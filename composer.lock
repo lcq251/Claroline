@@ -122,13 +122,13 @@
             "version": "dev-sf3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/claroline/Distribution.git",
-                "reference": "a4c1b0b49deac0f1975620f02ac998a4bf681942"
+                "url": "https://github.com/lcq251/Distribution.git",
+                "reference": "a202b05554d043d7f7ad465825cf218d0db155c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claroline/Distribution/zipball/a4c1b0b49deac0f1975620f02ac998a4bf681942",
-                "reference": "a4c1b0b49deac0f1975620f02ac998a4bf681942",
+                "url": "https://api.github.com/repos/claroline/Distribution/zipball/a202b05554d043d7f7ad465825cf218d0db155c2",
+                "reference": "a202b05554d043d7f7ad465825cf218d0db155c2",
                 "shasum": ""
             },
             "require": {
