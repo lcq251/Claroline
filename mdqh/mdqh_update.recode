@@ -14,3 +14,10 @@ cp zh.js web/dist/langs/
 
 php app/console claroline:plugin:create -i Mindme Markdown
 
+
+
+4.npm WARN saveError extraneous:
+npm prune -x
+
+
+npm i -D less@3.0.4- '2302:2301' 
