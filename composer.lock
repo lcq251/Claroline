@@ -119,16 +119,16 @@
         },
         {
             "name": "claroline/distribution",
-            "version": "12.x-dev",
+            "version": "md12-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcq251/Distribution.git",
-                "reference": "65731db4cb911d5c8f654b4b8c9984c811e4169b"
+                "reference": "31bdab70126d93b1140ae4360c235e28ddd52471"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcq251/Distribution/zipball/65731db4cb911d5c8f654b4b8c9984c811e4169b",
-                "reference": "65731db4cb911d5c8f654b4b8c9984c811e4169b",
+                "url": "https://api.github.com/repos/lcq251/Distribution/zipball/31bdab70126d93b1140ae4360c235e28ddd52471",
+                "reference": "31bdab70126d93b1140ae4360c235e28ddd52471",
                 "shasum": ""
             },
             "require": {
@@ -240,7 +240,8 @@
                 "innova/media-resource-bundle": "*",
                 "innova/path-bundle": "*",
                 "innova/video-recorder-bundle": "*",
-                "ujm/exo-bundle": "*"
+                "ujm/exo-bundle": "*",
+                "mindme/markdown-bundle": "*"
             },
             "type": "claroline-core",
             "extra": {
@@ -305,7 +306,8 @@
                     "Claroline\\BigBlueButtonBundle\\ClarolineBigBlueButtonBundle",
                     "Icap\\InwicastBundle\\IcapInwicastBundle",
                     "Claroline\\DropZoneBundle\\ClarolineDropZoneBundle",
-                    "Claroline\\PlannedNotificationBundle\\ClarolinePlannedNotificationBundle"
+                    "Claroline\\PlannedNotificationBundle\\ClarolinePlannedNotificationBundle",
+                    "Mindme\\MarkdownBundle\\MindmeMarkdownBundle"
                 ]
             },
             "autoload": {
@@ -372,7 +374,8 @@
                     "Claroline\\BigBlueButtonBundle\\": "plugin/big-blue-button",
                     "Icap\\InwicastBundle\\": "plugin/inwicast",
                     "Claroline\\DropZoneBundle\\": "plugin/drop-zone",
-                    "Claroline\\PlannedNotificationBundle\\": "plugin/planned-notification"
+                    "Claroline\\PlannedNotificationBundle\\": "plugin/planned-notification",
+                    "Mindme\\MarkdownBundle\\": "plugin/markdown"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
