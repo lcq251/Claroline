@@ -1,0 +1,16 @@
+
+1. local-zh
+
+cp -rf web/packages/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js web/packages/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh.js
+vi web/packages/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh.js
+$.fn.datepicker.dates['zh-CN'] => ['zh']
+
+2. tinymce-zh
+/data/claroline/vendor/claroline/distribution/main/core/Resources/modules/tinymce/langs/zh.js
+cp zh.js web/dist/langs/
+
+
+3. plugin install
+
+php app/console claroline:plugin:create -i Mindme Markdown
+
