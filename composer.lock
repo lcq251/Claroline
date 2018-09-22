@@ -123,12 +123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcq251/Distribution.git",
-                "reference": "31bdab70126d93b1140ae4360c235e28ddd52471"
+                "reference": "5f4d7d20df5ffd95cbf15e46f4ac5fde20746b6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcq251/Distribution/zipball/31bdab70126d93b1140ae4360c235e28ddd52471",
-                "reference": "31bdab70126d93b1140ae4360c235e28ddd52471",
+                "url": "https://api.github.com/repos/lcq251/Distribution/zipball/5f4d7d20df5ffd95cbf15e46f4ac5fde20746b6a",
+                "reference": "5f4d7d20df5ffd95cbf15e46f4ac5fde20746b6a",
                 "shasum": ""
             },
             "require": {
