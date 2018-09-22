@@ -119,16 +119,16 @@
         },
         {
             "name": "claroline/distribution",
-            "version": "dev-sf3",
+            "version": "12.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcq251/Distribution.git",
-                "reference": "a202b05554d043d7f7ad465825cf218d0db155c2"
+                "reference": "65731db4cb911d5c8f654b4b8c9984c811e4169b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claroline/Distribution/zipball/a202b05554d043d7f7ad465825cf218d0db155c2",
-                "reference": "a202b05554d043d7f7ad465825cf218d0db155c2",
+                "url": "https://api.github.com/repos/lcq251/Distribution/zipball/65731db4cb911d5c8f654b4b8c9984c811e4169b",
+                "reference": "65731db4cb911d5c8f654b4b8c9984c811e4169b",
                 "shasum": ""
             },
             "require": {
