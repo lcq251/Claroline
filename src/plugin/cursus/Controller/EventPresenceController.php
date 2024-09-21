@@ -237,7 +237,7 @@ class EventPresenceController
     {
         $this->checkPermission('EDIT', $event, [], true);
 
-        return new StreamedResponse(function () use ($event, $request, $filled) {
+        return new StreamedResponse(function () use ($event, $request, $filled): void {
             echo $this->pdfManager->fromHtml(
                 $this->manager->download($event, $this->eventManager->getRegisteredUsers($event), $request->getLocale(), (bool) $filled)
             );
@@ -256,7 +256,7 @@ class EventPresenceController
     {
         $this->checkPermission('OPEN', $eventPresence, [], true);
 
-        return new StreamedResponse(function () use ($eventPresence, $request) {
+        return new StreamedResponse(function () use ($eventPresence, $request): void {
             echo $this->pdfManager->fromHtml(
                 $this->manager->downloadUser($eventPresence, $request->getLocale())
             );
@@ -331,7 +331,7 @@ class EventPresenceController
         $downloadedName = $this->translator->trans('evidence', [], 'presence').'-'.$file['num'].'-'.$eventPresence->getUser()->getUsername().'-'.$eventPresence->getEvent()->getCode();
         $extension = pathinfo($file['url'], \PATHINFO_EXTENSION);
 
-        return new StreamedResponse(function () use ($content) {
+        return new StreamedResponse(function () use ($content): void {
             echo $content;
         }, 200, [
             'Content-Type' => $file['type'],
