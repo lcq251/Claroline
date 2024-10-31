@@ -2,7 +2,6 @@ import {connect} from 'react-redux'
 
 import {hasPermission} from '#/main/app/security'
 import {withReducer} from '#/main/app/store/components/withReducer'
-import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {selectors as resourceSelect} from '#/main/core/resource/store'
 
@@ -14,11 +13,6 @@ const ScormResource = withReducer(selectors.STORE_NAME, reducer)(
     (state) => ({
       scorm: selectors.scorm(state),
       editable: hasPermission('edit', resourceSelect.resourceNode(state))
-    }),
-    (dispatch) => ({
-      resetForm(formData) {
-        dispatch(formActions.resetForm(selectors.STORE_NAME+'.scormForm', formData))
-      }
     })
   )(ScormResourceComponent)
 )

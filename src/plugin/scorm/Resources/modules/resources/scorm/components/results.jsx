@@ -70,7 +70,7 @@ const ResultsComponent = props =>
         }, {
           name: 'scoreRaw',
           type: 'number',
-          label: trans('best_score'),
+          label: trans('best_score', {}, 'scorm'),
           displayed: true,
           render: (rowData) => {
             let Score

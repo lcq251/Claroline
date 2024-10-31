@@ -8,35 +8,54 @@ import {Routes} from '#/main/app/router'
 import {asset} from '#/main/app/config/asset'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ContentIFrame} from '#/main/app/content/components/iframe'
+import {PageSection} from '#/main/app/page'
+import {ResourceOverview} from '#/main/core/resource'
 
 import {Scorm as ScormTypes, Sco as ScoTypes} from '#/plugin/scorm/resources/scorm/prop-types'
 import {getFirstOpenableSco} from '#/plugin/scorm/resources/scorm/utils'
-import {ResourcePage} from '#/main/core/resource'
-import {PageSection} from '#/main/app/page'
 
 const Player = (props) => {
+  console.log('coucou')
   if (isEmpty(props.scos)) {
     return (
-      <ContentPlaceholder
-        size="lg"
-        icon="fa fa-face-frown"
-        title={trans('no_section')}
-      />
+      <ResourceOverview>
+        <ContentPlaceholder
+          size="lg"
+          icon="fa fa-face-frown"
+          title={trans('no_section')}
+        />
+      </ResourceOverview>
     )
   }
 
   const firstSco = getFirstOpenableSco(props.scos)
 
+  if (1 === props.scos.length) {
+    props.initializeScormAPI(firstSco, props.scorm, props.trackings, props.currentUser)
+
+    return (
+      <ResourceOverview>
+        <PageSection size="full">
+          <ContentIFrame
+            ratio={get(props.scorm, 'ratio')}
+            url={`${asset('data/uploads/scorm/')}${props.workspaceUuid}/${props.scorm.hashName}/${firstSco.data.entryUrl}${firstSco.data.parameters ? firstSco.data.parameters : ''}`}
+            sco={firstSco}
+          />
+        </PageSection>
+      </ResourceOverview>
+    )
+  }
+
   return (
-    <ResourcePage>
+    <ResourceOverview>
       <Routes
         path={props.path}
         redirect={firstSco ? [
-          {from: '/play', to: `/play/${firstSco.id}`}
+          {from: '/', to: `/${firstSco.id}`}
         ] : undefined}
         routes={[
           {
-            path: '/play/:id',
+            path: '/:id',
             onEnter(params = {}) {
               const currentSco = props.scos.find(sco => sco.id === params.id)
               if (currentSco) {
@@ -57,14 +76,14 @@ const Player = (props) => {
                 )
               }
 
-              routeProps.history.push(props.path+'/play')
+              routeProps.history.push(props.path)
 
               return null
             }
           }
         ]}
       />
-    </ResourcePage>
+    </ResourceOverview>
   )
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import {actions} from '#/plugin/scorm/resources/scorm/player/actions'
+import {actions} from '#/plugin/scorm/resources/scorm/store'
 
 const scorm12Errors = {
   '0': 'No error',

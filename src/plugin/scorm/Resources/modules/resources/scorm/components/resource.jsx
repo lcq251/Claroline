@@ -6,33 +6,15 @@ import {trans} from '#/main/app/intl/translation'
 import {DOWNLOAD_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {Resource} from '#/main/core/resource'
 
-import {Scorm as ScormType} from '#/plugin/scorm/resources/scorm/prop-types'
-import {Player} from '#/plugin/scorm/resources/scorm/player/containers/player'
-import {Editor} from '#/plugin/scorm/resources/scorm/editor/components/editor'
-import {Results} from '#/plugin/scorm/resources/scorm/player/components/results'
-import {ScormSummary} from '#/plugin/scorm/resources/scorm/containers/summary'
+import {Player} from '#/plugin/scorm/resources/scorm/containers/player'
+import {Results} from '#/plugin/scorm/resources/scorm/components/results'
+import {ScormEditor} from '#/plugin/scorm/resources/scorm/editor/components/main'
 
 const ScormResource = props =>
   <Resource
-    {...omit(props, 'scorm', 'editable', 'resetForm')}
-    menu={[
-      {
-        name: 'summary',
-        type: LINK_BUTTON,
-        //icon: 'fa fa-fw fa-sitemap',
-        label: trans('summary'),
-        target: `${props.path}/summary`
-      }
-    ]}
+    {...omit(props, 'scorm', 'editable')}
     actions={[
       {
-        name: 'play',
-        type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-play',
-        label: trans('start', {}, 'actions'),
-        target: `${props.path}/play`,
-        exact: true
-      }, {
         name: 'show-results',
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-list',
@@ -52,23 +34,10 @@ const ScormResource = props =>
         group: trans('transfer')
       }
     ]}
-    redirect={[
-      {from: '/', exact: true, to: '/play'}
-    ]}
+    editor={ScormEditor}
+    overviewPage={Player}
     pages={[
       {
-        path: '/play',
-        component: Player
-      }, {
-        path: '/summary',
-        component: ScormSummary
-      }, {
-        path: '/edit',
-        component: Editor,
-        disabled: !props.editable,
-        onLeave: () => props.resetForm(),
-        onEnter: () => props.resetForm(props.scorm)
-      }, {
         path: '/results',
         component: Results,
         disabled: !props.editable
@@ -78,9 +47,10 @@ const ScormResource = props =>
 
 ScormResource.propTypes = {
   path: T.string.isRequired,
-  scorm: T.shape(ScormType.propTypes),
-  editable: T.bool.isRequired,
-  resetForm: T.func.isRequired
+  scorm: T.shape({
+    id: T.string
+  }),
+  editable: T.bool.isRequired
 }
 
 export {

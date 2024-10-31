@@ -9,7 +9,7 @@ import {FORM_SUBMIT_SUCCESS} from '#/main/app/content/form/store/actions'
 import {RESOURCE_LOAD} from '#/main/core/resource/store/actions'
 
 import {selectors} from '#/plugin/scorm/resources/scorm/store/selectors'
-import {TRACKING_UPDATE} from '#/plugin/scorm/resources/scorm/player/actions'
+import {TRACKING_UPDATE} from '#/plugin/scorm/resources/scorm/store/actions'
 
 const reducer = combineReducers({
   scorm: makeReducer({}, {
