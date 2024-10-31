@@ -5,8 +5,11 @@ namespace Claroline\LogBundle\Controller;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
-use Claroline\AppBundle\Controller\AbstractSecurityController;
+use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\CoreBundle\Security\PlatformRoles;
 use Claroline\LogBundle\Entity\SecurityLog;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,13 +18,16 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route(path: '/log/security')]
-class SecurityLogController extends AbstractSecurityController
+class SecurityLogController
 {
+    use PermissionCheckerTrait;
+
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly AuthorizationCheckerInterface $authorization,
+        AuthorizationCheckerInterface $authorization,
         private readonly Crud $crud
     ) {
+        $this->authorization = $authorization;
     }
 
     #[Route(path: '', name: 'apiv2_logs_security', methods: ['GET'])]
@@ -29,7 +35,7 @@ class SecurityLogController extends AbstractSecurityController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        $this->canOpenAdminTool('logs');
+        $this->checkPermission(PlatformRoles::ADMIN, null, [], true);
 
         $logs = $this->crud->search(SecurityLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
@@ -46,7 +52,23 @@ class SecurityLogController extends AbstractSecurityController
         }
 
         $user = $this->tokenStorage->getToken()?->getUser();
-        $finderQuery->addFilter('doer', $user->getUuid());
+        $finderQuery->addFilter('target', $user->getUuid());
+
+        $logs = $this->crud->search(SecurityLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $logs->toResponse();
+    }
+
+    #[Route(path: '/user/{userId}', name: 'apiv2_logs_security_list_user', methods: ['GET'])]
+    public function listByUserAction(
+        #[MapEntity(mapping: ['userId' => 'uuid'])]
+        User $user,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        $this->checkPermission('EDIT', $user, [], true);
+
+        $finderQuery->addFilter('target', $user->getUuid());
 
         $logs = $this->crud->search(SecurityLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 

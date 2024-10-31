@@ -5,23 +5,26 @@ namespace Claroline\LogBundle\Controller;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
-use Claroline\AppBundle\Controller\AbstractSecurityController;
+use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\CoreBundle\Security\PlatformRoles;
 use Claroline\LogBundle\Entity\MessageLog;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route(path: '/log/message')]
-class MessageLogController extends AbstractSecurityController
+class MessageLogController
 {
+    use PermissionCheckerTrait;
+
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly AuthorizationCheckerInterface $authorization,
+        AuthorizationCheckerInterface $authorization,
         private readonly Crud $crud
     ) {
+        $this->authorization = $authorization;
     }
 
     #[Route(path: '', name: 'apiv2_logs_message', methods: ['GET'])]
@@ -29,7 +32,7 @@ class MessageLogController extends AbstractSecurityController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        $this->canOpenAdminTool('logs');
+        $this->checkPermission(PlatformRoles::ADMIN, null, [], true);
 
         $logs = $this->crud->search(MessageLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
@@ -41,9 +44,7 @@ class MessageLogController extends AbstractSecurityController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        if (!$this->authorization->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new AccessDeniedException();
-        }
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
         $user = $this->tokenStorage->getToken()?->getUser();
         $finderQuery->addFilter('doer', $user->getUuid());

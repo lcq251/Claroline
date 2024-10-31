@@ -12,10 +12,9 @@ import {LogFunctionalList} from '#/main/log/components/functional-list'
 
 const Activity = (props) =>
   <>
-    <ActivityCalendar />
+    <ActivityCalendar className="mb-4 mt-3" />
 
     <LogFunctionalList
-      className="component-container"
       name={selectors.STORE_NAME + '.logs'}
       url={props.url}
       customDefinition={[
@@ -34,12 +33,12 @@ const Activity = (props) =>
       ]}
     />
 
-    <Button
-      className="btn btn-outline-primary w-100 mt-3"
+    {/*<Button
+      className="btn btn-link w-100 mt-3"
       type={CALLBACK_BUTTON}
       label={trans('Voir plus d\'activités')}
       callback={() => true}
-    />
+    />*/}
   </>
 
 Activity.propTypes = {

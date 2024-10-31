@@ -36,7 +36,7 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
     }
 
     /**
-     * @internal used by DI.
+     * @internal used by DI
      */
     public function setSerializer(SerializerProvider $serializer): void
     {
@@ -56,7 +56,7 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
         $newData = $this->serializer->serialize($event->getObject());
         $changeSet = $this->getUpdateDiff($event->getOldData(), $newData);
         if (count($changeSet) > 0) {
-            $this->log('update', $this->getMessageFromEvent($event, 'update'), $event->getObject());
+            $this->log('update', $this->getMessageFromEvent($event, 'update'), $event->getObject(), $changeSet);
         }
     }
 
@@ -152,6 +152,14 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
     {
         $result = [];
         foreach ($old as $key => $val) {
+            /*if (array_key_exists($key, $new)) {
+                if (is_array($val)) {
+                    if (!array_is_list($new)) {
+                        $this->getUpdateDiff($val, $new[$key]);
+                    }
+                }
+            }*/
+
             if (isset($new[$key])) {
                 if (is_array($val) && $new[$key]) {
                     $result[$key] = $this->getUpdateDiff($val, $new[$key]);

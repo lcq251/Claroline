@@ -13,7 +13,14 @@ const LogsSecurity = () =>
       <LogSecurityList
         name={selectors.LIST_NAME}
         url={['apiv2_logs_security']}
-        selectable={false}
+        customDefinition={[
+          {
+            name: 'target',
+            type: 'user',
+            label: trans('target'),
+            displayed: false
+          }
+        ]}
       />
     </PageListSection>
   </ToolPage>

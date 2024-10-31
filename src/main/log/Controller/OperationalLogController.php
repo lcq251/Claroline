@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Component\Context\ContextProvider;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\LogBundle\Entity\OperationalLog;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -19,13 +20,14 @@ class OperationalLogController
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
+        private readonly ObjectManager $om,
         private readonly ContextProvider $contextProvider,
         private readonly Crud $crud
     ) {
     }
 
-    #[Route(path: '/{context}/{contextId}', name: 'apiv2_logs_operational', methods: ['GET'])]
-    public function listAction(
+    #[Route(path: '/context/{context}/{contextId}', name: 'apiv2_logs_operational', methods: ['GET'])]
+    public function listByContextAction(
         string $context,
         string $contextId = null,
         #[MapQueryString]
@@ -45,6 +47,43 @@ class OperationalLogController
         $finderQuery
             ->addFilter('contextId', $contextSubject?->getUuid())
             ->addFilter('contextName', $context);
+
+        $logs = $this->crud->search(OperationalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $logs->toResponse();
+    }
+
+    /**
+     * Lists all the operational logs for an object.
+     *
+     * @param string $objectName - the FQCN of the target entity without \ (ex. ClarolineCoreBundleEntityUser)
+     */
+    #[Route(path: '/object/{objectId}/{objectName}', name: 'apiv2_logs_operational_object', requirements: ['objectName' => '.+'], methods: ['GET'])]
+    public function listByObjectAction(
+        string $objectId,
+        ?string $objectName = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        try {
+            // FIXME : I can't find a way to get \ in the URL directly (route never matches)
+            $objectName = str_replace('/', '\\', $objectName);
+
+            $object = $this->om->getRepository($objectName)->findOneBy(['uuid' => $objectId]);
+            if (empty($object)) {
+                throw new NotFoundHttpException('Object not found.');
+            }
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        if (!$this->authorization->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
+        }
+
+        $finderQuery
+            ->addFilter('objectId', $objectId)
+            ->addFilter('objectClass', $objectName);
 
         $logs = $this->crud->search(OperationalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
