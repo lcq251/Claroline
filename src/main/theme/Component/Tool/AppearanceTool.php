@@ -7,19 +7,15 @@ use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\AbstractTool;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
-use Claroline\CoreBundle\Component\Context\AccountContext;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
-use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\ThemeBundle\Entity\ColorCollection;
 use Claroline\ThemeBundle\Manager\IconSetManager;
 use Claroline\ThemeBundle\Manager\ThemeManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AppearanceTool extends AbstractTool
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
         private readonly PlatformConfigurationHandler $config,
         private readonly SerializerProvider $serializer,
@@ -46,37 +42,22 @@ class AppearanceTool extends AbstractTool
 
     public function supportsContext(string $context): bool
     {
-        return in_array($context, [
-            AccountContext::getName(),
-            AdministrationContext::getName(),
-        ]);
+        return AdministrationContext::getName() === $context;
     }
 
     public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
-        if (AdministrationContext::getName() === $context) {
-            $colorCharts = $this->om->getRepository(ColorCollection::class)->findAll();
-            $parameters = $this->parametersSerializer->serialize(); // only get appearance options
-
-            return [
-                'parameters' => $parameters,
-                'currentTheme' => $this->config->getParameter('display.theme'),
-                'availableThemes' => $this->themeManager->getAvailableThemes(false),
-                'availableIconSets' => $this->iconSetManager->getAvailableSets(),
-                'availableColorCharts' => array_map(function (ColorCollection $colorCollection) {
-                    return $this->serializer->serialize($colorCollection);
-                }, $colorCharts),
-            ];
-        }
-
-        $currentUser = null;
-        if ($this->tokenStorage->getToken()?->getUser() instanceof User) {
-            $currentUser = $this->tokenStorage->getToken()?->getUser();
-        }
+        $colorCharts = $this->om->getRepository(ColorCollection::class)->findAll();
+        $parameters = $this->parametersSerializer->serialize(); // only get appearance options
 
         return [
-            'availableThemes' => $this->themeManager->getAvailableThemes(),
-            'theme' => $this->themeManager->getAppearance($currentUser),
+            'parameters' => $parameters,
+            'currentTheme' => $this->config->getParameter('display.theme'),
+            'availableThemes' => $this->themeManager->getAvailableThemes(false),
+            'availableIconSets' => $this->iconSetManager->getAvailableSets(),
+            'availableColorCharts' => array_map(function (ColorCollection $colorCollection) {
+                return $this->serializer->serialize($colorCollection);
+            }, $colorCharts),
         ];
     }
 }

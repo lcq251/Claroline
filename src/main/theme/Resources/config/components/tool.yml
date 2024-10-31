@@ -1,12 +1,11 @@
 services:
-  Claroline\ThemeBundle\Component\Tool\AppearanceTool:
-    parent: Claroline\AppBundle\Component\Tool\AbstractTool
-    tags: [ 'claroline.component.tool' ]
-    arguments:
-      - '@security.token_storage'
-      - '@Claroline\AppBundle\Persistence\ObjectManager'
-      - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
-      - '@Claroline\AppBundle\API\SerializerProvider'
-      - '@Claroline\ThemeBundle\Manager\ThemeManager'
-      - '@Claroline\ThemeBundle\Manager\IconSetManager'
-      - '@Claroline\CoreBundle\API\Serializer\ParametersSerializer'
+    Claroline\ThemeBundle\Component\Tool\AppearanceTool:
+        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        tags: [ 'claroline.component.tool' ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\ThemeBundle\Manager\ThemeManager'
+            - '@Claroline\ThemeBundle\Manager\IconSetManager'
+            - '@Claroline\CoreBundle\API\Serializer\ParametersSerializer'

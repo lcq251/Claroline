@@ -43,12 +43,13 @@ const ThemeUrlIcon = (props) => {
         role="presentation"
         className={classes(props.className, 'theme-icon', props.size && `theme-icon-${props.size}`)}
         dangerouslySetInnerHTML={{ __html: svg }}
+        aria-hidden={true}
       />
     )
   }
 
   return (
-    <span role="presentation" className={classes(props.className, 'theme-icon', props.size && `theme-icon-${props.size}`)}>
+    <span className={classes(props.className, 'theme-icon', props.size && `theme-icon-${props.size}`)} aria-hidden={true}>
       <img src={asset(props.url)} />
     </span>
   )
