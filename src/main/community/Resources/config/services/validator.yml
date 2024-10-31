@@ -12,4 +12,3 @@ services:
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
             - '@Claroline\CoreBundle\Manager\UserManager'
             - '@Claroline\CoreBundle\Manager\FacetManager'
-            - '@Claroline\CommunityBundle\Serializer\ProfileSerializer'

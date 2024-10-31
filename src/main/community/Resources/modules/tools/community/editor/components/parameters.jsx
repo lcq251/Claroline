@@ -67,21 +67,6 @@ const workspaceDefinition = (contextId, update) => [
 
 const desktopDefinition = (contextId, update) => [
   {
-    title: trans('general'),
-    primary: true,
-    hideTitle: true,
-    fields: [
-      {
-        name: 'parameters.community.username',
-        type: 'boolean',
-        label: trans('enable_username', {}, 'community'),
-        help: [
-          trans('username_enabled_help', {}, 'community'),
-          trans('username_disabled_help', {}, 'community')
-        ]
-      }
-    ]
-  }, {
     icon: 'fa fa-fw fa-user-plus',
     title: trans('registration'),
     primary: true,
@@ -130,6 +115,14 @@ const desktopDefinition = (contextId, update) => [
     primary: true,
     fields: [
       {
+        name: 'parameters.community.username',
+        type: 'boolean',
+        label: trans('enable_username', {}, 'community'),
+        help: [
+          trans('username_enabled_help', {}, 'community'),
+          trans('username_disabled_help', {}, 'community')
+        ]
+      }, {
         name: 'parameters.profile.roles_edition',
         type: 'roles',
         label: trans('profile_roles_for_edition')

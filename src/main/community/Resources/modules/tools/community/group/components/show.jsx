@@ -80,7 +80,7 @@ const GroupShow = (props) =>
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 tooltip: 'bottom',
-                label: trans('add_users'),
+                label: trans('add_users', {}, 'actions'),
                 disabled: get(props.group, 'meta.readOnly'),
                 displayed: hasPermission('administrate', props.group),
                 modal: [MODAL_USERS, {
@@ -117,7 +117,7 @@ const GroupShow = (props) =>
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 tooltip: 'bottom',
-                label: trans('add_organizations'),
+                label: trans('add_organizations', {}, 'actions'),
                 displayed: hasPermission('administrate', props.group),
                 modal: [MODAL_ORGANIZATIONS, {
                   selectAction: (organizations) => ({
@@ -151,7 +151,7 @@ const GroupShow = (props) =>
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 tooltip: 'bottom',
-                label: trans('add_roles'),
+                label: trans('add_roles', {}, 'actions'),
                 disabled: get(props.group, 'meta.readOnly'),
                 modal: [MODAL_ROLES, {
                   selectAction: (selected) => ({

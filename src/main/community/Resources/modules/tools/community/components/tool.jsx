@@ -11,7 +11,6 @@ import {UserMain} from '#/main/community/tools/community/user/containers/main'
 import {GroupMain} from '#/main/community/tools/community/group/containers/main'
 import {RoleMain} from '#/main/community/tools/community/role/containers/main'
 import {PendingMain} from '#/main/community/tools/community/pending/containers/main'
-import {OrganizationMain} from '#/main/community/tools/community/organization/containers/main'
 import {TeamMain} from '#/main/community/tools/community/team/containers/main'
 
 import {CommunityEditor} from '#/main/community/tools/community/editor/containers/main'
@@ -49,12 +48,6 @@ const CommunityTool = (props) =>
         target: `${props.path}/teams`,
         displayed: props.contextType === toolConstants.TOOL_WORKSPACE
       }, {
-        name: 'organizations',
-        type: LINK_BUTTON,
-        label: trans('organizations'),
-        target: `${props.path}/organizations`,
-        displayed: props.contextType === toolConstants.TOOL_DESKTOP/* && props.canEdit*/
-      }, {
         name: 'roles',
         type: LINK_BUTTON,
         label: trans('roles', {}, 'community'),
@@ -85,10 +78,6 @@ const CommunityTool = (props) =>
         path: '/roles',
         component: RoleMain,
         disabled: !props.canEdit
-      }, {
-        path: '/organizations',
-        component: OrganizationMain,
-        disabled: props.contextType !== toolConstants.TOOL_DESKTOP/* || !props.canEdit*/
       }, {
         path: '/teams',
         component: TeamMain,

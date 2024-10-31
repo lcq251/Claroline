@@ -7,7 +7,7 @@ import {makeListReducer} from '#/main/app/content/list/store'
 import {FORM_SUBMIT_SUCCESS} from '#/main/app/content/form/store/actions'
 import {TOOL_OPEN} from '#/main/core/tool/store/actions'
 
-import {selectors} from '#/main/community/tools/community/organization/store/selectors'
+import {selectors} from '#/main/community/tools/organizations/store/selectors'
 import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 
 const reducer = combineReducers({

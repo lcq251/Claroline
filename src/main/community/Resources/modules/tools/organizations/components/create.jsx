@@ -6,17 +6,10 @@ import {ToolPage} from '#/main/core/tool'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {OrganizationForm} from '#/main/community/organization/components/form'
-import {selectors} from '#/main/community/tools/community/organization/store'
+import {selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationCreate = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('organizations', {}, 'community'),
-        target: `${props.path}/organizations`
-      }
-    ]}
     title={trans('new_organization', {}, 'community')}
   >
     <OrganizationForm

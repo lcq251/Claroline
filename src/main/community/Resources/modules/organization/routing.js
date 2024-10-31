@@ -1,11 +1,11 @@
-import {route as toolRoute} from '#/main/core/tool/routing'
+import {route as adminRoute} from '#/main/core/administration/routing'
 
 function route(organization, basePath = null) {
   if (basePath) {
-    return basePath + '/organizations/' + organization.id
+    return basePath + '/' + organization.id
   }
 
-  return toolRoute('community') + '/organizations/' + organization.id
+  return adminRoute('organizations') + '/' + organization.id
 }
 
 export {

@@ -125,11 +125,11 @@ class UserSerializer
             ),
         ];
 
-        if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
+        /*if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
             if ($user->getMainOrganization()) {
                 $serializedUser['mainOrganization'] = $this->organizationSerializer->serialize($user->getMainOrganization(), [SerializerInterface::SERIALIZE_MINIMAL]);
             }
-        }
+        }*/
 
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
             $serializedUser['status'] = $user->getStatus();
@@ -171,7 +171,7 @@ class UserSerializer
         $this->sipe('phone', 'setPhone', $data, $user);
         $this->sipe('administrativeCode', 'setAdministrativeCode', $data, $user);
         $this->sipe('picture', 'setPicture', $data, $user);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $user);
+        //$this->sipe('thumbnail', 'setThumbnail', $data, $user);
         $this->sipe('poster', 'setPoster', $data, $user);
 
         // don't trim the password just in case

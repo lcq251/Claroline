@@ -6,6 +6,9 @@ plugin:
               - register
               - show_activity
 
+        - name: organizations
+          icon: building
+
     data_sources:
         - name: users
           type: list

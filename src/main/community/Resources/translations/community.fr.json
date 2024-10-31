@@ -16,7 +16,7 @@
   "organization_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cette organisation ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% organisations ?",
   "new_organization": "Nouvelle organisation",
   "organization_name": "Organisation : %name%",
-  "organization_loading": "Nous chargeons l'organisation'...",
+  "organization_loading": "Nous chargeons l'organisation...",
   "public_organization": "L'organisation est publique.",
   "make_organization_public": "Rendre l'organisation publique",
   "make_organization_public_help1": "Les organisations publiques sont visibles par les anonymes.",

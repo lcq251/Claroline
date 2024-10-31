@@ -114,7 +114,7 @@ const TeamShow = (props) => {
                   name: 'add-users',
                   type: MODAL_BUTTON,
                   icon: 'fa fa-fw fa-plus',
-                  label: trans('add_users'),
+                  label: trans('add_users', {}, 'actions'),
                   tooltip: 'bottom',
                   disabled: full,
                   displayed: hasPermission('edit', props.team),

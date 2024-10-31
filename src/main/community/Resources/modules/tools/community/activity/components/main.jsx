@@ -9,6 +9,7 @@ import {ToolPage} from '#/main/core/tool'
 import {LogFunctionalList} from '#/main/log/components/functional-list'
 import {selectors} from '#/main/community/tools/community/activity/store'
 import {PageListSection, PageSection} from '#/main/app/page'
+import {Activity} from '#/main/log/activity/components/main'
 
 class ActivityMain extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class ActivityMain extends Component {
       <ToolPage
         title={trans('activity')}
       >
-        <PageSection size="full">
+        <PageSection size="md">
           <ContentInfoBlocks
             className="my-4"
             size="lg"
@@ -46,16 +47,15 @@ class ActivityMain extends Component {
           />
         </PageSection>
 
-        {/*<div className="row py-4" role="presentation">
-          <ContentSizing size="md">
-            <Activity />
-          </ContentSizing>
-        </div>*/}
+        <PageSection>
+          <Activity
+            url={['apiv2_community_functional_logs', {contextId: this.props.contextId}]}
+          />
+        </PageSection>
 
-        <PageListSection>
+        {/*<PageListSection>
           <LogFunctionalList
             flush={true}
-            className="component-container"
             name={selectors.STORE_NAME + '.logs'}
             url={['apiv2_community_functional_logs', {contextId: this.props.contextId}]}
             customDefinition={[
@@ -73,7 +73,7 @@ class ActivityMain extends Component {
               }
             ]}
           />
-        </PageListSection>
+        </PageListSection>*/}
       </ToolPage>
     )
   }

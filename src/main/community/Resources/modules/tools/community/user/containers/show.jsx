@@ -1,7 +1,6 @@
 import {connect} from 'react-redux'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
-import {selectors as formSelectors} from '#/main/app/content/form/store'
 
 import {UserShow as UserShowComponent} from '#/main/community/tools/community/user/components/show'
 import {actions, selectors} from '#/main/community/tools/community/user/store'
@@ -9,7 +8,7 @@ import {actions, selectors} from '#/main/community/tools/community/user/store'
 const UserShow = connect(
   state => ({
     path: toolSelectors.path(state),
-    user: formSelectors.data(formSelectors.form(state, selectors.FORM_NAME))
+    user: selectors.currentUser(state)
   }),
   (dispatch) => ({
     reload(id) {
@@ -17,12 +16,6 @@ const UserShow = connect(
     },
     addGroups(id, groups) {
       dispatch(actions.addGroups(id, groups))
-    },
-    addOrganizations(id, organizations) {
-      dispatch(actions.addOrganizations(id, organizations))
-    },
-    addRoles(id, roles) {
-      dispatch(actions.addRoles(id, roles))
     }
   })
 )(UserShowComponent)

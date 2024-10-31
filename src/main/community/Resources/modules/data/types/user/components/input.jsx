@@ -17,7 +17,7 @@ const UserButton = props =>
     className="btn btn-outline-primary w-100 mt-2"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
-    label={trans('add_user')}
+    label={trans('add_user', {}, 'actions')}
     disabled={props.disabled}
     modal={[MODAL_USERS, {
       title: props.title,

@@ -7,6 +7,9 @@ import {hasPermission} from '#/main/app/security'
 import {DetailsData} from '#/main/app/content/details/containers/data'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
+import {PageSection} from '#/main/app/page/components/section'
+import {ContentHtml} from '#/main/app/content/components/html'
+import {route} from '#/main/community/organization/routing'
 
 import {UserList} from '#/main/community/user/components/list'
 import {MODAL_USERS} from '#/main/community/modals/users'
@@ -17,10 +20,7 @@ import {MODAL_WORKSPACES} from '#/main/core/modals/workspaces'
 
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 import {OrganizationPage} from '#/main/community/organization/components/page'
-import {selectors} from '#/main/community/tools/community/organization/store'
-import {PageSection} from '#/main/app/page/components/section'
-import {ContentHtml} from '#/main/app/content/components/html'
-import {route} from '#/main/community/organization/routing'
+import {selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationShow = props =>
   <OrganizationPage
@@ -44,14 +44,24 @@ const OrganizationShow = props =>
             primary: true,
             fields: [
               {
-                name: 'code',
-                type: 'string',
-                label: trans('code')
-              }, {
                 name: 'email',
                 type: 'email',
                 label: trans('email'),
-                displayed: (organization) => !!organization.email
+                //displayed: (organization) => !!organization.email
+              }, {
+                name: 'phone',
+                type: 'phone',
+                label: trans('phone'),
+                //displayed: (organization) => !!organization.email
+              }, {
+                name: 'address',
+                type: 'address',
+                label: trans('address'),
+                //displayed: (organization) => !!organization.email
+              }, {
+                name: 'code',
+                type: 'string',
+                label: trans('code')
               }
             ]
           }
@@ -81,7 +91,7 @@ const OrganizationShow = props =>
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 tooltip: 'bottom',
-                label: trans('add_users'),
+                label: trans('add_users', {}, 'actions'),
                 displayed: hasPermission('edit', props.organization),
                 modal: [MODAL_USERS, {
                   selectAction: (users) => ({
@@ -147,7 +157,7 @@ const OrganizationShow = props =>
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 tooltip: 'bottom',
-                label: trans('add_groups'),
+                label: trans('add_groups', {}, 'actions'),
                 displayed: hasPermission('edit', props.organization),
                 modal: [MODAL_GROUPS, {
                   selectAction: (groups) => ({

@@ -47,7 +47,7 @@ class GroupVoter extends AbstractRoleSubjectVoter
         return VoterInterface::ACCESS_ABSTAIN;
     }
 
-    private function checkOpen($token, Group $group)
+    private function checkOpen($token, Group $group): int
     {
         /** @var User $user */
         $user = $token->getUser();
@@ -58,7 +58,7 @@ class GroupVoter extends AbstractRoleSubjectVoter
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function checkEdit($token, Group $group)
+    private function checkEdit($token, Group $group): int
     {
         if (!$this->isOrganizationManager($token, $group)) {
             return VoterInterface::ACCESS_DENIED;
@@ -80,7 +80,7 @@ class GroupVoter extends AbstractRoleSubjectVoter
         return $this->checkEdit($token, $group);
     }
 
-    private function checkDelete($token, Group $group)
+    private function checkDelete($token, Group $group): int
     {
         if ($group->isLocked()) {
             return VoterInterface::ACCESS_DENIED;

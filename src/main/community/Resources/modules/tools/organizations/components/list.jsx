@@ -4,15 +4,13 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
-
-import {selectors} from '#/main/community/tools/community/organization/store'
-import {OrganizationList as BaseOrganizationList} from '#/main/community/organization/components/list'
 import {PageListSection} from '#/main/app/page/components/list-section'
 
+import {OrganizationList as BaseOrganizationList} from '#/main/community/organization/components/list'
+import {selectors} from '#/main/community/tools/organizations/store'
+
 const OrganizationList = (props) =>
-  <ToolPage
-    title={trans('organizations', {}, 'community')}
-  >
+  <ToolPage>
     <PageListSection>
       <BaseOrganizationList
         flush={true}
@@ -24,7 +22,7 @@ const OrganizationList = (props) =>
           type: LINK_BUTTON,
           // icon: 'fa fa-plus',
           label: trans('add_organization', {}, 'actions'),
-          target: `${props.path}/organizations/new`,
+          target: `${props.path}/new`,
           displayed: props.canCreate
         }}
       />

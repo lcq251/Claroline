@@ -2,8 +2,8 @@ import {connect} from 'react-redux'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 
-import {OrganizationList as OrganizationListComponent} from '#/main/community/tools/community/organization/components/list'
-import {selectors} from '#/main/community/tools/community/organization/store'
+import {OrganizationList as OrganizationListComponent} from '#/main/community/tools/organizations/components/list'
+import {selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationList = connect(
   (state) => ({

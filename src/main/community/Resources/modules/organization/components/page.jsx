@@ -6,23 +6,17 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/organization/utils'
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const Organization = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('organizations', {}, 'community'),
-        target: `${props.path}/organizations`
-      }
-    ].concat(props.organization ? props.breadcrumb : [])}
+    breadcrumb={props.breadcrumb}
     poster={get(props.organization, 'poster')}
     title={trans('organization_name', {name: get(props.organization, 'name', trans('loading'))}, 'community')}
     description={get(props.organization, 'meta.description')}
@@ -37,6 +31,17 @@ const Organization = (props) =>
     {!isEmpty(props.organization) &&
       <PageHeading
         size="md"
+        icon={get(props.organization, 'thumbnail') ?
+          <Thumbnail
+            size="xl"
+            thumbnail={get(props.organization, 'thumbnail')}
+            name={get(props.organization, 'name')}
+            square={true}
+          >
+            <span className="fa fa-building" aria-hidden={true} />
+          </Thumbnail> :
+          undefined
+        }
         title={get(props.organization, 'name', trans('loading'))}
         primaryAction="edit"
         actions={!isEmpty(props.organization) ? getActions([props.organization], {

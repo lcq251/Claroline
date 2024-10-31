@@ -142,7 +142,7 @@ const RoleShow = (props) =>
                   name: 'add-users',
                   type: MODAL_BUTTON,
                   icon: 'fa fa-fw fa-plus',
-                  label: trans('add_users'),
+                  label: trans('add_users', {}, 'actions'),
                   tooltip: 'bottom',
                   displayed: hasPermission('edit', props.role) && ('workspace' !== props.contextType || constants.ROLE_PLATFORM !== props.role.type),
                   modal: [MODAL_USERS, {
@@ -175,7 +175,7 @@ const RoleShow = (props) =>
                   name: 'add-groups',
                   type: MODAL_BUTTON,
                   icon: 'fa fa-fw fa-plus',
-                  label: trans('add_groups'),
+                  label: trans('add_groups', {}, 'actions'),
                   tooltip: 'bottom',
                   displayed: hasPermission('edit', props.role) && ('workspace' !== props.contextType || constants.ROLE_PLATFORM !== props.role.type),
                   modal: [MODAL_GROUPS, {

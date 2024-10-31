@@ -45,7 +45,6 @@ class RegistrationController
         private readonly PlatformConfigurationHandler $config,
         private readonly Crud $crud,
         private readonly SerializerProvider $serializer,
-        private readonly ProfileSerializer $profileSerializer,
         private readonly PrivacyManager $privacyManager,
         private readonly Authenticator $authenticator
     ) {
@@ -57,11 +56,7 @@ class RegistrationController
         $this->checkAccess();
 
         /** @var array|User $user */
-        $user = $this->crud->create(User::class, $this->decodeRequest($request), [
-            // maybe move these options in another class
-            Options::REGISTRATION,
-            Options::VALIDATE_FACET,
-        ]);
+        $user = $this->crud->create(User::class);
 
         $validation = $this->config->getParameter('registration.validation');
         // auto log user if option is set and account doesn't need to be validated
@@ -81,15 +76,13 @@ class RegistrationController
         $this->checkAccess();
         $terms = null;
         if ($this->privacyManager->getTosEnabled($request->getLocale())) {
-            $terms = $this->privacyManager->getTosTemplate($request->getLocale());
+            $terms = $this->privacyManager->getTosContent($request->getLocale());
         }
 
         return new JsonResponse([
-            'facets' => $this->profileSerializer->serialize([Options::REGISTRATION]),
             'termOfService' => $terms,
             'options' => [
                 'validation' => $this->config->getParameter('registration.validation'),
-                'organizationSelection' => $this->config->getParameter('registration.organization_selection'),
             ],
         ]);
     }

@@ -8,7 +8,6 @@ import {reducer as pendingReducer} from '#/main/community/tools/community/pendin
 import {reducer as usersReducer} from '#/main/community/tools/community/user/store/reducer'
 import {reducer as groupsReducer} from '#/main/community/tools/community/group/store/reducer'
 import {reducer as rolesReducer} from '#/main/community/tools/community/role/store/reducer'
-import {reducer as organizationReducer} from '#/main/community/tools/community/organization/store/reducer'
 import {reducer as teamsReducer} from '#/main/community/tools/community/team/store/reducer'
 
 import {selectors} from '#/main/community/tools/community/store/selectors'
@@ -25,8 +24,6 @@ const reducer = combineReducers({
   groups: groupsReducer,
   roles: rolesReducer,
   teams: teamsReducer,
-  organizations: organizationReducer,
-  //profile: profileReducer,
   pending: pendingReducer
 })
 

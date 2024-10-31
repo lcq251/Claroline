@@ -16,7 +16,7 @@ const RoleButton = props =>
     className="btn btn-outline-primary w-100 mt-2"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
-    label={trans('add_role')}
+    label={trans('add_role', {}, 'actions')}
     modal={[MODAL_ROLES, {
       url: props.url,
       title: props.title,

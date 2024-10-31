@@ -5,7 +5,7 @@ import {OrganizationPage} from '#/main/community/organization/components/page'
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 import {OrganizationForm} from '#/main/community/organization/components/form'
 
-import {selectors} from '#/main/community/tools/community/organization/store/selectors'
+import {selectors} from '#/main/community/tools/organizations/store/selectors'
 
 const OrganizationEdit = (props) =>
   <OrganizationPage

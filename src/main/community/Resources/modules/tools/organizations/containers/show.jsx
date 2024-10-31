@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import {selectors as formSelectors} from '#/main/app/content/form/store'
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 
-import {OrganizationShow as OrganizationShowComponent} from '#/main/community/tools/community/organization/components/show'
-import {actions, selectors} from '#/main/community/tools/community/organization/store'
+import {OrganizationShow as OrganizationShowComponent} from '#/main/community/tools/organizations/components/show'
+import {actions, selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationShow = connect(
   state => ({

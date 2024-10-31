@@ -9,9 +9,12 @@ use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\TransferBundle\Transfer\Importer\AbstractImporter;
+use Psr\Log\LoggerAwareTrait;
 
 final class Create extends AbstractImporter
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly Crud $crud
     ) {
@@ -47,6 +50,9 @@ final class Create extends AbstractImporter
             foreach ($data['groups'] as $group) {
                 $object = $this->crud->find(Group::class, $group);
                 if (!$object) {
+                    $this->logger->warning('Group %name% does not exist', [
+                        'ids' => implode(',', $group),
+                    ]);
                     throw new \Exception('Group '.implode(',', $group).' does not exists');
                 }
 

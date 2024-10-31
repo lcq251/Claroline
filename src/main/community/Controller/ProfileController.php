@@ -11,8 +11,6 @@
 
 namespace Claroline\CommunityBundle\Controller;
 
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use ZipArchive;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -20,15 +18,14 @@ use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
-use Claroline\CoreBundle\Entity\Facet\Facet;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route(path: '/profile')]
 class ProfileController
@@ -36,29 +33,16 @@ class ProfileController
     use PermissionCheckerTrait;
     use RequestDecoderTrait;
 
-    private ObjectManager $om;
-    private TempFileManager $tempManager;
-    private Crud $crud;
-    private SerializerProvider $serializer;
-    private ParametersSerializer $parametersSerializer;
-    private ProfileSerializer $profileSerializer;
-
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        ObjectManager $om,
-        TempFileManager $tempManager,
-        Crud $crud,
-        SerializerProvider $serializer,
-        ParametersSerializer $parametersSerializer,
-        ProfileSerializer $profileSerializer
+        private readonly ObjectManager $om,
+        private readonly TempFileManager $tempManager,
+        private readonly Crud $crud,
+        private readonly SerializerProvider $serializer,
+        private readonly ParametersSerializer $parametersSerializer,
+        private readonly ProfileSerializer $profileSerializer
     ) {
         $this->authorization = $authorization;
-        $this->om = $om;
-        $this->tempManager = $tempManager;
-        $this->crud = $crud;
-        $this->serializer = $serializer;
-        $this->parametersSerializer = $parametersSerializer;
-        $this->profileSerializer = $profileSerializer;
     }
 
     public function getName(): string
@@ -73,8 +57,8 @@ class ProfileController
 
         $pathArch = $this->tempManager->generate();
 
-        $archive = new ZipArchive();
-        $archive->open($pathArch, ZipArchive::CREATE);
+        $archive = new \ZipArchive();
+        $archive->open($pathArch, \ZipArchive::CREATE);
 
         // add user json
         $archive->addFromString('user.json', json_encode($this->serializer->serialize($user), JSON_PRETTY_PRINT));
@@ -111,42 +95,5 @@ class ProfileController
             'facets' => $this->profileSerializer->serialize(),
             'parameters' => $this->parametersSerializer->serialize()['profile'],
         ]);
-    }
-
-    /**
-     * Updates the profile configuration for the current platform.
-     */
-    #[Route(path: '', name: 'apiv2_profile_configure', methods: ['PUT'])]
-    public function configureAction(Request $request): JsonResponse
-    {
-        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
-
-        $formData = $this->decodeRequest($request);
-
-        // dump current profile configuration (to know what to remove later)
-        /** @var Facet[] $facets */
-        $facets = $this->om->getRepository(Facet::class)->findAll();
-
-        $this->om->startFlushSuite();
-
-        // updates facets data
-        $updatedFacets = [];
-        foreach ($formData as $facetData) {
-            $updated = $this->crud->update(Facet::class, $facetData);
-            $updatedFacets[$updated->getId()] = $updated;
-        }
-
-        // removes deleted facets
-        foreach ($facets as $facet) {
-            if (empty($updatedFacets[$facet->getId()])) {
-                $this->crud->delete($facet);
-            }
-        }
-
-        $this->om->endFlushSuite();
-
-        return new JsonResponse(
-            $this->profileSerializer->serialize()
-        );
     }
 }

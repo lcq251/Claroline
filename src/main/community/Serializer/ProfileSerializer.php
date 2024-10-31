@@ -8,6 +8,9 @@ use Claroline\CoreBundle\API\Serializer\Facet\FacetSerializer;
 use Claroline\CoreBundle\Entity\Facet\Facet;
 use Doctrine\Persistence\ObjectRepository;
 
+/**
+ * @deprecated
+ */
 class ProfileSerializer
 {
     private FacetSerializer $facetSerializer;

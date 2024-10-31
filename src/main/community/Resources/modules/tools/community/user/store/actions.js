@@ -33,8 +33,6 @@ actions.open = (username, reload = false) => (dispatch, getState) => {
 
   // invalidate embedded lists
   dispatch(listActions.invalidateData(selectors.FORM_NAME+'.groups'))
-  dispatch(listActions.invalidateData(selectors.FORM_NAME+'.organizations'))
-  dispatch(listActions.invalidateData(selectors.FORM_NAME+'.roles'))
 
   return dispatch({
     [API_REQUEST]: {
@@ -66,32 +64,6 @@ actions.addGroups = (id, groups) => ({
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
       dispatch(listActions.invalidateData(selectors.FORM_NAME+'.groups'))
-    }
-  }
-})
-
-actions.addRoles = (id, roles) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_user_add_roles', {id: id}], {ids: roles}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.LIST_NAME))
-      dispatch(listActions.invalidateData(selectors.FORM_NAME+'.roles'))
-    }
-  }
-})
-
-actions.addOrganizations = (id, organizations) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_user_add_organizations', {id: id}], {ids: organizations}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.LIST_NAME))
-      dispatch(listActions.invalidateData(selectors.FORM_NAME+'.organizations'))
     }
   }
 })

@@ -8,5 +8,6 @@ imports:
     - { resource: services/messenger.yml }
     - { resource: services/serializer.yml }
     - { resource: services/subscriber.yml }
+    - { resource: services/updater.yml }
     - { resource: services/validator.yml }
     - { resource: services/voter.yml }

@@ -23,11 +23,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class RoleVoter extends AbstractVoter
 {
-    private $workspaceManager;
-
-    public function __construct(WorkspaceManager $workspaceManager)
-    {
-        $this->workspaceManager = $workspaceManager;
+    public function __construct(
+        private readonly WorkspaceManager $workspaceManager
+    ) {
     }
 
     public function getClass(): string

@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\ValidatorInterface;
 use Claroline\AppBundle\API\ValidatorProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Entity\AuthenticationParameters;
+use Claroline\CommunityBundle\Entity\UserProfile;
 use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
@@ -20,8 +21,7 @@ class UserValidator implements ValidatorInterface
         private readonly ObjectManager $om,
         private readonly PlatformConfigurationHandler $config,
         private readonly UserManager $manager,
-        private readonly FacetManager $facetManager,
-        private readonly ProfileSerializer $profileSerializer
+        private readonly FacetManager $facetManager
     ) {
     }
 
@@ -76,26 +76,28 @@ class UserValidator implements ValidatorInterface
 
         // todo validate Facet values
         if (in_array(Options::VALIDATE_FACET, $options)) {
-            $facets = $this->profileSerializer->serialize(in_array(Options::REGISTRATION, $options) ? [Options::REGISTRATION] : []);
+            /** @var UserProfile $userProfile */
+            $userProfile = $this->om->getRepository(UserProfile::class)->findAll();
+            if (empty($userProfile)) {
+                return $errors;
+            }
+
             $allFields = [];
             $required = [];
-
-            foreach ($facets as $facet) {
-                foreach ($facet['sections'] as $section) {
-                    foreach ($section['fields'] as $field) {
-                        $allFields[] = $field;
-                        if ($field['required']) {
-                            $required[] = $field;
-                        }
+            foreach ($userProfile->getSections() as $section) {
+                foreach ($section->getFields() as $field) {
+                    $allFields[] = $field;
+                    if ($field->isRequired()) {
+                        $required[] = $field;
                     }
                 }
             }
 
             foreach ($required as $field) {
-                if ($this->facetManager->isFieldDisplayed($field, $allFields, $data) && !ArrayUtils::has($data, 'profile.'.$field['id'])) {
+                if ($this->facetManager->isFieldDisplayed($field, $allFields, $data) && !ArrayUtils::has($data, 'profile.'.$field->getUuid())) {
                     $errors[] = [
-                        'path' => 'profile/'.$field['id'],
-                        'message' => 'The field '.$field['label'].' is required',
+                        'path' => 'profile/'.$field->getUuid(),
+                        'message' => 'The field '.$field->getLabel().' is required',
                     ];
                 }
             }

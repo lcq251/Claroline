@@ -76,18 +76,8 @@ class UserVoter extends AbstractRoleSubjectVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        if ($this->isToolGranted('ADMINISTRATE', 'community')) {
+        if ($this->isToolGranted('EDIT', 'community')) {
             return VoterInterface::ACCESS_GRANTED;
-        }
-
-        // allow defined roles
-        $allowedRoles = $this->config->getParameter('profile.roles_edition');
-        if (!empty($allowedRoles)) {
-            foreach ($token->getRoleNames() as $role) {
-                if (in_array($role, $allowedRoles)) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-            }
         }
 
         return VoterInterface::ACCESS_DENIED;

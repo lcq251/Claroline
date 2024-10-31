@@ -16,7 +16,7 @@ const GroupButton = props =>
     className="btn btn-outline-primary w-100 mt-2"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
-    label={trans('add_group')}
+    label={trans('add_group', {}, 'actions')}
     disabled={props.disabled}
     modal={[MODAL_GROUPS, {
       url: props.url,

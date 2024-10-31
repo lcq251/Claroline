@@ -17,7 +17,7 @@ const OrganizationsButton = props =>
     className="btn btn-outline-primary w-100 mt-2"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
-    label={trans('add_organizations')}
+    label={trans('add_organizations', {}, 'actions')}
     disabled={props.disabled}
     modal={[MODAL_ORGANIZATIONS, {
       title: props.title,

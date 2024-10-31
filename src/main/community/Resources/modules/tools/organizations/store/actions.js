@@ -5,7 +5,7 @@ import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
-import {selectors} from '#/main/community/tools/community/organization/store/selectors'
+import {selectors} from '#/main/community/tools/organizations/store/selectors'
 
 export const actions = {}
 

@@ -67,7 +67,7 @@ final class UserSubscriber implements EventSubscriberInterface
 
         if (empty($user->getLocale())) {
             $user->setLocale(
-                $this->config->getParameter('locales.default')
+                $this->config->getParameter('intl.locale')
             );
         }
 
@@ -177,22 +177,18 @@ final class UserSubscriber implements EventSubscriberInterface
             $hasRoleFromGroup = $user->hasRole($role->getName(), true) && !$user->hasRole($role->getName(), false);
             if (!$hasRoleFromGroup) {
                 if ('add' === $event->getAction()) {
-                    $event = new AddRoleEvent([$user], $role);
-                    $this->eventDispatcher->dispatch($event, AddRoleEvent::class);
+                    $this->eventDispatcher->dispatch(new AddRoleEvent([$user], $role), AddRoleEvent::class);
                 } elseif ('remove' === $event->getAction()) {
-                    $event = new RemoveRoleEvent([$user], $role);
-                    $this->eventDispatcher->dispatch($event, RemoveRoleEvent::class);
+                    $this->eventDispatcher->dispatch(new RemoveRoleEvent([$user], $role), RemoveRoleEvent::class);
                 }
             }
         } elseif ($event->getValue() instanceof Group) {
             foreach ($event->getValue()->getEntityRoles() as $role) {
                 if (!$user->hasRole($role->getName(), false)) {
                     if ('add' === $event->getAction()) {
-                        $event = new AddRoleEvent([$user], $role);
-                        $this->eventDispatcher->dispatch($event, AddRoleEvent::class);
+                        $this->eventDispatcher->dispatch(new AddRoleEvent([$user], $role), AddRoleEvent::class);
                     } elseif ('remove' === $event->getAction()) {
-                        $event = new RemoveRoleEvent([$user], $role);
-                        $this->eventDispatcher->dispatch($event, RemoveRoleEvent::class);
+                        $this->eventDispatcher->dispatch(new RemoveRoleEvent([$user], $role), RemoveRoleEvent::class);
                     }
                 }
             }

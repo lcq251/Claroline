@@ -14,6 +14,21 @@ registry.add('ClarolineCommunityBundle', {
   },
 
   /**
+   * Provides Desktop and/or Workspace tools.
+   */
+  tools: {
+    'community': () => { return import(/* webpackChunkName: "community-tool-community" */ '#/main/community/tools/community') },
+    //'organizations': () => { return import(/* webpackChunkName: "community-tool-organizations" */ '#/main/community/tools/organizations') }
+  },
+
+  /**
+   * Provides Administration tools.
+   */
+  administration: {
+    'organizations': () => { return import(/* webpackChunkName: "community-tool-organizations" */ '#/main/community/tools/organizations') }
+  },
+
+  /**
    * Provides actions for base Claroline objects.
    */
   actions: {
@@ -69,13 +84,6 @@ registry.add('ClarolineCommunityBundle', {
       'empty': () => { return import(/* webpackChunkName: "community-action-team-empty" */ '#/main/community/actions/team/empty') },
       'delete': () => { return import(/* webpackChunkName: "community-action-team-delete" */ '#/main/community/actions/team/delete') },
     },
-  },
-
-  /**
-   * Provides Desktop and/or Workspace tools.
-   */
-  tools: {
-    'community': () => { return import(/* webpackChunkName: "core-tool-users" */ '#/main/community/tools/community') }
   },
 
   data: {

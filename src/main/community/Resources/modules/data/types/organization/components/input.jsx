@@ -10,14 +10,13 @@ import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {OrganizationCard} from '#/main/community/organization/components/card'
 import {Organization as OrganizationTypes} from '#/main/community/prop-types'
 import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
-import {OrganizationChoice} from '#/main/community/data/types/organization/components/choice'
 
 const OrganizationButton = props =>
   <Button
     className="btn btn-outline-primary w-100 mt-2"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
-    label={trans('add_organization')}
+    label={trans('add_organization', {}, 'actions')}
     disabled={props.disabled}
     modal={[MODAL_ORGANIZATIONS, {
       url: ['apiv2_organization_list'],
@@ -38,14 +37,6 @@ OrganizationButton.propTypes = {
 }
 
 const OrganizationInput = props => {
-  if ('choice' === props.mode) {
-    return (
-      <OrganizationChoice
-        {...props}
-      />
-    )
-  }
-
   if (props.value) {
     return (
       <Fragment>
@@ -95,11 +86,9 @@ implementPropTypes(OrganizationInput, DataInputTypes, {
   value: T.shape(OrganizationTypes.propTypes),
   picker: T.shape({
     title: T.string
-  }),
-  mode: T.oneOf(['picker', 'choice'])
+  })
 }, {
-  value: null,
-  mode: 'picker'
+  value: null
 })
 
 export {
