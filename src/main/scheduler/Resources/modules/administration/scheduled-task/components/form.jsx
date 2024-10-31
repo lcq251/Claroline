@@ -90,7 +90,7 @@ const ScheduledTaskForm = props =>
             {
               type: MODAL_BUTTON,
               icon: 'fa fa-fw fa-plus',
-              label: trans('add_users'),
+              label: trans('add_users', {}, 'actions'),
               modal: [MODAL_USERS, {
                 selectAction: (selected) => ({
                   type: CALLBACK_BUTTON,
