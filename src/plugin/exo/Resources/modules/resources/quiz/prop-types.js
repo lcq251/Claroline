@@ -70,7 +70,6 @@ const Quiz = {
       mandatoryQuestions: false,
       interruptible: true,
       showCorrectionAt: constants.QUIZ_RESULTS_AT_VALIDATION,
-      correctionDate: '',
       anonymizeAttempts: false,
       showScoreAt: constants.QUIZ_SCORE_AT_CORRECTION,
       showStatistics: false,

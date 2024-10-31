@@ -22,7 +22,7 @@ const QuizEditor = () => {
         additionalData={() => ({
           resource: quiz
         })}
-        defaultPage="steps"
+        /*defaultPage="steps"*/
         appearancePage={QuizEditorAppearance}
         pages={[
           {

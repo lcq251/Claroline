@@ -1,4 +1,11 @@
 services:
+    UJM\ExoBundle\Finder\ItemType:
+        tags: [ claroline.finder.type ]
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@UJM\ExoBundle\Library\Item\ItemDefinitionsCollection'
+
     UJM\ExoBundle\Finder\PaperFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]

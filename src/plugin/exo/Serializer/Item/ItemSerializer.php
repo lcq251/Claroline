@@ -52,9 +52,6 @@ class ItemSerializer
         return Item::class;
     }
 
-    /**
-     * Converts a Item into a JSON-encodable structure.
-     */
     public function serialize(Item $question, ?array $options = []): array
     {
         // Serialize specific data for the item type
@@ -85,8 +82,8 @@ class ItemSerializer
                 'score' => json_decode($question->getScoreRule(), true),
                 'permissions' => [
                     // the check on token is required because of tests utilities
-                    'edit' => !empty($this->tokenStorage->getToken()) ? $this->authorization->isGranted('EDIT', $question) : false,
-                    'delete' => !empty($this->tokenStorage->getToken()) ? $this->authorization->isGranted('DELETE', $question) : false,
+                    'edit' => !empty($this->tokenStorage->getToken()) && $this->authorization->isGranted('EDIT', $question),
+                    'delete' => !empty($this->tokenStorage->getToken()) && $this->authorization->isGranted('DELETE', $question),
                 ],
             ]);
 

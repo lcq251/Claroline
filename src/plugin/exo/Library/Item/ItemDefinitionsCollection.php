@@ -17,64 +17,58 @@ class ItemDefinitionsCollection
      *
      * @var ItemDefinitionInterface[]
      */
-    private $definitions = [];
+    private array $definitions = [];
 
     /**
-     * Adds a item definition to the collection.
+     * Adds an item definition to the collection.
      *
      * @throws UnregisterableDefinitionException
      */
-    public function addDefinition(ItemDefinitionInterface $definition)
+    public function addDefinition(ItemDefinitionInterface $definition): void
     {
-        if (!is_string($definition->getMimeType())) {
+        if (!is_string($definition::getMimeType())) {
             throw UnregisterableDefinitionException::notAStringMimeType($definition);
         }
 
-        if (!in_array($definition->getMimeType(), ItemType::getList())) {
+        if (!in_array($definition::getMimeType(), ItemType::getList())) {
             throw UnregisterableDefinitionException::unsupportedMimeType($definition);
         }
 
-        if ($this->has($definition->getMimeType())) {
+        if ($this->has($definition::getMimeType())) {
             throw UnregisterableDefinitionException::duplicateMimeType($definition);
         }
 
-        $this->definitions[$definition->getMimeType()] = $definition;
+        $this->definitions[$definition::getMimeType()] = $definition;
     }
 
     /**
      * Adds a content item definition to the collection.
      *
-     * @param ContentItemDefinitionInterface $definition
-     *
      * @throws UnregisterableDefinitionException
      */
-    public function addContentItemDefinition(ContentItemDefinition $definition)
+    public function addContentItemDefinition(ContentItemDefinition $definition): void
     {
-        if (!is_string($definition->getMimeType())) {
+        if (!is_string($definition::getMimeType())) {
             throw UnregisterableDefinitionException::notAStringMimeType($definition);
         }
 
-        if (!in_array($definition->getMimeType(), ItemType::getList())) {
+        if (!in_array($definition::getMimeType(), ItemType::getList())) {
             throw UnregisterableDefinitionException::unsupportedMimeType($definition);
         }
 
-        if ($this->has($definition->getMimeType())) {
+        if ($this->has($definition::getMimeType())) {
             throw UnregisterableDefinitionException::duplicateMimeType($definition);
         }
 
-        $this->definitions[$definition->getMimeType()] = $definition;
+        $this->definitions[$definition::getMimeType()] = $definition;
     }
 
     /**
      * Returns the definition for a specific MIME type, if any.
      *
-     * @param string $type
-     *
      * @throws UnregisteredDefinitionException
-     *
-     * @return ItemDefinitionInterface
      */
-    public function get($type)
+    public function get(string $type): ItemDefinitionInterface
     {
         if (isset($this->definitions[$type])) {
             return $this->definitions[$type];
@@ -85,34 +79,24 @@ class ItemDefinitionsCollection
 
     /**
      * Checks if a mime-type is supported by the bundle.
-     *
-     * @param string $type
-     *
-     * @return bool
      */
-    public function has($type)
+    public function has(string $type): bool
     {
         return isset($this->definitions[$type]);
     }
 
     /**
      * Gets the list of supported item mime-types.
-     *
-     * @return array
      */
-    public function getSupportedTypes()
+    public function getSupportedTypes(): array
     {
         return array_keys($this->definitions);
     }
 
     /**
      * Converts mime-type to a supported format.
-     *
-     * @param string $mimeType
-     *
-     * @return string
      */
-    public function getConvertedType($mimeType)
+    public function getConvertedType(string $mimeType): string
     {
         $type = $mimeType;
 
@@ -125,12 +109,8 @@ class ItemDefinitionsCollection
 
     /**
      * Checks if the mime-type is a supported question type.
-     *
-     * @param string $mimeType
-     *
-     * @return bool
      */
-    public function isQuestionType($mimeType)
+    public function isQuestionType(string $mimeType): bool
     {
         return (1 === preg_match('#^application\/x\.[^/]+\+json$#', $mimeType)) && $this->has($mimeType);
     }

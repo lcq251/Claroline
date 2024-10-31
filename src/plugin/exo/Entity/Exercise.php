@@ -2,16 +2,13 @@
 
 namespace UJM\ExoBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use UJM\ExoBundle\Repository\ExerciseRepository;
-use Doctrine\DBAL\Types\Types;
-use DateTime;
-use DateTimeInterface;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\HasEndPage;
 use Claroline\CoreBundle\Entity\Resource\HasHomePage;
 use Claroline\EvaluationBundle\Entity\EvaluationFeedbacks;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Item\Item;
 use UJM\ExoBundle\Library\Model\AttemptParametersTrait;
@@ -19,7 +16,7 @@ use UJM\ExoBundle\Library\Options\ExerciseNumbering;
 use UJM\ExoBundle\Library\Options\ExerciseType;
 use UJM\ExoBundle\Library\Options\ShowCorrectionAt;
 use UJM\ExoBundle\Library\Options\ShowScoreAt;
-
+use UJM\ExoBundle\Repository\ExerciseRepository;
 
 #[ORM\Table(name: 'ujm_exercise')]
 #[ORM\Entity(repositoryClass: ExerciseRepository::class)]
@@ -32,39 +29,27 @@ class Exercise extends AbstractResource
 
     /**
      * Type of the Exercise.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(type: Types::STRING)]
-    private $type = ExerciseType::CUSTOM;
+    private ?string $type = ExerciseType::CUSTOM;
 
     /**
      * When corrections are available to the Users ?
-     *
-     *
-     * @var string
      */
     #[ORM\Column(name: 'correction_mode', type: Types::STRING)]
-    private $correctionMode = ShowCorrectionAt::AFTER_END;
+    private ?string $correctionMode = ShowCorrectionAt::AFTER_END;
 
     /**
      * Date of availability of the corrections.
-     *
-     *
-     * @var DateTimeInterface
      */
     #[ORM\Column(name: 'date_correction', type: Types::STRING, nullable: true)]
-    private $dateCorrection;
+    private ?\DateTimeInterface $dateCorrection = null;
 
     /**
      * When marks are available to the Users ?
-     *
-     *
-     * @var string
      */
     #[ORM\Column(name: 'mark_mode', type: Types::STRING)]
-    private $markMode = ShowScoreAt::WITH_CORRECTION;
+    private ?string $markMode = ShowScoreAt::WITH_CORRECTION;
 
     /**
      * Add a button to stop the Exercise before the end.
@@ -86,12 +71,9 @@ class Exercise extends AbstractResource
 
     /**
      * Show intermediates scores by steps, by tags or not at all on the end page.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(name: 'intermediate_scores', type: Types::TEXT, nullable: true)]
-    private $intermediateScores = 'none';
+    private ?string $intermediateScores = 'none';
 
     /**
      * A message to display when a user has done all its attempts.
@@ -148,11 +130,8 @@ class Exercise extends AbstractResource
     #[ORM\Column(name: 'show_feedback', type: Types::BOOLEAN)]
     private bool $showFeedback = false;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $scoreRule;
+    private ?string $scoreRule = null;
 
     /**
      * Score to obtain to pass the exercise.
@@ -212,8 +191,6 @@ class Exercise extends AbstractResource
     private bool $expectedAnswers = true;
 
     /**
-     *
-     *
      * @var Collection<int, Step>
      */
     #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'exercise', cascade: ['all'], orphanRemoval: true)]
@@ -224,7 +201,7 @@ class Exercise extends AbstractResource
     {
         parent::__construct();
 
-        $this->dateCorrection = new DateTime();
+        $this->dateCorrection = new \DateTime();
         $this->steps = new ArrayCollection();
     }
 
@@ -238,12 +215,12 @@ class Exercise extends AbstractResource
         return $this->correctionMode;
     }
 
-    public function setDateCorrection(DateTimeInterface $dateCorrection = null): void
+    public function setDateCorrection(\DateTimeInterface $dateCorrection = null): void
     {
         $this->dateCorrection = $dateCorrection;
     }
 
-    public function getDateCorrection(): ?DateTimeInterface
+    public function getDateCorrection(): ?\DateTimeInterface
     {
         return $this->dateCorrection;
     }

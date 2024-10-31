@@ -2,152 +2,106 @@
 
 namespace UJM\ExoBundle\Entity\Item;
 
-use Doctrine\Common\Collections\Collection;
-use Datetime;
-use UJM\ExoBundle\Repository\ItemRepository;
-use Doctrine\DBAL\Types\Types;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\CoreBundle\Entity\User;
+use Claroline\AppBundle\Entity\Meta\Creator;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\ItemType\AbstractItem;
+use UJM\ExoBundle\Finder\ItemType;
+use UJM\ExoBundle\Repository\ItemRepository;
 
 #[ORM\Table(name: 'ujm_question')]
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[CrudEntity(finderClass: ItemType::class)]
 class Item
 {
     use Id;
     use Uuid;
+    use Creator;
 
     /**
      * The mime type of the Item type.
-     *
-     *
-     * @var string
      */
     #[ORM\Column('mime_type', type: Types::STRING)]
-    private $mimeType;
+    private ?string $mimeType = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private $title;
+    private ?string $title = null;
 
-    /**
-     * @var string
-     */
-    #[ORM\Column(name: 'invite', type: Types::TEXT, nullable: true)]
-    private $content;
-
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $feedback;
+    private ?string $content = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $feedback = null;
 
     /**
      * The creation date of the question.
-     *
-     *
-     * @var DateTime
      */
     #[ORM\Column(name: 'date_create', type: Types::DATETIME_MUTABLE)]
-    private $dateCreate;
+    private ?\DateTimeInterface $dateCreate = null;
 
     /**
      * The last update date of the question.
-     *
-     *
-     * @var DateTime
      */
     #[ORM\Column(name: 'date_modify', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private $dateModify;
+    private ?\DateTimeInterface $dateModify = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $description;
-
-    /**
-     * The user who have created the question.
-     *
-     *
-     * @var User
-     */
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    private ?User $creator = null;
+    private ?string $description = null;
 
     /**
      * @var Collection<int, Hint>
      */
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Hint::class, cascade: ['remove', 'persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Hint::class, mappedBy: 'question', cascade: ['remove', 'persist'], orphanRemoval: true)]
     private Collection $hints;
 
     /**
-     *
      * @var Collection<int, ItemObject>
      */
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: ItemObject::class, cascade: ['remove', 'persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ItemObject::class, mappedBy: 'question', cascade: ['remove', 'persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $objects;
 
     /**
      * A list of additional Resources that can help to answer the question.
      *
-     *
      * @var Collection<int, ItemResource>
      */
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: ItemResource::class, cascade: ['remove', 'persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ItemResource::class, mappedBy: 'question', cascade: ['remove', 'persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $resources;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $scoreRule;
+    private ?string $scoreRule = null;
 
     /**
      * The linked interaction entity.
      * This is populated by Doctrine Lifecycle events.
-     *
-     * @var AbstractItem
      */
-    private $interaction = null;
+    private ?AbstractItem $interaction = null;
 
     /**
      * Allows other user to edit a question.
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'protect_update', type: Types::BOOLEAN)]
-    private $protectUpdate = false;
+    private bool $protectUpdate = false;
 
     /**
      * The is answer mandatory to continue the quiz.
      *
-     *
-     * @var bool
-     * @deprecated. Moved on StepQuestion.
+     * @deprecated Moved on StepQuestion
      */
     #[ORM\Column(name: 'mandatory', type: Types::BOOLEAN)]
-    private $mandatory = false;
+    private bool $mandatory = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(name: 'expected_answers', type: Types::BOOLEAN)]
-    private $expectedAnswers = true;
+    private bool $expectedAnswers = true;
 
-    /**
-     * Item constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
@@ -155,16 +109,14 @@ class Item
         $this->hints = new ArrayCollection();
         $this->objects = new ArrayCollection();
         $this->resources = new ArrayCollection();
-        $this->dateCreate = new DateTime();
-        $this->dateModify = new DateTime();
+        $this->dateCreate = new \DateTime();
+        $this->dateModify = new \DateTime();
     }
 
     /**
      * NB. This is required to make Tags work properly.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!empty($this->getTitle())) {
             return $this->getTitle();
@@ -173,81 +125,50 @@ class Item
         return substr(strip_tags($this->content), 0, 50);
     }
 
-    /**
-     * Gets mime type.
-     *
-     * @return string
-     */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
-    /**
-     * Sets mime type.
-     *
-     * @param $mimeType
-     */
-    public function setMimeType($mimeType)
+    public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Sets content.
-     *
-     * @param string $content
-     */
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
 
-    /**
-     * Gets content.
-     *
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
     /**
      * Gets content without html.
-     *
-     * @return string
      */
-    public function getContentText()
+    public function getContentText(): ?string
     {
         return strip_tags($this->content);
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getObjects()
+    public function getObjects(): Collection
     {
         return $this->objects;
     }
 
-    public function addObject(ItemObject $object)
+    public function addObject(ItemObject $object): void
     {
         if (!$this->objects->contains($object)) {
             $this->objects->add($object);
@@ -255,7 +176,7 @@ class Item
         }
     }
 
-    public function removeObject(ItemObject $object)
+    public function removeObject(ItemObject $object): void
     {
         if ($this->objects->contains($object)) {
             $this->objects->removeElement($object);
@@ -263,20 +184,17 @@ class Item
         }
     }
 
-    public function emptyObjects()
+    public function emptyObjects(): void
     {
         $this->objects->clear();
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getResources()
+    public function getResources(): Collection
     {
         return $this->resources;
     }
 
-    public function addResource(ItemResource $resource)
+    public function addResource(ItemResource $resource): void
     {
         if (!$this->resources->contains($resource)) {
             $this->resources->add($resource);
@@ -284,7 +202,7 @@ class Item
         }
     }
 
-    public function removeResource(ItemResource $resource)
+    public function removeResource(ItemResource $resource): void
     {
         if ($this->resources->contains($resource)) {
             $this->resources->removeElement($resource);
@@ -292,74 +210,46 @@ class Item
         }
     }
 
-    /**
-     * @param string $feedback
-     */
-    public function setFeedback($feedback)
+    public function setFeedback(?string $feedback): void
     {
         $this->feedback = $feedback;
     }
 
-    /**
-     * @return string
-     */
-    public function getFeedback()
+    public function getFeedback(): string
     {
         return $this->feedback ?: '';
     }
 
     #[ORM\PrePersist]
-    public function updateDateCreate()
+    public function updateDateCreate(): void
     {
         if (empty($this->dateCreate)) {
-            $this->dateCreate = new DateTime();
+            $this->dateCreate = new \DateTime();
         }
     }
 
-    /**
-     * @return Datetime
-     */
-    public function getDateCreate()
+    public function getDateCreate(): ?\DateTimeInterface
     {
         return $this->dateCreate;
     }
 
     #[ORM\PreUpdate]
-    public function updateDateModify()
+    public function updateDateModify(): void
     {
-        $this->dateModify = new DateTime();
+        $this->dateModify = new \DateTime();
     }
 
-    /**
-     * @return Datetime
-     */
-    public function getDateModify()
+    public function getDateModify(): ?\DateTimeInterface
     {
         return $this->dateModify;
     }
 
-    /**
-     * @return User
-     */
-    public function getCreator()
-    {
-        return $this->creator;
-    }
-
-    public function setCreator(User $creator)
-    {
-        $this->creator = $creator;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getHints()
+    public function getHints(): Collection
     {
         return $this->hints;
     }
 
-    public function addHint(Hint $hint)
+    public function addHint(Hint $hint): void
     {
         if (!$this->hints->contains($hint)) {
             $this->hints->add($hint);
@@ -367,99 +257,69 @@ class Item
         }
     }
 
-    public function removeHint(Hint $hint)
+    public function removeHint(Hint $hint): void
     {
         if ($this->hints->contains($hint)) {
             $this->hints->removeElement($hint);
         }
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description ?: '';
     }
 
-    /**
-     * @return AbstractItem
-     */
-    public function getInteraction()
+    public function getInteraction(): ?AbstractItem
     {
         return $this->interaction;
     }
 
-    public function setInteraction(AbstractItem $interaction)
+    public function setInteraction(AbstractItem $interaction): void
     {
         $this->interaction = $interaction;
     }
 
-    /**
-     * @return string
-     */
-    public function getScoreRule()
+    public function getScoreRule(): ?string
     {
         return $this->scoreRule;
     }
 
-    /**
-     * @param string $scoreRule
-     *
-     * @return string
-     */
-    public function setScoreRule($scoreRule)
+    public function setScoreRule(string $scoreRule): void
     {
         $this->scoreRule = $scoreRule;
-
-        return $this->scoreRule;
     }
 
-    public function setProtectUpdate($protectUpdate)
+    public function setProtectUpdate(bool $protectUpdate): void
     {
         $this->protectUpdate = $protectUpdate;
     }
 
-    public function getProtectUpdate()
+    public function getProtectUpdate(): bool
     {
         return $this->protectUpdate;
     }
 
-    public function setMandatory($mandatory)
+    public function setMandatory(bool $mandatory): void
     {
         $this->mandatory = $mandatory;
     }
 
-    public function isMandatory()
+    public function isMandatory(): bool
     {
         return $this->mandatory;
     }
 
-    public function getMandatory()
-    {
-        return $this->isMandatory();
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasExpectedAnswers()
+    public function hasExpectedAnswers(): bool
     {
         return $this->expectedAnswers;
     }
 
-    /**
-     * @param bool $expectedAnswers
-     */
-    public function setExpectedAnswers($expectedAnswers)
+    public function setExpectedAnswers(bool $expectedAnswers): void
     {
         $this->expectedAnswers = $expectedAnswers;
     }

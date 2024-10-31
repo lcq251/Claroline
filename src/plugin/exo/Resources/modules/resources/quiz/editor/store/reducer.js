@@ -102,7 +102,9 @@ export const reducer = makeFormReducer(selectors.FORM_NAME, {}, {
     [QUIZ_ITEM_MOVE]: () => true,
     [QUIZ_ITEM_COPY]: () => true
   }),
-  bank: makeListReducer(selectors.BANK_NAME),
+  bank: makeListReducer(selectors.BANK_NAME, {
+    sortBy: {property: 'dateModify', direction: -1}}
+  ),
   originalData: makeReducer({}, {
     [makeInstanceAction(RESOURCE_LOAD, quizSelectors.STORE_NAME)]: (state, action) => setDefaults(action.resourceData.quiz) || state
   }),

@@ -88,10 +88,9 @@ const ItemList = props => {
             time: true
           }
         }, {
-          name: 'selfOnly',
-          label: trans('filter_by_self_only', {}, 'quiz'),
-          type: 'boolean',
-          displayable: false
+          name: 'creator',
+          label: trans('creator'),
+          type: 'user'
         }
       ]}
 
