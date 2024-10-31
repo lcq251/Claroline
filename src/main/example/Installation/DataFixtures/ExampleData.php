@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Installation\DataFixtures;
+namespace Claroline\ExampleBundle\Installation\DataFixtures;
 
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\CoreBundle\Entity\File\PublicFile;

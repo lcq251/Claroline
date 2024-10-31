@@ -64,6 +64,7 @@ const ExampleForm = () =>
             }, {
               name: 'dateRange',
               label: 'Date range',
+              help: 'Select a start and an end date to define a period.',
               type: 'date-range',
               required: true
             }, {
@@ -85,7 +86,8 @@ const ExampleForm = () =>
               options: {min: 0, max: 100, unit: 'unit'}
             }, {
               name: 'boolean',
-              label: 'This checkbox will display additional fields once checked.',
+              label: 'This checkbox will display additional fields once checked',
+              help: 'This checkbox also as an additional help text.',
               type: 'boolean',
               required: true,
               linked: [
