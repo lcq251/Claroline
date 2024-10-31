@@ -1,11 +1,10 @@
-import React, {Component, Fragment, createElement} from 'react'
+import React, {Component, createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentHtml} from '#/main/app/content/components/html'
 
 import {getSso} from '#/main/authentication/sso'
 import {LoginAccount} from '#/main/app/security/login/components/account'
@@ -31,89 +30,48 @@ class LoginMain extends Component {
   }
 
   render() {
-    const primarySso = this.props.sso.find(sso => sso.primary)
-    const otherSso = this.props.sso.filter(sso => !sso.primary)
-
     // check if we want to show the form to log in with a claroline account
     const internalAccount = this.props.forceInternalAccount || this.props.internalAccount
 
     return (
-      <Fragment>
-        {this.props.help &&
-          <div className={classes('card login-container mb-3 mx-auto', {
-            'login-with-sso': internalAccount && otherSso.length
-          })}>
-            <ContentHtml className="card-body">{this.props.help}</ContentHtml>
-          </div>
+      <div className="">
+        {internalAccount &&
+          <LoginAccount
+            username={this.props.username}
+            resetPassword={this.props.resetPassword}
+            login={this.props.login}
+            onLogin={this.props.onLogin}
+          />
         }
 
-        <div className={classes('card login-container mb-3 mx-auto', {
-          'login-with-sso': internalAccount && otherSso.length
-        })}>
-          {internalAccount &&
-            <div className="authentication-column account-authentication-column">
-              {primarySso && this.state.sso[primarySso.service] &&
-                <div className="primary-external-authentication-column">
-                  {createElement(this.state.sso[primarySso.service].components.button, Object.assign({}, primarySso, {
-                    label: primarySso.label || trans('login_with_third_party_btn', {name: trans(primarySso.service, {}, 'oauth')})
-                  }))}
-                </div>
-              }
+        {this.props.registration &&
+          <Button
+            className="btn btn-body mt-1 w-100"
+            type={LINK_BUTTON}
+            label={trans('create-account', {}, 'actions')}
+            target="/registration"
+          />
+        }
 
-              <p className="authentication-help">{trans('login_auth_claro_account', {platform: this.props.platformName})}</p>
-
-              <LoginAccount
-                username={this.props.username}
-                resetPassword={this.props.resetPassword}
-                login={this.props.login}
-                onLogin={this.props.onLogin}
-              />
-
-              {this.props.registration &&
-                <Button
-                  className={classes('mt-1 w-100 btn-registration', {
-                    'login-with-sso': internalAccount && 0 !== otherSso.length
-                  })}
-                  variant="btn"
-                  type={LINK_BUTTON}
-                  label={trans('create-account', {}, 'actions')}
-                  target="/registration"
-                />
-              }
-
-              {0 !== otherSso.length &&
-                <div className="authentication-or">
-                  {trans('login_auth_or')}
-                </div>
-              }
+        {0 !== this.props.sso.length &&
+          <>
+            <div className="authentication-or">
+              {trans('login_auth_or')}
             </div>
-          }
 
-          {0 !== otherSso.length &&
-            <div className="authentication-column external-authentication-column">
-              {!internalAccount && primarySso && this.state.sso[primarySso.service] &&
-                <div className="primary-external-authentication-column">
-                  {createElement(this.state.sso[primarySso.service].components.button, Object.assign({}, primarySso, {
-                    label: primarySso.label || trans('login_with_third_party_btn', {name: trans(primarySso.service, {}, 'oauth')})
-                  }))}
-                </div>
-              }
+            <p className="authentication-help">{trans(!internalAccount ? 'login_auth_sso' : 'login_auth_sso_other')}</p>
 
-              <p className="authentication-help">{trans(!internalAccount ? 'login_auth_sso' : 'login_auth_sso_other')}</p>
-
-              <div role="presentation" className="d-grid gap-1">
-                {otherSso.map(sso => this.state.sso[sso.service] ?
-                  createElement(this.state.sso[sso.service].components.button, Object.assign({}, sso, {
-                    key: sso.service,
-                    label: sso.label || trans('login_with_third_party_btn', {name: trans(sso.service, {}, 'oauth')})
-                  })) : null
-                )}
-              </div>
+            <div role="presentation" className="d-grid gap-1">
+              {this.props.sso.map(sso => this.state.sso[sso.service] ?
+                createElement(this.state.sso[sso.service].components.button, Object.assign({}, sso, {
+                  key: sso.service,
+                  label: sso.label || trans('login_with_third_party_btn', {name: trans(sso.service, {}, 'oauth')})
+                })) : null
+              )}
             </div>
-          }
-        </div>
-
-      </Fragment>
+          </>
+        }
+      </div>
     )
   }
 }

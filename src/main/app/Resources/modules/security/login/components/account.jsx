@@ -23,6 +23,7 @@ class LoginAccount extends Component {
       <FormData
         name={selectors.FORM_NAME}
         alertExit={false}
+        //size="lg"
         definition={[
           {
             title: trans('general'),
@@ -30,18 +31,18 @@ class LoginAccount extends Component {
             fields: [
               {
                 name: 'username',
-                label: trans('username_or_email'),
-                placeholder: this.props.username ? trans('username_or_email') : trans('email'),
+                label: this.props.username ? trans('username_or_email') : trans('email'),
+                //placeholder: this.props.username ? trans('username_or_email') : trans('email'),
                 autoComplete: 'username',
-                hideLabel: true,
+                //hideLabel: true,
                 type: 'string',
                 required: true
               }, {
                 name: 'password',
                 label: trans('password'),
-                placeholder: trans('password'),
+                //placeholder: trans('password'),
                 autoComplete: 'current-password',
-                hideLabel: true,
+                //hideLabel: true,
                 options: {
                   hideStrength: true,
                   disablePasswordCheck: true
@@ -55,7 +56,7 @@ class LoginAccount extends Component {
       >
         {this.props.resetPassword &&
           <Button
-            className="mt-2 ms-auto text-wrap text-start"
+            className="ms-auto text-wrap text-start mt-n2 mb-4"
             type={LINK_BUTTON}
             label={trans('forgot_password')}
             target="/reset_password"
@@ -63,8 +64,7 @@ class LoginAccount extends Component {
         }
 
         <Button
-          className="w-100 mt-4"
-          variant="btn"
+          className="btn btn-primary w-100 mt-4"
           size="lg"
           type={CALLBACK_BUTTON}
           htmlType="submit"
@@ -74,7 +74,6 @@ class LoginAccount extends Component {
             this.setState({inProgress: true})
             this.props.login(this.props.onLogin).then(() => this.setState({inProgress: false}))
           }}
-          primary={true}
         />
       </FormData>
     )

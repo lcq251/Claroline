@@ -1,14 +1,43 @@
+@use "sass:math";
 
 @import "variables";
 @import "mixins";
 
-@import "components/login";
-@import "components/reset-password";
-@import "components/sso";
+.btn-third-party-login {
+  text-align: left;
+  color: $sso-btn-color !important;
+  font-size: $sso-btn-font-size;
+
+  &:hover,
+  &:focus {
+    color: $sso-btn-color !important;
+  }
+
+  @include sso-connect-btn($sso-default-primary, $sso-default-secondary);
+}
 
 // adds a bg on login, reset-password, registration
 .auth-page {
-  background-color: var(--#{$prefix}body-bg); // fallback to body color if theme has no image
+  display: flex;
+  flex-direction: row;
+
+  .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.auth-page-brand {
+  max-width: 8rem;
+  max-height: 8rem;
+}
+
+.auth-page-meta {
+  color: color-contrast($primary);
+  background-color: $primary;
 
   // styles for bg image
   background-image: url($login-bg-image);
@@ -16,4 +45,33 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
+}
+
+.auth-page-content {
+  overflow-y: auto;
+  height: 100%;
+}
+
+// local vars for dev simplicity
+$auth-or-size: 70px;
+$auth-or-font-size: 20px;
+
+.authentication-or {
+  text-align: center;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+
+  font-size: $auth-or-font-size;
+  line-height: 1;
+  font-weight: 900;
+
+  background: white;
+  padding: floor(math.div($auth-or-size - $auth-or-font-size, 2)) 0;
+  border-radius: floor(math.div($auth-or-size, 2));
+
+  height: $auth-or-size;
+  width: $auth-or-size;
 }

@@ -53,7 +53,7 @@
 }
 
 .app-menu-cover {
-    height: 6.5rem;
+    //height: 6.5rem;
     text-align: center;
     padding-bottom: 2.5rem;
     flex-shrink: 0;
@@ -66,10 +66,10 @@
     align-items: center;
     padding: map-get($spacers, 3);
     padding-top: 0;
-    min-height: 6.5rem;
+    //min-height: 6.5rem;
 
     .user-avatar {
-        margin-top: -2.5rem;
+        margin-top: -(2.5rem + $thumbnail-padding);
         background: var(--#{$prefix}menu-bg);
         padding: $thumbnail-padding;
     }

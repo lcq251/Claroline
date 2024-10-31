@@ -2,16 +2,14 @@ import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Alert} from '#/main/app/alert/components/alert'
-import {FormStepper} from '#/main/app/content/form/components/stepper'
-
-import {Facet} from '#/main/app/security/registration/components/facet'
-import {Required} from '#/main/app/security/registration/components/required'
-import {Optional} from '#/main/app/security/registration/components/optional'
-import {OrganizationSelection} from '#/main/app/security/registration/components/organization-selection'
+import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {Button} from '#/main/app/action'
+import {Alert} from '#/main/app/components/alert'
+import {FormData} from '#/main/app/content/form'
+import {param} from '#/main/app/config'
 
 import {constants} from '#/main/app/security/registration/constants'
+import {selectors} from '#/main/app/security/registration/store'
 
 class RegistrationMain extends Component {
   componentDidMount() {
@@ -19,39 +17,75 @@ class RegistrationMain extends Component {
   }
 
   render() {
-    let steps = []
-
-    steps = steps.concat([
-      {
-        title: trans('my_account'),
-        component: Required
-      }, {
-        title: 'Configuration',
-        component: Optional
-      }
-    ], this.props.facets.map(facet => ({
-      title: facet.title,
-      render: () => {
-        const currentFacet = <Facet facet={facet} allFields={this.props.allFacetFields} user={this.props.user} />
-
-        return currentFacet
-      }
-    })))
-
-    if (constants.ORGANIZATION_SELECTION_SELECT === this.props.options.organizationSelection) {
-      steps.push({
-        title: trans('organization'),
-        component: OrganizationSelection
-      })
-    }
-
     return (
-      <FormStepper
-        className={this.props.className}
-        submit={{
-          type: CALLBACK_BUTTON,
-          label: trans('create-account', {}, 'actions'),
-          confirm: {
+      <FormData
+        level={2}
+        className="content-sm"
+        name={selectors.FORM_NAME}
+        definition={[
+          {
+            title: trans('general'),
+            primary: true,
+            fields: [
+              /*{
+                name: 'lastName',
+                type: 'string',
+                label: trans('last_name'),
+                required: true
+              }, {
+                name: 'firstName',
+                type: 'string',
+                label: trans('first_name'),
+                required: true
+              }, */{
+                name: 'email',
+                type: 'email',
+                label: trans('email'),
+                required: true,
+                options: {
+                  unique: {
+                    check: ['apiv2_user_get', {field: 'email'}]
+                  }
+                }
+              }, {
+                name: 'plainPassword',
+                type: 'password',
+                label: trans('password'),
+                required: true
+              }, {
+                name: 'username',
+                type: 'string',
+                label: trans('username'),
+                required: true,
+                displayed: param('community.username'),
+                options: {
+                  unique: {
+                    check: ['apiv2_user_get', {field: 'username'}],
+                    error: 'This username already exists.'
+                  }
+                }
+              }, {
+                name: 'meta.acceptTerms',
+                type: 'boolean',
+                label: (
+                  <>Accepter les <a href="#">Conditions d'utilisation</a> de la plateforme.</>
+                ),
+                required: true
+              }
+            ]
+          }
+        ]}
+      >
+        <Button
+          className="btn btn-primary w-100 mt-4"
+          size="lg"
+          type={CALLBACK_BUTTON}
+          label={trans('create-account', {}, 'actions')}
+          callback={() => this.props.register(this.props.user, (user) => {
+            this.props.onRegister(user)
+          })}
+          htmlType="submit"
+          confirm={{
             title: trans('registration'),
             message: trans('register_confirm_message'),
             button: trans('registration_confirm'),
@@ -68,13 +102,16 @@ class RegistrationMain extends Component {
                 }
               </div>
             ) : undefined
-          },
-          callback: () => this.props.register(this.props.user, (user) => {
-            this.props.onRegister(user)
-          })
-        }}
-        steps={steps}
-      />
+          }}
+        />
+
+        <Button
+          className="btn btn-body w-100 mt-1"
+          type={LINK_BUTTON}
+          label={trans('login', {}, 'actions')}
+          target="/login"
+        />
+      </FormData>
     )
   }
 }
@@ -85,22 +122,14 @@ RegistrationMain.propTypes = {
   history: T.shape({
     push: T.func.isRequired
   }).isRequired,
-  location: T.shape({
-    path: T.string
-  }),
   user: T.shape({
     // user type
   }).isRequired,
-  facets: T.arrayOf(T.shape({
-    id: T.string.isRequired,
-    title: T.string.isRequired
-  })),
   termOfService: T.string,
   register: T.func.isRequired,
   fetchRegistrationData: T.func.isRequired,
   options: T.shape({
     validation: T.bool,
-    organizationSelection: T.string
   }).isRequired,
   allFacetFields: T.array,
   onRegister: T.func

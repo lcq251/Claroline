@@ -9,51 +9,42 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {selectors} from '#/main/app/security/password/send/store/selectors'
 
 const SendPasswordForm = (props) =>
-  <div className="card login-container mx-auto">
-    <div className="authentication-column account-authentication-column">
-      <p className="authentication-help">{trans('send_password_help')}</p>
-
-      <FormData
-        name={selectors.FORM_NAME}
-        definition={[
+  <FormData
+    name={selectors.FORM_NAME}
+    definition={[
+      {
+        title: trans('general'),
+        primary: true,
+        fields: [
           {
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'email',
-                label: trans('email'),
-                placeholder: trans('email'),
-                type: 'email',
-                required: true
-              }
-            ]
+            name: 'email',
+            label: trans('email'),
+            //placeholder: trans('email'),
+            type: 'email',
+            required: true
           }
-        ]}
-      >
-        <Button
-          className="w-100 mt-4"
-          variant="btn"
-          size="lg"
-          htmlType="submit"
-          type={CALLBACK_BUTTON}
-          label={trans('send_password')}
-          callback={() => props.reset(props.form.data.email, () => {
-            props.history.push('/login')
-          })}
-          primary={true}
-        />
+        ]
+      }
+    ]}
+  >
+    <Button
+      className="btn btn-primary w-100 mt-4"
+      size="lg"
+      htmlType="submit"
+      type={CALLBACK_BUTTON}
+      label={trans('send_password')}
+      callback={() => props.reset(props.form.data.email, () => {
+        props.history.push('/login')
+      })}
+    />
 
-        <Button
-          className="w-100 mt-1"
-          variant="btn"
-          type={LINK_BUTTON}
-          label={trans('login', {}, 'actions')}
-          target="/login"
-        />
-      </FormData>
-    </div>
-  </div>
+    <Button
+      className="btn btn-body w-100 mt-1"
+      type={LINK_BUTTON}
+      label={trans('login', {}, 'actions')}
+      target="/login"
+    />
+  </FormData>
 
 SendPasswordForm.propTypes = {
   reset: T.func.isRequired,

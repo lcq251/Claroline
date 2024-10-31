@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\AuthenticationBundle\Entity\ApiToken;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class ApiTokenFinder extends AbstractFinder
 {
     public static function getClass(): string

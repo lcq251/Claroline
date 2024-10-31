@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\AuthenticationBundle\Entity\IpUser;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class IpUserFinder extends AbstractFinder
 {
     public static function getClass(): string

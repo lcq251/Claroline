@@ -8,9 +8,6 @@ export const reducer = combineReducers({
   termOfService: makeReducer(null, {
     [REGISTRATION_DATA_LOAD]: (state, action) => action.data.termOfService || null
   }),
-  facets: makeReducer([], {
-    [REGISTRATION_DATA_LOAD]: (state, action) => action.data.facets || []
-  }),
   options: makeReducer({}, {
     [REGISTRATION_DATA_LOAD]: (state, action) => action.data.options
   }),

@@ -1,4 +1,10 @@
 services:
+    Claroline\AuthenticationBundle\Finder\ApiTokenType:
+        tags: [ claroline.finder.type ]
+
+    Claroline\AuthenticationBundle\Finder\IpUserType:
+        tags: [ claroline.finder.type ]
+
     Claroline\AuthenticationBundle\Finder\ApiTokenFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]

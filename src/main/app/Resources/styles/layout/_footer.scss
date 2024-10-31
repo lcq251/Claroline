@@ -45,12 +45,6 @@
         }
     }
 
-    .app-current-locale {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     .app-footer-content {
         min-width: 100%; // force display in a new line in flex container
         padding: ($grid-gutter-width * .5);

@@ -1,6 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
+import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
@@ -8,12 +9,11 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 const TokenList = (props) =>
   <ListData
-    className={props.className}
-    flush={props.flush}
-    name={props.name}
+    {...omit(props, 'autoload', 'url', 'definition')}
+
     fetch={{
       url: props.url,
-      autoload: true
+      autoload: props.autoload
     }}
     delete={{
       url: ['apiv2_apitoken_delete'],
@@ -41,12 +41,12 @@ const TokenList = (props) =>
         type: 'boolean'
       }
     ].concat(props.definition)}
-    actions={props.actions}
   />
 
 TokenList.propTypes = {
   className: T.string,
   flush: T.bool,
+  autoload: T.bool,
   name: T.string.isRequired,
   url: T.oneOfType([T.string, T.array]),
   definition: T.array,
@@ -55,6 +55,7 @@ TokenList.propTypes = {
 
 TokenList.defaultProps = {
   url: ['apiv2_apitoken_list'],
+  autoload: true,
   definition: []
 }
 

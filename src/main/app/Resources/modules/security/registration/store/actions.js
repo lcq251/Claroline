@@ -10,7 +10,7 @@ const actions = {}
 
 actions.loadRegistrationData = makeActionCreator(REGISTRATION_DATA_LOAD, 'data')
 
-actions.createUser = (user, onCreated = () => {}) => ({
+actions.createUser = (user, onCreated = () => {}) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_user_register'],
     messages: constants.ALERT_REGISTRATION,
@@ -18,7 +18,7 @@ actions.createUser = (user, onCreated = () => {}) => ({
       method: 'POST',
       body: JSON.stringify(user)
     },
-    success: (response, dispatch) => {
+    success: (response) => {
       if (response) {
         dispatch(securityActions.onLogin(response))
       }
@@ -28,15 +28,13 @@ actions.createUser = (user, onCreated = () => {}) => ({
   }
 })
 
-actions.fetchRegistrationData = () => ({
+actions.fetchRegistrationData = () => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_user_initialize_registration'],
     request: {
       method: 'GET'
     },
-    success: (data, dispatch) => {
-      dispatch(actions.loadRegistrationData(data))
-    }
+    success: (data) => dispatch(actions.loadRegistrationData(data))
   }
 })
 

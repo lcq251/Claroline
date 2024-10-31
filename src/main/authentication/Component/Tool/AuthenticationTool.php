@@ -6,7 +6,6 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\AbstractTool;
 use Claroline\AuthenticationBundle\Manager\AuthenticationManager;
-use Claroline\CoreBundle\Component\Context\AccountContext;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 
 class AuthenticationTool extends AbstractTool
@@ -34,22 +33,15 @@ class AuthenticationTool extends AbstractTool
 
     public function supportsContext(string $context): bool
     {
-        return in_array($context, [
-            AccountContext::getName(),
-            AdministrationContext::getName(),
-        ]);
+        return AdministrationContext::getName() === $context;
     }
 
     public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
-        if (AdministrationContext::getName() === $context) {
-            return [
-                'authentication' => $this->serializer->serialize(
-                    $this->authenticationManager->getParameters()
-                ),
-            ];
-        }
-
-        return [];
+        return [
+            'authentication' => $this->serializer->serialize(
+                $this->authenticationManager->getParameters()
+            ),
+        ];
     }
 }

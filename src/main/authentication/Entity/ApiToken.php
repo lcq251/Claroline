@@ -11,17 +11,19 @@
 
 namespace Claroline\AuthenticationBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Restriction\Locked;
+use Claroline\AuthenticationBundle\Finder\ApiTokenType;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_api_token')]
 #[ORM\Entity]
+#[CrudEntity(finderClass: ApiTokenType::class)]
 class ApiToken
 {
     use Id;
@@ -29,7 +31,6 @@ class ApiToken
     use Locked;
     use Uuid;
 
-    
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user;

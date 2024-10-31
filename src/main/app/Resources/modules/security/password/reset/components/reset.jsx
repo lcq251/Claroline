@@ -9,51 +9,46 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {selectors} from '#/main/app/security/password/reset/store/selectors'
 
 const ResetPasswordForm = (props) =>
-  <div className="card login-container mx-auto">
-    <div className="authentication-column account-authentication-column">
-      <FormData
-        name={selectors.FORM_NAME}
-        definition={[
+  <FormData
+    name={selectors.FORM_NAME}
+    definition={[
+      {
+        title: trans('general'),
+        primary: true,
+        fields: [
           {
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'password',
-                label: trans('password'),
-                placeholder: trans('password'),
-                hideLabel: false,
-                type: 'password',
-                required: true
-              },
-              {
-                name: 'confirm',
-                label: trans('confirm', {}, 'actions'),
-                placeholder: trans('confirm', {}, 'actions'),
-                hideLabel: false,
-                type: 'password',
-                required: true
-              }
-            ]
+            name: 'password',
+            label: trans('password'),
+            placeholder: trans('password'),
+            hideLabel: false,
+            type: 'password',
+            required: true
+          },
+          {
+            name: 'confirm',
+            label: trans('confirm', {}, 'actions'),
+            placeholder: trans('confirm', {}, 'actions'),
+            hideLabel: false,
+            type: 'password',
+            required: true
           }
-        ]}
-      >
-        <Button
-          className="w-100 mt-4"
-          variant="btn"
-          size="lg"
-          type={CALLBACK_BUTTON}
-          label={trans('reset_password')}
-          callback={() => props.reset({
-            password: props.form.data.password, confirm: props.form.data.confirm, hash: props.match.params.hash
-          }, () => {
-            props.history.push('/login')
-          })}
-          primary={true}
-        />
-      </FormData>
-    </div>
-  </div>
+        ]
+      }
+    ]}
+  >
+    <Button
+      className="btn btn-primary w-100 mt-4"
+      size="lg"
+      type={CALLBACK_BUTTON}
+      label={trans('reset_password')}
+      callback={() => props.reset({
+        password: props.form.data.password, confirm: props.form.data.confirm, hash: props.match.params.hash
+      }, () => {
+        props.history.push('/login')
+      })}
+      primary={true}
+    />
+  </FormData>
 
 ResetPasswordForm.propTypes = {
   reset: T.func.isRequired,

@@ -15,30 +15,11 @@ const options = createSelector(
   (store) => store.options
 )
 
-const facets = createSelector(
-  [store],
-  (store) => store.facets
-)
-
-const allFacetFields = createSelector(
-  [facets],
-  (configuredFacets) => {
-    let fields = []
-
-    configuredFacets.map(facet => facet.sections.map(section => {
-      fields = fields.concat(section.fields)
-    }))
-
-    return fields
-  }
-)
 
 export const selectors = {
   STORE_NAME,
   FORM_NAME,
 
   termOfService,
-  options,
-  facets,
-  allFacetFields
+  options
 }

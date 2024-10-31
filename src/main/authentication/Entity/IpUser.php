@@ -2,28 +2,29 @@
 
 namespace Claroline\AuthenticationBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Restriction\Locked;
+use Claroline\AuthenticationBundle\Finder\IpUserType;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Associates a User to an IP address to automatically log user for requests from this IP.
  * Used with the IpAuthenticator.
- *
- *
  */
 #[ORM\Table(name: 'claro_ip_user')]
 #[ORM\Entity]
+#[CrudEntity(finderClass: IpUserType::class)]
 class IpUser
 {
     use Id;
     use Uuid;
     use Locked;
 
-    #[ORM\Column(type: Types::STRING, nullable: false, unique: true)]
+    #[ORM\Column(type: Types::STRING, unique: true, nullable: false)]
     private ?string $ip = null;
 
     /**
@@ -32,7 +33,6 @@ class IpUser
     #[ORM\Column(name: 'is_range', type: Types::BOOLEAN)]
     private bool $range = false;
 
-    
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
