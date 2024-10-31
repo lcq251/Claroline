@@ -6,9 +6,10 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onResponse }
 
     # Console Commands
-    Claroline\DevBundle\Command\TranslationIntegrityCommand:
+    Claroline\DevBundle\Command\TranslationExportCommand:
         arguments:
             - '@kernel'
             - '@Claroline\CoreBundle\Manager\PluginManager'
+            - '@Claroline\AppBundle\Manager\File\ArchiveManager'
         tags:
-            - { name: 'console.command', command: 'claroline:translations:debug' }
+            - { name: 'console.command', command: 'claroline:translation:export' }
