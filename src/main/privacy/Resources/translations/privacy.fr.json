@@ -29,5 +29,6 @@
   "terms_of_service_activation_help": "Les nouveaux utilisateurs devront accepter les conditions avant de pouvoir utiliser la plateforme",
   "terms_of_service_alert_enabled": "Vous avez activé les conditions d'utilisation de la plateforme",
   "terms_of_service_alert_disabled": "Vous n'avez pas activé les conditions d'utilisation de la plateforme",
-  "terms_of_service_show": "Voir les conditions d'utilisation"
+  "terms_of_service_show": "Voir les conditions d'utilisation",
+  "privacy_policy": "Politique de confidentialité"
 }

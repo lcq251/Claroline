@@ -6,14 +6,15 @@ import {Button} from '#/main/app/action'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {trans}from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
+import {Alert} from '#/main/app/components/alert'
 import {ContentSizing} from '#/main/app/content/components/sizing'
-import {PrivacySummary} from '#/main/privacy/component/summary'
-import {MODAL_DPO} from '#/main/privacy/modals/dpo'
-import {MODAL_COUNTRY_STORAGE} from '#/main/privacy/modals/country-storage'
-import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
-import {MODAL_TOS_EDITOR} from '#/main/privacy/modals/terms-of-service/editor'
 import {Tool} from '#/main/core/tool'
+
+import {PrivacySummary} from '#/main/privacy/components/summary'
+import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
+import {MODAL_DPO} from '#/main/privacy/administration/privacy/modals/dpo'
+import {MODAL_COUNTRY_STORAGE} from '#/main/privacy/administration/privacy/modals/country-storage'
+import {MODAL_TOS_EDITOR} from '#/main/privacy/administration/privacy/modals/terms-of-service'
 
 const PrivacyTool = (props) => {
   const isDpoFilled = props.parameters.dpo && props.parameters.dpo.name &&
@@ -29,8 +30,10 @@ const PrivacyTool = (props) => {
       <ToolPage>
         <ContentSizing size="md">
           <PrivacySummary
-            parameters={props.parameters}
+            dpo={props.parameters.dpo || {}}
+            countryStorage={props.parameters.countryStorage}
           />
+
           {get(props.parameters, 'tos.enabled') &&
             <Button
               className="btn btn-lg btn-primary w-100 mb-3"
@@ -39,7 +42,8 @@ const PrivacyTool = (props) => {
               modal={[MODAL_TERMS_OF_SERVICE]}
             />
           }
-          <AlertBlock
+
+          <Alert
             type={get(props.parameters, 'tos.enabled') ? 'success' : 'danger'}
             title={trans('terms_of_service', {}, 'privacy')}
           >
@@ -58,8 +62,9 @@ const PrivacyTool = (props) => {
                 modal={[MODAL_TOS_EDITOR]}
               />
             </div>
-          </AlertBlock>
-          <AlertBlock
+          </Alert>
+
+          <Alert
             type={isDpoFilled ? 'success' : 'danger'}
             title={trans('dpo', {}, 'privacy')}
           >
@@ -75,8 +80,9 @@ const PrivacyTool = (props) => {
                 modal={[MODAL_DPO]}
               />
             </div>
-          </AlertBlock>
-          <AlertBlock
+          </Alert>
+
+          <Alert
             type={props.parameters.countryStorage ? 'success' : 'danger'}
             title={trans('country_storage', {}, 'privacy')}
           >
@@ -92,7 +98,7 @@ const PrivacyTool = (props) => {
                 modal={[MODAL_COUNTRY_STORAGE]}
               />
             </div>
-          </AlertBlock>
+          </Alert>
         </ContentSizing>
       </ToolPage>
     </Tool>
@@ -118,7 +124,7 @@ PrivacyTool.propTypes = {
       }),
       phone: T.string
     }),
-    countryStorage: T.bool
+    countryStorage: T.string
   })
 }
 

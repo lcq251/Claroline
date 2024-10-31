@@ -7,7 +7,7 @@
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {CountryStorageModal} from '#/main/privacy/modals/country-storage/containers/modal'
+import {CountryStorageModal} from '#/main/privacy/administration/privacy/modals/country-storage/containers/modal'
 
 const MODAL_COUNTRY_STORAGE = 'MODAL_COUNTRY_STORAGE'
 

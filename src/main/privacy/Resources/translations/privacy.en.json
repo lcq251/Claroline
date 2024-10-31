@@ -29,5 +29,6 @@
   "terms_of_service_activation_help": "New users will need to accept the terms to be able to use the platform",
   "terms_of_service_alert_enabled": "You have enabled the terms of use of the platform",
   "terms_of_service_alert_disabled": "You have not enabled the terms of use of the platform",
-  "terms_of_service_show": "Show terms of service"
+  "terms_of_service_show": "Show terms of service",
+  "privacy_policy": "Privacy Policy"
 }

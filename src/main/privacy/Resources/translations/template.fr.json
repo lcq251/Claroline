@@ -1,6 +1,8 @@
 {
   "terms_of_service": "Conditions d'utilisation",
   "terms_of_service_desc": "Template utilisé pour les conditions d'utilisation",
+  "privacy": "Politique de confidentialité",
+  "privacy_desc": "Template utilisé pour la politique de confidentialité",
   "country_storage_desc": "Pays de stockage des données",
   "dpo_name_desc": "Nom du Délégué à la protection des données",
   "dpo_email_desc": "Email du Délégué à la protection des données",

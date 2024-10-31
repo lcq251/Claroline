@@ -36,10 +36,10 @@ class PrivacyManager
 
     public function getTosEnabled(string $locale): bool
     {
-        return $this->getParameters()->getTosEnabled() && strlen(trim($this->getTosTemplate($locale))) > 0;
+        return $this->getParameters()->getTosEnabled() && strlen(trim($this->getTosContent($locale))) > 0;
     }
 
-    public function getTosTemplate(string $locale): string
+    public function getTosContent(string $locale): string
     {
         $privacyParameters = $this->getParameters();
 
@@ -60,6 +60,32 @@ class PrivacyManager
             $content = $this->templateManager->getTemplateContent($privacyParameters->getTosTemplate(), $placeholders, $locale);
         } else {
             $content = $this->templateManager->getTemplate('terms_of_service', $placeholders, $locale);
+        }
+
+        return $content;
+    }
+
+    public function getPrivacyContent(string $locale): string
+    {
+        $privacyParameters = $this->getParameters();
+
+        $placeholders = [
+            'country_storage' => $privacyParameters->getCountryStorage(),
+            'dpo_name' => $privacyParameters->getDpoName(),
+            'dpo_email' => $privacyParameters->getDpoEmail(),
+            'dpo_phone' => $privacyParameters->getDpoPhone(),
+            'dpo_address_street1' => $privacyParameters->getDpoAddressStreet1(),
+            'dpo_address_street2' => $privacyParameters->getDpoAddressStreet2(),
+            'dpo_address_postal_code' => $privacyParameters->getDpoAddressPostalCode(),
+            'dpo_address_city' => $privacyParameters->getDpoAddressCity(),
+            'dpo_address_state' => $privacyParameters->getDpoAddressState(),
+            'dpo_address_country' => $privacyParameters->getDpoAddressCountry(),
+        ];
+
+        if ($privacyParameters->getPrivacyTemplate()) {
+            $content = $this->templateManager->getTemplateContent($privacyParameters->getPrivacyTemplate(), $placeholders, $locale);
+        } else {
+            $content = $this->templateManager->getTemplate('privacy', $placeholders, $locale);
         }
 
         return $content;

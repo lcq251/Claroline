@@ -2,6 +2,7 @@
 
 namespace Claroline\PrivacyBundle\Subscriber;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Event\Client\ConfigureEvent;
 use Claroline\AppBundle\Event\ClientEvents;
@@ -26,7 +27,7 @@ class ClientSubscriber implements EventSubscriberInterface
     public function onClientConfig(ConfigureEvent $event): void
     {
         $privacyParameters = $this->privacyManager->getParameters();
-        $serializedParameters = $this->serializer->serialize($privacyParameters);
+        $serializedParameters = $this->serializer->serialize($privacyParameters, [SerializerInterface::SERIALIZE_MINIMAL]);
 
         $event->setParameters([
             'privacy' => $serializedParameters,

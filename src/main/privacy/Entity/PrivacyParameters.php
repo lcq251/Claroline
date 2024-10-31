@@ -2,11 +2,10 @@
 
 namespace Claroline\PrivacyBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\Template\Template;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_privacy_parameters')]
 #[ORM\Entity]
@@ -47,10 +46,13 @@ class PrivacyParameters
     #[ORM\Column(name: 'tos_enabled', type: Types::BOOLEAN)]
     private bool $tosEnabled = false;
 
-    
-    #[ORM\JoinColumn(name: 'template_id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'tos_template_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Template::class)]
     private ?Template $tosTemplate = null;
+
+    #[ORM\JoinColumn(name: 'privacy_template_id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Template::class)]
+    private ?Template $privacyTemplate = null;
 
     public function getCountryStorage(): ?string
     {
@@ -170,5 +172,15 @@ class PrivacyParameters
     public function setTosTemplate(Template $tosTemplate = null): void
     {
         $this->tosTemplate = $tosTemplate;
+    }
+
+    public function getPrivacyTemplate(): ?Template
+    {
+        return $this->privacyTemplate;
+    }
+
+    public function setPrivacyTemplate(Template $privacyTemplate = null): void
+    {
+        $this->privacyTemplate = $privacyTemplate;
     }
 }

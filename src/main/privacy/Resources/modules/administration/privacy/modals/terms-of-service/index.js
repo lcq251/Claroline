@@ -1,6 +1,6 @@
 import {registry} from '#/main/app/modals/registry'
 
-import {EditorModal} from '#/main/privacy/modals/terms-of-service/editor/containers/modal'
+import {EditorModal} from '#/main/privacy/administration/privacy/modals/terms-of-service/containers/modal'
 
 const MODAL_TOS_EDITOR = 'MODAL_TOS_EDITOR'
 

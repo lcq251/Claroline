@@ -1,6 +1,8 @@
 {
   "terms_of_service": "Terms of Service",
   "terms_of_service_desc": "Template used for terms of service",
+  "privacy": "Privacy Policy",
+  "privacy_desc": "Template used for privacy policy",
   "country_storage_desc": "Country where data is stored",
   "dpo_name_desc": "Name of the Data Protection Officer",
   "dpo_email_desc": "Email of the Data Protection Officer",

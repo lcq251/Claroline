@@ -13,15 +13,10 @@ class PrivacyParametersSerializer
 {
     use SerializerTrait;
 
-    private ObjectManager $om;
-    private TemplateSerializer $templateSerializer;
-
     public function __construct(
-        ObjectManager $om,
-        TemplateSerializer $templateSerializer
+        private readonly ObjectManager $om,
+        private readonly TemplateSerializer $templateSerializer
     ) {
-        $this->om = $om;
-        $this->templateSerializer = $templateSerializer;
     }
 
     public function getClass(): string
@@ -55,6 +50,9 @@ class PrivacyParametersSerializer
             if ($privacyParameters->getTosTemplate()) {
                 $serialized['tos']['template'] = $this->templateSerializer->serialize($privacyParameters->getTosTemplate(), $options);
             }
+            if ($privacyParameters->getPrivacyTemplate()) {
+                $serialized['privacyTemplate'] = $this->templateSerializer->serialize($privacyParameters->getPrivacyTemplate(), $options);
+            }
         }
 
         return $serialized;
@@ -72,14 +70,23 @@ class PrivacyParametersSerializer
         $this->sipe('dpo.address.state', 'setDpoAddressState', $data, $privacyParameters);
         $this->sipe('dpo.address.country', 'setDpoAddressCountry', $data, $privacyParameters);
         $this->sipe('dpo.phone', 'setDpoPhone', $data, $privacyParameters);
-        $this->sipe('tos.enabled', 'setTosEnabled', $data, $privacyParameters);
 
         if (array_key_exists('tos', $data) && array_key_exists('template', $data['tos'])) {
+            $this->sipe('tos.enabled', 'setTosEnabled', $data, $privacyParameters);
+
             $template = null;
             if (!empty($data['tos']['template']) && !empty($data['tos']['template']['id'])) {
                 $template = $this->om->getRepository(Template::class)->findOneBy(['uuid' => $data['tos']['template']['id']]);
             }
             $privacyParameters->setTosTemplate($template);
+        }
+
+        if (array_key_exists('privacyTemplate', $data)) {
+            $template = null;
+            if (!empty($data['privacyTemplate']) && !empty($data['privacyTemplate']['id'])) {
+                $template = $this->om->getRepository(Template::class)->findOneBy(['uuid' => $data['privacyTemplate']['id']]);
+            }
+            $privacyParameters->setPrivacyTemplate($template);
         }
 
         return $privacyParameters;
