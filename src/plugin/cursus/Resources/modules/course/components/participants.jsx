@@ -168,7 +168,7 @@ const CourseParticipants = (props) =>
                   add={{
                     name: 'add_users',
                     type: MODAL_BUTTON,
-                    label: trans('add_users'),
+                    label: trans('add_users', {}, 'actions'),
                     modal: [MODAL_USERS, {
                       selectAction: (selected) => ({
                         type: MODAL_BUTTON,
@@ -214,7 +214,7 @@ const CourseParticipants = (props) =>
                   add={{
                     name: 'add_groups',
                     type: MODAL_BUTTON,
-                    label: trans('add_groups'),
+                    label: trans('add_groups', {}, 'actions'),
                     modal: [MODAL_GROUPS, {
                       selectAction: (selected) => ({
                         type: MODAL_BUTTON,

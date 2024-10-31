@@ -49,7 +49,7 @@ const EventUsers = (props) =>
     add={{
       name: 'add_users',
       type: MODAL_BUTTON,
-      label: constants.TEACHER_TYPE === props.type ? trans('add_tutors', {}, 'cursus') : trans('add_users'),
+      label: constants.TEACHER_TYPE === props.type ? trans('add_tutors', {}, 'cursus') : trans('add_users', {}, 'actions'),
       modal: [MODAL_USERS, {
         selectAction: (selected) => ({
           type: CALLBACK_BUTTON,
@@ -89,7 +89,7 @@ const EventGroups = (props) =>
     add={{
       name: 'add_groups',
       type: MODAL_BUTTON,
-      label: trans('add_groups'),
+      label: trans('add_groups', {}, 'actions'),
       disabled: isFull(props.event),
       modal: [MODAL_GROUPS, {
         selectAction: (selected) => ({

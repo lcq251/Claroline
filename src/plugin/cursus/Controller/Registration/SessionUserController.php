@@ -2,7 +2,6 @@
 
 namespace Claroline\CursusBundle\Controller\Registration;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
@@ -12,6 +11,7 @@ use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\SessionManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,13 +53,15 @@ class SessionUserController extends AbstractCrudController
 
     /**
      * List registered users to sessions.
-     *
      */
-    #[Route(path: '/{id}', name: 'course_list', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'list', methods: ['GET'])]
     #[Route(path: '/{id}/{sessionId}', name: 'course_list', methods: ['GET'])]
-    public function listByCourseAction(Request $request, #[MapEntity(class: 'Claroline\CursusBundle\Entity\Course', mapping: ['id' => 'uuid'])]
-    Course $course, string $sessionId = null): JsonResponse
-    {
+    public function listByCourseAction(
+        Request $request,
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Course $course,
+        string $sessionId = null
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $course, [], true);
 
         $params = $request->query->all();
@@ -78,12 +80,14 @@ class SessionUserController extends AbstractCrudController
 
     /**
      * Move user's registration from a session to another.
-     *
      */
     #[Route(path: '/move/{type}/{targetId}', name: 'move', methods: ['PUT'])]
-    public function moveAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['targetId' => 'uuid'])]
-    Session $session, string $type, Request $request): JsonResponse
-    {
+    public function moveAction(
+        #[MapEntity(mapping: ['targetId' => 'uuid'])]
+        Session $session,
+        string $type,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         $data = $this->decodeRequest($request);
