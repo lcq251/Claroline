@@ -16,12 +16,9 @@ class CsvAdapter implements AdapterInterface
     private const ARRAY_DELIMITER = ',';
     private const ENCLOSURE = '"';
 
-    /** @var TranslatorInterface */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     public function supports(string $mimeType): bool
@@ -32,12 +29,8 @@ class CsvAdapter implements AdapterInterface
     /**
      * Create a php array object from the schema according to the data passed on.
      * Each line is a new object.
-     *
-     * @param string $content
-     *
-     * @return array
      */
-    public function decodeSchema($content, Explanation $explanation)
+    public function decodeSchema(string $content, Explanation $explanation): array
     {
         $data = [];
         $lines = str_getcsv($content, self::LINE_DELIMITER);

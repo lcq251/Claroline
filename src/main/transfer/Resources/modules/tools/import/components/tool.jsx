@@ -1,20 +1,41 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {Tool} from '#/main/core/tool'
+import {constants as toolConstants, Tool} from '#/main/core/tool'
 
 import {ImportList} from '#/main/transfer/tools/import/containers/list'
 import {ImportEditor} from '#/main/transfer/import/editor/containers/main'
-import {ImportDetails} from '#/main/transfer/tools/import/containers/details'
+import {ImportShow} from '#/main/transfer/tools/import/containers/show'
+import {LINK_BUTTON} from '#/main/app/buttons'
+import {trans} from '#/main/app/intl'
+import get from 'lodash/get'
+import {ImportOverview} from '#/main/transfer/tools/import/components/overview'
 
 const ImportTool = (props) =>
   <Tool
     {...props}
     styles={['claroline-distribution-main-transfer-transfer-tool']}
+    menu={[
+      {
+        name: 'overview',
+        type: LINK_BUTTON,
+        label: trans('about'),
+        target: props.path,
+        exact: true
+      }, {
+        name: 'all',
+        type: LINK_BUTTON,
+        label: trans('all_imports', {}, 'transfer'),
+        target: props.path+'/all'
+      }
+    ]}
     pages={[
       {
         path: '/',
         exact: true,
+        component: ImportOverview
+      }, {
+        path: '/all',
         component: ImportList
       }, {
         path: '/new',
@@ -29,7 +50,7 @@ const ImportTool = (props) =>
       }, {
         path: '/:id',
         onEnter: (params) => props.open(params.id),
-        component: ImportDetails
+        component: ImportShow
       }
     ]}
   />

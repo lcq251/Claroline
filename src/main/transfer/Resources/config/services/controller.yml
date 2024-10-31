@@ -6,6 +6,7 @@ services:
             - '@security.authorization_checker'
             - '@Claroline\TransferBundle\Transfer\ImportProvider'
             - '@Claroline\TransferBundle\Manager\ImportManager'
+            - '%claroline.param.files_directory%'
 
     Claroline\TransferBundle\Controller\ExportController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController

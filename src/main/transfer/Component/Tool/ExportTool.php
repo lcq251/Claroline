@@ -10,7 +10,7 @@ use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\TransferBundle\Transfer\ExportProvider;
 
-class ExportTool extends AbstractTool
+final class ExportTool extends AbstractTool
 {
     public function __construct(
         private readonly ExportProvider $exportProvider,

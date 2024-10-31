@@ -4,9 +4,9 @@ import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {actions as formActions} from '#/main/app/content/form/store'
 
 import {selectors} from '#/main/transfer/tools/import/store'
-import {ImportDetails as ImportDetailsComponent} from '#/main/transfer/tools/import/components/details'
+import {ImportShow as ImportShowComponent} from '#/main/transfer/tools/import/components/show'
 
-const ImportDetails = connect(
+const ImportShow = connect(
   state => ({
     path: toolSelectors.path(state),
     importFile: selectors.importFile(state)
@@ -16,8 +16,8 @@ const ImportDetails = connect(
       dispatch(formActions.reset(selectors.FORM_NAME, importFile, false))
     }
   })
-)(ImportDetailsComponent)
+)(ImportShowComponent)
 
 export {
-  ImportDetails
+  ImportShow
 }

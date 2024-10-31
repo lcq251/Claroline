@@ -24,7 +24,7 @@ class ExplanationBuilder
      */
     private function explainObject($data, $explanation, $currentPath, $isArray = false)
     {
-        if (!isset($data->properties) || isset($data->transferable) && false === $data->transferable) {
+        if (!isset($data->properties)) {
             return;
         }
 
@@ -48,12 +48,12 @@ class ExplanationBuilder
                     $required = isset($data->required) ? in_array($name, $data->required) : false;
                 }
                 $explanation->addProperty(
-                  $whereAmI,
-                  $property->type,
-                  $this->translator->trans($this->getDescription($property), [], 'schema'),
-                  $required,
-                  $isArray
-              );
+                    $whereAmI,
+                    $property->type,
+                    $this->translator->trans($this->getDescription($property), [], 'schema'),
+                    $required,
+                    $isArray
+                );
             }
         }
     }
@@ -86,15 +86,15 @@ class ExplanationBuilder
      * @return Explanation
      */
     public function explainSchema(
-      $data,
-      $explanation = null,
-      $currentPath = '',
-      $isArray = false
-  ) {
+        $data,
+        $explanation = null,
+        $currentPath = '',
+        $isArray = false
+    ) {
         if (!$explanation) {
             $explanation = new Explanation();
         }
-        //parse the json and explain what to do
+        // parse the json and explain what to do
 
         if (isset($data->type)) {
             $this->explainObject($data, $explanation, $currentPath, $isArray);
@@ -139,8 +139,8 @@ class ExplanationBuilder
                 }
 
                 $explanation->addOneOf(
-                  $oneOfs,
-                  $this->translator->trans('One of the following list of properties', [], 'schema')
+                    $oneOfs,
+                    $this->translator->trans('One of the following list of properties', [], 'schema')
                 );
             }
         }

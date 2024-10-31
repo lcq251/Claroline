@@ -93,7 +93,7 @@ class ImportLogger implements LoggerInterface
         $this->set('end', true);
     }
 
-    public function get(?string $property = null): array
+    public function get(?string $property = null): mixed
     {
         $data = $this->cache ?: json_decode(file_get_contents($this->file), true);
 

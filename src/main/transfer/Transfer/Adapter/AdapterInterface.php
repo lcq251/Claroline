@@ -13,7 +13,7 @@ interface AdapterInterface
      *
      * @return array
      */
-    public function decodeSchema($content, Explanation $explanation);
+    public function decodeSchema(string $content, Explanation $explanation): array;
 
     /**
      * Explain how to build the content for the specified mime-type from the json-schema.

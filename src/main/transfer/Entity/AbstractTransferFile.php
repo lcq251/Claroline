@@ -2,6 +2,7 @@
 
 namespace Claroline\TransferBundle\Entity;
 
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\CreatedAt;
@@ -11,7 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
-abstract class AbstractTransferFile implements TransferFileInterface
+abstract class AbstractTransferFile implements TransferFileInterface, CrudEntityInterface
 {
     use Id;
     use Uuid;
@@ -46,6 +47,11 @@ abstract class AbstractTransferFile implements TransferFileInterface
     public function __construct()
     {
         $this->refreshUuid();
+    }
+
+    public static function getIdentifiers(): array
+    {
+        return [];
     }
 
     public function getName(): ?string

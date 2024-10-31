@@ -8,9 +8,9 @@ use Claroline\AppBundle\API\Finder\Type\ChoiceType;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
+use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
-use Claroline\CoreBundle\Finder\WorkspaceType;
-use Claroline\TransferBundle\Entity\ImportFile;
+use Claroline\TransferBundle\Entity\ExportFile;
 use Claroline\TransferBundle\Entity\TransferFileInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +19,7 @@ class ExportFileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ImportFile::class,
+            'data_class' => ExportFile::class,
             'fulltext' => ['name'],
         ]);
     }
@@ -39,7 +39,7 @@ class ExportFileType extends AbstractType
             ])
             ->add('createdAt', DateType::class)
             ->add('executedAt', DateType::class)
-            ->add('workspace', WorkspaceType::class)
+            ->add('workspace', RelatedEntityType::class)
             ->add('creator', CreatorType::class)
         ;
     }

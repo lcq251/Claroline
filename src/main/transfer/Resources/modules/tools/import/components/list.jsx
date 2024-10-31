@@ -13,6 +13,7 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {transAction} from '#/main/transfer/utils'
 import {selectors} from '#/main/transfer/tools/import/store'
 import {PageListSection} from '#/main/app/page/components/list-section'
+import {Badge} from '#/main/app/components/badge'
 
 const ImportList = props =>
   <ToolPage
@@ -61,14 +62,14 @@ const ImportList = props =>
               }
             },
             render: (row) => (
-              <span className={classes('badge', {
-                'text-bg-secondary': 'pending' === row.status,
-                'text-bg-info': 'in_progress' === row.status,
-                'text-bg-success': 'success' === row.status,
-                'text-bg-danger': 'error' === row.status
+              <Badge variant={classes({
+                'secondary': 'pending' === row.status,
+                'info': 'in_progress' === row.status,
+                'success': 'success' === row.status,
+                'danger': 'error' === row.status
               })}>
                 {trans(row.status)}
-              </span>
+              </Badge>
             )
           }, {
             name: 'name',
@@ -109,8 +110,7 @@ const ImportList = props =>
             name: 'meta.creator',
             alias: 'creator',
             type: 'user',
-            label: trans('creator'),
-            displayed: true
+            label: trans('creator')
           }, {
             name: 'workspace',
             type: 'workspace',

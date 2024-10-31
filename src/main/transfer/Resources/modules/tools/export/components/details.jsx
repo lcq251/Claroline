@@ -7,7 +7,7 @@ import {hasPermission} from '#/main/app/security'
 import {Alert} from '#/main/app/alert/components/alert'
 import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
-import {TransferDetails} from '#/main/transfer/components/details'
+import {TransferPage} from '#/main/transfer/components/page'
 import {ExportEditor} from '#/main/transfer/export/editor/containers/main'
 import {ExportFile as ExportFileTypes} from '#/main/transfer/tools/export/prop-types'
 
@@ -18,13 +18,13 @@ const ExportDetails = props => {
   }, [props.exportFile ? props.exportFile.id : props.exportFile])
 
   return (
-    <TransferDetails
+    <TransferPage
       path={props.exportFile ? props.path + '/' + props.exportFile.id : ''}
       transferFile={props.exportFile}
       actions={[
         {
           name: 'download',
-          size: 'lg',
+          //size: 'lg',
           type: URL_BUTTON,
           label: trans('download', {}, 'actions'),
           target: ['apiv2_transfer_export_download', {id: props.exportFile ? props.exportFile.id : null}],
@@ -60,7 +60,7 @@ const ExportDetails = props => {
           ]}
         />
       }
-    </TransferDetails>
+    </TransferPage>
   )
 }
 

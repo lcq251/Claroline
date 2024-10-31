@@ -17,6 +17,7 @@ use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\ToolPermissions;
+use Claroline\TransferBundle\Component\Importer\FileReader;
 use Claroline\TransferBundle\Entity\ImportFile;
 use Claroline\TransferBundle\Entity\TransferFileInterface;
 use Claroline\TransferBundle\Manager\ImportManager;
@@ -39,7 +40,8 @@ class ImportController extends AbstractCrudController
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly ImportProvider $provider,
-        private readonly ImportManager $importManager
+        private readonly ImportManager $importManager,
+        private readonly string $filesDir
     ) {
         $this->authorization = $authorization;
     }
@@ -94,6 +96,31 @@ class ImportController extends AbstractCrudController
         }
 
         return new Response($logs);
+    }
+
+    #[Route(path: '/{id}/download', name: 'download', methods: ['GET'])]
+    public function downloadAction(#[MapEntity(mapping: ['id' => 'uuid'])] ImportFile $importFile): BinaryFileResponse
+    {
+        $this->checkPermission('OPEN', $importFile, [], true);
+
+        $file = $importFile->getFile();
+
+        return new BinaryFileResponse($this->filesDir.DIRECTORY_SEPARATOR.$file->getUrl(), 200, [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename={$file->getFilename()}",
+        ]);
+    }
+
+    #[Route(path: '/{id}/file', name: 'file', methods: ['GET'])]
+    public function getFileContentAction(#[MapEntity(mapping: ['id' => 'uuid'])] ImportFile $importFile): StreamedJsonResponse
+    {
+        $this->checkPermission('OPEN', $importFile, [], true);
+
+        $file = $importFile->getFile();
+
+        $reader = new FileReader($this->filesDir.DIRECTORY_SEPARATOR.$file->getUrl());
+
+        return new StreamedJsonResponse($reader->read());
     }
 
     #[Route(path: '/sample/{format}/{entity}/{name}/{sample}', name: 'sample', methods: ['GET'])]
