@@ -23,7 +23,8 @@ const ResourceEditorAppearance = (props) =>
           }, {
             name: 'resourceNode.thumbnail',
             label: trans('thumbnail'),
-            type: 'image'
+            type: 'image',
+            recommended: true
           }
         ]
       }, {

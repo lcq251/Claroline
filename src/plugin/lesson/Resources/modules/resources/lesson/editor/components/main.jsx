@@ -18,7 +18,7 @@ const LessonEditor = () => {
         resource: lesson,
         chapters: chapters.children || []
       })}
-      defaultPage="content"
+      /*defaultPage="content"*/
       appearancePage={LessonEditorAppearance}
       pages={[
         {

@@ -21,10 +21,6 @@ abstract class AbstractResource
     use Id;
     use Uuid;
 
-    /**
-     *
-     * @var ResourceNode
-     */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: ResourceNode::class)]
     protected ?ResourceNode $resourceNode = null;
@@ -32,55 +28,44 @@ abstract class AbstractResource
     /**
      * Only used for setting ResourceNode mimeType in old creation.
      *
-     * @var string
-     *
      * @deprecated
      */
-    protected $mimeType;
+    protected ?string $mimeType = null;
 
     /**
      * Only used for setting ResourceNode name in old creation.
      *
-     * @var string
-     *
      * @deprecated
      */
-    protected $name;
+    protected ?string $name = null;
 
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    public function setResourceNode(ResourceNode $resourceNode)
+    public function setResourceNode(ResourceNode $resourceNode): void
     {
         $this->resourceNode = $resourceNode;
     }
 
-    /**
-     * @return ResourceNode
-     */
-    public function getResourceNode()
+    public function getResourceNode(): ?ResourceNode
     {
         return $this->resourceNode;
     }
 
     /**
      * Shortcut to access name from Resource.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name ?? $this->getResourceNode()->getName();
     }
 
     /**
-     * @param $name
-     *
      * @deprecated Only used by old creation process
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -88,21 +73,17 @@ abstract class AbstractResource
     /**
      * DO NOT USE IT. It may be empty.
      *
-     * @return string
-     *
      * @deprecated Only used by old creation process
      */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
     /**
-     * @param string $mimeType
-     *
      * @deprecated Only used by old creation process
      */
-    public function setMimeType($mimeType)
+    public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }

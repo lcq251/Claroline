@@ -23,16 +23,10 @@ class Directory extends AbstractResource
 
     /**
      * Is the directory the default upload destination (for tinyMCE and some other things).
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'is_upload_destination', type: Types::BOOLEAN)]
-    private $uploadDestination = false;
+    private bool $uploadDestination = false;
 
-    /**
-     * Directory constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -54,18 +48,12 @@ class Directory extends AbstractResource
         $this->availableSort = ['name', 'resourceType'];
     }
 
-    /**
-     * @param bool $uploadDestination
-     */
-    public function setUploadDestination($uploadDestination)
+    public function setUploadDestination(bool $uploadDestination): void
     {
         $this->uploadDestination = $uploadDestination;
     }
 
-    /**
-     * @return bool
-     */
-    public function isUploadDestination()
+    public function isUploadDestination(): bool
     {
         return $this->uploadDestination;
     }

@@ -6,7 +6,7 @@ import {ThemeIcon} from '#/main/theme/components/icon'
 
 const ResourceIcon = props =>
   <ThemeIcon
-    className={classes('resource-icon', props.className)}
+    className={classes('resource-icon flex-shrink-0', props.className)}
     mimeType={props.mimeType}
     set="resources"
     size={props.size}

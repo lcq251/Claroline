@@ -17,11 +17,11 @@ class SecondaryResource
     use Id;
     use Order;
 
-    #[ORM\JoinColumn(name: 'step_id', onDelete: 'CASCADE', nullable: false)]
+    #[ORM\JoinColumn(name: 'step_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Step::class, inversedBy: 'secondaryResources')]
     private ?Step $step = null;
 
-    #[ORM\JoinColumn(name: 'resource_id', onDelete: 'CASCADE', nullable: false)]
+    #[ORM\JoinColumn(name: 'resource_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     private ?ResourceNode $resource = null;
 

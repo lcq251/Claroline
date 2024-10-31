@@ -15,7 +15,7 @@ class PathRepository extends EntityRepository
      *
      * @return Path[]
      */
-    public function findByPrimaryResource(ResourceNode $resourceNode)
+    public function findByPrimaryResource(ResourceNode $resourceNode): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -36,7 +36,7 @@ class PathRepository extends EntityRepository
      *
      * @return ResourceUserEvaluation[]
      */
-    public function findRequiredEvaluations(Path $path, User $user)
+    public function findRequiredEvaluations(Path $path, User $user): array
     {
         return $this->getEntityManager()
             ->createQuery('

@@ -2,7 +2,6 @@
 
 namespace Innova\PathBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Display\Order;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Identifier\Id;
@@ -11,6 +10,7 @@ use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Innova\PathBundle\Entity\Path\Path;
@@ -64,6 +64,7 @@ class Step
 
     /**
      * Secondary resources.
+     *
      * @var Collection<int, SecondaryResource>
      */
     #[ORM\OneToMany(targetEntity: SecondaryResource::class, mappedBy: 'step', cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -71,7 +72,7 @@ class Step
     private Collection $secondaryResources;
 
     #[ORM\Column(length: 128)]
-    #[Gedmo\Slug(fields: ['title'], unique: false, updatable: false)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false, unique: false)]
     private ?string $slug = null;
 
     public function __construct()
@@ -83,7 +84,7 @@ class Step
     }
 
     /**
-     * @internal use Path::addStep() or Path::removeStep().
+     * @internal use Path::addStep() or Path::removeStep()
      */
     public function setPath(Path $path = null): void
     {
@@ -96,7 +97,6 @@ class Step
         if (!empty($path)) {
             $path->addStep($this);
         }
-
     }
 
     public function getPath(): ?Path

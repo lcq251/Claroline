@@ -11,9 +11,9 @@
 
 namespace Claroline\CoreBundle\Entity\Resource;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_text_revision')]
@@ -26,7 +26,7 @@ class Revision
     private int $version = 1;
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Text::class, inversedBy: 'revisions', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Text::class, cascade: ['persist'], inversedBy: 'revisions')]
     private ?Text $text;
 
     #[ORM\Column(type: Types::TEXT)]

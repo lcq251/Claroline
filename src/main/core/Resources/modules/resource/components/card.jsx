@@ -25,7 +25,6 @@ const ResourceCard = props =>
       null
     }
     title={props.data.name}
-    /*subtitle={trans(props.data.meta.type, {}, 'resource')}*/
     meta={
       <>
         <span className="badge bg-secondary-subtle text-secondary-emphasis">{trans(props.data.meta.type, {}, 'resource')}</span>

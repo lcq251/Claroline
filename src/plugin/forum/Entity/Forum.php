@@ -11,12 +11,11 @@
 
 namespace Claroline\ForumBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use DateTimeInterface;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\HasHomePage;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_forum')]
@@ -25,60 +24,41 @@ class Forum extends AbstractResource
 {
     use HasHomePage;
 
-    const VALIDATE_NONE = 'NONE';
-    const VALIDATE_PRIOR_ONCE = 'PRIOR_ONCE';
-    const VALIDATE_PRIOR_ALL = 'PRIOR_ALL';
+    public const VALIDATE_NONE = 'NONE';
+    public const VALIDATE_PRIOR_ONCE = 'PRIOR_ONCE';
+    public const VALIDATE_PRIOR_ALL = 'PRIOR_ALL';
 
-    const DISPLAY_TABLE_SM = 'table-sm';
-    const DISPLAY_TABLE = 'table';
-    const DISPLAY_LIST_SM = 'list-sm';
-    const DISPLAY_LIST = 'list';
-    const DISPLAY_TILES = 'tiles';
-    const DISPLAY_TILES_SM = 'tiles-sm';
+    public const DISPLAY_TABLE_SM = 'table-sm';
+    public const DISPLAY_TABLE = 'table';
+    public const DISPLAY_LIST_SM = 'list-sm';
+    public const DISPLAY_LIST = 'list';
+    public const DISPLAY_TILES = 'tiles';
+    public const DISPLAY_TILES_SM = 'tiles-sm';
+
+    #[ORM\Column(type: Types::STRING)]
+    private string $validationMode = self::VALIDATE_NONE;
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $displayMessages = 3;
+
+    #[ORM\Column(type: Types::STRING)]
+    private string $dataListOptions = self::DISPLAY_LIST;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lockDate = null;
+
+    #[ORM\Column(options: ['default' => 'ASC'])]
+    private string $messageOrder = 'ASC';
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $expandComments = false;
 
     /**
-     *
      * @var Collection<int, Subject>
      */
     #[ORM\OneToMany(targetEntity: Subject::class, mappedBy: 'forum')]
     #[ORM\OrderBy(['id' => 'ASC'])]
-    protected Collection $subjects;
-
-    /**
-     * @var string
-     */
-    #[ORM\Column(type: Types::STRING)]
-    protected $validationMode = self::VALIDATE_NONE;
-
-    /**
-     * @var int
-     */
-    #[ORM\Column(type: Types::INTEGER)]
-    protected $displayMessages = 3;
-
-    /**
-     * @var string
-     */
-    #[ORM\Column(type: Types::STRING)]
-    protected $dataListOptions = self::DISPLAY_LIST;
-
-    /**
-     * @var DateTimeInterface
-     */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected $lockDate = null;
-
-    /**
-     * @var string
-     */
-    #[ORM\Column(options: ['default' => 'ASC'])]
-    private $messageOrder = 'ASC';
-
-    /**
-     * @var bool
-     */
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
-    private $expandComments = false;
+    private Collection $subjects;
 
     public function __construct()
     {
@@ -87,7 +67,7 @@ class Forum extends AbstractResource
         $this->subjects = new ArrayCollection();
     }
 
-    public function getSubjects()
+    public function getSubjects(): Collection
     {
         return $this->subjects;
     }
@@ -122,12 +102,12 @@ class Forum extends AbstractResource
         return $this->dataListOptions;
     }
 
-    public function setLockDate(DateTimeInterface $date = null): void
+    public function setLockDate(\DateTimeInterface $date = null): void
     {
         $this->lockDate = $date;
     }
 
-    public function getLockDate(): ?DateTimeInterface
+    public function getLockDate(): ?\DateTimeInterface
     {
         return $this->lockDate;
     }

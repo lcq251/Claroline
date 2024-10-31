@@ -182,7 +182,7 @@ class CorrectionModal extends Component {
             type="button"
             onClick={this.props.fadeModal}
           >
-            {trans('close', {}, 'platform')}
+            {trans('close', {}, 'actions')}
           </button>
         </div>
       </Modal>

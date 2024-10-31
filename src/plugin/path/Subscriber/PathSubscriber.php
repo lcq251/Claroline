@@ -51,7 +51,7 @@ class PathSubscriber extends ResourceComponent implements EvaluatedResourceInter
         ]);
     }
 
-    /** @var Path $resource */
+    /** @param Path $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -85,7 +85,7 @@ class PathSubscriber extends ResourceComponent implements EvaluatedResourceInter
         ];
     }
 
-    /** @var Path $resource */
+    /** @param Path $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         return [

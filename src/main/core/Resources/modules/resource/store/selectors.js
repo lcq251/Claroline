@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
 import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store/selectors'
 
@@ -112,6 +113,11 @@ const accessErrors = createSelector(
   (store) => !store.accessErrors.dismissed && !isEmpty(store.accessErrors.details) ? store.accessErrors.details : {}
 )
 
+const estimatedDuration = createSelector(
+  [resourceNode],
+  (resourceNode) => get(resourceNode, 'evaluation.estimateDuration')
+)
+
 const hasEvaluation = createSelector(
   [resourceNode],
   (resourceNode) => supportEvaluation(resourceNode)
@@ -125,7 +131,7 @@ const resourceEvaluation = createSelector(
 
 const evaluationStatus = createSelector(
   [resourceEvaluation],
-  (evaluation) => evaluation.status
+  (evaluation) => evaluation ? evaluation.status : null
 )
 
 const isTerminated = createSelector(
@@ -165,6 +171,7 @@ export const selectors = {
   resourceType,
   mimeType,
   // evaluation
+  estimatedDuration,
   resourceEvaluation,
   hasEvaluation,
   evaluationStatus,

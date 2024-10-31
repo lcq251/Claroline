@@ -8,19 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasHomePage
 {
     /**
-     * Show overview to users or directly start the quiz.
-     *
-     *
-     * @var bool
+     * Show overview to users or directly start the resource.
      */
     #[ORM\Column(name: 'show_overview', type: Types::BOOLEAN)]
-    private $showOverview = true;
+    private bool $showOverview = true;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
-    private $overviewMessage = '';
+    private ?string $overviewMessage = '';
 
     public function getShowOverview(): bool
     {

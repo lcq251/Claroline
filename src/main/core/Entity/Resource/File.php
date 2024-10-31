@@ -14,7 +14,6 @@ namespace Claroline\CoreBundle\Entity\Resource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_file')]
 #[ORM\Entity]
 class File extends AbstractResource
@@ -27,30 +26,20 @@ class File extends AbstractResource
     public const OPENING_PLAYER = 'player';
 
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
-    protected $size;
+    private ?int $size = null;
 
     #[ORM\Column(name: 'hash_name')]
-    protected $hashName;
+    private ?string $hashName = null;
 
     #[ORM\Column]
-    protected $opening = self::OPENING_PLAYER;
+    private string $opening = self::OPENING_PLAYER;
 
-    /**
-     * Returns the file size.
-     *
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * Sets the file size.
-     *
-     * @param int $size
-     */
-    public function setSize($size)
+    public function setSize(int $size): void
     {
         $this->size = $size;
     }
@@ -60,7 +49,7 @@ class File extends AbstractResource
         return $this->opening;
     }
 
-    public function setOpening(string $opening)
+    public function setOpening(string $opening): void
     {
         $this->opening = $opening;
     }
@@ -69,10 +58,8 @@ class File extends AbstractResource
      * Returns the name of the file actually stored in the file directory (as
      * opposed to the file original name, which is kept in the entity name
      * attribute).
-     *
-     * @return string
      */
-    public function getHashName()
+    public function getHashName(): ?string
     {
         return $this->hashName;
     }
@@ -81,10 +68,8 @@ class File extends AbstractResource
      * Sets the name of the physical file that will be stored in the file directory.
      * To prevent file name issues (e.g. with special characters), the original
      * file should be renamed with a standard unique identifier.
-     *
-     * @param string $hashName
      */
-    public function setHashName($hashName)
+    public function setHashName(string $hashName): void
     {
         $this->hashName = $hashName;
     }

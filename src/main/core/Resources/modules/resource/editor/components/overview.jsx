@@ -48,6 +48,7 @@ const ResourceEditorOverview = (props) =>
             label: trans('description_short'),
             help: trans('Décrivez succintement votre ressource (La description courte est affichée dans les listes et sur la vue "À propos").'),
             type: 'string',
+            recommended: true,
             options: {
               long: true,
               minRows: 2

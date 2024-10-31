@@ -37,6 +37,29 @@ const PathOverview = (props) =>
         disabled: props.empty
       }
     ]}
+    affix={
+      <>
+        <h3 className="page-section-title h6 my-3">Parcours</h3>
+        <ul className="list-unstyled fw-bolder mb-0 text-body-secondary">
+          <li className="py-1">
+            <span className="me-2 fa far fa-fw fa-clock " />
+            Durée estimée : 30min
+          </li>
+          <li className="py-1">
+            <span className="me-2 fa fa-fw fa-list " />
+            5 étapes
+          </li>
+          <li className="py-1">
+            <span className="me-2 fa fa-fw fa-pen-ruler" />
+            2 activités
+          </li>
+          <li className="py-1">
+            <span className="me-2 fa fa-fw fa-calendar " />
+            2 évènements
+          </li>
+        </ul>
+      </>
+    }
   >
     {!isEmpty(get(props.path, 'overview.resource')) &&
       <PageSection size="md">
@@ -50,7 +73,7 @@ const PathOverview = (props) =>
 
     <PageSection
       size="md"
-      className="py-3"
+      className="mb-5"
       title={trans('summary')}
     >
       {!isEmpty(props.path.steps) ?

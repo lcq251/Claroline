@@ -1,0 +1,109 @@
+import React from 'react'
+import {PropTypes as T} from 'prop-types'
+import merge from 'lodash/merge'
+
+import {trans} from '#/main/app/intl'
+import {makeId} from '#/main/core/scaffolding/id'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {ContentMenu} from '#/main/app/content/components/menu'
+
+import {MODAL_RESOURCES} from '#/main/core/modals/resources'
+
+const ResourceCreation = (props) =>
+  <ContentMenu
+    className="mb-3"
+    items={[
+      {
+        id: 'create-empty',
+        icon: 'plus',
+        label: trans('Créer une ressource'),
+        description: trans('Créez une ressource vide pour pouvoir choisir son type et la configurer comme vous le souhaitez.'),
+        action: {
+          type: CALLBACK_BUTTON,
+          callback: () => props.changeStep('type')
+        }
+      }, {
+        id: 'create-directory',
+        icon: 'folder',
+        label: trans('Créer un dossier'),
+        description: trans('Créez un dossier pour organiser vos différentes ressources.'),
+        action: {
+          type: CALLBACK_BUTTON,
+          callback: () => {
+            props.startCreation('directory', {meta: {published: true}})
+            props.changeStep('info')
+          }
+        }
+      }, {
+        id: 'create-from-file',
+        icon: 'file',
+        label: trans('Importer un fichier'),
+        description: trans('Déposez un fichier pour l\'ajouter à la plateforme. Le type de ressource créé dépend du fichier déposé.'),
+        action: {
+          type: CALLBACK_BUTTON,
+          callback: () => props.changeStep('upload')
+        },
+        group: 'A partir d\'un contenu existant'
+      }, {
+        id: 'create-from-url',
+        icon: 'link',
+        label: trans('Créer à partir d\'une URL'),
+        description: trans('Créez un espace vide pour pouvoir le configurer comme vous le souhaitez.'),
+        action: {
+          type: CALLBACK_BUTTON,
+          callback: () => props.changeStep('url')
+        },
+        group: 'A partir d\'un contenu existant'
+      }, {
+        id: 'create-shortcut',
+        icon: 'arrow-up-right-from-square',
+        label: trans('Créer un raccourci'),
+        description: trans('Créer un raccourci vers une autre ressource de la plateforme.'),
+        action: {
+          type: MODAL_BUTTON,
+          modal: [MODAL_RESOURCES, {
+            contextId: props.contextId,
+            multiple: false,
+            selectAction: (selected) => ({
+              type: CALLBACK_BUTTON,
+              callback: () => {
+                props.startCreation('shortcut', merge({}, selected[0], {meta: {published: true}}))
+                props.changeStep('info')
+              }
+            })
+          }]
+        },
+        //group: 'A partir d\'un contenu existant'
+      }, {
+        id: 'create-from-copy',
+        icon: 'clone',
+        label: trans('Copier une ressource existante'),
+        description: trans('Dupliquez une ressource de la plateforme ainsi que tous ses contenus.'),
+        action: {
+          type: MODAL_BUTTON,
+          modal: [MODAL_RESOURCES, {
+            contextId: props.contextId,
+            multiple: false,
+            selectAction: (selected) => ({
+              type: CALLBACK_BUTTON,
+              callback: () => {
+                props.startCreation(get(selected[0], 'meta.type'), merge({}, selected[0]))
+                props.changeStep('info')
+              }
+            })
+          }]
+        },
+        group: 'A partir d\'un contenu existant'
+      },
+    ]}
+  />
+
+ResourceCreation.propTypes = {
+  contextId: T.string,
+  startCreation: T.func.isRequired,
+  changeStep: T.func.isRequired
+}
+
+export {
+  ResourceCreation
+}

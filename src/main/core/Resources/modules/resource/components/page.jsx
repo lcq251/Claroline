@@ -38,7 +38,7 @@ const ResourcePage = (props) => {
   return (
     <ToolPage
       className={classes('resource-page', `${resourceNode.meta.type}-page`, props.className)}
-      breadcrumb={breadcrumb.concat(!props.root ? [
+      breadcrumb={breadcrumb.concat(!props.root && !!get(resourceNode, 'parent') ? [
         {
           label: resourceNode.name,
           target: resourcePath

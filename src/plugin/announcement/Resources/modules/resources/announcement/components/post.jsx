@@ -75,7 +75,7 @@ const AnnouncementPost = (props) => {
       />
 
       <PageSection size="md" className="pb-5">
-        <div className="text-body-tertiary fw-bolder d-flex align-items-center gap-3 mb-4" role="presentation">
+        <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
           <UserMicro
             {...get(props.announcement, 'meta.creator', {})}
             noStatus={true}

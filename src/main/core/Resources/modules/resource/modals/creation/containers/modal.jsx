@@ -8,19 +8,15 @@ import {actions, reducer, selectors} from '#/main/core/resource/modals/creation/
 const ResourceCreationModal = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     (state) => ({
-      newNode: selectors.newNode(state),
-      saveEnabled: selectors.saveEnabled(state)
+      //newNode: selectors.newNode(state),
+      //saveEnabled: selectors.saveEnabled(state)
     }),
     (dispatch) => ({
-      startCreation(parent, resourceType) {
-        return dispatch(actions.startCreation(parent, resourceType))
+      startCreation(parent, resourceType, resourceData) {
+        return dispatch(actions.startCreation(parent, resourceType, resourceData))
       },
-
-      updateRights(perms) {
-        dispatch(actions.updateNode('rights', perms))
-      },
-      save(parent, close) {
-        dispatch(actions.create(parent)).then(close)
+      create(parent) {
+        return dispatch(actions.create(parent))
       },
       reset() {
         dispatch(actions.reset())

@@ -1,130 +1,92 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {PropTypes as T} from 'prop-types'
+import get from 'lodash/get'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {Toolbar} from '#/main/app/action/components/toolbar'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
-import {ResourceRights} from '#/main/core/resource/components/rights'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 
-import {constants} from '#/main/core/resource/modals/creation/constants'
-import {ResourceType} from '#/main/core/resource/modals/creation/components/type'
-import {ResourceParameters} from '#/main/core/resource/modals/creation/components/parameters'
+import {CreationInfo} from '#/main/core/resource/modals/creation/components/info'
+import {CreationStart} from '#/main/core/resource/modals/creation/components/start'
+import {CreationType} from '#/main/core/resource/modals/creation/components/type'
+import {CreationUpload} from '#/main/core/resource/modals/creation/components/upload'
+import {CreationUrl} from '#/main/core/resource/modals/creation/components/url'
 
-class ResourceCreationModal extends Component {
-  constructor(props) {
-    super(props)
+const ResourceCreationModal = (props) => {
+  const [currentStep, setCurrentStep] = useState('start')
 
-    this.state = {
-      currentStep: 'type'
-    }
-
-    this.changeStep = this.changeStep.bind(this)
-  }
-
-  changeStep(step) {
-    this.setState({
-      currentStep: step
-    })
-  }
-
-  renderStepTitle() {
-    switch (this.state.currentStep) {
-      case constants.RESOURCE_CREATION_TYPE:
-        return trans('new_resource_select', {}, 'resource')
-      case constants.RESOURCE_CREATION_PARAMETERS:
-        return trans('new_resource_configure', {}, 'resource')
-      case constants.RESOURCE_CREATION_RIGHTS:
-        return trans('new_resource_configure_rights', {}, 'resource')
-    }
-  }
-
-  renderStep() {
-    switch (this.state.currentStep) {
-      case constants.RESOURCE_CREATION_TYPE:
-        return (
-          <ResourceType
-            types={this.props.parent.permissions.create}
-            select={(type) => this.props.startCreation(this.props.parent, type).then(() => {
-              this.changeStep(constants.RESOURCE_CREATION_PARAMETERS)
-            })}
-          />
-        )
-      case constants.RESOURCE_CREATION_PARAMETERS:
-        return (
-          <ResourceParameters
-            resourceNode={this.props.newNode}
-          />
-        )
-      case constants.RESOURCE_CREATION_RIGHTS:
-        return (
-          <ResourceRights
-            resourceNode={this.props.newNode}
-            updateRights={this.props.updateRights}
-          />
-        )
-    }
-  }
-
-  close() {
-    this.props.fadeModal()
-    this.changeStep('type')
-    this.props.reset()
-  }
-
-  render() {
-    return (
-      <Modal
-        {...omit(this.props, 'parent', 'newNode', 'saveEnabled', 'startCreation', 'updateRights', 'save', 'reset', 'add')}
-        icon="fa fa-fw fa-plus"
-        title={trans('new_resource', {}, 'resource')}
-        subtitle={this.renderStepTitle()}
-        fadeModal={() => this.close()}
-        size="lg"
-      >
-        {this.renderStep()}
-
-        <Toolbar
-          className="btn-group-vertical"
-          buttonName="modal-btn"
-          variant="btn"
-          actions={[
-            {
-              name: 'rights',
-              type: CALLBACK_BUTTON,
-              label: trans('edit-rights', {}, 'actions'),
-              disabled: !this.props.saveEnabled,
-              displayed: constants.RESOURCE_CREATION_PARAMETERS === this.state.currentStep,
-              callback: () => this.changeStep(constants.RESOURCE_CREATION_RIGHTS)
-            }, {
-              name: 'edit',
-              type: CALLBACK_BUTTON,
-              label: trans('configure', {}, 'actions'),
-              displayed: constants.RESOURCE_CREATION_RIGHTS === this.state.currentStep,
-              callback: () => this.changeStep(constants.RESOURCE_CREATION_PARAMETERS)
-            }, {
-              name: 'save',
-              type: CALLBACK_BUTTON,
-              primary: true,
-              size: 'lg',
-              label: trans('create', {}, 'actions'),
-              disabled: !this.props.saveEnabled,
-              displayed: constants.RESOURCE_CREATION_TYPE !== this.state.currentStep,
-              callback: () => this.props.save(this.props.parent, () => {
-                this.props.add(this.props.newNode)
-                this.close()
-              })}
-          ]}
+  let StepComponent
+  switch (currentStep) {
+    case 'start':
+      StepComponent = (
+        <CreationStart
+          contextId={get(props.parent, 'workspace.id', null)}
+          changeStep={setCurrentStep}
+          startCreation={(type, resourceData) => props.startCreation(props.parent, type, resourceData).then(() => {
+            setCurrentStep('info')
+          })}
         />
-      </Modal>
-    )
+      )
+      break
+
+    case 'type':
+      StepComponent = (
+        <CreationType
+          types={props.parent.permissions.create}
+          changeStep={setCurrentStep}
+          startCreation={(type, resourceData) => props.startCreation(props.parent, type, resourceData).then(() => {
+            setCurrentStep('info')
+          })}
+        />
+      )
+      break
+
+    case 'upload':
+      StepComponent = (
+        <CreationUpload
+          changeStep={setCurrentStep}
+          //create={props.create}
+        />
+      )
+      break
+
+    case 'url':
+      StepComponent = (
+        <CreationUrl
+          changeStep={setCurrentStep}
+          //create={props.create}
+        />
+      )
+      break
+
+    case 'info':
+      StepComponent = (
+        <CreationInfo
+          create={() => props.create(props.parent)}
+          changeStep={setCurrentStep}
+          fadeModal={props.fadeModal}
+        />
+      )
+      break
   }
+
+  return (
+    <Modal
+      {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add')}
+      title={trans('new_resource', {}, 'resource')}
+      subtitle={trans('Lorem ipsum dolor sit amet.')}
+      centered={true}
+      onExited={props.reset}
+    >
+      {StepComponent}
+    </Modal>
+  )
 }
 
 ResourceCreationModal.propTypes = {
+  contextId: T.string,
   parent: T.shape(
     ResourceNodeTypes.propTypes
   ).isRequired,
@@ -132,13 +94,9 @@ ResourceCreationModal.propTypes = {
   fadeModal: T.func.isRequired,
 
   // from redux store
-  updateRights: T.func.isRequired,
   startCreation: T.func.isRequired,
-  save: T.func.isRequired,
-  reset: T.func.isRequired,
-  saveEnabled: T.bool.isRequired,
-  // not a ResourceNodeTypes to avoid prop-types fails before the node is valid (ie. filled by user)
-  newNode: T.object.isRequired
+  create: T.func.isRequired,
+  reset: T.func.isRequired
 }
 
 export {

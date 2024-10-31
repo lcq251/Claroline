@@ -101,6 +101,8 @@ const Step = props =>
       }, props.path, props.currentUser) : []}
     />
 
+    {props.children}
+
     {((props.manualProgressionAllowed && props.currentUser) || props.description) &&
       <PageSection size="md">
         {props.manualProgressionAllowed && props.currentUser &&

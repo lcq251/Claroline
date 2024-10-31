@@ -4,13 +4,10 @@ import {useSelector} from 'react-redux'
 import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import omit from 'lodash/omit'
 
-import {trans} from '#/main/app/intl'
 import {toKey} from '#/main/core/scaffolding/text'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {ContentHtml} from '#/main/app/content/components/html'
-import {Button} from '#/main/app/action/components/button'
 import {Alert} from '#/main/app/components/alert'
 
 import {ResourcePage} from '#/main/core/resource/components/page'
@@ -19,34 +16,38 @@ import {selectors} from '#/main/core/resource/store'
 import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 import {PageSection} from '#/main/app/page/components/section'
-import {EvaluationJumbotron} from '#/main/evaluation/components/jumbotron'
+import {EvaluationProgression} from '#/main/evaluation/components/progression'
+import {Toolbar} from '#/main/app/action'
+import {EvaluationStatus} from '#/main/evaluation/components/status'
+import {PageAffix} from '#/main/app/page/components/affix'
 
-const ResourceOverview = props => {
+const ResourceOverviewContent = (props) => {
   const resourceNode = useSelector(selectors.resourceNode)
   const embedded = useSelector(selectors.embedded)
 
   const description = get(resourceNode, 'meta.descriptionHtml', null) /*|| get(resourceNode, 'meta.description', null)*/
+  const estimatedDuration = get(resourceNode, 'evaluation.estimatedDuration')
 
   return (
-    <ResourcePage
-      primaryAction={props.primaryAction}
-      actions={props.actions}
-      poster={get(resourceNode, 'poster')}
-    >
-      {description &&
-        <PageSection size="md" className={classes('pb-5', {
+    <>
+      {(props.evaluation || description || estimatedDuration) &&
+        <PageSection size="md" className={classes({
           'pt-5': !embedded
         })}>
-          <ContentHtml className="lead">{description}</ContentHtml>
+          {props.evaluation &&
+            <EvaluationProgression
+              {...props.evaluation}
+            />
+          }
+
+          {description &&
+            <ContentHtml className="lead mb-5">{description}</ContentHtml>
+          }
         </PageSection>
       }
 
       {props.evaluation &&
         <>
-          <EvaluationJumbotron
-            evaluation={props.evaluation}
-          />
-
           {((!isEmpty(props.evaluation) && get(props, 'display.feedback', false)) || !isEmpty(get(props.feedbacks, 'closed'))) &&
             <PageSection size="md" className="resource-feedbacks py-3">
               {!isEmpty(props.evaluation) && get(props, 'display.feedback', false) &&
@@ -67,32 +68,55 @@ const ResourceOverview = props => {
       }
 
       {props.children}
+    </>
+  )
+}
 
-      {0 !== props.actions.length &&
-        <PageSection size="md" className="py-3">
-          <h3 className="sr-only">{trans('resource_overview_actions', {}, 'resource')}</h3>
+const ResourceOverviewAffix = (props) => {
+  return (
+    <div className="p-4 border rounded-3 shadow bg-body">
+      {props.evaluationStatus &&
+        <EvaluationStatus
+          status={props.evaluationStatus}
+          subtle={true}
+          className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
+        />
+      }
+      <Toolbar
+        className="d-grid gap-1"
+        buttonName="btn"
+        primaryName="btn-primary"
+        defaultName="btn-body"
+        actions={props.actions}
+      />
 
-          <div className="d-grid gap-1" role="presentation">
-            {props.actions
-              .filter(action => undefined === action.displayed || action.displayed)
-              .map((action, index) => !action.disabled ?
-                  <Button
-                    {...omit(action, 'disabledMessages')}
-                    key={index}
-                    className={classes('btn', {
-                      'btn-outline-primary': !action.primary && !action.dangerous,
-                      'btn-primary': action.primary,
-                      'btn-danger': action.dangerous
-                    })}
-                    size={action.primary ? 'lg' : undefined}
-                  /> :
-                  action.disabledMessages && action.disabledMessages.map((message, messageIndex) =>
-                    <Alert key={messageIndex} type="warning">{message}</Alert>
-                  )
-              )
-            }
-          </div>
-        </PageSection>
+      {props.children}
+    </div>
+  )
+}
+
+ResourceOverviewAffix.propTypes = {
+  evaluationStatus: T.string
+}
+
+const ResourceOverview = props => {
+  const resourceNode = useSelector(selectors.resourceNode)
+
+  return (
+    <ResourcePage
+      poster={get(resourceNode, 'poster')}
+    >
+      {!props.affix ?
+        <ResourceOverviewContent {...props} /> :
+        <PageAffix
+          affix={
+            <ResourceOverviewAffix actions={props.actions} evaluationStatus={get(props.evaluation, 'status')}>
+              {props.affix}
+            </ResourceOverviewAffix>
+          }
+        >
+          <ResourceOverviewContent {...props} />
+        </PageAffix>
       }
     </ResourcePage>
   )
@@ -123,7 +147,6 @@ ResourceOverview.propTypes = {
   details: T.arrayOf(
     T.arrayOf(T.string)
   ),
-  primaryAction: T.string,
   actions: T.arrayOf(T.shape(
     ActionTypes.propTypes
   )),

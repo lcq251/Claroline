@@ -1,7 +1,6 @@
 import merge from 'lodash/merge'
 
 import {makeId} from '#/main/core/scaffolding/id'
-import {selectors as securitySelectors} from '#/main/app/security/store/selectors'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {getResource} from '#/main/core/resources'
@@ -16,20 +15,20 @@ export const actions = {}
  * It initializes the new resource node with the default & parent values.
  *
  * @param {object} parent       - the parent of the new resource
- * @param {object} resourceType - the type of resource to create
+ * @param {string} resourceType - the type of resource to create
+ * @param {object} resourceData - the initial data of resource to create
  */
-actions.startCreation = (parent, resourceType) => (dispatch, getState) => {
+actions.startCreation = (parent, resourceType, resourceData = {}) => (dispatch) => {
   let defaultData = {
     resource: null,
-    resourceNode: merge({}, ResourceNodeTypes.defaultProps, {
+    resourceNode: merge({}, ResourceNodeTypes.defaultProps, resourceData, {
       id: makeId(),
-      autoId: 0, // this is just to avoid prop-types fail. It's not used and will be removed
       workspace: parent.workspace,
       meta: {
-        mimeType: `custom/${resourceType.name}`,
-        type: resourceType.name,
-        creator: securitySelectors.currentUser(getState()),
-        published: true
+        mimeType: `custom/${resourceType}`,
+        type: resourceType,
+        //creator: securitySelectors.currentUser(getState()),
+        published: false
       },
       restrictions: parent.restrictions,
       rights: parent.rights
@@ -37,7 +36,7 @@ actions.startCreation = (parent, resourceType) => (dispatch, getState) => {
   }
 
   // let the plugin add some changes to init data if it wants to
-  return getResource(resourceType.name).then(module => {
+  return getResource(resourceType).then(module => {
     if (module.default && module.default.create) {
       // plugin wants to customize init data
       defaultData = module.default.create(defaultData)

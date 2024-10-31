@@ -73,7 +73,7 @@ const ResourceMain = props => {
         <ResourceRestrictions />
       }
 
-      {loaded && isEmpty(accessErrors) && (!isEmpty(props.pages) || props.children) &&
+      {loaded && isEmpty(accessErrors) &&
         <Routes
           path={resourcePath}
           routes={[
@@ -99,13 +99,12 @@ const ResourceMain = props => {
             .concat([
               {
                 path: '/',
-                disabled: !props.overviewPage,
-                component: props.overviewPage,
-                exact: true
-              }, {
-                path: '/',
                 disabled: isEmpty(props.children),
                 render: () => props.children
+              }, {
+                path: '/',
+                disabled: !props.overviewPage,
+                component: props.overviewPage
               }
             ])
           }

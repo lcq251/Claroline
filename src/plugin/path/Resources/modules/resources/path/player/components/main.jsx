@@ -14,6 +14,7 @@ import {getNumbering} from '#/plugin/path/resources/path/utils'
 import {ResourcePage} from '#/main/core/resource'
 import {PathNav} from '#/plugin/path/resources/path/components/nav'
 import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {Datetime} from '#/main/app/components/date'
 
 const PlayerMain = props => {
   if (0 === props.steps.length) {
@@ -63,13 +64,6 @@ const PlayerMain = props => {
 
               const Current =
                 <ResourcePage poster={step.poster}>
-                  <ProgressBar
-                    className="progress-minimal"
-                    value={Math.floor(((stepIndex+1) / (props.steps.length)) * 100)}
-                    size="xs"
-                    type="primary"
-                  />
-
                   <Step
                     {...step}
                     currentUser={props.currentUser}
@@ -80,7 +74,17 @@ const PlayerMain = props => {
                     enableNavigation={props.enableNavigation}
                     disableNavigation={props.disableNavigation}
                     secondaryResourcesTarget={props.path.opening.secondaryResources}
-                  />
+                  >
+                    <div className="content-md mx-auto px-4 mb-3" role="presentation">
+                      <b className="text-uppercase fw-medium" style={{fontSize: '.75rem'}}>Progression du parcours</b>
+                      <ProgressBar
+                        value={Math.floor(((stepIndex+1) / (props.steps.length)) * 100)}
+                        size="xs"
+                        variant="learning"
+                      />
+                      <small className="text-body-secondary d-block mt-2">{Math.floor(((stepIndex+1) / (props.steps.length)) * 100)}% Complete</small>
+                    </div>
+                  </Step>
 
                   {props.navigationEnabled &&
                     <PathNav

@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserProgression
  * Represents the progression of a User in a Step.
- *
- *
  */
 #[ORM\Table(name: 'innova_path_progression')]
 #[ORM\Entity]
@@ -21,8 +19,6 @@ class UserProgression
 
     /**
      * Step for which we track the progression.
-     *
-     *
      */
     #[ORM\JoinColumn(name: 'step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Step::class)]
@@ -30,8 +26,6 @@ class UserProgression
 
     /**
      * User for which we track the progression.
-     *
-     *
      */
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]

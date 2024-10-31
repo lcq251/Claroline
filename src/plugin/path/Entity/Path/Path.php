@@ -2,8 +2,6 @@
 
 namespace Innova\PathBundle\Entity\Path;
 
-use Doctrine\DBAL\Types\Types;
-use Innova\PathBundle\Repository\PathRepository;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\HasEndPage;
 use Claroline\CoreBundle\Entity\Resource\HasHomePage;
@@ -11,12 +9,11 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\EvaluationBundle\Entity\EvaluationFeedbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Innova\PathBundle\Entity\Step;
+use Innova\PathBundle\Repository\PathRepository;
 
-/**
- * Path resource.
- */
 #[ORM\Table(name: 'innova_path')]
 #[ORM\Entity(repositoryClass: PathRepository::class)]
 class Path extends AbstractResource

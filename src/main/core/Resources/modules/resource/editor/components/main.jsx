@@ -18,6 +18,7 @@ import {ResourceEditorEvaluation} from '#/main/core/resource/editor/components/e
 import {ResourceEditorActions} from '#/main/core/resource/editor/components/actions'
 
 import {actions, selectors} from '#/main/core/resource/editor/store'
+import {ResourceEditorSequences} from '#/main/core/resource/editor/components/sequences'
 
 const ResourceEditor = (props) => {
   const resourcePath = useSelector(resourceSelectors.path)
@@ -58,10 +59,18 @@ const ResourceEditor = (props) => {
       pages={[
         {
           name: 'evaluation',
-          title: trans('evaluation'),
+          title: trans('parameters'),
           help: trans('Activez le suivi pédagogique pour enregistrer et suivre la progression des utilisateurs.'),
           component: ResourceEditorEvaluation,
-          disabled: !supportEvaluation(editedNode)
+          disabled: !supportEvaluation(editedNode),
+          group: trans('evaluation')
+        }, {
+          name: 'sequences',
+          title: trans('Scénarisation'),
+          help: trans('Retrouver tous les scénarios pédagogiques utilisant cette ressource.'),
+          component: ResourceEditorSequences,
+          disabled: !supportEvaluation(editedNode),
+          group: trans('evaluation')
         }
       ].concat(props.pages || [])}
     />

@@ -2,10 +2,10 @@
 
 namespace Claroline\SlideshowBundle\Entity\Resource;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +47,7 @@ class Slideshow extends AbstractResource
 
     /**
      * The list of slides in the slideshow.
+     *
      * @var Collection<int, Slide>
      */
     #[ORM\OneToMany(targetEntity: Slide::class, mappedBy: 'slideshow', cascade: ['persist', 'remove'], orphanRemoval: true)]

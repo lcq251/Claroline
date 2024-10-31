@@ -9,59 +9,37 @@ trait HasEndPage
 {
     /**
      * Show an end page when the user has finished the quiz.
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'show_end_page', type: Types::BOOLEAN)]
-    private $showEndPage = false;
+    private bool $showEndPage = false;
 
     /**
      * A message to display at the end of the quiz.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(name: 'end_message', type: Types::TEXT, nullable: true)]
-    private $endMessage = '';
+    private ?string $endMessage = '';
 
     /**
      * Show navigation buttons on the end page.
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'end_navigation', type: Types::BOOLEAN)]
-    private $endNavigation = false;
+    private bool $endNavigation = false;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'end_back_type', type: Types::TEXT, nullable: true)]
-    private $endBackType;
+    private ?string $endBackType = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'end_back_label', type: Types::TEXT, nullable: true)]
-    private $endBackLabel;
+    private ?string $endBackLabel = null;
 
-    /**
-     *
-     * @var ResourceNode
-     */
     #[ORM\JoinColumn(name: 'end_back_target_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     private ?ResourceNode $endBackTarget = null;
 
     /**
      * Show buttons on the end page to download WS certificates (participation and success).
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'show_workspace_certificates', type: Types::BOOLEAN)]
-    private $showWorkspaceCertificates = false;
+    private bool $showWorkspaceCertificates = false;
 
     public function getShowEndPage(): bool
     {
