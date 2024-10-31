@@ -63,7 +63,7 @@ const CreationForm = (props) => {
 
           <Button
             type={CALLBACK_BUTTON}
-            label={trans('Créer & Configurer', {}, 'actions')}
+            label={trans('create_and_configure', {}, 'actions')}
             className="btn btn-link"
             callback={() => {
               create().then((workspace) => {

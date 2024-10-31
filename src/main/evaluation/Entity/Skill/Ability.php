@@ -8,7 +8,6 @@ use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_evaluation_ability')]
 #[ORM\Entity]
 class Ability
@@ -33,7 +32,7 @@ class Ability
     }
 
     /**
-     * @internal use Skill::addAbility(Ability $ability).
+     * @internal use Skill::addAbility(Ability $ability)
      */
     public function setSkill(?Skill $skill): void
     {

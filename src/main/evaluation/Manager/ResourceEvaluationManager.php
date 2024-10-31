@@ -12,10 +12,13 @@
 namespace Claroline\EvaluationBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
+use Claroline\CoreBundle\Component\Resource\ResourceProvider;
 use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceAttemptEvent;
@@ -26,8 +29,16 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ObjectManager $om
+        private readonly ObjectManager $om,
+        private readonly ResourceProvider $resourceProvider
     ) {
+    }
+
+    public function supportsEvaluation(ResourceNode $resourceNode): bool
+    {
+        $resourceHandler = $this->resourceProvider->getComponent($resourceNode->getResourceType()->getName());
+
+        return $resourceHandler instanceof EvaluatedResourceInterface;
     }
 
     public function getUserEvaluation(ResourceNode $node, User $user, ?bool $withCreation = true): ?ResourceUserEvaluation

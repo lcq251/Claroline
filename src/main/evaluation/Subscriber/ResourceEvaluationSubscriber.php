@@ -54,6 +54,11 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
         /** @var ResourceNode $resourceNode */
         $resourceNode = $event->getObject();
 
+        if (!$this->manager->supportsEvaluation($resourceNode)) {
+            // nothing to do
+            return;
+        }
+
         if ($resourceNode->isRequired()) {
             $registeredUsers = $this->userRepo->findByWorkspaces([$resourceNode->getWorkspace()]);
             if (!empty($registeredUsers)) {
@@ -74,6 +79,11 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
         /** @var ResourceNode $resourceNode */
         $resourceNode = $event->getObject();
         $oldData = $event->getOldData();
+
+        if (!$this->manager->supportsEvaluation($resourceNode)) {
+            // nothing to do
+            return;
+        }
 
         if (empty($oldData['evaluation']) || $resourceNode->isRequired() !== $oldData['evaluation']['required']) {
             $registeredUsers = $this->userRepo->findByWorkspaces([$resourceNode->getWorkspace()]);
@@ -100,7 +110,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
     public function open(LoadResourceEvent $event): void
     {
         // Update current user evaluation
-        if ($this->tokenStorage->getToken()?->getUser() instanceof User) {
+        if ($this->tokenStorage->getToken()?->getUser() instanceof User && $this->manager->supportsEvaluation($event->getResourceNode())) {
             $this->manager->updateUserEvaluation(
                 $event->getResourceNode(),
                 $this->tokenStorage->getToken()?->getUser(),

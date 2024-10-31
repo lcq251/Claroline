@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Tests\Library;
+namespace Claroline\EvaluationBundle\Tests\Library\Checker;
 
 use Claroline\EvaluationBundle\Library\Checker\ProgressionChecker;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;

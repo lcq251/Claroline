@@ -2,14 +2,12 @@
 
 namespace Claroline\EvaluationBundle\Entity;
 
-use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_evaluation_certificate')]
 #[ORM\Entity]
@@ -19,10 +17,10 @@ class Certificate
     use Id;
 
     #[ORM\Column(name: 'obtention_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $obtentionDate = null;
+    private ?\DateTimeInterface $obtentionDate = null;
 
     #[ORM\Column(name: 'issue_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $issueDate = null;
+    private ?\DateTimeInterface $issueDate = null;
 
     #[ORM\Column(name: 'content', type: Types::TEXT, nullable: true)]
     private ?string $content = null;
@@ -36,13 +34,11 @@ class Certificate
     #[ORM\Column(name: 'language', type: Types::STRING, length: 255, nullable: false)]
     private string $language;
 
-    
-    #[ORM\JoinColumn(name: 'evaluation_id', onDelete: 'SET NULL', nullable: true)]
+    #[ORM\JoinColumn(name: 'evaluation_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Evaluation::class)]
     private ?Evaluation $evaluation;
 
-    
-    #[ORM\JoinColumn(name: 'user_id', onDelete: 'SET NULL', nullable: true)]
+    #[ORM\JoinColumn(name: 'user_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user;
 
@@ -57,22 +53,22 @@ class Certificate
         $this->refreshUuid();
     }
 
-    public function getObtentionDate(): ?DateTimeInterface
+    public function getObtentionDate(): ?\DateTimeInterface
     {
         return $this->obtentionDate;
     }
 
-    public function setObtentionDate(?DateTimeInterface $obtentionDate): void
+    public function setObtentionDate(?\DateTimeInterface $obtentionDate): void
     {
         $this->obtentionDate = $obtentionDate;
     }
 
-    public function getIssueDate(): ?DateTimeInterface
+    public function getIssueDate(): ?\DateTimeInterface
     {
         return $this->issueDate;
     }
 
-    public function setIssueDate(?DateTimeInterface $issueDate): void
+    public function setIssueDate(?\DateTimeInterface $issueDate): void
     {
         $this->issueDate = $issueDate;
     }

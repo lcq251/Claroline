@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_evaluation_skills_framework')]
 #[ORM\Entity]
 class SkillsFramework implements CrudEntityInterface
@@ -25,17 +24,17 @@ class SkillsFramework implements CrudEntityInterface
     /**
      * @var Collection<int, Skill>
      */
-    #[ORM\OneToMany(mappedBy: 'skillsFramework', targetEntity: Skill::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Skill::class, mappedBy: 'skillsFramework', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $skills;
 
     /**
      * @var Collection<int, Workspace>
      */
+    #[ORM\ManyToMany(targetEntity: Workspace::class)]
     #[ORM\JoinTable(name: 'claro_evaluation_skills_frameworks_workspaces')]
     #[ORM\JoinColumn(name: 'skills_framework_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'workspace_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\ManyToMany(targetEntity: Workspace::class)]
     private Collection $workspaces;
 
     public function __construct()

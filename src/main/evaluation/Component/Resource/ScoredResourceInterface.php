@@ -2,7 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Component\Resource;
 
-interface ScoredResourceInterface
+interface ScoredResourceInterface extends EvaluatedResourceInterface
 {
 
 }

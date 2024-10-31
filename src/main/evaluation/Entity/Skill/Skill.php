@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_evaluation_skill')]
 #[ORM\Entity]
 class Skill
@@ -29,16 +28,16 @@ class Skill
     private ?Skill $parent = null;
 
     /**
-     * @var Collection<int, \Claroline\EvaluationBundle\Entity\Skill\Skill>
+     * @var Collection<int, Skill>
      */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Skill::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Skill::class, mappedBy: 'parent', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $children;
 
     /**
      * @var Collection<int, Ability>
      */
-    #[ORM\OneToMany(mappedBy: 'skill', targetEntity: Ability::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Ability::class, mappedBy: 'skill', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $abilities;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\OpenBadgeBundle\Installation\DataFixtures\Template;
+namespace Claroline\EvaluationBundle\Installation\DataFixtures\Template;
 
 use Claroline\CoreBundle\Installation\DataFixtures\AbstractTemplateFixture;
 

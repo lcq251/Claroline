@@ -3,6 +3,7 @@ services:
         arguments:
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
 
     Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager:
         arguments:
