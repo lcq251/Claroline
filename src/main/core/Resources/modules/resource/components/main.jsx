@@ -97,11 +97,11 @@ const ResourceMain = props => {
           ]
             .concat(props.pages || [])
             .concat([
-              {
+              /*{
                 path: '/',
                 disabled: isEmpty(props.children),
                 render: () => props.children
-              }, {
+              }, */{
                 path: '/',
                 disabled: !props.overviewPage,
                 component: props.overviewPage
@@ -111,6 +111,8 @@ const ResourceMain = props => {
           redirect={props.redirect}
         />
       }
+
+      {loaded && isEmpty(accessErrors) && props.children}
     </ResourceContext.Provider>
   )
 }

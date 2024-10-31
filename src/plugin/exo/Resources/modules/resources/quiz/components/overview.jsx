@@ -47,13 +47,13 @@ const Parameters = props =>
       <b>{props.maxAttempts ? props.maxAttempts : '-'}</b>
     </li>
 
-    {(props.timeLimited && props.duration) &&
+    {(props.timeLimited && props.duration) ?
       <li className="exercise-parameter">
         <span className="fa fa-fw fa-clock icon-with-text-right" />
         {trans('duration')} :
         &nbsp;
         <b>{displayDuration(props.duration)}</b>
-      </li>
+      </li> : null
     }
   </ul>
 
@@ -76,6 +76,8 @@ const QuizOverview = props => {
   if (get(props.quiz, 'parameters.maxAttempts')) {
     maxAttemptsReached = get(props.userEvaluation, 'nbAttempts', 0) >= get(props.quiz, 'parameters.maxAttempts')
   }
+
+  console.log('coucou')
 
   return (
     <ResourceOverview
