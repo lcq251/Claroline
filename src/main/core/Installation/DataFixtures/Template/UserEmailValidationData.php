@@ -20,7 +20,7 @@ class UserEmailValidationData extends AbstractTemplateFixture
                     'content' => $this->twig->render('@ClarolineCore/template/user_email_validation.en.html.twig'),
                 ],
                 'fr' => [
-                    'title' => 'Validation du courriel pour %platform_name%',
+                    'title' => 'Validation de l\'adresse email pour %platform_name%',
                     'content' => $this->twig->render('@ClarolineCore/template/user_email_validation.fr.html.twig'),
                 ],
             ],

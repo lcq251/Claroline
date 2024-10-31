@@ -20,16 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateRichTextCommand extends Command
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Update a text string ')

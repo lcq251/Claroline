@@ -8,7 +8,7 @@ export default (role, refresher) => ({
   name: 'add-users',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-user-plus',
-  label: trans('add_user'),
+  label: trans('add_users', {}, 'actions'),
   modal: [MODAL_USERS, {
     selectAction: (users) => ({
       type: ASYNC_BUTTON,

@@ -264,13 +264,19 @@ const DataGroup = {
      */
     validating: T.bool,
     error: T.oneOfType([T.string, T.arrayOf(T.string), T.arrayOf(T.arrayOf(T.string))]),
-    optional: T.bool
+    /**
+     * @deprecated
+     */
+    optional: T.bool,
+    required: T.bool,
+    recommended: T.bool
   },
   defaultProps: {
     className: '',
     hideLabel: false,
     warnOnly: false,
-    optional: false
+    optional: false,
+    required: true
   }
 }
 

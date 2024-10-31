@@ -15,6 +15,7 @@
   "copy": "Copy",
   "correct": "Correct",
   "create": "Create",
+  "create_and_configure": "Create & Configure",
   "create-account": "Create an account",
   "decline": "Decline",
   "delete": "Delete",
@@ -91,5 +92,6 @@
   "purge": "Purger",
   "hide": "Hide",
   "reset": "Reset",
-  "show": "Show"
+  "show": "Show",
+  "empty_history": "Empty my history"
 }

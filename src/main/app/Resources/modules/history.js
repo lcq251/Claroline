@@ -1,5 +1,9 @@
-import {now} from '#/main/app/intl'
 import isEmpty from 'lodash/isEmpty'
+import {now} from '#/main/app/intl'
+
+function parseRecent(recent) {
+  return Object.keys(recent).map(recentId => recent[recentId])
+}
 
 function getRecent() {
   const recent = window.localStorage.getItem('recent')
@@ -9,6 +13,10 @@ function getRecent() {
   }
 
   return JSON.parse(recent) || {}
+}
+
+function hasRecent() {
+  return !isEmpty(getRecent())
 }
 
 function addRecent(id, type, target, name, description, thumbnail) {
@@ -40,8 +48,15 @@ function removeRecent(id) {
   return recent
 }
 
+function emptyRecent() {
+  window.localStorage.setItem('recent', null)
+}
+
 export {
+  hasRecent,
   getRecent,
+  parseRecent,
   addRecent,
-  removeRecent
+  removeRecent,
+  emptyRecent
 }

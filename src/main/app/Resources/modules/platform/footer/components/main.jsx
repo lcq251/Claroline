@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
@@ -25,8 +24,6 @@ const FooterMain = (props) => {
           {props.display.show &&
             <Fragment>
               <a className="app-footer-brand btn btn-text-secondary" href="https://www.claroline.com">
-                <img src={asset('bundles/clarolinecore/images/logos/logo-sm.svg')} alt="logo" />
-
                 <span className="d-none d-sm-block">Claroline Connect</span>
 
                 <small>{props.version}</small>
@@ -54,7 +51,7 @@ const FooterMain = (props) => {
 
               {props.display.locale &&
                 <Button
-                  className="app-current-locale app-footer-btn btn btn-text-secondary"
+                  className="app-footer-btn btn btn-text-secondary d-flex align-items-center-center"
                   type={MODAL_BUTTON}
                   modal={[MODAL_LOCALE, props.locale]}
                   icon={<CountryFlag className="action-icon" countryCode={props.locale.current} />}

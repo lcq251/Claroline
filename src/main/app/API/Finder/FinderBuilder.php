@@ -2,10 +2,8 @@
 
 namespace Claroline\AppBundle\API\Finder;
 
-use BadMethodCallException;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Doctrine\ORM\EntityManagerInterface;
-use InvalidArgumentException;
 
 class FinderBuilder implements FinderBuilderInterface
 {
@@ -45,7 +43,7 @@ class FinderBuilder implements FinderBuilderInterface
     public function getFinder(): FinderInterface
     {
         if ($this->locked) {
-            throw new BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
+            throw new \BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
         }
 
         $this->locked = true;
@@ -62,7 +60,7 @@ class FinderBuilder implements FinderBuilderInterface
     public function add(string $name, ?string $type = null, ?array $options = []): static
     {
         if ($this->locked) {
-            throw new BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
+            throw new \BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
         }
 
         if (null === $type) {
@@ -77,13 +75,13 @@ class FinderBuilder implements FinderBuilderInterface
     public function get(string $name): FinderBuilderInterface
     {
         if ($this->locked) {
-            throw new BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
+            throw new \BadMethodCallException('FinderBuilder methods cannot be accessed anymore once the builder is turned into a FinderInterface instance.');
         }
 
         if (isset($this->children[$name])) {
             return $this->children[$name];
         }
 
-        throw new InvalidArgumentException(sprintf('The child with the name "%s" does not exist.', $name));
+        throw new \InvalidArgumentException(sprintf('The child with the name "%s" does not exist.', $name));
     }
 }

@@ -1,15 +1,16 @@
 import React from 'react'
 
-import {PageSimple} from '#/main/app/page/components/simple'
+import {trans} from '#/main/app/intl'
+import {SecurityPage} from '#/main/app/security/components/page'
 
 import {ResetPasswordForm} from '#/main/app/security/password/reset/containers/reset'
 
 const PlatformNewPassword = () =>
-  <PageSimple
-    className="auth-page login-page"
+  <SecurityPage
+    title={trans('reset_password')}
   >
     <ResetPasswordForm />
-  </PageSimple>
+  </SecurityPage>
 
 export {
   PlatformNewPassword

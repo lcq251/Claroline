@@ -43,7 +43,7 @@ const PlayerOverview = (props) =>
           size: 'lg'
         }, {
           name: 'home',
-          type: URL_BUTTON, // we require an URL_BUTTON here to escape the embedded resource router
+          type: URL_BUTTON, // we require a URL_BUTTON here to escape the embedded resource router
           icon: 'fa fa-fw fa-home',
           label: trans('return-home', {}, 'actions'),
           target: '#'+route(props.workspace),

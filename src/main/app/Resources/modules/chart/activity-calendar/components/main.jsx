@@ -1,11 +1,12 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
+
 import moment from 'moment/moment'
 import times from 'lodash/times'
 import random from 'lodash/random'
 
 import {trans} from '#/main/app/intl/translation'
-import classes from 'classnames'
 
 const ActivityCalendar = (props) => {
   const endRange = moment()
@@ -15,7 +16,7 @@ const ActivityCalendar = (props) => {
   const diff = moment.duration(endRange.diff(startRange))
 
   return (
-    <div className="activity-calendar-container">
+    <div className={classes('activity-calendar-container', props.className)}>
       <table className="activity-calendar">
         <thead>
         <tr>
@@ -74,7 +75,7 @@ const ActivityCalendar = (props) => {
 }
 
 ActivityCalendar.propTypes = {
-
+  className: T.string
 }
 
 export {

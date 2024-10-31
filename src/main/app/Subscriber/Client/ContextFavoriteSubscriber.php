@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\AppBundle\Subscriber;
+namespace Claroline\AppBundle\Subscriber\Client;
 
 use Claroline\AppBundle\Component\Context\ContextProvider;
 use Claroline\AppBundle\Event\Client\UserPreferencesEvent;

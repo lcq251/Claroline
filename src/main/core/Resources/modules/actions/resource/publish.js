@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 
 import {url} from '#/main/app/api'
-import {number} from '#/main/app/intl'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {trans} from '#/main/app/intl/translation'
@@ -19,11 +18,6 @@ export default (resourceNodes, nodesRefresher) => ({
   icon: 'fa fa-fw fa-eye',
   label: trans('publish', {}, 'actions'),
   displayed: -1 !== resourceNodes.findIndex(node => !get(node, 'meta.published') && hasPermission('edit', node)),
-  /*subscript: 1 === resourceNodes.length ? {
-    type: 'label',
-    status: 'secondary',
-    value: number(get(resourceNodes[0], 'meta.views') || 0, true)
-  } : undefined,*/
   request: {
     type: 'publish',
     url: url(

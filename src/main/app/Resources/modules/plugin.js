@@ -10,7 +10,6 @@ registry.add('ClarolineAppBundle', {
     'public'        : () => { return import(/* webpackChunkName: "app-context-public" */        '#/main/app/contexts/public') },
     'desktop'       : () => { return import(/* webpackChunkName: "app-context-desktop" */        '#/main/app/contexts/desktop') },
     'administration': () => { return import(/* webpackChunkName: "app-context-administration" */ '#/main/app/contexts/administration') },
-    'account'       : () => { return import(/* webpackChunkName: "app-context-account" */        '#/main/app/contexts/account') },
     'workspace'     : () => { return import(/* webpackChunkName: "app-context-workspace" */      '#/main/app/contexts/workspace') }
   },
   data: {

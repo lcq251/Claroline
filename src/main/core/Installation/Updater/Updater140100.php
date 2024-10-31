@@ -3,7 +3,6 @@
 namespace Claroline\CoreBundle\Installation\Updater;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Component\Context\AccountContext;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
 use Claroline\CoreBundle\Entity\Role;
@@ -96,7 +95,7 @@ class Updater140100 extends Updater
 
         foreach ($tools as $index => $tool) {
             $orderedTool = new OrderedTool();
-            $orderedTool->setContextName(AccountContext::getName());
+            $orderedTool->setContextName('account');
             $orderedTool->setOrder($index);
             $orderedTool->setName($tool);
 

@@ -7,17 +7,17 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Facet\Facet;
 use Claroline\CoreBundle\Entity\Facet\PanelFacet;
 
+/**
+ * @deprecated
+ */
 class FacetSerializer
 {
     use SerializerTrait;
 
-    private ObjectManager $om;
-    private PanelFacetSerializer $pfSerializer;
-
-    public function __construct(ObjectManager $om, PanelFacetSerializer $pfSerializer)
-    {
-        $this->om = $om;
-        $this->pfSerializer = $pfSerializer;
+    public function __construct(
+        private readonly ObjectManager $om,
+        private readonly PanelFacetSerializer $pfSerializer
+    ) {
     }
 
     public function getClass(): string
@@ -67,7 +67,7 @@ class FacetSerializer
             $facet->resetPanelFacets();
 
             foreach ($data['sections'] as $section) {
-                //check if section exists first
+                // check if section exists first
                 $panelFacet = $this->om->getObject($section, PanelFacet::class) ?? new PanelFacet();
                 $this->pfSerializer->deserialize($section, $panelFacet, $options);
                 $panelFacet->setFacet($facet);

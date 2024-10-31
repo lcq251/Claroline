@@ -36,12 +36,15 @@ const DataFormProperty = {
   })
 }
 
-// todo merge with DataDetailsSection
 const DataFormSection = {
   propTypes: {
     id: T.string,
     icon: T.string,
     title: T.string.isRequired,
+    description: T.string,
+    /**
+     * @deprecated use description
+     */
     subtitle: T.string,
     help: T.string,
     primary: T.bool,

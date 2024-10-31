@@ -64,7 +64,7 @@ const EditorPage = (props) => {
         actions={[
           {
             name: 'close',
-            label: trans('close'),
+            label: trans('close', {}, 'actions'),
             icon: 'fa fa-fw fa-times',
             type: LINK_BUTTON,
             target: editorDef.close,

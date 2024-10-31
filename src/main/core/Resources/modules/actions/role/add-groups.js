@@ -8,7 +8,7 @@ export default (role, refresher) => ({
   name: 'add-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-users',
-  label: trans('add_group'),
+  label: trans('add_group', {}, 'actions'),
   modal: [MODAL_GROUPS, {
     selectAction: (groups) => ({
       type: ASYNC_BUTTON,

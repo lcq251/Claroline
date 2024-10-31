@@ -87,6 +87,7 @@ const FormData = (props) => {
         autoFocus={props.autoFocus}
         disabled={disabled}
         definition={props.definition || props.sections}
+        size={props.size}
         locked={props.locked}
       />
 
@@ -135,6 +136,7 @@ FormData.propTypes = {
   embedded: T.bool,
   level: T.number,
   displayLevel: T.number,
+  size: T.string,
   flush: T.bool,
   autoFocus: T.bool,
   title: T.string,

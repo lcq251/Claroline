@@ -12,7 +12,8 @@
 namespace Claroline\CoreBundle\Entity;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
-use Claroline\AppBundle\Entity\Address;
+use Claroline\AppBundle\Entity\Contact\Address;
+use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Display\Thumbnail;
@@ -36,14 +37,12 @@ class Location implements CrudEntityInterface
     use Description;
     use Thumbnail;
     use Poster;
+    use Phone;
     use Address;
     use HasOrganizations;
 
     #[ORM\Column]
     private ?string $name = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?string $phone = null;
 
     /**
      * @var Collection<int, Organization>
@@ -72,15 +71,5 @@ class Location implements CrudEntityInterface
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function setPhone(string $phone = null): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
     }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 
 import {toKey} from '#/main/core/scaffolding/text'
 
@@ -8,7 +9,7 @@ const FormHelp = (props) => {
 
   if (Array.isArray(helps)) {
     return (
-      <ul className="list-unstyled mb-0">
+      <ul className={classes('list-unstyled', props.className)}>
         {helps.map(help =>
           <li key={toKey(help)} className="form-text">
             {help}
@@ -19,13 +20,14 @@ const FormHelp = (props) => {
   }
 
   return (
-    <div className="form-text">
+    <p className={classes('form-text', props.className)}>
       {helps}
-    </div>
+    </p>
   )
 }
 
 FormHelp.propTypes = {
+  className: T.string,
   help: T.oneOfType([
     T.string,           // a single help message
     T.arrayOf(T.string) // a list of help messages

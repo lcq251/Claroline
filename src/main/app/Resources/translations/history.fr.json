@@ -1,0 +1,12 @@
+{
+  "history": "Historique",
+  "history_desc": "Retrouvez et gérez votre historique de consultation.",
+  "empty_history_confirm": "Êtes-vous sûr(e) de vouloir supprimer tous les éléments présents dans votre historique ?",
+  "enable_history": "Activer mon historique",
+  "enable_history_help": "Activez l'historique personnel pour retrouver facilement les derniers éléments consultés.",
+  "no_history_results": "Votre historique est vide pour le moment",
+  "no_history_results_help": "Parcourez le contenu de la plateforme et retrouvez les éléments précédemment visités ici.",
+  "recent": "Récent",
+  "history_unavailable": "Vous n'avez pas accès à l'historique personnel de l'utilsateur",
+  "history_unavailable_help": "L'historique est stocké sur l'appareil de l'utilisateur et n'est disponible que pour lui."
+}

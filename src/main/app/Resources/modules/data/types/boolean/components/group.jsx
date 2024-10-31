@@ -1,7 +1,9 @@
 import React from 'react'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 
 import {FormGroup} from '#/main/app/content/form/components/group'
+import {FormHelp} from '#/main/app/content/form/components/help'
 
 /**
  * Overrides default form group because in this case
@@ -11,11 +13,14 @@ const BooleanGroup = props =>
   <FormGroup
     id={props.id}
     className={classes('form-check form-switch', props.className)}
-    help={props.help}
     error={props.error}
     warnOnly={props.warnOnly}
   >
     {props.children}
+
+    {!isEmpty(props.help) &&
+      <FormHelp help={props.help} className="mb-0" />
+    }
   </FormGroup>
 
 BooleanGroup.propTypes = FormGroup.propTypes

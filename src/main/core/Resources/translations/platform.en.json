@@ -552,7 +552,7 @@
     "search_full": "Full search",
     "search_unified": "Unified search",
     "login_auth_or": "OR",
-    "login_auth_claro_account": "Connect with your %platform% account:",
+    "login_auth_account": "Connect with your %platform% account",
     "login_auth_sso": "Connect with one of your account:",
     "login_auth_sso_other": "Connect with one of your other account:",
     "published_at": "published on %date%",
@@ -600,6 +600,7 @@
     "registered_at": "registered at",
     "last_activity_at": "last activity at",
     "optional": "optional",
+    "recommended": "recommended",
     "field_required": "Make the field mandatory",
     "field_hide_label": "Hide label",
     "help": "Help",
@@ -845,7 +846,7 @@
     "my_progression": "My progression",
     "useful_links": "Useful links",
     "contact_information": "Contact information",
-    "send_password_help": "Please specify the email address attached to your account so that we can send you a new password.",
+    "send_password_help": "Please specify the email address attached to your account so that we can send you a new password",
     "active": "Active",
     "inactive": "Inactive",
     "per_day": "per day",
@@ -856,7 +857,7 @@
     "file_drop_help": "Drop your files to import them in the platform",
     "file_opening_download": "Suggest file download",
     "file_opening_browser": "Open file with browser player",
-    "file_opening_player": "Open file with Claroline player",
+    "file_opening_player": "Open file with platform player",
     "privacy": "Private life",
     "full": "Full",
     "quantity": "Quantity",
@@ -902,5 +903,7 @@
     "plugins": "Plugins",
     "notifications": "Notifications",
     "info": "Information",
-    "warning": "Warning"
+    "warning": "Warning",
+    "legal_information": "Legal information",
+    "logs": "Logs"
 }

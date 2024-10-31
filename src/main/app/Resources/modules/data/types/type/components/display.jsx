@@ -10,16 +10,17 @@ const TypeDisplay = props => {
     const value = props.data || props.value
 
     return (
-      <article className="type-control">
+      <div className="py-2 px-3 gap-3 d-flex align-items-center border rounded-2">
         {value.icon && cloneElement(value.icon, {
+          size: 'sm',
           className: classes(value.icon.props.className, 'type-icon')
         })}
 
         <div role="presentation">
-          <h1>{value.name}</h1>
-          <p>{value.description}</p>
+          <b className="mb-1 fw-medium">{value.name}</b>
+          <p className="mb-0 text-body-secondary fs-sm">{value.description}</p>
         </div>
-      </article>
+      </div>
     )
   }
 

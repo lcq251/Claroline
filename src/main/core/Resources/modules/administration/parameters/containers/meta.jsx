@@ -9,8 +9,7 @@ import {Meta as MetaComponent} from '#/main/core/administration/parameters/compo
 const Meta = connect(
   (state) => ({
     path: toolSelectors.path(state),
-    lockedParameters: selectors.lockedParameters(state),
-    availableLocales: selectors.availableLocales(state)
+    lockedParameters: selectors.lockedParameters(state)
   }),
   (dispatch) => ({
     updateProp(prop, value) {

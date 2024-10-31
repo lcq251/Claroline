@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import {WorkspaceCreation} from '#/main/app/contexts/workspace/components/creation'
 
 const CreationType = (props) =>
-  <div className="modal-body">
+  <div className="modal-body" role="presentation">
     <WorkspaceCreation
       startCreation={props.startCreation}
       changeStep={props.changeStep}

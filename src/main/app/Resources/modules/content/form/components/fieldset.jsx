@@ -78,7 +78,7 @@ class FormFieldset extends Component {
             options={field.options}
             help={field.help}
             placeholder={field.placeholder}
-            size={this.props.size}
+            size={this.props.size || field.size}
             required={field.required}
 
             value={value}
@@ -96,8 +96,9 @@ class FormFieldset extends Component {
             options={field.options}
             help={field.help}
             placeholder={field.placeholder}
-            size={this.props.size}
+            size={this.props.size || field.size}
             required={field.required}
+            recommended={field.recommended}
             disabled={this.props.disabled || (typeof field.disabled === 'function' ? field.disabled(this.props.data) : field.disabled)}
             validating={this.props.validating}
             autoFocus={field.autoFocus}

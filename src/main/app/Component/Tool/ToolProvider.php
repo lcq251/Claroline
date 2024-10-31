@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *   - be declared as a symfony service and tagged with "claroline.component.tool".
  *   - implement the ToolInterface interface (or the AbstractTool class in most cases).
  */
-class ToolProvider extends AbstractComponentProvider
+final class ToolProvider extends AbstractComponentProvider
 {
     private OrderedToolRepository $orderedToolRepo;
 

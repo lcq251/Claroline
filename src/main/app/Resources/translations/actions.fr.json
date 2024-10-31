@@ -15,6 +15,7 @@
   "copy": "Copier",
   "correct": "Corriger",
   "create": "Créer",
+  "create_and_configure": "Créer & Configurer",
   "create-account": "Créer un compte",
   "decline": "Refuser",
   "delete": "Supprimer",
@@ -91,5 +92,6 @@
   "purge": "Purger",
   "hide": "Cacher",
   "reset": "Réinitialiser",
-  "show": "Voir"
+  "show": "Voir",
+  "empty_history": "Vider mon historique"
 }

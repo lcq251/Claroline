@@ -13,8 +13,10 @@ import resourcesSource from '#/main/core/data/sources/resources'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {getActions, getDefaultAction} from '#/main/core/resource/utils'
 import {FileDrop} from '#/main/app/overlays/dnd/components/file-drop'
-import {ResourcePage} from '#/main/core/resource'
+import {ResourceOverview, ResourcePage} from '#/main/core/resource'
 import {PageListSection} from '#/main/app/page/components/list-section'
+import {MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_RESOURCE_CREATION} from '#/main/core/resource/modals/creation'
 
 /**
  * Transform resource node actions.
@@ -37,56 +39,69 @@ function transformAction(action, resourceNodes, embedded = false) {
   return action
 }
 
-const DirectoryPlayer = props =>
-  <ResourcePage
-    root={props.isRoot}
-    title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
-  >
-    {props.storageLock &&
-      <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
-    }
+const DirectoryPlayer = (props) => {
+  return (
+    <ResourceOverview
+      root={props.isRoot}
+      title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
+    >
+      {props.storageLock &&
+        <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
+      }
 
-    <PageListSection>
-      <FileDrop
-        size="lg"
-        disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
-        onDrop={(files) => props.createFiles(props.currentNode, files).then(props.updateNodes)}
-        help={trans('file_drop_help', {}, 'resource')}
-      >
-        <ListSource
-          flush={true}
-          name={props.listName}
-          fetch={{
-            url: ['apiv2_resource_list', {contextId: get(props.currentNode, 'workspace.id', null), parent: get(props.currentNode, 'id', null)}],
-            autoload: true
-          }}
-          source={merge({}, resourcesSource('workspace', get(props.currentNode, 'workspace'), {
-            update: props.updateNodes,
-            delete: props.deleteNodes
-          }, props.currentUser), {
-            // adds actions to source
-            primaryAction: (resourceNode) => getDefaultAction(resourceNode, {
+      <PageListSection>
+        <FileDrop
+          size="lg"
+          disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
+          onDrop={(files) => props.createFiles(props.currentNode, files).then(props.updateNodes)}
+          help={trans('file_drop_help', {}, 'resource')}
+        >
+          <ListSource
+            flush={true}
+            name={props.listName}
+            fetch={{
+              url: ['apiv2_resource_list', {contextId: get(props.currentNode, 'workspace.id', null), parent: get(props.currentNode, 'id', null)}],
+              autoload: true
+            }}
+            addAction={{
+              name: 'add',
+              type: MODAL_BUTTON,
+              label: trans('add_resource', {}, 'resource'),
+              modal: [MODAL_RESOURCE_CREATION, {
+                parent: props.currentNode,
+                add: props.updateNodes
+              }],
+              displayed: get(props.currentNode, 'permissions.create', []).length > 0
+            }}
+            source={merge({}, resourcesSource('workspace', get(props.currentNode, 'workspace'), {
               update: props.updateNodes,
               delete: props.deleteNodes
-            }, props.path, props.currentUser).then((action) => {
-              if (action) {
-                return transformAction(action, [resourceNode], props.embedded)
-              }
+            }, props.currentUser), {
+              // adds actions to source
+              primaryAction: (resourceNode) => getDefaultAction(resourceNode, {
+                update: props.updateNodes,
+                delete: props.deleteNodes
+              }, props.path, props.currentUser).then((action) => {
+                if (action) {
+                  return transformAction(action, [resourceNode], props.embedded)
+                }
 
-              return null
-            }),
-            actions: (resourceNodes) => getActions(resourceNodes, {
-              update: props.updateNodes,
-              delete: props.deleteNodes
-            }, props.path, props.currentUser).then((actions) => actions
-              .filter(action => !props.storageLock || 'copy' !== action.name)
-              .map(action => transformAction(action, resourceNodes, props.embedded)))
-          })}
-          parameters={props.listConfiguration}
-        />
-      </FileDrop>
-    </PageListSection>
-  </ResourcePage>
+                return null
+              }),
+              actions: (resourceNodes) => getActions(resourceNodes, {
+                update: props.updateNodes,
+                delete: props.deleteNodes
+              }, props.path, props.currentUser).then((actions) => actions
+                .filter(action => !props.storageLock || 'copy' !== action.name)
+                .map(action => transformAction(action, resourceNodes, props.embedded)))
+            })}
+            parameters={props.listConfiguration}
+          />
+        </FileDrop>
+      </PageListSection>
+    </ResourceOverview>
+  )
+}
 
 DirectoryPlayer.propTypes = {
   path: T.string,

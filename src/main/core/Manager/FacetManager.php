@@ -3,6 +3,7 @@
 namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\API\Utils\ArrayUtils;
+use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Claroline\CoreBundle\Event\CatalogEvents\FacetEvents;
 use Claroline\CoreBundle\Event\Facet\GetFacetValueEvent;
 use Claroline\CoreBundle\Event\Facet\SetFacetValueEvent;
@@ -43,41 +44,43 @@ class FacetManager
         return $event->getFormattedValue();
     }
 
-    public function isFieldDisplayed(array $fieldDef, array $allFields, array $data): bool
+    public function isFieldDisplayed(FieldFacet $fieldDef, array $allFields, array $data): bool
     {
-        $condition = $fieldDef['display']['condition'];
+        if (empty($fieldDef->getConditionField())) {
+            // the field is not linked to another
+            return true;
+        }
 
-        if (!empty($condition)) {
-            $parentField = null;
+        // retrieve the parent field
+        $parentField = null;
+        foreach ($allFields as $searchedField) {
+            if ($searchedField === $fieldDef->getConditionField()) {
+                $parentField = $searchedField;
+            }
+        }
 
-            foreach ($allFields as $searchedField) {
-                if ($searchedField['id'] === $condition['field']) {
-                    $parentField = $searchedField;
-                }
+        // check if the parent field value match the display condition value
+        if ($parentField) {
+            $parentValue = ArrayUtils::get($data, 'profile.'.$parentField->getUuid());
+
+            $displayed = false;
+
+            switch ($fieldDef->getConditionComparator()) {
+                case 'equal':
+                    $displayed = $parentValue === $fieldDef->getConditionValue();
+                    break;
+                case 'different':
+                    $displayed = $parentValue !== $fieldDef->getConditionValue();
+                    break;
+                case 'empty':
+                    $displayed = empty($parentValue);
+                    break;
+                case 'not_empty':
+                    $displayed = !empty($parentValue);
+                    break;
             }
 
-            if ($parentField) {
-                $parentValue = ArrayUtils::get($data, 'profile.'.$parentField['id']);
-
-                $displayed = false;
-
-                switch ($condition['comparator']) {
-                    case 'equal':
-                        $displayed = $parentValue === $condition['value'];
-                        break;
-                    case 'different':
-                        $displayed = $parentValue !== $condition['value'];
-                        break;
-                    case 'empty':
-                        $displayed = empty($parentValue);
-                        break;
-                    case 'not_empty':
-                        $displayed = !empty($parentValue);
-                        break;
-                }
-
-                return $displayed;
-            }
+            return $displayed;
         }
 
         return true;

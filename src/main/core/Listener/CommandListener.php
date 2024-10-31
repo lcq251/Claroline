@@ -48,7 +48,7 @@ class CommandListener
      */
     public function setLocale(): void
     {
-        $locale = $this->config->getParameter('locales.default');
+        $locale = $this->config->getParameter('intl.locale');
         if ($locale) {
             $this->translator->setLocale($locale);
         }

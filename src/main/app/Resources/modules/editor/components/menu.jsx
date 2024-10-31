@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
@@ -16,7 +16,7 @@ const EditorMenuSection = (props) => {
         }
 
         <div className="nav flex-column nav-pills mx-n3" role="presentation">
-          <Button className="nav-link text-start w-100 text-truncate fw-normal" {...props.links[0]} />
+          <Button className="nav-link text-start w-100 py-2 text-truncate fw-normal" {...props.links[0]} />
         </div>
       </nav>
     )
@@ -31,7 +31,7 @@ const EditorMenuSection = (props) => {
       <ul className="nav nav-pills flex-column mb-0 mx-n3">
         {props.links.map(action =>
           <li key={action.name} className="nav-item w-100">
-            <Button className="nav-link text-start w-100 text-truncate fw-normal" {...action} />
+            <Button className="py-2 nav-link text-start w-100 text-truncate fw-normal" {...action} />
           </li>
         )}
       </ul>
@@ -77,7 +77,7 @@ const EditorMenu = (props) => {
       }
 
       {Object.keys(groups).map(groupName =>
-        <>
+        <Fragment key={groupName}>
           <hr className="app-editor-menu-separator my-2" aria-hidden={true} />
           <EditorMenuSection
             className="mt-3"
@@ -89,7 +89,7 @@ const EditorMenu = (props) => {
               target: props.path + '/' + page.name
             }))}
           />
-        </>
+        </Fragment>
       )}
 
       {!isEmpty(advancedPages) &&

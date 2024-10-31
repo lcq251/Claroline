@@ -126,6 +126,6 @@ class ArrayUtils
 
     public static function isAssociative(array $array): bool
     {
-        return count(array_filter(array_keys($array), 'is_string')) > 0;
+        return !array_is_list($array);
     }
 }

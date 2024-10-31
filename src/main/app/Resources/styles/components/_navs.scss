@@ -21,10 +21,10 @@
     --#{$prefix}nav-underline-border-active-color: #{$nav-underline-border-active-color};
     // scss-docs-end nav-underline-css-vars
 
-    .nav-link {
+    /*.nav-link {
         padding-left: map-get($spacers, 2);
         padding-right: map-get($spacers, 2);
-    }
+    }*/
 
     .nav-link.active,
     .show > .nav-link {

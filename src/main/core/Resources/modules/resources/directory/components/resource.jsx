@@ -12,13 +12,7 @@ const DirectoryResource = (props) =>
     {...omit(props, 'storageLock')}
     disabledActions={props.storageLock ? ['add', 'add_files', 'copy'] : []}
     editor={DirectoryEditor}
-    pages={[
-      {
-        path: '/',
-        exact: true,
-        component: DirectoryPlayer
-      }
-    ]}
+    overviewPage={DirectoryPlayer}
   />
 
 DirectoryResource.propTypes = {

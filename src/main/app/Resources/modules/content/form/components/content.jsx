@@ -69,7 +69,7 @@ const FormContent = (props) => {
               displayLevel={props.displayLevel}
               displayed={0 !== index && !primarySection.hideTitle}
               title={primarySection.title}
-              subtitle={primarySection.subtitle}
+              subtitle={primarySection.description || primarySection.subtitle}
             />
 
             {!isEmpty(primarySection.actions) &&
@@ -93,6 +93,7 @@ const FormContent = (props) => {
               validating={props.validating}
               updateProp={props.updateProp}
               setErrors={props.setErrors}
+              size={props.size}
             >
               {primarySection.component && createElement(primarySection.component)}
               {!primarySection.component && primarySection.render && primarySection.render(props.data, props.errors)}
@@ -116,7 +117,7 @@ const FormContent = (props) => {
               key={getSectionId(section, props.id)}
               icon={section.icon}
               title={section.title}
-              subtitle={section.subtitle}
+              subtitle={section.description || section.subtitle}
               errors={getSectionErrors(section.fields, props.errors)}
               validating={props.validating}
               actions={section.actions}
@@ -133,6 +134,7 @@ const FormContent = (props) => {
                 validating={props.validating}
                 updateProp={props.updateProp}
                 setErrors={props.setErrors}
+                size={props.size}
               >
                 {section.component && createElement(section.component)}
                 {!section.component && section.render && section.render(props.data, props.errors)}
@@ -152,6 +154,7 @@ FormContent.propTypes = {
   flush: T.bool,
   autoFocus: T.bool,
   mode: T.string.isRequired,
+  size: T.string,
   disabled: T.oneOfType([T.bool, T.func]),
 
   definition: T.arrayOf(T.shape(

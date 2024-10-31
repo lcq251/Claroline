@@ -21,7 +21,7 @@ class FieldFacetRepository extends EntityRepository
      *
      * @deprecated
      */
-    public function findPlatformFieldFacets()
+    public function findPlatformFieldFacets(): array
     {
         $dql = '
             SELECT ff

@@ -172,10 +172,11 @@ class DirectoryListener extends ResourceComponent
 
         // initialize resource node Entity
         try {
-            /** @var ResourceNode $resourceNode */
-            $resourceNode = $this->crud->create(ResourceNode::class, $nodeData, array_merge([Options::NO_RIGHTS, Crud::THROW_EXCEPTION], $options));
+            $resourceNode = new ResourceNode();
             $resourceNode->setParent($parent);
             $resourceNode->setWorkspace($parent->getWorkspace());
+
+            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS, Crud::THROW_EXCEPTION], $options));
         } catch (InvalidDataException $e) {
             // for resource creation we submit the resourceNode and resource data at once
             // we need to update the errors path for correct rendering in form

@@ -7,8 +7,6 @@ import {constants} from '#/main/core/tool/constants'
 function getTools(contextType) {
   if (constants.TOOL_ADMINISTRATION === contextType) {
     return getApps('administration')
-  } else if (constants.TOOL_ACCOUNT === contextType) {
-    return getApps('account')
   }
 
   return getApps('tools')
@@ -17,8 +15,6 @@ function getTools(contextType) {
 async function getTool(name, contextType) {
   if (constants.TOOL_ADMINISTRATION === contextType) {
     return getApp('administration', name)()
-  } else if (constants.TOOL_ACCOUNT === contextType) {
-    return getApp('account', name)()
   }
 
   return getApp('tools', name)()

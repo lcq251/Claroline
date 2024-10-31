@@ -192,10 +192,7 @@ class WorkspaceController extends AbstractCrudController
             })
         ;
 
-        return new StreamedJsonResponse([
-            'totalResults' => $workspaces->count(),
-            'data' => $workspaces->getItems(),
-        ]);
+        return $workspaces->toResponse();
     }
 
     /**
@@ -218,8 +215,6 @@ class WorkspaceController extends AbstractCrudController
 
         $finderQuery->addFilters([
             'model' => true,
-            /*'roles' => $this->tokenStorage->getToken()->getRoleNames(),
-            'administrated' => true,*/
         ]);
 
         $models = $this->crud->search(Workspace::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);

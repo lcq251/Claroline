@@ -11,7 +11,7 @@
 
 namespace Claroline\CoreBundle\Listener;
 
-use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextProvider;
 use Claroline\AppBundle\Manager\ClientManager;
@@ -61,14 +61,14 @@ class AuthenticationSuccessListener implements AuthenticationSuccessHandlerInter
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
-                'user' => $this->serializer->serialize($user, [Options::SERIALIZE_FACET]), // TODO : we should only get the minimal representation of user here,
+                'user' => $this->serializer->serialize($user, [SerializerInterface::SERIALIZE_MINIMAL]),
                 'config' => $this->clientManager->getUserPreferences($user), // for retro-compatibility. Should be in a new key userPreferences
                 'messages' => $this->messageManager->getConnectionMessagesByUser($user),
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
-                'currentOrganization' => $this->serializer->serialize($user->getMainOrganization(), [Options::SERIALIZE_MINIMAL]),
+                'currentOrganization' => $this->serializer->serialize($user->getMainOrganization(), [SerializerInterface::SERIALIZE_MINIMAL]),
                 'availableOrganizations' => array_map(function (Organization $organization) {
-                    return $this->serializer->serialize($organization, [Options::SERIALIZE_MINIMAL]);
+                    return $this->serializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
                 }, $user->getOrganizations()),
             ]);
         }

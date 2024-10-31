@@ -59,7 +59,7 @@ class PlatformController
                 // 'userPreferences' => $this->clientManager->getUserPreferences($currentUser),
 
                 'currentUser' => $currentUser ? $this->serializer->serialize(
-                    $currentUser, [Options::SERIALIZE_FACET] // TODO : we should only get the minimal representation of user here
+                    $currentUser, [Options::SERIALIZE_MINIMAL]
                 ) : null,
                 'impersonated' => $this->securityManager->isImpersonated(),
                 'contexts' => $this->contextProvider->getAvailableContexts(),

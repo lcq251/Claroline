@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {cloneElement} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
@@ -24,12 +24,14 @@ const ContentMenuItem = (props) =>
       className="list-group-item list-group-item-action d-flex gap-3 align-items-center"
       autoFocus={props.autoFocus}
       icon={props.icon &&
-        <Thumbnail square={true} size="sm" color={props.color}>
+        <>
           {typeof props.icon === 'string' ?
-            <span className={`fa fa-${props.icon}`} /> :
-            props.icon
+            <Thumbnail square={true} size="sm" color={props.color}>
+              <span className={`fa fa-${props.icon}`} />
+            </Thumbnail>  :
+            cloneElement(props.icon, {size: 'sm'})
           }
-        </Thumbnail>
+        </>
       }
       label={
         <>

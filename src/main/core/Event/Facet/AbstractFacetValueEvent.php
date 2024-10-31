@@ -7,18 +7,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 abstract class AbstractFacetValueEvent extends Event
 {
     /**
-     * The parent object which holds the facets feature (eg. User, ClacoForm Entry).
-     *
-     * @var mixed
+     * The parent object which holds the facets feature (e.g. User, ClacoForm Entry).
      */
-    private $object;
+    private object $object;
 
-    /** @var string */
-    private $fieldType;
-    private $value;
-    private $formattedValue;
+    private string $fieldType;
+    private mixed $value;
+    private mixed $formattedValue;
 
-    public function __construct($object, string $fieldType, $value)
+    public function __construct(object $object, string $fieldType, mixed $value)
     {
         $this->object = $object;
         $this->fieldType = $fieldType;
@@ -26,7 +23,7 @@ abstract class AbstractFacetValueEvent extends Event
         $this->formattedValue = $value;
     }
 
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }
@@ -36,17 +33,17 @@ abstract class AbstractFacetValueEvent extends Event
         return $this->fieldType;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
-    public function getFormattedValue()
+    public function getFormattedValue(): mixed
     {
         return $this->formattedValue;
     }
 
-    public function setFormattedValue($formattedValue)
+    public function setFormattedValue(mixed $formattedValue): void
     {
         $this->formattedValue = $formattedValue;
     }

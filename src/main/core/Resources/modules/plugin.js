@@ -21,6 +21,10 @@ registry.add('ClarolineCoreBundle', {
     'workspace': () => { return import(/* webpackChunkName: "core-search-workspace" */ '#/main/core/search/workspace')}
   },
 
+  account: {
+    'history': () => { return import(/* webpackChunkName: "core-account-history" */ '#/main/core/account/history')}
+  },
+
   /**
    * Provides actions for base Claroline objects.
    */
@@ -115,13 +119,6 @@ registry.add('ClarolineCoreBundle', {
     'templates'          : () => { return import(/* webpackChunkName: "core-admin-template" */    '#/main/core/administration/template') },
     'integration'        : () => { return import(/* webpackChunkName: "core-admin-integration" */ '#/main/core/administration/integration') },
     'connection_messages': () => { return import(/* webpackChunkName: "core-admin-connection-messages" */ '#/main/core/administration/connection-messages') },
-  },
-
-  /**
-   * Provides current user Account sections.
-   */
-  account: {
-    'parameters': () => { return import(/* webpackChunkName: "core-account-parameters" */ '#/main/core/account/parameters') },
   },
 
   /**

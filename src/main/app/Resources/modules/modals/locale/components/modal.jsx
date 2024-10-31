@@ -13,10 +13,9 @@ const LocaleModal = props =>
     {...omit(props, 'current', 'available')}
     title={trans('language')}
   >
-    <div className="modal-body text-center">
+    <div className="modal-body">
       <LocaleInput
         value={props.current}
-        available={props.available}
         onChange={(newLocale) => {
           window.location = url(['claroline_locale_change', {locale: newLocale}])
         }}
@@ -26,7 +25,6 @@ const LocaleModal = props =>
 
 LocaleModal.propTypes = {
   current: T.string.isRequired,
-  available: T.arrayOf(T.string).isRequired,
   fadeModal: T.func.isRequired
 }
 

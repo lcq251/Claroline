@@ -41,7 +41,7 @@ const TemplatePage = (props) => {
           name: 'add',
           type: LINK_BUTTON,
           icon: 'fa fa-fw fa-plus',
-          label: trans('add_a_template'),
+          label: trans('add_template'),
           target: `${props.path}/${props.templateType.type}/${props.templateType.id}/form`,
           primary: true,
           exact: true

@@ -5,13 +5,16 @@ import React from 'react'
 import {PageSimple} from '#/main/app/page/components/simple'
 
 import {SendPasswordForm} from '#/main/app/security/password/send/containers/send'
+import {SecurityPage} from '#/main/app/security/components/page'
+import {trans} from '#/main/app/intl'
 
 const PlatformSendPassword = () =>
-  <PageSimple
-    className="auth-page login-page"
+  <SecurityPage
+    title={trans('forgot_password')}
+    description={trans('send_password_help')}
   >
-    <SendPasswordForm/>
-  </PageSimple>
+    <SendPasswordForm />
+  </SecurityPage>
 
 export {
   PlatformSendPassword

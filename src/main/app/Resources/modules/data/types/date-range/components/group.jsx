@@ -18,26 +18,26 @@ const DateRangeGroup = props => {
     <fieldset className={classes('data-range-group form-group mb-4', props.className, getValidationClassName(props.error, props.validating))}>
       {props.label &&
         <legend
-          className={classes('form-label', {
+          className={classes('form-label d-flex align-items-baseline gap-2', {
             'visually-hidden': props.hideLabel
           })}
         >
           {props.label}
 
           {props.optional &&
-            <small className="ms-2 text-secondary fw-normal text-lowercase">({trans('optional')})</small>
+            <small className="text-secondary fw-normal text-lowercase">({trans('optional')})</small>
           }
         </legend>
+      }
+
+      {!isEmpty(props.help) &&
+        <FormHelp help={props.help} className={classes('mb-2', {'mt-n1': !!props.label && !props.hideLabel})} />
       }
 
       {props.children}
 
       {!isEmpty(error) &&
         <FormError error={error} warnOnly={!props.validating} />
-      }
-
-      {!isEmpty(props.help) &&
-        <FormHelp help={props.help} />
       }
     </fieldset>
   )

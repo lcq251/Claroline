@@ -102,7 +102,7 @@
     }
   },
   "claroline": {
-    "requiredAtCreation": ["email", "firstName", "lastName", "plainPassword"],
+    "requiredAtCreation": ["email"],
     "ids": ["id", "email", "username"]
   }
 }

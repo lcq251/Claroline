@@ -1,16 +1,23 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
-import {PageSimple} from '#/main/app/page/components/simple'
+import {trans} from '#/main/app/intl'
+import {SecurityPage} from '#/main/app/security/components/page'
+
 import {LoginMain} from '#/main/app/security/login/containers/main'
+import {useSelector} from 'react-redux'
+import {selectors as configSelectors} from '#/main/app/config/store'
 
 const PlatformLogin = () => {
   const history = useHistory()
   const routeParams = useParams()
 
+  const platformName = useSelector((state) => configSelectors.param(state, 'name'))
+
   return (
-    <PageSimple
-      className="auth-page login-page"
+    <SecurityPage
+      title={trans('login')}
+      description={trans('login_auth_account', {platform: platformName})}
     >
       <LoginMain
         forceInternalAccount={routeParams.forceInternalAccount}
@@ -18,7 +25,7 @@ const PlatformLogin = () => {
           history.push('/desktop')
         }}
       />
-    </PageSimple>
+    </SecurityPage>
   )
 }
 

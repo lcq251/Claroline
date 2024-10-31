@@ -6,15 +6,6 @@
       "type": "string",
       "description": "The location id"
     },
-    "meta": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "integer",
-          "description": "The location type"
-        }
-      }
-    },
     "phone": {
       "type": ["null", "string"],
       "description": "The location phone"

@@ -12,7 +12,6 @@
 namespace Claroline\CoreBundle\Installation\DataFixtures;
 
 use Claroline\AppBundle\Component\Context\ContextProvider;
-use Claroline\CoreBundle\Component\Context\AccountContext;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
@@ -40,7 +39,6 @@ class DefaultToolsData extends AbstractFixture implements PostInstallInterface
     {
         $this->loadContextTools($manager, PublicContext::getName());
         $this->loadContextTools($manager, DesktopContext::getName());
-        $this->loadContextTools($manager, AccountContext::getName());
         $this->loadContextTools($manager, AdministrationContext::getName());
 
         $manager->flush();

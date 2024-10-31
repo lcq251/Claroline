@@ -1,3 +1,4 @@
+
 import React, {createElement, Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
@@ -19,8 +20,7 @@ class DataInput extends Component {
       error: false,
       loaded: false,
       input: null,
-      group: null,
-      editable: true
+      group: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -69,8 +69,7 @@ class DataInput extends Component {
           loaded: true,
           error: false,
           group: get(result[0], 'components.group'),
-          input: get(result[0], 'components.input'),
-          editable: get(result[0], 'meta.editable', true)
+          input: get(result[0], 'components.input')
         })
       )
       .then(
@@ -129,6 +128,7 @@ class DataInput extends Component {
           value: this.props.value,
           error: this.props.error,
           required: this.props.required,
+          recommended: this.props.recommended,
           placeholder: this.props.placeholder,
           disabled: this.props.disabled,
           autoComplete: this.props.autoComplete,
@@ -153,7 +153,10 @@ class DataInput extends Component {
         hideLabel: this.props.hideLabel,
         help: this.props.help,
         error: this.props.error,
-        optional: !this.props.required && this.state.editable, // cheat to hide the "optional" label on non-editable fields
+        // for retro-compatibility : use required
+        optional: !this.props.required,
+        required: !this.props.required,
+        recommended: this.props.recommended,
         validating: this.props.validating,
         warnOnly: !this.props.validating
       },
@@ -177,6 +180,7 @@ DataInput.propTypes = {
   autoComplete: T.string,
   autoFocus: T.bool,
   required: T.bool,
+  recommended: T.bool,
   disabled: T.bool,
   validating: T.bool,
 
@@ -204,7 +208,8 @@ DataInput.defaultProps = {
   options: {},
   required: false,
   disabled: false,
-  validating: false
+  validating: false,
+  recommended: false
 }
 
 export {

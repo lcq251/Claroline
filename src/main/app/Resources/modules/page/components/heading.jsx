@@ -7,16 +7,16 @@ import {Action as ActionTypes, PromisedAction as PromisedActionTypes} from '#/ma
 import {PageActions} from '#/main/app/page/components/actions'
 
 const PageHeading = props =>
-  <header className={classes('app-page-heading px-4', props.className, props.size && `content-${props.size}`)}>
+  <header className={classes('app-page-heading px-4 mb-4', props.className, props.size && `content-${props.size}`)}>
     {props.icon &&
       <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
         {props.icon}
       </div>
     }
 
-    <div className={classes('app-page-heading pb-4 d-flex gap-3 align-items-end flex-wrap flex-md-nowrap', {
-      'pt-5': !props.icon,
-      'pt-2': !!props.icon
+    <div className={classes('d-flex gap-3 align-items-end flex-wrap flex-md-nowrap', {
+      'mt-5': !props.icon,
+      'mt-2': !!props.icon
     })} role="presentation">
       <h1 className="app-page-title m-0">
         {props.title}

@@ -4,7 +4,7 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {param} from '#/main/app/config'
-import {PageFull} from '#/main/app/page/components/full'
+import {SecurityPage} from '#/main/app/security/components/page'
 
 import {RegistrationMain} from '#/main/app/security/registration/containers/main'
 
@@ -12,8 +12,9 @@ const PlatformRegistration = () => {
   const history = useHistory()
 
   return (
-    <PageFull
+    <SecurityPage
       title={trans('registration')}
+      description={trans('Créez un compte en quelques instants pour accéder à toutes les fonctionnalités de Claroline Connect')}
     >
       <RegistrationMain
         className="content-sm"
@@ -31,7 +32,7 @@ const PlatformRegistration = () => {
           }
         }}
       />
-    </PageFull>
+    </SecurityPage>
   )
 }
 

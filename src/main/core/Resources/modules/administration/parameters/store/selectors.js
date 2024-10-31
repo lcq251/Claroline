@@ -7,11 +7,6 @@ const FORM_NAME = STORE_NAME+'.parameters'
 
 const store = (state) => state[STORE_NAME]
 
-const availableLocales = createSelector(
-  [store],
-  (store) => store.availableLocales
-)
-
 const lockedParameters = createSelector(
   [store],
   (store) => store.lockedParameters
@@ -34,7 +29,6 @@ export const selectors = {
   FORM_NAME,
 
   store,
-  availableLocales,
   lockedParameters,
   parameters,
   locales,

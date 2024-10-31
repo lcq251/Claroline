@@ -21,18 +21,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExportCommand extends Command
 {
-    private $em;
-    private $workspaceManager;
-
-    public function __construct(EntityManagerInterface $em, WorkspaceManager $workspaceManager)
-    {
-        $this->em = $em;
-        $this->workspaceManager = $workspaceManager;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly WorkspaceManager $workspaceManager
+    ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('export workspace archive');
         $this->setDefinition([

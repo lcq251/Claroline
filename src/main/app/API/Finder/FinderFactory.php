@@ -3,9 +3,8 @@
 namespace Claroline\AppBundle\API\Finder;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FinderFactory implements FinderFactoryInterface
+final class FinderFactory implements FinderFactoryInterface
 {
     public function __construct(
         private readonly FinderRegistryInterface $registry,
@@ -26,7 +25,7 @@ class FinderFactory implements FinderFactoryInterface
     public function createNamedBuilder(string $name, string $type, ?array $options = []): FinderBuilderInterface
     {
         $type = $this->registry->getType($type);
-        $resolver = $type->getOptionsResolver();;
+        $resolver = $type->getOptionsResolver();
 
         $builder = new FinderBuilder($this->em, $this, $type, $name, $resolver->resolve($options));
 

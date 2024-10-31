@@ -1,5 +1,5 @@
 {
-  "claroline/distribution": "Distribution standard de Claroline",
+  "claroline/distribution": "Distribution standard de Claroline Connect",
   "claroline_core": "Core",
-  "claroline_core_desc": "Fournit les fonctionnalités de base de la plateforme Claroline."
+  "claroline_core_desc": "Fournit les fonctionnalités de base de la plateforme."
 }

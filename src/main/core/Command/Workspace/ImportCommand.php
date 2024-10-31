@@ -19,16 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportCommand extends Command
 {
-    private $workspaceManager;
-
-    public function __construct(WorkspaceManager $workspaceManager)
-    {
-        $this->workspaceManager = $workspaceManager;
-
+    public function __construct(
+        private readonly WorkspaceManager $workspaceManager
+    ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Create a workspace from a zip archive')

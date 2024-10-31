@@ -140,8 +140,6 @@ plugin:
 
         - name: locations
           icon: map-marker-alt
-          tool_rights:
-              - book
 
         - name: parameters
           icon: cog

@@ -3,6 +3,7 @@
 namespace Claroline\CoreBundle\Installation\Updater;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\InstallationBundle\Updater\Helper\RemovePluginTrait;
 use Claroline\InstallationBundle\Updater\Updater;
 use Doctrine\DBAL\Connection;
@@ -13,11 +14,27 @@ class Updater150000 extends Updater
 
     public function __construct(
         private readonly Connection $connection,
-        private readonly ObjectManager $om
+        private readonly ObjectManager $om,
+        private readonly PlatformConfigurationHandler $config
     ) {
     }
 
     public function postUpdate(): void
+    {
+        $this->updateConfig();
+        $this->removeOldPlugins();
+        $this->removeAccountContext();
+    }
+
+    private function updateConfig(): void
+    {
+        $locale = $this->config->getParameter('locales.default');
+        if ($locale) {
+            $this->config->setParameter('intl.locale', $locale);
+        }
+    }
+
+    private function removeOldPlugins(): void
     {
         $this->removePlugin('Icap', 'NotificationBundle');
         $this->removePlugin('Icap', 'BibliographyBundle');
@@ -28,6 +45,14 @@ class Updater150000 extends Updater
 
         $deleteTool = $this->connection->prepare(
             'DELETE FROM claro_ordered_tool WHERE tool_name = "notifications"'
+        );
+        $deleteTool->executeQuery();
+    }
+
+    private function removeAccountContext(): void
+    {
+        $deleteTool = $this->connection->prepare(
+            'DELETE FROM claro_ordered_tool WHERE context_name = "account"'
         );
         $deleteTool->executeQuery();
     }

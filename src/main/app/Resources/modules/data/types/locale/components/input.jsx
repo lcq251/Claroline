@@ -71,7 +71,6 @@ implementPropTypes(LocaleInput, DataInputTypes, {
     T.string, // single locale
     T.arrayOf(T.string) // multiple locales
   ]),
-  available: T.arrayOf(T.string),
   multiple: T.bool
 }, {
   value: '',

@@ -15,7 +15,7 @@ class ChoiceType extends AbstractType
             'default' => null,
         ]);
 
-        $resolver->setAllowedTypes('default', ['null', 'scalar']);
+        $resolver->setAllowedTypes('default', ['null', 'scalar', 'array']);
         $resolver->define('choices');
         $resolver->setAllowedTypes('choices', ['array']);
         $resolver->setRequired('choices');

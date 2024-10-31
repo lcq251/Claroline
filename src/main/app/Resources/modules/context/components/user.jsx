@@ -2,17 +2,16 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {url} from '#/main/app/api'
-import {asset} from '#/main/app/config'
 import {Button, Toolbar} from '#/main/app/action'
-import {CALLBACK_BUTTON, LINK_BUTTON, LinkButton, MenuButton, URL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, MenuButton, URL_BUTTON} from '#/main/app/buttons'
 
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {User as UserTypes} from '#/main/community/user/prop-types'
 import {constants as userConst} from '#/main/app/user/constants'
+import {Poster} from '#/main/app/components/poster'
 
 const ContextAuthentication = (props) =>
   <Toolbar
@@ -74,15 +73,7 @@ const ContextUser = (props) => {
 
   return (
     <>
-      <div
-        className={classes('app-menu-cover', !isEmpty(poster) && 'app-menu-poster')}
-        style={!isEmpty(poster) ? {
-          backgroundImage: `url(${asset(poster)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        } : undefined}
-        role="presentation"
-      />
+      <Poster url={poster} className="app-menu-cover" />
 
       <article className="app-menu-current-user">
         <UserAvatar user={props.currentUser} noStatusTooltip={true} size="lg" />

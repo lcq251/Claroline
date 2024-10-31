@@ -18,16 +18,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ComputeStorageCommand extends Command
 {
-    private $fileManager;
-
-    public function __construct(FileManager $fileManager)
-    {
-        $this->fileManager = $fileManager;
-
+    public function __construct(
+        private readonly FileManager $fileManager
+    ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Compute used storage (content of files directory) and store result in platform options');
     }

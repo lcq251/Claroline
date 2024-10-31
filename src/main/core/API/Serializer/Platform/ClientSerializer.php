@@ -43,6 +43,7 @@ class ClientSerializer
         return [
             // 'logo' => $this->config->getParameter('logo'),
             'name' => $this->config->getParameter('name'),
+            'description' => $this->config->getParameter('meta.description'),
             'version' => $this->platformManager->getVersion(),
             'environment' => $this->platformManager->getEnv(),
             // 'helpUrl' => $this->config->getParameter('help_url'),
@@ -50,9 +51,9 @@ class ClientSerializer
             'community' => $this->config->getParameter('community'),
             'serverUrl' => $this->platformManager->getUrl(),
             'locale' => [
-                'default' => $this->localeManager->getDefault(),
+                // 'default' => $this->localeManager->getDefault(),
                 'current' => $this->localeManager->getUserLocale($request),
-                'available' => $this->localeManager->getEnabledLocales(),
+                'available' => $this->localeManager->getAvailableLocales(),
             ],
             // 'restrictions' => $this->config->getParameter('restrictions'),
             'richTextScript' => $this->config->getParameter('rich_text_script'),

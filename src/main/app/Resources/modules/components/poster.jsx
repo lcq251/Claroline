@@ -8,9 +8,9 @@ const Poster = (props) =>
   <div
     className={classes(props.className, 'poster ratio ratio-poster')}
     role="presentation"
-    style={{
+    style={props.url ? {
       backgroundImage: `url("${asset(props.url)}")`
-    }}
+    } : undefined}
     aria-hidden={true}
   />
 

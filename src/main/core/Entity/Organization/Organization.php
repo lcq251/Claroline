@@ -13,6 +13,9 @@ namespace Claroline\CoreBundle\Entity\Organization;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
+use Claroline\AppBundle\Entity\Contact\Address;
+use Claroline\AppBundle\Entity\Contact\Email;
+use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Display\Thumbnail;
@@ -43,9 +46,9 @@ class Organization implements CrudEntityInterface, ContextSubjectInterface
     use Description;
     use Poster;
     use Thumbnail;
-
-    #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $email = null;
+    use Email;
+    use Phone;
+    use Address;
 
     #[ORM\Column(name: 'is_default', type: Types::BOOLEAN)]
     private bool $default = false;
@@ -70,16 +73,6 @@ class Organization implements CrudEntityInterface, ContextSubjectInterface
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    public function setEmail(?string $email): void
-    {
-        $this->email = $email;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
     }
 
     public function setDefault(bool $default): void

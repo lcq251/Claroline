@@ -110,10 +110,11 @@
 // ---
 
 .sub-fields {
-    padding-left: calc(map-get($spacers, 3) - 2px);
-    border-left: 2px solid $input-border-color;
+    padding-left: calc(2.5rem - 3px);
+    border-left: 3px solid $input-border-color;
 
-    @include border-bottom-start-radius($input-border-radius);
+
+    //@include border-bottom-start-radius($input-border-radius);
 }
 
 

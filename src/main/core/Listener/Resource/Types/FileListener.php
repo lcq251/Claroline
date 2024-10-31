@@ -11,8 +11,8 @@
 
 namespace Claroline\CoreBundle\Listener\Resource\Types;
 
-use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
@@ -46,7 +46,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return 'file';
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
@@ -65,7 +65,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         ]);
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function download(AbstractResource $resource): ?string
     {
         if ($this->fileManager->exists($resource->getHashName())) {
@@ -75,7 +75,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return null;
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         if ($softDelete && $this->fileManager->exists($resource->getHashName())) {
@@ -86,7 +86,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return true;
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         if ($this->fileManager->exists($resource->getHashName())) {
@@ -97,7 +97,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return [];
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         $workspace = $resource->getResourceNode()->getWorkspace();

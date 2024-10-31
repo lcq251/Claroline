@@ -13,6 +13,7 @@ namespace Claroline\CoreBundle\Entity;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
+use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Display\Thumbnail;
@@ -23,7 +24,6 @@ use Claroline\AppBundle\Entity\Meta\Disabled;
 use Claroline\CommunityBundle\Finder\UserType;
 use Claroline\CommunityBundle\Model\HasGroups;
 use Claroline\CommunityBundle\Repository\UserRepository;
-use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Organization\UserOrganizationReference;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -43,7 +43,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Index(name: 'is_removed', columns: ['is_removed'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[CrudEntity(
-    serializerClass: UserSerializer::class,
     finderClass: UserType::class
 )]
 class User extends AbstractRoleSubject implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, CrudEntityInterface, ContextSubjectInterface
@@ -53,13 +52,14 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     use Poster;
     use Thumbnail;
     use Description;
+    use Phone;
     use Disabled;
     use HasGroups;
 
-    #[ORM\Column(name: 'first_name', length: 50)]
+    #[ORM\Column(name: 'first_name', length: 50, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(name: 'last_name', length: 50)]
+    #[ORM\Column(name: 'last_name', length: 50, nullable: true)]
     private ?string $lastName = null;
 
     #[ORM\Column(unique: true)]
@@ -76,10 +76,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
 
     private ?string $plainPassword = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $phone = null;
-
-    #[ORM\Column(unique: true, name: 'mail')]
+    #[ORM\Column(name: 'mail', unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(name: 'administrative_code', nullable: true)]
@@ -186,6 +183,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
         return [
             'id' => $this->id,
             'username' => $this->username,
+            'email' => $this->email,
         ];
     }
 
@@ -196,6 +194,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     {
         $this->id = $data['id'];
         $this->username = $data['username'];
+        $this->email = $data['email'];
     }
 
     public function getUserIdentifier(): string
@@ -220,7 +219,11 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
 
     public function getFullName(): ?string
     {
-        return trim($this->firstName.' '.$this->lastName);
+        if (!empty($this->firstName)) {
+            return trim($this->firstName.' '.$this->lastName);
+        }
+
+        return $this->username;
     }
 
     public function getStatus(): ?string
@@ -413,16 +416,6 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
         }
 
         return true;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): void
-    {
-        $this->phone = $phone;
     }
 
     public function getEmail(): ?string

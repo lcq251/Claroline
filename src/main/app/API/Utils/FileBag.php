@@ -4,24 +4,19 @@ namespace Claroline\AppBundle\API\Utils;
 
 class FileBag
 {
-    private $files;
+    private array $files = [];
 
-    public function __construct()
-    {
-        $this->files = [];
-    }
-
-    public function add($newPath, $location)
+    public function add(string $newPath, string $location): void
     {
         $this->files[$newPath] = $location;
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->files;
     }
 
-    public function get($key)
+    public function get(string $key): ?string
     {
         // be sure to use unix directory separator
         $key = str_replace('\\', '/', $key);

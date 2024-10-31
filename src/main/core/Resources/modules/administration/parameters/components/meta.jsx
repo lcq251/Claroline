@@ -39,26 +39,31 @@ const Meta = (props) =>
               label: trans('name'),
               required: true
             }, {
-              name: 'locales.available',
-              type: 'locale',
-              label: trans('available_languages'),
-              required: true,
-              options: {
-                available: props.availableLocales,
-                multiple: true
-              }
+              name: 'meta.description',
+              type: 'string',
+              label: trans('description'),
+              options: {long: true}
             }, {
-              name: 'locales.default',
+              name: 'intl.locale',
               type: 'locale',
               label: trans('default_language'),
-              required: true,
-              options: {
-                available: props.availableLocales
-              }
+              required: true
             }, {
               name: 'intl.timezone',
               type: 'timezone',
               label: trans('timezone')
+            }, {
+              name: 'pricing.currency',
+              label: trans('currency'),
+              type: 'choice',
+              required: true,
+              options: {
+                choices: {
+                  euro: trans('currency.euro'),
+                  us_dollar: trans('currency.us_dollar'),
+                  chf: trans('currency.chf')
+                }
+              }
             }
           ]
         }, {
@@ -130,7 +135,7 @@ const Meta = (props) =>
               type: 'url'
             }
           ]
-        }, {
+        }, /*{
           icon: 'fa fa-fw fa-credit-card',
           title: trans('pricing'),
           fields: [
@@ -155,7 +160,7 @@ const Meta = (props) =>
               ]
             }
           ]
-        }, {
+        }, */{
           icon: 'fa fa-fw fa-key',
           title: trans('access_restrictions'),
           fields: [

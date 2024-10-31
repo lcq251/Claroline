@@ -25,22 +25,9 @@ class LocaleManager
     ) {
     }
 
-    public function getLocales(): array
-    {
-        $enabled = $this->getEnabledLocales();
-        $available = $this->getAvailableLocales();
-
-        return array_map(function ($locale) use ($enabled) {
-            return [
-                'name' => $locale,
-                'enabled' => in_array($locale, $enabled),
-            ];
-        }, $available);
-    }
-
     public function getDefault(): ?string
     {
-        return $this->configHandler->getParameter('locales.default');
+        return $this->configHandler->getParameter('intl.locale');
     }
 
     /**
@@ -48,15 +35,7 @@ class LocaleManager
      */
     public function getAvailableLocales(): array
     {
-        return ['en', 'fr'];
-    }
-
-    /**
-     * Get the list of enabled languages in the platform.
-     */
-    public function getEnabledLocales(): array
-    {
-        return $this->configHandler->getParameter('locales.available') ?? [];
+        return ['en', 'fr', 'nl'];
     }
 
     /**
@@ -77,7 +56,7 @@ class LocaleManager
      */
     public function getUserLocale(Request $request): string
     {
-        $locales = $this->getEnabledLocales();
+        $locales = $this->getAvailableLocales();
         $preferred = explode('_', $request->getPreferredLanguage());
 
         if ($request->query->get('_locale')) {

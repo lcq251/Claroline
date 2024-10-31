@@ -93,11 +93,8 @@ class PlatformDefaults implements ParameterProviderInterface
                 'tag' => null,
                 'from' => 'noreply@claroline.com',
             ],
-            'locales' => [ // to move in `intl` block
-                'default' => 'fr',
-                'available' => ['fr', 'en'],
-            ],
             'intl' => [
+                'locale' => 'fr',
                 'timezone' => null, // default to UTC
                 'dateFormat' => 'd/m/Y',
                 'timeFormat' => 'H:i',
