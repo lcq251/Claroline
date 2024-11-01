@@ -30,7 +30,7 @@ class PlatformController
         private readonly TokenStorageInterface $tokenStorage,
         private readonly Environment $templating,
         private readonly ObjectManager $om,
-        private readonly PlatformConfigurationHandler $configHandler,
+        private readonly PlatformConfigurationHandler $config,
         private readonly LocaleManager $localeManager,
         private readonly SecurityManager $securityManager,
         private readonly ContextProvider $contextProvider,
@@ -69,11 +69,11 @@ class PlatformController
                     return $this->serializer->serialize($organization, [Options::SERIALIZE_MINIMAL]);
                 }, $currentUser->getOrganizations()) : [],
                 'footer' => [
-                    'content' => $this->configHandler->getParameter('footer.content'),
+                    'content' => $this->config->getParameter('footer.content'),
                     'display' => [
-                        'show' => $this->configHandler->getParameter('footer.show'),
-                        'locale' => $this->configHandler->getParameter('footer.show_locale'),
-                        'help' => $this->configHandler->getParameter('footer.show_help'),
+                        'show' => $this->config->getParameter('footer.show'),
+                        'locale' => $this->config->getParameter('footer.show_locale'),
+                        'help' => $this->config->getParameter('footer.show_help'),
                         // 'termsOfService' => $this->privacyManager->getTosEnabled($request->getLocale()),
                     ],
                 ],
@@ -88,7 +88,7 @@ class PlatformController
     /**
      * Change current user locale.
      */
-    #[Route(path: '/locale/{locale}', name: 'claroline_locale_change')]
+    #[Route(path: '/locale/{locale}', name: 'claroline_locale_change', methods: ['GET'])]
     public function changeLocaleAction(Request $request, string $locale): RedirectResponse
     {
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -122,5 +122,57 @@ class PlatformController
         $this->om->flush();
 
         return new JsonResponse(null, 204);
+    }
+
+    #[Route(path: '/manifest', name: 'claro_manifest', methods: ['GET'])]
+    public function getManifestAction(Request $request): JsonResponse
+    {
+        $response = new JsonResponse([
+            // the primary locale of the app as a valid HTML language attribute
+            // (see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang)
+            'lang' => $this->localeManager->getUserLocale($request),
+
+            // the name of the web application as it is usually displayed to the user
+            'name' => $this->config->getParameter('name'),
+            // a shorter variant of the app name to be displayed when there is not
+            // enough space (e.g. as a label for an icon on the phone home screen).
+            'short_name' => $this->config->getParameter('name'),
+
+            // use it to explain what the application does
+            'description' => $this->config->getParameter('meta.description'),
+
+            // the preferred URL to be loaded when the user launches the web app
+            // (this is just a hint, so user agents can ignore this value)
+            'start_url' => $this->clientManager->getBaseUrl(),
+
+            // the preferred orientation of the web app contents
+            // (see https://developer.mozilla.org/en-US/docs/Web/Manifest/orientation)
+            'orientation' => 'any',
+
+            // determines how much of browser interface is displayed when running the app
+            // "browser" = display the full browser window; "fullscreen" = display no browser interface
+            // (see https://developer.mozilla.org/en-US/docs/Web/Manifest/display)
+            'display' => 'fullscreen',
+
+            // the placeholder background color used for the app before its stylesheet is loaded
+            // Once the stylesheet is loaded, the real background color from the app is used
+            // 'background_color' => '#42a7ff',
+            // the default theme color for the application, which affects how the operating system
+            // displays the site (e.g. on Android's task switcher, the theme color surrounds the site)
+            // 'theme_color' => 'rgb(29, 164, 14)',
+
+            // an array of objects representing image files that can serve as app icons for different contexts
+            // (see https://developer.mozilla.org/en-US/docs/Web/Manifest/icons)
+            'icons' => [
+                /*{ "src": "icon/lowres.webp", "sizes": "48x48", "type": "image/webp" },
+                { "src": "icon/lowres", "sizes": "48x48" },
+                { "src": "icon/hd_hi.ico", "sizes": "72x72 96x96 128x128 256x256" },
+                { "src": "icon/hd_hi.svg", "sizes": "any" }*/
+            ],
+        ]);
+
+        $response->headers->set('Content-Type', 'application/manifest+json');
+
+        return $response;
     }
 }

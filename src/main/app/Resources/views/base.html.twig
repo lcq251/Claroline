@@ -18,6 +18,8 @@
         {% block meta %}
         {% endblock %}
 
+        <link rel="manifest" href="{{ path('claro_manifest') }}" />
+
         {# Adds stylesheets #}
         {# Styles from current theme #}
         <link rel="stylesheet" type="text/css" href="{{ themeAsset('bootstrap.css') }}" />
