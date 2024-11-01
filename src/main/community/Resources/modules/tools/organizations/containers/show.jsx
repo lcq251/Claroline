@@ -15,17 +15,8 @@ const OrganizationShow = connect(
     reload(id) {
       dispatch(actions.open(id, true))
     },
-    addUsers(organizationId, users) {
-      dispatch(actions.addUsers(organizationId, users))
-    },
     addManagers(organizationId, users) {
       dispatch(actions.addManagers(organizationId, users))
-    },
-    addGroups(organizationId, groups) {
-      dispatch(actions.addGroups(organizationId, groups))
-    },
-    addWorkspaces(organizationId, workspaces) {
-      dispatch(actions.addWorkspaces(organizationId, workspaces))
     }
   })
 )(OrganizationShowComponent)

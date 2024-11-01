@@ -57,7 +57,6 @@ class PlatformDefaults implements ParameterProviderInterface
                 'self' => false,
                 'default_role' => PlatformRoles::USER,
                 'validation' => self::REGISTRATION_MAIL_VALIDATION_PARTIAL,
-                'organization_selection' => 'none',
                 'username_regex' => "/^[a-zA-Z0-9@\-_\.]*$/",
             ],
             'security' => [ // to move in community parameters
@@ -116,7 +115,6 @@ class PlatformDefaults implements ParameterProviderInterface
                 'show_progression' => false,
                 'menu' => null,
             ],
-            'javascripts' => [],
             'restrictions' => [
                 'users' => null,
                 'storage' => null,

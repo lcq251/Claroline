@@ -76,21 +76,6 @@ const desktopDefinition = (contextId, update) => [
         type: 'boolean',
         label: trans('activate_self_registration'),
         help: trans('self_registration_platform_help'),
-        linked: [
-          {
-            name: 'parameters.registration.organization_selection',
-            type: 'boolean',
-            label: trans('allow_organization_selection'),
-            calculated: (parameters) => {
-              console.log(get(parameters, 'parameters.registration.organization_selection'))
-              return constants.ORGANIZATION_SELECTION_SELECT === get(parameters, 'parameters.registration.organization_selection')
-            },
-            displayed: (parameters) => get(parameters, 'parameters.registration.self', false),
-            onChange: (enabled) => {
-              update('registration.organization_selection', !enabled ? null : constants.ORGANIZATION_SELECTION_SELECT)
-            }
-          }
-        ]
       }, {
         name: 'parameters.registration.default_role',
         type: 'role',

@@ -6,17 +6,11 @@ import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {DetailsData} from '#/main/app/content/details/containers/data'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
 import {PageSection} from '#/main/app/page/components/section'
 import {ContentHtml} from '#/main/app/content/components/html'
-import {route} from '#/main/community/organization/routing'
 
 import {UserList} from '#/main/community/user/components/list'
 import {MODAL_USERS} from '#/main/community/modals/users'
-import {GroupList} from '#/main/community/group/components/list'
-import {MODAL_GROUPS} from '#/main/community/modals/groups'
-import {WorkspaceList} from '#/main/core/workspace/components/list'
-import {MODAL_WORKSPACES} from '#/main/core/modals/workspaces'
 
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 import {OrganizationPage} from '#/main/community/organization/components/page'
@@ -29,8 +23,8 @@ const OrganizationShow = props =>
     reload={props.reload}
   >
     {get(props.organization, 'meta.description') &&
-      <PageSection size="md" className="pb-5">
-        <ContentHtml className="lead">{get(props.organization, 'meta.description')}</ContentHtml>
+      <PageSection size="md">
+        <ContentHtml className="lead mb-5">{get(props.organization, 'meta.description')}</ContentHtml>
       </PageSection>
     }
 
@@ -47,17 +41,14 @@ const OrganizationShow = props =>
                 name: 'email',
                 type: 'email',
                 label: trans('email'),
-                //displayed: (organization) => !!organization.email
               }, {
                 name: 'phone',
                 type: 'phone',
                 label: trans('phone'),
-                //displayed: (organization) => !!organization.email
               }, {
                 name: 'address',
                 type: 'address',
                 label: trans('address'),
-                //displayed: (organization) => !!organization.email
               }, {
                 name: 'code',
                 type: 'string',
@@ -69,155 +60,35 @@ const OrganizationShow = props =>
       />
     </PageSection>
 
-    <PageTabbedSection
-      size="md"
-      className="py-3 embedded-list-section"
-      path={route(props.organization, props.path)}
-      tabs={[
-        {
-          path: '',
-          exact: true,
-          icon: 'fa fa-user',
-          title: trans('users', {}, 'community'),
-          render: () => (
-            <UserList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.users`}
-              url={['apiv2_organization_list_users', {id: props.organization.id}]}
-              autoload={!!props.organization.id}
-              addAction={{
-                name: 'add',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_users', {}, 'actions'),
-                displayed: hasPermission('edit', props.organization),
-                modal: [MODAL_USERS, {
-                  selectAction: (users) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addUsers(props.organization.id, users.map(user => user.id))
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_organization_remove_users', {id: props.organization.id}],
-                displayed: () => hasPermission('edit', props.organization)
-              }}
-              actions={undefined}
-            />
-          )
-        }, {
-          path: '/managers',
-          icon: 'fa fa-user-tie',
-          title: trans('managers', {}, 'community'),
-          render: () => (
-            <UserList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.managers`}
-              url={['apiv2_organization_list_managers', {id: props.organization.id}]}
-              autoload={!!props.organization.id}
-              addAction={{
-                name: 'add-managers',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_managers'),
-                displayed: hasPermission('edit', props.organization),
-                modal: [MODAL_USERS, {
-                  selectAction: (users) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addManagers(props.organization.id, users.map(user => user.id))
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_organization_remove_managers', {id: props.organization.id}],
-                displayed: () => hasPermission('edit', props.organization)
-              }}
-              actions={undefined}
-            />
-          )
-        }, {
-          path: '/groups',
-          icon: 'fa fa-users',
-          title: trans('groups', {}, 'community'),
-          render: () => (
-            <GroupList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.groups`}
-              url={['apiv2_organization_list_groups', {id: props.organization.id}]}
-              autoload={!!props.organization.id}
-              addAction={{
-                name: 'add',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_groups', {}, 'actions'),
-                displayed: hasPermission('edit', props.organization),
-                modal: [MODAL_GROUPS, {
-                  selectAction: (groups) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addGroups(props.organization.id, groups.map(group => group.id))
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_organization_remove_groups', {id: props.organization.id}],
-                displayed: () => hasPermission('edit', props.organization)
-              }}
-              actions={undefined}
-            />
-          )
-        }, {
-          path: '/workspaces',
-          icon: 'fa fa-book',
-          title: trans('workspaces'),
-          render: () => (
-            <WorkspaceList
-              className="mt-3"
-              name={`${selectors.FORM_NAME}.workspaces`}
-              url={['apiv2_organization_list_workspaces', {id: props.organization.id}]}
-              autoload={!!props.organization.id}
-              addAction={{
-                name: 'add-workspace',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_workspaces'),
-                displayed: hasPermission('edit', props.organization),
-                modal: [MODAL_WORKSPACES, {
-                  url: ['apiv2_workspace_list'],
-                  selectAction: (workspaces) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addWorkspaces(props.organization.id, workspaces.map(workspace => workspace.id))
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_organization_remove_workspaces', {id: props.organization.id}],
-                displayed: () => hasPermission('edit', props.organization)
-              }}
-              actions={undefined}
-              customDefinition={[
-                {
-                  name: 'meta.model',
-                  label: trans('model'),
-                  type: 'boolean',
-                  alias: 'model'
-                }
-              ]}
-            />
-          )
-        }
-      ]}
-    />
+    <PageSection size="md" title={trans('managers', {}, 'community')}>
+      <UserList
+        className="mb-5"
+        path={props.path}
+        name={`${selectors.FORM_NAME}.managers`}
+        url={['apiv2_organization_list_managers', {id: props.organization.id}]}
+        autoload={!!props.organization.id}
+        addAction={{
+          name: 'add-managers',
+          type: MODAL_BUTTON,
+          icon: 'fa fa-fw fa-plus',
+          tooltip: 'bottom',
+          label: trans('add_managers'),
+          displayed: hasPermission('edit', props.organization),
+          modal: [MODAL_USERS, {
+            selectAction: (users) => ({
+              type: CALLBACK_BUTTON,
+              label: trans('add', {}, 'actions'),
+              callback: () => props.addManagers(props.organization.id, users.map(user => user.id))
+            })
+          }]
+        }}
+        delete={{
+          url: ['apiv2_organization_remove_managers', {id: props.organization.id}],
+          displayed: () => hasPermission('edit', props.organization)
+        }}
+        actions={undefined}
+      />
+    </PageSection>
   </OrganizationPage>
 
 OrganizationShow.propTypes = {
@@ -226,9 +97,6 @@ OrganizationShow.propTypes = {
     OrganizationTypes.propTypes
   ).isRequired,
   reload: T.func.isRequired,
-  addUsers: T.func.isRequired,
-  addGroups: T.func.isRequired,
-  addWorkspaces: T.func.isRequired,
   addManagers: T.func.isRequired
 }
 

@@ -763,7 +763,6 @@
     "ssl": "Ssl",
     "icons": "Icons",
     "secondary_name": "Secondary name",
-    "allow_organization_selection": "Allow organization selection",
     "count_elements": "{0, 1} %count% element|[2,Inf[ %count% elements",
     "search_and_filters": "Search & filters",
     "overview_message": "Welcome message",

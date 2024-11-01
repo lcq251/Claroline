@@ -13,9 +13,6 @@ namespace Claroline\CommunityBundle\Controller;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Controller\AbstractCrudController;
-use Claroline\CoreBundle\Controller\Model\HasGroupsTrait;
-use Claroline\CoreBundle\Controller\Model\HasUsersTrait;
-use Claroline\CoreBundle\Controller\Model\HasWorkspacesTrait;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -29,9 +26,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 #[Route(path: '/organization', name: 'apiv2_organization_')]
 class OrganizationController extends AbstractCrudController
 {
-    use HasGroupsTrait;
-    use HasUsersTrait;
-    use HasWorkspacesTrait;
     use PermissionCheckerTrait;
 
     public function __construct(

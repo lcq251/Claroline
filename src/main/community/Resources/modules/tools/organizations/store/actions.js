@@ -38,18 +38,6 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
   })
 }
 
-actions.addUsers = (id, users) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_organization_add_users', {id: id}], {ids: users}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.LIST_NAME))
-      dispatch(listActions.invalidateData(selectors.FORM_NAME+'.users'))
-    }
-  }
-})
 
 actions.addManagers = (id, users) => ({
   [API_REQUEST]: {
@@ -60,32 +48,6 @@ actions.addManagers = (id, users) => ({
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
       dispatch(listActions.invalidateData(selectors.FORM_NAME+'.managers'))
-    }
-  }
-})
-
-actions.addWorkspaces = (id, workspaces) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_organization_add_workspaces', {id: id}], {ids: workspaces}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.LIST_NAME))
-      dispatch(listActions.invalidateData(selectors.FORM_NAME+'.workspaces'))
-    }
-  }
-})
-
-actions.addGroups = (id, groups) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_organization_add_groups', {id: id}], {ids: groups}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.LIST_NAME))
-      dispatch(listActions.invalidateData(selectors.FORM_NAME+'.groups'))
     }
   }
 })

@@ -26,13 +26,10 @@ const registrationValidationTypes = {
   [REGISTRATION_MAIL_VALIDATION_FULL]: trans('force_mail_validation')
 }
 
-const ORGANIZATION_SELECTION_SELECT = 'select'
-
 export const constants = {
   ALERT_REGISTRATION,
   REGISTRATION_MAIL_VALIDATION_NONE,
   REGISTRATION_MAIL_VALIDATION_FULL,
   REGISTRATION_MAIL_VALIDATION_PARTIAL,
-  registrationValidationTypes,
-  ORGANIZATION_SELECTION_SELECT
+  registrationValidationTypes
 }

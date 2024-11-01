@@ -14,17 +14,12 @@ namespace Claroline\CommunityBundle\Security\Voter;
 use Claroline\AppBundle\Security\Voter\AbstractVoter;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
+use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class OrganizationVoter extends AbstractVoter
 {
-    public function __construct(
-        private readonly PlatformConfigurationHandler $config
-    ) {
-    }
-
     /**
      * @param Organization $object
      */
@@ -35,10 +30,7 @@ class OrganizationVoter extends AbstractVoter
 
         switch ($attributes[0]) {
             case self::CREATE:
-                if ('create' === $this->config->getParameter('registration.organization_selection')) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-                if ($this->isToolGranted('EDIT', 'community')) {
+                if ($this->isGranted(PlatformRoles::ADMIN)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
@@ -49,7 +41,10 @@ class OrganizationVoter extends AbstractVoter
                 break;
             case self::EDIT:
             case self::PATCH:
-                if ($currentUser instanceof User && $this->isToolGranted('EDIT', 'community') && $currentUser->hasOrganization($object, true)) {
+                if ($currentUser->hasOrganization($object, true)) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+                if ($currentUser instanceof User && $this->isToolGranted('EDIT', 'community')) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
@@ -65,6 +60,6 @@ class OrganizationVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::CREATE, self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::CREATE, self::OPEN, self::CREATE, self::EDIT, self::PATCH];
     }
 }

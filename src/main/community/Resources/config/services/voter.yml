@@ -37,8 +37,6 @@ services:
     Claroline\CommunityBundle\Security\Voter\OrganizationVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter
         tags: [ security.voter ]
-        arguments:
-            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
 
     Claroline\CommunityBundle\Security\Voter\RoleVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter
