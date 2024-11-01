@@ -14,6 +14,9 @@ namespace Claroline\AppBundle\API;
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\AppBundle\Persistence\ObjectManager;
 
+/**
+ * @deprecated
+ */
 class FinderProvider
 {
     public function __construct(
@@ -125,7 +128,7 @@ class FinderProvider
     public static function parseQueryParams(array $finderParams = []): array
     {
         $filters = isset($finderParams['filters']) ? self::parseFilters($finderParams['filters']) : [];
-        $sortBy = /*isset($finderParams['sortBy']) ? self::parseSortBy($finderParams['sortBy']) :*/ null;
+        $sortBy = /* isset($finderParams['sortBy']) ? self::parseSortBy($finderParams['sortBy']) : */ null;
         $page = isset($finderParams['page']) ? (int) $finderParams['page'] : 0;
         $limit = isset($finderParams['limit']) ? (int) $finderParams['limit'] : -1;
 
@@ -152,28 +155,6 @@ class FinderProvider
             'pageSize' => $limit,
             'filters' => self::decodeFilters($filters),
             'sortBy' => $sortBy,
-        ];
-    }
-
-    private static function parseSortBy(?string $sortBy): array
-    {
-        // default values
-        $property = null;
-        $direction = 0;
-
-        if (!empty($sortBy)) {
-            if ('-' === substr($sortBy, 0, 1)) {
-                $property = substr($sortBy, 1);
-                $direction = -1;
-            } else {
-                $property = $sortBy;
-                $direction = 1;
-            }
-        }
-
-        return [
-            'property' => $property,
-            'direction' => $direction,
         ];
     }
 

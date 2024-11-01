@@ -20,35 +20,23 @@ class FavouriteController
 {
     use RequestDecoderTrait;
 
-    /** @var ObjectManager */
-    protected $om; // this is required by the RequestDecoderTrait. It should be fixed
-
-    /** @var SerializerProvider */
-    private $serializer;
-
-    /** @var FavouriteManager */
-    private $manager;
-
     public function __construct(
-        ObjectManager $om,
-        SerializerProvider $serializer,
-        FavouriteManager $manager
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer,
+        private readonly FavouriteManager $manager
     ) {
-        $this->om = $om;
-        $this->serializer = $serializer;
-        $this->manager = $manager;
     }
 
     /**
      * Gets the current user favourites.
      */
     #[Route(path: '/', name: 'claro_user_favourites')]
-    public function listAction(#[CurrentUser] ?User $currentUser): JsonResponse
+    public function listAction(#[CurrentUser] ?User $currentUser = null): JsonResponse
     {
-        if (null == $currentUser) {
+        if (null === $currentUser) {
             return new JsonResponse([
                 'workspaces' => [],
-                'resources' => []
+                'resources' => [],
             ]);
         }
 

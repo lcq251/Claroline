@@ -115,9 +115,9 @@ class HomeTabController extends AbstractCrudController
             }
 
             if ($new) {
-                $this->crud->create($existingTab, $tab, [Crud::THROW_EXCEPTION]);
+                $this->crud->create($existingTab, $tab);
             } else {
-                $this->crud->update($existingTab, $tab, [Crud::THROW_EXCEPTION]);
+                $this->crud->update($existingTab, $tab);
             }
 
             $updated[] = $existingTab;

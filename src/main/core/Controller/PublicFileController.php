@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Controller;
 
-use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\File\PublicFile;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
@@ -65,7 +64,7 @@ class PublicFileController extends AbstractCrudController
                 throw new InvalidDataException('Unauthorized file type.');
             }
 
-            $object = $this->crud->create(PublicFile::class, [], ['file' => $file, Crud::THROW_EXCEPTION]);
+            $object = $this->crud->create(PublicFile::class, [], ['file' => $file]);
             $objects[] = $this->serializer->serialize($object);
         }
 
@@ -85,11 +84,11 @@ class PublicFileController extends AbstractCrudController
                 throw new InvalidDataException('Unauthorized file type.');
             }
 
-            if (0 !== strpos($file->getMimeType(), 'image')) {
+            if (!str_starts_with($file->getMimeType(), 'image')) {
                 throw new InvalidDataException('Invalid image type.');
             }
 
-            $object = $this->crud->create(PublicFile::class, [], ['file' => $file, Crud::THROW_EXCEPTION]);
+            $object = $this->crud->create(PublicFile::class, [], ['file' => $file]);
             $objects[] = $this->serializer->serialize($object);
         }
 

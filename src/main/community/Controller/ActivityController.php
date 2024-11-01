@@ -4,7 +4,6 @@ namespace Claroline\CommunityBundle\Controller;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
-use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\GroupRepository;
@@ -12,7 +11,6 @@ use Claroline\CommunityBundle\Repository\UserRepository;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Group;
-use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Tool\ToolManager;
@@ -110,27 +108,5 @@ class ActivityController
         }
 
         return true;
-    }
-
-    private function filterQuery(array $query, string $contextId = null): array
-    {
-        if (empty($query['hiddenFilters'])) {
-            $query['hiddenFilters'] = [];
-        }
-
-        if ($contextId) {
-            $query['hiddenFilters']['workspace'] = $contextId;
-        }
-
-        if (!$this->authorization->isGranted(PlatformRoles::ADMIN)) {
-            $user = $this->tokenStorage->getToken()?->getUser();
-
-            $organizations = array_map(function (Organization $organization) {
-                return $organization->getUuid();
-            }, $user->getOrganizations()->toArray());
-            $query['hiddenFilters']['organizations'] = $organizations;
-        }
-
-        return $query;
     }
 }

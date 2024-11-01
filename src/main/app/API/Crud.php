@@ -36,11 +36,6 @@ class Crud
     /** @var string */
     public const PROPERTY_SET = 'set';
 
-    /**
-     * @deprecated it's always the case now
-     */
-    public const THROW_EXCEPTION = 'throw_exception';
-
     public const NO_PERMISSIONS = 'NO_PERMISSIONS';
     public const NO_VALIDATION = 'NO_VALIDATION';
 

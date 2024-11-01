@@ -121,7 +121,7 @@ class DirectoryListener extends ResourceComponent
 
         $publicFiles = [];
         foreach ($files as $file) {
-            $publicFiles[] = $this->crud->create(PublicFile::class, [], ['file' => $file, Crud::THROW_EXCEPTION]);
+            $publicFiles[] = $this->crud->create(PublicFile::class, [], ['file' => $file]);
         }
 
         $this->om->startFlushSuite();
@@ -176,7 +176,7 @@ class DirectoryListener extends ResourceComponent
             $resourceNode->setParent($parent);
             $resourceNode->setWorkspace($parent->getWorkspace());
 
-            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS, Crud::THROW_EXCEPTION], $options));
+            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS], $options));
         } catch (InvalidDataException $e) {
             // for resource creation we submit the resourceNode and resource data at once
             // we need to update the errors path for correct rendering in form
@@ -198,7 +198,7 @@ class DirectoryListener extends ResourceComponent
             $resource = new $resourceClass();
             $resource->setResourceNode($resourceNode);
 
-            $this->crud->create($resource, $resourceData, array_merge([Crud::THROW_EXCEPTION], $options));
+            $this->crud->create($resource, $resourceData, $options);
         } catch (InvalidDataException $e) {
             // for resource creation we submit the resourceNode and resource data at once
             // we need to update the errors path for correct rendering in form

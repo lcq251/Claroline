@@ -11,7 +11,6 @@
 
 namespace Claroline\AppBundle\Controller\Component;
 
-use Exception;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextProvider;
@@ -53,7 +52,7 @@ class ToolController
             $contextSubject = $contextHandler->getObject($contextId);
 
             $orderedTool = $this->toolProvider->getTool($name, $context, $contextSubject);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
@@ -76,7 +75,7 @@ class ToolController
             $contextSubject = $contextHandler->getObject($contextId);
 
             $orderedTool = $this->toolProvider->getTool($name, $context, $contextHandler->getObject($contextId));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
@@ -91,7 +90,7 @@ class ToolController
         $this->om->startFlushSuite();
         // update base tool configuration
         if (!empty($data['data'])) {
-            $this->crud->update($orderedTool, $data['data'], [Crud::THROW_EXCEPTION]);
+            $this->crud->update($orderedTool, $data['data']);
         }
 
         // update tool rights
@@ -122,7 +121,7 @@ class ToolController
             $contextHandler = $this->contextProvider->getContext($context, $contextId);
 
             $orderedTool = $this->toolProvider->getTool($name, $context, $contextHandler->getObject($contextId));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 

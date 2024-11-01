@@ -150,7 +150,7 @@ class SessionManager
                     'type' => $type,
                     'validated' => $validated,
                     'data' => !empty($registrationData[$user->getUuid()]) ? $registrationData[$user->getUuid()] : [],
-                ], [Crud::THROW_EXCEPTION]);
+                ]);
             }
 
             $results[] = $sessionUser;

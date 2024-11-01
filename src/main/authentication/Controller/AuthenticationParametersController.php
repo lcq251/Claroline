@@ -40,7 +40,7 @@ class AuthenticationParametersController extends AbstractSecurityController
 
         $data = $this->decodeRequest($request);
         $authenticationParameters = $this->authenticationManager->getParameters();
-        $authenticationParametersUpdate = $this->crud->update($authenticationParameters, $data, [Crud::THROW_EXCEPTION]);
+        $authenticationParametersUpdate = $this->crud->update($authenticationParameters, $data);
 
         return new JsonResponse(
             $this->serializer->serialize($authenticationParametersUpdate)

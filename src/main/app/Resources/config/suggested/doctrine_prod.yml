@@ -49,5 +49,3 @@ doctrine:
         result_cache_driver:
             type: pool
             pool: doctrine.result_cache_pool
-        #mappings:
-        #    StofDoctrineExtensionsBundle: false

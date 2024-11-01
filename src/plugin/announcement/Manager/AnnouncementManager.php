@@ -74,13 +74,13 @@ class AnnouncementManager
 
         if (empty($announcement->getTask())) {
             /** @var ScheduledTask $task */
-            $task = $this->crud->create(ScheduledTask::class, $taskData, [Crud::THROW_EXCEPTION]);
+            $task = $this->crud->create(ScheduledTask::class, $taskData);
 
             // link new task to announcement
             $announcement->setTask($task);
             $this->om->persist($announcement);
         } else {
-            $this->crud->update($announcement->getTask(), $taskData, [Crud::THROW_EXCEPTION]);
+            $this->crud->update($announcement->getTask(), $taskData);
         }
 
         $this->om->endFlushSuite();
