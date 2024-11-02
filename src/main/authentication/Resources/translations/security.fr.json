@@ -3,6 +3,7 @@
   "add_token": "Ajouter un jeton d'authentification",
   "new_token": "Nouveau jeton d'authentification",
   "token": "Jeton d'authentification",
+  "ips": "Adresses IP connues",
   "add_ip": "Ajouter une adresse IP",
   "new_ip": "Nouvelle adresse IP",
   "ips_help": "La liste d'adresse IPs connues vous permet d'authentifier automatiquement les personnes consultant votre platforme depuis ces adresses avec les Utilisateurs choisis.",
@@ -14,5 +15,8 @@
   "tokens_info": "Usage avancé pour les utilisateurs souhaitant manipuler les données sans passer par l'interface utilisateur.",
   "user_password_reset_confirm_message": "{1} Êtes-vous sûr(e) de vouloir réinitialiser le mot de passe de cet utilisateur ? | [2,Inf[ Êtes-vous sûr(e) de vouloir réinitialiser le mot de passe de ces %count% utilisateurs ?",
   "group_password_reset_confirm_message": "{1} Êtes-vous sûr(e) de vouloir réinitialiser le mot de passe de tous les utlisateurs de ce groupe ? | [2,Inf[ Êtes-vous sûr(e) de vouloir réinitialiser le mot de passe de tous les utlisateurs de ces %count% groupes ?",
-  "password_reset_confirm_help": "Un e-mail contenant un lien pour changer le mot de passe sera envoyé à l'utilisateur.<br> En cliquant sur le lien, l'utilisateur sera redirigé vers une page où il pourra définir un nouveau mot de passe."
+  "password_reset_confirm_help": "Un e-mail contenant un lien pour changer le mot de passe sera envoyé à l'utilisateur.<br> En cliquant sur le lien, l'utilisateur sera redirigé vers une page où il pourra définir un nouveau mot de passe.",
+  "logs": "Logs de sécurité",
+  "logs_help": "Retrouvez toutes les actions de sécurité effectuées sur votre compte, telles que les connexions ou les changements de permissions.",
+  "authentication_help": "Configurez les modes de connexion à votre compte et retrouvez divers informations concernant la sécurité."
 }

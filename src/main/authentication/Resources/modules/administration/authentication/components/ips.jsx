@@ -14,7 +14,7 @@ import {IpList} from '#/main/authentication/ip/components/list'
 
 const AuthenticationIps = props =>
   <ToolPage
-    title={trans('ips', {}, 'integration')}
+    title={trans('ips', {}, 'security')}
   >
     <Alert type="info" className="mb-0">
       {trans('ips_help', {}, 'security')}

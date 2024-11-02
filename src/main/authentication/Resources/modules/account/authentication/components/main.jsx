@@ -9,7 +9,6 @@ import {hasPermission} from '#/main/app/security'
 import {Button} from '#/main/app/action'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentTitle} from '#/main/app/content/components/title'
-import {Alert} from '#/main/app/components/alert'
 import {EditorPage} from '#/main/app/editor'
 
 import changePasswordAction from '#/main/authentication//actions/user/password-change'
@@ -19,6 +18,8 @@ import {LogSecurityList} from '#/main/log/components/security-list'
 
 import {selectors as editorSelectors} from '#/main/community/user/editor'
 import {selectors} from '#/main/authentication/account/authentication/store'
+import {MODAL_IP_PARAMETERS} from '#/main/authentication/ip/modals/parameters'
+import {IpList} from '#/main/authentication/ip/components/list'
 
 const AccountAuthentication = props => {
   const currentUser = useSelector(editorSelectors.user)
@@ -26,7 +27,7 @@ const AccountAuthentication = props => {
   return (
     <EditorPage
       title={trans('authentication', {}, 'tools')}
-      help={trans('Lorem ipsum dolor sir amet.')}
+      help={trans('authentication_help', {}, 'security')}
     >
       <Button
         className="btn btn-primary me-auto"
@@ -35,19 +36,13 @@ const AccountAuthentication = props => {
       />
 
       <hr className="my-5" aria-hidden="true" />
-
       <ContentTitle
         displayLevel={5}
         title={trans('tokens', {}, 'security')}
       />
-
       <p className="text-body-secondary">
         {trans('tokens_help', {}, 'security')}
       </p>
-
-      <Alert type="info">
-        {trans('tokens_info', {}, 'security')}
-      </Alert>
 
       <TokenList
         name={selectors.STORE_NAME+'.tokens'}
@@ -62,7 +57,7 @@ const AccountAuthentication = props => {
             modal: [MODAL_TOKEN_PARAMETERS, {
               token: rows[0],
               userDisabled: true,
-              onSave: () => props.invalidateList()
+              onSave: () => props.invalidateList(selectors.STORE_NAME+'.tokens')
             }],
             disabled: !rows[0] || !hasPermission('edit', rows[0]) || get(rows[0], 'restrictions.locked', false),
             scope: ['object'],
@@ -81,19 +76,48 @@ const AccountAuthentication = props => {
             token: {
               user: currentUser
             },
-            onSave: () => props.invalidateList()
+            onSave: () => props.invalidateList(selectors.STORE_NAME+'.tokens')
           }]
         }}
       />
 
       <hr className="my-5" aria-hidden="true" />
-
       <ContentTitle
         displayLevel={5}
-        title={trans('logs')}
+        title={trans('ips', {}, 'security')}
       />
       <p className="text-body-secondary">
-        {trans('Lorem ipsum dolor sit amet.', {}, 'security')}
+        {trans('ips_help', {}, 'security')}
+      </p>
+
+      <IpList
+        name={selectors.STORE_NAME+'.ips'}
+        url={['apiv2_ip_user_list_user', {userId: currentUser.id}]}
+        autoload={!isEmpty(currentUser)}
+        addAction={{
+          name: 'add-ip',
+          type: MODAL_BUTTON,
+          icon: 'fa fa-fw fa-plus',
+          tooltip: 'bottom',
+          label: trans('add_ip', {}, 'security'),
+          primary: true,
+          modal: [MODAL_IP_PARAMETERS, {
+            userDisabled: true,
+            ip: {
+              user: currentUser
+            },
+            onSave: () => props.invalidateList(selectors.STORE_NAME+'.ips')
+          }]
+        }}
+      />
+
+      <hr className="my-5" aria-hidden="true" />
+      <ContentTitle
+        displayLevel={5}
+        title={trans('logs', {}, 'security')}
+      />
+      <p className="text-body-secondary">
+        {trans('logs_help', {}, 'security')}
       </p>
 
       <LogSecurityList

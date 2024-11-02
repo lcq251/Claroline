@@ -5,6 +5,7 @@ namespace Claroline\AuthenticationBundle\Entity;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Restriction\Locked;
 use Claroline\AuthenticationBundle\Finder\IpUserType;
 use Claroline\CoreBundle\Entity\User;
@@ -22,6 +23,7 @@ class IpUser
 {
     use Id;
     use Uuid;
+    use Description;
     use Locked;
 
     #[ORM\Column(type: Types::STRING, unique: true, nullable: false)]

@@ -30,7 +30,8 @@ class IpUserSerializer
             'id' => $object->getUuid(),
             'ip' => $object->isRange() ? explode(',', $object->getIp()) : $object->getIp(),
             'range' => $object->isRange(),
-            'user' => $this->userSerializer->serialize($object->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]),
+            'description' => $object->getDescription(),
+            'user' => $object->getUser() ? $this->userSerializer->serialize($object->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             'restrictions' => [
                 'locked' => $object->isLocked(),
             ],
@@ -49,6 +50,7 @@ class IpUserSerializer
             $object->setIp(is_array($data['ip']) ? implode(',', $data['ip']) : $data['ip']);
         }
         $this->sipe('range', 'setRange', $data, $object);
+        $this->sipe('description', 'setDescription', $data, $object);
         $this->sipe('restrictions.locked', 'setLocked', $data, $object);
 
         if (!empty($data['user'])) {

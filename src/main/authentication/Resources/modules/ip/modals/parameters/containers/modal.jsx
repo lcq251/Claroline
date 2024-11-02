@@ -22,7 +22,7 @@ const ParametersModal = withReducer(selectors.STORE_NAME, reducer)(
         dispatch(formActions.updateProp(selectors.STORE_NAME, prop, value))
       },
       loadIp(ip = null) {
-        dispatch(formActions.resetForm(selectors.STORE_NAME, ip, !ip))
+        dispatch(formActions.resetForm(selectors.STORE_NAME, ip, !ip || !ip.id))
       },
       saveIp(ip, isNew, callback) {
         dispatch(formActions.saveForm(selectors.STORE_NAME, isNew ? ['apiv2_ip_user_create'] : ['apiv2_ip_user_update', {id: ip.id}])).then(() => {

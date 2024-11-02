@@ -13,11 +13,10 @@ import {selectors} from '#/main/authentication/token/modals/parameters/store'
 const ParametersModal = props =>
   <Modal
     {...omit(props, 'token', 'isNew', 'data', 'saveEnabled', 'load', 'save', 'onSave')}
-    icon={props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
+    // icon={props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
     title={props.isNew ? trans('new_token', {}, 'security') : trans('parameters')}
     subtitle={!props.isNew && props.token ? props.token.description || props.token.token : ''}
     onEntering={() => props.load(props.token)}
-    size="lg"
   >
     <FormData
       flush={true}
@@ -31,6 +30,7 @@ const ParametersModal = props =>
               name: 'description',
               type: 'string',
               label: trans('description'),
+              recommended: true,
               options: {
                 long: true
               }

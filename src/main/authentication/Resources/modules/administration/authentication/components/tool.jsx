@@ -22,12 +22,12 @@ const AuthenticationTool = (props) =>
       }, {
         name: 'ips',
         type: LINK_BUTTON,
-        label: trans('ips', {}, 'integration'),
+        label: trans('ips', {}, 'security'),
         target: `${props.path}/ips`
       }, {
         name: 'tokens',
         type: LINK_BUTTON,
-        label: trans('tokens', {}, 'integration'),
+        label: trans('tokens', {}, 'security'),
         target: `${props.path}/tokens`
       }
     ]}

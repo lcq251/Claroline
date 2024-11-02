@@ -10,8 +10,8 @@ const AccountAuthentication = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     null,
     (dispatch) => ({
-      invalidateList() {
-        dispatch(listActions.invalidateData(selectors.STORE_NAME+'.tokens'))
+      invalidateList(listName) {
+        dispatch(listActions.invalidateData(listName))
       }
     })
   )(AccountAuthenticationComponent)

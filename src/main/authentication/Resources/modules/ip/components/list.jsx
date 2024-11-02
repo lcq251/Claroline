@@ -31,6 +31,7 @@ const IpList = (props) => {
           label: trans('ip_address'),
           type: 'string',
           displayed: true,
+          primary: true,
           calculated: (row) => {
             if (Array.isArray(row.ip)) {
               return `[ ${row.ip[0]}, ${row.ip[1]} ]`
@@ -39,11 +40,18 @@ const IpList = (props) => {
             return row.ip
           }
         }, {
+          name: 'description',
+          label: trans('description'),
+          type: 'string',
+          displayed: true,
+          options: {
+            long: true
+          }
+        }, {
           name: 'restrictions.locked',
           alias: 'locked',
           label: trans('locked'),
-          type: 'boolean',
-          displayed: true
+          type: 'boolean'
         }
       ].concat(props.definition)}
       actions={(rows) => [

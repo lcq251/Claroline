@@ -12,15 +12,15 @@
 namespace Claroline\AuthenticationBundle\Security\Voter;
 
 use Claroline\AppBundle\Security\Voter\AbstractVoter;
-use Claroline\AuthenticationBundle\Entity\ApiToken;
+use Claroline\AuthenticationBundle\Entity\IpUser;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ApiTokenVoter extends AbstractVoter
+class IpUserVoter extends AbstractVoter
 {
     /**
-     * @param ApiToken $object
+     * @param IpUser $object
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
@@ -46,7 +46,7 @@ class ApiTokenVoter extends AbstractVoter
 
     public function getClass(): string
     {
-        return ApiToken::class;
+        return IpUser::class;
     }
 
     public function getSupportedActions(): array

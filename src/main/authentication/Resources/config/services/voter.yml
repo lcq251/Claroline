@@ -4,3 +4,6 @@ services:
 
     Claroline\AuthenticationBundle\Security\Voter\ApiTokenVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter
+
+    Claroline\AuthenticationBundle\Security\Voter\IpUserVoter:
+        parent: Claroline\AppBundle\Security\Voter\AbstractVoter

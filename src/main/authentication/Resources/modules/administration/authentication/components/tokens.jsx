@@ -13,7 +13,7 @@ import {selectors} from '#/main/authentication/administration/authentication/sto
 
 const AuthenticationTokens = props =>
   <ToolPage
-    title={trans('tokens', {}, 'integration')}
+    title={trans('tokens', {}, 'security')}
     primaryAction="add-token"
     actions={[
       {

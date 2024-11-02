@@ -13,11 +13,10 @@ import {selectors} from '#/main/authentication/ip/modals/parameters/store'
 const ParametersModal = props =>
   <Modal
     {...omit(props, 'ip', 'isNew', 'data', 'saveEnabled', 'update', 'loadIp', 'saveIp', 'onSave')}
-    icon={props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
+    // icon={props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
     title={props.isNew ? trans('new_ip', {}, 'security') : trans('parameters')}
     subtitle={!props.isNew && props.ip ? props.ip.ip : ''}
     onEntering={() => props.loadIp(props.ip)}
-    size="lg"
   >
     <FormData
       flush={true}
@@ -58,6 +57,12 @@ const ParametersModal = props =>
               label: trans('ip_address'),
               required: true,
               displayed: (data) => !data.range
+            }, {
+              name: 'description',
+              type: 'string',
+              label: trans('description'),
+              recommended: true,
+              options: {long: true}
             }, {
               name: 'user',
               type: 'user',
