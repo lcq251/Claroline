@@ -20,7 +20,7 @@ actions.addRoles = (id, roles) => (dispatch) => dispatch({
     request: {
       method: 'PATCH'
     },
-    success: (data) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.roles'))
     }
   }
@@ -32,7 +32,7 @@ actions.addOrganizations = (id, organizations) => (dispatch) => dispatch({
     request: {
       method: 'PATCH'
     },
-    success: (data) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.organizations'))
     }
   }

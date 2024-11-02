@@ -39,7 +39,6 @@ services:
             - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
-            - '@Claroline\CommunityBundle\Serializer\OrganizationSerializer'
             - '@Claroline\CoreBundle\Manager\FacetManager'
 
     Claroline\CommunityBundle\Serializer\UserProfileSerializer:

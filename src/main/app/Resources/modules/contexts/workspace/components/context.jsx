@@ -4,6 +4,8 @@ import get from 'lodash/get'
 
 import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
+import {addRecent} from '#/main/app/history'
+import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {PageBanner} from '#/main/app/page/components/banner'
 import {ContextMain, selectors} from '#/main/app/context'
@@ -14,9 +16,7 @@ import {WorkspaceForbidden} from '#/main/app/contexts/workspace/containers/forbi
 import {WorkspaceLoading} from '#/main/app/contexts/workspace/components/loading'
 import {WorkspaceNotFound} from '#/main/app/contexts/workspace/components/not-found'
 import {WorkspaceMenu} from '#/main/app/contexts/workspace/containers/menu'
-import {WorkspaceEditor} from '#/main/app/contexts/workspace/editor/components/main'
-import {addRecent} from '#/main/app/history'
-import {hasPermission} from '#/main/app/security'
+import {WorkspaceEditor} from '#/main/app/contexts/workspace/editor/containers/main'
 
 const WorkspaceWarning = () => {
   const workspace = useSelector(selectors.data)

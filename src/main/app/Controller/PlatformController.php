@@ -143,7 +143,7 @@ class PlatformController
 
             // the preferred URL to be loaded when the user launches the web app
             // (this is just a hint, so user agents can ignore this value)
-            'start_url' => $this->clientManager->getBaseUrl(),
+            // 'start_url' => $this->clientManager->getBaseUrl(),
 
             // the preferred orientation of the web app contents
             // (see https://developer.mozilla.org/en-US/docs/Web/Manifest/orientation)

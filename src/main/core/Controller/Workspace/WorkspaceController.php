@@ -21,6 +21,7 @@ use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Controller\Model\HasGroupsTrait;
+use Claroline\CoreBundle\Controller\Model\HasOrganizationsTrait;
 use Claroline\CoreBundle\Controller\Model\HasRolesTrait;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
@@ -36,7 +37,6 @@ use Claroline\CoreBundle\Messenger\Message\CreateWorkspace;
 use Claroline\CoreBundle\Messenger\Message\ImportWorkspace;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
-use Claroline\TransferBundle\Finder\ImportFileType;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,6 +53,7 @@ class WorkspaceController extends AbstractCrudController
 {
     use HasGroupsTrait; // to remove : only the list endpoint is used
     use HasRolesTrait; // to remove : only the list endpoint is used
+    use HasOrganizationsTrait;
     use PermissionCheckerTrait;
 
     public function __construct(
@@ -133,33 +134,6 @@ class WorkspaceController extends AbstractCrudController
         return new StreamedJsonResponse([
             'totalResults' => $workspaces->count(),
             'data' => $workspaces->getItems(),
-        ]);
-    }
-
-    #[Route(path: '/test', name: 'test', methods: ['GET'])]
-    public function testAction(
-        #[MapQueryString]
-        ?FinderQuery $finderQuery = new FinderQuery()
-    ): StreamedJsonResponse {
-        $finder = $this->finder->create(ImportFileType::class)
-            ->submit($finderQuery)
-            ->getResult(function (object $row): array {
-                return $this->serializer->serialize($row, [SerializerInterface::SERIALIZE_MINIMAL]);
-            })
-        ;
-
-        $queryParams = $finder->getQuery()->getParameters()->toArray();
-
-        return new StreamedJsonResponse([
-            'sql' => $finder->getQuery()->getSQL(),
-            'parameters' => array_map(function ($parameter) {
-                return [
-                    'name' => $parameter->getName(),
-                    'type' => $parameter->getType(),
-                    'value' => $parameter->getValue(),
-                ];
-            }, $queryParams),
-            'data' => $finder->getItems(),
         ]);
     }
 

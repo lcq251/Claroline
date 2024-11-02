@@ -8,7 +8,6 @@ use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
-use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
@@ -32,7 +31,6 @@ class UserSerializer
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly PlatformConfigurationHandler $config,
-        private readonly OrganizationSerializer $organizationSerializer,
         private readonly FacetManager $facetManager
     ) {
         $this->fieldFacetRepo = $om->getRepository(FieldFacet::class);
@@ -94,7 +92,6 @@ class UserSerializer
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
             'username' => $user->getUsername(),
-            // 'thumbnail' => $user->getThumbnail(),
             'poster' => $user->getPoster(),
             'email' => $showEmail ? $user->getEmail() : null,
             'administrativeCode' => $user->getAdministrativeCode(),
@@ -124,12 +121,6 @@ class UserSerializer
                 }, $user->getGroupRoles()),
             ),
         ];
-
-        /*if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
-            if ($user->getMainOrganization()) {
-                $serializedUser['mainOrganization'] = $this->organizationSerializer->serialize($user->getMainOrganization(), [SerializerInterface::SERIALIZE_MINIMAL]);
-            }
-        }*/
 
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
             $serializedUser['status'] = $user->getStatus();
@@ -171,7 +162,6 @@ class UserSerializer
         $this->sipe('phone', 'setPhone', $data, $user);
         $this->sipe('administrativeCode', 'setAdministrativeCode', $data, $user);
         $this->sipe('picture', 'setPicture', $data, $user);
-        //$this->sipe('thumbnail', 'setThumbnail', $data, $user);
         $this->sipe('poster', 'setPoster', $data, $user);
 
         // don't trim the password just in case
@@ -183,15 +173,6 @@ class UserSerializer
 
         if (isset($data['restrictions'])) {
             $this->deserializeRestrictions($data['restrictions'], $user);
-        }
-
-        if (isset($data['mainOrganization'])) {
-            /** @var Organization $organization */
-            $organization = $this->om->getObject($data['mainOrganization'], Organization::class, ['id', 'code', 'name', 'email']);
-
-            if ($organization) {
-                $user->setMainOrganization($organization);
-            }
         }
 
         if (isset($data['profile'])) {

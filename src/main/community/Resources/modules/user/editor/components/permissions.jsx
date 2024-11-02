@@ -41,6 +41,7 @@ const UserEditorPermissions = () => {
           render: () => (
             <RoleList
               /*path={props.path}*/
+              className="mb-3"
               name={`${selectors.STORE_NAME}.roles`}
               url={['apiv2_user_list_roles', {id: currentUser.id}]}
               autoload={!!currentUser.id}
@@ -72,6 +73,7 @@ const UserEditorPermissions = () => {
           render: () => (
             <OrganizationList
               /*path={props.path}*/
+              className="mb-3"
               name={`${selectors.STORE_NAME}.organizations`}
               url={['apiv2_user_list_organizations', {id: currentUser.id}]}
               autoload={!!currentUser.id}

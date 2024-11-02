@@ -56,7 +56,7 @@ const WorkspaceEditorAppearance = () => {
                   type: 'choice',
                   label: trans('tool'),
                   required: true,
-                  displayed: (context) => 'tool' === get(context, 'data.opening.type'),
+                  displayed: (formData) => 'tool' === get(formData, 'data.opening.type'),
                   options: {
                     noEmpty: true,
                     multiple: false,
@@ -76,7 +76,7 @@ const WorkspaceEditorAppearance = () => {
                     }
                   },
                   required: true,
-                  displayed: (context) => 'resource' === get(context, 'data.opening.type'),
+                  displayed: (formData) => 'resource' === get(formData, 'data.opening.type'),
                   onChange: (selected) => updateProp('opening.target', selected)
                 }
               ]
