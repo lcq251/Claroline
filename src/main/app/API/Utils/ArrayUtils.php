@@ -105,7 +105,7 @@ class ArrayUtils
         return false;
     }
 
-    public static function getPropertiesName(array $object, $titles = [], $currentPos = null): array
+    public static function getPropertiesName(array $object, array $titles = [], ?string $currentPos = null): array
     {
         $keys = array_keys($object);
 

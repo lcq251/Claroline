@@ -113,7 +113,7 @@ class BBB extends AbstractResource
         return $this->moderatorRequired;
     }
 
-    public function setModeratorRequired($moderatorRequired): void
+    public function setModeratorRequired(bool $moderatorRequired): void
     {
         $this->moderatorRequired = $moderatorRequired;
     }
@@ -123,7 +123,7 @@ class BBB extends AbstractResource
         return $this->record;
     }
 
-    public function setRecord($record): void
+    public function setRecord(bool $record): void
     {
         $this->record = $record;
     }

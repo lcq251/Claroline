@@ -9,7 +9,7 @@ use UJM\ExoBundle\DependencyInjection\Compiler\ItemDefinitionsPass;
 
 class UJMExoBundle extends DistributionPluginBundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

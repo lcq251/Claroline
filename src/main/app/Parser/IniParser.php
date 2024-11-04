@@ -18,10 +18,7 @@ namespace Claroline\AppBundle\Parser;
  */
 class IniParser
 {
-    /**
-     * @return string
-     */
-    public static function dump(array $parameters)
+    public static function dump(array $parameters): string
     {
         $content = '';
 
@@ -35,7 +32,7 @@ class IniParser
         return $content;
     }
 
-    public static function dumpFile(array $parameters, $iniFile)
+    public static function dumpFile(array $parameters, string $iniFile): void
     {
         $content = static::dump($parameters);
 
@@ -44,7 +41,7 @@ class IniParser
         }
     }
 
-    public static function updateKey($key, $value, $iniFile)
+    public static function updateKey($key, $value, $iniFile): void
     {
         $values = static::parseFile($iniFile);
         $values[$key] = $value;
@@ -52,12 +49,7 @@ class IniParser
         static::dumpFile($values, $iniFile);
     }
 
-    /**
-     * @param string $iniString
-     *
-     * @return array
-     */
-    public static function parse($iniString)
+    public static function parse(string $iniString): array
     {
         $values = parse_ini_string($iniString);
         if (!empty($values)) {
@@ -71,12 +63,7 @@ class IniParser
         return [];
     }
 
-    /**
-     * @param string $iniFile
-     *
-     * @return array
-     */
-    public static function parseFile($iniFile)
+    public static function parseFile(string $iniFile): array
     {
         if (file_exists($iniFile)) {
             return static::parse(file_get_contents($iniFile));

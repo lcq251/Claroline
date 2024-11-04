@@ -32,8 +32,8 @@ class VideoController
         #[CurrentUser] ?User $user,
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Video $video,
-        $currentTime,
-        $totalTime
+        ?float $currentTime,
+        ?float $totalTime
     ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
