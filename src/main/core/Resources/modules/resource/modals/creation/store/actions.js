@@ -16,12 +16,13 @@ export const actions = {}
  *
  * @param {object} parent       - the parent of the new resource
  * @param {string} resourceType - the type of resource to create
- * @param {object} resourceData - the initial data of resource to create
+ * @param {object} nodeData     - the initial data of the node to create
+ * @param {object} resourceData - the initial data of the resource to create
  */
-actions.startCreation = (parent, resourceType, resourceData = {}) => (dispatch) => {
+actions.startCreation = (parent, resourceType, nodeData = {}, resourceData = {}) => (dispatch) => {
   let defaultData = {
-    resource: null,
-    resourceNode: merge({}, ResourceNodeTypes.defaultProps, resourceData, {
+    resource: resourceData,
+    resourceNode: merge({}, ResourceNodeTypes.defaultProps, nodeData, {
       id: makeId(),
       workspace: parent.workspace,
       meta: {

@@ -9,4 +9,6 @@ interface UrlAdapterInterface
     public const SUPPORTED = 2;
 
     public function supportsUrl(string $url): int;
+
+    public function fromUrl(string $url): ?array;
 }

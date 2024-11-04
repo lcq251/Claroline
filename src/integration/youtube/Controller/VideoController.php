@@ -2,13 +2,13 @@
 
 namespace Claroline\YouTubeBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\YouTubeBundle\Entity\Video;
 use Claroline\YouTubeBundle\Manager\EvaluationManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -28,9 +28,13 @@ class VideoController
     }
 
     #[Route(path: '/{id}/progression/{currentTime}/{totalTime}', name: 'apiv2_youtube_video_progression_update', methods: ['PUT'])]
-    public function updateProgressionAction(#[CurrentUser] ?User $user, #[MapEntity(class: 'Claroline\YouTubeBundle\Entity\Video', mapping: ['id' => 'uuid'])]
-    Video $video, $currentTime, $totalTime): JsonResponse
-    {
+    public function updateProgressionAction(
+        #[CurrentUser] ?User $user,
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Video $video,
+        ?float $currentTime,
+        ?float $totalTime
+    ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
         }

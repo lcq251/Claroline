@@ -24,7 +24,7 @@ const ResourceCreationModal = (props) => {
         <CreationStart
           contextId={get(props.parent, 'workspace.id', null)}
           changeStep={setCurrentStep}
-          startCreation={(type, resourceData) => props.startCreation(props.parent, type, resourceData).then(() => {
+          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData).then(() => {
             setCurrentStep('info')
           })}
         />
@@ -64,7 +64,7 @@ const ResourceCreationModal = (props) => {
     case 'info':
       StepComponent = (
         <CreationInfo
-          create={() => props.create(props.parent)}
+          create={() => props.create(props.parent).then(response => props.add([response]))}
           changeStep={setCurrentStep}
           fadeModal={props.fadeModal}
         />

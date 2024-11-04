@@ -40,7 +40,7 @@ class RightsManager
     /**
      * @param array|int $permissions - either an array of perms or an encoded mask
      */
-    public function create($permissions, Role $role, ResourceNode $node, ?bool $isRecursive = false, ?array $creations = []): void
+    public function create(array|int $permissions, Role $role, ResourceNode $node, ?bool $isRecursive = false, ?array $creations = []): void
     {
         $this->update($permissions, $role, $node, $isRecursive, $creations);
     }
@@ -48,7 +48,7 @@ class RightsManager
     /**
      * @param array|int $permissions - either an array of perms or an encoded mask
      */
-    public function update($permissions, Role $role, ResourceNode $node, ?bool $isRecursive = false, ?array $creations = []): void
+    public function update(array|int $permissions, Role $role, ResourceNode $node, ?bool $isRecursive = false, ?array $creations = []): void
     {
         if (!is_int($permissions)) {
             $mask = $this->maskManager->encodeMask($permissions, $node->getResourceType());
@@ -224,7 +224,7 @@ class RightsManager
         ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+        $stmt->executeQuery();
 
         $sql = "
             DELETE list FROM claro_list_type_creation list
@@ -236,7 +236,7 @@ class RightsManager
         ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+        $stmt->executeQuery();
 
         if (0 === count($types)) {
             return;
@@ -263,11 +263,15 @@ class RightsManager
             ) AS t GROUP BY tid
         ";
 
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(1, $typeList);
+        $stmt->executeQuery();
+        /*
         $this->conn->executeQuery(
             $sql,
             [$typeList],
             [Connection::PARAM_STR_ARRAY]
-        );
+        );*/
     }
 
     private function recursiveUpdate(ResourceNode $node, Role $role, ?int $mask = 1, ?array $types = []): void
@@ -300,7 +304,7 @@ class RightsManager
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $node->getPath().'%', \PDO::PARAM_STR);
-        $stmt->execute();
+        $stmt->executeQuery();
 
         $sql = "
             DELETE list FROM claro_list_type_creation list
@@ -313,7 +317,7 @@ class RightsManager
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $node->getPath().'%', \PDO::PARAM_STR);
-        $stmt->execute();
+        $stmt->executeQuery();
 
         if (0 === count($types)) {
             return;
@@ -343,10 +347,9 @@ class RightsManager
                 ) as t
         ";
 
-        $this->conn->executeQuery(
-            $sql,
-            [$node->getPath().'%', $typeList],
-            [\PDO::PARAM_STR, Connection::PARAM_STR_ARRAY]
-        );
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(1, $node->getPath().'%');
+        $stmt->bindValue(2, $typeList);
+        $stmt->executeQuery();
     }
 }

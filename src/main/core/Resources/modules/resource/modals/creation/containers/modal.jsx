@@ -12,8 +12,8 @@ const ResourceCreationModal = withReducer(selectors.STORE_NAME, reducer)(
       //saveEnabled: selectors.saveEnabled(state)
     }),
     (dispatch) => ({
-      startCreation(parent, resourceType, resourceData) {
-        return dispatch(actions.startCreation(parent, resourceType, resourceData))
+      startCreation(parent, resourceType, nodeData, resourceData) {
+        return dispatch(actions.startCreation(parent, resourceType, nodeData, resourceData))
       },
       create(parent) {
         return dispatch(actions.create(parent))

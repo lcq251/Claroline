@@ -21,7 +21,6 @@ const CreationType = props =>
             'icap_blog',
             'icap_wiki',
             'claroline_announcement_aggregate',
-            'innova_path',
             'text',
             'file',
             'hevinci_url',

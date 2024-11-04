@@ -81,6 +81,8 @@ class ResourceNodeSerializer
             'slug' => $resourceNode->getSlug(),
             'name' => $resourceNode->getName(),
             'code' => $resourceNode->getCode(),
+            'thumbnail' => $resourceNode->getThumbnail(),
+            'poster' => $resourceNode->getPoster(),
             //'path' => $resourceNode->getAncestors(),
             'meta' => [
                 'type' => $resourceNode->getType(), // try to remove. use mimeType instead
@@ -99,8 +101,6 @@ class ResourceNodeSerializer
                 'authors' => $resourceNode->getAuthor(),
                 'license' => $resourceNode->getLicense(),
             ],
-            'thumbnail' => $resourceNode->getThumbnail(),
-            'poster' => $resourceNode->getPoster(),
             'workspace' => $serializedWorkspace,
             'evaluation' => [
                 'evaluated' => $resourceNode->isEvaluated(),

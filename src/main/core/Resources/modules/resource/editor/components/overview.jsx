@@ -1,8 +1,12 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
+
+import {ResourceIcon} from '#/main/core/resource/components/icon'
 
 const ResourceEditorOverview = (props) =>
   <EditorPage
@@ -17,6 +21,16 @@ const ResourceEditorOverview = (props) =>
             label: trans('poster'),
             type: 'poster',
             hideLabel: true
+          }, {
+            name: 'resourceNode.meta.type',
+            label: trans('type'),
+            type: 'type',
+            hideLabel: true,
+            calculated: (data) => !isEmpty(get(data, 'resourceNode.meta.mimeType')) ? ({
+              icon: <ResourceIcon mimeType={data.resourceNode.meta.mimeType} />,
+              name: trans(data.resourceNode.meta.type, {}, 'resource'),
+              description: trans(`${data.resourceNode.meta.type}_desc`, {}, 'resource')
+            }) : null
           }, {
             name: 'resourceNode.name',
             label: trans('name'),

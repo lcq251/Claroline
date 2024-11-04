@@ -1,9 +1,9 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import get from 'lodash/get'
 import merge from 'lodash/merge'
 
 import {trans} from '#/main/app/intl'
-import {makeId} from '#/main/core/scaffolding/id'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentMenu} from '#/main/app/content/components/menu'
 
@@ -67,13 +67,24 @@ const ResourceCreation = (props) =>
             selectAction: (selected) => ({
               type: CALLBACK_BUTTON,
               callback: () => {
-                props.startCreation('shortcut', merge({}, selected[0], {meta: {published: true}}))
+                props.startCreation('shortcut', {
+                  name: selected[0].name,
+                  code: selected[0].code,
+                  thumbnail: selected[0].thumbnail,
+                  poster: selected[0].poster,
+                  meta: {
+                    published: true,
+                    description: get(selected[0], 'meta.description')
+                  }
+                }, {
+                  target: merge({}, selected[0])
+                })
+
                 props.changeStep('info')
               }
             })
           }]
-        },
-        //group: 'A partir d\'un contenu existant'
+        }
       }, {
         id: 'create-from-copy',
         icon: 'clone',

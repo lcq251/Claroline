@@ -14,24 +14,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class YouTubeManager
 {
-    private CurlManager $curlManager;
-    private TempFileManager $tempManager;
-    private Crud $crud;
-    private ObjectManager $om;
-    private FileManager $fileManager;
-
     public function __construct(
-        CurlManager $curlManager,
-        TempFileManager $tempManager,
-        Crud $crud,
-        ObjectManager $om,
-        FileManager $fileManager
+        private readonly CurlManager $curlManager,
+        private readonly TempFileManager $tempManager,
+        private readonly Crud $crud,
+        private readonly ObjectManager $om,
+        private readonly FileManager $fileManager
     ) {
-        $this->curlManager = $curlManager;
-        $this->tempManager = $tempManager;
-        $this->crud = $crud;
-        $this->om = $om;
-        $this->fileManager = $fileManager;
     }
 
     public function checkUrl(string $url): ?string

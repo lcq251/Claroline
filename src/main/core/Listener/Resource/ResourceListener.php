@@ -122,7 +122,7 @@ class ResourceListener
             // FIXME : rights are out of date
             'rights' => !empty($data['rights']) && $isManager ? array_map(function (ResourceRights $rights) {
                 return $this->serializer->serialize($rights);
-            }, $resourceNode->getRights()->toArray()) : []
+            }, $resourceNode->getRights()->toArray()) : [],
         ])));
 
         $event->stopPropagation();
