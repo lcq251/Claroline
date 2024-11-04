@@ -4,6 +4,7 @@ namespace Claroline\CursusBundle\Entity;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,6 +17,7 @@ class EventPresence
 {
     use Id;
     use Uuid;
+    use UpdatedAt;
 
     public const UNKNOWN = 'unknown';
     public const PRESENT = 'present';
@@ -60,7 +62,26 @@ class EventPresence
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private ?array $evidences = null;
+    private ?array $evidence = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Claroline\CoreBundle\Entity\User")
+     *
+     * @ORM\JoinColumn(name="updatedBy", referencedColumnName="id", nullable=true)
+     */
+    private ?User $updatedBy = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Claroline\CoreBundle\Entity\User")
+     *
+     * @ORM\JoinColumn(name="evidence_added_by", referencedColumnName="id", nullable=true)
+     */
+    private ?User $evidenceAddedBy = null;
+
+    /**
+     * @ORM\Column(name="evidence_added_at", type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $evidenceAddedAt = null;
 
     public function __construct()
     {
@@ -117,13 +138,49 @@ class EventPresence
         $this->validationDate = $validationDate;
     }
 
-    public function getEvidences(): ?array
+    public function getEvidence(): ?array
     {
-        return $this->evidences;
+        return $this->evidence;
     }
 
-    public function setEvidences(?array $evidences): void
+    public function setEvidence(?array $evidence): void
     {
-        $this->evidences = $evidences;
+        $this->evidence = $evidence;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?User $user): self
+    {
+        $this->updatedBy = $user;
+
+        return $this;
+    }
+
+    public function getEvidenceAddedBy(): ?User
+    {
+        return $this->evidenceAddedBy;
+    }
+
+    public function setEvidenceAddedBy(?User $user): self
+    {
+        $this->evidenceAddedBy = $user;
+
+        return $this;
+    }
+
+    public function getEvidenceAddedAt(): ?\DateTimeInterface
+    {
+        return $this->evidenceAddedAt;
+    }
+
+    public function setEvidenceAddedAt(?\DateTimeInterface $date): self
+    {
+        $this->evidenceAddedAt = $date;
+
+        return $this;
     }
 }

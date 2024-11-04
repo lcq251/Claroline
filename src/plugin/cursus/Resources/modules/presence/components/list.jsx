@@ -5,15 +5,15 @@ import omit from 'lodash/omit'
 import merge from 'lodash/merge'
 import classes from 'classnames'
 
-import {trans, transChoice} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action'
 import {constants} from '#/plugin/cursus/constants'
-import {MODAL_BUTTON, DOWNLOAD_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {actions as listActions} from '#/main/app/content/list/store'
-import {MODAL_EVIDENCE} from '#/plugin/cursus/modals/presence/evidences'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {getActions, getDefaultAction} from '#/plugin/cursus/presence/utils'
+import {MODAL_EVIDENCE_ABOUT} from '#/plugin/cursus/modals/presence/about'
 
 const Presences = props => {
   const refresher = merge({
@@ -46,44 +46,39 @@ const Presences = props => {
           ),
           displayed: true
         }, {
+          name: 'meta.updatedBy',
+          type: 'user',
+          label: trans('updated_by', {}, 'presence'),
+          displayed: false
+        }, {
+          name: 'meta.updatedAt',
+          type: 'date',
+          label: trans('updated_at', {}, 'presence'),
+          displayed: false,
+          options: {time: true}
+        },{
           name: 'validation_date',
           type: 'date',
           label: trans('presence_confirmation_date', {}, 'presence'),
           displayed: true,
-          options: {
-            time: true
-          }
+          options: {time: true}
         }, {
           name: 'evidences',
           type: 'number',
-          label: trans('evidences', {}, 'presence'),
+          label: trans('show_evidence', {}, 'presence'),
           displayed: true,
           render: (row) => {
-            if (row.evidences && row.evidences.length > 0) {
-              if( row.evidences.length === 1) {
-                return (
-                  <Button
-                    className="btn btn-link"
-                    type={DOWNLOAD_BUTTON}
-                    label={(transChoice('evidence_count', 1, {count: 1}, 'presence') )}
-                    file={{url: ['apiv2_cursus_presence_evidence_download', {id: row.id, file: row.evidences[0]}]}}
-                  />
-                )
-              } else {
-                return (
-                  <Button
-                    className="btn btn-link"
-                    type={MODAL_BUTTON}
-                    label={(transChoice('evidence_count', row.evidences.length, { count: row.evidences.length }, 'presence') )}
-                    modal={[MODAL_EVIDENCE, {
-                      parent: row,
-                      editable: false
-                    }]}
-                  />
-                )
-              }
+            if (row.evidences && row.evidences.length === 1) {
+              return (
+                <Button
+                  className="btn btn-link"
+                  type={MODAL_BUTTON}
+                  label={trans('show_evidence', {}, 'presence')}
+                  modal={[MODAL_EVIDENCE_ABOUT, {presence: row}]}
+                />
+              )
             } else {
-              return transChoice('evidence_count', 0, { count: 0 }, 'presence')
+              return trans('no_evidence', {}, 'presence')
             }
           }
         }, {
