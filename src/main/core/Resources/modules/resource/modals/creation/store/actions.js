@@ -7,7 +7,6 @@ import {getResource} from '#/main/core/resources'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {selectors} from '#/main/core/resource/modals/creation/store/selectors'
 
-// action creators
 export const actions = {}
 
 /**
@@ -27,9 +26,7 @@ actions.startCreation = (parent, resourceType, nodeData = {}, resourceData = {})
       workspace: parent.workspace,
       meta: {
         mimeType: `custom/${resourceType}`,
-        type: resourceType,
-        //creator: securitySelectors.currentUser(getState()),
-        published: false
+        type: resourceType
       },
       restrictions: parent.restrictions,
       rights: parent.rights

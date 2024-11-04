@@ -58,7 +58,7 @@ const ResourceCreation = (props) =>
         id: 'create-shortcut',
         icon: 'arrow-up-right-from-square',
         label: trans('Créer un raccourci'),
-        description: trans('Créer un raccourci vers une autre ressource de la plateforme.'),
+        description: trans('Créez un raccourci vers une autre ressource de la plateforme.'),
         action: {
           type: MODAL_BUTTON,
           modal: [MODAL_RESOURCES, {
