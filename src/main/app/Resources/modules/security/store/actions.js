@@ -12,7 +12,6 @@ import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
 import {MODAL_CONNECTION} from '#/main/app/modals/connection'
 import {selectors} from '#/main/app/security/store/selectors'
 
-
 // actions
 export const SECURITY_USER_CHANGE = 'SECURITY_USER_CHANGE'
 export const SECURITY_USER_UPDATE = 'SECURITY_USER_UPDATE'
@@ -53,9 +52,7 @@ actions.login = (username, password) => (dispatch) => dispatch({
         password: password
       })
     },
-    success: (response) => {
-      return dispatch(actions.onLogin(response))
-    }
+    success: (response) => dispatch(actions.onLogin(response))
   }
 })
 
@@ -64,7 +61,7 @@ actions.onLogin = (response) => (dispatch) => {
     return dispatch(actions.changeUser(response.user, response.config, false, response.contexts, response.contextFavorites, response.currentOrganization, response.availableOrganizations))
   }
 
-  if (!get(response.user, 'meta.acceptedTerms') && param('privacy.tos.enabled')) {
+  if (!response.acceptedTerms && param('privacy.tos.enabled')) {
     return dispatch(modalActions.showModal(MODAL_TERMS_OF_SERVICE, {
       validate: true,
       onAccept: () => changeCurrentUser,

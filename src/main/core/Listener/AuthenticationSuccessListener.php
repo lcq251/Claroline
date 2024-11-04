@@ -62,6 +62,7 @@ class AuthenticationSuccessListener implements AuthenticationSuccessHandlerInter
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'user' => $this->serializer->serialize($user, [SerializerInterface::SERIALIZE_MINIMAL]),
+                'acceptedTerms' => $user->hasAcceptedTerms(),
                 'config' => $this->clientManager->getUserPreferences($user), // for retro-compatibility. Should be in a new key userPreferences
                 'messages' => $this->messageManager->getConnectionMessagesByUser($user),
                 'contexts' => $this->contextProvider->getAvailableContexts(),

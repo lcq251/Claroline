@@ -1,6 +1,5 @@
 import React, {Component, createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
