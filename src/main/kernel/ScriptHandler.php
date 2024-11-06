@@ -17,10 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ScriptHandler
 {
-    /**
-     * @var BundleFileWriter
-     */
-    private static $handler;
+    private static ?BundleFileWriter $handler = null;
 
     /**
      * Writes the list of available bundles, based on currently installed packages.

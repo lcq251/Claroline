@@ -15,9 +15,8 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    private $bundlesFile;
-    /** @var BundleFileLoader */
-    private $bundleManager;
+    private string $bundlesFile;
+    private BundleFileLoader $bundleManager;
 
     public function __construct(string $environment, bool $debug)
     {

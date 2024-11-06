@@ -23,9 +23,9 @@ class BundleFileWriter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private $fs;
-    private $sourceFile;
-    private $targetFile;
+    private Filesystem $fs;
+    private string $sourceFile;
+    private string $targetFile;
 
     public function __construct(Filesystem $fs, string $sourceFile, string $targetFile, LoggerInterface $logger = null)
     {
@@ -42,7 +42,7 @@ class BundleFileWriter implements LoggerAwareInterface
         }
     }
 
-    public function writeBundleFile()
+    public function writeBundleFile(): void
     {
         $this->logger->info('Writing bundle file...');
 

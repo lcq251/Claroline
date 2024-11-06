@@ -22,14 +22,14 @@ class BundleFileLoader
     private string $env;
     private string $bundlesFile;
 
-    private static $selfInstance;
+    private static ?BundleFileLoader $selfInstance = null;
 
     public static function initialize(string $env, string $bundlesFile): void
     {
         static::$selfInstance = new self($env, $bundlesFile);
     }
 
-    public static function getInstance()
+    public static function getInstance(): BundleFileLoader
     {
         if (isset(static::$selfInstance)) {
             return static::$selfInstance;
@@ -44,7 +44,7 @@ class BundleFileLoader
 
         $bundles = [];
         foreach ($entries as $bundleClass => $isActive) {
-            if ((bool) $isActive || $fetchAll) {
+            if ($isActive || $fetchAll) {
                 if (class_exists($bundleClass)) {
                     /** @var BundleInterface $bundle */
                     $bundle = new $bundleClass();
