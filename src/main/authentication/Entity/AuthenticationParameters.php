@@ -6,7 +6,6 @@ use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_authentication_parameters')]
 #[ORM\Entity]
 class AuthenticationParameters

@@ -47,11 +47,6 @@ function getDetailsDefaultSection(parameters, user) {
         options: {
           minRows: 5
         }
-      }, {
-        name: 'mainOrganization',
-        type: 'organization',
-        displayed: hasPermission('administrate', user),
-        label: trans('main_organization')
       }
     ]
   }
@@ -102,12 +97,6 @@ function getFormDefaultSections(user, update, isNew = false) {
           label: trans('password'),
           displayed: isNew,
           required: true
-        }, {
-          name: 'mainOrganization',
-          type: 'organization',
-          required: true,
-          displayed: hasPermission('administrate', user),
-          label: trans('main_organization')
         }
       ]
     }, {

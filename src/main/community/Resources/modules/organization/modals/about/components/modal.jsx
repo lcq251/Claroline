@@ -38,11 +38,6 @@ const AboutModal = props =>
             primary: true,
             fields: [
               {
-                name: 'parent',
-                label: trans('parent'),
-                type: 'organization',
-                displayed: (organization) => !!organization.parent
-              }, {
                 name: 'code',
                 type: 'string',
                 label: trans('code')

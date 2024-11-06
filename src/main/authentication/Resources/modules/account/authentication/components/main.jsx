@@ -6,20 +6,20 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
-import {Button} from '#/main/app/action'
-import {MODAL_BUTTON} from '#/main/app/buttons'
+import {Button, Toolbar} from '#/main/app/action'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {EditorPage} from '#/main/app/editor'
 
-import changePasswordAction from '#/main/authentication//actions/user/password-change'
 import {MODAL_TOKEN_PARAMETERS} from '#/main/authentication/token/modals/parameters'
 import {TokenList} from '#/main/authentication/token/components/list'
-import {LogSecurityList} from '#/main/log/components/security-list'
-
-import {selectors as editorSelectors} from '#/main/community/user/editor'
-import {selectors} from '#/main/authentication/account/authentication/store'
 import {MODAL_IP_PARAMETERS} from '#/main/authentication/ip/modals/parameters'
 import {IpList} from '#/main/authentication/ip/components/list'
+import {LogSecurityList} from '#/main/log/components/security-list'
+
+import {MODAL_USER_PASSWORD} from '#/main/authentication/account/authentication/modals/password'
+import {selectors as editorSelectors} from '#/main/community/user/editor'
+import {selectors} from '#/main/authentication/account/authentication/store'
 
 const AccountAuthentication = props => {
   const currentUser = useSelector(editorSelectors.user)
@@ -29,10 +29,30 @@ const AccountAuthentication = props => {
       title={trans('authentication', {}, 'tools')}
       help={trans('authentication_help', {}, 'security')}
     >
-      <Button
-        className="btn btn-primary me-auto"
-        {...changePasswordAction([currentUser])}
-        icon={undefined}
+      <div role="presentation" className="mb-3">
+        Nom du compte : <b className="fw-bold">{currentUser.username}</b>
+      </div>
+      <Toolbar
+        className="me-auto"
+        buttonName="btn"
+        primaryName="btn-primary"
+        defaultName="btn-link"
+        actions={[
+          {
+            name: 'change-password',
+            type: MODAL_BUTTON,
+            label: trans('change_password', {}, 'actions'),
+            modal: [MODAL_USER_PASSWORD, {
+              user: currentUser
+            }],
+            primary: true
+          }, {
+            name: 'reset-password',
+            type: CALLBACK_BUTTON,
+            label: trans('forgot_password'),
+            callback: () => true
+          }
+        ]}
       />
 
       <hr className="my-5" aria-hidden="true" />

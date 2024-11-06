@@ -25,7 +25,6 @@ registry.add('ClarolineAuthenticationBundle', {
 
   actions: {
     user: {
-      'password-change': () => { return import(/* webpackChunkName: "auth-action-user-password-change" */ '#/main/authentication/actions/user/password-change') },
       'password-reset' : () => { return import(/* webpackChunkName: "auth-action-user-password-reset" */  '#/main/authentication/actions/user/password-reset') }
     },
     group: {
