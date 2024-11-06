@@ -64,10 +64,10 @@ class PeriodStatusType extends AbstractType
                 $queryBuilder->andWhere("($startProp <= :{$finder->getAlias()}Now AND $endProp >= :{$finder->getAlias()}Now)");
                 break;
             case self::ENDED:
-                $queryBuilder->andWhere("$endProp < :{$finder->getAlias()}Now");
+                $queryBuilder->andWhere("($endProp IS NOT NULL AND $endProp < :{$finder->getAlias()}Now)");
                 break;
             case self::NOT_ENDED:
-                $queryBuilder->andWhere("$endProp >= :{$finder->getAlias()}Now");
+                $queryBuilder->andWhere("($endProp IS NULL OR $endProp >= :{$finder->getAlias()}Now)");
                 break;
         }
 
