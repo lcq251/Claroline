@@ -5,7 +5,7 @@ import {ContextHistory} from '#/main/app/context/components/history'
 
 const SearchRecent = (props) =>
   <ContextHistory
-    className="mt-3"
+    className="mt-4"
     onOpen={props.fadeModal}
   />
 
