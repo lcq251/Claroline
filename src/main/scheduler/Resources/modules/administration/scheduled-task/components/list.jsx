@@ -12,21 +12,13 @@ import {constants} from '#/main/scheduler/administration/scheduled-task/constant
 import {selectors} from '#/main/scheduler/administration/scheduled-task/store'
 import {ScheduledTaskCard} from '#/main/scheduler/administration/scheduled-task/components/card'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 const ScheduledTaskList = (props) =>
   <ToolPage
     primaryAction="add"
     actions={[
       {
-        name: 'add',
-        type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-plus',
-        label: trans('add_scheduled_task', {}, 'scheduler'),
-        target: `${props.path}/form`,
-        primary: true,
-        exact: true,
-        disabled: !props.isSchedulerEnabled
-      }, {
         name: 'execute-all',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-refresh',
@@ -42,96 +34,110 @@ const ScheduledTaskList = (props) =>
       </Alert>
     }
 
-    <ListData
-      name={selectors.STORE_NAME + '.tasks'}
-      fetch={{
-        url: ['apiv2_scheduled_task_list'],
-        autoload: true
-      }}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        target: `${props.path}/form/${row.id}`
-      })}
-      delete={{
-        url: ['apiv2_scheduled_task_delete'],
-        disabled: (rows) => -1 === rows.findIndex(row => hasPermission('delete', row))
-      }}
-      definition={[
-        {
-          name: 'status',
-          type: 'choice',
-          label: trans('status'),
-          displayed: true,
-          options: {
-            noEmpty: true,
-            choices: constants.TASK_STATUSES
-          },
-          render: (row) => (
-            <span className={classes('badge', {
-              'text-bg-secondary': constants.TASK_STATUS_PENDING === row.status,
-              'text-bg-success': constants.TASK_STATUS_SUCCESS === row.status,
-              'text-bg-info': constants.TASK_STATUS_IN_PROGRESS === row.status,
-              'text-bg-danger': constants.TASK_STATUS_ERROR === row.status
-            })}>
-              {trans('task_'+row.status, {}, 'scheduler')}
-            </span>
-          )
-        }, {
-          name: 'name',
-          label: trans('name'),
-          type: 'string',
-          primary: true,
-          displayed: true
-        }, {
-          name: 'action',
-          label: trans('task'),
-          type: 'translation',
-          displayed: true
-        }, {
-          name: 'executionType',
-          label: trans('type'),
-          type: 'choice',
-          options: {
-            choices: constants.TASK_TYPES
-          },
-          displayed: true
-        }, {
-          name: 'scheduledDate',
-          type: 'date',
-          label: trans('scheduled_date', {}, 'scheduler'),
-          displayed: true,
-          options: {
-            time: true
-          }
-        }, {
-          name: 'executionDate',
-          type: 'date',
-          label: trans('execution_date', {}, 'scheduler'),
-          displayed: true,
-          options: {
-            time: true
-          }
-        }
-      ]}
-      actions={(rows) => [
-        {
-          name: 'edit',
+    <PageListSection>
+      <ListData
+        flush={true}
+        name={selectors.STORE_NAME + '.tasks'}
+        fetch={{
+          url: ['apiv2_scheduled_task_list'],
+          autoload: true
+        }}
+        addAction={{
+          name: 'add',
           type: LINK_BUTTON,
-          icon: 'fa fa-fw fa-pencil',
-          label: trans('edit', {}, 'actions'),
-          target: `${props.path}/form/${rows[0].id}`,
-          scope: ['object'],
-          group: trans('management')
-        }, {
-          name: 'execute',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-refresh',
-          label: trans('execute', {}, 'actions'),
-          callback: () => props.execute(rows.map(row => row.id))
-        }
-      ]}
-      card={ScheduledTaskCard}
-    />
+          icon: 'fa fa-fw fa-plus',
+          label: trans('add_scheduled_task', {}, 'scheduler'),
+          tooltip: 'bottom',
+          target: `${props.path}/form`,
+          primary: true,
+          exact: true,
+          disabled: !props.isSchedulerEnabled
+        }}
+        primaryAction={(row) => ({
+          type: LINK_BUTTON,
+          target: `${props.path}/form/${row.id}`
+        })}
+        delete={{
+          url: ['apiv2_scheduled_task_delete'],
+          disabled: (rows) => -1 === rows.findIndex(row => hasPermission('delete', row))
+        }}
+        definition={[
+          {
+            name: 'status',
+            type: 'choice',
+            label: trans('status'),
+            displayed: true,
+            options: {
+              noEmpty: true,
+              choices: constants.TASK_STATUSES
+            },
+            render: (row) => (
+              <span className={classes('badge', {
+                'text-bg-secondary': constants.TASK_STATUS_PENDING === row.status,
+                'text-bg-success': constants.TASK_STATUS_SUCCESS === row.status,
+                'text-bg-info': constants.TASK_STATUS_IN_PROGRESS === row.status,
+                'text-bg-danger': constants.TASK_STATUS_ERROR === row.status
+              })}>
+                {trans('task_'+row.status, {}, 'scheduler')}
+              </span>
+            )
+          }, {
+            name: 'name',
+            label: trans('name'),
+            type: 'string',
+            primary: true,
+            displayed: true
+          }, {
+            name: 'action',
+            label: trans('task'),
+            type: 'translation',
+            displayed: true
+          }, {
+            name: 'executionType',
+            label: trans('type'),
+            type: 'choice',
+            options: {
+              choices: constants.TASK_TYPES
+            },
+            displayed: true
+          }, {
+            name: 'scheduledDate',
+            type: 'date',
+            label: trans('scheduled_date', {}, 'scheduler'),
+            displayed: true,
+            options: {
+              time: true
+            }
+          }, {
+            name: 'executionDate',
+            type: 'date',
+            label: trans('execution_date', {}, 'scheduler'),
+            displayed: true,
+            options: {
+              time: true
+            }
+          }
+        ]}
+        actions={(rows) => [
+          {
+            name: 'edit',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-pencil',
+            label: trans('edit', {}, 'actions'),
+            target: `${props.path}/form/${rows[0].id}`,
+            scope: ['object'],
+            group: trans('management')
+          }, {
+            name: 'execute',
+            type: CALLBACK_BUTTON,
+            icon: 'fa fa-fw fa-refresh',
+            label: trans('execute', {}, 'actions'),
+            callback: () => props.execute(rows.map(row => row.id))
+          }
+        ]}
+        card={ScheduledTaskCard}
+      />
+    </PageListSection>
   </ToolPage>
 
 ScheduledTaskList.propTypes = {
