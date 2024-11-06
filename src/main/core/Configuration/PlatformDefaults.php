@@ -45,7 +45,7 @@ class PlatformDefaults implements ParameterProviderInterface
                 'auto_enable_email_redirect' => false,
             ],
             'help' => [
-                'url' => 'http://doc.claroline.com',
+                'url' => 'https://doc.claroline.com',
                 'support_email' => null,
                 'show' => true,
             ],
