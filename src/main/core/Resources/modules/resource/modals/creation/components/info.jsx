@@ -60,10 +60,7 @@ const CreationInfo = (props) => {
               name: 'meta.published',
               label: trans('publish', {}, 'actions'),
               type: 'boolean',
-              help: [
-                trans('Publiez la ressource pour la rendre accessible à vos utilisateurs.', {}, 'resource'),
-                trans('Temps que la ressource n\'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission "Modifier".', {}, 'resource')
-              ]
+              help: trans('Temps que la ressource n\'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission "Modifier".', {}, 'resource')
             }
           ]
         }

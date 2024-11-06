@@ -24,6 +24,7 @@ const WorkspacesButton = props =>
       title: props.title,
       selectAction: (selected) => ({
         type: CALLBACK_BUTTON,
+        label: trans('add', {}, 'actions'),
         callback: () => props.onChange(selected[0])
       })
     }]}

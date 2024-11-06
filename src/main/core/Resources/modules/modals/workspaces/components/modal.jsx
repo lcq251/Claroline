@@ -5,7 +5,6 @@ import omit from 'lodash/omit'
 import {trans} from '#/main/app/intl/translation'
 import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
-import {selectors} from '#/main/core/modals/workspaces/store'
 import {WorkspaceCard} from '#/main/core/workspace/components/card'
 import {WorkspaceIcon} from '#/main/app/contexts/workspace/components/icon'
 
@@ -14,7 +13,7 @@ const WorkspacesModal = props => {
     <PickerModal
       {...omit(props)}
       icon="fa fa-fw fa-book"
-      name={selectors.STORE_NAME}
+      name="workspacesPicker"
       definition={[
         {
           name: 'name',
@@ -50,7 +49,8 @@ const WorkspacesModal = props => {
           type: 'date',
           alias: 'updatedAt',
           displayed: true,
-          filterable: false
+          filterable: false,
+          options: {time: true}
         }, {
           name: 'meta.creator',
           label: trans('creator'),
@@ -102,8 +102,7 @@ WorkspacesModal.propTypes = {
 
 WorkspacesModal.defaultProps = {
   url: ['apiv2_workspace_list_managed'],
-  title: trans('workspaces'),
-  multiple: true
+  title: trans('workspaces')
 }
 
 export {

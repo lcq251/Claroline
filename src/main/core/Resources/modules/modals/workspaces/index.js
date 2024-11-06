@@ -1,13 +1,13 @@
 /**
- * workspaces picker modal.
+ * Workspaces picker modal.
  *
- * Displays the workspaces picker inside the modale.
+ * Displays the workspaces list inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {WorkspacesModal} from '#/main/core/modals/workspaces/containers/modal'
+import {WorkspacesModal} from '#/main/core/modals/workspaces/components/modal'
 
 const MODAL_WORKSPACES = 'MODAL_WORKSPACES'
 

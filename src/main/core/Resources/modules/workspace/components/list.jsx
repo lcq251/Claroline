@@ -79,12 +79,7 @@ const Workspaces = (props) => {
           type: 'boolean',
           alias: 'hidden',
           displayable: false
-        }, /*{
-          name: 'registration.selfRegistration',
-          label: trans('public_registration'),
-          type: 'boolean',
-          alias: 'selfRegistration'
-        }, */{
+        }, {
           name: 'tags',
           type: 'tag',
           label: trans('tags'),
@@ -93,14 +88,6 @@ const Workspaces = (props) => {
           options: {
             objectClass: 'Claroline\\CoreBundle\\Entity\\Workspace\\Workspace'
           }
-        }, {
-          name: 'organizations',
-          type: 'organizations',
-          label: trans('organizations'),
-          displayable: false,
-          displayed: false,
-          sortable: false,
-          filterable: true
         }
       ].concat(props.customDefinition)}
 

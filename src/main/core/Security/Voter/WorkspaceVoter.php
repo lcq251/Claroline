@@ -54,14 +54,18 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
         $collection = isset($options['collection']) ? $options['collection'] : null;
 
         switch ($attributes[0]) {
-            case self::VIEW:   return $this->checkView($token, $object);
-            case self::CREATE: return $this->checkCreation($token);
+            case self::VIEW:
+                return $this->checkView($token, $object);
+            case self::CREATE:
+                return $this->checkCreation($token);
             case self::EDIT:
             case self::ADMINISTRATE:
             case self::COPY:
                 return $this->checkEdit($token, $object);
-            case self::DELETE: return $this->checkDelete($token, $object);
-            case self::PATCH:  return $this->checkPatch($token, $object, $collection);
+            case self::DELETE:
+                return $this->checkDelete($token, $object);
+            case self::PATCH:
+                return $this->checkPatch($token, $object, $collection);
         }
 
         if ($this->isToolGranted('ADMINISTRATE', 'workspaces') || $this->isWorkspaceManaged($token, $object)) {

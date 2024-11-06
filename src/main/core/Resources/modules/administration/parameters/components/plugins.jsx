@@ -10,6 +10,7 @@ import {DataCard} from '#/main/app/data/components/card'
 import {ToolPage} from '#/main/core/tool'
 
 import {selectors} from '#/main/core/administration/parameters/store'
+import {PageListSection} from '#/main/app/page'
 
 const PluginCard = props =>
   <DataCard
@@ -37,61 +38,64 @@ PluginCard.propTypes = {
 
 const Plugins = (props) =>
   <ToolPage title={trans('plugins')}>
-    <ListData
-      name={selectors.STORE_NAME+'.plugins'}
-      fetch={{
-        url: ['apiv2_plugin_list'],
-        autoload: true
-      }}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        target: `${props.path}/plugins/${row.id}`,
-        label: trans('open', {}, 'actions')
-      })}
-      definition={[
-        {
-          name: 'status',
-          label: trans('status'),
-          type: 'string',
-          render: (row) => {
-            if (!row.ready) {
-              return <span className="fa fa-fw fa-warning" />
-            }
+    <PageListSection>
+      <ListData
+        flush={true}
+        name={selectors.STORE_NAME+'.plugins'}
+        fetch={{
+          url: ['apiv2_plugin_list'],
+          autoload: true
+        }}
+        primaryAction={(row) => ({
+          type: LINK_BUTTON,
+          target: `${props.path}/plugins/${row.id}`,
+          label: trans('open', {}, 'actions')
+        })}
+        definition={[
+          {
+            name: 'status',
+            label: trans('status'),
+            type: 'string',
+            render: (row) => {
+              if (!row.ready) {
+                return <span className="fa fa-fw fa-warning" />
+              }
 
-            if (row.locked) {
-              return <span className="fa fa-fw fa-lock" />
-            }
-          },
-          displayed: true,
-          filterable: false,
-          sortable: false
-        }, {
-          name: 'name',
-          type: 'translation',
-          label: trans('name'),
-          options: {domain: 'plugin'},
-          displayed: true,
-          primary: true,
-          filterable: false,
-          sortable: false
-        }, {
-          name: 'meta.version',
-          alias: 'version',
-          type: 'string',
-          label: trans('version'),
-          displayed: true
-        }, {
-          name: 'meta.description',
-          type: 'string',
-          label: trans('description'),
-          calculated: (data) => trans(`${data.name}_desc`, {}, 'plugin'),
-          displayed: true,
-          filterable: false,
-          sortable: false
-        }
-      ]}
-      card={PluginCard}
-    />
+              if (row.locked) {
+                return <span className="fa fa-fw fa-lock" />
+              }
+            },
+            displayed: true,
+            filterable: false,
+            sortable: false
+          }, {
+            name: 'name',
+            type: 'translation',
+            label: trans('name'),
+            options: {domain: 'plugin'},
+            displayed: true,
+            primary: true,
+            filterable: false,
+            sortable: false
+          }, {
+            name: 'meta.version',
+            alias: 'version',
+            type: 'string',
+            label: trans('version'),
+            displayed: true
+          }, {
+            name: 'meta.description',
+            type: 'string',
+            label: trans('description'),
+            calculated: (data) => trans(`${data.name}_desc`, {}, 'plugin'),
+            displayed: true,
+            filterable: false,
+            sortable: false
+          }
+        ]}
+        card={PluginCard}
+      />
+    </PageListSection>
   </ToolPage>
 
 Plugins.propTypes = {

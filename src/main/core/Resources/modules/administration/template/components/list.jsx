@@ -8,50 +8,54 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 import {TemplateTypeCard} from '#/main/core/data/types/template-type/components/card'
 import {selectors} from '#/main/core/administration/template/store'
+import {PageListSection} from '#/main/app/page'
 
 const TemplateList = (props) =>
   <ToolPage
     title={trans(props.type)}
   >
-    <ListData
-      name={selectors.STORE_NAME + '.templates'}
-      fetch={{
-        url: ['apiv2_template_type_list', {type: props.type}],
-        autoload: true
-      }}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        target: `${props.path}/${props.type}/${row.id}`,
-        label: trans('open', {}, 'actions')
-      })}
-      definition={[
-        {
-          name: 'name',
-          type: 'translation',
-          label: trans('name'),
-          displayed: true,
-          filterable: false,
-          sortable: false,
-          options: {
-            domain: 'template'
-          },
-          primary: true
-        }, {
-          name: 'description',
-          type: 'translation',
-          label: trans('description'),
-          displayed: true,
-          filterable: false,
-          sortable: false,
-          calculated: (rowData) => `${rowData.name}_desc`,
-          options: {
-            domain: 'template'
+    <PageListSection>
+      <ListData
+        flush={true}
+        name={selectors.STORE_NAME + '.templates'}
+        fetch={{
+          url: ['apiv2_template_type_list', {type: props.type}],
+          autoload: true
+        }}
+        primaryAction={(row) => ({
+          type: LINK_BUTTON,
+          target: `${props.path}/${props.type}/${row.id}`,
+          label: trans('open', {}, 'actions')
+        })}
+        definition={[
+          {
+            name: 'name',
+            type: 'translation',
+            label: trans('name'),
+            displayed: true,
+            filterable: false,
+            sortable: false,
+            options: {
+              domain: 'template'
+            },
+            primary: true
+          }, {
+            name: 'description',
+            type: 'translation',
+            label: trans('description'),
+            displayed: true,
+            filterable: false,
+            sortable: false,
+            calculated: (rowData) => `${rowData.name}_desc`,
+            options: {
+              domain: 'template'
+            }
           }
-        }
-      ]}
-      card={TemplateTypeCard}
-      selectable={false}
-    />
+        ]}
+        card={TemplateTypeCard}
+        selectable={false}
+      />
+    </PageListSection>
   </ToolPage>
 
 TemplateList.propTypes = {

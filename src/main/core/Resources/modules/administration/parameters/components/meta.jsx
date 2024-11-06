@@ -17,6 +17,7 @@ const restrictedStorage = (parameters) => get(parameters, 'restrictions.enableSt
 const Meta = (props) =>
   <ToolPage title={trans('general')}>
     <FormData
+      className="my-5"
       level={2}
       name={selectors.FORM_NAME}
       target={['apiv2_parameters_update']}
@@ -42,6 +43,7 @@ const Meta = (props) =>
               name: 'meta.description',
               type: 'string',
               label: trans('description'),
+              recommended: true,
               options: {long: true}
             }, {
               name: 'intl.locale',

@@ -12,7 +12,7 @@ const TemplateTypeCard = props =>
     id={props.data.id}
     icon="fa fa-file-alt"
     title={trans(props.data.name, {}, 'template')}
-    subtitle={trans(`${props.data.name}_desc`, {}, 'template')}
+    contentText={trans(`${props.data.name}_desc`, {}, 'template')}
   />
 
 TemplateTypeCard.propTypes = {
