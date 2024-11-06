@@ -24,7 +24,7 @@ const Modal = (props) => {
           }}
           className={classes({
             'modal-poster': !!props.poster,
-            'mt-3': !props.poster
+            // 'mt-3': !props.poster
           })}
         >
           {props.icon &&

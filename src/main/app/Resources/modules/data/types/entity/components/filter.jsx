@@ -9,7 +9,7 @@ import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 const EntityFilter = (props) =>
   <span className="data-filter entity-filter">
-    {props.search}
+    {props.value}
 
     <Button
       className="btn btn-outline-secondary btn-filter"
@@ -18,12 +18,19 @@ const EntityFilter = (props) =>
       icon={props.icon}
       label={props.placeholder || trans('select', {}, 'actions')}
       size="sm"
-      modal={[props.picker.type, {
+      modal={[props.pickerType, {
         ...props.picker,
+        multiple: props.multiple,
         selectAction: (selected) => ({
           type: CALLBACK_BUTTON,
           label: trans('select', {}, 'actions'),
-          callback: () => props.updateSearch(selected[0].id)
+          callback: () => {
+            if (props.multiple) {
+              props.updateSearch(selected.map(s => s.id))
+            } else {
+              props.updateSearch(selected[0].id)
+            }
+          }
         })
       }]}
       disabled={props.disabled}
@@ -32,15 +39,18 @@ const EntityFilter = (props) =>
 
 implementPropTypes(EntityFilter, DataSearchTypes, {
   search: T.string,
+  pickerType: T.string.isRequired,
   picker: T.shape({
-    type: T.string.isRequired,
     url: T.oneOfType([T.string, T.array]),
     title: T.string,
     filters: T.arrayOf(T.shape({
       // list filter types
     }))
-  }).isRequired,
+  }),
+  multiple: T.bool,
   icon: T.string
+}, {
+  multiple: false // for retro-compatibility. should be true like EntityInput
 })
 
 export {

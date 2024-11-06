@@ -26,7 +26,7 @@ const ContextHistory = (props) => {
 
   return (
     <div className={props.className} role="presentation">
-      {props.empty && hasRecent() &&
+      {props.delete && hasRecent() &&
         <Button
           type={CALLBACK_BUTTON}
           className="mb-3 me-auto btn btn-primary"
@@ -75,6 +75,7 @@ const ContextHistory = (props) => {
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-times',
                   label: trans('delete', {}, 'actions'),
+                  displayed: props.delete,
                   callback: () => {
                     const newRecent = removeRecent(result.id)
                     setHistory(parseRecent(newRecent))
@@ -92,13 +93,13 @@ const ContextHistory = (props) => {
 ContextHistory.propTypes = {
   className: T.string,
   size: T.string,
-  empty: T.bool,
+  delete: T.bool,
   onOpen: T.func
 }
 
 ContextHistory.defaultProps = {
   size: 'xs',
-  empty: false
+  delete: false
 }
 
 export {

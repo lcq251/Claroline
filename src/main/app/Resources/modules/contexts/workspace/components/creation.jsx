@@ -29,6 +29,7 @@ const WorkspaceCreation = (props) =>
             multiple: false,
             selectAction: (selected) => ({
               type: CALLBACK_BUTTON,
+              label: trans('Créer à partir du modèle', {}, 'actions'),
               callback: () => {
                 props.startCreation(merge({}, pick(selected[0], 'name', 'code', 'thumbnail', 'poster', 'meta'), {
                   model: selected[0],
@@ -61,6 +62,7 @@ const WorkspaceCreation = (props) =>
             multiple: false,
             selectAction: (selected) => ({
               type: CALLBACK_BUTTON,
+              label: trans('copy', {}, 'actions'),
               callback: () => {
                 props.startCreation(merge({}, selected[0], {
                   id: makeId(),

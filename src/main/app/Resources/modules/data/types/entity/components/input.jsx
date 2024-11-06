@@ -6,10 +6,11 @@ import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {Button} from '#/main/app/action/components/button'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import isEmpty from 'lodash/isEmpty'
 
 const PickerButton = props =>
   <Button
-    className="btn btn-outline-primary w-100 mt-2"
+    className="btn btn-body w-100 mt-3"
     type={MODAL_BUTTON}
     icon="fa fa-fw fa-plus"
     label={trans('add', {}, 'actions')}
@@ -17,10 +18,26 @@ const PickerButton = props =>
       url: props.url,
       title: props.title,
       filters: props.filters,
+      multiple: props.multiple,
       selectAction: (selected) => ({
         type: CALLBACK_BUTTON,
-        label: trans('select', {}, 'actions'),
-        callback: () => props.onChange(props.multiple ? selected : selected[0])
+        label: trans('add', {}, 'actions'),
+        callback: () => {
+          if (props.multiple) {
+            const newValue = [].concat(props.value || [])
+            selected.forEach(object => {
+              const index = newValue.findIndex(o => o.id === object.id)
+
+              if (-1 === index) {
+                newValue.push(object)
+              }
+            })
+
+            props.onChange(newValue)
+          } else {
+            props.onChange(selected[0])
+          }
+        }
       })
     }]}
     size={props.size}
@@ -34,6 +51,10 @@ PickerButton.propTypes = {
   filters: T.arrayOf(T.shape({
     // list filter types
   })),
+  value: T.oneOfType([
+    T.object, // multiple = false
+    T.arrayOf(T.object) // multiple = true
+  ]),
   onChange: T.func.isRequired,
   size: T.string,
   disabled: T.bool,
@@ -41,30 +62,57 @@ PickerButton.propTypes = {
 }
 
 const EntityInput = props => {
-  const actions = props.disabled ? [] : [
-    {
-      name: 'delete',
-      type: CALLBACK_BUTTON,
-      icon: 'fa fa-fw fa-trash',
-      label: trans('delete', {}, 'actions'),
-      dangerous: true,
-      callback: () => props.onChange(null)
-    }
-  ]
-
-  if (props.value) {
+  if (!isEmpty(props.value)) {
     return (
       <>
-        {createElement(props.card, {
+        {props.multiple &&
+          <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
+            {props.value.map(object => (
+              <li key={object.id}>
+                {createElement(props.card, {
+                  data: object,
+                  size: 'sm',
+                  actions: [{
+                    name: 'delete',
+                    type: CALLBACK_BUTTON,
+                    icon: 'fa fa-fw fa-times',
+                    label: trans('delete', {}, 'actions'),
+                    displayed: !props.disabled,
+                    callback: () => {
+                      const newValue = [].concat(props.value || [])
+                      const index = newValue.findIndex(o => o.id === object.id)
+
+                      if (-1 < index) {
+                        newValue.splice(index, 1)
+                        props.onChange(newValue)
+                      }
+                    }
+                  }]
+                })}
+              </li>
+            ))}
+          </ul>
+        }
+
+        {!props.multiple && createElement(props.card, {
           data: props.value,
-          size: 'xs',
-          actions: actions
+          size: 'sm',
+          actions: [{
+            name: 'delete',
+            type: CALLBACK_BUTTON,
+            icon: 'fa fa-fw fa-times',
+            label: trans('delete', {}, 'actions'),
+            displayed: !props.disabled,
+            callback: () => props.onChange(null)
+          }]
         })}
 
         {!props.disabled &&
           <PickerButton
             {...props.picker}
+            type={props.pickerType}
             size={props.size}
+            value={props.value}
             onChange={props.onChange}
             multiple={props.multiple}
           />
@@ -82,25 +130,43 @@ const EntityInput = props => {
     >
       <PickerButton
         {...props.picker}
+        type={props.pickerType}
         size={props.size}
+        value={props.value}
         disabled={props.disabled}
         onChange={props.onChange}
+        multiple={props.multiple}
       />
     </ContentPlaceholder>
   )
 }
 
 implementPropTypes(EntityInput, DataInputTypes, {
-  value: T.object,
+  value: T.oneOfType([
+    T.object, // multiple = false
+    T.arrayOf(T.object) // multiple = true
+  ]),
+
+  /**
+   * The name of a registered modal to use as a picker for the input.
+   */
+  pickerType: T.string.isRequired,
+
+  /**
+   * Custom configuration for the picker
+   */
   picker: T.shape({
-    type: T.string.isRequired,
     url: T.oneOfType([T.string, T.array]),
     title: T.string,
     filters: T.arrayOf(T.shape({
       // list filter types
     }))
-  }).isRequired,
-  card: T.any,
+  }),
+
+  /**
+   * The Card component of the entity.
+   */
+  card: T.any.isRequired,
   icon: T.string,
   placeholder: T.string,
   multiple: T.bool

@@ -23,6 +23,7 @@ const OrganizationButton = props =>
       title: props.title,
       selectAction: (selected) => ({
         type: CALLBACK_BUTTON,
+        label: trans('add', {}, 'actions'),
         callback: () => props.onChange(selected[0])
       })
     }]}
@@ -39,7 +40,7 @@ OrganizationButton.propTypes = {
 const OrganizationInput = props => {
   if (props.value) {
     return (
-      <Fragment>
+      <>
         <OrganizationCard
           data={props.value}
           size="xs"
@@ -47,9 +48,8 @@ const OrganizationInput = props => {
             {
               name: 'delete',
               type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-trash',
+              icon: 'fa fa-fw fa-times',
               label: trans('delete', {}, 'actions'),
-              dangerous: true,
               disabled: props.disabled,
               callback: () => props.onChange(null)
             }
@@ -62,7 +62,7 @@ const OrganizationInput = props => {
           size={props.size}
           onChange={props.onChange}
         />
-      </Fragment>
+      </>
     )
   }
 

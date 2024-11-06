@@ -3,43 +3,58 @@ import {PropTypes as T} from 'prop-types'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
+import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
-import {Organization as OrganizationTypes} from '#/main/community/prop-types'
-import {OrganizationList} from '#/main/community/organization/components/list'
-
-import {selectors} from '#/main/community/modals/organizations/store'
+import {OrganizationCard} from '#/main/community/organization/components/card'
 
 const OrganizationsModal = props => {
-  const selectAction = props.selectAction(props.selected)
-
   return (
-    <Modal
-      {...omit(props, 'selected', 'selectAction', 'reset')}
+    <PickerModal
+      {...omit(props)}
       icon="fa fa-fw fa-building"
-      className="data-picker-modal"
-      size="xl"
-      onExiting={props.reset}
-    >
-      <OrganizationList
-        name={selectors.STORE_NAME}
-        url={props.url}
-        primaryAction={undefined}
-        actions={undefined}
-      />
-
-      <Button
-        label={trans('select', {}, 'actions')}
-        {...selectAction}
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        primary={true}
-        disabled={0 === props.selected.length}
-        onClick={props.fadeModal}
-      />
-    </Modal>
+      name="organizationsPicker"
+      definition={[
+        {
+          name: 'name',
+          type: 'string',
+          label: trans('name'),
+          displayed: true,
+          primary: true,
+          render: (organization) => (
+            <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
+              <Thumbnail thumbnail={organization.thumbnail} name={organization.name} size="xs" square={true} />
+              {organization.name}
+            </div>
+          )
+        }, {
+          name: 'code',
+          type: 'string',
+          label: trans('code')
+        }, {
+          name: 'meta.description',
+          type: 'string',
+          label: trans('description'),
+          options: {long: true},
+          displayed: true,
+          sortable: false
+        }, {
+          name: 'meta.default',
+          type: 'boolean',
+          label: trans('default')
+        }, {
+          name: 'email',
+          type: 'email',
+          label: trans('email')
+        }, {
+          name: 'restrictions.public',
+          alias: 'public',
+          type: 'boolean',
+          label: trans('public')
+        }
+      ]}
+      card={OrganizationCard}
+    />
   )
 }
 
@@ -47,18 +62,14 @@ OrganizationsModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
   selectAction: T.func.isRequired,
-  fadeModal: T.func.isRequired,
-
-  // from store
-  selected: T.arrayOf(T.shape(
-    OrganizationTypes.propTypes
-  )).isRequired,
-  reset: T.func.isRequired
+  multiple: T.bool,
+  // from modal
+  fadeModal: T.func.isRequired
 }
 
 OrganizationsModal.defaultProps = {
   url: ['apiv2_organization_list'],
-  title: trans('organizations')
+  title: trans('organizations', {}, 'community')
 }
 
 export {

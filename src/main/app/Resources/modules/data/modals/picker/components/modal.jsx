@@ -2,8 +2,9 @@ import React, {useCallback, useMemo} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import omit from 'lodash/omit'
+import isEmpty from 'lodash/isEmpty'
 
-import {useReducer} from '#/main/app/store/reducer'
+import {makeReducer, useReducer} from '#/main/app/store/reducer'
 import {trans, transChoice} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
@@ -11,10 +12,31 @@ import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {makeListReducer, actions as listActions, selectors as listSelectors} from '#/main/app/content/list/store'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {LIST_TOGGLE_SELECT, LIST_TOGGLE_SELECT_ALL} from '#/main/app/content/list/store/actions'
+import {makeInstanceAction} from '#/main/app/store/actions'
 
 const PickerModal = (props) => {
   // append list reducer to the store if not already mounted
-  const reducer = useMemo(() => makeListReducer(props.name), [props.name])
+  const reducer = useMemo(() => makeListReducer(props.name, {}, {
+    selected: makeReducer([], {
+      [makeInstanceAction(LIST_TOGGLE_SELECT, props.name)]: (state, action) => {
+        if (!props.multiple) {
+          return [action.row.id]
+        }
+
+        return state
+      },
+      [makeInstanceAction(LIST_TOGGLE_SELECT_ALL, props.name)]: (state, action) => {
+        if (!props.multiple) {
+          if (!isEmpty(action.rows)) {
+            return [action.rows[0].id]
+          }
+        }
+
+        return state
+      }
+    })
+  }), [props.name, props.multiple])
   useReducer(props.name, reducer)
 
   const dispatch = useDispatch()
@@ -54,13 +76,13 @@ const PickerModal = (props) => {
             definition={props.definition}
             card={props.card}
             primaryAction={(row) => {
-              if (props.multiple) {
+              /*if (props.multiple) {*/
                 return ({
                   type: CALLBACK_BUTTON,
                   label: trans('select', {}, 'actions'),
                   callback: () => select(row)
                 })
-              }
+              /*}*/
 
               const selectAction = props.selectAction([row])
               if (selectAction) {
@@ -74,7 +96,7 @@ const PickerModal = (props) => {
                 }
               }
             }}
-            selectable={props.multiple}
+            selectable={true}
           /> :
           props.children
         }
@@ -83,25 +105,23 @@ const PickerModal = (props) => {
 
       {props.children}
 
-      {props.multiple &&
-        <div className="modal-footer">
-          {selected && 0 !== selected.length &&
-            <span role="presentation">
-              {transChoice('list_selected_count', selected.length, {count: selected.length}, 'platform')}
-            </span>
-          }
+      <div className="modal-footer">
+        {selected && 0 !== selected.length &&
+          <span role="presentation">
+            {transChoice('list_selected_count', selected.length, {count: selected.length}, 'platform')}
+          </span>
+        }
 
-          {selectAction &&
-            <Button
-              label={trans('select', {}, 'actions')}
-              {...selectAction}
-              className="btn btn-primary"
-              disabled={0 === selected.length}
-              onClick={props.fadeModal}
-            />
-          }
-        </div>
-      }
+        {selectAction &&
+          <Button
+            label={trans('select', {}, 'actions')}
+            {...selectAction}
+            className="btn btn-primary"
+            disabled={0 === selected.length}
+            onClick={props.fadeModal}
+          />
+        }
+      </div>
     </Modal>
   )
 }
@@ -113,13 +133,11 @@ PickerModal.propTypes = {
   definition: T.arrayOf(T.object),
   card: T.func,
   selectAction: T.func,
-  children: T.any,
-  autoClose: T.bool
+  children: T.any
 }
 
 PickerModal.defaultProps = {
-  multiple: true,
-  autoClose: true
+  multiple: true
 }
 
 export {

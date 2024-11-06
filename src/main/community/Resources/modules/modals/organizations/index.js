@@ -1,13 +1,13 @@
 /**
  * Organization picker modal.
  *
- * Displays the groups picker inside the modale.
+ * Displays the groups picker inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {OrganizationsModal} from '#/main/community/modals/organizations/containers/modal'
+import {OrganizationsModal} from '#/main/community/modals/organizations/components/modal'
 
 const MODAL_ORGANIZATIONS = 'MODAL_ORGANIZATIONS'
 
