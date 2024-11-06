@@ -1,6 +1,5 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
@@ -10,7 +9,7 @@ import {ContentMenu} from '#/main/app/content/components/menu'
 
 import {selectors} from '#/main/transfer/tools/import/store'
 
-const ImportOverview = (props) => {
+const ImportOverview = () => {
   const importers = useSelector(selectors.importExplanation)
 
   let links = []
