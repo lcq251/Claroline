@@ -42,7 +42,7 @@ class Exercise extends AbstractResource
     /**
      * Date of availability of the corrections.
      */
-    #[ORM\Column(name: 'date_correction', type: Types::STRING, nullable: true)]
+    #[ORM\Column(name: 'date_correction', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCorrection = null;
 
     /**
