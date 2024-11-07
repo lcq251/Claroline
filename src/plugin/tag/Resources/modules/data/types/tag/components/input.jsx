@@ -272,6 +272,7 @@ class TagInput extends Component {
             modal={[MODAL_TAGS, {
               selectAction: (selectedTags) => ({
                 type: CALLBACK_BUTTON,
+                label: trans('add', {}, 'actions'),
                 callback: () => this.select(selectedTags)
               })
             }]}
@@ -301,7 +302,6 @@ class TagInput extends Component {
 }
 
 implementPropTypes(TagInput, DataInputTypes, {
-  objectClass: T.string,
   value: T.arrayOf(T.string)
 }, {
   value: []
