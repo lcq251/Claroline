@@ -17,7 +17,7 @@ use Claroline\CoreBundle\Entity\Plugin;
 use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
 use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
-use Claroline\CoreBundle\Entity\Template\TemplateType;
+use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Entity\Tool\Tool;
 use Claroline\CoreBundle\Entity\Tool\ToolMaskDecoder;
 use Claroline\CoreBundle\Entity\Widget\Widget;

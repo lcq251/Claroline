@@ -15,7 +15,7 @@ use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\IdentifiableInterface;
 use Claroline\CoreBundle\Entity\Location;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CursusBundle\Finder\SessionType;
 use Claroline\CursusBundle\Repository\SessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;

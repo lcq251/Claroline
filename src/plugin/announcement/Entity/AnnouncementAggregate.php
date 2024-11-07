@@ -12,7 +12,7 @@
 namespace Claroline\AnnouncementBundle\Entity;
 
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

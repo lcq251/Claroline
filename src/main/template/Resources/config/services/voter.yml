@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        tags: [security.voter]
+
+    Claroline\TemplateBundle\Security\Voter\TemplateVoter:
+        parent: Claroline\AppBundle\Security\Voter\AbstractVoter

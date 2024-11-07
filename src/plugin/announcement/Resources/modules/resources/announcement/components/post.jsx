@@ -28,7 +28,6 @@ const AnnouncementPost = (props) => {
       <PageHeading
         size="md"
         title={props.announcement.title}
-        primaryAction="edit"
         actions={[
           {
             name: 'download',

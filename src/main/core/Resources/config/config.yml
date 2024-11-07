@@ -144,9 +144,6 @@ plugin:
         - name: parameters
           icon: cog
 
-        - name: templates
-          icon: file-alt
-
         - name: integration
           icon: plug
 

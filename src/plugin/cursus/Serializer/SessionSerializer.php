@@ -10,12 +10,11 @@ use Claroline\CommunityBundle\Serializer\RoleSerializer;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\LocationSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
-use Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Location;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Role;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
@@ -25,6 +24,7 @@ use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Repository\CourseRepository;
 use Claroline\CursusBundle\Repository\SessionRepository;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -32,41 +32,21 @@ class SessionSerializer
 {
     use SerializerTrait;
 
-    private AuthorizationCheckerInterface $authorization;
-    private ObjectManager $om;
-    private UserSerializer $userSerializer;
-    private RoleSerializer $roleSerializer;
-    private LocationSerializer $locationSerializer;
-    private WorkspaceSerializer $workspaceSerializer;
-    private ResourceNodeSerializer $resourceSerializer;
-    private CourseSerializer $courseSerializer;
-    private TemplateSerializer $templateSerializer;
-
     private CourseRepository $courseRepo;
     private SessionRepository $sessionRepo;
     private ObjectRepository $templateRepo;
 
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        ObjectManager $om,
-        UserSerializer $userSerializer,
-        RoleSerializer $roleSerializer,
-        LocationSerializer $locationSerializer,
-        WorkspaceSerializer $workspaceSerializer,
-        ResourceNodeSerializer $resourceSerializer,
-        CourseSerializer $courseSerializer,
-        TemplateSerializer $templateSerializer
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly ObjectManager $om,
+        private readonly UserSerializer $userSerializer,
+        private readonly RoleSerializer $roleSerializer,
+        private readonly LocationSerializer $locationSerializer,
+        private readonly WorkspaceSerializer $workspaceSerializer,
+        private readonly ResourceNodeSerializer $resourceSerializer,
+        private readonly CourseSerializer $courseSerializer,
+        private readonly TemplateSerializer $templateSerializer
     ) {
-        $this->authorization = $authorization;
-        $this->om = $om;
-        $this->userSerializer = $userSerializer;
-        $this->roleSerializer = $roleSerializer;
-        $this->locationSerializer = $locationSerializer;
-        $this->workspaceSerializer = $workspaceSerializer;
-        $this->resourceSerializer = $resourceSerializer;
-        $this->courseSerializer = $courseSerializer;
-        $this->templateSerializer = $templateSerializer;
-
         $this->courseRepo = $om->getRepository(Course::class);
         $this->sessionRepo = $om->getRepository(Session::class);
         $this->templateRepo = $om->getRepository(Template::class);

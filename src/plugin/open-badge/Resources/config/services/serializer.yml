@@ -15,7 +15,7 @@ services:
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\CommunityBundle\Serializer\OrganizationSerializer'
             - '@Claroline\OpenBadgeBundle\Serializer\RuleSerializer'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
 
     Claroline\OpenBadgeBundle\Serializer\EvidenceSerializer:
         arguments:

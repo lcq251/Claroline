@@ -3,9 +3,9 @@
 namespace Claroline\PrivacyBundle\Installation\Updater;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Template\Template;
-use Claroline\CoreBundle\Entity\Template\TemplateContent;
-use Claroline\CoreBundle\Entity\Template\TemplateType;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Entity\TemplateContent;
+use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\InstallationBundle\Updater\Updater;
 use Claroline\PrivacyBundle\Manager\PrivacyManager;

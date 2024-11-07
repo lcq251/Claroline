@@ -9,7 +9,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
 
-    claroline.context_provider:
+    claroline.provider.context:
         alias: Claroline\AppBundle\Component\Context\ContextProvider
         public: true
 
@@ -29,7 +29,7 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\AppBundle\API\Crud'
 
-    claroline.tool_provider:
+    claroline.provider.tool:
         alias: Claroline\AppBundle\Component\Tool\ToolProvider
         public: true
 
@@ -42,7 +42,7 @@ services:
         arguments:
             - !tagged_iterator claroline.component.data_source
 
-    claroline.data_source_provider:
+    claroline.provider.data_source:
         alias: Claroline\AppBundle\Component\DataSource\DataSourceProvider
         public: true
 

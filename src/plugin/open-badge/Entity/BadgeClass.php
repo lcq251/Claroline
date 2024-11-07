@@ -22,11 +22,11 @@ use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
-use Claroline\CoreBundle\Entity\Model\Template;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Finder\BadgeType;
+use Claroline\TemplateBundle\Model\HasTemplate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -47,7 +47,7 @@ class BadgeClass implements CrudEntityInterface
     use CreatedAt;
     use UpdatedAt;
     use Color;
-    use Template;
+    use HasTemplate;
     use Archived;
     use Poster;
 

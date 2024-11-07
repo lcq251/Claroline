@@ -24,7 +24,7 @@ services:
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
             - '@Claroline\CursusBundle\Serializer\CourseSerializer'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
 
     Claroline\CursusBundle\Serializer\EventSerializer:
         arguments:
@@ -33,7 +33,7 @@ services:
             - '@Claroline\CoreBundle\API\Serializer\Planning\PlannedObjectSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CursusBundle\Serializer\SessionSerializer'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
 
     Claroline\CursusBundle\Serializer\EventPresenceSerializer:
         arguments:

@@ -1,0 +1,8 @@
+services:
+    Claroline\TemplateBundle\Component\Template\TemplateProvider:
+        arguments:
+            - !tagged_iterator claroline.component.template
+
+    claroline.provider.template:
+        alias: Claroline\TemplateBundle\Component\Template\TemplateProvider
+        public: true

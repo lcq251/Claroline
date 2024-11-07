@@ -115,6 +115,7 @@
             "Claroline\\ScormBundle\\": "src/plugin/scorm",
             "Claroline\\SlideshowBundle\\": "src/plugin/slideshow",
             "Claroline\\TagBundle\\": "src/plugin/tag",
+            "Claroline\\TemplateBundle\\": "src/main/template",
             "Claroline\\TextPlayerBundle\\": "src/plugin/text-player",
             "Claroline\\ThemeBundle\\": "src/main/theme",
             "Claroline\\TransferBundle\\": "src/main/transfer",

@@ -40,17 +40,6 @@ services:
             - '@security.token_storage'
             - '@Claroline\AppBundle\API\FinderProvider'
 
-    Claroline\CoreBundle\Controller\Template\TemplateController:
-        parent: Claroline\AppBundle\Controller\AbstractCrudController
-        public: true
-
-    Claroline\CoreBundle\Controller\Template\TemplateTypeController:
-        arguments:
-            - '@security.authorization_checker'
-            - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
-
     Claroline\CoreBundle\Controller\Workspace\ArchiveController:
         public: true
         arguments:

@@ -1,0 +1,9 @@
+services:
+    Claroline\TemplateBundle\Serializer\TemplateTypeSerializer:
+        tags: [ claroline.serializer ]
+
+    Claroline\TemplateBundle\Serializer\TemplateSerializer:
+        tags: [ claroline.serializer ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\TemplateBundle\Serializer\TemplateTypeSerializer'

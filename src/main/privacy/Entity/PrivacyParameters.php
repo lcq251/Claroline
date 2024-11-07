@@ -3,7 +3,7 @@
 namespace Claroline\PrivacyBundle\Entity;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

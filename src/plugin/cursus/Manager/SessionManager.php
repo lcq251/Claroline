@@ -16,7 +16,7 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Manager\PlatformManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Role;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\CatalogEvents\MessageEvents;
 use Claroline\CoreBundle\Event\SendMessageEvent;

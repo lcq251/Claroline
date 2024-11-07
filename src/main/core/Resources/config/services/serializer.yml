@@ -84,15 +84,6 @@ services:
             - '@Claroline\AppBundle\Component\Tool\ToolProvider'
             - '@Claroline\CoreBundle\Manager\Tool\ToolManager'
 
-    Claroline\CoreBundle\API\Serializer\Template\TemplateTypeSerializer:
-        tags: [claroline.serializer]
-
-    Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer:
-        tags: [claroline.serializer]
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateTypeSerializer'
-
     Claroline\CoreBundle\API\Serializer\Resource\ResourceTypeSerializer:
         tags: [claroline.serializer]
         arguments:

@@ -1,0 +1,5 @@
+claro_template:
+    resource: "@ClarolineTemplateBundle/Controller/"
+    type: attribute
+    options:
+        expose: true

@@ -7,10 +7,10 @@ use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\API\Serializer\Planning\PlannedObjectSerializer;
-use Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EventSerializer

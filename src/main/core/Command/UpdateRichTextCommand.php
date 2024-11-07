@@ -99,7 +99,7 @@ class UpdateRichTextCommand extends Command
         return array_filter([
             'Claroline\CoreBundle\Entity\Resource\Revision' => ['content'],
             'Claroline\CoreBundle\Entity\Widget\Type\SimpleWidget' => ['content'],
-            'Claroline\CoreBundle\Entity\Template\TemplateContent' => ['content'],
+            'Claroline\TemplateBundle\Entity\TemplateContent' => ['content'],
             'Claroline\CoreBundle\Entity\Planning\PlannedObject' => ['description'],
             // plugins (should not be here)
             'Claroline\AnnouncementBundle\Entity\Announcement' => ['content'],

@@ -6,22 +6,17 @@ use Claroline\AnnouncementBundle\Entity\AnnouncementAggregate;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 
 class AnnouncementAggregateSerializer
 {
     use SerializerTrait;
 
-    private $om;
-    private $templateSerializer;
-
     public function __construct(
-        ObjectManager $om,
-        TemplateSerializer $templateSerializer
+        private readonly ObjectManager $om,
+        private readonly TemplateSerializer $templateSerializer
     ) {
-        $this->om = $om;
-        $this->templateSerializer = $templateSerializer;
     }
 
     public function getName(): string

@@ -13,4 +13,4 @@ services:
         tags: [claroline.serializer]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'

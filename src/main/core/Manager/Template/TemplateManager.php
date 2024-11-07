@@ -12,29 +12,21 @@
 namespace Claroline\CoreBundle\Manager\Template;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Template\Template;
-use Claroline\CoreBundle\Entity\Template\TemplateType;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Manager\LocaleManager;
 use Doctrine\Persistence\ObjectRepository;
 
 class TemplateManager
 {
-    private ObjectManager $om;
-    private LocaleManager $localeManager;
-    private PlaceholderManager $placeholderManager;
-
     private ObjectRepository $templateTypeRepo;
     private ObjectRepository $templateRepo;
 
     public function __construct(
-        ObjectManager $om,
-        LocaleManager $localeManager,
-        PlaceholderManager $placeholderManager
+        private readonly ObjectManager $om,
+        private readonly LocaleManager $localeManager,
+        private readonly PlaceholderManager $placeholderManager
     ) {
-        $this->om = $om;
-        $this->localeManager = $localeManager;
-        $this->placeholderManager = $placeholderManager;
-
         $this->templateTypeRepo = $om->getRepository(TemplateType::class);
         $this->templateRepo = $om->getRepository(Template::class);
     }

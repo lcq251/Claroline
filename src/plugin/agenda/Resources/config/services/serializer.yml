@@ -11,7 +11,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Planning\PlannedObjectSerializer'
-            - '@Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
 
     Claroline\AgendaBundle\Serializer\EventInvitationSerializer:
         tags: [ claroline.serializer ]

@@ -6,15 +6,15 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\OrganizationSerializer;
-use Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Organization\Organization;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

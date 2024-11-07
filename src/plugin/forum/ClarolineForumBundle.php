@@ -12,14 +12,7 @@
 namespace Claroline\ForumBundle;
 
 use Claroline\KernelBundle\Bundle\DistributionPluginBundle;
-use Claroline\TagBundle\ClarolineTagBundle;
 
 class ClarolineForumBundle extends DistributionPluginBundle
 {
-    public function getRequiredPlugins(): array
-    {
-        return [
-            ClarolineTagBundle::class,
-        ];
-    }
 }

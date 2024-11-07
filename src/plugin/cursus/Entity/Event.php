@@ -13,7 +13,7 @@ namespace Claroline\CursusBundle\Entity;
 
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CursusBundle\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

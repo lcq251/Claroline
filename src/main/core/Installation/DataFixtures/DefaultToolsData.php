@@ -27,7 +27,7 @@ class DefaultToolsData extends AbstractFixture implements PostInstallInterface
 
     public function setContainer(ContainerInterface $container = null): void
     {
-        $this->contextProvider = $container->get('claroline.context_provider');
+        $this->contextProvider = $container->get('claroline.provider.context');
     }
 
     public function getOrder(): int

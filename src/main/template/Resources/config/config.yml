@@ -1,0 +1,4 @@
+plugin:
+    tools:
+        - name: templates
+          icon: stamp

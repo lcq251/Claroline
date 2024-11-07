@@ -1,0 +1,7 @@
+{
+    "loading": "Nous chargeons votre template...",
+    "template_delete_confirm": "Suppression du template",
+    "template_delete_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce template ?",
+    "no_template_type": "Aucun type de template",
+    "no_template": "Aucun template"
+}

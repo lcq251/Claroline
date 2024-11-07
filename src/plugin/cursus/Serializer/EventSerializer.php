@@ -16,14 +16,14 @@ use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Planning\PlannedObjectSerializer;
-use Claroline\CoreBundle\API\Serializer\Template\TemplateSerializer;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Registration\EventUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Repository\EventRepository;
 use Claroline\CursusBundle\Repository\SessionRepository;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

@@ -12,7 +12,7 @@
 namespace Claroline\CoreBundle\API\Finder\Template;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Doctrine\ORM\QueryBuilder;
 
 /**

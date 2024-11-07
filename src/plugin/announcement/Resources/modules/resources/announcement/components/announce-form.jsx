@@ -21,6 +21,7 @@ const restrictByDates = (announcement) => get(announcement, 'restrictions.enable
 const AnnounceFormComponent = props =>
   <ResourcePage>
     <FormData
+      className="my-5"
       name={selectors.STORE_NAME+'.announcementForm'}
       buttons={true}
       save={{

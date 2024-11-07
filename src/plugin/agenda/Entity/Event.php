@@ -14,7 +14,7 @@ namespace Claroline\AgendaBundle\Entity;
 use Claroline\AgendaBundle\Finder\EventType;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
-use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
