@@ -30,28 +30,12 @@
     }
 }
 
-.list-header {
-    /*display: flex;
-    align-items: stretch;
-    justify-content: flex-end;*/
-
-    /*.list-header-btn {
-        font-size: $font-size-lg; // same as search icon
-        line-height: $line-height-large;
-        height: $input-height-lg;
-        padding: $padding-large-vertical $padding-large-horizontal;
-        background: $list-controls-bg;
-
-        @include border-radius(0);
-    }*/
-}
 
 .list-selected {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    //background: $list-controls-bg;
 
     .list-selected-label {
         font-weight: $font-weight-bold;

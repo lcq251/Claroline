@@ -1,9 +1,5 @@
 
 @mixin embedded-list-variant() {
-    .list-header {
-        //background: $list-controls-bg;
-    }
-
     .list-footer {
         margin: 0;
         padding: map-get($spacers, 2) map-get($spacers, 4);

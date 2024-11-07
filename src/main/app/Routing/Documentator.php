@@ -158,12 +158,12 @@ class Documentator
 
                             if ($addFilter && '$defaults' !== $name) {
                                 $finderDoc[] = [
-                                  'name' => "filters[{$name}]",
-                                  'type' => $data['type'],
-                                  'description' => $data['description'],
-                                  'required' => false,
-                                  'in' => 'query',
-                              ];
+                                    'name' => "filters[{$name}]",
+                                    'type' => $data['type'],
+                                    'description' => $data['description'],
+                                    'required' => false,
+                                    'in' => 'query',
+                                ];
                             }
                         }
 
