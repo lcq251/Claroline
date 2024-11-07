@@ -31,7 +31,6 @@ use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\AppBundle\Entity\Restriction\AccessCode;
 use Claroline\AppBundle\Entity\Restriction\AccessibleFrom;
 use Claroline\AppBundle\Entity\Restriction\AccessibleUntil;
-use Claroline\AppBundle\Entity\Restriction\AllowedIps;
 use Claroline\CommunityBundle\Model\HasOrganizations;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Organization\Organization;
@@ -74,7 +73,6 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     use AccessibleFrom;
     use AccessibleUntil;
     use AccessCode;
-    use AllowedIps;
     use HasOrganizations;
 
     #[ORM\Column(length: 128, unique: true)]

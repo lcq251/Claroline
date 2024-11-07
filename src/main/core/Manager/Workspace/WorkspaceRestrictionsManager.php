@@ -38,8 +38,7 @@ class WorkspaceRestrictionsManager
         return $this->hasRights($workspace)
             && !$workspace->isArchived()
             && ($this->isStarted($workspace) && !$this->isEnded($workspace))
-            && $this->isUnlocked($workspace)
-            && $this->isIpAuthorized($workspace);
+            && $this->isUnlocked($workspace);
     }
 
     /**
@@ -72,10 +71,6 @@ class WorkspaceRestrictionsManager
                 $errors['ended'] = $this->isEnded($workspace);
                 $errors['endDate'] = DateNormalizer::normalize($workspace->getAccessibleUntil());
             }
-
-            /*if (!empty($workspace->getAllowedIps())) {
-                $errors['invalidLocation'] = !$this->isIpAuthorized($workspace);
-            }*/
 
             $event = new AccessRestrictedWorkspaceEvent($workspace, $errors);
             $this->dispatcher->dispatch($event, WorkspaceEvents::ACCESS_RESTRICTED);
@@ -110,43 +105,6 @@ class WorkspaceRestrictionsManager
     public function isEnded(Workspace $workspace): bool
     {
         return !empty($workspace->getAccessibleUntil()) && $workspace->getAccessibleUntil() <= new \DateTime();
-    }
-
-    /**
-     * Checks if the ip of the current user is allowed to access the workspace.
-     *
-     * @todo works just with IPv4, should be working with IPv6
-     */
-    public function isIpAuthorized(Workspace $workspace): bool
-    {
-        $allowed = $workspace->getAllowedIps();
-        if (!empty($allowed)) {
-            $currentRequest = $this->requestStack->getCurrentRequest();
-            if ($currentRequest && $currentRequest->getClientIp()) {
-                $currentParts = explode('.', $currentRequest->getClientIp());
-
-                foreach ($allowed as $allowedIp) {
-                    $allowedParts = explode('.', $allowedIp);
-                    $allowBlock = [];
-
-                    foreach ($allowedParts as $key => $val) {
-                        if (isset($currentParts[$key])) {
-                            $allowBlock[] = ($val === $currentParts[$key] || '*' === $val);
-                        }
-                    }
-
-                    if (!in_array(false, $allowBlock)) {
-                        return true;
-                    }
-                }
-            }
-
-            // the current user ip is not in the allowed list
-            return false;
-        }
-
-        // the current workspace does not restrict ips
-        return true;
     }
 
     /**

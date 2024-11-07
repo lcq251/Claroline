@@ -83,10 +83,8 @@ class ResourceNodeSerializer
             'code' => $resourceNode->getCode(),
             'thumbnail' => $resourceNode->getThumbnail(),
             'poster' => $resourceNode->getPoster(),
-            //'path' => $resourceNode->getAncestors(),
             'meta' => [
                 'type' => $resourceNode->getType(), // try to remove. use mimeType instead
-                //'className' => $resourceNode->getClass(), // try to remove. use mimeType instead
                 'mimeType' => $resourceNode->getMimeType(),
                 'description' => $resourceNode->getDescription(),
                 'descriptionHtml' => $resourceNode->getDescriptionHtml(),

@@ -358,19 +358,6 @@ class ResourceNode implements CrudEntityInterface
         return $this->fullscreen;
     }
 
-    public function setAllowedIps(?array $ips): void
-    {
-        $this->accesses['ip'] = [
-            'activateFilters' => !empty($ips),
-            'ips' => $ips,
-        ];
-    }
-
-    public function getAllowedIps(): array
-    {
-        return isset($this->accesses['ip']) ? $this->accesses['ip']['ips'] : [];
-    }
-
     public function getAccessCode(): ?string
     {
         return isset($this->accesses['code']) ? $this->accesses['code'] : null;

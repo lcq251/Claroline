@@ -149,21 +149,6 @@ class ResourceRestrictions extends Component {
             </ContentRestriction>
           }
 
-          {!isUndefined(this.props.errors.invalidLocation) &&
-            <ContentRestriction
-              icon="fa fa-fw fa-laptop"
-              onlyWarn={true}
-              failed={this.props.errors.invalidLocation}
-              success={{
-                title: trans('restrictions.location_authorized', {}, 'resource')
-              }}
-              fail={{
-                title: trans('restrictions.location_unauthorized', {}, 'resource'),
-                help: trans('restrictions.location_unauthorized_help', {}, 'resource')
-              }}
-            />
-          }
-
           {this.props.managed &&
             <>
               <hr/>
@@ -201,7 +186,6 @@ ResourceRestrictions.propTypes = {
     locked: T.bool,
     notStarted: T.bool,
     ended: T.bool,
-    invalidLocation: T.bool,
     startDate: T.string,
     endDate: T.string
   }).isRequired,

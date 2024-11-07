@@ -266,12 +266,6 @@ class RightsManager
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(1, $typeList);
         $stmt->executeQuery();
-        /*
-        $this->conn->executeQuery(
-            $sql,
-            [$typeList],
-            [Connection::PARAM_STR_ARRAY]
-        );*/
     }
 
     private function recursiveUpdate(ResourceNode $node, Role $role, ?int $mask = 1, ?array $types = []): void

@@ -129,12 +129,6 @@ class WorkspaceSerializer
             // $serialized['registered'] = $this->isRegistered($workspace);
         }
 
-        /*if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
-            $serialized['organizations'] = array_map(function (Organization $organization) {
-                return $this->organizationSerializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $workspace->getOrganizations()->toArray());
-        }*/
-
         return $serialized;
     }
 

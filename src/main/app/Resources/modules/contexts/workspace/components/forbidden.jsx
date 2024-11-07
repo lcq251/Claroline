@@ -277,7 +277,6 @@ WorkspaceForbidden.propTypes = {
     archived: T.bool,
     selfRegistration: T.bool,
     locked: T.bool,
-    invalidLocation: T.bool,
     notStarted: T.bool,
     startDate: T.string,
     ended: T.bool,

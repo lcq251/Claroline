@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait Template
 {
-    /**
-     *
-     * @var TemplateEntity
-     */
     #[ORM\JoinColumn(name: 'template_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: TemplateEntity::class)]
     protected ?TemplateEntity $template = null;

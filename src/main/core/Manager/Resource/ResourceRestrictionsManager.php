@@ -45,8 +45,7 @@ class ResourceRestrictionsManager
             && $resourceNode->isActive()
             && $resourceNode->isPublished()
             && ($this->isStarted($resourceNode) && !$this->isEnded($resourceNode))
-            && $this->isUnlocked($resourceNode)
-            && $this->isIpAuthorized($resourceNode);
+            && $this->isUnlocked($resourceNode);
     }
 
     /**
@@ -75,10 +74,6 @@ class ResourceRestrictionsManager
                 $errors['startDate'] = DateNormalizer::normalize($resourceNode->getAccessibleFrom());
                 $errors['ended'] = $this->isEnded($resourceNode);
                 $errors['endDate'] = DateNormalizer::normalize($resourceNode->getAccessibleUntil());
-            }
-
-            if (!empty($resourceNode->getAllowedIps())) {
-                $errors['invalidLocation'] = !$this->isIpAuthorized($resourceNode);
             }
 
             return $errors;
@@ -121,43 +116,6 @@ class ResourceRestrictionsManager
     }
 
     /**
-     * Checks if the ip of the current user is allowed to access the resource.
-     *
-     * @todo works just with IPv4, should be working with IPv6
-     */
-    public function isIpAuthorized(ResourceNode $resourceNode): bool
-    {
-        $allowed = $resourceNode->getAllowedIps();
-        if (!empty($allowed)) {
-            $currentRequest = $this->requestStack->getCurrentRequest();
-            if ($currentRequest && $currentRequest->getClientIp()) {
-                $currentParts = explode('.', $currentRequest->getClientIp());
-
-                foreach ($allowed as $allowedIp) {
-                    $allowedParts = explode('.', $allowedIp);
-                    $allowBlock = [];
-
-                    foreach ($allowedParts as $key => $val) {
-                        if (isset($currentParts[$key])) {
-                            $allowBlock[] = ($val === $currentParts[$key] || '*' === $val);
-                        }
-                    }
-
-                    if (!in_array(false, $allowBlock)) {
-                        return true;
-                    }
-                }
-            }
-
-            // the current user ip is not in the allowed list
-            return false;
-        }
-
-        // the current resource does not restrict ips
-        return true;
-    }
-
-    /**
      * Checks if a resource is unlocked.
      * (aka it has no access code, or user has already submitted it).
      */
@@ -179,7 +137,7 @@ class ResourceRestrictionsManager
      * Submits a code to unlock a resource.
      * NB. The resource will stay unlocked as long as the user session stay alive.
      */
-    public function unlock(ResourceNode $resourceNode, string $code = null)
+    public function unlock(ResourceNode $resourceNode, string $code = null): void
     {
         $accessCode = $resourceNode->getAccessCode();
         if ($accessCode) {
