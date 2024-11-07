@@ -4,7 +4,7 @@
 parameters:
   secret: change_me
 
-  database_version: 8.0
+  database_version: '8.0'
   database_driver: pdo_mysql
   database_host: 127.0.0.1
   database_port: ~
