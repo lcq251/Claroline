@@ -15,6 +15,9 @@ use Claroline\AgendaBundle\Entity\EventInvitation;
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class EventInvitationFinder extends AbstractFinder
 {
     public static function getClass(): string

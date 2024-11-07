@@ -33,84 +33,11 @@ const EventDetails = (props) =>
         }
       ] : []}
     >
-      <DetailsData
-        data={props.agendaEvent}
-        meta={true}
-        definition={[
-          {
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'meta.type',
-                type: 'type',
-                label: trans('type'),
-                hideLabel: true,
-                calculated: (event) => ({
-                  icon: <EventIcon type={event.meta.type} />,
-                  name: trans(event.meta.type, {}, 'event'),
-                  description: trans(`${event.meta.type}_desc`, {}, 'event')
-                })
-              }, {
-                name: 'dates',
-                type: 'date-range',
-                label: trans('date'),
-                calculated: (event) => [event.start || null, event.end || null],
-                options: {
-                  time: true
-                }
-              }, {
-                name: 'description',
-                type: 'html',
-                label: trans('description')
-              }
-            ]
-          }, {
-            icon: 'fa fa-fw fa-map-marker-alt',
-            title: trans('location'),
-            fields: [
-              {
-                name: '_locationType',
-                type: 'choice',
-                label: trans('type'),
-                hideLabel: true,
-                calculated: (event) => {
-                  if (event.location) {
-                    return 'irl'
-                  }
-
-                  return 'online'
-                },
-                options: {
-                  choices: {
-                    online: trans('online'),
-                    irl: trans('irl')
-                  }
-                },
-                linked: [
-                  {
-                    name: 'locationUrl',
-                    label: trans('url'),
-                    type: 'url',
-                    displayed: (event) => !isEmpty(event.locationUrl)
-                  }, {
-                    name: 'location',
-                    label: trans('location'),
-                    type: 'location',
-                    displayed: (event) => !isEmpty(event.location)
-                  }
-                ]
-              }
-            ]
-          }
-        ]}
-      >
-        <EventParticipants
-          isNew={false}
-          eventId={props.event.id}
-          canEdit={!!props.agendaEvent && hasPermission('edit', props.agendaEvent)}
-        />
-      </DetailsData>
+      <EventParticipants
+        isNew={false}
+        eventId={props.event.id}
+        canEdit={!!props.agendaEvent && hasPermission('edit', props.agendaEvent)}
+      />
     </EventPage>
   </EventMain>
 

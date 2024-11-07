@@ -4,6 +4,8 @@ import cloneDeep from 'lodash/cloneDeep'
 import {now, getApiFormat} from '#/main/app/intl/date'
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
+import {makeListReducer} from '#/main/app/content/list/store'
+import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 import {TOOL_LOAD, TOOL_OPEN} from '#/main/core/tool/store/actions'
 
 import {
@@ -18,6 +20,7 @@ import {
   AGENDA_CHANGE_PLANNING_COLOR,
   AGENDA_SET_PLANNING_LOADED
 } from '#/plugin/agenda/tools/agenda/store/actions'
+import {selectors} from '#/plugin/agenda/tools/agenda/store/selectors'
 
 const reducer = combineReducers({
   view: makeReducer('month', {
@@ -139,6 +142,15 @@ const reducer = combineReducers({
   current: makeReducer(null, {
     [TOOL_OPEN]: () => null,
     [AGENDA_LOAD_EVENT]: (state, action) => action.event
+  }),
+
+  list: makeListReducer(selectors.STORE_NAME+'.list', {}, {
+    loaded: makeReducer(false, {
+      [CONTEXT_OPEN]: () => false
+    }),
+    invalidated: makeReducer(false, {
+      [TOOL_OPEN]: () => true
+    })
   })
 })
 

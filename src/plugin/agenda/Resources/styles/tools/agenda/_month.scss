@@ -2,7 +2,7 @@
 @use "sass:math";
 
 .agenda-month {
-    flex: 1; // fill .page-content
+    flex: 1;
     display: flex;
     flex-direction: column;
     max-height: 100%;
@@ -55,33 +55,25 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 26px;
-            height: 26px;
+            width: 1.75em;
+            height: 1.75em;
             margin: map-get($spacers, 1) auto;
             border-radius: 50%;
 
             background: transparent;
-            border: 1px solid transparent;
             font-weight: $font-weight-medium;
         }
 
         &.now .day-number {
-            color: $primary;
-            background: transparent;
-            border-color: $primary;
-        }
-
-        &.selected .day-number {
             color: color-contrast($primary);
             background: $primary;
-            border-color: $primary;
         }
 
         &.fill {
             background: var(--#{$prefix}tertiary-bg);
 
             .day-number {
-                color: var(--#{$prefix}secondary-color);
+                color: var(--#{$prefix}tertiary-color);
             }
         }
     }

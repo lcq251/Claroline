@@ -19,12 +19,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class PlannedObjectVoter extends AbstractVoter
 {
-    /** @var ObjectManager */
-    private $om;
-
-    public function __construct(ObjectManager $om)
-    {
-        $this->om = $om;
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
     }
 
     /**
@@ -44,7 +41,7 @@ class PlannedObjectVoter extends AbstractVoter
             return VoterInterface::ACCESS_DENIED;
         }
 
-        return AbstractVoter::ACCESS_ABSTAIN;
+        return VoterInterface::ACCESS_ABSTAIN;
     }
 
     public function getClass(): string

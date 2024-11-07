@@ -16,6 +16,9 @@ use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 abstract class AbstractEventFinder extends AbstractFinder
 {
     public function configureQueryBuilder(QueryBuilder $qb, array $searches = [], array $sortBy = null, ?int $page = 0, ?int $limit = -1): QueryBuilder

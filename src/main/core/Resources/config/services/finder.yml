@@ -2,11 +2,14 @@ services:
     Claroline\CoreBundle\Finder\LocationType:
         tags: [ claroline.finder.type ]
 
+    Claroline\CoreBundle\Finder\PlannedObjectType:
+        tags: [ claroline.finder.type ]
+
     Claroline\CoreBundle\Finder\ResourceNodeType:
         tags: [ claroline.finder.type ]
 
     Claroline\CoreBundle\Finder\WorkspaceType:
-        tags: [claroline.finder.type]
+        tags: [ claroline.finder.type ]
 
     Claroline\CoreBundle\Finder\Template\TemplateType:
         tags: [ claroline.finder.type ]

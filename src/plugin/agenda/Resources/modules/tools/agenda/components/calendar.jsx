@@ -25,7 +25,7 @@ const AgendaCalendar = (props) => {
     <ToolPage
       title={currentView.display(props.referenceDate)}
     >
-      <header className="d-flex align-items-center gap-3 px-4 py-2 border-bottom border-top bg-body-tertiary pe-2">
+      <header className="d-flex align-items-center gap-3 px-4 py-2 border-bottom bg-body-tertiary pe-2">
         <Heading level={1} displayLevel={5} className="m-0">
           {currentView.display(props.referenceDate)}
         </Heading>
@@ -36,7 +36,6 @@ const AgendaCalendar = (props) => {
           buttonName="btn"
           defaultName="btn-text-body p-2"
           primaryName="btn-primary"
-          //separatorName="mx-1"
           tooltip="bottom"
           actions={[
             {
@@ -93,7 +92,7 @@ const AgendaCalendar = (props) => {
       </header>
 
       <Routes
-        path={props.path}
+        path={props.path+'/calendar'}
         routes={[
           {
             path: '/:view?/:year?/:month?/:day?',
@@ -145,16 +144,13 @@ AgendaCalendar.propTypes = {
   contextData: T.shape({
     id: T.string
   }),
-  currentUser: T.shape({
-    // TODO : propTypes
-  }),
+  currentUser: T.object,
 
   view: T.oneOf([
     'day',
     'week',
     'month',
     'year',
-    'schedule',
     'list'
   ]).isRequired,
   referenceDate: T.object.isRequired,// moment date object

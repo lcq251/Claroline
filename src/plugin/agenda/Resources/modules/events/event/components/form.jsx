@@ -1,13 +1,10 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {FormData} from '#/main/app/content/form/containers/data'
 
 import {EventForm as BaseEventForm} from '#/plugin/agenda/event/containers/form'
-import {EventParticipants} from '#/plugin/agenda/events/event/containers/participants'
 
 const EventForm = (props) =>
   <BaseEventForm
@@ -128,14 +125,7 @@ const EventForm = (props) =>
           ]
         }
       ]}
-    >
-      <EventParticipants
-        isNew={props.isNew}
-        eventId={props.event.id}
-        canEdit={true}
-        flush={props.flush}
-      />
-    </FormData>
+    />
   </BaseEventForm>
 
 EventForm.propTypes = {

@@ -1,12 +1,6 @@
 @use "sass:math";
 
 .agenda-year {
-    .month-name {
-        display: inline-block;
-        margin-top: $component-margin-bottom;
-        color: $primary;
-    }
-
     .day-name {
         font-weight: normal;
         text-transform: var(--#{$prefix}label-text-transform);
@@ -18,27 +12,34 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 30px;
-        height: 30px;
+        width: 2em;
+        height: 2em;
         padding: 0;
         border-radius: 50%;
         background: transparent;
-        border: 1px solid transparent;
+        box-shadow: none;
+        //border: 1px solid transparent;
 
         &.now {
-            color: $primary;
-            background: transparent;
-            border-color: $primary;
+            color: color-contrast($primary) !important;
+            background: $primary !important;
+            border-color: $primary !important;
         }
 
         &.selected {
-            color: white;
-            background: $primary;
-            border-color: $primary;
+            color: var(--#{$prefix}primary-text-emphasis) !important;
+            background: var(--#{$prefix}primary-bg-subtle) !important;
+            border-color: var(--#{$prefix}primary-bg-subtle) !important;
         }
 
         &.fill {
-            color: var(--#{$prefix}secondary-color);
+            color: var(--#{$prefix}tertiary-color);
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: var(--#{$prefix}body-color);
+            background: var(--#{$prefix}tertiary-bg);
         }
     }
 
@@ -72,7 +73,6 @@
             font-size: $font-size-lg;
             font-weight: $font-weight-medium;
 
-            //color: $agenda-color;
             background: transparent;
             border: 1px solid transparent;
         }

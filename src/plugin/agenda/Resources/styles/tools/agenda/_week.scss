@@ -10,7 +10,6 @@
 
     .calendar-col {
         flex: 1;
-        //background: $agenda-bg;
 
         + .calendar-col {
             border-left: 1px solid $agenda-grid-border;
@@ -41,7 +40,6 @@
         font-size: $font-size-lg;
         font-weight: $font-weight-medium;
 
-        //color: $agenda-color;
         background: transparent;
         border: 1px solid transparent;
     }

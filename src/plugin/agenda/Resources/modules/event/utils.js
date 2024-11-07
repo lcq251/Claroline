@@ -4,7 +4,6 @@ import {trans} from '#/main/app/intl/translation'
 
 function eventDuration(event) {
   if (event.allDay) {
-    // TODO : correct compute
     return trans('all_day', {}, 'agenda')
   }
 

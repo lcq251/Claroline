@@ -3,8 +3,8 @@
  */
 
 $datepicker-color:         $body-color;
-$datepicker-alt-color:     #fff;
 $datepicker-alt-bg:        $primary;
+$datepicker-alt-color:     color-contrast($datepicker-alt-bg);
 $datepicker-padding:       $spacer;
 $datepicker-btn-border-radius: $btn-border-radius;
 
@@ -114,9 +114,9 @@ $datepicker-btn-border-radius: $btn-border-radius;
         }
 
         &.now {
-            color: $datepicker-alt-bg !important;
-            border: 1px solid $datepicker-alt-bg !important;
-            background: transparent !important;
+            color: var(--#{$prefix}primary-text-emphasis) !important;
+            background: var(--#{$prefix}primary-bg-subtle) !important;
+            // border: 1px solid $datepicker-alt-bg !important;
         }
 
         &.selected {

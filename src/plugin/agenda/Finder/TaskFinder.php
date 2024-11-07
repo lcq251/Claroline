@@ -13,6 +13,9 @@ namespace Claroline\AgendaBundle\Finder;
 
 use Claroline\AgendaBundle\Entity\Task;
 
+/**
+ * @deprecated
+ */
 class TaskFinder extends AbstractEventFinder
 {
     public static function getClass(): string

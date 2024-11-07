@@ -13,6 +13,9 @@ namespace Claroline\AgendaBundle\Finder;
 
 use Claroline\AgendaBundle\Entity\Event;
 
+/**
+ * @deprecated
+ */
 class EventFinder extends AbstractEventFinder
 {
     public static function getClass(): string

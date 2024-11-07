@@ -3,6 +3,7 @@
 namespace Claroline\CoreBundle\API\Serializer\Planning;
 
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
@@ -25,12 +26,30 @@ class PlannedObjectSerializer
 
     public function serialize(PlannedObject $plannedObject, array $options = []): array
     {
-        $serialized = [
+        if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
+            return [
+                'id' => $plannedObject->getUuid(),
+                'name' => $plannedObject->getName(),
+                'start' => $plannedObject->getStartDate() ? DateNormalizer::normalize($plannedObject->getStartDate()) : null,
+                'end' => $plannedObject->getEndDate() ? DateNormalizer::normalize($plannedObject->getEndDate()) : null,
+                'thumbnail' => $plannedObject->getThumbnail(),
+                'meta' => [
+                    'type' => $plannedObject->getType(),
+                    'description' => $plannedObject->getDescription(),
+                ],
+                'display' => [
+                    'color' => $plannedObject->getColor(),
+                ],
+            ];
+        }
+
+        return [
             'id' => $plannedObject->getUuid(),
             'name' => $plannedObject->getName(),
             'start' => $plannedObject->getStartDate() ? DateNormalizer::normalize($plannedObject->getStartDate()) : null,
             'end' => $plannedObject->getEndDate() ? DateNormalizer::normalize($plannedObject->getEndDate()) : null,
             'thumbnail' => $plannedObject->getThumbnail(),
+            'poster' => $plannedObject->getPoster(),
             'description' => $plannedObject->getDescription(),
             'meta' => [
                 'type' => $plannedObject->getType(),
@@ -44,14 +63,6 @@ class PlannedObjectSerializer
                 'color' => $plannedObject->getColor(),
             ],
         ];
-
-        if (!in_array(Options::SERIALIZE_MINIMAL, $options)) {
-            $serialized = array_merge($serialized, [
-                'poster' => $plannedObject->getPoster(),
-            ]);
-        }
-
-        return $serialized;
     }
 
     public function deserialize(array $data, PlannedObject $planned): PlannedObject

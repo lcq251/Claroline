@@ -4,11 +4,15 @@ namespace Claroline\CoreBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
+use Claroline\CommunityBundle\Entity\Team;
 use Claroline\CoreBundle\Entity\Planning\PlannedObject;
 use Claroline\CoreBundle\Entity\Planning\Planning;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlannedObjectType extends AbstractType
@@ -29,10 +33,18 @@ class PlannedObjectType extends AbstractType
             ->add('type', TextType::class, ['mode' => TextType::MODE_EXACT])
             ->add('startDate', DateType::class)
             ->add('endDate', DateType::class)
-            ->add('location', LocationType::class)
+            // ->add('location', LocationType::class)
             ->add('planning', EntityType::class, [
                 'data_class' => Planning::class,
                 'identifier' => 'objectId',
+                'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    $alias = $finder->getAlias();
+                    if (!$finder->isRoot()) {
+                        $alias = $finder->getParent()->getAlias();
+                    }
+
+                    $queryBuilder->leftJoin(Planning::class, $finder->getAlias(), Join::WITH, "$alias MEMBER OF {$finder->getAlias()}.plannedObjects");
+                },
             ])
         ;
     }

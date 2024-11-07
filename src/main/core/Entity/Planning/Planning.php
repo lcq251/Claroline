@@ -25,10 +25,10 @@ class Planning
     /**
      * @var Collection<int, PlannedObject>
      */
+    #[ORM\ManyToMany(targetEntity: PlannedObject::class)]
     #[ORM\JoinTable(name: 'claro_planning_planned_object')]
     #[ORM\JoinColumn(name: 'planning_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'planned_object_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\ManyToMany(targetEntity: PlannedObject::class)]
     private Collection $plannedObjects;
 
     public function __construct()

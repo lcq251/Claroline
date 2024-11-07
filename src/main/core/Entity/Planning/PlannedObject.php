@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Entity\Planning;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Id;
@@ -21,12 +22,14 @@ use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\Location;
+use Claroline\CoreBundle\Finder\PlannedObjectType;
 use Claroline\CoreBundle\Repository\Planning\PlannedObjectRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_planned_object')]
 #[ORM\Entity(repositoryClass: PlannedObjectRepository::class)]
+#[CrudEntity(finderClass: PlannedObjectType::class)]
 class PlannedObject
 {
     use Id;

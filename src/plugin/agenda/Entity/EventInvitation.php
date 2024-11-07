@@ -2,6 +2,8 @@
 
 namespace Claroline\AgendaBundle\Entity;
 
+use Claroline\AgendaBundle\Finder\EventInvitationType;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\DBAL\Types\Types;
@@ -9,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_event_invitation')]
 #[ORM\Entity]
+#[CrudEntity(finderClass: EventInvitationType::class)]
 class EventInvitation
 {
     use Id;

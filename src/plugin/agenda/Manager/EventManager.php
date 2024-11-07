@@ -59,7 +59,7 @@ class EventManager
         return $this->ics->create($icsProps);
     }
 
-    public function createInvitation(Event $event, User $user)
+    public function createInvitation(Event $event, User $user): EventInvitation
     {
         $eventInvitation = $this->om->getRepository(EventInvitation::class)->findOneBy([
             'user' => $user,

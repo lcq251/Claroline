@@ -18,7 +18,7 @@ const EventMicro = props => {
 
   return (
     <ModalButton
-      className={classes('agenda-event-micro text-truncate', props.className, {
+      className={classes('agenda-event-micro text-truncate fw-normal', props.className, {
         'text-light': color && color.isDark(),
         'text-dark': color && color.isLight()
       })}

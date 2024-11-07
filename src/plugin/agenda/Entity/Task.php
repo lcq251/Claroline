@@ -2,6 +2,8 @@
 
 namespace Claroline\AgendaBundle\Entity;
 
+use Claroline\AgendaBundle\Finder\TaskType;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Doctrine\DBAL\Types\Types;
@@ -9,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_task')]
 #[ORM\Entity]
+#[CrudEntity(finderClass: TaskType::class)]
 class Task extends AbstractPlanned
 {
     #[ORM\JoinColumn(onDelete: 'CASCADE')]

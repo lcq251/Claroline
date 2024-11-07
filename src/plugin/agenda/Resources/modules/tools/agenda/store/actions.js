@@ -57,11 +57,12 @@ actions.fetch = (rangeDates, force = false) => (dispatch, getState) => {
         // get results for this planning
         filters.planning = planning.id
 
+        filters.startDate = rangeDates[0].format(getApiFormat())
+        filters.endDate = rangeDates[1].format(getApiFormat())
+
         return dispatch({
           [API_REQUEST]: {
             url: url(['apiv2_planned_object_list'], {
-              start: rangeDates[0].format(getApiFormat()),
-              end: rangeDates[1].format(getApiFormat()),
               filters: filters
             }),
             success: (response) => dispatch(actions.load(planning.id, response.data))

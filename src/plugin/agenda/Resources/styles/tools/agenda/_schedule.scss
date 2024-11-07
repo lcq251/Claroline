@@ -1,10 +1,8 @@
 @use "sass:math";
 
 .agenda-schedule {
-    flex: 1; // fill .page-content
     display: flex;
     flex-direction: column;
-    margin: 0 (-(($grid-gutter-width * .5))); // absorb .page-content padding
 
     .day {
         flex: 1;
@@ -13,13 +11,11 @@
         align-items: baseline;
         padding: 10px;
         border-bottom: 1px solid $agenda-grid-border;
-        //background: $agenda-bg;
 
         .day-name {
             min-width: 100px;
             padding: 5px;
             text-transform: var(--#{$prefix}label-text-transform);
-            //font-size: $label-font-size;
             color: $label-color;
         }
 
@@ -31,25 +27,24 @@
             height: 36px;
             border-radius: 50%;
 
-            //color: $agenda-color;
             background: transparent;
-            border: 1px solid transparent;
+            //border: 1px solid transparent;
             font-weight: bold;
 
             font-size: $font-size-lg;
         }
 
         &.now .day-number {
-            color: $primary;
-            background: transparent;
-            border-color: $primary;
+            color: color-contrast($primary);
+            background: $primary;
+            //border-color: $primary;
         }
 
-        &.selected .day-number {
+        /*&.selected .day-number {
             color: white;
             background: $primary;
             border-color: $primary;
-        }
+        }*/
 
         .day-events {
             flex: 1;
@@ -70,7 +65,7 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: $event-color-default;
+            background: $event-bg;
         }
 
         .event-duration {

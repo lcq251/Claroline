@@ -199,9 +199,7 @@ AgendaNav.propTypes = {
     'day',
     'week',
     'month',
-    'year',
-    'schedule',
-    'list'
+    'year'
   ]).isRequired,
   types: T.arrayOf(T.string).isRequired,
   selected: T.string.isRequired,

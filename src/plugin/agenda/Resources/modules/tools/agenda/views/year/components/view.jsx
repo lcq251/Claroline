@@ -19,7 +19,7 @@ const DayPopover = props =>
   <PopoverButton
     id={props.id}
     type="callback"
-    className={classes('btn-link day-number', props.className)}
+    className={classes('btn day-number', props.className)}
     onClick={() => {
       props.loadEvents([
         moment(props.current).hour(0).minute(0).second(0),
@@ -73,7 +73,7 @@ DayPopover.propTypes = {
 }
 
 const Month = props =>
-  <table cellSpacing="0" cellPadding="0">
+  <table cellSpacing="0" cellPadding="0" className="mx-auto">
     <thead>
       <tr>
         {times(7, (dayNum) =>
@@ -98,8 +98,8 @@ const Month = props =>
                   id={`day-popover-${weekNum}-${dayNum}`}
                   path={props.path}
                   className={classes({
-                    now:      current.isSame(props.now, 'day'),
-                    selected: current.isSame(props.referenceDate, 'day'),
+                    now:      current.isSame(props.now, 'day') && props.currentRange[0].get('month') === current.get('month'),
+                    selected: current.isSame(props.referenceDate, 'day') && props.currentRange[0].get('month') === current.get('month'),
                     fill:     props.currentRange[0].get('month') !== current.get('month')
                   })}
                   current={current}
@@ -136,11 +136,11 @@ Month.propTypes = {
 }
 
 const AgendaViewYear = (props) =>
-  <div className="agenda-year row">
+  <div className="agenda-year d-flex flex-wrap mb-4">
     {times(12, (monthNum) =>
-      <div key={`month-${monthNum}`} className="col-md-3 col-sm-4 col-xs-6">
+      <div key={`month-${monthNum}`} className="mt-4 text-center" role="presentation" style={{flex: '1 1 25%'}}>
         <LinkButton
-          className="h4 month-name"
+          className="ds-5 btn btn-link"
           target={route(props.path, 'month', moment(props.referenceDate).month(monthNum))}
         >
           {moment().month(monthNum).format('MMMM')}
