@@ -11,8 +11,6 @@
 
 namespace Claroline\CursusBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use DateTime;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\SerializerProvider;
@@ -29,6 +27,7 @@ use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\EventPresence;
 use Claroline\CursusBundle\Manager\EventManager;
 use Claroline\CursusBundle\Manager\EventPresenceManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -102,11 +101,9 @@ class EventPresenceController
 
     /**
      * Confirm the status of a EventPresence for current event.
-     *
-     * @EXT\ParamConverter("event", class="Claroline\CursusBundle\Entity\Event", options={"mapping": {"id": "uuid"}})
      */
     #[Route(path: '/confirm/{id}', name: 'apiv2_cursus_event_presence_confirm', methods: ['PUT'])]
-    public function confirmStatusAction(Event $event): JsonResponse
+    public function confirmStatusAction(#[MapEntity(mapping: ['id' => 'uuid'])] Event $event): JsonResponse
     {
         $this->checkPermission('ADMINISTRATE', $event, [], true);
 
@@ -148,9 +145,11 @@ class EventPresenceController
     }
 
     #[Route(path: '/{id}', name: 'apiv2_cursus_event_presence_list', methods: ['GET'])]
-    public function listAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Event', mapping: ['id' => 'uuid'])]
-    Event $event, Request $request): JsonResponse
-    {
+    public function listAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Event $event,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $event, [], true);
 
         // not optimal, as it will do it for each new search
@@ -167,9 +166,10 @@ class EventPresenceController
     }
 
     #[Route(path: '/workspace/{id}', name: 'apiv2_cursus_workspace_presence_list', methods: ['GET'])]
-    public function listByWorkspaceAction(#[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace, Request $request): JsonResponse
-    {
+    public function listByWorkspaceAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Workspace $workspace, Request $request
+    ): JsonResponse {
         $isManager = $this->checkPermission(ToolPermissions::getPermission(TrainingEventsTool::getName(), 'EDIT'), $workspace, [])
             || $this->checkPermission(ToolPermissions::getPermission(TrainingEventsTool::getName(), 'REGISTER'), $workspace, []);
 
@@ -217,9 +217,12 @@ class EventPresenceController
     }
 
     #[Route(path: '/{id}/download/{filled}', name: 'apiv2_cursus_event_presence_download', methods: ['GET'])]
-    public function downloadPdfAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Event', mapping: ['id' => 'uuid'])]
-    Event $event, Request $request, int $filled): StreamedResponse
-    {
+    public function downloadPdfAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Event $event,
+        Request $request,
+        int $filled
+    ): StreamedResponse {
         $this->checkPermission('EDIT', $event, [], true);
 
         return new StreamedResponse(function () use ($event, $request, $filled): void {
@@ -233,9 +236,11 @@ class EventPresenceController
     }
 
     #[Route(path: '/{id}/pdf', name: 'apiv2_cursus_user_presence_download', methods: ['GET'])]
-    public function downloadUserPdfAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\EventPresence', mapping: ['id' => 'uuid'])]
-    EventPresence $eventPresence, Request $request): StreamedResponse
-    {
+    public function downloadUserPdfAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        EventPresence $eventPresence,
+        Request $request
+    ): StreamedResponse {
         $this->checkPermission('OPEN', $eventPresence, [], true);
 
         return new StreamedResponse(function () use ($eventPresence, $request): void {
@@ -249,9 +254,11 @@ class EventPresenceController
     }
 
     #[Route(path: '/{id}/evidence', name: 'apiv2_cursus_presence_evidences_upload', methods: ['POST'])]
-    public function uploadEvidences(#[MapEntity(class: 'Claroline\CursusBundle\Entity\EventPresence', mapping: ['id' => 'uuid'])]
-    EventPresence $eventPresence, Request $request): JsonResponse
-    {
+    public function uploadEvidenceAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        EventPresence $eventPresence,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('EDIT', $eventPresence, [], true);
 
         $files = $request->files->all();
@@ -280,8 +287,10 @@ class EventPresenceController
     }
 
     #[Route(path: '/{id}/evidence', name: 'apiv2_cursus_presence_evidence_delete', methods: ['DELETE'])]
-    public function deleteEvidenceAction(EventPresence $eventPresence): JsonResponse
-    {
+    public function deleteEvidenceAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        EventPresence $eventPresence
+    ): JsonResponse {
         $this->checkPermission('EDIT', $eventPresence, [], true);
 
         $eventPresence->setEvidence(null);
@@ -292,11 +301,12 @@ class EventPresenceController
         return new JsonResponse(['success' => true]);
     }
 
-
     #[Route(path: '/{id}/evidence', name: 'apiv2_cursus_presence_evidence_download', methods: ['GET'])]
-    public function downloadEvidenceAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\EventPresence', mapping: ['id' => 'uuid'])]
-    EventPresence $eventPresence, Request $request): StreamedResponse
-    {
+    public function downloadEvidenceAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        EventPresence $eventPresence,
+        Request $request
+    ): StreamedResponse {
         $this->checkPermission('OPEN', $eventPresence, [], true);
 
         $file = $request->get('file');

@@ -20,10 +20,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventGroupRepository::class)]
 class EventGroup extends AbstractGroupRegistration
 {
-    /**
-     *
-     * @var Event
-     */
     #[ORM\JoinColumn(name: 'event_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Event::class)]
     private ?Event $event = null;
@@ -33,7 +29,7 @@ class EventGroup extends AbstractGroupRegistration
         return $this->event;
     }
 
-    public function setEvent(Event $event)
+    public function setEvent(Event $event): void
     {
         $this->event = $event;
     }

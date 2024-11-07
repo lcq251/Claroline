@@ -2,13 +2,13 @@
 
 namespace Claroline\CursusBundle\Controller\Registration;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Registration\CourseUser;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,14 +20,11 @@ class CourseUserController extends AbstractCrudController
 {
     use PermissionCheckerTrait;
 
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage
+        private readonly TokenStorageInterface $tokenStorage
     ) {
         $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getName(): string
@@ -47,12 +44,13 @@ class CourseUserController extends AbstractCrudController
 
     /**
      * List pending users of a course.
-     *
      */
     #[Route(path: '/{id}/pending', name: 'list', methods: ['GET'])]
-    public function listByCourseAction(Request $request, #[MapEntity(class: 'Claroline\CursusBundle\Entity\Course', mapping: ['id' => 'uuid'])]
-    Course $course): JsonResponse
-    {
+    public function listByCourseAction(
+        Request $request,
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Course $course
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $course, [], true);
 
         $params = $request->query->all();

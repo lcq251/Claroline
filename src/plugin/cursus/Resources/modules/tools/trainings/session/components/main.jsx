@@ -14,11 +14,6 @@ import {selectors} from '#/plugin/cursus/tools/trainings/session/store/selectors
 
 const SessionMain = (props) =>
   <ToolPage
-    breadcrumb={[{
-      type: LINK_BUTTON,
-      label: trans('my_sessions', {}, 'cursus'),
-      target: `${props.path}/registered`
-    }]}
     title={trans('my_courses', {}, 'cursus')}
   >
     <ContentTabs

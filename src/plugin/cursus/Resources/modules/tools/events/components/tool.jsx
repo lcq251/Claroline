@@ -10,11 +10,9 @@ import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 import {CourseEditor} from '#/plugin/cursus/course/editor/containers/main'
 
 import {EmptyCourse} from '#/plugin/cursus/course/components/empty'
-import {EventsAll} from '#/plugin/cursus/tools/events/components/all'
-import {EventsPublic} from '#/plugin/cursus/tools/events/components/public'
+import {Events} from '#/plugin/cursus/tools/events/components/events'
 import {EventsDetails} from '#/plugin/cursus/tools/events/containers/details'
 import {EventsPresences} from '#/plugin/cursus/tools/events/containers/presences'
-import {EventsRegistered} from '#/plugin/cursus/tools/events/components/registered'
 
 const EventsTool = (props) =>
   <Tool
@@ -34,16 +32,10 @@ const EventsTool = (props) =>
         label: trans('my_events', {}, 'cursus'),
         target: props.path + '/registered'
       }, {
-        name: 'public',
-        type: LINK_BUTTON,
-        label: trans('public_events', {}, 'cursus'),
-        target: props.path + '/public'
-      }, {
         name: 'all',
         type: LINK_BUTTON,
         label: trans('all_events', {}, 'cursus'),
-        target: props.path + '/all',
-        displayed: props.canEdit || props.canRegister
+        target: props.path + '/all'
       }, {
         name: 'presences',
         type: LINK_BUTTON,
@@ -81,35 +73,26 @@ const EventsTool = (props) =>
                 history={params.history}
               />
             )
-          } else {
-            return (
-              <EmptyCourse
-                path={props.path}
-                canEdit={props.canEdit}
-                contextType={props.contextType}
-                contextId={get(props.currentContext, 'data')}
-                openForm={props.openForm}
-              />
-            )
           }
+
+          return (
+            <EmptyCourse
+              path={props.path}
+              canEdit={props.canEdit}
+              contextType={props.contextType}
+              contextId={get(props.currentContext, 'data')}
+              openForm={props.openForm}
+            />
+          )
         }
       }, {
         path: '/registered',
         onEnter: props.invalidateList,
         render: () => (
-          <EventsRegistered
+          <Events
             path={props.path}
-            contextId={get(props.currentContext, 'data.id')}
-            invalidateList={props.invalidateList}
-          />
-        )
-      }, {
-        path: '/public',
-        onEnter: props.invalidateList,
-        render: () => (
-          <EventsPublic
-            path={props.path}
-            contextId={get(props.currentContext, 'data.id')}
+            title={trans('my_events', {}, 'cursus')}
+            url={['apiv2_cursus_my_events', {workspace: props.contextId}]}
           />
         )
       }, {
@@ -117,9 +100,13 @@ const EventsTool = (props) =>
         onEnter: props.invalidateList,
         disabled: !props.canEdit && !props.canRegister,
         render: () => (
-          <EventsAll
+          <Events
             path={props.path}
-            contextId={get(props.currentContext, 'data.id')}
+            title={trans('all_events', {}, 'cursus')}
+            url={props.canEdit || props.canRegister ?
+              ['apiv2_cursus_event_list', {workspace: props.contextId}] :
+              ['apiv2_cursus_event_public', {workspace: props.contextId}]
+            }
           />
         )
       }, {

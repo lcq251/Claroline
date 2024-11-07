@@ -23,7 +23,7 @@ class SessionRepository extends EntityRepository
 {
     use UniqueValueFinder;
 
-    public function findByWorkspace(Workspace $workspace)
+    public function findByWorkspace(Workspace $workspace): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -39,7 +39,7 @@ class SessionRepository extends EntityRepository
     /**
      * Finds all the Sessions which are not ended for a given Course.
      */
-    public function findAvailable(Course $course)
+    public function findAvailable(Course $course): array
     {
         return $this->getEntityManager()
             ->createQuery('

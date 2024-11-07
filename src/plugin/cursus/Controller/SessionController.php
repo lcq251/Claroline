@@ -11,7 +11,6 @@
 
 namespace Claroline\CursusBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
@@ -30,6 +29,7 @@ use Claroline\CursusBundle\Entity\Registration\SessionGroup;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\SessionManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,29 +47,16 @@ class SessionController extends AbstractCrudController
     use PermissionCheckerTrait;
     use RequestDecoderTrait;
 
-    private TokenStorageInterface $tokenStorage;
-    private TranslatorInterface $translator;
-    private RoutingHelper $routingHelper;
-    private ToolManager $toolManager;
-    private SessionManager $manager;
-    private PdfManager $pdfManager;
-
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        TranslatorInterface $translator,
-        RoutingHelper $routingHelper,
-        ToolManager $toolManager,
-        SessionManager $manager,
-        PdfManager $pdfManager
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly TranslatorInterface $translator,
+        private readonly RoutingHelper $routingHelper,
+        private readonly ToolManager $toolManager,
+        private readonly SessionManager $manager,
+        private readonly PdfManager $pdfManager
     ) {
         $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->translator = $translator;
-        $this->routingHelper = $routingHelper;
-        $this->toolManager = $toolManager;
-        $this->manager = $manager;
-        $this->pdfManager = $pdfManager;
     }
 
     public static function getName(): string
@@ -138,9 +125,11 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/list/canceled', name: 'list_canceled', methods: ['GET'])]
-    public function listCanceledAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Course', mapping: ['id' => 'uuid'])]
-    Course $course, Request $request): JsonResponse
-    {
+    public function listCanceledAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Course $course,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('EDIT', $course, [], true);
 
         $filters = $request->query->all();
@@ -173,9 +162,11 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/pdf', name: 'download_pdf', methods: ['GET'])]
-    public function downloadPdfAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, Request $request): StreamedResponse
-    {
+    public function downloadPdfAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        Request $request
+    ): StreamedResponse {
         $this->checkPermission('OPEN', $session, [], true);
 
         return new StreamedResponse(function () use ($session, $request): void {
@@ -189,9 +180,10 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/events', name: 'list_events')]
-    public function listEventsAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, Request $request): JsonResponse
-    {
+    public function listEventsAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session, Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $session, [], true);
 
         $params = $request->query->all();
@@ -204,9 +196,12 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/users/{type}', name: 'add_users', methods: ['PATCH'])]
-    public function addUsersAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, string $type, Request $request): JsonResponse
-    {
+    public function addUsersAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        string $type,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
@@ -226,9 +221,12 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/groups/{type}', name: 'add_groups', methods: ['PATCH'])]
-    public function addGroupsAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, string $type, Request $request): JsonResponse
-    {
+    public function addGroupsAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        string $type,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         /** @var Group[] $groups */
@@ -253,9 +251,11 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/pending', name: 'add_pending', methods: ['PATCH'])]
-    public function addPendingAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, Request $request): JsonResponse
-    {
+    public function addPendingAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
@@ -266,11 +266,13 @@ class SessionController extends AbstractCrudController
         }, $sessionUsers));
     }
 
-    
     #[Route(path: '/{id}/self/register', name: 'self_register', methods: ['PUT'])]
-    public function selfRegisterAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, #[CurrentUser] ?User $user, Request $request): JsonResponse
-    {
+    public function selfRegisterAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        #[CurrentUser] ?User $user,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $session, [], true);
 
         if (!$session->getPublicRegistration() && !$session->getAutoRegistration()) {
@@ -288,12 +290,13 @@ class SessionController extends AbstractCrudController
 
     /**
      * This is the endpoint used by confirmation email.
-     *
      */
     #[Route(path: '/{id}/self/confirm', name: 'self_confirm', methods: ['GET'])]
-    public function selfConfirmAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session, #[CurrentUser] ?User $user): RedirectResponse
-    {
+    public function selfConfirmAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session,
+        #[CurrentUser] ?User $user
+    ): RedirectResponse {
         $this->checkPermission('OPEN', $session, [], true);
 
         $sessionUser = $this->om->getRepository(SessionUser::class)->findOneBy(['session' => $session, 'user' => $user]);
@@ -307,9 +310,10 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/invite/all', name: 'invite_all', methods: ['PUT'])]
-    public function inviteAllAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session): JsonResponse
-    {
+    public function inviteAllAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         $this->manager->inviteAllSessionLearners($session);
@@ -318,9 +322,10 @@ class SessionController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/stats', name: 'stats', methods: ['GET'])]
-    public function getStatsAction(#[MapEntity(class: 'Claroline\CursusBundle\Entity\Session', mapping: ['id' => 'uuid'])]
-    Session $session): JsonResponse
-    {
+    public function getStatsAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Session $session
+    ): JsonResponse {
         $this->checkPermission('REGISTER', $session, [], true);
 
         $stats = $this->om->getRepository(Course::class)->getRegistrationStats($session->getCourse(), $session);

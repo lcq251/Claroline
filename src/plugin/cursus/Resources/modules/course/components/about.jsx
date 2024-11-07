@@ -21,7 +21,6 @@ import {route} from '#/plugin/cursus/routing'
 import {getInfo, isFullyRegistered, isFull, getSessionRegistration, getCourseRegistration} from '#/plugin/cursus/utils'
 import {constants} from '#/plugin/cursus/constants'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
-import {CourseCard} from '#/plugin/cursus/course/components/card'
 import {SessionCard} from '#/plugin/cursus/session/components/card'
 
 const CurrentRegistration = (props) => {
@@ -321,50 +320,6 @@ const CourseAbout = (props) => {
             primaryAction={{
               type: LINK_BUTTON,
               target: resourceRoute(resource)
-            }}
-          />
-        )}
-
-        {(props.course.parent || !isEmpty(props.course.children)) &&
-          <ContentTitle
-            level={3}
-            displayLevel={2}
-            title={trans('linked_trainings', {}, 'cursus')}
-            subtitle={trans(props.course.parent ? 'linked_trainings_parent' : 'linked_trainings_children', {}, 'cursus')}
-          />
-        }
-
-        {props.course.parent &&
-          <CourseCard
-            className="mb-3"
-            orientation="row"
-            size="xs"
-            data={props.course.parent}
-            primaryAction={{
-              type: LINK_BUTTON,
-              target: route(props.course.parent, null, props.path)
-            }}
-          />
-        }
-
-        {props.course.parent && !isEmpty(props.course.children) &&
-          <ContentTitle
-            level={3}
-            displayLevel={2}
-            subtitle={trans('linked_trainings_children', {}, 'cursus')}
-          />
-        }
-
-        {props.course.children.map((child, index) =>
-          <CourseCard
-            key={child.id}
-            className={index === props.course.children.length - 1 ? 'mb-3' : 'mb-1'}
-            orientation="row"
-            size="xs"
-            data={child}
-            primaryAction={{
-              type: LINK_BUTTON,
-              target: route(child, null, props.path)
             }}
           />
         )}

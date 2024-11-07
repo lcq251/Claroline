@@ -25,7 +25,7 @@
     "create_mode_existing_desc": "Select an existing training.",
     "create_mode_group_existing": "From existing content",
 
-    "catalog": "Training catalog",
+    "catalog": "Catalog",
     "course": "Training",
     "courses": "Trainings",
     "course_appearance_help": "Customize your training's advanced display settings.",
@@ -148,7 +148,6 @@
     "no_session": "No session",
     "session_info": "Session information",
     "download_presence": "Download the certificate of presence (.pdf)",
-    "show_catalog": "Show training catalog",
     "registration_auto": "All session participants are automatically registered for this event.",
     "session_about": "About session",
 

@@ -21,16 +21,10 @@ const TrainingsTool = (props) =>
         label: trans('catalog', {}, 'cursus'),
         target: props.path+'/course'
       }, {
-        name: 'public',
-        type: LINK_BUTTON,
-        label: trans('public_events', {}, 'cursus'),
-        target: props.path + '/events/public'
-      }, {
         name: 'all',
         type: LINK_BUTTON,
         label: trans('all_events', {}, 'cursus'),
-        target: props.path + '/events/all',
-        displayed: props.authenticated && (props.canEdit || props.canRegister)
+        target: props.path + '/events/all'
       }, {
         name: 'registered',
         type: LINK_BUTTON,

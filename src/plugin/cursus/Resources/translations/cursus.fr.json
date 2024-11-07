@@ -19,13 +19,13 @@
     "create_mode_empty_desc": "Créez une formation vide pour pouvoir la configurer comme vous le souhaitez.",
     "create_mode_copy": "Copier une formation existante",
     "create_mode_copy_desc": "Dupliquez une formation ainsi que tous ses contenus.",
-    "create_mode_organization": "Ajouter depuis une organisation",
+    "create_mode_organization": "Ajouter depuis une autre organisation",
     "create_mode_organization_desc": "Sélectionnez une formation existante dans une autre organisation.",
     "create_mode_existing": "Sélectionner une formation existante",
     "create_mode_existing_desc": "Sélectionnez une formation existante.",
     "create_mode_group_existing": "A partir d'un contenu existant",
 
-    "catalog": "Catalogue de formations",
+    "catalog": "Catalogue",
     "course": "Formation",
     "courses": "Formations",
     "course_appearance_help": "Personnalisez les paramètres d'affichage avancés de votre formation.",
@@ -149,7 +149,6 @@
     "no_session": "Aucune session",
     "session_info": "Informations sur la session",
     "download_presence": "Télécharger l'attestation de présence (.pdf)",
-    "show_catalog": "Voir le catalogue de formations",
     "registration_auto": "Tous les participants de la session sont automatiquement insrit à cette séance.",
     "session_about": "A propos de la session",
 

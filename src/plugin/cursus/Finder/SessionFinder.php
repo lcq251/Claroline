@@ -21,6 +21,9 @@ use Claroline\TagBundle\Entity\TaggedObject;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class SessionFinder extends AbstractFinder
 {
     public static function getClass(): string

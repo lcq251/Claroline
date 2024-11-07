@@ -37,17 +37,19 @@ const CourseEditorOverview = () =>
             name: 'plainDescription',
             type: 'string',
             label: trans('description_short'),
-            help: trans('course_short_desc_help', {}, 'cursus')
-
-          }, {
-            name: 'description',
-            label: trans('description_long'),
-            type: 'html',
-            help: trans('course_long_desc_help', {}, 'cursus'),
+            help: trans('course_short_desc_help', {}, 'cursus'),
+            recommended: true,
             options: {
               long: true,
               minRows: 2
             }
+          }, {
+            name: 'description',
+            label: trans('description_long'),
+            type: 'html',
+            recommended: true,
+            help: trans('course_long_desc_help', {}, 'cursus'),
+
           }, {
             name: 'meta.duration',
             type: 'number',
@@ -61,10 +63,6 @@ const CourseEditorOverview = () =>
             name: 'tags',
             label: trans('tags'),
             type: 'tag'
-          }, {
-            name: 'parent',
-            type: 'training_course',
-            label: trans('parent')
           }
         ]
       }

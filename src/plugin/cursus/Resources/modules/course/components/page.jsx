@@ -30,20 +30,11 @@ const Course = (props) => {
 
   return (
     <ToolPage
-      className="training-page"
       title={props.course.name || get(props.activeSession, 'name')}
       poster={getInfo(props.course, props.activeSession, 'poster')}
-      meta={{
-        title: `${trans('trainings', {}, 'tools')} - ${props.course.name}`,
-        description: props.course.description
-      }}
+      description={getInfo(props.course, props.activeSession, 'description')}
       breadcrumb={[
         {
-          type: LINK_BUTTON,
-          label: trans('catalog', {}, 'cursus'),
-          target: props.path,
-          displayed: 'desktop' === props.contextType
-        }, {
           type: LINK_BUTTON,
           label: get(props.course, 'name', trans('loading')),
           target: !isEmpty(props.course) ? route(props.course, null, props.basePath) : ''

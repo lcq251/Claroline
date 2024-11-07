@@ -20,6 +20,7 @@ use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Normalizer\CodeNormalizer;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CursusBundle\Entity\Course;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,6 +56,13 @@ class CourseSubscriber implements EventSubscriberInterface
 
         /** @var Course $course */
         $course = $event->getObject();
+
+        // make sure the course code is unique and generate one if missing
+        $course = $this->om->getRepository(Course::class)->findNextUnique(
+            'code',
+            $course->getCode() ?? CodeNormalizer::normalize($course->getName())
+        );
+        $course->setCode($course);
 
         // If Course is associated to no organization, initializes it with organizations administrated by authenticated user
         // or at last resort with default organizations
@@ -141,15 +149,16 @@ class CourseSubscriber implements EventSubscriberInterface
     {
         /** @var Course $original */
         $original = $event->getObject();
-
         /** @var Course $copy */
         $copy = $event->getCopy();
 
         $copy->setCreatedAt(new \DateTime());
         $copy->setUpdatedAt(new \DateTime());
+
         $copyName = $this->om->getRepository(Course::class)->findNextUnique('name', $original->getName());
-        $copyCode = $this->om->getRepository(Course::class)->findNextUnique('code', $original->getCode());
         $copy->setName($copyName);
+
+        $copyCode = $this->om->getRepository(Course::class)->findNextUnique('code', $original->getCode());
         $copy->setCode($copyCode);
     }
 

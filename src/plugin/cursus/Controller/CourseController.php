@@ -45,26 +45,15 @@ class CourseController extends AbstractCrudController
     use PermissionCheckerTrait;
     use RequestDecoderTrait;
 
-    private TokenStorageInterface $tokenStorage;
-    private RoutingHelper $routing;
-    private ToolManager $toolManager;
-    private CourseManager $manager;
-    private PdfManager $pdfManager;
-
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        RoutingHelper $routing,
-        ToolManager $toolManager,
-        CourseManager $manager,
-        PdfManager $pdfManager,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly RoutingHelper $routing,
+        private readonly ToolManager $toolManager,
+        private readonly CourseManager $manager,
+        private readonly PdfManager $pdfManager,
     ) {
         $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->routing = $routing;
-        $this->toolManager = $toolManager;
-        $this->manager = $manager;
-        $this->pdfManager = $pdfManager;
     }
 
     public static function getName(): string
@@ -125,7 +114,7 @@ class CourseController extends AbstractCrudController
         ));
     }
 
-    #[Route(path: '/list/archived', name: 'list_archived', methods: ['GET'])]
+    #[Route(path: '/archived', name: 'list_archived', methods: ['GET'])]
     public function listArchivedAction(Request $request): JsonResponse
     {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);

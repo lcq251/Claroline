@@ -11,7 +11,7 @@ const CreationModal = (props) =>
   <Modal
     {...omit(props, 'openForm')}
     title={trans('new_course', {}, 'cursus')}
-    subtitle={trans('')}
+    subtitle={trans('Lorem ipsum dolor sit amet')}
     centered={true}
     onExited={props.reset}
   >

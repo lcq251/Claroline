@@ -11,7 +11,6 @@
 
 namespace Claroline\CursusBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -19,13 +18,14 @@ use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Creator;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
-use Claroline\AppBundle\Entity\Meta\Order;
-use Claroline\AppBundle\Entity\Meta\Poster;
-use Claroline\AppBundle\Entity\Meta\Thumbnail;
+use Claroline\AppBundle\Entity\Display\Order;
+use Claroline\AppBundle\Entity\Display\Poster;
+use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
-use Claroline\AppBundle\Entity\Restriction\Hidden;
+use Claroline\AppBundle\Entity\Display\Hidden;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
@@ -83,9 +83,6 @@ class AbstractTraining
     #[ORM\Column(name: 'pending_registrations', type: Types::BOOLEAN)]
     protected bool $pendingRegistrations = false;
 
-    #[ORM\Column(name: 'max_users', nullable: true, type: Types::INTEGER)]
-    protected ?int $maxUsers = null;
-
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
     protected ?float $price = null;
 
@@ -97,7 +94,7 @@ class AbstractTraining
         return $this->plainDescription;
     }
 
-    public function setPlainDescription(string $description = null)
+    public function setPlainDescription(string $description = null): void
     {
         $this->plainDescription = $description;
     }
@@ -107,7 +104,7 @@ class AbstractTraining
         return $this->workspace;
     }
 
-    public function setWorkspace(?Workspace $workspace = null)
+    public function setWorkspace(?Workspace $workspace = null): void
     {
         $this->workspace = $workspace;
     }
@@ -205,16 +202,6 @@ class AbstractTraining
     public function setPendingRegistrations(bool $pendingRegistrations): void
     {
         $this->pendingRegistrations = $pendingRegistrations;
-    }
-
-    public function getMaxUsers(): ?int
-    {
-        return $this->maxUsers;
-    }
-
-    public function setMaxUsers(?int $maxUsers): void
-    {
-        $this->maxUsers = $maxUsers;
     }
 
     public function getPrice(): ?float

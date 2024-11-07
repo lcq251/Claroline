@@ -8,10 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\MappedSuperclass]
 abstract class AbstractGroupRegistration extends AbstractRegistration
 {
-    /**
-     *
-     * @var Group
-     */
     #[ORM\JoinColumn(name: 'group_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Group::class)]
     protected ?Group $group = null;
@@ -21,7 +17,7 @@ abstract class AbstractGroupRegistration extends AbstractRegistration
         return $this->group;
     }
 
-    public function setGroup(Group $group)
+    public function setGroup(Group $group): void
     {
         $this->group = $group;
     }

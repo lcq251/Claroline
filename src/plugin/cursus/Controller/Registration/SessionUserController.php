@@ -23,17 +23,12 @@ class SessionUserController extends AbstractCrudController
 {
     use PermissionCheckerTrait;
 
-    private TokenStorageInterface $tokenStorage;
-    private SessionManager $sessionManager;
-
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        SessionManager $sessionManager
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly SessionManager $sessionManager
     ) {
         $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->sessionManager = $sessionManager;
     }
 
     public static function getName(): string
@@ -119,7 +114,7 @@ class SessionUserController extends AbstractCrudController
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {
-            $this->checkPermission('REGISTER', $sessionUser->getSession(), [], true);
+            $this->checkPermission('EDIT', $sessionUser, [], true);
 
             $this->sessionManager->confirmUsers([$sessionUser]);
         }
@@ -138,7 +133,7 @@ class SessionUserController extends AbstractCrudController
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {
-            $this->checkPermission('REGISTER', $sessionUser->getSession(), [], true);
+            $this->checkPermission('ADMINISTRATE', $sessionUser, [], true);
 
             $this->sessionManager->validateUsers([$sessionUser]);
         }
@@ -149,6 +144,9 @@ class SessionUserController extends AbstractCrudController
         }, $sessionUsers));
     }
 
+    /**
+     * Send an invitation message to a subset of the registered users.
+     */
     #[Route(path: '/invite', name: 'invite', methods: ['PUT'])]
     public function inviteAction(Request $request): JsonResponse
     {

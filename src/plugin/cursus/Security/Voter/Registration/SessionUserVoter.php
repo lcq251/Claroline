@@ -65,6 +65,6 @@ class SessionUserVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::CREATE, self::EDIT, self::DELETE];
+        return [self::CREATE, self::EDIT, self::ADMINISTRATE, self::DELETE];
     }
 }

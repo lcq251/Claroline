@@ -24,7 +24,7 @@ class CourseRepository extends EntityRepository
 {
     use UniqueValueFinder;
 
-    public function search(string $search, int $nbResults)
+    public function search(string $search, int $nbResults): array
     {
         return $this->createQueryBuilder('c')
             ->where('(UPPER(c.name) LIKE :search OR UPPER(c.code) LIKE :search)')
@@ -71,7 +71,7 @@ class CourseRepository extends EntityRepository
         return 0 < (int) $query->getSingleScalarResult();
     }
 
-    public function findByWorkspace(Workspace $workspace)
+    public function findByWorkspace(Workspace $workspace): array
     {
         $dql = '
             SELECT DISTINCT c

@@ -47,7 +47,7 @@ class CourseUser extends AbstractUserRegistration
         return $this->course;
     }
 
-    public function setCourse(Course $course)
+    public function setCourse(Course $course): void
     {
         $this->course = $course;
     }

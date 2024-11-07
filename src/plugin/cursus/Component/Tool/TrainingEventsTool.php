@@ -38,15 +38,15 @@ class TrainingEventsTool extends AbstractTool
 
     public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
-        $sessionList = $this->finder->search(Session::class, [
-            'filters' => ['workspace' => $contextSubject->getContextIdentifier()],
-        ], [SerializerInterface::SERIALIZE_MINIMAL]);
-
         $courses = $this->om->getRepository(Course::class)->findByWorkspace($contextSubject);
 
         if (count($courses) <= 0) {
             return null;
         }
+
+        $sessionList = $this->finder->search(Session::class, [
+            'filters' => ['workspace' => $contextSubject->getContextIdentifier()],
+        ], [SerializerInterface::SERIALIZE_MINIMAL]);
 
         $course = $this->serializer->serialize($courses[0]);
         $course['sessions'] = $sessionList['data'];

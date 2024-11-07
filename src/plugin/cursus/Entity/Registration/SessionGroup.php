@@ -18,10 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class SessionGroup extends AbstractGroupRegistration
 {
-    /**
-     *
-     * @var Session
-     */
     #[ORM\JoinColumn(name: 'session_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Session::class)]
     private ?Session $session = null;
@@ -31,7 +27,7 @@ class SessionGroup extends AbstractGroupRegistration
         return $this->session;
     }
 
-    public function setSession(Session $session)
+    public function setSession(Session $session): void
     {
         $this->session = $session;
     }

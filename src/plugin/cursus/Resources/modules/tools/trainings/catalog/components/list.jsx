@@ -13,11 +13,6 @@ import {PageListSection} from '#/main/app/page/components/list-section'
 
 const CatalogList = (props) =>
   <ToolPage
-    breadcrumb={[{
-      type: LINK_BUTTON,
-      label: trans('catalog', {}, 'cursus'),
-      target: props.path
-    }]}
     title={trans('catalog', {}, 'cursus')}
   >
     <PageListSection>

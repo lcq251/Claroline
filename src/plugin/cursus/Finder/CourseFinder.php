@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CursusBundle\Entity\Course;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class CourseFinder extends AbstractFinder
 {
     public static function getClass(): string

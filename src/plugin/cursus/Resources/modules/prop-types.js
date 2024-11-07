@@ -12,11 +12,6 @@ const Course = {
     name: T.string,
     description: T.string,
     plainDescription: T.string,
-    parent: T.shape({ // This is a minimal Course
-      id: T.string,
-      code: T.string,
-      name: T.string
-    }),
     meta: T.shape({
       workspace: T.shape(WorkspaceTypes.propTypes),
       workspaceModel: T.shape(WorkspaceTypes.propTypes),

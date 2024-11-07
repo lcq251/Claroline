@@ -20,6 +20,7 @@ const CourseEditorAppearance = (props) =>
           }, {
             name: 'thumbnail',
             label: trans('thumbnail'),
+            recommended: true,
             type: 'image'
           },{
             name: 'display.order',

@@ -11,21 +11,23 @@
 
 namespace Claroline\CursusBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\CursusBundle\Repository\CourseRepository;
-use Claroline\CoreBundle\Entity\Organization\Organization;
-use DateTime;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Meta\Archived;
 use Claroline\AppBundle\Entity\Meta\IsPublic;
 use Claroline\CommunityBundle\Model\HasOrganizations;
 use Claroline\CoreBundle\Entity\Facet\PanelFacet;
+use Claroline\CoreBundle\Entity\Organization\Organization;
+use Claroline\CursusBundle\Finder\CourseType;
+use Claroline\CursusBundle\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Table(name: 'claro_cursusbundle_course')]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
+#[CrudEntity(finderClass: CourseType::class)]
 class Course extends AbstractTraining
 {
     use HasOrganizations;
@@ -36,24 +38,10 @@ class Course extends AbstractTraining
     #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
-    
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'children')]
-    private ?Course $parent = null;
-
-    /**
-     *
-     *
-     * @var Collection<int, \Claroline\CursusBundle\Entity\Course>
-     */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Course::class)]
-    #[ORM\OrderBy(['order' => 'ASC'])]
-    private Collection $children;
-
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Session::class)]
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'course')]
     private Collection $sessions;
 
     /**
@@ -68,8 +56,9 @@ class Course extends AbstractTraining
     #[ORM\Column(nullable: true)]
     private ?string $sessionOpening = 'first_available';
 
-    #[ORM\Column(name: 'session_duration', nullable: false, type: Types::FLOAT, options: ['default' => 1])]
+    #[ORM\Column(name: 'session_duration', type: Types::FLOAT, nullable: false, options: ['default' => 1])]
     private float $defaultSessionDuration = 1; // in hours
+
     /**
      * @var Collection<int, Organization>
      */
@@ -80,14 +69,12 @@ class Course extends AbstractTraining
     /**
      * A list of custom panels and fields for the user registration form.
      *
-     *
-     *
      * @var Collection<int, PanelFacet>
      */
+    #[ORM\ManyToMany(targetEntity: PanelFacet::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'claro_cursusbundle_course_panel_facet')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'panel_facet_id', referencedColumnName: 'id', onDelete: 'CASCADE', unique: true)]
-    #[ORM\ManyToMany(targetEntity: PanelFacet::class, cascade: ['persist'])]
+    #[ORM\InverseJoinColumn(name: 'panel_facet_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
     private Collection $panelFacets;
 
     public function __construct()
@@ -96,7 +83,6 @@ class Course extends AbstractTraining
 
         $this->sessions = new ArrayCollection();
         $this->organizations = new ArrayCollection();
-        $this->children = new ArrayCollection();
         $this->panelFacets = new ArrayCollection();
     }
 
@@ -136,7 +122,7 @@ class Course extends AbstractTraining
 
     public function hasAvailableSession(): bool
     {
-        $now = new DateTime();
+        $now = new \DateTime();
         foreach ($this->sessions as $session) {
             if (empty($session->getEndDate()) || $session->getEndDate() > $now) {
                 return true;
@@ -174,35 +160,6 @@ class Course extends AbstractTraining
     public function setDefaultSessionDuration($defaultSessionDuration): void
     {
         $this->defaultSessionDuration = $defaultSessionDuration;
-    }
-
-    public function getParent(): ?Course
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?Course $parent = null): void
-    {
-        $this->parent = $parent;
-    }
-
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
-
-    public function addChild(Course $course): void
-    {
-        if (!$this->children->contains($course)) {
-            $this->children->add($course);
-        }
-    }
-
-    public function removeChild(Course $course): void
-    {
-        if ($this->children->contains($course)) {
-            $this->children->removeElement($course);
-        }
     }
 
     public function getPanelFacets(): Collection

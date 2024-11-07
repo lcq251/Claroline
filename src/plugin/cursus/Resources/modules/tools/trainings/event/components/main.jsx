@@ -1,11 +1,10 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
+import {trans} from '#/main/app/intl'
 import {Routes} from '#/main/app/router'
 
-import {EventsAll} from '#/plugin/cursus/tools/trainings/event/components/all'
-import {EventsRegistered} from '#/plugin/cursus/tools/trainings/event/components/registered'
-import {EventsPublic} from '#/plugin/cursus/tools/trainings/event/components/public'
+import {EventsList} from '#/plugin/cursus/tools/trainings/event/components/list'
 import {EventsDetails} from '#/plugin/cursus/tools/events/containers/details'
 import {EventMain as Event} from '#/plugin/cursus/events/event/containers/main'
 
@@ -13,8 +12,7 @@ const EventMain = (props) =>
   <Routes
     path={props.path+'/events'}
     redirect={[
-      {from: '/', exact: true, to: '/registered', disabled: !props.authenticated},
-      {from: '/', exact: true, to: '/public', disabled: props.authenticated}
+      {from: '/', exact: true, to: '/all'}
     ]}
     routes={[
       {
@@ -22,24 +20,23 @@ const EventMain = (props) =>
         onEnter: props.invalidateList,
         disabled: !props.authenticated,
         render: () => (
-          <EventsRegistered
+          <EventsList
             path={props.path+'/events'}
-          />
-        )
-      }, {
-        path: '/public',
-        onEnter: props.invalidateList,
-        render: () => (
-          <EventsPublic
-            path={props.path+'/events'}
+            title={trans('my_events', {}, 'cursus')}
+            url={['apiv2_cursus_my_events'/*, {workspace: props.contextId}*/]}
           />
         )
       }, {
         path: '/all',
         onEnter: props.invalidateList,
         render: () => (
-          <EventsAll
+          <EventsList
             path={props.path+'/events'}
+            title={trans('all_events', {}, 'cursus')}
+            url={props.authenticated && (props.canEdit || props.canRegister) ?
+              ['apiv2_cursus_event_list'/*, {workspace: props.contextId}*/] :
+              ['apiv2_cursus_event_public'/*, {workspace: props.contextId}*/]
+            }
           />
         ),
         disabled: !props.authenticated || !props.canEdit || !props.canRegister

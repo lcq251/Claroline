@@ -11,13 +11,12 @@
 
 namespace Claroline\CursusBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\CursusBundle\Repository\EventRepository;
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
 use Claroline\CoreBundle\Entity\Template\Template;
+use Claroline\CursusBundle\Repository\EventRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_cursusbundle_session_event')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -25,45 +24,26 @@ class Event extends AbstractPlanned
 {
     use Code;
 
-    /**
-     *
-     *
-     * @var Session
-     */
     #[ORM\JoinColumn(name: 'session_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Session::class, inversedBy: 'events')]
     private ?Session $session = null;
 
-    /**
-     * @var int
-     */
-    #[ORM\Column(name: 'max_users', nullable: true, type: Types::INTEGER)]
-    private $maxUsers;
+    #[ORM\Column(name: 'max_users', type: Types::INTEGER, nullable: true)]
+    private ?int $maxUsers = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(name: 'registration_type', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
-    private $registrationType = Session::REGISTRATION_AUTO;
+    private int $registrationType = Session::REGISTRATION_AUTO;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(name: 'registration_mail', type: Types::BOOLEAN)]
-    private $registrationMail = true;
+    private bool $registrationMail = true;
 
     /**
      * Template used to print the presence of a User.
-     *
-     *
-     *
-     * @var Template
      */
     #[ORM\JoinColumn(name: 'presence_template_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Template::class)]
     private ?Template $presenceTemplate = null;
 
-    
     #[ORM\JoinColumn(name: 'invitation_template_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Template::class)]
     private ?Template $invitationTemplate = null;
@@ -73,32 +53,32 @@ class Event extends AbstractPlanned
         return 'training_event';
     }
 
-    public function getSession()
+    public function getSession(): ?Session
     {
         return $this->session;
     }
 
-    public function setSession(Session $session)
+    public function setSession(Session $session): void
     {
         $this->session = $session;
     }
 
-    public function getMaxUsers()
+    public function getMaxUsers(): ?int
     {
         return $this->maxUsers;
     }
 
-    public function setMaxUsers($maxUsers)
+    public function setMaxUsers(?int $maxUsers): void
     {
         $this->maxUsers = $maxUsers;
     }
 
-    public function getRegistrationType()
+    public function getRegistrationType(): int
     {
         return $this->registrationType;
     }
 
-    public function setRegistrationType($registrationType)
+    public function setRegistrationType(int $registrationType): void
     {
         $this->registrationType = $registrationType;
     }
@@ -108,7 +88,7 @@ class Event extends AbstractPlanned
         return $this->registrationMail;
     }
 
-    public function setRegistrationMail(bool $mail)
+    public function setRegistrationMail(bool $mail): void
     {
         $this->registrationMail = $mail;
     }
@@ -118,7 +98,7 @@ class Event extends AbstractPlanned
         return $this->presenceTemplate;
     }
 
-    public function setPresenceTemplate(Template $template = null)
+    public function setPresenceTemplate(?Template $template = null): void
     {
         $this->presenceTemplate = $template;
     }
@@ -128,7 +108,7 @@ class Event extends AbstractPlanned
         return $this->invitationTemplate;
     }
 
-    public function setInvitationTemplate(Template $template = null)
+    public function setInvitationTemplate(?Template $template = null): void
     {
         $this->invitationTemplate = $template;
     }

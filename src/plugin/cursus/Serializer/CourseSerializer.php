@@ -37,37 +37,19 @@ class CourseSerializer
 {
     use SerializerTrait;
 
-    private AuthorizationCheckerInterface $authorization;
-    private EventDispatcherInterface $eventDispatcher;
-    private ObjectManager $om;
-    private UserSerializer $userSerializer;
-    private RoleSerializer $roleSerializer;
-    private OrganizationSerializer $orgaSerializer;
-    private WorkspaceSerializer $workspaceSerializer;
-    private PanelFacetSerializer $panelFacetSerializer;
-
     private WorkspaceRepository $workspaceRepo;
     private CourseRepository $courseRepo;
 
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        EventDispatcherInterface $eventDispatcher,
-        ObjectManager $om,
-        UserSerializer $userSerializer,
-        RoleSerializer $roleSerializer,
-        OrganizationSerializer $orgaSerializer,
-        WorkspaceSerializer $workspaceSerializer,
-        PanelFacetSerializer $panelFacetSerializer,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ObjectManager $om,
+        private readonly UserSerializer $userSerializer,
+        private readonly RoleSerializer $roleSerializer,
+        private readonly OrganizationSerializer $orgaSerializer,
+        private readonly WorkspaceSerializer $workspaceSerializer,
+        private readonly PanelFacetSerializer $panelFacetSerializer,
     ) {
-        $this->authorization = $authorization;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->om = $om;
-        $this->userSerializer = $userSerializer;
-        $this->roleSerializer = $roleSerializer;
-        $this->orgaSerializer = $orgaSerializer;
-        $this->workspaceSerializer = $workspaceSerializer;
-        $this->panelFacetSerializer = $panelFacetSerializer;
-
         $this->workspaceRepo = $om->getRepository(Workspace::class);
         $this->courseRepo = $om->getRepository(Course::class);
     }
@@ -122,7 +104,6 @@ class CourseSerializer
             'restrictions' => [
                 'hidden' => $course->isHidden(),
                 'active' => $course->hasAvailableSession(),
-                'users' => $course->getMaxUsers(),
             ],
             'tags' => $this->serializeTags($course),
         ];
@@ -140,7 +121,6 @@ class CourseSerializer
         if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
             $serialized = array_merge($serialized, [
                 'poster' => $course->getPoster(),
-                'parent' => $course->getParent() ? $this->serialize($course->getParent(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
                 'display' => [
                     'order' => $course->getOrder(),
                     'hideSessions' => $course->getHideSessions(),
@@ -167,9 +147,6 @@ class CourseSerializer
                 'organizations' => array_map(function (Organization $organization) {
                     return $this->orgaSerializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
                 }, $course->getOrganizations()->toArray()),
-                'children' => array_map(function (Course $child) {
-                    return $this->serialize($child, [SerializerInterface::SERIALIZE_MINIMAL]);
-                }, $course->getChildren()->toArray()),
                 'workspace' => $course->getWorkspace() ?
                     $this->workspaceSerializer->serialize($course->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]) :
                     null,
@@ -197,7 +174,6 @@ class CourseSerializer
         $this->sipe('display.order', 'setOrder', $data, $course);
         $this->sipe('display.hideSessions', 'setHideSessions', $data, $course);
 
-        $this->sipe('restrictions.users', 'setMaxUsers', $data, $course);
         $this->sipe('restrictions.hidden', 'setHidden', $data, $course);
 
         $this->sipe('opening.session', 'setSessionOpening', $data, $course);
@@ -273,15 +249,6 @@ class CourseSerializer
             }
         }
 
-        if (array_key_exists('parent', $data)) {
-            $parent = null;
-            if (!empty($data['parent'])) {
-                $parent = $this->courseRepo->findOneBy(['uuid' => $data['parent']['id']]);
-            }
-
-            $course->setParent($parent);
-        }
-
         if (array_key_exists('workspace', $data)) {
             $workspace = null;
             if (isset($data['workspace']['id'])) {
@@ -333,7 +300,7 @@ class CourseSerializer
     /**
      * Deserializes Course tags.
      */
-    private function deserializeTags(Course $course, array $tags = [], array $options = [])
+    private function deserializeTags(Course $course, array $tags = [], array $options = []): void
     {
         if (in_array(Options::PERSIST_TAG, $options)) {
             $event = new GenericDataEvent([
