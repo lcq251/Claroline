@@ -43,7 +43,6 @@ const Organization = (props) =>
           undefined
         }
         title={get(props.organization, 'name', trans('loading'))}
-        primaryAction="edit"
         actions={!isEmpty(props.organization) ? getActions([props.organization], {
           add: () => props.reload(props.organization.id),
           update: () => props.reload(props.organization.id),

@@ -37,7 +37,6 @@ const Role = (props) =>
       <PageHeading
         size="md"
         title={trans(get(props.role, 'translationKey', 'loading'))}
-        primaryAction="edit"
         actions={!isEmpty(props.role) ? getActions([props.role], {
           add: () => props.reload(props.role.id),
           update: () => props.reload(props.role.id),
