@@ -18,7 +18,7 @@ const ExampleComponents = (props) =>
     title="Components"
   >
     <ContentTabs
-      className="mb-3"
+      className="mb-3 content-lg px-4"
       sections={[
         {
           name: 'alerts',

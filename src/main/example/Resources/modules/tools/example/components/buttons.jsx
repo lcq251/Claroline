@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import classes from 'classnames'
 
 import {Button} from '#/main/app/action/components/button'
@@ -6,9 +6,10 @@ import {CALLBACK_BUTTON, MENU_BUTTON, POPOVER_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {Toolbar} from '#/main/app/action'
 import {ContentTitle} from '#/main/app/content/components/title'
+import {PageSection} from '#/main/app/page'
 
 const ExampleButtons = () =>
-  <Fragment>
+  <PageSection size="lg">
     <ContentTitle level={2} title="Button variants" />
     <ContentTitle level={3} title="btn" />
 
@@ -321,7 +322,7 @@ const ExampleButtons = () =>
         ]}
       />
     </div>
-  </Fragment>
+  </PageSection>
 
 export {
   ExampleButtons

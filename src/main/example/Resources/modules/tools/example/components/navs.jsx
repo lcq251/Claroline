@@ -7,6 +7,7 @@ import {Button} from '#/main/app/action'
 import {ContentNav} from '#/main/app/content/components/nav'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {ContentMenu} from '#/main/app/content/components/menu'
+import {PageSection} from '#/main/app/page'
 
 const SampleData = [
   {
@@ -31,7 +32,7 @@ const SampleData = [
 ]
 
 const ExampleNavs = (props) =>
-  <Fragment>
+  <PageSection size="lg">
     <ContentTitle title="Vertical nav" />
 
     <div className="row">
@@ -59,7 +60,7 @@ const ExampleNavs = (props) =>
     <ContentTitle title="Simple menu" />
 
     <nav>
-      <div className="list-group" role="presentation">
+      <div className="list-group list-group-striped" role="presentation">
         <Button
           className="list-group-item list-group-item-action d-flex align-items-center"
           type={CALLBACK_BUTTON}
@@ -79,7 +80,7 @@ const ExampleNavs = (props) =>
       </div>
 
       <div className="fs-sm text-body-secondary text-uppercase fw-semibold mt-3 mb-1">Group 1</div>
-      <div className="list-group" role="presentation">
+      <div className="list-group list-group-striped" role="presentation">
         <Button
           className="list-group-item list-group-item-action d-flex align-items-center"
           type={CALLBACK_BUTTON}
@@ -99,7 +100,7 @@ const ExampleNavs = (props) =>
       </div>
 
       <div className="fs-sm text-body-secondary text-uppercase fw-semibold mt-3 mb-1">Group 2</div>
-      <div className="list-group" role="presentation">
+      <div className="list-group list-group-striped" role="presentation">
         <Button
           className="list-group-item list-group-item-action d-flex align-items-center"
           type={CALLBACK_BUTTON}
@@ -153,7 +154,7 @@ const ExampleNavs = (props) =>
         }
       ]}
     />
-  </Fragment>
+  </PageSection>
 
 ExampleNavs.propTypes = {
   path: T.string.isRequired

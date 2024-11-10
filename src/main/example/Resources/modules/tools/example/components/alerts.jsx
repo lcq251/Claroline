@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {useDispatch} from 'react-redux'
 
 import {ContentTitle} from '#/main/app/content/components/title'
@@ -8,12 +8,13 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {actions as alertActions} from '#/main/app/overlays/alert/store'
 import {constants as alertConstants} from '#/main/app/overlays/alert/constants'
 import {constants as actionConstants} from '#/main/app/action/constants'
+import {PageSection} from '#/main/app/page'
 
 const ExampleAlerts = () => {
   const dispatch = useDispatch()
 
   return (
-    <Fragment>
+    <PageSection size="lg">
       <ContentTitle title="Flying alerts" />
 
       <div className="btn-toolbar gap-1 mb-3">
@@ -62,6 +63,7 @@ const ExampleAlerts = () => {
         />
       </div>
 
+      <hr className="my-5" />
       <ContentTitle title="Simple alerts" />
       {['success', 'danger', 'warning', 'info'].map(type =>
         <Alert key={type} type={type}>
@@ -69,6 +71,7 @@ const ExampleAlerts = () => {
         </Alert>
       )}
 
+      <hr className="my-5" />
       <ContentTitle title="Detailled alerts" />
       {['success', 'danger', 'warning', 'info'].map(type =>
         <Alert key={type} type={type} title={`My ${type} alert title`}>
@@ -78,6 +81,7 @@ const ExampleAlerts = () => {
         </Alert>
       )}
 
+      <hr className="my-5" />
       <ContentTitle title="Alerts with button" />
       {['success', 'danger', 'warning', 'info'].map(type =>
         <Alert key={type} type={type} title={`My ${type} alert title`}>
@@ -98,7 +102,7 @@ const ExampleAlerts = () => {
           </div>
         </Alert>
       )}
-    </Fragment>
+    </PageSection>
   )
 }
 

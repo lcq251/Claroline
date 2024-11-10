@@ -6,9 +6,10 @@ import {ProgressBar} from '#/main/app/content/components/progress-bar'
 
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
 import {constants} from '#/main/evaluation/constants'
+import {PageSection} from '#/main/app/page'
 
 const ExampleProgression = () =>
-  <>
+  <PageSection size="lg">
     <ContentTitle title="Progress bars" />
 
     <div className="mb-3">
@@ -54,7 +55,7 @@ const ExampleProgression = () =>
       />
     </div>
 
-  </>
+  </PageSection>
 
 export {
   ExampleProgression

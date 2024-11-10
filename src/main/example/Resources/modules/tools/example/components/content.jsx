@@ -3,9 +3,10 @@ import classes from 'classnames'
 
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ContentTitle} from '#/main/app/content/components/title'
+import {PageSection} from '#/main/app/page'
 
 const ExampleContent = () =>
-  <div>
+  <PageSection size="lg">
     <ContentTitle title="Titles" />
 
     <ContentTitle title="Title 1" level={1} numbering={1} />
@@ -15,6 +16,7 @@ const ExampleContent = () =>
     <ContentTitle title="Title 5" level={5} numbering={5} />
     <ContentTitle title="Title 6" level={6} numbering={6} />
 
+    <hr className="my-5" />
     <ContentTitle title="Content sizing" />
 
     {['lg', 'md', 'sm'].map(size =>
@@ -27,6 +29,7 @@ const ExampleContent = () =>
       </div>
     )}
 
+    <hr className="my-5" />
     <ContentTitle title="Placeholders" />
 
     <ContentPlaceholder
@@ -54,7 +57,7 @@ const ExampleContent = () =>
       title="No content found."
       size="sm"
     />
-  </div>
+  </PageSection>
 
 export {
   ExampleContent

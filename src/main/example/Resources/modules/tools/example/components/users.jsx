@@ -8,12 +8,13 @@ import {UserAvatar} from '#/main/app/user/components/avatar'
 
 import {constants} from "#/main/app/user/constants"
 import {UserStatus} from '#/main/app/user/components/status'
+import {PageSection} from '#/main/app/page'
 
 const ExampleUsers = () => {
   const currentUser = useSelector(securitySelectors.currentUser)
 
   return (
-    <>
+    <PageSection size="lg">
       <ContentTitle level={2} title="Avatars" />
 
       <div className="mb-3 d-flex gap-5 align-items-end">
@@ -48,7 +49,7 @@ const ExampleUsers = () => {
           <UserStatus key={status} user={{status: status}} variant="badge" />
         )}
       </div>
-    </>
+    </PageSection>
   )
 }
 

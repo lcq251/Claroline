@@ -6,7 +6,7 @@ use Claroline\AppBundle\API\Finder\FinderFactory;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
-use Claroline\CursusBundle\Finder\CourseType;
+use Claroline\CoreBundle\Finder\PlannedObjectType;
 use Claroline\ExampleBundle\Entity\Example;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -34,7 +34,7 @@ class ExampleController extends AbstractCrudController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        $finder = $this->finder->create(CourseType::class)
+        $finder = $this->finder->create(PlannedObjectType::class)
             ->submit($finderQuery)
             ->getResult(function (object $row): array {
                 return $this->serializer->serialize($row, [SerializerInterface::SERIALIZE_MINIMAL]);
@@ -48,7 +48,7 @@ class ExampleController extends AbstractCrudController
             'parameters' => array_map(function ($parameter) {
                 return [
                     'name' => $parameter->getName(),
-                    //'type' => $parameter->getType(),
+                    // 'type' => $parameter->getType(),
                     'value' => $parameter->getValue(),
                 ];
             }, $queryParams),
