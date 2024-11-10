@@ -15,7 +15,7 @@ import {DataListProperty, DataListDisplay} from '#/main/app/content/list/prop-ty
 const ListHeader = props =>
   <div className={classes('list-header d-flex align-items-center justify-content-end gap-2 py-2 px-4 bg-body-tertiary', {
     'rounded-3': !props.flush,
-    'border-top border-bottom': props.flush,
+    'border-bottom': props.flush,
     'pe-2': !isEmpty(props.addAction),
     'pe-3': isEmpty(props.addAction) && (props.filters || props.display)
   })}>

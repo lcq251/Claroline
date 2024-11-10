@@ -750,9 +750,9 @@ $table-accent-bg:             transparent !default;
 $table-th-color:              var(--#{$prefix}body-color) !default; // custom claroline
 $table-th-font-weight:        $font-weight-semibold !default;
 
-$table-striped-color:         $table-color !default;
-$table-striped-bg-factor:     .0375 !default; // default : .05
-$table-striped-bg:            rgba($black, $table-striped-bg-factor) !default;
+$table-striped-color:         var(--#{$prefix}striped-color) !default; // default: $table-color
+$table-striped-bg-factor:     .0375; // replaced by $striped-bg-factor default: .05
+$table-striped-bg:            var(--#{$prefix}striped-bg) !default;
 
 $table-active-color:          $table-color !default;
 $table-active-bg-factor:      .1 !default;

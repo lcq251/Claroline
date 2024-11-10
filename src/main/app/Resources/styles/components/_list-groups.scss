@@ -1,7 +1,12 @@
+.list-group {
+    --#{$prefix}list-group-striped-color: var(--#{$prefix}striped-color);
+    --#{$prefix}list-group-striped-bg: var(--#{$prefix}striped-bg);
+}
 
 .list-group-striped {
-    > .list-group-item:nth-of-type(odd) {
-        background-color: $table-striped-bg;
+    > .list-group-item:nth-of-type(#{$striped-order}) {
+        --#{$prefix}list-group-color: var(--#{$prefix}list-group-striped-color);
+        --#{$prefix}list-group-bg: var(--#{$prefix}list-group-striped-bg);
     }
 }
 
@@ -15,7 +20,6 @@
         text-transform: var(--#{$prefix}label-text-transform);
 
         .value {
-            //color: $gray-light;
             font-weight: 400;
             font-size: $font-size-base;
             text-align: right;
@@ -26,8 +30,7 @@
 
 .list-group-item {
     .action-subscript {
-        float: right; // todo : find a better approach
-
+        float: right;
         .fa {
             margin: 0;
         }

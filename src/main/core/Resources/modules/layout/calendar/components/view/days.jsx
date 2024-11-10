@@ -13,7 +13,7 @@ import {constants} from '#/main/core/layout/calendar/constants'
 const Day = props =>
   <CallbackButton
     type="callback"
-    className={classes('btn day', {
+    className={classes('btn day focus-ring', {
       now:      props.current.isSame(props.now, 'day'),
       selected: props.selected && props.current.isSame(props.selected, 'day'),
       fill:     props.month !== props.current.get('month')

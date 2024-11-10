@@ -122,7 +122,7 @@ const DataCard = props => {
 
       <CardAction
         action={props.primaryAction}
-        className={classes('data-card-content text-reset text-decoration-none', {
+        className={classes('data-card-content text-reset text-decoration-none focus-ring', {
           'text-center': 'row' !== props.orientation && asIcon,
           'py-2': 'xs' === props.size
         })}
@@ -140,7 +140,10 @@ const DataCard = props => {
           <p className={classes('data-card-description text-body-secondary', {
             'mb-0': -1 !== ['xs', 'sm'].indexOf(props.size) || !props.meta || (-1 === props.display.indexOf('meta') && -1 === props.display.indexOf('flags'))
           })}>
-            {props.contentText && getPlainText(props.contentText)}
+            {props.contentText && typeof props.contentText === 'string' ?
+              getPlainText(props.contentText) :
+              props.contentText
+            }
           </p>
         }
 
@@ -159,8 +162,8 @@ const DataCard = props => {
         <Toolbar
           id={`actions-${props.id}`}
           name="data-card-toolbar"
-          buttonName="btn btn-text-body"
-          tooltip="left"
+          buttonName="btn btn-text-body focus-ring focus-ring-secondary"
+          tooltip={'row' === props.orientation ? 'left' : 'bottom'}
           toolbar={props.toolbar}
           actions={props.actions}
           scope="object"

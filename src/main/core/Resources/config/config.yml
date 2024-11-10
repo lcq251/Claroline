@@ -147,9 +147,6 @@ plugin:
         - name: integration
           icon: plug
 
-        - name: connection_messages
-          icon: comment-dots
-
     widgets:
         - name: simple
           class: Claroline\CoreBundle\Entity\Widget\Type\SimpleWidget

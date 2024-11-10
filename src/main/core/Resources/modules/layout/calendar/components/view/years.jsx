@@ -13,7 +13,7 @@ import {yearNum} from '#/main/core/layout/calendar/utils'
 
 const Year = props =>
   <CallbackButton
-    className={classes('btn year', {
+    className={classes('btn year focus-ring', {
       now:      props.current.isSame(props.now, 'year'),
       selected: props.selected && props.current.isSame(props.selected, 'year'),
       fill:     props.fill

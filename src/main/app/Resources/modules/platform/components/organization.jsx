@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
@@ -18,7 +18,7 @@ const PlatformOrganization = () => {
     return (
       <>
         <Button
-          className="app-context-btn"
+          className="app-context-btn focus-ring"
           type={MODAL_BUTTON}
           modal={[MODAL_PLATFORM_ORGANIZATIONS]}
           label={currentOrganization.name + ' ' + trans('(Cliquez pour changer d\'organization)')}

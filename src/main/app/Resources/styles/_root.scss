@@ -2,6 +2,9 @@
   --#{$prefix}label-text-transform: #{$label-text-transform};
   --#{$prefix}scrollbar-color: #{shade-color($gray-100, 40%)};
   --#{$prefix}scrollbar-bg: #{shade-color($gray-100, 10%)};
+
+  --#{$prefix}striped-color: #{$striped-color};
+  --#{$prefix}striped-bg: #{$striped-bg};
 }
 
 @if $enable-dark-mode {

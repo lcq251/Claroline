@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
-import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {route} from '#/main/core/workspace/routing'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
@@ -27,13 +27,22 @@ const ContextNav = (props) => {
 
   return (
     <section className="app-contexts">
+      <Button
+        type={CALLBACK_BUTTON}
+        className="app-context-jump app-context-btn focus-ring"
+        icon="fa fa-fw fa-angles-right"
+        label={trans('go_to_content', {}, 'actions')}
+        tooltip="right"
+      callback={() => document.querySelector('#toggle-menu').focus()}
+      />
+
       <PlatformOrganization />
 
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
           <Button
             type={LINK_BUTTON}
-            className="app-context-btn position-relative"
+            className="app-context-btn position-relative focus-ring"
             label={trans('desktop', {}, 'context')}
             tooltip="right"
             target="/desktop"
@@ -49,7 +58,7 @@ const ContextNav = (props) => {
 
         <li>
           <NotificationButton
-            className="app-context-btn"
+            className="app-context-btn focus-ring"
             tooltip="right"
           />
         </li>
@@ -57,7 +66,7 @@ const ContextNav = (props) => {
         <li>
           <Button
             type={MODAL_BUTTON}
-            className="app-context-btn"
+            className="app-context-btn focus-ring"
             icon="far fa-fw fa-compass"
             label={trans('search_and_history')}
             tooltip="right"
@@ -74,7 +83,7 @@ const ContextNav = (props) => {
             <li key={pinnedContext.id || trans('loading')}>
               <Button
                 type={LINK_BUTTON}
-                className="app-context-btn position-relative"
+                className="app-context-btn position-relative focus-ring"
                 label={pinnedContext.name || trans('loading')}
                 tooltip="right"
                 target={route(pinnedContext)}

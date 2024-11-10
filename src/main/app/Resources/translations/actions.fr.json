@@ -93,5 +93,6 @@
   "hide": "Cacher",
   "reset": "Réinitialiser",
   "show": "Voir",
-  "empty_history": "Vider mon historique"
+  "empty_history": "Vider mon historique",
+  "go_to_content": "Aller au contenu"
 }

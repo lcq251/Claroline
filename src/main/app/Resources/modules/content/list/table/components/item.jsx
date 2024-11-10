@@ -165,7 +165,7 @@ const TableItem = props => {
         {props.loaded && actions &&
           <Toolbar
             id={`data-table-item-${props.row.id}-actions`}
-            buttonName="btn btn-text-body"
+            buttonName="btn btn-text-body focus-ring focus-ring-secondary"
             tooltip="left"
             toolbar="more"
             actions={actions}

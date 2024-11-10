@@ -13,7 +13,7 @@ import {monthNum} from '#/main/core/layout/calendar/utils'
 
 const Month = props =>
   <CallbackButton
-    className={classes('btn month', {
+    className={classes('btn month focus-ring', {
       now:      props.current.isSame(props.now, 'month'),
       selected: props.selected && props.current.isSame(props.selected, 'month')
     })}

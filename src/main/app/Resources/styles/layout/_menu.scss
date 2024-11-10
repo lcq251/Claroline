@@ -96,12 +96,16 @@
 
     .btn {
         color: var(--#{$prefix}menu-item-color);
-        box-shadow: none !important;
+        box-shadow: none;
         border-color: transparent !important;
 
         &:hover {
             color: var(--#{$prefix}menu-item-hover-color);
             background: var(--#{$prefix}menu-item-hover-bg);
+        }
+
+        &:focus {
+            box-shadow: inherit !important;
         }
 
         &:focus,
@@ -132,7 +136,6 @@
     color: var(--#{$prefix}menu-item-color);
     background: var(--#{$prefix}menu-item-bg);
     border: none;
-    box-shadow: none;
     text-align: left;
     white-space: nowrap;
 
@@ -148,15 +151,15 @@
         text-decoration: none;
     }
 
-    &:focus,
+    //&:focus,
     &:active,
     &.active {
         &,
-        &:hover,
-        &:focus {
+        //&:focus,
+        &:hover {
             color: var(--#{$prefix}menu-item-active-color);
             background: var(--#{$prefix}menu-item-active-bg);
-            box-shadow: none;
+            //box-shadow: none;
         }
     }
 
@@ -171,7 +174,7 @@
         }
 
         // preserve active state on disabled (because active links are disabled)
-        &.active {
+        /*&.active {
             &,
             &:hover,
             &:focus {
@@ -179,7 +182,7 @@
                 background: var(--#{$prefix}menu-item-active-bg);
                 opacity: 1;
             }
-        }
+        }*/
     }
 }
 

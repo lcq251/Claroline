@@ -34,4 +34,10 @@ $icon-sizes: (
 // customize labels (form input, details, groups in actions menu, etc.)
 $label-text-transform: uppercase !default;
 $label-font-size:      $form-label-font-size !default;
-$label-color:          $form-label-color;
+$label-color:          $form-label-color !default;
+
+// normalize stripping and make it toggleable though user config
+$striped-order:     $table-striped-order;
+$striped-color:     null !default;
+$striped-bg-factor: .0375 !default; // default : .05
+$striped-bg:        rgba($black, $striped-bg-factor) !default;

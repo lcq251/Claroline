@@ -93,5 +93,6 @@
   "hide": "Hide",
   "reset": "Reset",
   "show": "Show",
-  "empty_history": "Empty my history"
+  "empty_history": "Empty my history",
+  "go_to_content": "Go to content"
 }

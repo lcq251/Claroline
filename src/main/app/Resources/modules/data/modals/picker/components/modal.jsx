@@ -14,6 +14,7 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {LIST_TOGGLE_SELECT, LIST_TOGGLE_SELECT_ALL} from '#/main/app/content/list/store/actions'
 import {makeInstanceAction} from '#/main/app/store/actions'
+import {constants as listConst} from '#/main/app/content/list'
 
 const PickerModal = (props) => {
   // append list reducer to the store if not already mounted
@@ -70,33 +71,19 @@ const PickerModal = (props) => {
               url: props.url,
               autoload: true
             }}
+            className="border-top"
             autoFocus={true}
             name={props.name}
             flush={true}
             definition={props.definition}
             card={props.card}
-            primaryAction={(row) => {
-              /*if (props.multiple) {*/
-                return ({
-                  type: CALLBACK_BUTTON,
-                  label: trans('select', {}, 'actions'),
-                  callback: () => select(row)
-                })
-              /*}*/
-
-              const selectAction = props.selectAction([row])
-              if (selectAction) {
-                return {
-                  ...selectAction,
-                  onClick: () => {
-                    if (props.autoClose) {
-                      props.fadeModal()
-                    }
-                  }
-                }
-              }
-            }}
+            primaryAction={(row) => ({
+              type: CALLBACK_BUTTON,
+              label: trans('select', {}, 'actions'),
+              callback: () => select(row)
+            })}
             selectable={true}
+            display={{current: props.displayMode}}
           /> :
           props.children
         }
@@ -133,11 +120,13 @@ PickerModal.propTypes = {
   definition: T.arrayOf(T.object),
   card: T.func,
   selectAction: T.func,
+  displayMode: T.string,
   children: T.any
 }
 
 PickerModal.defaultProps = {
-  multiple: true
+  multiple: true,
+  displayMode: listConst.DISPLAY_LIST_SM
 }
 
 export {

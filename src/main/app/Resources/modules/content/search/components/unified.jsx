@@ -181,7 +181,7 @@ const SearchUnified = (props) => {
 
         {(currentText !== props.currentText) &&
           <Button
-            className="btn btn-text-secondary px-2"
+            className="btn btn-text-secondary px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
             label={trans('search', {},'actions')}
             htmlType="submit"
@@ -194,7 +194,7 @@ const SearchUnified = (props) => {
 
         {((!isEmpty(props.current) || props.currentText) && props.currentText === currentText) &&
           <Button
-            className="btn btn-text-secondary position-relative px-2"
+            className="btn btn-text-secondary position-relative px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-times"
             label={trans('remove_all_filter')}
@@ -208,7 +208,7 @@ const SearchUnified = (props) => {
         }
 
         <Button
-          className="btn btn-text-body dropdown-toggle search-btn position-relative px-2"
+          className="btn btn-text-body dropdown-toggle search-btn position-relative px-2 focus-ring focus-ring-secondary"
           type={CALLBACK_BUTTON}
           icon="fa fa-fw fa-filter"
           label={trans('filters')}

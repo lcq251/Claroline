@@ -23,7 +23,7 @@ const ConfirmModal = (props) =>
       </ContentHtml>
 
       {props.items && 1 < props.items.length &&
-        <ul className="list-group mt-4">
+        <ul className="list-group list-group-striped mt-4">
           {props.items.map((item) =>
             <li className="list-group-item d-flex align-items-center">
               <Thumbnail

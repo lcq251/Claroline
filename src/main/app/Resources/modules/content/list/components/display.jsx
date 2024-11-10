@@ -12,7 +12,7 @@ import DISPLAY_MODES from '#/main/app/content/list/modes'
 const ListDisplay = props =>
   <Button
     id="list-format-toggle"
-    className={classes('btn btn-text-body px-2', props.className)}
+    className={classes('btn btn-text-body px-2 focus-ring focus-ring-secondary', props.className)}
     type={MENU_BUTTON}
     icon={DISPLAY_MODES[props.current].icon}
     label={trans('list_display_modes_title')}

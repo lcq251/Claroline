@@ -122,7 +122,7 @@ class ContextMenu extends Component
                   <Toolbar
                     id="app-menu-actions"
                     className="flex-shrink-0"
-                    buttonName="btn"
+                    buttonName="btn focus-ring focus-ring-secondary"
                     actions={actions}
                     onClick={this.autoClose}
                     toolbar="favourite more"
@@ -144,7 +144,7 @@ class ContextMenu extends Component
                   <li key={toolLink.name}>
                     <Button
                       {...toolLink}
-                      className="app-menu-item"
+                      className="app-menu-item focus-ring focus-ring-secondary"
                       onClick={this.autoClose}
                     />
                   </li>

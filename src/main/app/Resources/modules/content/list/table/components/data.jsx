@@ -21,7 +21,7 @@ const TableData = props => {
   }
 
   return (
-    <Table className={classes('data-table mb-auto', {
+    <Table className={classes('data-table table-striped mb-auto', {
       'table-hover': props.loaded && !props.invalidated
     })} condensed={'sm' === props.size}>
       <TableHeader

@@ -71,7 +71,6 @@ $datepicker-btn-border-radius: $btn-border-radius;
 
         .btn {
             opacity: .75;
-            //color: rgba($datepicker-alt-color, .25);
 
             &:not(.disabled):hover,
             &:not(.disabled):focus {
@@ -103,7 +102,6 @@ $datepicker-btn-border-radius: $btn-border-radius;
     justify-content: center;
 
     .btn {
-        //padding: $btn-padding-y-sm $btn-padding-x-sm;
         box-shadow: none;
 
         // precise selector to override .input-group .btn

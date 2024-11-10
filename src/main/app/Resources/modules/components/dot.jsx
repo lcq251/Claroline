@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 const Dot = (props) =>
-  <div className={classes(props.className, 'p-1 rounded-circle', `bg-${props.variant}-subtle`)} aria-hidden={true}>
+  <div className={classes(props.className, 'd-inline-block p-1 rounded-circle', `bg-${props.variant}-subtle`)} aria-hidden={true}>
     <div className={classes('p-1 rounded-circle', `bg-${props.variant}`)} />
   </div>
 

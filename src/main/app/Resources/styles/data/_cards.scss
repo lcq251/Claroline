@@ -51,10 +51,13 @@
     }
 
     .thumbnail-icon {
-
         margin-left: $data-card-spacer-x;
         margin-top: $data-card-spacer-y;
         margin-bottom: $data-card-spacer-y;
+    }
+
+    &.data-card-selectable .thumbnail-icon {
+        margin-left: $data-card-spacer-x * 3;
     }
 
     .data-card-description {
@@ -64,10 +67,6 @@
         text-overflow: ellipsis;
         height: $line-height-base * $data-card-content-font !important;
     }
-
-    /*.data-card-toolbar {
-        align-self: center;
-    }*/
 }
 
 .data-card {
@@ -76,7 +75,6 @@
     display: flex;
     position: relative; // constrain actions toolbar
     flex: 1;
-    //overflow: hidden;
 
     color: $data-card-color;
     background-color: var(--#{$prefix}data-card-bg);
@@ -105,10 +103,17 @@
     }
 }
 
-.data-grid-item-container:hover {
+.data-grid-col .data-grid-item-container:hover {
     .data-grid-item-select {
         z-index: 3;
         transform: translateY(-2px);
+    }
+}
+
+.data-grid-row .data-grid-item-container:hover {
+    .data-grid-item-select {
+        z-index: 3;
+        transform: translateY(calc(-50% - 2px));
     }
 }
 
@@ -160,7 +165,6 @@
 }
 
 .data-card-content {
-    //color: $data-card-color; // reset color when card is clickable (uses a <a> tag)
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -183,11 +187,6 @@
     text-align: right;
     color: $data-card-color-muted;
 }
-
-// to remove. use bootstrap margin utilities
-/*.data-card-row + .data-card-row {
-    margin-top: 5px;
-}*/
 
 
 // -

@@ -83,29 +83,6 @@
 
 
 // -
-// Multi steps Forms.
-// ---
-
-.form-stepper {
-    .progress + .h-title {
-        margin-top: calc($line-height-computed - 4px); // 4px is to absorb progress bar height
-    }
-}
-
-.form-stepper-footer {
-    text-align: right;
-
-    .btn + .btn {
-        margin-left: 5px;
-    }
-
-    .btn-next {
-        min-width: 240px;
-    }
-}
-
-
-// -
 // Fieldset
 // ---
 

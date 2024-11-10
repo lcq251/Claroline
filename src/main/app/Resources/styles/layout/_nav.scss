@@ -13,6 +13,19 @@
   margin-bottom: .5rem;
 }
 
+.app-context-jump {
+  &:not(:focus) {
+    overflow: hidden;
+    height: 0;
+    width: 0;
+    margin-bottom: 0;
+  }
+
+  &:focus {
+    margin-bottom: map-get($spacers, 2);
+  }
+}
+
 .app-context-btn {
   position: relative;
   width: map-get($icon-sizes, sm);
@@ -52,13 +65,13 @@
     @include transition(height .15s ease);
   }
 
+  &:focus,
   &:hover {
     &:before {
       height: 24px;
     }
   }
 
-  &:focus,
   &.active {
     &:before {
       height: 36px;

@@ -16,8 +16,18 @@
         margin-right: $data-tree-gutter*.5;
     }
 
-    .data-grid {
+    .data-grid-col {
         margin-left: map-get($spacers, 4);
         margin-right: map-get($spacers, 4);
+    }
+
+    .data-grid-row {
+        .list-selected {
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+        .data-card {
+            border-radius: 0;
+        }
     }
 }

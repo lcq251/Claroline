@@ -34,8 +34,7 @@
     border: $data-card-border-width solid transparent;
     margin-bottom: $data-grid-gutter;
 
-    .list-selected-label/*,
-    .btn*/ {
+    .list-selected-label {
         padding: $data-card-spacer-y $data-card-spacer-x;
     }
 }
@@ -72,7 +71,19 @@
     .data-grid-content {
         display: flex;
         flex-direction: column;
-        gap: $data-grid-gutter*.5 0;
+        //gap: $data-grid-gutter*.5 0;
+    }
+
+    .data-grid-item-select {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .data-grid-item-container:not(:first-child) .data-card-row {
+        @include border-top-radius(0);
+    }
+    .data-grid-item-container:not(:last-child) .data-card-row {
+        @include border-bottom-radius(0);
     }
 }
 
