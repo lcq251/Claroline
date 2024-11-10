@@ -197,7 +197,7 @@ class MessageController extends AbstractCrudController
         $this->om->startFlushSuite();
 
         foreach ($messages as $message) {
-            $this->crud->replace($message, 'isRead', true);
+            $this->crud->replace($message, 'read', true);
         }
 
         $this->om->endFlushSuite();
@@ -223,7 +223,7 @@ class MessageController extends AbstractCrudController
         $this->om->startFlushSuite();
 
         foreach ($messages as $message) {
-            $this->crud->replace($message, 'isRead', false);
+            $this->crud->replace($message, 'read', false);
         }
 
         $this->om->endFlushSuite();
@@ -234,7 +234,6 @@ class MessageController extends AbstractCrudController
     }
 
     /**
-     *
      * @ApiDoc(
      *     description="Get the fist message.",
      *     parameters={
@@ -259,7 +258,7 @@ class MessageController extends AbstractCrudController
 
         $object = $this->crud->get($this->getClass(), $id);
         $um = $this->om->getRepository(UserMessage::class)->findOneBy(['message' => $object, 'user' => $currentUser]);
-        $this->crud->replace($um, 'isRead', true);
+        $this->crud->replace($um, 'read', true);
 
         $options = static::getOptions();
 

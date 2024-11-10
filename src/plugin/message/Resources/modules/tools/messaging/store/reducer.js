@@ -7,17 +7,23 @@ import {selectors} from '#/plugin/message/tools/messaging/store/selectors'
 import {MESSAGE_LOAD} from '#/plugin/message/tools/messaging/store/actions'
 
 const reducer = combineReducers({
-  receivedMessages: makeListReducer(`${selectors.STORE_NAME}.receivedMessages`, {}, {
+  receivedMessages: makeListReducer(`${selectors.STORE_NAME}.receivedMessages`, {
+    sortBy: {property: 'date', direction: -1}
+  }, {
     invalidated: makeReducer(false, {
       [TOOL_OPEN]: () => true
     })
   }),
-  sentMessages: makeListReducer(`${selectors.STORE_NAME}.sentMessages`, {}, {
+  sentMessages: makeListReducer(`${selectors.STORE_NAME}.sentMessages`, {
+    sortBy: {property: 'date', direction: -1}
+  }, {
     invalidated: makeReducer(false, {
       [TOOL_OPEN]: () => true
     })
   }),
-  deletedMessages: makeListReducer(`${selectors.STORE_NAME}.deletedMessages`, {}, {
+  deletedMessages: makeListReducer(`${selectors.STORE_NAME}.deletedMessages`, {
+    sortBy: {property: 'date', direction: -1}
+  }, {
     invalidated: makeReducer(false, {
       [TOOL_OPEN]: () => true
     })

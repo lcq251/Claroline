@@ -45,7 +45,7 @@ class MessageManager
     {
         if ($message->getSender()) {
             $userMessage = new UserMessage();
-            $userMessage->setIsSent(true);
+            $userMessage->setSent(true);
             $userMessage->setUser($message->getSender());
             $userMessage->setMessage($message);
 

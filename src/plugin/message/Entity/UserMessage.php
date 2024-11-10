@@ -11,140 +11,88 @@
 
 namespace Claroline\MessageBundle\Entity;
 
-use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
-use DateTime;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'claro_user_message')]
 #[ORM\Entity]
+#[ORM\Table(name: 'claro_user_message')]
 class UserMessage
 {
     use Id;
     use Uuid;
 
-    /**
-     *
-     * @var User
-     */
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-    /**
-     *
-     * @var Message
-     */
+    #[ORM\ManyToOne(targetEntity: Message::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'userMessages')]
     private ?Message $message = null;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(name: 'is_removed', type: Types::BOOLEAN)]
-    protected $isRemoved = false;
+    private bool $removed = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(name: 'is_read', type: Types::BOOLEAN)]
-    protected $isRead = false;
+    private bool $read = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(name: 'is_sent', type: Types::BOOLEAN)]
-    protected $isSent = false;
+    private bool $sent = false;
 
-    /**
-     * @var DateTimeInterface
-     */
-    #[ORM\Column(name: 'last_open_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected $lastOpenDate;
-
-    /**
-     * UserMessage constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    public function setRemoved($removed)
+    public function isRead(): bool
     {
-        $this->isRemoved = $removed;
+        return $this->read;
     }
 
-    public function setIsRead($isRead)
+    public function setRead(bool $isRead): void
     {
-        $this->isRead = $isRead;
-
-        if ($isRead) {
-            $now = new DateTime();
-            $this->setLastOpenDate($now);
-        }
+        $this->read = $isRead;
     }
 
-    //alias
-    public function setRead($isRead)
+    public function isRemoved(): bool
     {
-        $this->setIsRead($isRead);
+        return $this->removed;
     }
 
-    public function isRemoved()
+    public function setRemoved(bool $removed): void
     {
-        return $this->isRemoved;
+        $this->removed = $removed;
     }
 
-    public function isRead()
+    public function isSent(): bool
     {
-        return $this->isRead;
+        return $this->sent;
     }
 
-    public function isSent()
+    public function setSent(bool $isSent): void
     {
-        return $this->isSent;
+        $this->sent = $isSent;
     }
 
-    public function setIsSent($isSent)
-    {
-        $this->isSent = $isSent;
-    }
-
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setMessage($message)
-    {
-        $this->message = $message;
-    }
-
-    public function setUser($user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
 
-    public function setLastOpenDate(DateTime $date)
+    public function getMessage(): Message
     {
-        $this->lastOpenDate = $date;
+        return $this->message;
     }
 
-    public function getLastOpenDate()
+    public function setMessage(Message $message): void
     {
-        return $this->lastOpenDate;
+        $this->message = $message;
     }
 }

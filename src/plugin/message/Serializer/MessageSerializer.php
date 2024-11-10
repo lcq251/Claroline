@@ -123,7 +123,7 @@ class MessageSerializer
         }
 
         if (isset($data['sender'])) {
-            $sender = $this->om->getRepository(User::class)->findOneBy(['username' => $data['sender']['username']]);
+            $sender = $this->userRepo->findOneBy(['username' => $data['sender']['username']]);
             $message->setSender($sender);
         }
 
@@ -157,10 +157,13 @@ class MessageSerializer
 
         $userMessage = null;
         if ($currentUser instanceof User) {
-            $userMessage = $message->getUserMessage($currentUser);
+            $userMessage = $this->om->getRepository(UserMessage::class)->findOneBy([
+                'user' => $currentUser,
+                'message' => $message,
+            ]);
         }
 
-        //mainly for tests or if something went wrong
+        // mainly for tests or if something went wrong
         if (empty($userMessage)) {
             $userMessage = new UserMessage();
             // a little hacky but if it's not found it's most likely because

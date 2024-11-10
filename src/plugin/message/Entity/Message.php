@@ -11,21 +11,19 @@
 
 namespace Claroline\MessageBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
-use DateTime;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+#[ORM\Entity]
 #[ORM\Table(name: 'claro_message')]
 #[ORM\Index(name: 'level_idx', columns: ['lvl'])]
 #[ORM\Index(name: 'root_idx', columns: ['root'])]
-#[ORM\Entity]
 #[Gedmo\Tree(type: 'nested')]
 class Message
 {
@@ -33,126 +31,95 @@ class Message
     use Uuid;
 
     #[ORM\Column]
-    protected $object;
+    private ?string $object = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    protected $content;
+    private ?string $content = null;
 
-    #[ORM\JoinColumn(name: 'sender_id', onDelete: 'CASCADE', nullable: true)]
+    #[ORM\JoinColumn(name: 'sender_id', nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    protected ?User $user = null;
+    private ?User $user = null;
 
-    /**
-     *
-     * @var DateTimeInterface
-     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $date;
-
-    /**
-     * @var Collection<int, UserMessage>
-     */
-    #[ORM\OneToMany(targetEntity: UserMessage::class, mappedBy: 'message')]
-    protected Collection $userMessages;
+    private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Gedmo\TreeLeft]
-    protected $lft;
+    private ?int $lft = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Gedmo\TreeLevel]
-    protected $lvl;
+    private ?int $lvl = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Gedmo\TreeRight]
-    protected $rgt;
+    private ?int $rgt = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Gedmo\TreeRoot]
-    protected $root;
+    private ?int $root = null;
 
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Gedmo\TreeParent]
-    protected ?Message $parent = null;
+    private ?Message $parent = null;
 
     /**
      * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Message::class)]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'parent')]
     #[ORM\OrderBy(['lft' => 'ASC'])]
-    protected Collection $children;
+    private Collection $children;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'sender_username')]
-    protected $senderUsername = 'claroline-connect';
+    private ?string $senderUsername = 'claroline-connect';
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'receiver_string', type: Types::TEXT)]
-    protected $to;
+    private ?string $to = null;
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    protected $attachments = [];
+    private ?array $attachments = [];
 
-    /**
-     * Message constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
 
         $this->children = new ArrayCollection();
-        $this->userMessages = new ArrayCollection();
     }
 
-    public function getObject()
+    public function getObject(): ?string
     {
         return $this->object;
     }
 
-    public function setObject($object)
+    public function setObject(?string $object): void
     {
         $this->object = $object;
     }
 
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent($content)
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
 
-    /**
-     * @return User|null
-     */
-    public function getSender()
+    public function getSender(): ?User
     {
         return $this->user;
     }
 
-    public function setSender(User $sender = null)
+    public function setSender(User $sender = null): void
     {
         $this->user = $sender;
         $this->senderUsername = $sender ? $sender->getUsername() : 'claroline-connect';
     }
 
-    public function getCreator()
-    {
-        return $this->getSender();
-    }
-
-    public function getDate()
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
@@ -163,79 +130,62 @@ class Message
      * NOTE : creation date is already handled by the timestamp listener; this
      *        setter exists mainly for testing purposes.
      */
-    public function setDate(DateTime $date)
+    public function setDate(\DateTimeInterface $date): void
     {
         $this->date = $date;
     }
 
-    public function getUserMessages()
-    {
-        return $this->userMessages;
-    }
-
-    public function getUserMessage(User $user)
-    {
-        $found = null;
-        foreach ($this->userMessages as $userMessage) {
-            if ($user->getUuid() === $userMessage->getUser()->getUuid()) {
-                $found = $userMessage;
-            }
-        }
-
-        return $found;
-    }
-
-    public function getParent()
+    public function getParent(): ?Message
     {
         return $this->parent;
     }
 
-    public function setParent($parent)
+    public function setParent(?Message $parent): void
     {
         $this->parent = $parent;
     }
 
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
 
-    public function getLft()
+    public function getLft(): ?int
     {
         return $this->lft;
     }
 
-    public function getRgt()
+    public function getRgt(): ?int
     {
         return $this->rgt;
     }
 
-    public function getRoot()
+    public function getRoot(): ?int
     {
         return $this->root;
     }
 
-    public function getLvl()
+    public function getLvl(): ?int
     {
         return $this->lvl;
     }
 
-    public function getTo()
+    public function getTo(): ?string
     {
         return $this->to;
     }
 
-    public function setTo($to)
+    public function setTo($to): void
     {
         $this->to = $to;
     }
 
-    public function getSenderUsername()
+    public function getSenderUsername(): ?string
     {
         return $this->senderUsername;
     }
 
-    public function getReceivers()
+    public function getReceivers(): array
     {
         $users = [];
         $groups = [];
@@ -246,9 +196,9 @@ class Message
             // split the string of target into different array.
             foreach ($receivers as $receiver) {
                 if (!empty($receiver)) {
-                    if ('{' === substr($receiver, 0, 1)) {
+                    if (str_starts_with($receiver, '{')) {
                         $groups[] = trim($receiver, '{}');
-                    } elseif ('[' === substr($receiver, 0, 1)) {
+                    } elseif (str_starts_with($receiver, '[')) {
                         $workspaces[] = trim($receiver, '[]');
                     } else {
                         $users[] = $receiver;
@@ -264,7 +214,7 @@ class Message
         ];
     }
 
-    public function setReceivers(array $users = [], array $groups = [], array $workspaces = [])
+    public function setReceivers(array $users = [], array $groups = [], array $workspaces = []): void
     {
         $receivers = [];
 
@@ -294,7 +244,7 @@ class Message
         return $this->attachments;
     }
 
-    public function setAttachments(array $attachments)
+    public function setAttachments(array $attachments): void
     {
         $this->attachments = $attachments;
     }

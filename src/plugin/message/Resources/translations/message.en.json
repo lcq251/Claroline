@@ -1,7 +1,6 @@
 {
     "message": "Message",
-    "message_form_content": "Content",
-    "message_form_object": "Subject",
+    "object": "Subject",
     "message_form_to": "To",
     "message_from": "From",
     "messages": "Messages",

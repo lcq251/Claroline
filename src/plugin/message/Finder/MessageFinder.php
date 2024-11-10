@@ -31,7 +31,7 @@ class MessageFinder extends AbstractFinder
 
     public function configureQueryBuilder(QueryBuilder $qb, array $searches = [], array $sortBy = null, ?int $page = 0, ?int $limit = -1): QueryBuilder
     {
-        $qb->join('obj.userMessages', 'um');
+        $qb->join('Claroline\MessageBundle\Entity\UserMessage', 'um', 'WITH', 'um.message = obj');
         $qb->leftJoin('um.user', 'currentUser');
 
         if ($this->tokenStorage->getToken() && $this->tokenStorage->getToken()?->getUser() instanceof User) {
@@ -43,15 +43,15 @@ class MessageFinder extends AbstractFinder
         foreach ($searches as $filterName => $filterValue) {
             switch ($filterName) {
                 case 'sent':
-                    $qb->andWhere("um.isSent = :{$filterName}");
+                    $qb->andWhere("um.sent = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
                     break;
                 case 'removed':
-                    $qb->andWhere("um.isRemoved = :{$filterName}");
+                    $qb->andWhere("um.removed = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
                     break;
                 case 'read':
-                    $qb->andWhere("um.isRead = :{$filterName}");
+                    $qb->andWhere("um.read = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
                     break;
                 case 'after':
@@ -83,7 +83,7 @@ class MessageFinder extends AbstractFinder
             switch ($sortByProperty) {
                 case 'read':
                 case 'isRead':
-                    $qb->orderBy('um.isRead', $sortByDirection);
+                    $qb->orderBy('um.read', $sortByDirection);
                     break;
             }
         } else {
