@@ -23,7 +23,7 @@ class PrivacyTool extends AbstractTool
 
     public static function getIcon(): string
     {
-        return 'user-shield';
+        return 'scale-balanced';
     }
 
     public function supportsContext(string $context): bool

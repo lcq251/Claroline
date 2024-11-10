@@ -1,7 +1,7 @@
 plugin:
     tools:
         - name: privacy
-          icon: user-shield
+          icon: scale-balanced
 
     templates:
         - name: terms_of_service
