@@ -21,6 +21,7 @@ class UserPreferencesSerializer
             'themeMode' => $preferences->getThemeMode(),
             'fontSize' => $preferences->getFontSize(),
             'fontWeight' => $preferences->getFontWeight(),
+            'striped' => $preferences->isStriped(),
         ];
     }
 
@@ -30,6 +31,7 @@ class UserPreferencesSerializer
         $this->sipe('themeMode', 'setThemeMode', $data, $preferences);
         $this->sipe('fontSize', 'setFontSize', $data, $preferences);
         $this->sipe('fontWeight', 'setFontWeight', $data, $preferences);
+        $this->sipe('striped', 'setStriped', $data, $preferences);
 
         return $preferences;
     }

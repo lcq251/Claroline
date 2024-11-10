@@ -20,14 +20,17 @@ class ThemeSerializer
             'id' => $theme->getUuid(),
             'name' => $theme->getName(),
             'normalizedName' => $theme->getNormalizedName(),
-            'logo' => $theme->getLogo(),
+            'disabled' => $theme->isDisabled(),
             'default' => $theme->isDefault(),
+
+            'logo' => $theme->getLogo(),
+            'primaryColor' => $theme->getPrimaryColor(),
+            'secondaryColor' => $theme->getSecondaryColor(),
+
             'themeMode' => $theme->getThemeMode(),
             'fontSize' => $theme->getFontSize(),
             'fontWeight' => $theme->getFontWeight(),
-            'disabled' => $theme->isDisabled(),
-            'primaryColor' => $theme->getPrimaryColor(),
-            'secondaryColor' => $theme->getSecondaryColor(),
+            'striped' => $theme->isStriped(),
         ];
     }
 
@@ -48,6 +51,7 @@ class ThemeSerializer
         $this->sipe('themeMode', 'setThemeMode', $data, $theme);
         $this->sipe('fontSize', 'setFontSize', $data, $theme);
         $this->sipe('fontWeight', 'setFontWeight', $data, $theme);
+        $this->sipe('striped', 'setStriped', $data, $theme);
 
         return $theme;
     }

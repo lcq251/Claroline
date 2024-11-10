@@ -1,12 +1,8 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import {PropTypes as T} from 'prop-types'
-import {connect} from 'react-redux'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {FormData} from '#/main/app/content/form/containers/data'
-import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 import {constants} from '#/main/theme/constants'
 
 const ThemeForm = props =>
@@ -65,13 +61,20 @@ const ThemeForm = props =>
             },
             calculated: (data) => parseInt(data.fontWeight)
           }, {
+            name: 'striped',
+            type: 'boolean',
+            label: trans('striped', {}, 'appearance'),
+            help: trans('striped_help', {}, 'appearance')
+          }, {
             name: 'primaryColor',
             type: 'color',
             label: trans('primary_color', {}, 'appearance'),
+            displayed: false
           }, {
             name: 'secondaryColor',
             type: 'color',
-            label: trans('secondary_color', {}, 'appearance')
+            label: trans('secondary_color', {}, 'appearance'),
+            displayed: false
           }
         ]
       }

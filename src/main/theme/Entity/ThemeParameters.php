@@ -11,16 +11,22 @@
 
 namespace Claroline\ThemeBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait ThemeParameters
 {
     #[ORM\Column(name: 'theme_mode', nullable: true)]
     private ?string $themeMode = null; // auto (null) | light | dark
+
     #[ORM\Column(name: 'font_size', nullable: true)]
     private ?string $fontSize = null; // auto (null) | sm (14px) | md (16px) | lg (18px)
+
     #[ORM\Column(name: 'font_weight', nullable: true)]
     private ?string $fontWeight = null; // light (300) | normal (400) | medium (500)
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $striped = false;
 
     public function getThemeMode(): ?string
     {
@@ -50,5 +56,15 @@ trait ThemeParameters
     public function setFontWeight(?string $fontWeight): void
     {
         $this->fontWeight = $fontWeight;
+    }
+
+    public function isStriped(): bool
+    {
+        return $this->striped;
+    }
+
+    public function setStriped(bool $striped): void
+    {
+        $this->striped = $striped;
     }
 }

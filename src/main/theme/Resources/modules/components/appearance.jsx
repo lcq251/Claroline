@@ -18,6 +18,11 @@ const Appearance = (props) => {
   styles['body-font-weight'] = themeConfig.fontWeight
   styles['root-font-size'] = themeConfig.fontSize
 
+  if (!themeConfig.striped) {
+    styles['striped-bg'] = 'inherit'
+    styles['striped-color'] = 'inherit'
+  }
+
   if (themeConfig.primaryColor) {
     styles['primary'] = themeConfig.primaryColor
   }

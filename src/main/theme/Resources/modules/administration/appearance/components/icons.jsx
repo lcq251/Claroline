@@ -43,6 +43,8 @@ IconSet.propTypes = {
 }
 
 const AppearanceIcons = (props) => {
+    console.log('coucou')
+  console.log(props.currentIconSet)
   if (!props.currentIconSet) {
     return null
   }
