@@ -17,7 +17,6 @@ use Claroline\CoreBundle\Entity\Plugin;
 use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
 use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
-use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Entity\Tool\Tool;
 use Claroline\CoreBundle\Entity\Tool\ToolMaskDecoder;
 use Claroline\CoreBundle\Entity\Widget\Widget;
@@ -25,6 +24,7 @@ use Claroline\CoreBundle\Manager\Resource\MaskManager;
 use Claroline\CoreBundle\Manager\Tool\ToolMaskDecoderManager;
 use Claroline\CoreBundle\Repository\PluginRepository;
 use Claroline\KernelBundle\Bundle\PluginBundleInterface;
+use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\ThemeBundle\Entity\Theme;
 use Claroline\ThemeBundle\Manager\IconSetBuilderManager;
 use Psr\Log\LoggerAwareInterface;
@@ -77,8 +77,8 @@ class DatabaseWriter implements LoggerAwareInterface
 
         /** @var Plugin $plugin */
         $plugin = $this->pluginRepository->findOneBy([
-             'vendorName' => $namespaceParts[0],
-             'bundleName' => $namespaceParts[1],
+            'vendorName' => $namespaceParts[0],
+            'bundleName' => $namespaceParts[1],
         ]);
 
         if (null === $plugin) {
