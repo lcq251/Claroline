@@ -13,7 +13,7 @@ namespace Claroline\CoreBundle\Installation\DataFixtures;
 
 use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Entity\TemplateContent;
-use Claroline\TemplateBundle\Entity\TemplateType;
+// use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\InstallationBundle\Fixtures\PostInstallInterface;
 use Claroline\InstallationBundle\Fixtures\PostUpdateInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;

@@ -1,0 +1,3 @@
+services:
+    Claroline\ForumBundle\Component\Template\ForumNewMessageEmail:
+        tags: [ 'claroline.component.template' ]

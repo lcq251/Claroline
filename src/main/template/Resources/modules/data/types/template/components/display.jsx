@@ -2,26 +2,18 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {route} from '#/main/core/administration/routing'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Template as TemplateTypes} from '#/main/template/data/types/template/prop-types'
 import {TemplateCard} from '#/main/template/data/types/template/components/card'
 
-const TemplateDisplay = (props) => props.data ?
-  <TemplateCard
+const TemplateDisplay = (props) =>
+  <EntityDisplay
+    icon="fa fa-stamp"
+    placeholder={trans('no_template', {}, 'template')}
+    card={TemplateCard}
     data={props.data}
-    size="xs"
-    primaryAction={{
-      type: LINK_BUTTON,
-      label: trans('open', {}, 'actions'),
-      target: route('templates')+'/form/'+props.data.id
-    }}
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-file-alt"
-    title={trans('no_template', {}, 'template')}
+    multiple={false}
   />
 
 TemplateDisplay.propTypes = {

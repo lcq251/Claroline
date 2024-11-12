@@ -3,4 +3,3 @@ services:
         tags: [ kernel.event_subscriber ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\Manager\Template\TemplateManager'

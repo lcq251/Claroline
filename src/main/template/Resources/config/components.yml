@@ -2,3 +2,5 @@ services:
     Claroline\TemplateBundle\Component\Tool\TemplatesTool:
         parent: Claroline\AppBundle\Component\Tool\AbstractTool
         tags: [ 'claroline.component.tool' ]
+        arguments:
+            - '@Claroline\TemplateBundle\Component\Template\TemplateProvider'

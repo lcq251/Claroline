@@ -18,7 +18,9 @@ import {constants as listConst} from '#/main/app/content/list'
 
 const PickerModal = (props) => {
   // append list reducer to the store if not already mounted
-  const reducer = useMemo(() => makeListReducer(props.name, {}, {
+  const reducer = useMemo(() => makeListReducer(props.name, {
+    filters: props.filters || []
+  }, {
     selected: makeReducer([], {
       [makeInstanceAction(LIST_TOGGLE_SELECT, props.name)]: (state, action) => {
         if (!props.multiple) {
@@ -43,6 +45,7 @@ const PickerModal = (props) => {
   const dispatch = useDispatch()
   const reset = useCallback(() => {
     dispatch(listActions.resetSelect(props.name))
+    dispatch(listActions.resetFilters(props.filters || []))
     dispatch(listActions.invalidateData(props.name))
   }, [props.name])
   const select = useCallback((row) => {
@@ -117,6 +120,7 @@ PickerModal.propTypes = {
   name: T.string.isRequired,
   fadeModal: T.func.isRequired,
   multiple: T.bool,
+  filters: T.array,
   definition: T.arrayOf(T.object),
   card: T.func,
   selectAction: T.func,
@@ -126,7 +130,8 @@ PickerModal.propTypes = {
 
 PickerModal.defaultProps = {
   multiple: true,
-  displayMode: listConst.DISPLAY_LIST_SM
+  displayMode: listConst.DISPLAY_LIST_SM,
+  filters: []
 }
 
 export {

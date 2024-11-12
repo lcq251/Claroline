@@ -12,7 +12,7 @@ const OrganizationsInput = props =>
   <EntityInput
     {...props}
     icon="fa fa-building"
-    placeholder={trans('no_organization')}
+    placeholder={trans('no_organization', {}, 'community')}
     card={OrganizationCard}
     multiple={true}
     pickerType={MODAL_ORGANIZATIONS}

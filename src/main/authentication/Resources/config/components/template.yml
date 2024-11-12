@@ -1,0 +1,9 @@
+services:
+    Claroline\AuthenticationBundle\Component\Template\DisabledPasswordEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\AuthenticationBundle\Component\Template\ForgottenPasswordEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\AuthenticationBundle\Component\Template\ResetPasswordEmail:
+        tags: [ 'claroline.component.template' ]

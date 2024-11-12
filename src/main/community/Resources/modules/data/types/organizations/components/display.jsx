@@ -1,35 +1,21 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Organization as OrganizationTypes} from '#/main/community/prop-types'
 import {OrganizationCard} from '#/main/community/organization/components/card'
 
-const OrganizationsDisplay = (props) => {
-  if (!isEmpty(props.data)) {
-    return (
-      <Fragment>
-        {props.data.map(organization =>
-          <OrganizationCard
-            key={`organization-card-${organization.id}`}
-            data={organization}
-            size="xs"
-          />
-        )}
-      </Fragment>
-    )
-  }
 
-  return (
-    <ContentPlaceholder
-      icon="fa fa-building"
-      title={trans('no_organization')}
-    />
-  )
-}
+const OrganizationsDisplay = (props) =>
+  <EntityDisplay
+    icon="fa fa-building"
+    placeholder={trans('no_organization', {}, 'community')}
+    card={OrganizationCard}
+    data={props.data}
+    multiple={true}
+  />
 
 OrganizationsDisplay.propTypes = {
   data: T.arrayOf(T.shape(

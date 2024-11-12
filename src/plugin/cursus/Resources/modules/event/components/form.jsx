@@ -122,9 +122,7 @@ const EventForm = (props) =>
             type: 'template',
             label: trans('training_event_presence', {}, 'template'),
             options: {
-              picker: {
-                filters: [{property: 'typeName', value: 'training_event_presence', locked: true}]
-              }
+              templateType: 'training_event_presence'
             }
           }
         ]
@@ -152,13 +150,7 @@ const EventForm = (props) =>
                 label: trans('training_event_invitation', {}, 'template'),
                 displayed: (event) => event.registration ? event.registration.mail : false,
                 options: {
-                  picker: {
-                    filters: [{
-                      property: 'typeName',
-                      value: 'training_event_invitation',
-                      locked: true
-                    }]
-                  }
+                  templateType: 'training_event_invitation'
                 }
               }
             ]

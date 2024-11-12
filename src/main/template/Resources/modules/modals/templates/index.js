@@ -7,7 +7,7 @@
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {TemplatesModal} from '#/main/template/modals/templates/containers/modal'
+import {TemplatesModal} from '#/main/template/modals/templates/components/modal'
 
 const MODAL_TEMPLATES = 'MODAL_TEMPLATES'
 

@@ -1,0 +1,27 @@
+services:
+    Claroline\CursusBundle\Component\Template\CoursePdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\EventInvitationEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\EventPdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\EventPresencePdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\EventPresencesPdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\SessionCanceledEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\SessionConfirmationEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\SessionInvitationEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CursusBundle\Component\Template\SessionPdf:
+        tags: [ 'claroline.component.template' ]

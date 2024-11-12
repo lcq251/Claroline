@@ -13,26 +13,12 @@ namespace Claroline\TemplateBundle\Serializer;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
-use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Entity\TemplateContent;
-use Claroline\TemplateBundle\Entity\TemplateType;
-use Doctrine\Persistence\ObjectRepository;
 
 class TemplateSerializer
 {
     use SerializerTrait;
-
-    private ObjectRepository $templateRepo;
-    private ObjectRepository $templateTypeRepo;
-
-    public function __construct(
-        private readonly ObjectManager $om,
-        private readonly TemplateTypeSerializer $typeSerializer
-    ) {
-        $this->templateRepo = $om->getRepository(Template::class);
-        $this->templateTypeRepo = $om->getRepository(TemplateType::class);
-    }
 
     public function getName(): string
     {
@@ -49,7 +35,9 @@ class TemplateSerializer
         $serialized = [
             'id' => $template->getUuid(),
             'name' => $template->getName(),
-            'type' => $this->typeSerializer->serialize($template->getType()),
+            'type' => $template->getType(),
+            'description' => $template->getDescription(),
+            'default' => $template->isDefault(),
             'system' => $template->isSystem(),
         ];
 
@@ -71,20 +59,17 @@ class TemplateSerializer
         return $serialized;
     }
 
-    public function deserialize(array $data, Template $template): Template
+    public function deserialize(array $data, Template $template, ?array $options = []): Template
     {
-        $this->sipe('id', 'setUuid', $data, $template);
-        $this->sipe('name', 'setName', $data, $template);
-
-        if (isset($data['type'])) {
-            $templateType = isset($data['type']['id']) ?
-                $this->templateTypeRepo->findOneBy(['uuid' => $data['type']['id']]) :
-                null;
-
-            if ($templateType) {
-                $template->setType($templateType);
-            }
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $template);
+        } else {
+            $template->refreshUuid();
         }
+
+        $this->sipe('name', 'setName', $data, $template);
+        $this->sipe('type', 'setType', $data, $template);
+        $this->sipe('description', 'setDescription', $data, $template);
 
         if (isset($data['contents'])) {
             foreach ($data['contents'] as $locale => $localizedData) {
@@ -98,13 +83,6 @@ class TemplateSerializer
                 $this->sipe('title', 'setTitle', $localizedData, $content);
                 $this->sipe('content', 'setContent', $localizedData, $content);
             }
-        }
-
-        // TODO : should not be managed here
-        if (isset($data['defineAsDefault']) && $template->getType()) {
-            $templateType = $template->getType();
-            $templateType->setDefaultTemplate($template->getName());
-            $this->om->persist($templateType);
         }
 
         return $template;

@@ -1,0 +1,12 @@
+services:
+    Claroline\CoreBundle\Component\Template\EmailValidationEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CoreBundle\Component\Template\LayoutEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CoreBundle\Component\Template\UserActivationEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\CoreBundle\Component\Template\UserRegistrationEmail:
+        tags: [ 'claroline.component.template' ]

@@ -5,19 +5,28 @@ import {trans} from '#/main/app/intl/translation'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {Template as TemplateTypes} from '#/main/template/data/types/template/prop-types'
+import {Badge} from '#/main/app/components/badge'
 
 const TemplateCard = props =>
   <DataCard
     {...props}
     id={props.data.id}
-    icon="fa fa-file-alt"
     title={props.data.name}
-    subtitle={trans(props.data.type.name, {}, 'template')}
-    contentText={props.data.content}
-    footer={
-      <span>
-        {props.data.lang}
-      </span>
+    contentText={props.data.description || <em>{trans('no_description')}</em>}
+    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    meta={
+      <>
+        {props.data.system &&
+          <Badge subtle={true} variant="secondary">
+            {trans('system')}
+          </Badge>
+        }
+        {props.data.default &&
+          <Badge subtle={true} variant="primary">
+            {trans('default')}
+          </Badge>
+        }
+      </>
     }
   />
 

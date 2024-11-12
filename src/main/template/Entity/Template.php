@@ -14,6 +14,7 @@ namespace Claroline\TemplateBundle\Entity;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\TemplateBundle\Finder\TemplateType as TemplateFinder;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,12 +28,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Template
 {
     use Id;
-    use Name;
     use Uuid;
+    use Name;
+    use Description;
 
-    #[ORM\JoinColumn(name: 'claro_template_type', nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: TemplateType::class)]
-    private ?TemplateType $type = null;
+    #[ORM\Column(name: 'entity_type')]
+    private ?string $type = null;
+
+    #[ORM\Column(name: 'is_default', type: Types::BOOLEAN)]
+    private bool $default = false;
 
     /**
      * System templates can not be edited nor deleted by users.
@@ -54,14 +58,24 @@ class Template
         $this->contents = new ArrayCollection();
     }
 
-    public function getType(): ?TemplateType
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(TemplateType $type): void
+    public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+    public function setDefault(bool $default): void
+    {
+        $this->default = $default;
     }
 
     public function isSystem(): bool

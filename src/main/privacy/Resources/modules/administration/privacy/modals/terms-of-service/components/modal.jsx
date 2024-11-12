@@ -37,13 +37,7 @@ const EditorModal = props =>
                   type: 'template',
                   displayed: get(props, 'tos.enabled'),
                   options: {
-                    picker: {
-                      filters: [{
-                        property: 'typeName',
-                        value: 'terms_of_service',
-                        locked: true
-                      }]
-                    }
+                    templateType: 'terms_of_service'
                   }
                 }
               ]

@@ -17,26 +17,14 @@ const AnnouncementEditorAppearance = () =>
         label: trans('email_announcement', {}, 'template'),
         type: 'template',
         options: {
-          picker: {
-            filters: [{
-              property: 'typeName',
-              value: 'email_announcement',
-              locked: true
-            }]
-          }
+          templateType: 'email_announcement'
         }
       }, {
         name: 'resource.templatePdf',
         label: trans('pdf_announcement', {}, 'template'),
         type: 'template',
         options: {
-          picker: {
-            filters: [{
-              property: 'typeName',
-              value: 'pdf_announcement',
-              locked: true
-            }]
-          }
+          templateType: 'pdf_announcement'
         }
       }]
     }]}

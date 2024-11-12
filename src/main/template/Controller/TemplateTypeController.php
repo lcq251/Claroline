@@ -11,17 +11,12 @@
 
 namespace Claroline\TemplateBundle\Controller;
 
-use Claroline\AppBundle\API\Crud;
-use Claroline\AppBundle\API\Finder\FinderQuery;
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\TemplateBundle\Component\Template\TemplateProvider;
 use Claroline\TemplateBundle\Entity\Template;
-use Claroline\TemplateBundle\Entity\TemplateType;
-use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\StreamedJsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -32,44 +27,30 @@ class TemplateTypeController
 
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        private readonly Crud $crud,
+        private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
-        private readonly TemplateManager $templateManager
+        private readonly TemplateProvider $templateProvider
     ) {
         $this->authorization = $authorization;
     }
 
-    #[Route(path: '/{type}', name: 'apiv2_template_type_list', methods: ['GET'])]
-    public function listAction(
-        ?string $type = null,
-        #[MapQueryString]
-        ?FinderQuery $finderQuery = new FinderQuery()
-    ): StreamedJsonResponse {
+    #[Route(path: '/{type}', name: 'apiv2_template_type_get', methods: ['GET'])]
+    public function getAction(string $type): JsonResponse
+    {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        if ($type) {
-            $finderQuery->addFilter('type', $type);
-        }
+        $templateType = $this->templateProvider->getTemplate($type);
+        $templates = $this->om->getRepository(Template::class)->findBy(['type' => $type]);
 
-        $templateTypes = $this->crud->search(TemplateType::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
-
-        return $templateTypes->toResponse();
-    }
-
-    #[Route(path: '/{id}/open', name: 'apiv2_template_type_open', methods: ['GET'])]
-    public function openAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        TemplateType $templateType
-    ): StreamedJsonResponse {
-        $this->checkPermission('OPEN', $templateType, [], true);
-
-        $finderQuery = new FinderQuery();
-        $finderQuery->addFilter('type', $templateType->getUuid());
-        $templates = $this->crud->search(Template::class, $finderQuery);
-
-        return new StreamedJsonResponse([
-            'type' => $this->serializer->serialize($templateType),
-            'templates' => $templates->getItems(),
+        return new JsonResponse([
+            'type' => [
+                'name' => $templateType::getName(),
+                'type' => $templateType::getType(),
+                'placeholders' => $templateType->getPlaceholders(),
+            ],
+            'templates' => array_map(function (Template $template) {
+                return $this->serializer->serialize($template);
+            }, $templates),
         ]);
     }
 }

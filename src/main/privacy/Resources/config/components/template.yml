@@ -1,0 +1,6 @@
+services:
+    Claroline\PrivacyBundle\Component\Template\PrivacyTemplate:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\PrivacyBundle\Component\Template\TermsOfServiceTemplate:
+        tags: [ 'claroline.component.template' ]

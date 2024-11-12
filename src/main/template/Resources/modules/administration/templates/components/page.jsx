@@ -1,25 +1,12 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
 
-import {TemplateType as TemplateTypeTypes} from '#/main/template/data/types/template-type/prop-types'
-
 const TemplatePage = (props) => {
-  if (isEmpty(props.templateType)) {
-    return (
-      <ContentLoader
-        size="lg"
-        description={trans('loading', {}, 'template')}
-      />
-    )
-  }
-
   return (
     <ToolPage
       breadcrumb={[
@@ -27,13 +14,14 @@ const TemplatePage = (props) => {
           type: LINK_BUTTON,
           label: trans(get(props.templateType, 'type')),
           target: props.path + '/' + get(props.templateType, 'type')
+        }, {
+          type: LINK_BUTTON,
+          label: trans(get(props.templateType, 'name'), {}, 'template'),
+          target: props.path + '/' + get(props.templateType, 'type') + '/' + get(props.templateType, 'name')
         }
       ]}
       title={trans(get(props.templateType, 'name'), {}, 'template')}
-      meta={{
-        title: `${trans('templates', {}, 'tools')} - ${trans(get(props.templateType, 'name'), {}, 'template')}`,
-        description: trans(get(props.templateType, 'name')+'_desc', {}, 'template')
-      }}
+      description={trans(get(props.templateType, 'description'), {}, 'template')}
 
       primaryAction="add"
       actions={[
@@ -55,9 +43,9 @@ const TemplatePage = (props) => {
 
 TemplatePage.propTypes = {
   path: T.string.isRequired,
-  templateType: T.shape(
-    TemplateTypeTypes.propTypes
-  ),
+  templateType: T.shape({
+    // TemplateTypeTypes.propTypes
+  }),
   children: T.any
 }
 

@@ -14,13 +14,7 @@ const EvaluationToolAppearance = () =>
         help: trans('workspace_participation_certificate_desc', {}, 'template'),
         type: 'template',
         options: {
-          picker: {
-            filters: [{
-              property: 'typeName',
-              value: 'workspace_participation_certificate',
-              locked: true
-            }]
-          }
+          templateType: 'workspace_participation_certificate'
         }
       }, {
         name: 'evaluation.successTemplate',
@@ -28,13 +22,7 @@ const EvaluationToolAppearance = () =>
         help: trans('workspace_success_certificate_desc', {}, 'template'),
         type: 'template',
         options: {
-          picker: {
-            filters: [{
-              property: 'typeName',
-              value: 'workspace_success_certificate',
-              locked: true
-            }]
-          }
+          templateType: 'workspace_success_certificate'
         }
       }]
     }]}

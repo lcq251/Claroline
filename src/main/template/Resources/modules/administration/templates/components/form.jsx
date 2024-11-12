@@ -37,10 +37,16 @@ const TemplateForm = (props) =>
             required: true,
             disabled: (template) => template.system
           }, {
-            name: 'defineAsDefault',
+            name: 'description',
+            type: 'string',
+            label: trans('description'),
+            recommended: true,
+            options: {long: true},
+            disabled: (template) => template.system
+          }, {
+            name: 'default',
             type: 'boolean',
-            label: trans('define_as_default_for_type', {}, 'template'),
-            calculated: (template) => template.defineAsDefault || (template.type && template.name === template.type.defaultTemplate)
+            label: trans('define_as_default_for_type', {}, 'template')
           }
         ]
       }

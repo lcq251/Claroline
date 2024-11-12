@@ -1,0 +1,6 @@
+services:
+    Claroline\AnnouncementBundle\Component\Template\AnnouncementEmail:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\AnnouncementBundle\Component\Template\AnnouncementPdf:
+        tags: [ 'claroline.component.template' ]

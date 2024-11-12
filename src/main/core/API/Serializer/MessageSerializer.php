@@ -14,15 +14,10 @@ class MessageSerializer
 {
     use SerializerTrait;
 
-    /** @var ObjectManager */
-    private $om;
-    /** @var UserSerializer */
-    private $userSerializer;
-
-    public function __construct(UserSerializer $userSerializer, ObjectManager $om)
-    {
-        $this->userSerializer = $userSerializer;
-        $this->om = $om;
+    public function __construct(
+        private readonly UserSerializer $userSerializer,
+        private readonly ObjectManager $om
+    ) {
     }
 
     public function getClass(): string
@@ -40,15 +35,18 @@ class MessageSerializer
         return '#/main/core/message.json';
     }
 
-    /**
-     * Serializes a AbstractMessage entity.
-     */
     public function serialize(AbstractMessage $message, array $options = []): array
     {
         return [
             'id' => $message->getUuid(),
             'content' => $message->getContent(),
-            'meta' => $this->serializeMeta($message),
+            'meta' => [
+                'creator' => $this->serializeCreator($message),
+                'created' => DateNormalizer::normalize($message->getCreationDate()),
+                'updated' => DateNormalizer::normalize($message->getModificationDate()),
+                'flagged' => $message->isFlagged(),
+                'moderation' => $message->getModerated(),
+            ],
             'parent' => $this->serializeParent($message),
             'children' => array_map(function (AbstractMessage $child) use ($options) {
                 return $this->serialize($child, $options);
@@ -56,46 +54,7 @@ class MessageSerializer
         ];
     }
 
-    protected function serializeMeta(AbstractMessage $message): array
-    {
-        return [
-            'creator' => $this->serializeCreator($message),
-            'created' => $message->getCreationDate()->format('Y-m-d\TH:i:s'),
-            'updated' => $message->getModificationDate()->format('Y-m-d\TH:i:s'),
-            'flagged' => $message->isFlagged(),
-            'moderation' => $message->getModerated(),
-        ];
-    }
-
-    protected function serializeCreator(AbstractMessage $message): array
-    {
-        if (!empty($message->getCreator())) {
-            return $this->userSerializer->serialize($message->getCreator(), [Options::SERIALIZE_MINIMAL]);
-        }
-
-        return [
-            'name' => $message->getAuthor(),
-        ];
-    }
-
-    protected function serializeParent(AbstractMessage $message): ?array
-    {
-        $parent = null;
-        if ($message->getParent()) {
-            $parent = ['id' => $message->getParent()->getId()];
-        }
-
-        return $parent;
-    }
-
-    /**
-     * Deserializes data into a Forum entity.
-     *
-     * @param array $data
-     *
-     * @return AbstractMessage
-     */
-    public function deserialize($data, AbstractMessage $message, array $options = [])
+    public function deserialize(array $data, AbstractMessage $message, array $options = []): AbstractMessage
     {
         $this->sipe('content', 'setContent', $data, $message);
 
@@ -116,5 +75,26 @@ class MessageSerializer
         }
 
         return $message;
+    }
+
+    private function serializeCreator(AbstractMessage $message): array
+    {
+        if (!empty($message->getCreator())) {
+            return $this->userSerializer->serialize($message->getCreator(), [Options::SERIALIZE_MINIMAL]);
+        }
+
+        return [
+            'name' => $message->getAuthor(),
+        ];
+    }
+
+    private function serializeParent(AbstractMessage $message): ?array
+    {
+        $parent = null;
+        if ($message->getParent()) {
+            $parent = ['id' => $message->getParent()->getId()];
+        }
+
+        return $parent;
     }
 }

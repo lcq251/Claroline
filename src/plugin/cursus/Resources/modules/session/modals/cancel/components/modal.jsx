@@ -57,13 +57,7 @@ const SessionCancelModal = props =>
                         type: 'template',
                         displayed: (data) => !!data.sendMail,
                         options: {
-                          picker: {
-                            filters: [{
-                              property: 'typeName',
-                              value: 'training_session_canceled',
-                              locked: true
-                            }]
-                          }
+                          templateType: 'training_session_canceled'
                         }
                       }
                     ]

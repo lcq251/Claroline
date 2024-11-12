@@ -1,12 +1,12 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
+import {trans} from '#/main/app/intl'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {Tool} from '#/main/core/tool'
 
 import {TemplateList} from '#/main/template/administration/templates/containers/list'
 import {TemplateDetails} from '#/main/template/administration/templates/containers/details'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
 
 const TemplateTool = (props) =>
   <Tool
@@ -32,13 +32,6 @@ const TemplateTool = (props) =>
         type: LINK_BUTTON,
         label: trans('other'),
         target: `${props.path}/other`
-      }, {
-        name: 'sms',
-        type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-sms',
-        label: trans('sms'),
-        target: `${props.path}/sms`,
-        displayed: false
       }
     ]}
     pages={[
@@ -52,8 +45,8 @@ const TemplateTool = (props) =>
           />
         )
       }, {
-        path: '/:type/:id',
-        onEnter: (params) => props.open(params.id || null),
+        path: '/:type/:templateType',
+        onEnter: (params) => props.open(params.templateType || null),
         component: TemplateDetails
       }
     ]}

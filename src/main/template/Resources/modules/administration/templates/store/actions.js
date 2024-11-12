@@ -9,11 +9,11 @@ const actions = {}
 
 actions.loadTemplateType = makeActionCreator(TEMPLATE_TYPE_LOAD, 'templateType')
 
-actions.open = (id = null) => (dispatch) => {
-  if (id) {
+actions.open = (type = null) => (dispatch) => {
+  if (type) {
     return dispatch({
       [API_REQUEST]: {
-        url: ['apiv2_template_type_open', {id}],
+        url: ['apiv2_template_type_get', {type: type}],
         silent: true,
         success: (response) => dispatch(actions.loadTemplateType(response))
       }

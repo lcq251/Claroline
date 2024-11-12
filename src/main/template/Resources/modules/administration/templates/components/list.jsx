@@ -3,60 +3,48 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
+import {PageSection} from '#/main/app/page'
+import {ContentMenu} from '#/main/app/content/components/menu'
 import {ToolPage} from '#/main/core/tool'
-import {ListData} from '#/main/app/content/list/containers/data'
 
-import {TemplateTypeCard} from '#/main/template/data/types/template-type/components/card'
-import {selectors} from '#/main/template/administration/templates/store'
-import {PageListSection} from '#/main/app/page'
+const TemplateList = (props) => {
+  const types = props.templateTypes[props.type] || []
 
-const TemplateList = (props) =>
-  <ToolPage
-    title={trans(props.type)}
-  >
-    <PageListSection>
-      <ListData
-        flush={true}
-        name={selectors.STORE_NAME + '.templates'}
-        fetch={{
-          url: ['apiv2_template_type_list', {type: props.type}],
-          autoload: true
-        }}
-        primaryAction={(row) => ({
-          type: LINK_BUTTON,
-          target: `${props.path}/${props.type}/${row.id}`,
-          label: trans('open', {}, 'actions')
-        })}
-        definition={[
-          {
-            name: 'name',
-            type: 'translation',
-            label: trans('name'),
-            displayed: true,
-            filterable: false,
-            sortable: false,
-            options: {
-              domain: 'template'
-            },
-            primary: true
-          }, {
-            name: 'description',
-            type: 'translation',
-            label: trans('description'),
-            displayed: true,
-            filterable: false,
-            sortable: false,
-            calculated: (rowData) => `${rowData.name}_desc`,
-            options: {
-              domain: 'template'
-            }
+  return (
+    <ToolPage
+      title={trans(props.type)}
+    >
+      <PageSection size="md">
+        <p className="mt-5 mb-4 text-center lead">
+          {trans('configure_'+props.type+'_help', {}, 'template')}
+        </p>
+
+        <ContentMenu
+          className="mb-5"
+          autoFocus={false}
+          items={types
+            .map(type => ({
+              id: type,
+              label: trans(type, {}, 'template'),
+              description: trans(type+'_desc', {}, 'template'),
+              action: {
+                type: LINK_BUTTON,
+                target: `${props.path}/${props.type}/${type}`
+              }
+            }))
+            .sort((a, b) => {
+              if (a.label > b.label) {
+                return 1
+              }
+
+              return -1
+            })
           }
-        ]}
-        card={TemplateTypeCard}
-        selectable={false}
-      />
-    </PageListSection>
-  </ToolPage>
+        />
+      </PageSection>
+    </ToolPage>
+  )
+}
 
 TemplateList.propTypes = {
   path: T.string.isRequired,

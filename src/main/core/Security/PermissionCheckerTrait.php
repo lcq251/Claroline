@@ -22,15 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 trait PermissionCheckerTrait
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
+    private AuthorizationCheckerInterface $authorization;
 
-    protected function checkPermission($permission, $object = null, ?array $options = [], ?bool $throwException = false): bool
+    protected function checkPermission(mixed $permission, mixed $object = null, ?array $options = [], ?bool $throwException = false): bool
     {
-        if (!$this->authorization instanceof AuthorizationCheckerInterface) {
-            throw new \RuntimeException('PermissionCheckerTrait requires the AuthorizationChecker (@security.authorization_checker) to be injected in your service.');
-        }
-
         $subject = null;
         if ($object) {
             switch ($object) {

@@ -13,56 +13,38 @@ namespace Claroline\CoreBundle\Manager\Template;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\TemplateBundle\Entity\Template;
-use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Manager\LocaleManager;
 use Doctrine\Persistence\ObjectRepository;
 
 class TemplateManager
 {
-    private ObjectRepository $templateTypeRepo;
     private ObjectRepository $templateRepo;
 
     public function __construct(
-        private readonly ObjectManager $om,
+        ObjectManager $om,
         private readonly LocaleManager $localeManager,
         private readonly PlaceholderManager $placeholderManager
     ) {
-        $this->templateTypeRepo = $om->getRepository(TemplateType::class);
         $this->templateRepo = $om->getRepository(Template::class);
     }
 
-    public function defineTemplateAsDefault(Template $template): void
+    public function getTemplate(string $templateType, array $placeholders = [], string $locale = null, string $mode = 'content'): string
     {
-        $templateType = $template->getType();
-        $templateType->setDefaultTemplate($template->getName());
+        /** @var Template $template */
+        $template = $this->templateRepo->findOneBy([
+            'type' => $templateType,
+            'default' => true,
+        ]);
 
-        $this->om->persist($templateType);
-        $this->om->flush();
-    }
-
-    public function getTemplate(string $templateTypeName, array $placeholders = [], string $locale = null, string $mode = 'content'): string
-    {
-        $result = '';
-        $templateType = $this->templateTypeRepo->findOneBy(['name' => $templateTypeName]);
-
-        if (!$locale) {
-            $locale = $this->localeManager->getDefault();
-        }
-
-        // Checks if a template is associated to the template type
-        if ($templateType && $templateType->getDefaultTemplate()) {
-            /** @var Template $template */
-            $template = $this->templateRepo->findOneBy([
-                'type' => $templateType,
-                'name' => $templateType->getDefaultTemplate(),
-            ]);
-
-            if ($template) {
-                $result = $this->getTemplateContent($template, $placeholders, $locale, $mode);
+        if ($template) {
+            if (!$locale) {
+                $locale = $this->localeManager->getDefault();
             }
+
+            return $this->getTemplateContent($template, $placeholders, $locale, $mode);
         }
 
-        return $result;
+        return '';
     }
 
     public function getTemplateContent(Template $template, array $placeholders = [], string $locale = null, string $mode = 'content'): string

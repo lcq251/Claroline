@@ -15,8 +15,7 @@ registry.add('ClarolineTemplateBundle', {
 
   data: {
     types: {
-      'template'     : () => { return import(/* webpackChunkName: "template-data-type-template" */      '#/main/template/data/types/template') },
-      'template_type': () => { return import(/* webpackChunkName: "template-data-type-template-type" */ '#/main/template/data/types/template-type') }
+      'template': () => { return import(/* webpackChunkName: "template-data-type-template" */ '#/main/template/data/types/template') }
     }
   }
 })

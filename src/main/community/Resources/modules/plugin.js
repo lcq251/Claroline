@@ -17,8 +17,7 @@ registry.add('ClarolineCommunityBundle', {
    * Provides Desktop and/or Workspace tools.
    */
   tools: {
-    'community': () => { return import(/* webpackChunkName: "community-tool-community" */ '#/main/community/tools/community') },
-    //'organizations': () => { return import(/* webpackChunkName: "community-tool-organizations" */ '#/main/community/tools/organizations') }
+    'community': () => { return import(/* webpackChunkName: "community-tool-community" */ '#/main/community/tools/community') }
   },
 
   /**
@@ -44,7 +43,6 @@ registry.add('ClarolineCommunityBundle', {
     },
 
     user: {
-      //'about'          : () => { return import(/* webpackChunkName: "community-action-user-about" */           '#/main/community/actions/user/about') },
       'open'           : () => { return import(/* webpackChunkName: "community-action-user-open" */            '#/main/community/actions/user/open') },
       'edit'           : () => { return import(/* webpackChunkName: "community-action-user-edit" */            '#/main/community/actions/user/edit') },
       'disable'        : () => { return import(/* webpackChunkName: "community-action-user-disable" */         '#/main/community/actions/user/disable') },
@@ -54,14 +52,12 @@ registry.add('ClarolineCommunityBundle', {
     },
 
     group: {
-      //'about'         : () => { return import(/* webpackChunkName: "community-action-group-about" */          '#/main/community/actions/group/about') },
       'open'          : () => { return import(/* webpackChunkName: "community-action-group-open" */           '#/main/community/actions/group/open') },
       'edit'          : () => { return import(/* webpackChunkName: "community-action-group-edit" */           '#/main/community/actions/group/edit') },
       'delete'        : () => { return import(/* webpackChunkName: "community-action-group-delete" */         '#/main/community/actions/group/delete') }
     },
 
     role: {
-      //'about'  : () => { return import(/* webpackChunkName: "community-action-role-about" */   '#/main/community/actions/role/about') },
       'open'   : () => { return import(/* webpackChunkName: "community-action-role-open" */    '#/main/community/actions/role/open') },
       'edit'   : () => { return import(/* webpackChunkName: "community-action-role-edit" */    '#/main/community/actions/role/edit') },
       'delete' : () => { return import(/* webpackChunkName: "community-action-role-delete" */  '#/main/community/actions/role/delete') },
@@ -69,7 +65,6 @@ registry.add('ClarolineCommunityBundle', {
     },
 
     organization: {
-      //'about' : () => { return import(/* webpackChunkName: "community-action-organization-about" */  '#/main/community/actions/organization/about') },
       'open'  : () => { return import(/* webpackChunkName: "community-action-organization-open" */   '#/main/community/actions/organization/open') },
       'browse'  : () => { return import(/* webpackChunkName: "community-action-organization-browse" */   '#/main/community/actions/organization/browse') },
       'edit'  : () => { return import(/* webpackChunkName: "community-action-organization-edit" */   '#/main/community/actions/organization/edit') },
@@ -77,7 +72,6 @@ registry.add('ClarolineCommunityBundle', {
     },
 
     team: {
-      //'about' : () => { return import(/* webpackChunkName: "community-action-team-about" */  '#/main/community/actions/team/about') },
       'open'  : () => { return import(/* webpackChunkName: "community-action-team-open" */   '#/main/community/actions/team/open') },
       'edit'  : () => { return import(/* webpackChunkName: "community-action-team-edit" */   '#/main/community/actions/team/edit') },
       'fill': () => { return import(/* webpackChunkName: "community-action-team-fill" */ '#/main/community/actions/team/fill') },

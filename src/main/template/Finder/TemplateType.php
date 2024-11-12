@@ -4,6 +4,7 @@ namespace Claroline\TemplateBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\TemplateBundle\Entity\Template;
@@ -15,7 +16,7 @@ class TemplateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Template::class,
-            'fulltext' => ['name'],
+            'fulltext' => ['name', 'description'],
         ]);
     }
 
@@ -23,7 +24,9 @@ class TemplateType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('type', TemplateTypeType::class)
+            ->add('description', TextType::class)
+            ->add('default', BooleanType::class)
+            ->add('type', TextType::class, ['mode' => TextType::MODE_EXACT])
         ;
     }
 

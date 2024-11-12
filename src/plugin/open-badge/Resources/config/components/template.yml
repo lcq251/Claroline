@@ -1,0 +1,6 @@
+services:
+    Claroline\OpenBadgeBundle\Component\Template\BadgeCertificatePdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\OpenBadgeBundle\Component\Template\BadgeGrantedEmail:
+        tags: [ 'claroline.component.template' ]

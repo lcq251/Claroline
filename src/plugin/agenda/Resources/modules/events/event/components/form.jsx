@@ -117,9 +117,7 @@ const EventForm = (props) =>
               type: 'template',
               label: trans('event_invitation', {}, 'template'),
               options: {
-                picker: {
-                  filters: [{property: 'typeName', value: 'event_invitation', locked: true}]
-                }
+                templateType: 'event_invitation'
               }
             }
           ]

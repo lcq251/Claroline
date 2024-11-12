@@ -2,7 +2,6 @@
 
 namespace Claroline\AppBundle\Controller\Component;
 
-use Exception;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
@@ -56,7 +55,7 @@ class ContextController
         try {
             $contextHandler = $this->contextProvider->getContext($context, $contextId);
             $contextSubject = $contextHandler->getObject($contextId);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
@@ -117,7 +116,7 @@ class ContextController
         // retrieve the requested context
         try {
             $contextHandler = $this->contextProvider->getContext($context, $contextId);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 

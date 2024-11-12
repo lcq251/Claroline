@@ -24,7 +24,6 @@ use Claroline\CoreBundle\Manager\Resource\MaskManager;
 use Claroline\CoreBundle\Manager\Tool\ToolMaskDecoderManager;
 use Claroline\CoreBundle\Repository\PluginRepository;
 use Claroline\KernelBundle\Bundle\PluginBundleInterface;
-use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\ThemeBundle\Entity\Theme;
 use Claroline\ThemeBundle\Manager\IconSetBuilderManager;
 use Psr\Log\LoggerAwareInterface;
@@ -147,10 +146,6 @@ class DatabaseWriter implements LoggerAwareInterface
             $this->createTheme($theme, $plugin);
         }
 
-        foreach ($processedConfiguration['templates'] as $templateType) {
-            $this->createTemplateType($templateType, $plugin);
-        }
-
         $mimeTypes = [];
         foreach ($processedConfiguration['resource_icons'] as $iconConfig) {
             $mimeTypes[$iconConfig['name']] = $iconConfig['mime_types'];
@@ -216,10 +211,6 @@ class DatabaseWriter implements LoggerAwareInterface
         foreach ($sourcesToDelete as $source) {
             $this->logger->debug('Removing data source '.$source->getName());
             $this->em->remove($source);
-        }
-
-        foreach ($processedConfiguration['templates'] as $templateType) {
-            $this->updateTemplateType($templateType, $plugin);
         }
 
         $mimeTypes = [];
@@ -523,32 +514,5 @@ class DatabaseWriter implements LoggerAwareInterface
             }
         }
         $this->em->flush();
-    }
-
-    private function createTemplateType(array $templateTypeConfiguration, Plugin $plugin): void
-    {
-        $templateType = new TemplateType();
-        $this->persistTemplateType($templateTypeConfiguration, $plugin, $templateType);
-    }
-
-    private function updateTemplateType(array $templateTypeConfiguration, Plugin $plugin): void
-    {
-        $templateType = $this->em->getRepository(TemplateType::class)
-            ->findOneBy(['name' => $templateTypeConfiguration['name']]);
-
-        if (null === $templateType) {
-            $templateType = new TemplateType();
-        }
-
-        $this->persistTemplateType($templateTypeConfiguration, $plugin, $templateType);
-    }
-
-    private function persistTemplateType(array $templateTypeConfiguration, Plugin $plugin, TemplateType $templateType): void
-    {
-        $templateType->setName($templateTypeConfiguration['name']);
-        $templateType->setType($templateTypeConfiguration['type']);
-        $templateType->setPlaceholders(isset($templateTypeConfiguration['placeholders']) ? $templateTypeConfiguration['placeholders'] : []);
-        $templateType->setPlugin($plugin);
-        $this->em->persist($templateType);
     }
 }

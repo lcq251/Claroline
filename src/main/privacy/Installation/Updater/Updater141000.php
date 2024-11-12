@@ -3,20 +3,17 @@
 namespace Claroline\PrivacyBundle\Installation\Updater;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\TemplateBundle\Entity\Template;
-use Claroline\TemplateBundle\Entity\TemplateContent;
-use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\InstallationBundle\Updater\Updater;
 use Claroline\PrivacyBundle\Manager\PrivacyManager;
-use Doctrine\Persistence\ObjectRepository;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Entity\TemplateContent;
 
 class Updater141000 extends Updater
 {
     private PlatformConfigurationHandler $config;
     private PrivacyManager $privacyManager;
     private ObjectManager $om;
-    private ObjectRepository $templateTypeRepo;
 
     public function __construct(
         PlatformConfigurationHandler $config,
@@ -26,7 +23,6 @@ class Updater141000 extends Updater
         $this->config = $config;
         $this->privacyManager = $privacyManager;
         $this->om = $om;
-        $this->templateTypeRepo = $om->getRepository(TemplateType::class);
     }
 
     public function postUpdate(): void
@@ -40,7 +36,7 @@ class Updater141000 extends Updater
 
         $template = new Template();
         $template->setName('terms_of_service');
-        $template->setType($this->templateTypeRepo->findOneBy(['name' => 'terms_of_service']));
+        $template->setType('terms_of_service');
 
         $templateContentFr = new TemplateContent();
         $templateContentFr->setLang('fr');

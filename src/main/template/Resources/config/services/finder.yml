@@ -1,6 +1,3 @@
 services:
     Claroline\TemplateBundle\Finder\TemplateType:
         tags: [ claroline.finder.type ]
-
-    Claroline\TemplateBundle\Finder\TemplateTypeType:
-        tags: [ claroline.finder.type ]

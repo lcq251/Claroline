@@ -188,13 +188,7 @@ const SessionForm = (props) =>
                 label: trans('training_session_invitation', {}, 'template'),
                 displayed: (event) => event.registration ? event.registration.mail : false,
                 options: {
-                  picker: {
-                    filters: [{
-                      property: 'typeName',
-                      value: 'training_session_invitation',
-                      locked: true
-                    }]
-                  }
+                  templateType: 'training_session_invitation'
                 }
               }
             ]

@@ -3,5 +3,8 @@
     "template_delete_confirm": "Suppression du template",
     "template_delete_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce template ?",
     "no_template_type": "Aucun type de template",
-    "no_template": "Aucun template"
+    "no_template": "Aucun template",
+    "configure_email_help": "Configurez l'apparence et le contenu des messages envoyés par la plateforme.",
+    "configure_pdf_help": "Configurez l'apparence et le contenu des impressions PDF de la plateforme.",
+    "configure_other_help": "Configurez l'apparence et le contenu de divers éléments de la plateforme."
 }

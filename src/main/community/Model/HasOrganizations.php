@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 
 trait HasOrganizations
 {
-    /** @var Collection|Organization[] */
     private Collection $organizations;
 
     /**
@@ -28,7 +27,7 @@ trait HasOrganizations
     /**
      * Removes an organization.
      */
-    public function removeOrganization($organization): void
+    public function removeOrganization(Organization $organization): void
     {
         if ($this->organizations && $this->organizations->contains($organization)) {
             $this->organizations->removeElement($organization);

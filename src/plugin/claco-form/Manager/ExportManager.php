@@ -20,44 +20,19 @@ use Twig\Environment;
 
 class ExportManager
 {
-    /** @var RouterInterface */
-    private $router;
-    /** @var ClacoFormManager */
-    private $clacoFormManager;
-    /** @var TempFileManager */
-    private $tempManager;
-    /** @var string */
-    private $filesDir;
-    /** @var LocationManager */
-    private $locationManager;
-    /** @var Environment */
-    private $templating;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var PdfManager */
-    private $pdfManager;
-
     public function __construct(
-        RouterInterface $router,
-        ClacoFormManager $clacoFormManager,
-        TempFileManager $tempManager,
-        string $filesDir,
-        LocationManager $locationManager,
-        Environment $templating,
-        TranslatorInterface $translator,
-        PdfManager $pdfManager
+        private readonly RouterInterface $router,
+        private readonly ClacoFormManager $clacoFormManager,
+        private readonly TempFileManager $tempManager,
+        private readonly string $filesDir,
+        private readonly LocationManager $locationManager,
+        private readonly Environment $templating,
+        private readonly TranslatorInterface $translator,
+        private readonly PdfManager $pdfManager
     ) {
-        $this->router = $router;
-        $this->clacoFormManager = $clacoFormManager;
-        $this->tempManager = $tempManager;
-        $this->filesDir = $filesDir;
-        $this->locationManager = $locationManager;
-        $this->templating = $templating;
-        $this->translator = $translator;
-        $this->pdfManager = $pdfManager;
     }
 
-    public function generatePdfForEntry(Entry $entry, User $user)
+    public function generatePdfForEntry(Entry $entry, User $user): ?string
     {
         $clacoForm = $entry->getClacoForm();
         $fields = $clacoForm->getFields();
@@ -205,7 +180,7 @@ class ExportManager
         return [$exportedFile, TextNormalizer::toKey($clacoForm->getResourceNode()->getName()).'.zip'];
     }
 
-    private function formatFieldValue(Entry $entry, Field $field, $value, ?bool $stripHtml = false)
+    private function formatFieldValue(Entry $entry, Field $field, $value, ?bool $stripHtml = false): string
     {
         if (is_null($value)) {
             return '';

@@ -105,20 +105,22 @@ const DataCard = props => {
       'data-card-clickable': props.primaryAction && !props.primaryAction.disabled,
       'data-card-poster': !props.asIcon && (!!props.poster || !!props.color || !!props.icon),
     })}>
-      <Thumbnail
-        thumbnail={props.poster}
-        color={props.color}
-        size={props.size}
-        square={asIcon}
-        className={classes({
-          'my-2': 'xs' === props.size
-        })}
-      >
-        {typeof props.icon === 'string' ?
-          <span className={props.icon} /> :
-          props.icon
-        }
-      </Thumbnail>
+      {(props.poster || props.icon) &&
+        <Thumbnail
+          thumbnail={props.poster}
+          color={props.color}
+          size={props.size}
+          square={asIcon}
+          className={classes({
+            'my-2': 'xs' === props.size
+          })}
+        >
+          {typeof props.icon === 'string' ?
+            <span className={props.icon} /> :
+            props.icon
+          }
+        </Thumbnail>
+      }
 
       <CardAction
         action={props.primaryAction}

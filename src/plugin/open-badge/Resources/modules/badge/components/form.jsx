@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
@@ -74,11 +73,7 @@ const BadgeFormComponent = (props) =>
         icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
         fields: [
-          /*{
-            name: 'color',
-            label: trans('color'),
-            type: 'color'
-          }, */{
+          {
             name: 'poster',
             label: trans('poster'),
             type: 'image'
@@ -87,11 +82,7 @@ const BadgeFormComponent = (props) =>
             label: trans('badge_certificate', {}, 'template'),
             type: 'template',
             options: {
-              picker: {
-                filters: [
-                  {property: 'typeName', value: 'badge_certificate', locked: true}
-                ]
-              }
+              templateType: 'badge_certificate'
             }
           }
         ]
