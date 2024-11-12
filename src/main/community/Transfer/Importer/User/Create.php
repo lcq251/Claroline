@@ -27,16 +27,7 @@ final class Create extends AbstractImporter
 
     public function execute(array $data): array
     {
-        $hasWs = false;
         $options = [Options::FORCE_FLUSH];
-
-        if (isset($data['meta']) && isset($data['meta']['personalWorkspace'])) {
-            $hasWs = $data['meta']['personalWorkspace'];
-        }
-
-        if (!$hasWs) {
-            $options[] = Options::NO_PERSONAL_WORKSPACE;
-        }
 
         if (isset($data['mainOrganization'])) {
             $organization = $this->crud->find(Organization::class, $data['mainOrganization']);

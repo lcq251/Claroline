@@ -53,9 +53,7 @@ class RoleSerializer
 
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
             $serialized['meta'] = [
-                'description' => $role->getDescription(),
                 'readOnly' => $role->isLocked(),
-                'personalWorkspaceCreationEnabled' => $role->isPersonalWorkspaceCreationEnabled(),
             ];
 
             if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
@@ -99,7 +97,6 @@ class RoleSerializer
         }
 
         $this->sipe('meta.description', 'setDescription', $data, $role);
-        $this->sipe('meta.personalWorkspaceCreationEnabled', 'setPersonalWorkspaceCreationEnabled', $data, $role);
 
         // we should test role type before trying to set the workspace
         if (!empty($data['workspace']) && !empty($data['workspace']['id'])) {

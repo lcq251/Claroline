@@ -65,67 +65,6 @@ class UserController extends AbstractCrudController
 
     /**
      * @ApiDoc(
-     *     description="Create the personal workspaces of an array of users.",
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}
-     *     }
-     * )
-     */
-    #[Route(path: '/pws', name: 'pws_create', methods: ['POST'])]
-    public function createPersonalWorkspaceAction(Request $request): JsonResponse
-    {
-        /** @var User[] $users */
-        $users = $this->decodeIdsString($request, User::class);
-
-        $this->om->startFlushSuite();
-
-        $processed = [];
-        foreach ($users as $user) {
-            if (!$user->getPersonalWorkspace() && $this->checkPermission('ADMINISTRATE', $user)) {
-                $this->workspaceManager->createPersonalWorkspace($user);
-                $processed[] = $user;
-            }
-        }
-        $this->om->endFlushSuite();
-
-        return new JsonResponse(array_map(function (User $user) {
-            return $this->serializer->serialize($user);
-        }, $processed));
-    }
-
-    /**
-     * @ApiDoc(
-     *     description="Remove the personal workspaces of an array of users.",
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}
-     *     }
-     * )
-     */
-    #[Route(path: '/pws', name: 'pws_delete', methods: ['DELETE'])]
-    public function deletePersonalWorkspaceAction(Request $request): JsonResponse
-    {
-        /** @var User[] $users */
-        $users = $this->decodeIdsString($request, User::class);
-
-        $this->om->startFlushSuite();
-
-        $processed = [];
-        foreach ($users as $user) {
-            $personalWorkspace = $user->getPersonalWorkspace();
-            if ($personalWorkspace && $this->checkPermission('ADMINISTRATE', $user)) {
-                $this->crud->delete($personalWorkspace);
-                $processed[] = $user;
-            }
-        }
-        $this->om->endFlushSuite();
-
-        return new JsonResponse(array_map(function (User $user) {
-            return $this->serializer->serialize($user);
-        }, $processed));
-    }
-
-    /**
-     * @ApiDoc(
      *     description="Enable a list of users.",
      *     queryString={
      *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}

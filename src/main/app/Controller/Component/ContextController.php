@@ -98,7 +98,7 @@ class ContextController
         $accessErrors = $contextHandler->getAccessErrors($this->tokenStorage->getToken(), $contextSubject);
 
         return new JsonResponse([
-            'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal ?
+            'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null,
             'impersonated' => $isImpersonated,
             'roles' => array_map(function (Role $role) {
                 return $this->serializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]);

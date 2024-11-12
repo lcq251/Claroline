@@ -30,7 +30,7 @@ export default (users, refresher) => {
         }
       })
     }],
-    group: trans('registration'),
+    group: trans('management'),
     scope: ['object', 'collection']
   }
 }

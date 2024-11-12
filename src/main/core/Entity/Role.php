@@ -61,9 +61,6 @@ class Role implements CrudEntityInterface
     #[ORM\ManyToOne(targetEntity: Workspace::class, fetch: 'EXTRA_LAZY', inversedBy: 'roles')]
     private ?Workspace $workspace = null;
 
-    #[ORM\Column(name: 'personal_workspace_creation_enabled', type: Types::BOOLEAN)]
-    private bool $personalWorkspaceCreationEnabled = false;
-
     public function __construct()
     {
         $this->refreshUuid();
@@ -183,15 +180,5 @@ class Role implements CrudEntityInterface
     public function getWorkspace(): ?Workspace
     {
         return $this->workspace;
-    }
-
-    public function isPersonalWorkspaceCreationEnabled(): bool
-    {
-        return $this->personalWorkspaceCreationEnabled;
-    }
-
-    public function setPersonalWorkspaceCreationEnabled(bool $boolean): void
-    {
-        $this->personalWorkspaceCreationEnabled = $boolean;
     }
 }

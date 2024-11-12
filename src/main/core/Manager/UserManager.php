@@ -172,7 +172,7 @@ class UserManager
                     'disabled' => true,
                     'removed' => true,
                 ],
-            ], [Options::NO_EMAIL, Options::NO_PERSONAL_WORKSPACE]);
+            ], [Options::NO_EMAIL]);
         }
 
         if (!$user->hasRole('ROLE_ADMIN')) {

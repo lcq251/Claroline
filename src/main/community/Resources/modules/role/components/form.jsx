@@ -44,6 +44,14 @@ const RoleFormComponent = props => {
               required: true,
               disabled: (role) => get(role, 'meta.readOnly')
             }, {
+              name: 'meta.description',
+              type: 'string',
+              label: trans('description'),
+              recommended: true,
+              options: {
+                long: true
+              }
+            }, {
               name: 'type',
               type: 'choice',
               label: trans('type'),
@@ -79,25 +87,6 @@ const RoleFormComponent = props => {
                   displayed: (role) => constants.ROLE_USER === role.type
                 }
               ]
-            }, {
-              name: 'meta.personalWorkspaceCreationEnabled',
-              type: 'boolean',
-              label: trans('role_personalWorkspaceCreation'),
-              help: trans('role_personalWorkspaceCreation_help'),
-              displayed: (role) => constants.ROLE_PLATFORM === role.type
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-circle-info',
-          title: trans('information'),
-          fields: [
-            {
-              name: 'meta.description',
-              type: 'string',
-              label: trans('description'),
-              options: {
-                long: true
-              }
             }
           ]
         }

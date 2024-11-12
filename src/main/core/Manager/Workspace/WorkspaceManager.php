@@ -42,41 +42,6 @@ class WorkspaceManager implements LoggerAwareInterface
         $this->workspaceRepo = $om->getRepository(Workspace::class);
     }
 
-    public function createPersonalWorkspace(User $user, Workspace $model = null): Workspace
-    {
-        if (empty($model)) {
-            $model = $this->getDefaultModel(true);
-        }
-
-        /** @var Workspace $workspace */
-        $workspace = $this->crud->create(Workspace::class, [
-            'name' => $user->getUsername(),
-            'code' => $user->getUsername(),
-            'model' => [
-                'id' => $model->getUuid(),
-            ],
-            'meta' => [
-                'personal' => true,
-                // Set the target user as creator (this no longer work has the creator is overridden in WorkspaceCrud):
-                // - user will automatically gets the MANAGER role on workspace creation
-                // - managers don't get registered to all the personal workspace they create
-                'creator' => ['id' => $user->getUuid()],
-            ],
-        ], [Crud::NO_PERMISSIONS]);
-
-        $user->setPersonalWorkspace($workspace);
-
-        // register target user as manager
-        if ($workspace->getManagerRole()) {
-            $this->crud->patch($user, 'role', 'add', [$workspace->getManagerRole()], [Crud::NO_PERMISSIONS]);
-        }
-
-        $this->om->persist($user);
-        $this->om->flush();
-
-        return $workspace;
-    }
-
     public function export(Workspace $workspace): string
     {
         return $this->transferManager->export($workspace);

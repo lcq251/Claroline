@@ -45,7 +45,7 @@ const PickerModal = (props) => {
   const dispatch = useDispatch()
   const reset = useCallback(() => {
     dispatch(listActions.resetSelect(props.name))
-    dispatch(listActions.resetFilters(props.filters || []))
+    dispatch(listActions.resetFilters(props.name, props.filters || []))
     dispatch(listActions.invalidateData(props.name))
   }, [props.name])
   const select = useCallback((row) => {

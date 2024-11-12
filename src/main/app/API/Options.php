@@ -13,7 +13,6 @@ namespace Claroline\AppBundle\API;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 
-// todo : should be broken in multiple files.
 final class Options
 {
     /**
@@ -48,7 +47,6 @@ final class Options
     public const PERSIST_TAG = 'persistTag'; // find a way to remove
 
     // for user
-    public const NO_PERSONAL_WORKSPACE = 'no_personal_workspace';
     public const SERIALIZE_FACET = 'serialize_facet';
     public const NO_EMAIL = 'no_email';
     public const VALIDATE_FACET = 'validate_facet';

@@ -54,7 +54,6 @@ class RoleManager
         $role->setName($name);
         $role->setTranslationKey($translationKey);
         $role->setLocked($isReadOnly);
-        $role->setPersonalWorkspaceCreationEnabled(true);
         $role->setType(Role::PLATFORM);
         $this->om->persist($role);
 

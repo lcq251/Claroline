@@ -35,7 +35,6 @@ registry.add('ClarolineCoreBundle', {
 
     resource: {
       // all resources
-      //'about'    : () => { return import(/* webpackChunkName: "core-action-resource-about" */       '#/main/core/actions/resource/about') },
       'configure': () => { return import(/* webpackChunkName: "core-action-resource-configure" */   '#/main/core/actions/resource/configure') },
       'copy'     : () => { return import(/* webpackChunkName: "core-action-resource-copy" */        '#/main/core/actions/resource/copy') },
       'delete'   : () => { return import(/* webpackChunkName: "core-action-resource-delete" */      '#/main/core/actions/resource/delete') },
@@ -58,7 +57,6 @@ registry.add('ClarolineCoreBundle', {
     },
 
     workspace: {
-      //'about'    : () => { return import(/* webpackChunkName: "core-action-workspace-about" */     '#/main/core/actions/workspace/about') },
       'archive'  : () => { return import(/* webpackChunkName: "core-action-workspace-archive" */   '#/main/core/actions/workspace/archive') },
       //'configure': () => { return import(/* webpackChunkName: "core-action-workspace-configure" */ '#/main/core/actions/workspace/configure') },
       'copy'     : () => { return import(/* webpackChunkName: "core-action-workspace-copy" */      '#/main/core/actions/workspace/copy') },
@@ -69,8 +67,6 @@ registry.add('ClarolineCoreBundle', {
     },
 
     user: {
-      'ws-disable': () => { return import(/* webpackChunkName: "core-action-user-ws-disable" */ '#/main/core/actions/user/ws-disable') },
-      'ws-enable' : () => { return import(/* webpackChunkName: "core-action-user-ws-enable" */  '#/main/core/actions/user/ws-enable') },
       'ws-register': () => { return import(/* webpackChunkName: "core-action-user-ws-register" */ '#/main/core/actions/user/ws-register') }
     },
 

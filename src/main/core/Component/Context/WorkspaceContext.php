@@ -7,7 +7,6 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\AbstractContext;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
@@ -103,12 +102,8 @@ class WorkspaceContext extends AbstractContext
             );
         }
 
-        // $rootNode = $this->om->getRepository(ResourceNode::class)->findOneBy(['workspace' => $workspace, 'parent' => null]);
-
         return [
             'userEvaluation' => $userEvaluation,
-            // do not expose root resource here (used in the WS to configure opening target)
-            // 'root' => $this->serializer->serialize($rootNode, [SerializerInterface::SERIALIZE_MINIMAL]),
         ];
     }
 

@@ -12,12 +12,10 @@
 namespace Claroline\CommunityBundle\Controller;
 
 use Claroline\AppBundle\API\Crud;
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Security\Authentication\Authenticator;
-use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\Configuration\PlatformDefaults;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
