@@ -17,7 +17,6 @@ export default (users, usersRefresher, path, currentUser) => {
       }
     }],
     displayed: 0 !== processable.length,
-    scope: ['object', 'collection'],
-    group: trans('community')
+    scope: ['object', 'collection']
   }
 }

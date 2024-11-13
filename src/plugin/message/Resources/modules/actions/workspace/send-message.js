@@ -20,7 +20,6 @@ export default (workspaces) => {
       }
     }],
     displayed: 0 !== processable.length,
-    scope: ['object', 'collection'],
-    group: trans('community')
+    scope: ['object', 'collection']
   }
 }

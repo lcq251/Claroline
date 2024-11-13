@@ -1,6 +1,5 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -11,7 +10,6 @@ import {formatSections} from '#/main/app/content/form/parameters/utils'
 
 import {selectors} from '#/main/community/user/editor/store'
 
-
 const UserEditorOverview = () => {
   const authenticatedUserId = useSelector(securitySelectors.currentUserId)
   const currentUser = useSelector(selectors.user)
@@ -19,8 +17,6 @@ const UserEditorOverview = () => {
 
   const userProfile = useSelector((state) => configSelectors.param(state, 'userProfile'))
   const hasUsername = useSelector((state) => configSelectors.param(state, 'community.username'))
-
-  console.log(userProfile)
 
   let profileSections = []
   if (!isEmpty(userProfile) && !isEmpty(userProfile.sections)) {
