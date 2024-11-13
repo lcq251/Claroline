@@ -16,7 +16,6 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
@@ -39,8 +38,7 @@ class ProfileController
         private readonly TempFileManager $tempManager,
         private readonly Crud $crud,
         private readonly SerializerProvider $serializer,
-        private readonly ParametersSerializer $parametersSerializer,
-        private readonly ProfileSerializer $profileSerializer
+        private readonly ParametersSerializer $parametersSerializer
     ) {
         $this->authorization = $authorization;
     }
@@ -86,14 +84,5 @@ class ProfileController
         $this->om->flush();
 
         return new JsonResponse($user->getStatus());
-    }
-
-    #[Route(path: '', name: 'apiv2_profile_open', methods: ['GET'])]
-    public function openAction(): JsonResponse
-    {
-        return new JsonResponse([
-            'facets' => $this->profileSerializer->serialize(),
-            'parameters' => $this->parametersSerializer->serialize()['profile'],
-        ]);
     }
 }

@@ -12,15 +12,10 @@ class FieldFacetSerializer
 {
     use SerializerTrait;
 
-    private ObjectManager $om;
-    private FieldFacetChoiceSerializer $ffcSerializer;
-
     public function __construct(
-        ObjectManager $om,
-        FieldFacetChoiceSerializer $ffcSerializer
+        private readonly ObjectManager $om,
+        private readonly FieldFacetChoiceSerializer $ffcSerializer
     ) {
-        $this->om = $om;
-        $this->ffcSerializer = $ffcSerializer;
     }
 
     public function getClass(): string
@@ -46,9 +41,11 @@ class FieldFacetSerializer
         $serialized = [
             'id' => $fieldFacet->getUuid(),
             'name' => $fieldFacet->getName(),
+            'alias' => $fieldFacet->getAlias(),
             'type' => $fieldFacet->getType(),
             'label' => $fieldFacet->getLabel(),
             'required' => $fieldFacet->isRequired(),
+            'recommended' => $fieldFacet->isRecommended(),
             'help' => $fieldFacet->getHelp(),
             'display' => [
                 'order' => $fieldFacet->getOrder(),
@@ -89,7 +86,9 @@ class FieldFacetSerializer
 
         $this->sipe('label', 'setLabel', $data, $field);
         $this->sipe('type', 'setType', $data, $field);
+        $this->sipe('alias', 'setAlias', $data, $field);
         $this->sipe('required', 'setRequired', $data, $field);
+        $this->sipe('recommended', 'setRecommended', $data, $field);
         $this->sipe('help', 'setHelp', $data, $field);
 
         $this->sipe('display.order', 'setOrder', $data, $field);

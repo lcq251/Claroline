@@ -2,23 +2,21 @@
 
 namespace Claroline\CommunityBundle\Transfer\Exporter\User;
 
-use Claroline\AppBundle\API\Options;
-use Claroline\CommunityBundle\Serializer\ProfileSerializer;
+use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CommunityBundle\Entity\UserProfile;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\TransferBundle\Transfer\Exporter\AbstractListExporter;
 
 class ListExporter extends AbstractListExporter
 {
-    private ProfileSerializer $profileSerializer;
-
     public static function getAction(): array
     {
         return ['user', 'list'];
     }
 
-    public function __construct(ProfileSerializer $profileSerializer)
-    {
-        $this->profileSerializer = $profileSerializer;
+    public function __construct(
+        private readonly ObjectManager $om,
+    ) {
     }
 
     public function supports(string $format, ?array $options = [], ?array $extra = []): bool
@@ -29,11 +27,6 @@ class ListExporter extends AbstractListExporter
     protected static function getClass(): string
     {
         return User::class;
-    }
-
-    protected function getOptions(): array
-    {
-        return [Options::SERIALIZE_FACET];
     }
 
     public function getSchema(?array $options = [], ?array $extra = []): array
@@ -88,28 +81,22 @@ class ListExporter extends AbstractListExporter
             ],
         ];
 
+        $userProfiles = $this->om->getRepository(UserProfile::class)->findAll();
+        if (empty($userProfiles)) {
+            return $userProfiles;
+        }
+
         // find facet fields to expose them to export
-        $facets = $this->profileSerializer->serialize();
-        if (!empty($facets)) {
-            foreach ($facets as $facet) {
-                if (empty($facet['sections'])) {
-                    continue;
-                }
+        $userProfile = $userProfiles[0];
 
-                foreach ($facet['sections'] as $section) {
-                    if (empty($section['fields'])) {
-                        continue;
-                    }
-
-                    foreach ($section['fields'] as $field) {
-                        $availableFields['properties'][] = [
-                            'name' => "profile.{$field['id']}",
-                            'type' => $field['type'],
-                            'label' => $field['label'],
-                            'description' => $field['label'],
-                        ];
-                    }
-                }
+        foreach ($userProfile->getSections() as $section) {
+            foreach ($section->getFields() as $field) {
+                $availableFields['properties'][] = [
+                    'name' => $field->getAlias() ? "profile.{$field->getUuid()}" : "profile.$field->getUuid()",
+                    'type' => $field->getType(),
+                    'label' => $field->getLabel(),
+                    'description' => $field->getLabel(),
+                ];
             }
         }
 

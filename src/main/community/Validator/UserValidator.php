@@ -2,14 +2,12 @@
 
 namespace Claroline\CommunityBundle\Validator;
 
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Utils\ArrayUtils;
 use Claroline\AppBundle\API\ValidatorInterface;
 use Claroline\AppBundle\API\ValidatorProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Entity\AuthenticationParameters;
 use Claroline\CommunityBundle\Entity\UserProfile;
-use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FacetManager;
@@ -75,7 +73,7 @@ class UserValidator implements ValidatorInterface
         }
 
         // todo validate Facet values
-        if (in_array(Options::VALIDATE_FACET, $options)) {
+        if (array_key_exists('profile', $data)) {
             /** @var UserProfile $userProfile */
             $userProfile = $this->om->getRepository(UserProfile::class)->findAll();
             if (empty($userProfile)) {

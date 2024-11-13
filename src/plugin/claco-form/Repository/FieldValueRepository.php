@@ -12,17 +12,11 @@
 namespace Claroline\ClacoFormBundle\Repository;
 
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
-use Claroline\ClacoFormBundle\Entity\FieldValue;
 use Doctrine\ORM\EntityRepository;
 
 class FieldValueRepository extends EntityRepository
 {
-    /**
-     * @param string $type
-     *
-     * @return FieldValue[]
-     */
-    public function findFieldValuesByType(ClacoForm $clacoForm, $type)
+    public function findFieldValuesByType(ClacoForm $clacoForm, string $type): array
     {
         $dql = '
             SELECT fv

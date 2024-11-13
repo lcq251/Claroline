@@ -10,11 +10,6 @@ services:
         arguments:
             - '@security.authorization_checker'
 
-    Claroline\CommunityBundle\Serializer\ProfileSerializer:
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\API\Serializer\Facet\FacetSerializer'
-
     Claroline\CommunityBundle\Serializer\RoleSerializer:
         tags: [claroline.serializer]
         arguments:

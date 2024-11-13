@@ -41,7 +41,7 @@ class FieldChoiceCategory extends AbstractFacetValue
         return $this->field;
     }
 
-    public function setField(Field $field)
+    public function setField(Field $field): void
     {
         $this->field = $field;
     }
@@ -51,7 +51,7 @@ class FieldChoiceCategory extends AbstractFacetValue
         return $this->category;
     }
 
-    public function setCategory(Category $category)
+    public function setCategory(Category $category): void
     {
         $this->category = $category;
     }
@@ -61,7 +61,7 @@ class FieldChoiceCategory extends AbstractFacetValue
         return $this->fieldFacetChoice;
     }
 
-    public function setFieldFacetChoice(?FieldFacetChoice $fieldFacetChoice = null)
+    public function setFieldFacetChoice(?FieldFacetChoice $fieldFacetChoice = null): void
     {
         $this->fieldFacetChoice = $fieldFacetChoice;
     }

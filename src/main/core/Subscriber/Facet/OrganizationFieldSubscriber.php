@@ -14,17 +14,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class OrganizationFieldSubscriber implements EventSubscriberInterface
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var SerializerProvider */
-    private $serializer;
-
     public function __construct(
-        ObjectManager $om,
-        SerializerProvider $serializer
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer
     ) {
-        $this->om = $om;
-        $this->serializer = $serializer;
     }
 
     public static function getSubscribedEvents(): array
@@ -38,7 +31,7 @@ class OrganizationFieldSubscriber implements EventSubscriberInterface
     /**
      * Retrieve and serialize Organization using the stored ID.
      */
-    public function getValue(GetFacetValueEvent $event)
+    public function getValue(GetFacetValueEvent $event): void
     {
         $organizationId = $event->getValue();
         if (!empty($organizationId)) {
@@ -57,7 +50,7 @@ class OrganizationFieldSubscriber implements EventSubscriberInterface
     /**
      * Grab Organization ID from the organization data received from the api to store it.
      */
-    public function setValue(SetFacetValueEvent $event)
+    public function setValue(SetFacetValueEvent $event): void
     {
         $organizationData = $event->getValue();
         if (!empty($organizationData) && !empty($organizationData['id'])) {

@@ -2,6 +2,11 @@ services:
     _defaults:
         tags: [ kernel.event_subscriber ]
 
+    Claroline\CommunityBundle\Subscriber\PlatformSubscriber:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+
     Claroline\CommunityBundle\Subscriber\UserActivitySubscriber:
         arguments:
             - '@security.token_storage'

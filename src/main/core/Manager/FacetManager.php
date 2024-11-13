@@ -11,14 +11,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FacetManager
 {
-    private EventDispatcherInterface $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher
+    ) {
     }
 
-    public function serializeFieldValue($object, $type, $value = null)
+    public function serializeFieldValue(object $object, string $type, mixed $value = null): mixed
     {
         $event = new GetFacetValueEvent(
             $object,
@@ -31,7 +29,7 @@ class FacetManager
         return $event->getFormattedValue();
     }
 
-    public function deserializeFieldValue($object, $type, $value = null)
+    public function deserializeFieldValue(object $object, string $type, mixed $value = null): mixed
     {
         $event = new SetFacetValueEvent(
             $object,

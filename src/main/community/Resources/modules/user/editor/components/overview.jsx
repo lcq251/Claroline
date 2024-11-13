@@ -1,14 +1,37 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
-import {param} from '#/main/app/config'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {selectors as configSelectors} from '#/main/app/config/store'
+import {formatSections} from '#/main/app/content/form/parameters/utils'
 
 import {selectors} from '#/main/community/user/editor/store'
 
+
 const UserEditorOverview = () => {
+  const authenticatedUserId = useSelector(securitySelectors.currentUserId)
   const currentUser = useSelector(selectors.user)
+  const isOwner = authenticatedUserId === currentUser.id
+
+  const userProfile = useSelector((state) => configSelectors.param(state, 'userProfile'))
+  const hasUsername = useSelector((state) => configSelectors.param(state, 'community.username'))
+
+  console.log(userProfile)
+
+  let profileSections = []
+  if (!isEmpty(userProfile) && !isEmpty(userProfile.sections)) {
+    let allFields = []
+    userProfile.sections.map(section => {
+      allFields = allFields.concat(section.fields)
+    })
+
+    // TODO : add roles checks
+    profileSections = formatSections(userProfile.sections, allFields, 'profile', isOwner, true, true)
+  }
 
   return (
     <EditorPage
@@ -28,7 +51,7 @@ const UserEditorOverview = () => {
               type: 'string',
               label: trans('username'),
               required: true,
-              displayed: param('community.username'),
+              displayed: hasUsername,
               options: {
                 unique: {
                   check: ['apiv2_user_get', {field: 'username'}],
@@ -43,6 +66,15 @@ const UserEditorOverview = () => {
                 long: true,
                 minRows: 2
               }
+            }, {
+              name: 'public',
+              type: 'boolean',
+              label: trans('Rendre mon profil public'),
+              help: [
+                trans('Lorsque votre profil est privé, seuls les gestionnaires peuvent consulter les informations.', {}, 'community'),
+                trans('Lorsque votre profil est public, tous les membres de la plateforme peuvent le consulter (à l\'esception des informations marquées "confidentielles").', {}, 'community'),
+                trans('Tous les membres de la plateforme peuvent voir certaines informations, comme votre nom d\'utilisateur et votre photo de profil.')
+              ]
             }
           ]
         }, {
@@ -61,27 +93,15 @@ const UserEditorOverview = () => {
               label: trans('last_name'),
               required: true
             }, {
-              name: 'email',
-              type: 'email',
-              label: trans('email'),
-              required: true,
-              options: {
-                unique: {
-                  check: ['apiv2_user_get', {field: 'email'}]
-                }
-              }
-            }, {
-              name: 'meta.mailNotified',
-              type: 'boolean',
-              label: trans('get_mail_notifications', {address: currentUser.email})
-            }, {
               name: 'phone',
               type: 'phone',
               label: trans('phone')
             }
           ]
         }
-      ]}
+      ].concat(profileSections.map(section => Object.assign({}, section, {
+        primary: true
+      })))}
     />
   )
 }

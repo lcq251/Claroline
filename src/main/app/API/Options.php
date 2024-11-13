@@ -47,10 +47,7 @@ final class Options
     public const PERSIST_TAG = 'persistTag'; // find a way to remove
 
     // for user
-    public const SERIALIZE_FACET = 'serialize_facet';
     public const NO_EMAIL = 'no_email';
-    public const VALIDATE_FACET = 'validate_facet';
-    public const REGISTRATION = 'registration';
 
     // make created workspace a model
     public const AS_MODEL = 'as_model';

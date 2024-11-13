@@ -6,7 +6,7 @@ services:
     Claroline\CommunityBundle\Transfer\Exporter\User\ListExporter:
         parent: Claroline\TransferBundle\Transfer\Exporter\AbstractListExporter
         arguments:
-            - '@Claroline\CommunityBundle\Serializer\ProfileSerializer'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     # Group
     Claroline\CommunityBundle\Transfer\Exporter\Group\ListExporter:

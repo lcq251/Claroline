@@ -12,12 +12,11 @@ use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\AbstractTool;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\Team;
+use Claroline\CommunityBundle\Entity\UserProfile;
 use Claroline\CommunityBundle\Manager\TeamManager;
-use Claroline\CommunityBundle\Serializer\ProfileSerializer;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Facet\Facet;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
@@ -35,7 +34,6 @@ class CommunityTool extends AbstractTool
         private readonly Crud $crud,
         private readonly PlatformConfigurationHandler $config,
         private readonly ParametersSerializer $parametersSerializer,
-        private readonly ProfileSerializer $profileSerializer,
         private readonly UserManager $userManager,
         private readonly RoleManager $roleManager,
         private readonly TeamManager $teamManager
@@ -72,11 +70,13 @@ class CommunityTool extends AbstractTool
             $userTeams = $this->teamManager->getTeamsByUserAndWorkspace($this->tokenStorage->getToken()?->getUser(), $contextSubject);
         }
 
+        $userProfile = $this->om->getRepository(UserProfile::class)->findAll();
+
         return [
             'userTeams' => array_map(function (Team $team) {
                 return $this->serializer->serialize($team, [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $userTeams),
-            'profile' => $this->profileSerializer->serialize(),
+            'profile' => $this->serializer->serialize($userProfile[0]),
             'usersLimitReached' => $this->userManager->hasReachedLimit(),
             'parameters' => WorkspaceContext::getName() === $context ? $this->getWorkspaceParameters($contextSubject) : $this->getDesktopParameters(),
         ];
@@ -96,14 +96,12 @@ class CommunityTool extends AbstractTool
             }
         }
 
-        if (!empty($configData['profile'])) {
-            $this->updateProfile($configData['profile']);
-        }
+        $profile = $this->updateProfile($configData['profile']);
 
         $this->om->endFlushSuite();
 
         return [
-            'profile' => $this->profileSerializer->serialize(),
+            'profile' => $this->serializer->serialize($profile),
             'parameters' => $contextSubject ? $this->getWorkspaceParameters($contextSubject) : $this->getDesktopParameters(),
         ];
     }
@@ -241,28 +239,15 @@ class CommunityTool extends AbstractTool
         $this->crud->update($workspace, $communityParameters);
     }
 
-    private function updateProfile(array $profileData): void
+    private function updateProfile(array $profileData): UserProfile
     {
-        // dump current profile configuration (to know what to remove later)
-        /** @var Facet[] $facets */
-        $facets = $this->om->getRepository(Facet::class)->findAll();
+        $userProfiles = $this->om->getRepository(UserProfile::class)->findAll();
 
-        $this->om->startFlushSuite();
-
-        // updates facets data
-        $updatedFacets = [];
-        foreach ($profileData as $facetData) {
-            $updated = $this->crud->update(Facet::class, $facetData);
-            $updatedFacets[$updated->getId()] = $updated;
+        $userProfile = $userProfiles[0];
+        if (!empty($profileData)) {
+            $this->crud->update($userProfile, $profileData);
         }
 
-        // removes deleted facets
-        foreach ($facets as $facet) {
-            if (empty($updatedFacets[$facet->getId()])) {
-                $this->crud->delete($facet);
-            }
-        }
-
-        $this->om->endFlushSuite();
+        return $userProfile;
     }
 }

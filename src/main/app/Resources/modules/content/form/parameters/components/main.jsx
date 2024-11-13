@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import merge from 'lodash/merge'
@@ -28,10 +28,7 @@ const SectionParameters = props =>
         label: trans('delete', {}, 'actions'),
         callback: props.remove,
         dangerous: true,
-        confirm: {
-          title: trans('facet_remove_section'),
-          message: trans('facet_remove_section_question')
-        }
+        confirm: trans('facet_remove_section_question')
       }
     ]}
   >
@@ -50,11 +47,13 @@ const SectionParameters = props =>
             {
               name: 'title',
               type: 'string',
-              label: trans('title')
+              label: trans('title'),
+              recommended: true
             }, {
               name: 'meta.description',
               type: 'string',
-              label: trans('description')
+              label: trans('description'),
+              options: {long: true, minRows: 2}
             }, {
               name: 'fields',
               type: 'fields',
@@ -109,7 +108,7 @@ SectionParameters.propTypes = {
   remove: T.func.isRequired
 }
 const FormParameters = (props) =>
-  <Fragment>
+  <>
     {0 < props.sections.length &&
       <FormSections level={2} className="mb-3">
         {props.sections.map((section, sectionIndex) =>
@@ -168,7 +167,7 @@ const FormParameters = (props) =>
       }]))}
       primary={true}
     />
-  </Fragment>
+  </>
 
 FormParameters.propTypes = {
   name: T.string.isRequired,

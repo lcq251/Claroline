@@ -8,7 +8,7 @@ import merge from 'lodash/merge'
 import {implementPropTypes, PropTypes as T} from '#/main/app/prop-types'
 import {makeId} from '#/main/core/scaffolding/id'
 import {trans} from '#/main/app/intl/translation'
-
+import {Badge} from '#/main/app/components/badge'
 import {actions as modalActions} from '#/main/app/overlays/modal/store'
 import {MODAL_SELECTION} from '#/main/app/modals/selection'
 import {MODAL_FIELD_PARAMETERS} from '#/main/app/data/types/fields/modals/parameters'
@@ -22,8 +22,6 @@ import {DataInput} from '#/main/app/data/components/input'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {Field as FieldTypes} from '#/main/app/data/types/fields/prop-types'
-
-// todo find a way to use collections
 
 const FieldPreview = props =>
   <DataInput
@@ -46,7 +44,6 @@ class FieldList extends Component {
     this.add         = this.add.bind(this)
     this.update      = this.update.bind(this)
     this.remove      = this.remove.bind(this)
-    this.removeAll   = this.removeAll.bind(this)
     this.formatField = this.formatField.bind(this)
   }
 
@@ -77,10 +74,6 @@ class FieldList extends Component {
     this.props.onChange(fields)
   }
 
-  removeAll() {
-    this.props.onChange([])
-  }
-
   formatField(field) {
     const options = field.options ? Object.assign({}, field.options) : {}
 
@@ -106,25 +99,13 @@ class FieldList extends Component {
       .map(this.formatField)
 
     return (
-      <div className={classes('field-list-control', this.props.className)}>
+      <div className={classes('field-list-control', this.props.className)} role="presentation">
         {0 === this.props.value.length &&
-          <ContentPlaceholder className="mb-2" title={this.props.placeholder} size={this.props.size} />
-        }
-
-        {0 !== this.props.value.length &&
-          <Button
-            className="btn btn-text-danger btn-delete-all"
-            type={CALLBACK_BUTTON}
-            label={trans('delete_all')}
-            disabled={this.props.disabled}
-            size="sm"
-            dangerous={true}
-            callback={this.removeAll}
-          />
+          <ContentPlaceholder title={this.props.placeholder} size={this.props.size} />
         }
 
         {0 < this.props.value.length &&
-          <ul>
+          <ul className="list-unstyled mb-0">
             {this.props.value
               .sort((a, b) => {
                 if (isNumber(get(a, 'display.order')) && !isNumber(get(b, 'display.order'))) {
@@ -140,14 +121,14 @@ class FieldList extends Component {
                 return 0
               })
               .map((field, fieldIndex) =>
-                <li key={fieldIndex} className="field-item mb-2">
-                  <div className="field-item-preview">
+                <li key={fieldIndex} className={classes('field-item', 0 !== fieldIndex && 'mt-2')}>
+                  <div className="field-item-preview" role="presentation">
                     <FieldPreview {...this.formatField(field)} />
                     {get(field, 'restrictions.confidentiality') && 'none' !== get(field, 'restrictions.confidentiality') &&
-                      <div className="badge text-bg-primary mt-1">
-                        <span className="fa fa-fw fa-eye icon-with-text-right" />
+                      <Badge variant="primary" className="mt-1">
+                        <span className="fa fa-fw fa-eye me-2" aria-hidden={true} />
                         {trans('confidentiality_'+field.restrictions.confidentiality)}
-                      </div>
+                      </Badge>
                     }
                   </div>
 
@@ -159,7 +140,7 @@ class FieldList extends Component {
                       {
                         name: 'edit',
                         type: MODAL_BUTTON,
-                        className: 'btn btn-text-secondary',
+                        className: 'btn btn-text-body',
                         icon: 'fa fa-fw fa-pencil',
                         label: trans('edit', {}, 'actions'),
                         modal: [MODAL_FIELD_PARAMETERS, {
@@ -191,8 +172,7 @@ class FieldList extends Component {
 
         <Button
           type={CALLBACK_BUTTON}
-          variant="btn"
-          className="w-100"
+          className="btn btn-body w-100 mt-3"
           icon="fa fa-fw fa-plus"
           label={trans('add_field')}
           callback={() => getCreatableTypes().then(types => {

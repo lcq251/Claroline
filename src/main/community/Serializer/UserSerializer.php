@@ -2,10 +2,11 @@
 
 namespace Claroline\CommunityBundle\Serializer;
 
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CommunityBundle\Entity\UserProfile;
+use Claroline\CommunityBundle\Repository\UserProfileRepository;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CoreBundle\Entity\Role;
@@ -14,7 +15,6 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Manager\FacetManager;
-use Claroline\CoreBundle\Repository\Facet\FieldFacetRepository;
 use Claroline\CoreBundle\Repository\Facet\FieldFacetValueRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -23,8 +23,9 @@ class UserSerializer
 {
     use SerializerTrait;
 
-    private FieldFacetRepository $fieldFacetRepo;
     private FieldFacetValueRepository $fieldFacetValueRepo;
+
+    private UserProfileRepository $userProfileRepo;
 
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -33,8 +34,8 @@ class UserSerializer
         private readonly PlatformConfigurationHandler $config,
         private readonly FacetManager $facetManager
     ) {
-        $this->fieldFacetRepo = $om->getRepository(FieldFacet::class);
         $this->fieldFacetValueRepo = $om->getRepository(FieldFacetValue::class);
+        $this->userProfileRepo = $om->getRepository(UserProfile::class);
     }
 
     public function getName(): string
@@ -97,7 +98,11 @@ class UserSerializer
             'administrativeCode' => $user->getAdministrativeCode(),
             'phone' => $showEmail ? $user->getPhone() : null,
             'meta' => $this->serializeMeta($user),
-            'restrictions' => $this->serializeRestrictions($user),
+            'restrictions' => [
+                'disabled' => $user->isDisabled(),
+                'removed' => $user->isRemoved(),
+                'dates' => DateRangeNormalizer::normalize($user->getInitDate(), $user->getExpirationDate()),
+            ],
             'roles' => array_merge(
                 array_map(function (Role $role) {
                     return [
@@ -127,18 +132,15 @@ class UserSerializer
             $serializedUser['permissions'] = $this->serializePermissions($user);
         }
 
-        if (in_array(Options::SERIALIZE_FACET, $options)) {
-            $fields = $this->fieldFacetValueRepo->findPlatformValuesByUser($user);
-            if (!empty($fields)) {
-                $serializedUser['profile'] = [];
-                foreach ($fields as $field) {
-                    // we just flatten field facets in the base user structure
-                    $serializedUser['profile'][$field->getFieldFacet()->getUuid()] = $this->facetManager->serializeFieldValue(
-                        $user,
-                        $field->getType(),
-                        $field->getValue()
-                    );
-                }
+        if (0 !== $user->getProfileValues()->count()) {
+            $serializedUser['profile'] = [];
+            foreach ($user->getProfileValues() as $field) {
+                // we just flatten field facets in the base user structure
+                $serializedUser['profile'][$field->getFieldFacet()->getUuid()] = $this->facetManager->serializeFieldValue(
+                    $user,
+                    $field->getType(),
+                    $field->getValue()
+                );
             }
         }
 
@@ -175,29 +177,23 @@ class UserSerializer
             $this->deserializeRestrictions($data['restrictions'], $user);
         }
 
-        if (isset($data['profile'])) {
-            $fieldFacets = $this->fieldFacetRepo->findPlatformFieldFacets();
-            foreach ($fieldFacets as $fieldFacet) {
-                if (array_key_exists($fieldFacet->getUuid(), $data['profile'])) {
-                    /** @var FieldFacetValue $fieldFacetValue */
-                    $fieldFacetValue = $this->fieldFacetValueRepo // TODO : retrieve all values at once for performances
-                        ->findOneBy([
-                            'user' => $user,
-                            'fieldFacet' => $fieldFacet,
-                        ]) ?? new FieldFacetValue();
-
-                    $fieldFacetValue->setUser($user);
+        if (array_key_exists('profile', $data)) {
+            foreach ($data['profile'] as $fieldId => $fieldValue) {
+                $fieldFacetValue = $user->getProfileValue($fieldId) ?? new FieldFacetValue();
+                $fieldFacet = $this->om->getRepository(FieldFacet::class)->findOneBy(['uuid' => $fieldId]);
+                if (empty($fieldFacet)) {
+                    $user->removeProfileValue($fieldFacetValue);
+                } else {
                     $fieldFacetValue->setFieldFacet($fieldFacet);
-
                     $fieldFacetValue->setValue(
                         $this->facetManager->deserializeFieldValue(
                             $user,
                             $fieldFacet->getType(),
-                            $data['profile'][$fieldFacet->getUuid()]
+                            $fieldValue
                         )
                     );
 
-                    $this->om->persist($fieldFacetValue);
+                    $user->addProfileValue($fieldFacetValue);
                 }
             }
         }
@@ -235,15 +231,6 @@ class UserSerializer
             'edit' => $administrate || $this->authorization->isGranted('EDIT', $user),
             'administrate' => $administrate,
             'delete' => $administrate || $this->authorization->isGranted('DELETE', $user),
-        ];
-    }
-
-    private function serializeRestrictions(User $user): array
-    {
-        return [
-            'disabled' => $user->isDisabled(),
-            'removed' => $user->isRemoved(),
-            'dates' => DateRangeNormalizer::normalize($user->getInitDate(), $user->getExpirationDate()),
         ];
     }
 

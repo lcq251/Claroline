@@ -14,6 +14,7 @@ import {UserEditorActions} from '#/main/community/user/editor/components/actions
 import {UserEditorPermissions} from '#/main/community/user/editor/components/permissions'
 import {UserEditorHistory} from '#/main/community/user/editor/components/history'
 import {UserEditorIntl} from '#/main/community/user/editor/components/intl'
+import {UserEditorNotifications} from '#/main/community/user/editor/components/notifications'
 import {getAccount} from '#/main/community/user/utils'
 
 const UserEditor = (props) => {
@@ -50,6 +51,12 @@ const UserEditor = (props) => {
           title: trans('Langue', {}, 'tools'),
           help: trans('Choisissez la langue et le format de date à utiliser dans votre compte.'),
           component: UserEditorIntl,
+          group: trans('preferences')
+        }, {
+          name: 'notifications',
+          title: trans('Notifications', {}, 'tools'),
+          help: trans('Choisissez la langue et le format de date à utiliser dans votre compte.'),
+          component: UserEditorNotifications,
           group: trans('preferences')
         }, {
           name: 'favorites',

@@ -2,6 +2,8 @@
 
 namespace Claroline\CommunityBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
+use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\UserProfile;
 use Claroline\CoreBundle\API\Serializer\Facet\PanelFacetSerializer;
@@ -9,6 +11,8 @@ use Claroline\CoreBundle\Entity\Facet\PanelFacet;
 
 class UserProfileSerializer
 {
+    use SerializerTrait;
+
     public function __construct(
         private readonly ObjectManager $om,
         private readonly PanelFacetSerializer $panelFacetSerializer
@@ -30,12 +34,18 @@ class UserProfileSerializer
         return [
             'sections' => array_map(function (PanelFacet $section) {
                 return $this->panelFacetSerializer->serialize($section);
-            }, $userProfile->getSections()->toArray()),
+            }, array_values($userProfile->getSections()->toArray())),
         ];
     }
 
     public function deserialize(array $data, UserProfile $userProfile, ?array $options = []): ?UserProfile
     {
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $userProfile);
+        } else {
+            $userProfile->refreshUuid();
+        }
+
         if (array_key_exists('sections', $data)) {
             $sectionIds = [];
             foreach ($data['sections'] as $section) {

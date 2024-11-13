@@ -14,7 +14,7 @@ final class FacetEvents
      */
     public const GET_VALUE = 'field_facet.get_value';
 
-    public static function getEventName(string $eventType, string $fieldType)
+    public static function getEventName(string $eventType, string $fieldType): string
     {
         return $eventType.'.'.$fieldType;
     }

@@ -24,6 +24,7 @@ use Claroline\AppBundle\Entity\Meta\Disabled;
 use Claroline\CommunityBundle\Finder\UserType;
 use Claroline\CommunityBundle\Model\HasGroups;
 use Claroline\CommunityBundle\Repository\UserRepository;
+use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Organization\UserOrganizationReference;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -152,6 +153,15 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     #[ORM\Column(name: 'user_status', nullable: true)]
     private ?string $status = null;
 
+    /**
+     * @var Collection<int, FieldFacetValue>
+     */
+    #[ORM\JoinTable(name: 'claro_user_profile_values')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'value_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: FieldFacetValue::class, cascade: ['persist'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    private Collection $profile;
+
     public function __construct()
     {
         parent::__construct();
@@ -163,6 +173,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
         $this->groups = new ArrayCollection();
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->userOrganizationReferences = new ArrayCollection();
+        $this->profile = new ArrayCollection();
     }
 
     public static function getIdentifiers(): array
@@ -699,5 +710,37 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     public function getLastActivity(): ?\DateTimeInterface
     {
         return $this->lastActivity;
+    }
+
+    public function getProfileValue(string $fieldId): ?FieldFacetValue
+    {
+        $found = null;
+        foreach ($this->profile as $facetValue) {
+            if ($facetValue->getFieldFacet()->getUuid() === $fieldId) {
+                $found = $facetValue;
+                break;
+            }
+        }
+
+        return $found;
+    }
+
+    public function getProfileValues(): Collection
+    {
+        return $this->profile;
+    }
+
+    public function addProfileValue(FieldFacetValue $fieldFacetValue): void
+    {
+        if (!$this->profile->contains($fieldFacetValue)) {
+            $this->profile->add($fieldFacetValue);
+        }
+    }
+
+    public function removeProfileValue(FieldFacetValue $fieldFacetValue): void
+    {
+        if ($this->profile->contains($fieldFacetValue)) {
+            $this->profile->removeElement($fieldFacetValue);
+        }
     }
 }

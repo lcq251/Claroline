@@ -9,21 +9,36 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Repository\Facet;
+namespace Claroline\CommunityBundle\Repository;
 
+use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
-/**
- * @deprecated
- */
-class FieldFacetValueRepository extends EntityRepository
+class UserProfileRepository extends EntityRepository
 {
+    /**
+     * @return FieldFacet[]
+     */
+    public function findFields(): array
+    {
+        $dql = '
+            SELECT ff
+            FROM Claroline\CoreBundle\Entity\Facet\FieldFacet ff
+            WHERE ff.panelFacet IS NOT NULL
+        ';
+
+        return $this->getEntityManager()
+            ->createQuery($dql)
+            ->getResult()
+        ;
+    }
+
     /**
      * @return FieldFacetValue[]
      */
-    public function findPlatformValuesByUser(User $user)
+    public function findFieldValues(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -34,6 +49,7 @@ class FieldFacetValueRepository extends EntityRepository
                   AND f.panelFacet IS NOT NULL
             ')
             ->setParameter('user', $user)
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

@@ -11,9 +11,9 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Claroline\ClacoFormBundle\Repository\FieldValueRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\ClacoFormBundle\Repository\FieldValueRepository;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,26 +25,14 @@ class FieldValue
     use Id;
     use Uuid;
 
-    /**
-     *
-     * @var Entry
-     */
     #[ORM\JoinColumn(name: 'entry_id', onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Entry::class, inversedBy: 'fieldValues', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Entry::class, cascade: ['persist'], inversedBy: 'fieldValues')]
     protected ?Entry $entry = null;
 
-    /**
-     *
-     * @var Field
-     */
     #[ORM\JoinColumn(name: 'field_id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Field::class)]
     protected ?Field $field = null;
 
-    /**
-     *
-     * @var FieldFacetValue
-     */
     #[ORM\JoinColumn(name: 'field_facet_value_id', onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: FieldFacetValue::class, cascade: ['persist'])]
     protected ?FieldFacetValue $fieldFacetValue = null;
@@ -54,45 +42,42 @@ class FieldValue
         $this->refreshUuid();
     }
 
-    public function getEntry()
+    public function getEntry(): ?Entry
     {
         return $this->entry;
     }
 
-    public function setEntry(Entry $entry)
+    public function setEntry(Entry $entry): void
     {
         $this->entry = $entry;
     }
 
-    public function getField()
+    public function getField(): ?Field
     {
         return $this->field;
     }
 
-    public function setField(Field $field)
+    public function setField(Field $field): void
     {
         $this->field = $field;
     }
 
-    /**
-     * @return FieldFacetValue
-     */
-    public function getFieldFacetValue()
+    public function getFieldFacetValue(): ?FieldFacetValue
     {
         return $this->fieldFacetValue;
     }
 
-    public function setFieldFacetValue(FieldFacetValue $fieldFacetValue)
+    public function setFieldFacetValue(FieldFacetValue $fieldFacetValue): void
     {
-        return $this->fieldFacetValue = $fieldFacetValue;
+        $this->fieldFacetValue = $fieldFacetValue;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return !empty($this->fieldFacetValue) ? $this->fieldFacetValue->getValue() : null;
     }
 
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         if (!empty($this->fieldFacetValue)) {
             $this->fieldFacetValue->setValue($value);

@@ -3,6 +3,7 @@
 namespace Claroline\CommunityBundle\Entity;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
+use Claroline\CommunityBundle\Repository\UserProfileRepository;
 use Claroline\CoreBundle\Entity\Facet\PanelFacet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * It contains the list of defined fields and some access restrictions.
  */
 #[ORM\Table(name: 'claro_user_profile')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 class UserProfile
 {
     use Id;

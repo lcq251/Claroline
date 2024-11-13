@@ -158,12 +158,6 @@ services:
     Claroline\CoreBundle\API\Serializer\Facet\FieldFacetChoiceSerializer:
         tags: [claroline.serializer]
 
-    Claroline\CoreBundle\API\Serializer\Facet\FacetSerializer:
-        tags: [claroline.serializer]
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\API\Serializer\Facet\PanelFacetSerializer'
-
     Claroline\CoreBundle\API\Serializer\Platform\ConnectionMessageSerializer:
         tags: [claroline.serializer]
         arguments:

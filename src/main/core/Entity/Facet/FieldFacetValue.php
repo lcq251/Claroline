@@ -22,13 +22,15 @@ class FieldFacetValue extends AbstractFacetValue
     /**
      * Used by profile to retrieve the values of a user to fill its profile.
      * This should be done in another entity. This is not used by claco-form.
+     *
+     * @deprecated
      */
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: FieldFacet::class, cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: FieldFacet::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     private ?FieldFacet $fieldFacet = null;
 
     public function getType(): string
@@ -46,11 +48,17 @@ class FieldFacetValue extends AbstractFacetValue
         return $this->fieldFacet;
     }
 
+    /**
+     * @deprecated
+     */
     public function setUser(?User $user = null): void
     {
         $this->user = $user;
     }
 
+    /**
+     * @deprecated
+     */
     public function getUser(): ?User
     {
         return $this->user;

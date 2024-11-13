@@ -11,9 +11,9 @@
 
 namespace Claroline\CoreBundle\Entity\Facet;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
@@ -22,11 +22,8 @@ abstract class AbstractFacetValue
     use Id;
     use Uuid;
 
-    /**
-     * @var mixed
-     */
     #[ORM\Column(name: 'field_value', type: Types::JSON, nullable: true)]
-    private $value;
+    private mixed $value = null;
 
     public function __construct()
     {
@@ -35,12 +32,12 @@ abstract class AbstractFacetValue
 
     abstract public function getType(): string;
 
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         $this->value = $value;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

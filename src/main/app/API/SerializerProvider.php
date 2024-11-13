@@ -15,10 +15,6 @@ class SerializerProvider
     /**
      * Returns the class handled by the serializer (It's public because of tests).
      *
-     * @param mixed $serializer
-     *
-     * @return string
-     *
      * @throws \Exception
      */
     public function getSerializerHandledClass($serializer): string
@@ -45,13 +41,9 @@ class SerializerProvider
     /**
      * Gets a registered serializer instance.
      *
-     * @param mixed $object
-     *
-     * @return mixed
-     *
      * @throws \Exception
      */
-    public function get(mixed $object)
+    public function get(mixed $object): object
     {
         // search for the correct serializer
         if (is_string($object)) {
@@ -76,13 +68,9 @@ class SerializerProvider
     /**
      * Check if serializer instance exists.
      *
-     * @param mixed $object
-     *
-     * @return mixed
-     *
      * @throws \Exception
      */
-    public function has($object)
+    public function has(string|object $object): bool
     {
         // search for the correct serializer
         foreach ($this->serializers as $serializer) {
@@ -110,9 +98,9 @@ class SerializerProvider
      * @param mixed $object  - the object to serialize
      * @param array $options - the serialization options
      *
-     * @return mixed - a json serializable structure
+     * @return array - a json serializable structure
      */
-    public function serialize($object, $options = [])
+    public function serialize(object $object, ?array $options = []): array
     {
         if (!$object) {
             return $object;
@@ -120,7 +108,7 @@ class SerializerProvider
 
         $data = $this->get($object)->serialize($object, $options);
 
-        //if a serializer wants to return a stdClass, we want an array
+        // if a serializer wants to return a stdClass, we want an array
         if (is_object($data)) {
             $data = json_decode(json_encode($data), true);
         }
@@ -131,13 +119,12 @@ class SerializerProvider
     /**
      * Serializes an object.
      *
-     * @param mixed $data    - the data to deserialize
-     * @param mixed $object
+     * @param array $data    - the data to deserialize
      * @param array $options - the deserialization options
      *
-     * @return mixed - the resulting entity of deserialization
+     * @return object - the resulting entity of deserialization
      */
-    public function deserialize($data, $object, $options = [])
+    public function deserialize(array $data, object $object, ?array $options = []): object
     {
         // search for the correct serializer
         $meta = $this->om->getClassMetaData(get_class($object));

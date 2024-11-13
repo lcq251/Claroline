@@ -109,12 +109,13 @@ class CourseSerializer
         ];
 
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
+            $admin = $this->authorization->isGranted('ADMINISTRATE', $course);
             $serialized['permissions'] = [
-                'open' => $this->authorization->isGranted('OPEN', $course),
-                'edit' => $this->authorization->isGranted('EDIT', $course),
-                'delete' => $this->authorization->isGranted('DELETE', $course),
-                'register' => $this->authorization->isGranted('REGISTER', $course),
-                'administrate' => $this->authorization->isGranted('ADMINISTRATE', $course),
+                'open' => $admin || $this->authorization->isGranted('OPEN', $course),
+                'edit' => $admin || $this->authorization->isGranted('EDIT', $course),
+                'register' => $admin || $this->authorization->isGranted('REGISTER', $course),
+                'administrate' => $admin || $this->authorization->isGranted('ADMINISTRATE', $course),
+                'delete' => $admin || $this->authorization->isGranted('DELETE', $course),
             ];
         }
 

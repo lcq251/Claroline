@@ -169,16 +169,6 @@ class UserController extends AbstractCrudController
         }, $processed));
     }
 
-    public static function getOptions(): array
-    {
-        return array_merge(parent::getOptions(), [
-            'deleteBulk' => [Options::SOFT_DELETE],
-            'create' => [Options::SERIALIZE_FACET],
-            'get' => [Options::SERIALIZE_FACET],
-            'update' => [Options::SERIALIZE_FACET],
-        ]);
-    }
-
     protected function getDefaultHiddenFilters(): array
     {
         if (!$this->authorization->isGranted('IS_AUTHENTICATED_FULLY')) {

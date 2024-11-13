@@ -12,6 +12,8 @@ import {ContentNav} from '#/main/app/content/components/nav'
 import {EditorFacet} from '#/main/community/tools/community/editor/components/facet'
 import {getDefaultFacet} from '#/main/community/profile/utils'
 import {EditorPage} from '#/main/app/editor'
+import {FormParameters} from '#/main/app/content/form/parameters/containers/main'
+import {selectors} from '#/main/community/tools/community/editor/store'
 
 const EditorProfile = props => {
   useEffect(() => {
@@ -26,84 +28,11 @@ const EditorProfile = props => {
       title={trans('user_profile')}
       help={trans('Ajoutez des champs personnalisés pour enrichir le profil de vos utilisateurs.')}
     >
-      <div className="row">
-        <div className="col-md-4">
-          <ContentNav
-            className="mb-3"
-            path={`${props.path}/edit/profile`}
-            sections={props.facets.map(facet => ({
-              icon: get(facet, 'display.icon'),
-              title: facet.title,
-              path: get(facet, 'meta.main') ? '' : `/${facet.id}`,
-              exact: true,
-              actions: [
-                {
-                  name: 'delete',
-                  type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-trash',
-                  label: trans('delete', {}, 'actions'),
-                  displayed: !get(facet, 'meta.main'),
-                  callback: () => props.removeFacet(props.facets, facet),
-                  confirm: {
-                    title: trans('profile_remove_facet'),
-                    message: trans('profile_remove_facet_question')
-                  },
-                  dangerous: true
-                }
-              ]
-            }))}
-            type="vertical"
-          />
-
-          <Button
-            type={CALLBACK_BUTTON}
-            className="btn btn-outline-primary w-100 btn-add-facet"
-            icon="fa fa-fw fa-plus"
-            label={trans('profile_facet_add')}
-            callback={() => {
-              props.addFacet(props.facets)
-            }}
-          />
-        </div>
-
-        <div className="col-md-8">
-          <Routes
-            path={`${props.path}/edit`}
-            routes={[
-              {
-                path: '/profile/:id?',
-                render: (routerProps) => {
-                  let currentFacetIndex = 0
-                  let currentFacet
-                  if (!isEmpty(props.facets)) {
-                    if (routerProps.match.params.id) {
-                      currentFacetIndex = props.facets.findIndex(facet => facet.id === routerProps.match.params.id)
-                    } else {
-                      currentFacetIndex = props.facets.findIndex(facet => !!facet.meta.main)
-                    }
-
-                    if (-1 !== currentFacetIndex) {
-                      currentFacet = props.facets[currentFacetIndex]
-                    }
-                  }
-
-                  if (isEmpty(currentFacet)) {
-                    currentFacetIndex = 0
-                    currentFacet = getDefaultFacet()
-                  }
-
-                  return (
-                    <EditorFacet
-                      index={currentFacetIndex}
-                      facet={currentFacet}
-                    />
-                  )
-                }
-              }
-            ]}
-          />
-        </div>
-      </div>
+      <FormParameters
+        name={selectors.FORM_NAME}
+        dataPart="profile.sections"
+        sections={get(props.formProfile, 'sections', [])}
+      />
     </EditorPage>
   )
 }
@@ -113,13 +42,8 @@ EditorProfile.propTypes = {
   loaded: T.bool.isRequired,
   contextType: T.string.isRequired,
   contextId: T.string,
-  facets: T.arrayOf(T.shape({
-    id: T.string.isRequired,
-    title: T.string.isRequired
-  })).isRequired,
-  load: T.func.isRequired,
-  addFacet: T.func.isRequired,
-  removeFacet: T.func.isRequired
+  formProfile: T.object,
+  load: T.func.isRequired
 }
 
 export {

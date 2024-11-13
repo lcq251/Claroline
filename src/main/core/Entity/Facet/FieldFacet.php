@@ -11,15 +11,14 @@
 
 namespace Claroline\CoreBundle\Entity\Facet;
 
-use Claroline\CoreBundle\Repository\Facet\FieldFacetRepository;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Display\Order;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\CoreBundle\Repository\Facet\FieldFacetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_field_facet')]
 #[ORM\Entity(repositoryClass: FieldFacetRepository::class)]
@@ -68,22 +67,27 @@ class FieldFacet
     #[ORM\Column(name: 'name')]
     private ?string $label = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $alias = null;
+
     #[ORM\Column]
     private ?string $type = null;
 
-    
-    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: true)]
     #[ORM\ManyToOne(targetEntity: PanelFacet::class, inversedBy: 'fieldsFacet')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?PanelFacet $panelFacet = null;
 
     /**
      * @var Collection<int, FieldFacetChoice>
      */
     #[ORM\OneToMany(targetEntity: FieldFacetChoice::class, mappedBy: 'fieldFacet')]
-    private ?Collection $fieldFacetChoices;
+    private Collection $fieldFacetChoices;
 
     #[ORM\Column(name: 'isRequired', type: Types::BOOLEAN)]
     private bool $required = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $recommended = false;
 
     #[ORM\Column(type: Types::JSON)]
     private ?array $options = [];
@@ -107,7 +111,7 @@ class FieldFacet
     private ?string $conditionComparator = null;
 
     #[ORM\Column(name: 'condition_value', type: Types::JSON, nullable: true)]
-    private $conditionValue = null;
+    private $conditionValue;
 
     #[ORM\Column(name: 'hide_label', type: Types::BOOLEAN)]
     private bool $hideLabel = false;
@@ -150,6 +154,16 @@ class FieldFacet
     public function getLabel(): ?string
     {
         return $this->label;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): void
+    {
+        $this->alias = $alias;
     }
 
     public function setType(string $type): void
@@ -209,6 +223,16 @@ class FieldFacet
     public function setRequired(bool $required): void
     {
         $this->required = $required;
+    }
+
+    public function isRecommended(): bool
+    {
+        return $this->recommended;
+    }
+
+    public function setRecommended(bool $recommended): void
+    {
+        $this->recommended = $recommended;
     }
 
     public function getOptions(): ?array

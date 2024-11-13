@@ -11,14 +11,13 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Claroline\ClacoFormBundle\Repository\EntryRepository;
-use DateTimeInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\ClacoFormBundle\Repository\EntryRepository;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_clacoformbundle_entry')]
@@ -41,37 +40,31 @@ class Entry
     #[ORM\Column(name: 'locked', type: Types::BOOLEAN, options: ['default' => 0])]
     private bool $locked = false;
 
-    
-    #[ORM\JoinColumn(name: 'claco_form_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ClacoForm::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(name: 'claco_form_id', nullable: false, onDelete: 'CASCADE')]
     private ?ClacoForm $clacoForm = null;
 
-    
-    #[ORM\JoinColumn(name: 'user_id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', onDelete: 'SET NULL')]
     private ?User $user = null;
 
     #[ORM\Column(name: 'creation_date', type: Types::DATETIME_MUTABLE, nullable: false)]
-    private ?DateTimeInterface $creationDate = null;
+    private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(name: 'edition_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $editionDate = null;
+    private ?\DateTimeInterface $editionDate = null;
 
     #[ORM\Column(name: 'publication_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $publicationDate = null;
+    private ?\DateTimeInterface $publicationDate = null;
 
     /**
-     *
-     *
      * @var Collection<int, FieldValue>
      */
-    #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_value')]
     #[ORM\OneToMany(targetEntity: FieldValue::class, mappedBy: 'entry', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_value')]
     private Collection $fieldValues;
 
     /**
-     *
-     *
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'entry')]
@@ -79,8 +72,6 @@ class Entry
     private Collection $comments;
 
     /**
-     *
-     *
      * @var Collection<int, Category>
      */
     #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_category')]
@@ -88,8 +79,6 @@ class Entry
     private Collection $categories;
 
     /**
-     *
-     *
      * @var Collection<int, Keyword>
      */
     #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_keyword')]
@@ -113,22 +102,12 @@ class Entry
         $this->entryUsers = new ArrayCollection();
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
@@ -163,32 +142,32 @@ class Entry
         $this->clacoForm = $clacoForm;
     }
 
-    public function getCreationDate(): ?DateTimeInterface
+    public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(?DateTimeInterface $creationDate = null): void
+    public function setCreationDate(?\DateTimeInterface $creationDate = null): void
     {
         $this->creationDate = $creationDate;
     }
 
-    public function getEditionDate(): ?DateTimeInterface
+    public function getEditionDate(): ?\DateTimeInterface
     {
         return $this->editionDate;
     }
 
-    public function setEditionDate(?DateTimeInterface $editionDate = null): void
+    public function setEditionDate(?\DateTimeInterface $editionDate = null): void
     {
         $this->editionDate = $editionDate;
     }
 
-    public function getPublicationDate(): ?DateTimeInterface
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(?DateTimeInterface $publicationDate = null): void
+    public function setPublicationDate(?\DateTimeInterface $publicationDate = null): void
     {
         $this->publicationDate = $publicationDate;
     }
@@ -208,7 +187,7 @@ class Entry
      *
      * @return FieldValue[]
      */
-    public function getFieldValues()
+    public function getFieldValues(): array
     {
         return $this->fieldValues->toArray();
     }
@@ -227,20 +206,14 @@ class Entry
         return $value;
     }
 
-    /**
-     * Add a field value.
-     */
-    public function addFieldValue(FieldValue $fieldValue)
+    public function addFieldValue(FieldValue $fieldValue): void
     {
         if (!$this->fieldValues->contains($fieldValue)) {
             $this->fieldValues->add($fieldValue);
         }
     }
 
-    /**
-     * Remove a field value.
-     */
-    public function removeValue(FieldValue $fieldValue)
+    public function removeValue(FieldValue $fieldValue): void
     {
         if ($this->fieldValues->contains($fieldValue)) {
             $this->fieldValues->removeElement($fieldValue);
@@ -252,25 +225,19 @@ class Entry
      *
      * @return Comment[]
      */
-    public function getComments()
+    public function getComments(): array
     {
         return $this->comments->toArray();
     }
 
-    /**
-     * Add comment.
-     */
-    public function addComment(Comment $comment)
+    public function addComment(Comment $comment): void
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
         }
     }
 
-    /**
-     * Remove comment.
-     */
-    public function removeComment(Comment $comment)
+    public function removeComment(Comment $comment): void
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
@@ -282,30 +249,24 @@ class Entry
      *
      * @return Category[]
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         return $this->categories->toArray();
     }
 
-    public function hasCategory(Category $category)
+    public function hasCategory(Category $category): bool
     {
         return $this->categories->contains($category);
     }
 
-    /**
-     * Add category.
-     */
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
         }
     }
 
-    /**
-     * Remove category.
-     */
-    public function removeCategory(Category $category)
+    public function removeCategory(Category $category): void
     {
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
@@ -315,7 +276,7 @@ class Entry
     /**
      * Removes all categories.
      */
-    public function emptyCategories()
+    public function emptyCategories(): void
     {
         $this->categories->clear();
     }
@@ -325,35 +286,26 @@ class Entry
      *
      * @return Keyword[]
      */
-    public function getKeywords()
+    public function getKeywords(): array
     {
         return $this->keywords->toArray();
     }
 
-    /**
-     * Add keyword.
-     */
-    public function addKeyword(Keyword $keyword)
+    public function addKeyword(Keyword $keyword): void
     {
         if (!$this->keywords->contains($keyword)) {
             $this->keywords->add($keyword);
         }
     }
 
-    /**
-     * Remove keyword.
-     */
-    public function removeKeyword(Keyword $keyword)
+    public function removeKeyword(Keyword $keyword): void
     {
         if ($this->keywords->contains($keyword)) {
             $this->keywords->removeElement($keyword);
         }
     }
 
-    /**
-     * Remove all keywords.
-     */
-    public function emptyKeywords()
+    public function emptyKeywords(): void
     {
         $this->keywords->clear();
     }
@@ -363,7 +315,7 @@ class Entry
      *
      * @return EntryUser[]
      */
-    public function getEntryUsers()
+    public function getEntryUsers(): array
     {
         return $this->entryUsers->toArray();
     }

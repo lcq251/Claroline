@@ -36,13 +36,6 @@ class PanelFacet
     private ?string $help = null;
 
     /**
-     * @todo : to remove. Only used in profile
-     */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Facet::class, inversedBy: 'panelFacets')]
-    private ?Facet $facet = null;
-
-    /**
      * @var Collection<int, FieldFacet>
      */
     #[ORM\OneToMany(targetEntity: FieldFacet::class, mappedBy: 'panelFacet', cascade: ['all'])]
@@ -64,20 +57,6 @@ class PanelFacet
     public function setHelp(?string $help): void
     {
         $this->help = $help;
-    }
-
-    public function getFacet(): ?Facet
-    {
-        return $this->facet;
-    }
-
-    public function setFacet(?Facet $facet = null): void
-    {
-        $this->facet = $facet;
-
-        if ($facet) {
-            $facet->addPanelFacet($this);
-        }
     }
 
     public function getFieldsFacet(): Collection

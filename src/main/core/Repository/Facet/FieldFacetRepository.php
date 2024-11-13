@@ -14,6 +14,9 @@ namespace Claroline\CoreBundle\Repository\Facet;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @deprecated
+ */
 class FieldFacetRepository extends EntityRepository
 {
     /**
