@@ -13,7 +13,6 @@ namespace Claroline\CoreBundle\Installation\DataFixtures;
 
 use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Entity\TemplateContent;
-// use Claroline\TemplateBundle\Entity\TemplateType;
 use Claroline\InstallationBundle\Fixtures\PostInstallInterface;
 use Claroline\InstallationBundle\Fixtures\PostUpdateInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -57,18 +56,8 @@ abstract class AbstractTemplateFixture extends AbstractFixture implements PostIn
     {
         $this->logger->info(sprintf('DataFixtures : Load system template "%s" for type "%s"', $templateName, static::getTemplateType()));
 
-        $templateTypeRepo = $om->getRepository(TemplateType::class);
-
-        /** @var TemplateType $templateType */
-        $templateType = $templateTypeRepo->findOneBy(['name' => static::getTemplateType()]);
-        if (empty($templateType)) {
-            $this->logger->warning(sprintf('DataFixtures : Template type %s does not exist.', static::getTemplateType()));
-
-            return;
-        }
-
         $template = $om->getRepository(Template::class)->findOneBy([
-            'type' => $templateType,
+            'type' => static::getTemplateType(),
             'name' => $templateName,
             'system' => true,
         ]);
@@ -77,7 +66,7 @@ abstract class AbstractTemplateFixture extends AbstractFixture implements PostIn
             // initialize new template
             $template = new Template();
             $template->setName($templateName);
-            $template->setType($templateType);
+            $template->setType(static::getTemplateType());
             $template->setSystem(true);
 
             $om->persist($template);
@@ -95,12 +84,6 @@ abstract class AbstractTemplateFixture extends AbstractFixture implements PostIn
             $templateContent->setTitle($content['title'] ?? null);
             $templateContent->setContent($content['content'] ?? null);
             $templateContent->setLang($lang);
-        }
-
-        // set the default template for the type if missing
-        if (empty($templateType->getDefaultTemplate())) {
-            $templateType->setDefaultTemplate($template->getName());
-            $om->persist($templateType);
         }
     }
 }
