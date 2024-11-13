@@ -77,7 +77,7 @@ class Session extends AbstractTraining implements IdentifiableInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $canceled = false;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'cancel_reason', type: Types::TEXT, nullable: true)]
     private ?string $cancelReason = null;
 
     #[ORM\ManyToOne(targetEntity: Template::class)]
