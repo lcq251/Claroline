@@ -2,7 +2,7 @@ import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
 
 import {param} from '#/main/app/config'
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {CourseCard} from '#/plugin/cursus/course/components/card'
 
 export default {

@@ -1,43 +1,17 @@
 import React from 'react'
 
-import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {DataSearch as DataSearchTypes} from '#/main/app/data/types/prop-types'
-
-import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {EntityFilter} from '#/main/app/data/types/entity'
 
 import {MODAL_TRAINING_COURSES} from '#/plugin/cursus/modals/courses'
 
 const CourseFilter = (props) =>
-  <span className="data-filter course">
-    {props.search}
+  <EntityFilter
+    {...props}
+    icon="fa fa-graduation-cap"
+    pickerType={MODAL_TRAINING_COURSES}
+  />
 
-    <Button
-      className="btn btn-outline-secondary btn-filter"
-      type={MODAL_BUTTON}
-      tooltip="left"
-      icon="fa fa-fw fa-graduation-cap"
-      label={props.placeholder || trans('select', {}, 'actions')}
-      size="sm"
-      modal={[MODAL_TRAINING_COURSES, {
-        selectAction: (selected) => ({
-          type: CALLBACK_BUTTON,
-          label: trans('select', {}, 'actions'),
-          callback: () => props.updateSearch(selected[0].id)
-        })
-      }]}
-      disabled={props.disabled}
-    />
-  </span>
-
-implementPropTypes(CourseFilter, DataSearchTypes, {
-  /*search: T.shape({
-   id: T.string.isRequired,
-   name: T.string.isRequired
-   }),*/
-  search: T.string
-})
+CourseFilter.propTypes = EntityFilter.propTypes
 
 export {
   CourseFilter

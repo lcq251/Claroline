@@ -31,6 +31,7 @@ const Groups = props => {
           label: trans('name'),
           displayed: true,
           primary: true,
+          filterable: false,
           render: (group) => (
             <div className="d-flex flex-direction-row gap-3 align-items-center">
               <Thumbnail thumbnail={group.thumbnail} name={group.name} size="xs" square={true} />
@@ -40,22 +41,23 @@ const Groups = props => {
         }, {
           name: 'code',
           type: 'string',
-          label: trans('code')
+          label: trans('code'),
+          filterable: false
         }, {
           name: 'meta.description',
           type: 'string',
           label: trans('description'),
           options: {long: true},
           displayed: true,
-          sortable: false
-        }, {
+          filterable: false
+        }/*, {
           name: 'organizations',
           label: trans('organizations'),
           type: 'organizations',
           displayed: false,
           displayable: false,
           sortable: false
-        }
+        }*/
       ].concat(props.customDefinition)}
 
       {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'refresher', 'invalidate')}

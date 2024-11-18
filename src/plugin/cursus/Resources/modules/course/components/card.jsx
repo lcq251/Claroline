@@ -1,45 +1,32 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {asset} from '#/main/app/config/asset'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
+import {Badge} from '#/main/app/components/badge'
 
-const CourseCard = props =>
+const CourseCard = (props) =>
   <DataCard
     {...props}
-    className={classes(props.className, {
-      'data-card-muted': get(props.data, 'restrictions.hidden', false) || !get(props.data, 'restrictions.active', false)
-    })}
     id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={!props.data.thumbnail ? 'fa fa-graduation-cap' : null}
+    poster={props.data.thumbnail}
+    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
     title={props.data.name}
-    subtitle={props.data.code}
-    contentText={props.data.plainDescription || props.data.description}
-    flags={[
-      get(props.data, 'restrictions.hidden')           && ['fa fa-eye-slash', trans('training_hidden', {}, 'cursus')],
-      get(props.data, 'registration.selfRegistration') && ['fa fa-globe',     trans('training_public_registration', {}, 'cursus')]
-    ].filter(flag => !!flag)}
-    footer={!isEmpty(props.data.tags) &&
-      <div className="tags">
-        {props.data.tags.map(tag =>
-          <span key={tag} className="tag badge text-bg-primary">
-            <span className="fa fa-fw fa-tag icon-with-text-right" />
-            {tag}
-          </span>
-        )}
-      </div>
+    contentText={props.data.plainDescription || <em>{trans('no_description')}</em>}
+    meta={
+      <>
+        {(get(props.data, 'registration.selfRegistration') || get(props.data, 'registration.autoRegistration')) &&
+          <Badge variant="secondary" subtle={true}>{trans('public_registration')}</Badge>
+        }
+      </>
     }
   />
 
 CourseCard.propTypes = {
-  className: T.string,
   data: T.shape(
     CourseTypes.propTypes
   ).isRequired

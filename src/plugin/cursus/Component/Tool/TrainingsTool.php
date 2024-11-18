@@ -2,11 +2,27 @@
 
 namespace Claroline\CursusBundle\Component\Tool;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
+use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
+use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CursusBundle\Entity\Course;
+use Claroline\CursusBundle\Manager\CourseManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TrainingsTool extends AbstractTool
 {
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer,
+        private readonly CourseManager $courseManager
+    ) {
+    }
+
     public static function getName(): string
     {
         return 'trainings';
@@ -20,5 +36,33 @@ class TrainingsTool extends AbstractTool
     public function supportsContext(string $context): bool
     {
         return DesktopContext::getName() === $context;
+    }
+
+    public function open(string $context, ?ContextSubjectInterface $contextSubject = null): ?array
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        if ($context === WorkspaceContext::getName()) {
+            // retrieve the course bound to workspace if any
+            $courses = $this->om->getRepository(Course::class)->findByWorkspace($contextSubject);
+
+            $course = null;
+            $registrations = [];
+            if ($user && !empty($courses)) {
+                $course = $courses[0];
+                $registrations = $this->courseManager->getRegistrations($user, $course);
+            }
+
+            return [
+                'course' => $course ? $this->serializer->serialize($course, [SerializerInterface::SERIALIZE_MINIMAL]) : null,
+                'registrations' => $registrations,
+                'presences' => [],
+            ];
+        }
+
+        return [
+            'registrations' => $user ? $this->courseManager->getRegistrations($user) : [],
+            'presences' => [],
+        ];
     }
 }

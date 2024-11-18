@@ -7,7 +7,7 @@
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {CoursesModal} from '#/plugin/cursus/modals/courses/containers/modal'
+import {CoursesModal} from '#/plugin/cursus/modals/courses/components/modal'
 
 const MODAL_TRAINING_COURSES = 'MODAL_TRAINING_COURSES'
 

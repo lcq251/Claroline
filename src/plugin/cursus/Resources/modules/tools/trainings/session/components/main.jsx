@@ -1,111 +1,91 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router/components/routes'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentTabs} from '#/main/app/content/components/tabs'
+import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+
 import {ToolPage} from '#/main/core/tool'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 import {PageListSection} from '#/main/app/page/components/list-section'
+import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {SessionList} from '#/plugin/cursus/session/components/list'
 import {selectors} from '#/plugin/cursus/tools/trainings/session/store/selectors'
 
-const SessionMain = (props) =>
-  <ToolPage
-    title={trans('my_courses', {}, 'cursus')}
-  >
-    <ContentTabs
-      sections={[
-        {
-          name: 'current',
-          type: LINK_BUTTON,
-          label: trans('Actives', {}, 'cursus'),
-          target: `${props.path}/registered`,
-          exact: true
-        }, {
-          name: 'ended',
-          type: LINK_BUTTON,
-          label: trans('Terminées', {}, 'cursus'),
-          target: `${props.path}/registered/ended`
-        }, {
-          name: 'pending',
-          type: LINK_BUTTON,
-          label: trans('pending_registrations'),
-          target: `${props.path}/registered/pending`
-        }
-      ]}
-    />
+import {MODAL_SESSION_FORM} from '#/plugin/cursus/session/modals/parameters'
+import {MODAL_TRAINING_COURSES} from '#/plugin/cursus/modals/courses'
 
+const SessionMain = (props) => {
+  const contextType = useSelector(toolSelectors.contextType)
+  const contextId = useSelector(toolSelectors.contextId)
+  const canCreateSession = useSelector(state => toolSelectors.hasPermission('edit', state))
+
+  return (
     <Routes
-      path={`${props.path}/registered`}
+      path={`${props.path}/sessions`}
       routes={[
         {
           path: '/',
           exact: true,
           onEnter: () => props.invalidateList(),
           render: () => (
-            <PageListSection>
-              <SessionList
-                flush={true}
-                path={props.path}
-                name={selectors.STORE_NAME}
-                url={['apiv2_cursus_my_sessions_active']}
-                actions={(rows) => [
-                  {
-                    type: LINK_BUTTON,
-                    icon: 'fa fa-fw fa-book',
-                    label: trans('open-workspace', {}, 'actions'),
-                    target: rows[0].workspace ? workspaceRoute(rows[0].workspace) : '',
-                    displayed: !!rows[0].workspace,
-                    scope: ['object']
-                  }
-                ]}
-              />
-            </PageListSection>
-          )
-        }, {
-          path: '/ended',
-          onEnter: () => props.invalidateList(),
-          render: () => (
-            <PageListSection>
-              <SessionList
-                flush={true}
-                path={props.path}
-                name={selectors.STORE_NAME}
-                url={['apiv2_cursus_my_sessions_ended']}
-                actions={(rows) => [
-                  {
-                    name: 'open-workspace',
-                    type: LINK_BUTTON,
-                    icon: 'fa fa-fw fa-book',
-                    label: trans('open-workspace', {}, 'actions'),
-                    target: rows[0].workspace ? workspaceRoute(rows[0].workspace) : '',
-                    displayed: !!rows[0].workspace,
-                    scope: ['object']
-                  }
-                ]}
-              />
-            </PageListSection>
-          )
-        }, {
-          path: '/pending',
-          onEnter: () => props.invalidateList(),
-          render: () => (
-            <PageListSection>
-              <SessionList
-                flush={true}
-                path={props.path}
-                name={selectors.STORE_NAME}
-                url={['apiv2_cursus_my_sessions_pending']}
-              />
-            </PageListSection>
+            <ToolPage
+              title={trans('sessions', {}, 'cursus')}
+            >
+              <PageListSection>
+                <SessionList
+                  flush={true}
+                  path={props.path}
+                  name={selectors.STORE_NAME}
+                  url={['apiv2_cursus_session_context_list', {context: contextType, contextId: contextId}]}
+                  addAction={{
+                    type: MODAL_BUTTON,
+                    label: trans('plan_training_session', {}, 'actions'),
+                    modal: [MODAL_TRAINING_COURSES, {
+                      multiple: false,
+                      selectAction: (selected) => ({
+                        type: MODAL_BUTTON,
+                        label: trans('plan_training_session', {}, 'actions'),
+                        modal: [MODAL_SESSION_FORM, {
+                          course: selected[0],
+                          onSave: props.invalidateList
+                        }]
+                      })
+                    }],
+                    displayed: canCreateSession
+                  }}
+                  customDefinition={[
+                    {
+                      name: 'course',
+                      type: 'training_course',
+                      label: trans('course', {}, 'cursus'),
+                      displayed: 'desktop' === contextType,
+                      primary: true,
+                      order: 1
+                    }
+                  ]}
+                  customActions={(rows) => [
+                    {
+                      name: 'open-workspace',
+                      type: LINK_BUTTON,
+                      icon: 'fa fa-fw fa-book',
+                      label: trans('open-workspace', {}, 'actions'),
+                      target: rows[0].workspace ? workspaceRoute(rows[0].workspace) : '',
+                      displayed: !!rows[0].workspace,
+                      scope: ['object']
+                    }
+                  ]}
+                />
+              </PageListSection>
+            </ToolPage>
           )
         }
       ]}
     />
-  </ToolPage>
+  )
+}
 
 SessionMain.propTypes = {
   path: T.string.isRequired,

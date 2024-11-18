@@ -13,31 +13,14 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AllCoursesSource
 {
-    /** @var FinderProvider */
-    private $finder;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-
-    /** @var ObjectManager */
-    private $om;
-
     public function __construct(
-        FinderProvider $finder,
-        ObjectManager $om,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorization
+        private readonly FinderProvider $finder,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorization
     ) {
-        $this->finder = $finder;
-        $this->om = $om;
-        $this->tokenStorage = $tokenStorage;
-        $this->authorization = $authorization;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions();
         $options['hiddenFilters']['hidden'] = false;

@@ -6,7 +6,11 @@ import {trans} from '#/main/app/intl'
 
 const AgendaOverview = () =>
   <ToolPage>
-    <PageSection size="md" title={trans('Evènements à venir')}>
+    <PageSection size="md" className="mt-5" title={trans('Evènements à venir')}>
+
+    </PageSection>
+
+    <PageSection size="md" className="mt-5 mb-5" title={trans('Mes invitations')}>
 
     </PageSection>
   </ToolPage>

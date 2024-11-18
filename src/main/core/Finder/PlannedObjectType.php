@@ -8,7 +8,6 @@ use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
-use Claroline\CommunityBundle\Entity\Team;
 use Claroline\CoreBundle\Entity\Planning\PlannedObject;
 use Claroline\CoreBundle\Entity\Planning\Planning;
 use Doctrine\ORM\Query\Expr\Join;

@@ -2,33 +2,34 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
-import {now, trans} from '#/main/app/intl'
+import {trans} from '#/main/app/intl'
+import {Badge} from '#/main/app/components/badge'
+
+import {getPeriodStatus} from '#/plugin/cursus/utils'
 
 const EventStatus = (props) => {
-  let status
-  if (props.startDate > now(false)) {
-    status = 'not_started'
-  } else if (props.startDate <= now(false) && props.endDate >= now(false)) {
-    status = 'in_progress'
-  } else if (props.endDate < now(false)) {
-    status = 'ended'
-  }
+  const status = getPeriodStatus(props.startDate, props.endDate)
 
   return (
-    <span className={classes('badge', props.className, {
-      'text-bg-success': 'not_started' === status,
-      'text-bg-info': 'in_progress' === status,
-      'text-bg-danger': 'ended' === status
-    })}>
+    <Badge
+      className={props.className}
+      variant={classes({
+        'secondary': 'not_started' === status,
+        'success': 'in_progress' === status,
+        'danger': 'ended' === status
+      })}
+     subtle={props.subtle}
+    >
       {trans('session_'+status, {}, 'cursus')}
-    </span>
+    </Badge>
   )
 }
 
 EventStatus.propTypes = {
   className: T.string,
   startDate: T.string,
-  endDate: T.string
+  endDate: T.string,
+  subtle: T.bool
 }
 
 export {

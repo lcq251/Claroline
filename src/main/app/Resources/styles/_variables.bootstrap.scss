@@ -658,7 +658,7 @@ $font-sizes: (
         6: $h6-font-size,
         base: $font-size-base,
         sm: $font-size-sm,
-        lg: $font-size-base
+        lg: $font-size-lg
 ) !default;
 // scss-docs-end font-sizes
 
@@ -1539,7 +1539,7 @@ $modal-content-box-shadow-xs:       $box-shadow-sm !default;
 $modal-content-box-shadow-sm-up:    $box-shadow !default;
 
 $modal-backdrop-bg:                 $black !default;
-$modal-backdrop-opacity:            .75; // .5 !default;
+$modal-backdrop-opacity:            .5 !default;
 
 $modal-header-border-color:         var(--#{$prefix}border-color-translucent) !default;
 $modal-header-border-width:         0; // $modal-content-border-width !default;

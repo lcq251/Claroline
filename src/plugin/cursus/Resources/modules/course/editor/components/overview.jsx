@@ -60,6 +60,26 @@ const CourseEditorOverview = () =>
               unit: trans('hours')
             }
           }, {
+            name: 'pricing.price',
+            label: trans('price'),
+            type: 'currency',
+            linked: [
+              {
+                name: 'pricing.description',
+                label: trans('comment'),
+                type: 'string',
+                options: {
+                  long: true
+                }
+              }
+            ]
+          }, {
+            name: 'certification',
+            type: 'string',
+            label: trans('Certification', {}, 'cursus'),
+            options: {long: true, minRows: 2},
+            help: trans('Définissez les titres et dipômes obtenus par les utilisateurs suivant cette formation.', {}, 'cursus')
+          }, {
             name: 'tags',
             label: trans('tags'),
             type: 'tag'

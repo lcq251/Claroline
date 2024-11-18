@@ -1,7 +1,7 @@
 import {trans} from '#/main/app/intl'
 
 import {CourseCard} from '#/plugin/cursus/course/components/card'
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 
 export default {
   name: 'training',

@@ -158,43 +158,6 @@ const EventAbout = (props) =>
     </div>
 
     <div className="col-md-9">
-      <div className="content-resume">
-        <div className="content-resume-info content-resume-primary">
-          <span className="text-secondary">
-            {trans('status')}
-          </span>
-
-          {get(props.event, 'start') > now() &&
-            <h1 className="content-resume-title h2 text-secondary">
-              {trans('session_not_started', {}, 'cursus')}
-            </h1>
-          }
-
-          {(get(props.event, 'start') <= now() && get(props.event, 'end') >= now()) &&
-            <h1 className="content-resume-title h2 text-success">
-              {trans('session_in_progress', {}, 'cursus')}
-            </h1>
-          }
-
-          {get(props.event, 'end') < now() &&
-            <h1 className="content-resume-title h2 text-danger">
-              {trans('session_ended', {}, 'cursus')}
-            </h1>
-          }
-        </div>
-
-        <div className="content-resume-info">
-          <span className="text-secondary">
-            {trans('start_date')}
-          </span>
-
-          {get(props.event, 'start') &&
-            <h1 className="content-resume-title h2">
-              {displayDate(get(props.event, 'start'), false, true)}
-            </h1>
-          }
-        </div>
-      </div>
 
       {!isEmpty(props.registration) &&
         <CurrentRegistration

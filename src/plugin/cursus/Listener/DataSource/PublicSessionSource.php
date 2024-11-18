@@ -14,28 +14,14 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PublicSessionSource
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var FinderProvider */
-    private $finder;
-    /** @var ObjectManager */
-    private $om;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder,
-        ObjectManager $om
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
-        $this->om = $om;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions();
         $options['hiddenFilters']['hidden'] = false;

@@ -97,13 +97,18 @@ class CourseSerializer
             'opening' => [
                 'session' => $course->getSessionOpening(),
             ],
+            'certification' => $course->getCertification(),
             'pricing' => [
                 'price' => $course->getPrice(),
                 'description' => $course->getPriceDescription(),
             ],
+            'registration' => [
+                'selfRegistration' => $course->getPublicRegistration(),
+                'autoRegistration' => $course->getAutoRegistration(),
+            ],
             'restrictions' => [
                 'hidden' => $course->isHidden(),
-                'active' => $course->hasAvailableSession(),
+                // 'active' => $course->hasAvailableSession(),
             ],
             'tags' => $this->serializeTags($course),
         ];
@@ -120,7 +125,7 @@ class CourseSerializer
         }
 
         if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
-            $serialized = array_merge($serialized, [
+            $serialized = array_merge_recursive($serialized, [
                 'poster' => $course->getPoster(),
                 'display' => [
                     'order' => $course->getOrder(),
@@ -128,11 +133,9 @@ class CourseSerializer
                 ],
                 'participants' => $this->courseRepo->countParticipants($course),
                 'registration' => [
-                    'selfRegistration' => $course->getPublicRegistration(),
-                    'autoRegistration' => $course->getAutoRegistration(),
                     'selfUnregistration' => $course->getPublicUnregistration(),
-                    'validation' => $course->getRegistrationValidation(),
-                    'userValidation' => $course->getUserValidation(),
+                    'validation' => $course->hasValidation(),
+                    'userValidation' => $course->hasConfirmation(),
                     'mail' => $course->getRegistrationMail(),
                     'pendingRegistrations' => $course->getPendingRegistrations(),
                     'learnerRole' => $course->getLearnerRole() ?
@@ -179,6 +182,7 @@ class CourseSerializer
 
         $this->sipe('opening.session', 'setSessionOpening', $data, $course);
 
+        $this->sipe('certification', 'setCertification', $data, $course);
         $this->sipe('pricing.price', 'setPrice', $data, $course);
         $this->sipe('pricing.description', 'setPriceDescription', $data, $course);
 

@@ -19,6 +19,7 @@ use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Normalizer\CodeNormalizer;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Session;
@@ -57,6 +58,13 @@ class SessionSubscriber implements EventSubscriberInterface
 
         /** @var Session $session */
         $session = $event->getObject();
+
+        // make sure the session code is unique and generate one if missing
+        $sessionCode = $this->om->getRepository(Course::class)->findNextUnique(
+            'code',
+            $session->getCode() ?? CodeNormalizer::normalize($session->getName())
+        );
+        $session->setCode($sessionCode);
 
         $session->setCreatedAt(new \DateTime());
         $session->setUpdatedAt(new \DateTime());

@@ -363,7 +363,7 @@ class SessionManager
     public function sendSessionInvitation(Session $session, array $users, bool $confirm = true): void
     {
         $templateName = 'training_session_invitation';
-        if ($confirm && $session->getUserValidation()) {
+        if ($confirm && $session->hasConfirmation()) {
             $templateName = 'training_session_confirmation';
         }
 

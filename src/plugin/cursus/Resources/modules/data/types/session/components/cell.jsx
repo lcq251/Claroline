@@ -5,7 +5,7 @@ import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {UrlButton} from '#/main/app/buttons/url'
 import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 
 const SessionCell = props => {
   if (!isEmpty(props.data)) {

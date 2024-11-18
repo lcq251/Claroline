@@ -11,7 +11,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Button} from '#/main/app/action/components/button'
 import {DataInput} from '#/main/app/data/components/input'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {actions} from '#/plugin/cursus/modals/presence/evidences/store'
+import {actions} from '#/plugin/cursus/presence/modals/evidences/store'
 import {FileThumbnail} from '#/main/app/data/types/file/components/thumbnail'
 
 const EvidenceModalComponent = (props) => {

@@ -35,7 +35,8 @@ const Users = (props) => {
           displayable: param('community.username'),
           displayed: param('community.username'),
           sortable: param('community.username'),
-          filterable: param('community.username'),
+          // filterable: param('community.username'),
+          filterable: false,
           primary: param('community.username'),
           render: (user) => (
             <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
@@ -43,32 +44,6 @@ const Users = (props) => {
               {user.username}
             </div>
           )
-        }, {
-          name: 'firstName',
-          type: 'string',
-          label: trans('first_name'),
-          displayed: true
-        }, {
-          name: 'lastName',
-          type: 'string',
-          label: trans('last_name'),
-          displayed: true,
-          primary: !param('community.username')
-        }, {
-          name: 'email',
-          type: 'email',
-          label: trans('email'),
-          displayable: true
-        }, {
-          name: 'administrativeCode',
-          type: 'string',
-          label: trans('code')
-        }, {
-          name: 'meta.created',
-          type: 'date',
-          alias: 'created',
-          label: trans('creation_date'),
-          filterable: false
         }, {
           name: 'status',
           type: 'choice',
@@ -81,6 +56,30 @@ const Users = (props) => {
           },
           render: (user) => <UserStatus user={user} variant="badge" />
         }, {
+          name: 'firstName',
+          type: 'string',
+          label: trans('first_name'),
+          displayed: true,
+          filterable: false
+        }, {
+          name: 'lastName',
+          type: 'string',
+          label: trans('last_name'),
+          displayed: true,
+          primary: !param('community.username'),
+          filterable: false
+        }, {
+          name: 'email',
+          type: 'email',
+          label: trans('email'),
+          displayable: true,
+          filterable: false
+        }, {
+          name: 'administrativeCode',
+          type: 'string',
+          label: trans('code'),
+          filterable: false
+        }, {
           name: 'lastActivity',
           type: 'date',
           label: trans('last_activity'),
@@ -89,13 +88,19 @@ const Users = (props) => {
             time: true
           }
         }, {
+          name: 'meta.created',
+          type: 'date',
+          alias: 'created',
+          label: trans('creation_date'),
+          filterable: true
+        }, /*{
           name: 'organizations',
           label: trans('organizations'),
           type: 'organizations',
           displayed: false,
           displayable: false,
           sortable: false
-        }, {
+        },*/ {
           name: 'restrictions.disabled',
           alias: 'disabled',
           type: 'boolean',

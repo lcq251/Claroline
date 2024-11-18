@@ -7,7 +7,7 @@ import {Action as ActionTypes, PromisedAction as PromisedActionTypes} from '#/ma
 import {PageActions} from '#/main/app/page/components/actions'
 
 const PageHeading = props =>
-  <header className={classes('app-page-heading px-4 mb-4', props.className, props.size && `content-${props.size}`)}>
+  <header className={classes('app-page-heading px-4 mb-5', props.className, props.size && `content-${props.size}`)}>
     {props.icon &&
       <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
         {props.icon}
@@ -20,9 +20,6 @@ const PageHeading = props =>
     })} role="presentation">
       <h1 className="app-page-title m-0">
         {props.title}
-        {props.subtitle &&
-          <small className="text-body-secondary">{props.subtitle}</small>
-        }
       </h1>
 
       {props.actions instanceof Promise ?
@@ -44,6 +41,10 @@ const PageHeading = props =>
         />
       }
     </div>
+
+    {props.description &&
+      <p className="lead text-body-secondary mt-3">{props.description}</p>
+    }
   </header>
 
 PageHeading.propTypes = {
@@ -57,7 +58,7 @@ PageHeading.propTypes = {
    */
   icon: T.element,
   title: T.oneOfType([T.string, T.element]).isRequired,
-  subtitle: T.string,
+  description: T.string,
   primaryAction: T.string,
   secondaryAction: T.string,
   toolbar: T.string,

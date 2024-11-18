@@ -143,7 +143,18 @@ function toKey(text, length = 30) {
   return formatted
 }
 
+function nl2br(str) {
+  if (typeof str === 'undefined' || str === null) {
+    return '';
+  }
+
+  const breakTag = '<br />';
+
+  return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
 export {
   stripDiacritics,
-  toKey
+  toKey,
+  nl2br
 }

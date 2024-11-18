@@ -12,7 +12,6 @@ export default (courses) => ({
   icon: 'fa fa-fw fa-file-pdf',
   label: trans('export-pdf', {}, 'actions'),
   displayed: hasPermission('open', courses[0]),
-  group: trans('transfer'),
   target: ['apiv2_cursus_course_download_pdf', {id: courses[0].id}],
   scope: ['object']
 })

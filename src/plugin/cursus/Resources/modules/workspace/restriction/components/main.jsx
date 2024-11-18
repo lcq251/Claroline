@@ -9,7 +9,7 @@ import {Router, Routes} from '#/main/app/router'
 import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {canSelfRegister, getCourseRegistration, getSessionRegistration, isFull} from '#/plugin/cursus/utils'
 import {CourseAbout} from '#/plugin/cursus/course/components/about'
 import {MODAL_COURSE_REGISTRATION} from '#/plugin/cursus/course/modals/registration'

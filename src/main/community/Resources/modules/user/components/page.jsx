@@ -39,15 +39,15 @@ const User = (props) =>
       <PageHeading
         size="md"
         icon={
-          <UserAvatar user={!isEmpty(props.user) ? props.user : undefined} size="xl" />
+          <UserAvatar user={props.user} size="xl" />
         }
         title={get(props.user, 'name', trans('loading'))}
         primaryAction="send-message"
-        actions={!isEmpty(props.user) ? getActions([props.user], {
+        actions={getActions([props.user], {
           add: () => props.reload(props.user.id),
           update: () => props.reload(props.user.id),
           delete: () => props.reload(props.user.id)
-        }, props.path, props.currentUser) : []}
+        }, props.path, props.currentUser)}
       />
     }
 

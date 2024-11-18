@@ -22,6 +22,7 @@ import {isFull} from '#/plugin/cursus/utils'
 import {CourseStats} from '#/plugin/cursus/course/components/stats'
 import {SessionGroups} from '#/plugin/cursus/session/containers/groups'
 import {SessionUsers} from '#/plugin/cursus/session/containers/users'
+import {ContentNav} from '#/main/app/content/components/nav'
 
 const SessionParticipants = (props) =>
   <>
@@ -53,22 +54,28 @@ const SessionParticipants = (props) =>
 
     <div className="row">
       <div className="col-md-3">
-        <Vertical
+        <ContentNav
           className="mb-3"
-          basePath={props.path}
-          tabs={[
+          path={props.path}
+          type="horizontal"
+          sections={[
             {
               icon: 'fa fa-fw fa-chalkboard-teacher',
               title: trans('tutors', {}, 'cursus'),
               path: '/',
-              exact: true
+              exact: true,
+              subscript: {
+                type: 'label',
+                value: 10,
+                status: 'primary'
+              }
             }, {
               icon: 'fa fa-fw fa-user',
-              title: trans('users'),
+              title: trans('users', {}, 'community'),
               path: '/users'
             }, {
               icon: 'fa fa-fw fa-users',
-              title: trans('groups'),
+              title: trans('groups', {}, 'community'),
               path: '/groups'
             }, {
               icon: 'fa fa-fw fa-hourglass-half',

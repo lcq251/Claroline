@@ -11,7 +11,6 @@ import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
 const OrganizationsInput = props =>
   <EntityInput
     {...props}
-    icon="fa fa-building"
     placeholder={trans('no_organization', {}, 'community')}
     card={OrganizationCard}
     multiple={true}

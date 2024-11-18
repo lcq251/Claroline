@@ -61,7 +61,7 @@ class SearchModal extends Component {
         /*size="sm"*/
       >
         <div className="modal-body" role="presentation">
-          <div className="app-search" role="form">
+          <div className="app-search" role="search">
             <span className="app-search-icon fa fa-search" aria-hidden={true} />
 
             <input

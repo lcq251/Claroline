@@ -7,20 +7,23 @@ import {EntityDisplay} from '#/main/app/data/types/entity'
 import {Organization as OrganizationTypes} from '#/main/community/prop-types'
 import {OrganizationCard} from '#/main/community/organization/components/card'
 
-
 const OrganizationsDisplay = (props) =>
   <EntityDisplay
-    icon="fa fa-building"
+    {...props}
     placeholder={trans('no_organization', {}, 'community')}
     card={OrganizationCard}
-    data={props.data}
     multiple={true}
   />
 
 OrganizationsDisplay.propTypes = {
-  data: T.arrayOf(T.shape(
-    OrganizationTypes.propTypes
-  ))
+  data: T.oneOfType([
+    T.shape(
+      OrganizationTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      OrganizationTypes.propTypes
+    ))
+  ])
 }
 
 export {

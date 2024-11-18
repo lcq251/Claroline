@@ -1,7 +1,7 @@
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
-import {MODAL_EVIDENCE} from '#/plugin/cursus/modals/presence/evidences'
+import {MODAL_EVIDENCE} from '#/plugin/cursus/presence/modals/evidences'
 import {constants} from '#/plugin/cursus/constants'
 
 export default (presences, refresher) => {

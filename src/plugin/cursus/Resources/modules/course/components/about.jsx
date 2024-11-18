@@ -17,11 +17,12 @@ import {LocationCard} from '#/main/core/data/types/location/components/card'
 import {ResourceCard} from '#/main/core/resource/components/card'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {getInfo, isFullyRegistered, isFull, getSessionRegistration, getCourseRegistration} from '#/plugin/cursus/utils'
 import {constants} from '#/plugin/cursus/constants'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {SessionCard} from '#/plugin/cursus/session/components/card'
+import {nl2br} from '#/main/core/scaffolding/text'
 
 const CurrentRegistration = (props) => {
   let registrationTitle = trans('session_registration_pending', {}, 'cursus')
@@ -127,7 +128,7 @@ const CourseAbout = (props) => {
                       popover={{
                         content: (
                           <ContentHtml>
-                            {(getInfo(props.course, props.activeSession, 'pricing.description') || '')}
+                            {nl2br(getInfo(props.course, props.activeSession, 'pricing.description') || '')}
                           </ContentHtml>
                         ),
                         position: 'bottom'

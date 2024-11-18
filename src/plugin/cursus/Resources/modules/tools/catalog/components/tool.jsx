@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Tool} from '#/main/core/tool'
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {Course} from '#/plugin/cursus/course/containers/main'
 import {CatalogList} from '#/plugin/cursus/tools/catalog/components/list'
 

@@ -16,31 +16,18 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EventsSource
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var ObjectManager */
-    private $om;
-    /** @var FinderProvider */
-    private $finder;
-    /** @var SessionRepository */
-    private $sessionRepo;
+    private SessionRepository $sessionRepo;
 
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder,
         ObjectManager $om
     ) {
-        $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->om = $om;
-        $this->finder = $finder;
         $this->sessionRepo = $om->getRepository(Session::class);
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions();
 

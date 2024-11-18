@@ -29,7 +29,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
-class AbstractTraining
+class AbstractTraining implements TrainingInterface
 {
     use Id;
     use Uuid;
@@ -159,7 +159,7 @@ class AbstractTraining
         $this->publicUnregistration = $publicUnregistration;
     }
 
-    public function getRegistrationValidation(): bool
+    public function hasValidation(): bool
     {
         return $this->registrationValidation;
     }
@@ -179,7 +179,7 @@ class AbstractTraining
         $this->registrationMail = $mail;
     }
 
-    public function getUserValidation(): bool
+    public function hasConfirmation(): bool
     {
         return $this->userValidation;
     }
@@ -187,11 +187,6 @@ class AbstractTraining
     public function setUserValidation(bool $userValidation): void
     {
         $this->userValidation = $userValidation;
-    }
-
-    public function hasValidation(): bool
-    {
-        return $this->registrationValidation || $this->userValidation;
     }
 
     public function getPendingRegistrations(): bool

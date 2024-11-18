@@ -1,74 +1,71 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {ListData} from '#/main/app/content/list/containers/data'
+import {param} from '#/main/app/config'
+import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
 import {CourseCard} from '#/plugin/cursus/course/components/card'
-import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 
-import {selectors} from '#/plugin/cursus/modals/courses/store'
-
-const CoursesModal = props => {
-  const selectAction = props.selectAction(props.selected)
-
-  return (
-    <Modal
-      {...omit(props, 'url', 'selected', 'selectAction', 'reset')}
-      icon="fa fa-fw fa-graduation-cap"
-      className="data-picker-modal"
-      size="xl"
-      onExiting={props.reset}
-    >
-      <ListData
-        name={selectors.STORE_NAME}
-        fetch={{
-          url: props.url,
-          autoload: true
-        }}
-        definition={[
-          {
-            name: 'name',
-            type: 'string',
-            label: trans('name'),
-            displayed: true,
-            primary: true
-          }, {
-            name: 'code',
-            type: 'string',
-            label: trans('code'),
-            displayed: true
-          }
-        ]}
-        card={CourseCard}
-      />
-
-      <Button
-        label={trans('select', {}, 'actions')}
-        {...selectAction}
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        primary={true}
-        disabled={0 === props.selected.length}
-        onClick={props.fadeModal}
-      />
-    </Modal>
-  )
-}
+const CoursesModal = (props) =>
+  <PickerModal
+    {...props}
+    icon="fa fa-fw fa-graduation-cap"
+    name="trainingCoursesPicker"
+    definition={[
+      {
+        name: 'name',
+        type: 'string',
+        label: trans('name'),
+        displayed: true,
+        primary: true
+      }, {
+        name: 'code',
+        type: 'string',
+        label: trans('code')
+      }, {
+        name: 'location',
+        type: 'location',
+        label: trans('location'),
+        displayable: false,
+        sortable: false
+      }, {
+        name: 'meta.duration',
+        alias: 'duration',
+        type: 'number',
+        label: trans('duration'),
+        displayed: true,
+        filterable: false,
+        options: {unit: trans('hours')}
+      }, {
+        name: 'pricing.price',
+        alias: 'price',
+        label: trans('price'),
+        type: 'currency',
+        displayable: param('pricing.enabled'),
+        displayed: param('pricing.enabled'),
+        filterable: param('pricing.enabled'),
+        sortable: param('pricing.enabled')
+      }, {
+        name: 'tags',
+        type: 'tag',
+        label: trans('tags'),
+        sortable: false,
+        options: {
+          objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
+        }
+      }
+    ]}
+    card={CourseCard}
+  />
 
 CoursesModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
   selectAction: T.func.isRequired,
-  fadeModal: T.func.isRequired,
-
-  // from store
-  selected: T.arrayOf(T.shape(CourseTypes.propTypes)).isRequired,
-  reset: T.func.isRequired
+  multiple: T.bool,
+  // from modal
+  fadeModal: T.func.isRequired
 }
 
 CoursesModal.defaultProps = {

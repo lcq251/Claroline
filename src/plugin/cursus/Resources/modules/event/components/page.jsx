@@ -12,6 +12,14 @@ import {ToolPage} from '#/main/core/tool'
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {MODAL_TRAINING_EVENT_ABOUT} from '#/plugin/cursus/event/modals/about'
 import {MODAL_TRAINING_EVENT_PARAMETERS} from '#/plugin/cursus/event/modals/parameters'
+import {PageHeading} from '#/main/app/page/components/heading'
+import {displayDateRange} from '#/main/app/intl'
+import {Badge} from '#/main/app/components/badge'
+import {ContentHtml} from '#/main/app/content/components/html'
+import {Contact} from '#/main/app/components/contact'
+import {PageSection} from '#/main/app/page'
+import {EventStatus} from '#/plugin/cursus/components/event-status'
+import {CalendarIcon} from '#/main/app/calendar/components/icon'
 
 const EventPage = (props) => {
   if (isEmpty(props.event)) {
@@ -25,84 +33,121 @@ const EventPage = (props) => {
 
   return (
     <ToolPage
-      path={props.path}
+      className="event-page"
       title={get(props.event, 'name')}
+      description={props.event.description}
       poster={get(props.event, 'poster')}
-      primaryAction="edit"
-      actions={[
-        {
-          name: 'about',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-circle-info',
-          label: trans('show-info', {}, 'actions'),
-          modal: [MODAL_TRAINING_EVENT_ABOUT, {
-            event: props.event
-          }]
-        }, {
-          name: 'edit',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-pencil',
-          label: trans('edit', {}, 'actions'),
-          modal: [MODAL_TRAINING_EVENT_PARAMETERS, {
-            event: props.event,
-            onSave: () => props.reload(props.event.id)
-          }],
-          group: trans('management'),
-          displayed: hasPermission('edit', props.event),
-          primary: true
-        }, {
-          name: 'export-pdf',
-          type: URL_BUTTON,
-          icon: 'fa fa-fw fa-file-pdf',
-          label: trans('export-pdf', {}, 'actions'),
-          displayed: hasPermission('open', props.event),
-          group: trans('transfer'),
-          target: ['apiv2_cursus_event_download_pdf', {id: props.event.id}]
-        }, {
-          name: 'export-ics',
-          type: URL_BUTTON,
-          icon: 'fa fa-fw fa-calendar',
-          label: trans('export-ics', {}, 'actions'),
-          displayed: hasPermission('open', props.event),
-          group: trans('transfer'),
-          target: ['apiv2_cursus_event_download_ics', {id: props.event.id}]
-        }, {
-          name: 'export-presences-empty',
-          type: URL_BUTTON,
-          icon: 'fa fa-fw fa-border-none',
-          label: trans('export-presences-empty', {}, 'cursus'),
-          displayed: hasPermission('edit', props.event),
-          group: trans('presences', {}, 'cursus'),
-          target: ['apiv2_cursus_event_presence_download', {id: props.event.id, filled: 0}]
-        }, {
-          name: 'export-presences-filled',
-          type: URL_BUTTON,
-          icon: 'fa fa-fw fa-border-all',
-          label: trans('export-presences-filled', {}, 'cursus'),
-          displayed: hasPermission('edit', props.event),
-          group: trans('presences', {}, 'cursus'),
-          target: ['apiv2_cursus_event_presence_download', {id: props.event.id, filled: 1}]
-        }, {
-          name: 'confirm-status',
-          type: ASYNC_BUTTON,
-          icon: 'fa fa-fw fa-clipboard-check',
-          label: trans('presence_validation', {}, 'presence'),
-          displayed: hasPermission('edit', props.event),
-          group: trans('validation', {}, 'presence'),
-          request: {
-            url: ['apiv2_cursus_event_presence_confirm', {id: props.event.id}],
-            request: {
-              method: 'PUT'
-            }
-          }
-        }
-      ]}
-
-      meta={{
-        title: `${trans('training_events', {}, 'tools')} - ${props.event.name}`,
-        description: props.event.description
-      }}
     >
+      {!isEmpty(props.event) &&
+        <PageHeading
+          size="md"
+          icon={
+            <CalendarIcon square={true} size="xl" date={props.event.date} />
+          }
+          title={get(props.event, 'name', trans('loading'))}
+          actions={[
+            {
+              name: 'about',
+              type: MODAL_BUTTON,
+              icon: 'fa fa-fw fa-circle-info',
+              label: trans('show-info', {}, 'actions'),
+              modal: [MODAL_TRAINING_EVENT_ABOUT, {
+                event: props.event
+              }]
+            }, {
+              name: 'edit',
+              type: MODAL_BUTTON,
+              icon: 'fa fa-fw fa-pencil',
+              label: trans('edit', {}, 'actions'),
+              modal: [MODAL_TRAINING_EVENT_PARAMETERS, {
+                event: props.event,
+                onSave: () => props.reload(props.event.id)
+              }],
+              group: trans('management'),
+              displayed: hasPermission('edit', props.event),
+              primary: true
+            }, {
+              name: 'export-pdf',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-file-pdf',
+              label: trans('export-pdf', {}, 'actions'),
+              displayed: hasPermission('open', props.event),
+              group: trans('transfer'),
+              target: ['apiv2_cursus_event_download_pdf', {id: props.event.id}]
+            }, {
+              name: 'export-ics',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-calendar',
+              label: trans('export-ics', {}, 'actions'),
+              displayed: hasPermission('open', props.event),
+              group: trans('transfer'),
+              target: ['apiv2_cursus_event_download_ics', {id: props.event.id}]
+            }, {
+              name: 'export-presences-empty',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-border-none',
+              label: trans('export-presences-empty', {}, 'cursus'),
+              displayed: hasPermission('edit', props.event),
+              group: trans('presences', {}, 'cursus'),
+              target: ['apiv2_cursus_event_presence_download', {id: props.event.id, filled: 0}]
+            }, {
+              name: 'export-presences-filled',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-border-all',
+              label: trans('export-presences-filled', {}, 'cursus'),
+              displayed: hasPermission('edit', props.event),
+              group: trans('presences', {}, 'cursus'),
+              target: ['apiv2_cursus_event_presence_download', {id: props.event.id, filled: 1}]
+            }, {
+              name: 'confirm-status',
+              type: ASYNC_BUTTON,
+              icon: 'fa fa-fw fa-clipboard-check',
+              label: trans('presence_validation', {}, 'presence'),
+              displayed: hasPermission('edit', props.event),
+              group: trans('validation', {}, 'presence'),
+              request: {
+                url: ['apiv2_cursus_event_presence_confirm', {id: props.event.id}],
+                request: {
+                  method: 'PUT'
+                }
+              }
+            }
+          ]}
+        />
+      }
+
+      <PageSection size="md" className="mb-4">
+        <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
+          {displayDateRange(get(props.event, 'start'), get(props.event, 'end'), true)}
+
+          <EventStatus
+            className="ms-auto fs-sm lh-base"
+            startDate={get(props.event, 'start')}
+            endDate={get(props.event, 'end')}
+            subtle={true}
+          >
+            {trans(props.event.meta.type, {}, 'event')}
+          </EventStatus>
+        </div>
+
+        {props.event.description &&
+          <ContentHtml className="lead mb-4">{props.event.description}</ContentHtml>
+        }
+
+        {props.event.locationUrl &&
+          <div className="d-flex flex-row align-items-baseline mb-2 mb-4" role="presentation">
+            <span className="fa fa-fw fa-link me-2" aria-hidden={true} />
+            <a href={props.event.locationUrl} className="text-reset">
+              {props.event.locationUrl}
+            </a>
+          </div>
+        }
+
+        {props.event.location &&
+          <Contact {...props.event.location} className="mb-4" />
+        }
+      </PageSection>
+
       {props.children}
     </ToolPage>
   )

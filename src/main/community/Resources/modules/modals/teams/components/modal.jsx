@@ -76,7 +76,7 @@ TeamsModal.propTypes = {
 
 TeamsModal.defaultProps = {
   url:['apiv2_team_list'],
-  title: trans('teams'),
+  title: trans('teams', {}, 'community'),
   filters: []
 }
 

@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect'
 
 import {selectors as contextSelectors} from '#/main/app/context/store/selectors'
+import {hasPermission as permissionChecker} from '#/main/app/security'
 
 const STORE_NAME = 'tool'
 const EDITOR_NAME = 'toolEditor'
@@ -51,6 +52,12 @@ const contextId = createSelector(
   (contextData) => contextData ? contextData.id : undefined
 )
 
+const hasPermission = (permission, state) => {
+  const data = toolData(state)
+
+  return permissionChecker(permission, data)
+}
+
 /**
  * @deprecated use one of contextType, contextData.
  */
@@ -77,6 +84,7 @@ export const selectors = {
   path,
   toolData,
   permissions,
+  hasPermission,
   context,
   contextType,
   contextData,

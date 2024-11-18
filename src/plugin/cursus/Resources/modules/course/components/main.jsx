@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {Routes} from '#/main/app/router'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {CoursePage} from '#/plugin/cursus/course/components/page'
 import {CourseDetails} from '#/plugin/cursus/course/components/details'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'

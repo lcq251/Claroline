@@ -12,15 +12,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class EventPresenceSourceSubscriber implements EventSubscriberInterface
 {
-    private AuthorizationCheckerInterface $authorization;
-    private FinderProvider $finder;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        FinderProvider $finder
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly FinderProvider $finder
     ) {
-        $this->authorization = $authorization;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array

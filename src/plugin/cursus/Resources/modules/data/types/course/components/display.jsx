@@ -2,25 +2,27 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 import {CourseCard} from '#/plugin/cursus/course/components/card'
 
-const CourseDisplay = (props) => props.data ?
-  <CourseCard
-    data={props.data}
-    size="xs"
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-graduation-cap"
-    title={trans('no_course', {}, 'cursus')}
+const CourseDisplay = (props) =>
+  <EntityDisplay
+    {...props}
+    placeholder={trans('no_course', {}, 'cursus')}
+    card={CourseCard}
   />
 
 CourseDisplay.propTypes = {
-  data: T.arrayOf(T.shape(
-    CourseTypes.propTypes
-  ))
+  data: T.oneOfType([
+    T.shape(
+      CourseTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      CourseTypes.propTypes
+    ))
+  ])
 }
 
 export {

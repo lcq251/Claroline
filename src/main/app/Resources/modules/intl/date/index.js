@@ -96,7 +96,7 @@ function displayTime(apiDate) {
   return moment.utc(apiDate).local().format('LT')
 }
 
-function displayDateRange(start, end) {
+function displayDateRange(start, end, time = false) {
   let date = displayDate(start, true)
   if (end) {
     if (moment(start).isSame(end, 'day')) {
@@ -106,8 +106,8 @@ function displayDateRange(start, end) {
       })
     } else {
       date = trans('date_range', {
-        start: displayDate(start, true),
-        end: displayDate(end, true)
+        start: displayDate(start, true, time),
+        end: displayDate(end, true, time)
       })
     }
   }

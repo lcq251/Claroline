@@ -37,7 +37,7 @@ const ToolPage = props => {
       description={trans(toolName+'_desc', {}, 'tools')}
       menu={{
         nav: toolDef.menu,
-        toolbar: 'configure more',
+        toolbar: 'search configure more',
         // get actions injected through plugins and the ones defined by the current tool
         actions: getActions(toolData, currentContext, {
           update: reload

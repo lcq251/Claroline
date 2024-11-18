@@ -26,7 +26,7 @@ const reducer = combineReducers({
     [LOAD_COURSE]: (state, action) => action.availableSessions
   }),
   courseSessions: makeListReducer(selectors.STORE_NAME+'.courseSessions', {
-    filters: [{property: 'status', value: 'not_ended'}],
+    filters: {filters: [{property: 'status', value: 'not_ended'}]},
     sortBy: {property: 'order', direction: 1}
   }, {
     invalidated: makeReducer(false, {
@@ -34,10 +34,11 @@ const reducer = combineReducers({
     })
   }),
   courseSessionsCanceled: makeListReducer(selectors.STORE_NAME+'.courseSessionsCanceled', {
-    sortBy: {property: 'order', direction: 1}
+    sortBy: {property: 'order', direction: 1},
+    filters: {filters: [{property: 'status', value: 'not_ended'}]}
   }),
   courseEvents: makeListReducer(selectors.STORE_NAME+'.courseEvents', {
-    filters: [{property: 'status', value: 'not_ended'}],
+    filters: {filters: [{property: 'status', value: 'not_ended'}]},
     sortBy: {property: 'startDate', direction: 1}
   }, {
     invalidated: makeReducer(false, {
@@ -63,10 +64,12 @@ const reducer = combineReducers({
   // active session participants
   sessionTutors: makeListReducer(selectors.STORE_NAME+'.sessionTutors', {
     sortBy: {property: 'date', direction: -1},
-    filters: [
-      {property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true},
-      {property: 'pending', value: false, locked: true, hidden: true}
-    ]
+    filters: {
+      filters: [
+        {property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true},
+        {property: 'pending', value: false, locked: true, hidden: true}
+      ]
+    }
   }, {
     invalidated: makeReducer(false, {
       [LOAD_COURSE]: () => true,
@@ -76,10 +79,12 @@ const reducer = combineReducers({
   }),
   sessionUsers: makeListReducer(selectors.STORE_NAME+'.sessionUsers', {
     sortBy: {property: 'date', direction: -1},
-    filters: [
-      {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
-      {property: 'pending', value: false, locked: true, hidden: true}
-    ]
+    filters: {
+      filters: [
+        {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
+        {property: 'pending', value: false, locked: true, hidden: true}
+      ]
+    }
   }, {
     invalidated: makeReducer(false, {
       [LOAD_COURSE]: () => true,
@@ -98,10 +103,12 @@ const reducer = combineReducers({
   }),
   sessionPending: makeListReducer(selectors.STORE_NAME+'.sessionPending', {
     sortBy: {property: 'date', direction: -1},
-    filters: [
-      {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
-      {property: 'pending', value: true, locked: true, hidden: true}
-    ]
+    filters: {
+      filters: [
+        {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
+        {property: 'pending', value: true, locked: true, hidden: true}
+      ]
+    }
   }, {
     invalidated: makeReducer(false, {
       [LOAD_COURSE]: () => true,

@@ -11,15 +11,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class GlobalSearchSubscriber implements EventSubscriberInterface
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var SerializerProvider */
-    private $serializer;
-
-    public function __construct(ObjectManager $om, SerializerProvider $serializer)
+    public function __construct(
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer)
     {
-        $this->om = $om;
-        $this->serializer = $serializer;
     }
 
     public static function getSubscribedEvents(): array
@@ -29,7 +24,7 @@ class GlobalSearchSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function searchTrainings(GlobalSearchEvent $event)
+    public function searchTrainings(GlobalSearchEvent $event): void
     {
         $search = $event->getSearch();
         $limit = $event->getLimit();

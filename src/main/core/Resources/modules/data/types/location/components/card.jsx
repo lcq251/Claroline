@@ -1,6 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 
 import {route} from '#/main/core/tool/routing'
 
@@ -18,8 +17,7 @@ const LocationCard = props =>
     poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
     icon="fa fa-map-marker-alt"
     title={props.data.name}
-    subtitle={getAddressString(props.data.address, true)}
-    contentText={get(props.data, 'meta.description')}
+    contentText={getAddressString(props.data.address, true)}
     primaryAction={{
       type: LINK_BUTTON,
       target: route('locations') + '/locations/' + props.data.id

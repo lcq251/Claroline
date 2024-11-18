@@ -14,7 +14,6 @@ use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Location;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Role;
-use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
@@ -24,6 +23,7 @@ use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Repository\CourseRepository;
 use Claroline\CursusBundle\Repository\SessionRepository;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -64,12 +64,15 @@ class SessionSerializer
 
     public function serialize(Session $session, array $options = []): array
     {
+        $course = $session->getCourse();
+
         if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
             return [
                 'id' => $session->getUuid(),
                 'code' => $session->getCode(),
-                'name' => $session->getName(),
-                'thumbnail' => $session->getThumbnail(),
+                'name' => $course->getName(),
+                'thumbnail' => $course->getThumbnail(),
+                'plainDescription' => $course->getPlainDescription(),
                 'course' => $this->courseSerializer->serialize($session->getCourse(), [SerializerInterface::SERIALIZE_MINIMAL]), // it is required to generate the link to the session
                 'restrictions' => [
                     'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
@@ -84,22 +87,17 @@ class SessionSerializer
             'confirmed' => true,
         ]);
 
-        return [
+        $serialized = [
             'autoId' => $session->getId(),
             'id' => $session->getUuid(),
             'code' => $session->getCode(),
-            'name' => $session->getName(),
-            'thumbnail' => $session->getThumbnail(),
-            'poster' => $session->getPoster(),
+            'name' => $course->getName(),
+            'thumbnail' => $course->getThumbnail(),
+            'poster' => $course->getPoster(),
             'description' => $session->getDescription(),
-            'plainDescription' => $session->getPlainDescription(),
+            'plainDescription' => $course->getPlainDescription(),
             'course' => $this->courseSerializer->serialize($session->getCourse(), [SerializerInterface::SERIALIZE_MINIMAL]), // it is required to generate the link to the session
-            'permissions' => [
-                'open' => $this->authorization->isGranted('OPEN', $session),
-                'edit' => $this->authorization->isGranted('EDIT', $session),
-                'delete' => $this->authorization->isGranted('DELETE', $session),
-                'register' => $this->authorization->isGranted('REGISTER', $session),
-            ],
+
             'restrictions' => [
                 'hidden' => $session->isHidden(),
                 'users' => $session->getMaxUsers(),
@@ -117,7 +115,7 @@ class SessionSerializer
                     null,
                 'created' => DateNormalizer::normalize($session->getCreatedAt()),
                 'updated' => DateNormalizer::normalize($session->getUpdatedAt()),
-                'duration' => $session->getCourse() ? $session->getCourse()->getDefaultSessionDuration() : null,
+                // 'duration' => $session->getCourse() ? $session->getCourse()->getDefaultSessionDuration() : null,
                 'default' => $session->isDefaultSession(),
                 'canceled' => $session->isCanceled(),
                 'cancelReason' => $session->getCancelReason(),
@@ -129,17 +127,11 @@ class SessionSerializer
                 'selfRegistration' => $session->getPublicRegistration(),
                 'autoRegistration' => $session->getAutoRegistration(),
                 'selfUnregistration' => $session->getPublicUnregistration(),
-                'validation' => $session->getRegistrationValidation(),
-                'userValidation' => $session->getUserValidation(),
+                'validation' => $session->hasValidation(),
+                'userValidation' => $session->hasConfirmation(),
                 'mail' => $session->getRegistrationMail(),
                 'pendingRegistrations' => $session->getPendingRegistrations(),
                 'eventRegistrationType' => $session->getEventRegistrationType(),
-                'learnerRole' => $session->getLearnerRole() ?
-                    $this->roleSerializer->serialize($session->getLearnerRole(), [SerializerInterface::SERIALIZE_MINIMAL]) :
-                    null,
-                'tutorRole' => $session->getTutorRole() ?
-                    $this->roleSerializer->serialize($session->getTutorRole(), [SerializerInterface::SERIALIZE_MINIMAL]) :
-                    null,
             ],
             'pricing' => [
                 'price' => $session->getPrice(),
@@ -149,16 +141,37 @@ class SessionSerializer
             'tutors' => array_map(function (SessionUser $sessionUser) {
                 return $this->userSerializer->serialize($sessionUser->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $tutors),
-            'resources' => array_map(function (ResourceNode $resource) {
-                return $this->resourceSerializer->serialize($resource, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $session->getResources()->toArray()),
-            'invitationTemplate' => $session->getInvitationTemplate() ?
-                $this->templateSerializer->serialize($session->getInvitationTemplate(), [Options::SERIALIZE_MINIMAL]) :
-                null,
-            'canceledTemplate' => $session->getCanceledTemplate() ?
-                $this->templateSerializer->serialize($session->getCanceledTemplate(), [Options::SERIALIZE_MINIMAL]) :
-                null,
         ];
+
+        if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
+            $serialized['permissions'] = [
+                'open' => $this->authorization->isGranted('OPEN', $session),
+                'edit' => $this->authorization->isGranted('EDIT', $session),
+                'delete' => $this->authorization->isGranted('DELETE', $session),
+                'register' => $this->authorization->isGranted('REGISTER', $session),
+            ];
+        }
+
+        if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
+            $serialized['registration']['learnerRole'] = $session->getLearnerRole() ?
+                $this->roleSerializer->serialize($session->getLearnerRole(), [SerializerInterface::SERIALIZE_MINIMAL]) :
+                null;
+            $serialized['registration']['tutorRole'] = $session->getTutorRole() ?
+                $this->roleSerializer->serialize($session->getTutorRole(), [SerializerInterface::SERIALIZE_MINIMAL]) :
+                null;
+
+            $serialized['resources'] = array_map(function (ResourceNode $resource) {
+                return $this->resourceSerializer->serialize($resource, [SerializerInterface::SERIALIZE_MINIMAL]);
+            }, $session->getResources()->toArray());
+            $serialized['invitationTemplate'] = $session->getInvitationTemplate() ?
+                $this->templateSerializer->serialize($session->getInvitationTemplate(), [Options::SERIALIZE_MINIMAL]) :
+                null;
+            $serialized['canceledTemplate'] = $session->getCanceledTemplate() ?
+                $this->templateSerializer->serialize($session->getCanceledTemplate(), [Options::SERIALIZE_MINIMAL]) :
+                null;
+        }
+
+        return $serialized;
     }
 
     public function deserialize(array $data, Session $session, array $options): Session

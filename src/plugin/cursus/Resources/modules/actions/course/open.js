@@ -2,7 +2,7 @@ import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 
 /**
  * Open course action.

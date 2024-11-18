@@ -23,8 +23,8 @@ const EventCard = props =>
         {props.data.name}
       </>
     }
-    subtitle={displayDateRange(props.data.start, props.data.end)}
-    contentText={props.data.description}
+    contentText={displayDateRange(props.data.start, props.data.end)}
+    // contentText={props.data.description}
     footer={
       <span
         style={{

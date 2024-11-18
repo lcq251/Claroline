@@ -94,5 +94,8 @@
   "reset": "Reset",
   "show": "Show",
   "empty_history": "Empty my history",
-  "go_to_content": "Go to content"
+  "go_to_content": "Go to content",
+  "see": "See",
+  "see_all": "See all",
+  "see_more": "See more"
 }

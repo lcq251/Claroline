@@ -253,7 +253,7 @@ class EventPresenceController
         ]);
     }
 
-    #[Route(path: '/{id}/evidence', name: 'apiv2_cursus_presence_evidences_upload', methods: ['POST'])]
+    #[Route(path: '/{id}/evidence', name: 'apiv2_cursus_presence_evidence_upload', methods: ['POST'])]
     public function uploadEvidenceAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         EventPresence $eventPresence,

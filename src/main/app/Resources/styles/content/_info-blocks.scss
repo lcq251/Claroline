@@ -2,15 +2,16 @@
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  font-size: $font-size-base;
+  // font-size: $font-size-base;
 
   .content-info-block-icon {
-    width: 2em;
-    height: 2em;
-    font-size: 1.25em;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: map-get($icon-sizes, sm);
+    height: map-get($icon-sizes, sm);
+    font-size: map-get($icon-sizes, sm) * .375;
 
     @include border-radius($border-radius-pill);
   }
@@ -23,23 +24,7 @@
 
   .content-info-block-content {
     margin: 0;
-    font-size: $font-size-base;
-  }
-}
-
-.content-info-block-lg {
-  @include rfs($font-size-lg);
-
-  .content-info-block-content {
-    @include rfs($font-size-lg);
-  }
-}
-
-.content-info-block-sm {
-  font-size: $font-size-sm;
-
-  .content-info-block-content {
-    font-size: $font-size-sm;
+    font-size: $font-size-lg;
   }
 }
 

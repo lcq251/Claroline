@@ -13,7 +13,7 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {getActions, getDefaultAction} from '#/plugin/cursus/presence/utils'
-import {MODAL_EVIDENCE_ABOUT} from '#/plugin/cursus/modals/presence/about'
+import {MODAL_EVIDENCE_ABOUT} from '#/plugin/cursus/presence/modals/about'
 
 const Presences = props => {
   const refresher = merge({
@@ -49,24 +49,24 @@ const Presences = props => {
           name: 'meta.updatedBy',
           type: 'user',
           label: trans('updated_by', {}, 'presence'),
-          displayed: false
+          filterable: false
         }, {
           name: 'meta.updatedAt',
           type: 'date',
           label: trans('updated_at', {}, 'presence'),
-          displayed: false,
+          filterable: false,
           options: {time: true}
         },{
           name: 'validation_date',
           type: 'date',
           label: trans('presence_confirmation_date', {}, 'presence'),
-          displayed: true,
           options: {time: true}
         }, {
           name: 'evidences',
           type: 'number',
           label: trans('show_evidence', {}, 'presence'),
-          displayed: true,
+          filterable: false,
+          sortable: false,
           render: (row) => {
             if (row.evidences && row.evidences.length === 1) {
               return (

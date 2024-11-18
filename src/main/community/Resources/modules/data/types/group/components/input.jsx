@@ -75,7 +75,7 @@ const GroupInput = props => {
   return (
     <ContentPlaceholder
       icon="fa fa-users"
-      title={trans('no_group')}
+      title={trans('no_group', {}, 'community')}
       size={props.size}
     >
       <GroupButton

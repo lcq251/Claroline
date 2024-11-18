@@ -11,10 +11,13 @@
 
 namespace Claroline\CursusBundle\Controller;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
+use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
@@ -33,7 +36,9 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -67,6 +72,22 @@ class SessionController extends AbstractCrudController
     public static function getClass(): string
     {
         return Session::class;
+    }
+
+    #[Route(path: '/context/{context}/{contextId}', name: 'context_list', methods: ['GET'])]
+    public function listByContextAction(
+        string $context,
+        string $contextId = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        if (WorkspaceContext::getName() === $context) {
+            $finderQuery->addFilter('workspace', $contextId);
+        }
+
+        $assertions = $this->crud->search(Session::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $assertions->toResponse();
     }
 
     protected function getDefaultHiddenFilters(): array

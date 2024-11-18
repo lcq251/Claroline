@@ -6,7 +6,7 @@ import {EntityFilter} from '#/main/app/data/types/entity'
 const OrganizationsFilter = (props) =>
   <EntityFilter
     {...props}
-    icon="fa fa-building"
+    icon="fa fa-fw fa-building"
     pickerType={MODAL_ORGANIZATIONS}
   />
 

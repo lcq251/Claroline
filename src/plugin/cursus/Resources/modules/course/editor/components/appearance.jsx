@@ -30,7 +30,30 @@ const CourseEditorAppearance = (props) =>
             options: {
               min: 0
             }
-          },
+          }
+        ]
+      }, {
+        title: trans('advanced'),
+        primary: true,
+        hideTitle: true,
+        fields: [
+          {
+            name: 'data.restrictions.hidden',
+            type: 'boolean',
+            label: trans('restrict_hidden'),
+            help: trans('restrict_hidden_help')
+          }, {
+            name: 'display.hideSessions',
+            type: 'boolean',
+            label: trans('hide_sessions', {}, 'cursus')
+          }
+        ]
+      }, {
+        name: 'opening',
+        title: trans('Ouverture'),
+        subtitle: trans('Configurez la façon dont votre formation va s\'ouvrir.'),
+        primary: true,
+        fields: [
           {
             name: 'opening.session',
             label: trans('opening_session', {}, 'cursus'),
@@ -38,7 +61,7 @@ const CourseEditorAppearance = (props) =>
             required: true,
             options: {
               noEmpty: true,
-              condensed: true,
+              condensed: false,
               choices: {
                 none: trans('opening_session_none', {}, 'cursus'),
                 first_available: trans('opening_session_first_available', {}, 'cursus'),
@@ -46,15 +69,6 @@ const CourseEditorAppearance = (props) =>
               }
             },
             help: trans('opening_session_help', {}, 'cursus')
-          }, {
-            name: 'display.hideSessions',
-            type: 'boolean',
-            label: trans('hide_sessions', {}, 'cursus')
-          }, {
-            name: 'restrictions.hidden',
-            type: 'boolean',
-            label: trans('restrict_hidden'),
-            help: trans('restrict_hidden_help')
           }
         ]
       }

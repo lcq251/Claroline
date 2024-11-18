@@ -20,20 +20,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class MyEventsSource
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var FinderProvider */
-    private $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions();
 

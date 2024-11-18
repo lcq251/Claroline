@@ -49,7 +49,7 @@ class FileController extends AbstractCrudController
         return 'file';
     }
 
-    #[Route(path: '{file}/raw', name: 'apiv2_resource_file_raw')]
+    #[Route(path: '/{file}/raw', name: 'raw', methods: ['GET'])]
     public function displayRawAction(string $file): Response
     {
         $fileResource = $this->om->getRepository(File::class)->findOneBy(['uuid' => $file]);

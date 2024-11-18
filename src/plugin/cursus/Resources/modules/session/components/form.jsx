@@ -11,18 +11,12 @@ import {constants} from '#/plugin/cursus/constants'
 const SessionForm = (props) =>
   <FormData
     {...props}
-    meta={true}
     sections={[
       {
         title: trans('general'),
         primary: true,
         fields: [
           {
-            name: 'name',
-            type: 'string',
-            label: trans('name'),
-            required: true
-          }, {
             name: 'code',
             type: 'string',
             label: trans('code'),
@@ -30,7 +24,7 @@ const SessionForm = (props) =>
           }, {
             name: 'restrictions.dates',
             type: 'date-range',
-            label: trans('access_dates'),
+            label: trans('training_period', {}, 'cursus'),
             required: true
           }
         ]
@@ -42,7 +36,7 @@ const SessionForm = (props) =>
             name: 'description',
             type: 'html',
             label: trans('description')
-          }, {
+          }, /*{
             name: 'plainDescription',
             type: 'string',
             label: trans('plain_description'),
@@ -56,7 +50,7 @@ const SessionForm = (props) =>
               trans('default_session_help', {}, 'cursus'),
               trans('default_session_help_registration', {}, 'cursus')
             ]
-          }, {
+          },*/ {
             name: 'location',
             type: 'location',
             label: trans('location')
@@ -70,7 +64,7 @@ const SessionForm = (props) =>
         icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
         fields: [
-          {
+          /*{
             name: 'poster',
             type: 'image',
             label: trans('poster')
@@ -78,7 +72,7 @@ const SessionForm = (props) =>
             name: 'thumbnail',
             type: 'image',
             label: trans('thumbnail')
-          }, {
+          }, */{
             name: 'display.order',
             type: 'number',
             label: trans('order'),

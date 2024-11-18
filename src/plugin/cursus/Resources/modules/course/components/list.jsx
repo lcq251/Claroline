@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 import merge from 'lodash/merge'
+import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {param} from '#/main/app/config'
@@ -14,7 +15,6 @@ import {CourseCard} from '#/plugin/cursus/course/components/card'
 import {getActions, getDefaultAction} from '#/plugin/cursus/course/utils'
 
 import {ContentSizing} from '#/main/app/content/components/sizing'
-import omit from 'lodash/omit'
 
 const Courses = (props) => {
   const refresher = merge({
@@ -37,24 +37,21 @@ const Courses = (props) => {
         }, {
           name: 'code',
           type: 'string',
-          label: trans('code'),
-          displayed: true
+          label: trans('code')
         }, {
           name: 'location',
           type: 'location',
           label: trans('location'),
-          placeholder: trans('online_session', {}, 'cursus'),
           displayable: false,
           sortable: false
         }, {
-          name: 'tags',
-          type: 'tag',
-          label: trans('tags'),
+          name: 'meta.duration',
+          alias: 'duration',
+          type: 'number',
+          label: trans('duration'),
           displayed: true,
-          sortable: false,
-          options: {
-            objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
-          }
+          filterable: false,
+          options: {unit: trans('hours')}
         }, {
           name: 'pricing.price',
           alias: 'price',
@@ -64,6 +61,14 @@ const Courses = (props) => {
           displayed: param('pricing.enabled'),
           filterable: param('pricing.enabled'),
           sortable: param('pricing.enabled')
+        }, {
+          name: 'tags',
+          type: 'tag',
+          label: trans('tags'),
+          sortable: false,
+          options: {
+            objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
+          }
         }, {
           name: 'display.order',
           alias: 'order',

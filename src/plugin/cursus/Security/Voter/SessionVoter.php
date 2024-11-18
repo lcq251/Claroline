@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SessionVoter extends AbstractVoter
 {
-    const REGISTER = 'REGISTER';
+    public const REGISTER = 'REGISTER';
 
     public function getClass(): string
     {

@@ -21,6 +21,7 @@ use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\Tool\ToolRights;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -132,6 +133,27 @@ class ToolController
         return new JsonResponse(array_map(function (ToolRights $rights) {
             return $this->serializer->serialize($rights);
         }, $orderedTool->getRights()->toArray()));
+    }
+
+    #[Route(path: '/search/{name}/{context}/{contextId}', name: 'claro_tool_search', methods: ['GET'])]
+    public function searchAction(string $name, string $context, string $contextId = null): StreamedJsonResponse
+    {
+        try {
+            $contextHandler = $this->contextProvider->getContext($context, $contextId);
+            $contextSubject = $contextHandler->getObject($contextId);
+
+            $orderedTool = $this->toolProvider->getTool($name, $context, $contextSubject);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        if (!$this->authorization->isGranted('OPEN', $orderedTool)) {
+            throw new AccessDeniedException();
+        }
+
+        return new StreamedJsonResponse(
+            $this->toolProvider->search($name, $context, $contextSubject)
+        );
     }
 
     private function updateRights(OrderedTool $orderedTool, array $rightsData = []): void

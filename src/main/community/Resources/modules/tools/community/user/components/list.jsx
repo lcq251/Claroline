@@ -1,6 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
@@ -28,8 +28,8 @@ const UserList = props =>
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}
-        url={!isEmpty(props.contextData) ?
-          ['apiv2_workspace_list_users', {id: props.contextData.id}] :
+        url={'workspace' === props.contextType ?
+          ['apiv2_workspace_list_users', {id: get(props.contextData, 'id')}] :
           ['apiv2_user_list']
         }
         addAction={'workspace' === props.contextType ?
@@ -59,7 +59,7 @@ const UserList = props =>
             primary: true
           }
         }
-        customActions={(rows) => !isEmpty(props.contextData) ? [{
+        customActions={(rows) => 'workspace' === props.contextType ? [{
           name: 'unregister',
           type: CALLBACK_BUTTON,
           icon: 'fa fa-fw fa-user-minus',
@@ -67,11 +67,11 @@ const UserList = props =>
           callback: () => props.unregisterUsers(rows, props.contextData),
           dangerous: true,
           displayed: props.canRegister,
-          disabled: -1 === rows.findIndex(row => -1 !== row.roles.findIndex(r => r.context !== 'group' && -1 !== r.name.indexOf(props.contextData.id))),
+          disabled: -1 === rows.findIndex(row => -1 !== row.roles.findIndex(r => r.context !== 'group' && -1 !== r.name.indexOf(get(props.contextData, 'id')))),
           confirm: {
             title: trans('unregister', {}, 'actions'),
             message: transChoice('unregister_users_confirm_message', rows.length, {count: rows.length}),
-            items:  rows.filter(row => -1 !== row.roles.findIndex(r => r.context !== 'group' && -1 !== r.name.indexOf(props.contextData.id))).map(item => ({
+            items:  rows.filter(row => -1 !== row.roles.findIndex(r => r.context !== 'group' && -1 !== r.name.indexOf(get(props.contextData, 'id')))).map(item => ({
               thumbnail: item.picture,
               name: item.name
             })),
@@ -81,13 +81,13 @@ const UserList = props =>
         customDefinition={[
           {
             name: 'groups',
-            label: trans('groups'),
+            label: trans('groups', {}, 'community'),
             type: 'groups',
-            /*options: {
-              picker: !isEmpty(props.contextData) ? {
-                url: ['apiv2_workspace_list_groups', {id: props.contextData.id}]
+            options: {
+              picker: 'workspace' === props.contextType ? {
+                url: ['apiv2_workspace_list_groups', {id: get(props.contextData, 'id')}]
               } : undefined
-            },*/
+            },
             displayed: false,
             displayable: false,
             sortable: false
@@ -95,17 +95,30 @@ const UserList = props =>
             name: 'roles',
             type: 'roles',
             label: trans('roles'),
-            calculated: (user) => !isEmpty(props.contextData) ?
-              getWorkspaceRoles(user.roles, props.contextData.id) :
+            calculated: (user) => 'workspace' === props.contextType ?
+              getWorkspaceRoles(user.roles, get(props.contextData, 'id')) :
               getPlatformRoles(user.roles),
             displayed: true,
             filterable: true,
             sortable: false,
             options: {
-              picker: !isEmpty(props.contextData) ? {
-                url: ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}],
+              picker: 'workspace' === props.contextType ? {
+                url: ['apiv2_workspace_list_roles_configurable', {workspace: get(props.contextData, 'id')}],
                 filters: []
               } : undefined
+            }
+          }, {
+            name: 'teams',
+            type: 'team',
+            label: trans('teams', {}, 'community'),
+            displayable: false,
+            displayed: false,
+            filterable: 'workspace' === props.contextType,
+            sortable: false,
+            options: {
+              picker: {
+                url: ['apiv2_team_workspace_list', {id: get(props.contextData, 'id')}]
+              }
             }
           }
         ]}
@@ -122,6 +135,10 @@ UserList.propTypes = {
   limitReached: T.bool.isRequired,
   unregisterUsers: T.func.isRequired,
   registerUsers: T.func.isRequired
+}
+
+UserList.defaultProps = {
+  contextData: {}
 }
 
 export {

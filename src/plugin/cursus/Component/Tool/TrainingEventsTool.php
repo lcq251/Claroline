@@ -44,12 +44,12 @@ class TrainingEventsTool extends AbstractTool
             return null;
         }
 
-        $sessionList = $this->finder->search(Session::class, [
+        /*$sessionList = $this->finder->search(Session::class, [
             'filters' => ['workspace' => $contextSubject->getContextIdentifier()],
-        ], [SerializerInterface::SERIALIZE_MINIMAL]);
+        ], [SerializerInterface::SERIALIZE_MINIMAL]);*/
 
-        $course = $this->serializer->serialize($courses[0]);
-        $course['sessions'] = $sessionList['data'];
+        $course = $this->serializer->serialize($courses[0], [SerializerInterface::SERIALIZE_MINIMAL]);
+        // $course['sessions'] = $sessionList['data'];
 
         return [
             'course' => $course,

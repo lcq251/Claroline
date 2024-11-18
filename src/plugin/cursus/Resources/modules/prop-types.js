@@ -43,9 +43,6 @@ const Course = {
     })
   },
   defaultProps: {
-    meta: {
-      duration: 1
-    },
     display: {
       order: 1,
       hideSessions: false

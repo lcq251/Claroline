@@ -8,6 +8,7 @@ import {DataCard} from '#/main/app/data/components/card'
 
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {ResourceIcon} from '#/main/core/resource/components/icon'
+import {Badge} from '#/main/app/components/badge'
 
 const ResourceCard = props =>
   <DataCard
@@ -27,23 +28,23 @@ const ResourceCard = props =>
     title={props.data.name}
     meta={
       <>
-        <span className="badge bg-secondary-subtle text-secondary-emphasis">{trans(props.data.meta.type, {}, 'resource')}</span>
+        <Badge variant="secondary" subtle={true}>{trans(props.data.meta.type, {}, 'resource')}</Badge>
         {get(props.data, 'meta.published') &&
-          <span className="badge bg-secondary-subtle text-secondary-emphasis">{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</span>
+          <Badge variant="secondary" subtle={true}>{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</Badge>
         }
         {get(props.data, 'evaluation.estimatedDuration') &&
-          <span className="badge bg-secondary-subtle text-secondary-emphasis">
+          <Badge variant="secondary" subtle={true}>
             <span className="fa far fa-clock me-1" />
             {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
-          </span>
+          </Badge>
         }
 
         {!get(props.data, 'meta.published') &&
-          <span className="badge bg-secondary-subtle text-secondary-emphasis text-capitalize">{trans('not_published')}</span>
+          <Badge variant="secondary" subtle={true}>{trans('not_published')}</Badge>
         }
 
         {get(props.data, 'restrictions.hidden', false) &&
-          <span className="badge bg-secondary-subtle text-secondary-emphasis text-capitalize">{trans('hidden')}</span>
+          <Badge variant="secondary" subtle={true}>{trans('hidden')}</Badge>
         }
       </>
     }

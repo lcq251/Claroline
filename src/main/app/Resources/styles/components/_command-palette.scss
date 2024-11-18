@@ -1,0 +1,49 @@
+
+.command-palette {
+  margin-top: 5rem;
+}
+
+.command-palette-search {
+  position: relative;
+
+  > .fa {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.5rem;
+  }
+
+  input {
+    padding: map-get($spacers, 3) 3.5rem;
+    border: none;
+    width: 100%;
+    background: transparent;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.command-palette-clear {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: map-get($spacers, 3) 1.5rem;
+}
+
+.command-palette-actions {
+  .btn {
+    box-shadow: none;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    background: $primary !important;
+    color: color-contrast($primary) !important;
+
+    .fa {
+      color: color-contrast($primary) !important;
+    }
+  }
+}

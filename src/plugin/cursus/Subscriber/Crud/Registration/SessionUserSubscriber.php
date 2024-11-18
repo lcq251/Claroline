@@ -51,8 +51,8 @@ class SessionUserSubscriber implements EventSubscriberInterface
             $sessionUser->setConfirmed(true);
         } else {
             // set validations for users based on session config
-            $sessionUser->setValidated(!$session->getRegistrationValidation() || $sessionUser->isValidated());
-            $sessionUser->setConfirmed(!$session->getUserValidation());
+            $sessionUser->setValidated(!$session->hasValidation() || $sessionUser->isValidated());
+            $sessionUser->setConfirmed(!$session->hasConfirmation());
         }
     }
 

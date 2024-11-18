@@ -153,12 +153,6 @@ const Events = (props) =>
         label: trans('code'),
         displayed: false
       }, {
-        name: 'location',
-        type: 'location',
-        label: trans('location'),
-        placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true
-      }, {
         name: 'start',
         alias: 'startDate',
         type: 'date',
@@ -175,6 +169,12 @@ const Events = (props) =>
         options: {
           time: true
         },
+        displayed: true
+      }, {
+        name: 'location',
+        type: 'location',
+        label: trans('location'),
+        placeholder: trans('online_session', {}, 'cursus'),
         displayed: true
       }, {
         name: 'tutors',
@@ -198,7 +198,7 @@ const Events = (props) =>
       }
     ].concat(props.customDefinition)}
     display={{
-      current: listConst.DISPLAY_LIST
+      current: listConst.DISPLAY_LIST_SM
     }}
 
     {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'invalidate')}

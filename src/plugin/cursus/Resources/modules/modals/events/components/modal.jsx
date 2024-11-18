@@ -1,83 +1,87 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import omit from 'lodash/omit'
+import get from 'lodash/get'
+
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {Event as EventTypes} from '#/plugin/cursus/prop-types'
+import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
-import {selectors} from '#/plugin/cursus/modals/events/store'
-import {EventList} from '#/plugin/cursus/event/components/list'
-import {constants as listConst} from '#/main/app/content/list/constants'
+import {EventStatus} from '#/plugin/cursus/components/event-status'
 
-class EventsModal extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      initialized: false
-    }
-  }
-
-  render() {
-    const selectAction = this.props.selectAction(this.props.selected)
-
-    return (
-      <Modal
-        {...omit(this.props, 'url', 'selected', 'selectAction', 'reset', 'resetFilters')}
-        icon="fa fa-fw fa-calendar-week"
-        className="data-picker-modal"
-        size="xl"
-        onEnter={() => {
-          this.props.resetFilters(this.props.filters)
-          this.setState({initialized: true})
-        }}
-        onExited={this.props.reset}
-      >
-        <EventList
-          name={selectors.STORE_NAME}
-          url={this.props.url}
-          autoload={this.state.initialized}
-          primaryAction={undefined}
-          actions={undefined}
-          delete={undefined}
-          display={{
-            current: listConst.DISPLAY_TABLE
-          }}
-        />
-
-        <Button
-          label={trans('select', {}, 'actions')}
-          {...selectAction}
-          className="modal-btn"
-          variant="btn"
-          size="lg"
-          primary={true}
-          disabled={0 === this.props.selected.length}
-          onClick={this.props.fadeModal}
-        />
-      </Modal>
-    )
-  }
-}
+const EventsModal = (props) =>
+  <PickerModal
+    {...props}
+    icon="fa fa-fw fa-calendar-day"
+    name="trainingEventsPicker"
+    definition={[
+      {
+        name: 'status',
+        type: 'choice',
+        label: trans('status'),
+        sortable: false,
+        displayed: true,
+        filterable: true,
+        order: 1,
+        options: {
+          noEmpty: true,
+          choices: {
+            not_started: trans('session_not_started', {}, 'cursus'),
+            in_progress: trans('session_in_progress', {}, 'cursus'),
+            ended: trans('session_ended', {}, 'cursus'),
+            not_ended: trans('session_not_ended', {}, 'cursus')
+          }
+        },
+        render: (row) => <EventStatus startDate={get(row, 'start')} endDate={get(row, 'end')} />
+      }, {
+        name: 'name',
+        type: 'string',
+        label: trans('name'),
+        displayed: true,
+        primary: true
+      }, {
+        name: 'code',
+        type: 'string',
+        label: trans('code'),
+        displayed: false
+      }, {
+        name: 'location',
+        type: 'location',
+        label: trans('location'),
+        placeholder: trans('online_session', {}, 'cursus'),
+        displayed: true
+      }, {
+        name: 'start',
+        alias: 'startDate',
+        type: 'date',
+        label: trans('start_date'),
+        displayed: true,
+        options: {
+          time: true
+        }
+      }, {
+        name: 'end',
+        alias: 'endDate',
+        type: 'date',
+        label: trans('end_date'),
+        options: {
+          time: true
+        },
+        displayed: true
+      }
+    ]}
+  />
 
 EventsModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
-  filters: T.arrayOf(T.object),
   selectAction: T.func.isRequired,
-  fadeModal: T.func.isRequired,
-
-  // from store
-  selected: T.arrayOf(T.shape(EventTypes.propTypes)).isRequired,
-  reset: T.func.isRequired,
-  resetFilters: T.func.isRequired
+  multiple: T.bool,
+  // from modal
+  fadeModal: T.func.isRequired
 }
 
 EventsModal.defaultProps = {
   url: ['apiv2_cursus_event_list'],
-  title: trans('session_events', {}, 'cursus'),
-  filters: []
+  title: trans('session_events', {}, 'cursus')
 }
 
 export {

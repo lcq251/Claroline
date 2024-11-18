@@ -1,4 +1,6 @@
 {
+  "download_training":  "Télécharger la fiche",
+  "browse_trainings_catalog": "Parcourir toutes les formations",
   "show_other_sessions": "Voir les autres sessions disponibles",
   "show_sessions": "Voir les sessions",
   "show_training_events": "Voir les séances",
@@ -9,6 +11,8 @@
   "open-training": "Ouvrir la formation",
   "move-pending": "Déplacer en liste d'attente",
 
+  "plan_training_session": "Planifier une session",
+  "plan_training_event": "Planifier une séance",
   "archive_training": "Archiver la formation",
   "archive_training_help": "Permet de masquer la formation de la liste des formations actives.",
   "archive_training_confirm_title": "{1} Archivage d'une formation | [2,Inf[ Archivage de plusieurs formations",

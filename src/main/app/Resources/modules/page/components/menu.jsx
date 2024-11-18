@@ -64,7 +64,7 @@ const PageMenu = (props) => {
   const main = breadcrumb.shift()
 
   return (
-    <div className={classes('app-page-menu px-4 border-bottom d-flex gap-4 flex-nowrap align-items-center bg-body', {
+    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-center bg-body', {
       'sticky-top': !props.embedded
     })} role="presentation">
       {!props.embedded &&

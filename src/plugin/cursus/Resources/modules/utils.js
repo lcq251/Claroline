@@ -1,5 +1,6 @@
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+import {now} from '#/main/app/intl'
 
 function getInfo(course, session, path) {
   if (session && undefined !== get(session, path)) {
@@ -9,6 +10,19 @@ function getInfo(course, session, path) {
   }
 
   return null
+}
+
+function getPeriodStatus(startDate, endDate) {
+  let status
+  if (startDate > now(false)) {
+    status = 'not_started'
+  } else if (startDate <= now(false) && endDate >= now(false)) {
+    status = 'in_progress'
+  } else if (endDate < now(false)) {
+    status = 'ended'
+  }
+
+  return status
 }
 
 function isFull(session) {
@@ -66,12 +80,26 @@ function canSelfRegister(course, session, registrations) {
     && (getInfo(course, session, 'registration.pendingRegistrations') || !isFull(session))
 }
 
+function getAvailableSeats(session) {
+  let availableSeats = null
+  if (get(session, 'restrictions.users')) {
+    availableSeats = (get(session, 'restrictions.users') - get(session, 'participants.learners', 0))
+    if (0 > availableSeats) {
+      availableSeats = 0
+    }
+  }
+
+  return availableSeats
+}
+
 export {
   getInfo,
+  getPeriodStatus,
   isFull,
   getSessionRegistration,
   getCourseRegistration,
   isFullyRegistered,
   isRegistered,
-  canSelfRegister
+  canSelfRegister,
+  getAvailableSeats
 }

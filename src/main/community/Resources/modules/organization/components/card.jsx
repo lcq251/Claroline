@@ -7,7 +7,7 @@ import {DataCard} from '#/main/app/data/components/card'
 
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 
-const OrganizationCard = props =>
+const OrganizationCard = (props) =>
   <DataCard
     {...props}
     id={props.data.id}

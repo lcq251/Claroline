@@ -1,35 +1,31 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
+import omit from 'lodash/omit'
 
 import {url} from '#/main/app/api'
 import {param} from '#/main/app/config'
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ListData} from '#/main/app/content/list/containers/data'
-import {constants as listConst} from '#/main/app/content/list/constants'
 import {ASYNC_BUTTON, LINK_BUTTON, MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {SessionCard} from '#/plugin/cursus/session/components/card'
 import {EventStatus} from '#/plugin/cursus/components/event-status'
 import {MODAL_SESSION_CANCEL} from '#/plugin/cursus/session/modals/cancel'
+import {constants as listConst} from '#/main/app/content/list'
+import {Badge} from '#/main/app/components/badge'
+import {getAvailableSeats} from '#/plugin/cursus/utils'
 
 const SessionList = (props) =>
   <ListData
-    className={props.className}
-    name={props.name}
-    fetch={{
-      url: props.url,
-      autoload: true
-    }}
     primaryAction={(row) => ({
       type: LINK_BUTTON,
       target: route(row.course, row, props.path),
       label: trans('open', {}, 'actions')
     })}
-    delete={props.delete}
     definition={[
       {
         name: 'status',
@@ -52,22 +48,11 @@ const SessionList = (props) =>
             endDate={get(row, 'restrictions.dates[1]')}
           />
       }, {
-        name: 'name',
-        type: 'string',
-        label: trans('name'),
-        displayed: true,
-        primary: true
-      }, {
         name: 'code',
         type: 'string',
         label: trans('code'),
-        sortable: false
-      }, {
-        name: 'location',
-        type: 'location',
-        label: trans('location'),
-        placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true
+        sortable: false,
+        filterable: false
       }, {
         name: 'restrictions.dates[0]',
         alias: 'startDate',
@@ -80,25 +65,17 @@ const SessionList = (props) =>
         type: 'date',
         label: trans('end_date'),
         displayed: true
-      }, {
+      }, /*{
         name: 'workspace',
         type: 'workspace',
         label: trans('workspace'),
         sortable: false
-      }, {
-        name: 'availableSeats',
-        type: 'string',
-        label: trans('available_seats', {}, 'cursus'),
-        calculated: (row) => {
-          if (get(row, 'restrictions.users')) {
-            return (get(row, 'restrictions.users') - get(row, 'participants.learners', 0)) + ' / ' + get(row, 'restrictions.users')
-          }
-
-          return trans('not_limited', {}, 'cursus')
-        },
-        displayed: true,
-        filterable: false,
-        sortable: false
+      }, */{
+        name: 'location',
+        type: 'location',
+        label: trans('location'),
+        placeholder: trans('online_session', {}, 'cursus'),
+        //displayed: true
       }, {
         name: 'pricing.price',
         alias: 'price',
@@ -106,20 +83,41 @@ const SessionList = (props) =>
         type: 'currency',
         displayable: param('pricing.enabled'),
         displayed: param('pricing.enabled'),
-        filterable: param('pricing.enabled'),
+        filterable: false, // param('pricing.enabled'),
         sortable: param('pricing.enabled')
       }, {
-        name: 'display.order',
-        alias: 'order',
-        type: 'number',
-        label: trans('order'),
-        displayable: false,
-        filterable: false
+        name: 'tutors',
+        type: 'users',
+        label: trans('tutors', {}, 'cursus')
+      }, {
+        name: 'availableSeats',
+        type: 'string',
+        label: trans('available_seats', {}, 'cursus'),
+        displayed: true,
+        filterable: true,
+        sortable: false,
+        render: (row) => {
+          const availableSeats = getAvailableSeats(row)
+
+          if (0 === availableSeats) {
+            return (<Badge subtle={true} variant="warning">{trans('full', {}, 'cursus')}</Badge>)
+          }
+
+          if (null === availableSeats) {
+            return (<Badge subtle={true} variant="primary">{trans('available_seats', {}, 'cursus')}</Badge>)
+          }
+
+          return (<Badge subtle={true} variant="primary">{transChoice('available_seats_count', availableSeats, {count: availableSeats}, 'cursus')}</Badge>)
+        }
+      }, {
+        name: 'restrictions.hidden',
+        label: trans('hidden'),
+        type: 'boolean',
+        alias: 'hidden',
+        displayable: false
       }
-    ].concat(props.definition)}
-    card={SessionCard}
-    actions={(rows) => {
-      let actions = [
+    ].concat(props.customDefinition)}
+    actions={(rows) => [
         {
           name: 'export-pdf',
           type: URL_BUTTON,
@@ -152,7 +150,7 @@ const SessionList = (props) =>
           group: trans('management'),
           scope: ['object', 'collection']
         }, {
-          name: 'canceled',
+          name: 'cancel',
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-ban',
           label: trans('cancel', {}, 'actions'),
@@ -161,37 +159,39 @@ const SessionList = (props) =>
           scope: ['object', 'collection'],
           modal: [MODAL_SESSION_CANCEL, {
             sessions: rows
-          }]
+          }],
+          dangerous: true
         }
-      ]
-
-      if (props.actions) {
-        actions = [].concat(actions, props.actions(rows))
-      }
-
-      return actions
-    }}
+      ].concat(props.customActions ? props.customActions(rows) : [])
+    }
     display={{
-      current: listConst.DISPLAY_LIST
+      current: listConst.DISPLAY_LIST_SM
+    }}
+    card={SessionCard}
+
+    {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions')}
+
+    name={props.name}
+    fetch={{
+      url: props.url,
+      autoload: true
     }}
   />
 
 SessionList.propTypes = {
-  className: T.string,
   path: T.string.isRequired,
   name: T.string.isRequired,
-  url: T.oneOfType([T.string, T.array]).isRequired,
-  delete: T.object,
-  definition: T.arrayOf(T.shape({
-    // TODO : list property propTypes
+  autoload: T.bool,
+  customDefinition: T.arrayOf(T.shape({
+    // data list prop types
   })),
-  course: T.object,
-  contextType: T.string,
-  actions: T.func
+  customActions: T.func
 }
 
 SessionList.defaultProps = {
-  definition: []
+  autoload: true,
+  customDefinition: [],
+  customActions: () => []
 }
 
 export {

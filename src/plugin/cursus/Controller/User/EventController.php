@@ -42,7 +42,7 @@ class EventController
         $params = $request->query->all();
         $params['hiddenFilters'] = [];
         $params['hiddenFilters']['user'] = $this->tokenStorage->getToken()?->getUser()->getUuid();
-        $params['hiddenFilters']['terminated'] = false;
+        // $params['hiddenFilters']['terminated'] = false;
         if ($workspace) {
             $params['hiddenFilters']['workspace'] = $workspace->getUuid();
         }

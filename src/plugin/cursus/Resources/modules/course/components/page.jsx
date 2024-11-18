@@ -1,49 +1,39 @@
 import React from 'react'
-import get from 'lodash/get'
-import {connect} from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
 import {PropTypes as T} from 'prop-types'
+import {connect} from 'react-redux'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl/translation'
-import {ToolPage} from '#/main/core/tool'
-
 import {ContentLoader} from '#/main/app/content/components/loader'
-
-import {route} from '#/plugin/cursus/routing'
-import {getInfo} from '#/plugin/cursus/utils'
-import {getActions} from '#/plugin/cursus/course/utils'
-
-import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {selectors as securitySelectors} from '#/main/app/security/store'
+import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
+
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 
 const Course = (props) => {
-  if (isEmpty(props.course)) {
-    return (
-      <ContentLoader
-        size="lg"
-        description={trans('training_loading', {}, 'cursus')}
-      />
-    )
-  }
 
   return (
     <ToolPage
-      title={props.course.name || get(props.activeSession, 'name')}
-      poster={getInfo(props.course, props.activeSession, 'poster')}
-      description={getInfo(props.course, props.activeSession, 'description')}
+      title={get(props.course, 'name', trans('loading'))}
+      poster={get(props.course, 'poster')}
+      description={get(props.course, 'description')}
       breadcrumb={[
-        {
+        /*{
           type: LINK_BUTTON,
           label: get(props.course, 'name', trans('loading')),
           target: !isEmpty(props.course) ? route(props.course, null, props.basePath) : ''
-        }
+        }*/
       ].concat(props.course ? props.breadcrumb : [])}
-      primaryAction="edit"
-      actions={getActions([props.course], {}, props.basePath)}
     >
-      {props.children}
+      {isEmpty(props.course) &&
+        <ContentLoader
+          size="lg"
+          description={trans('training_loading', {}, 'cursus')}
+        />
+      }
+
+      {!isEmpty(props.course) && props.children}
     </ToolPage>
   )
 }

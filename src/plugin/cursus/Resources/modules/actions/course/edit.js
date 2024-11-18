@@ -2,7 +2,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 
 export default (courses, refresher, path) => ({
   name: 'edit',

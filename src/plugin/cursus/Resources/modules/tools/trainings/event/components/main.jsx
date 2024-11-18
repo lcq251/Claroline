@@ -11,11 +11,11 @@ import {EventMain as Event} from '#/plugin/cursus/events/event/containers/main'
 const EventMain = (props) =>
   <Routes
     path={props.path+'/events'}
-    redirect={[
+    /*redirect={[
       {from: '/', exact: true, to: '/all'}
-    ]}
+    ]}*/
     routes={[
-      {
+      /*{
         path: '/registered',
         onEnter: props.invalidateList,
         disabled: !props.authenticated,
@@ -23,12 +23,13 @@ const EventMain = (props) =>
           <EventsList
             path={props.path+'/events'}
             title={trans('my_events', {}, 'cursus')}
-            url={['apiv2_cursus_my_events'/*, {workspace: props.contextId}*/]}
+            url={['apiv2_cursus_my_events'/!*, {workspace: props.contextId}*!/]}
           />
         )
-      }, {
-        path: '/all',
+      }, */{
+        path: '/',
         onEnter: props.invalidateList,
+        exact: true,
         render: () => (
           <EventsList
             path={props.path+'/events'}

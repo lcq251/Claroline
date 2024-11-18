@@ -213,3 +213,41 @@ $datepicker-btn-border-radius: $btn-border-radius;
         @include calendar-vertical-variant();
     }
 }
+
+
+// -
+// Calendar icon
+// ---
+
+.event-icon {
+    border-radius: var(--#{$prefix}border-radius-lg);
+    border: 1px solid var(--#{$prefix}primary);
+    background: var(--#{$prefix}body-bg);
+    text-align: center;
+    overflow: hidden;
+
+    .event-icon-month {
+        font-size: var(--#{$prefix}body-font-size);
+        font-weight: bolder;
+        text-transform: var(--#{$prefix}label-text-transform);
+
+        color: color-contrast($primary);
+        background: $primary;
+    }
+
+    .event-icon-day {
+        font-weight: 700;
+        font-size: $h1-font-size;
+        line-height: 1;
+    }
+
+    .event-icon-weekday {
+        font-size: $font-size-sm;
+    }
+}
+
+.event-page { // FIXME
+    .app-page-icon {
+        border-radius: var(--#{$prefix}border-radius-lg) !important;
+    }
+}

@@ -23,7 +23,7 @@ class PeriodStatusType extends AbstractType
         $resolver
             ->define('default')
             ->default(null)
-            ->allowedValues([self::NOT_STARTED, self::IN_PROGRESS, self::ENDED, self::NOT_ENDED]);
+            ->allowedValues(null, self::NOT_STARTED, self::IN_PROGRESS, self::ENDED, self::NOT_ENDED);
 
         // The name of the entity prop holding the start date of the period
         $resolver

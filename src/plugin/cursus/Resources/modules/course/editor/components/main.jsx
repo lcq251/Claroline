@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
-import {route} from '#/plugin/cursus/routing'
+import {route} from '#/plugin/cursus/course/routing'
 import {Editor} from '#/main/app/editor/components/main'
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 

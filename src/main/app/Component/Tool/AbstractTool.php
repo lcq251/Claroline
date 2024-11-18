@@ -36,6 +36,11 @@ abstract class AbstractTool implements ToolInterface
         return [];
     }
 
+    public function search(string $context, ContextSubjectInterface $contextSubject = null, string $search = ''): ?array
+    {
+        return [];
+    }
+
     public function export(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array
     {
         return [];

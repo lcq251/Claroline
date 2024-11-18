@@ -14,7 +14,7 @@ const GroupDisplay = (props) => props.data ?
   /> :
   <ContentPlaceholder
     icon="fa fa-users"
-    title={trans('no_group')}
+    title={trans('no_group', {}, 'community')}
   />
 
 GroupDisplay.propTypes = {

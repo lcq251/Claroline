@@ -54,28 +54,22 @@ class CourseManager
             'course_poster' => $course->getPoster() ? '<img src="'.$this->platformManager->getUrl().'/'.$course->getPoster().'" style="max-width: 100%;"/>' : '',
             'course_default_duration' => $course->getDefaultSessionDuration(),
             'course_public_registration' => $this->translator->trans($course->getPublicRegistration() ? 'yes' : 'no', [], 'platform'),
-            'course_max_users' => $course->getMaxUsers(),
         ];
 
         return $this->templateManager->getTemplate('training_course', $placeholders, $locale);
     }
 
-    public function getRegistrations(Course $course, User $user): array
+    public function getRegistrations(User $user, ?Course $course = null): array
     {
-        $userRegistrations = $this->finder->fetch(SessionUser::class, [
-            'user' => $user->getUuid(),
-            'course' => $course->getUuid(),
-        ]);
+        $search = ['user' => $user->getUuid()];
 
-        $groupRegistrations = $this->finder->fetch(SessionGroup::class, [
-            'user' => $user->getUuid(),
-            'course' => $course->getUuid(),
-        ]);
+        if ($course) {
+            $search['course'] = $course->getUuid();
+        }
 
-        $courseRegistrations = $this->finder->fetch(CourseUser::class, [
-            'user' => $user->getUuid(),
-            'course' => $course->getUuid(),
-        ]);
+        $userRegistrations = $this->finder->fetch(SessionUser::class, $search);
+        $groupRegistrations = $this->finder->fetch(SessionGroup::class, $search);
+        $courseRegistrations = $this->finder->fetch(CourseUser::class, $search);
 
         return [
             'users' => array_map(function (SessionUser $sessionUser) {

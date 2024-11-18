@@ -1,15 +1,12 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security/permissions'
 import {URL_BUTTON} from '#/main/app/buttons'
-import {DetailsData} from '#/main/app/content/details/components/data'
 
 import {EventPage} from '#/plugin/agenda/event/containers/page'
 import {Event as EventTypes} from '#/plugin/agenda/prop-types'
-import {EventIcon} from '#/plugin/agenda/event/components/icon'
 
 import {EventMain} from '#/plugin/agenda/events/event/containers/main'
 import {EventParticipants} from '#/plugin/agenda/events/event/containers/participants'

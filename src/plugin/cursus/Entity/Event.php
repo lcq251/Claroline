@@ -11,8 +11,10 @@
 
 namespace Claroline\CursusBundle\Entity;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
+use Claroline\CursusBundle\Finder\EventType;
 use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CursusBundle\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
@@ -20,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_cursusbundle_session_event')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
+#[CrudEntity(finderClass: EventType::class)]
 class Event extends AbstractPlanned
 {
     use Code;

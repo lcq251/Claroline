@@ -16,7 +16,8 @@ const CourseEditorActions = () =>
           type: CALLBACK_BUTTON,
           callback: () => false
         },
-        managerOnly: true
+        dangerous: true,
+        // managerOnly: true
       }, {
         title: trans('restore_training', {}, 'actions'),
         help: trans('restore_training_help', {}, 'actions'),
@@ -25,7 +26,7 @@ const CourseEditorActions = () =>
           type: CALLBACK_BUTTON,
           callback: () => false
         },
-        managerOnly: true
+        // managerOnly: true
       }, {
         title: trans('delete_training', {}, 'actions'),
         help: trans('delete_training_help', {}, 'actions'),
@@ -35,7 +36,7 @@ const CourseEditorActions = () =>
           callback: () => false
         },
         dangerous: true,
-        managerOnly: true
+        // managerOnly: true
       }
     ]}
   />

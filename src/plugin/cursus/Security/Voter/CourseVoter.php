@@ -41,7 +41,8 @@ class CourseVoter extends AbstractVoter
             case self::EDIT: // admin of organization | EDIT right on tool
             case self::PATCH:
             case self::DELETE:
-                if ($this->isToolGranted('ADMINISTRATE', 'training_events', $workspace)) {
+                if ($this->isToolGranted('ADMINISTRATE', 'trainings')
+                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'training_events', $workspace))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

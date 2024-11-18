@@ -13,19 +13,27 @@ import {EmptyCourse} from '#/plugin/cursus/course/components/empty'
 import {Events} from '#/plugin/cursus/tools/events/components/events'
 import {EventsDetails} from '#/plugin/cursus/tools/events/containers/details'
 import {EventsPresences} from '#/plugin/cursus/tools/events/containers/presences'
+import {EventsOverview} from '#/plugin/cursus/tools/events/components/overview'
+import {EventsFollow} from '#/plugin/cursus/tools/events/components/follow'
 
 const EventsTool = (props) =>
   <Tool
     {...props}
-    redirect={[
+    /*redirect={[
       {from: '/', exact: true, to: (props.course && props.course.slug) ? '/course/' + props.course.slug : '/course'}
-    ]}
+    ]}*/
     menu={[
       {
-        name: 'about',
+        name: 'overview',
         type: LINK_BUTTON,
-        label: trans('about', {}, 'platform'),
-        target: props.course ? `${props.path}/course/${props.course.slug}` : `${props.path}/course`
+        label: trans('about'),
+        target: props.path,
+        exact: true
+      }, {
+        name: 'course',
+        type: LINK_BUTTON,
+        label: trans('course', {}, 'cursus'),
+        target: `${props.path}/course`
       }, {
         name: 'registered',
         type: LINK_BUTTON,
@@ -41,20 +49,37 @@ const EventsTool = (props) =>
         type: LINK_BUTTON,
         label: (props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus'),
         target: props.path + '/presences'
+      }, {
+        name: 'follow',
+        type: LINK_BUTTON,
+        icon: 'fa fa-fw fa-gauge',
+        label: trans('Suivi'),
+        tooltip: 'bottom',
+        target: props.path + '/follow',
+        displayed: props.canRegister
       }
     ]}
     pages={[
       {
+        path: '/',
+        component: EventsOverview,
+        exact: true
+      }, {
+        path: '/follow',
+        component: EventsFollow,
+        disabled: !props.canRegister
+      }, {
         path: '/new',
         onEnter: () => props.openForm(null, CourseTypes.defaultProps, props.currentContext.data),
         disabled: !props.canEdit,
         render: () => (<CourseEditor isNew={true}/>)
       }, {
-        path: '/course/:courseSlug/edit',
-        render: (params = {}) => (
+        path: `/course/${props.course.slug}/edit`,
+        disabled: !props.canEdit,
+        render: () => (
           <CourseEditor
             path={props.path}
-            slug={params.match.params.courseSlug}
+            slug={props.course.slug}
           />
         )
       }, {
@@ -68,7 +93,7 @@ const EventsTool = (props) =>
           if (props.course && props.course.slug) {
             return (
               <Course
-                path={props.path + '/course/' + props.course.slug}
+                path={props.path + '/course'}
                 slug={props.course.slug}
                 history={params.history}
               />

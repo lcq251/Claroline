@@ -27,7 +27,7 @@ class SearchController
      *   - Resource : name.
      *   - User : username, firstName, lastName, email.
      */
-    #[Route(path: '/{search}', name: 'claro_search')]
+    #[Route(path: '/{search}', name: 'claro_search', methods: ['GET'])]
     public function searchAction(string $search): JsonResponse
     {
         if (!$this->authorization->isGranted('IS_AUTHENTICATED_FULLY')) {

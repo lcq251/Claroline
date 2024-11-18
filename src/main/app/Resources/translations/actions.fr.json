@@ -94,5 +94,8 @@
   "reset": "Réinitialiser",
   "show": "Voir",
   "empty_history": "Vider mon historique",
-  "go_to_content": "Aller au contenu"
+  "go_to_content": "Aller au contenu",
+  "see": "Voir",
+  "see_all": "Voir tous",
+  "see_more": "Voir plus"
 }

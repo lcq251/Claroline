@@ -23,6 +23,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\CodeNormalizer;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CursusBundle\Entity\Course;
+use Claroline\CursusBundle\Entity\Session;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -58,11 +59,11 @@ class CourseSubscriber implements EventSubscriberInterface
         $course = $event->getObject();
 
         // make sure the course code is unique and generate one if missing
-        $course = $this->om->getRepository(Course::class)->findNextUnique(
+        $courseCode = $this->om->getRepository(Course::class)->findNextUnique(
             'code',
             $course->getCode() ?? CodeNormalizer::normalize($course->getName())
         );
-        $course->setCode($course);
+        $course->setCode($courseCode);
 
         // If Course is associated to no organization, initializes it with organizations administrated by authenticated user
         // or at last resort with default organizations
@@ -170,7 +171,12 @@ class CourseSubscriber implements EventSubscriberInterface
         /** @var Course $original */
         $original = $event->getObject();
 
-        foreach ($original->getSessions() as $session) {
+        $sessions = $this->om->getRepository(Session::class)->findBy([
+            'course' => $original,
+            'canceled' => false,
+        ]);
+
+        foreach ($sessions as $session) {
             $this->crud->copy($session, [], ['parent' => $course]);
         }
 

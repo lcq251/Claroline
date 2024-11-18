@@ -24,8 +24,27 @@ class SessionController
     ) {
     }
 
+    #[Route(path: '/', name: 'apiv2_cursus_my_sessions', methods: ['GET'])]
+    public function listMineAction(Request $request): JsonResponse
+    {
+        if (!$this->authorization->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException();
+        }
+
+        $params = $request->query->all();
+        $params['hiddenFilters'] = [];
+        $params['hiddenFilters']['user'] = $this->tokenStorage->getToken()?->getUser()->getUuid();
+        $params['hiddenFilters']['organizations'] = [$this->tokenStorage->getToken()?->getUser()->getMainOrganization()->getUuid()];
+
+        return new JsonResponse(
+            $this->finder->search(Session::class, $params)
+        );
+    }
+
     /**
      * List the active (in progress and forthcoming) sessions of the current user.
+     *
+     * @deprecated use apiv2_cursus_my_sessions with filters
      */
     #[Route(path: '/active', name: 'apiv2_cursus_my_sessions_active', methods: ['GET'])]
     public function listActiveAction(Request $request): JsonResponse
@@ -46,6 +65,8 @@ class SessionController
 
     /**
      * List the ended sessions of the current user.
+     *
+     * @deprecated use apiv2_cursus_my_sessions with filters
      */
     #[Route(path: '/ended', name: 'apiv2_cursus_my_sessions_ended', methods: ['GET'])]
     public function listEndedAction(Request $request): JsonResponse

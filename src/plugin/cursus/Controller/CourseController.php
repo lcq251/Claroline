@@ -12,6 +12,7 @@
 namespace Claroline\CursusBundle\Controller;
 
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
@@ -276,7 +277,7 @@ class CourseController extends AbstractCrudController
         $user = $this->tokenStorage->getToken()?->getUser();
         $registrations = [];
         if ($user instanceof User) {
-            $registrations = $this->manager->getRegistrations($course, $user);
+            $registrations = $this->manager->getRegistrations($user, $course);
 
             // by default display one of the session the user is registered to
             if (!empty($registrations['users'])) {
@@ -311,7 +312,7 @@ class CourseController extends AbstractCrudController
             'course' => $this->serializer->serialize($course),
             'defaultSession' => $defaultSession ? $this->serializer->serialize($defaultSession) : null,
             'availableSessions' => array_map(function (Session $session) {
-                return $this->serializer->serialize($session);
+                return $this->serializer->serialize($session, [SerializerInterface::SERIALIZE_LIST]);
             }, $sessions),
             'registrations' => $registrations,
         ]);

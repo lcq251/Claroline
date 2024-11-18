@@ -2,19 +2,17 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 
 import {Team as TeamTypes} from '#/main/community/prop-types'
 import {TeamCard} from '#/main/community/team/components/card'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
-const TeamDisplay = (props) => props.data ?
-  <TeamCard
+const TeamDisplay = (props) =>
+  <EntityDisplay
+    placeholder={trans('no_team', {}, 'community')}
+    card={TeamCard}
     data={props.data}
-    size="xs"
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-fw fa-user-group"
-    title={trans('no_team')}
+    multiple={true}
   />
 
 TeamDisplay.propTypes = {

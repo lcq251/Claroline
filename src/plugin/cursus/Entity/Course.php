@@ -24,6 +24,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use PhpParser\Node\Scalar\String_;
 
 #[ORM\Table(name: 'claro_cursusbundle_course')]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -37,6 +38,12 @@ class Course extends AbstractTraining
     #[ORM\Column(length: 128, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
+
+    /**
+     * If the course grants a certification at the end, explains the certificates the user can obtain.
+     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $certification = null;
 
     /**
      * @var Collection<int, Session>
@@ -99,6 +106,16 @@ class Course extends AbstractTraining
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getCertification(): ?string
+    {
+        return $this->certification;
+    }
+
+    public function setCertification(?string $certification): void
+    {
+        $this->certification = $certification;
     }
 
     public function getSessions(): Collection

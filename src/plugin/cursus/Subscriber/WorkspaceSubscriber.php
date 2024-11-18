@@ -52,7 +52,7 @@ class WorkspaceSubscriber implements EventSubscriberInterface
             $user = $this->tokenStorage->getToken()?->getUser();
             $registrations = [];
             if ($user instanceof User) {
-                $registrations = $this->courseManager->getRegistrations($course, $user);
+                $registrations = $this->courseManager->getRegistrations($user, $course);
 
                 // by default display one of the session the user is registered to
                 if (!empty($registrations['users'])) {

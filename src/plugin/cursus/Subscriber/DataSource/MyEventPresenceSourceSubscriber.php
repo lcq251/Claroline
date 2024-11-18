@@ -13,15 +13,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class MyEventPresenceSourceSubscriber implements EventSubscriberInterface
 {
-    private TokenStorageInterface $tokenStorage;
-    private FinderProvider $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array
