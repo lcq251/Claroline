@@ -8,7 +8,7 @@ import set from 'lodash/set'
 
 import {trans} from '#/main/app/intl/translation'
 import {withRouter} from '#/main/app/router'
-import {Alert} from '#/main/app/alert/components/alert'
+import {Alert} from '#/main/app/components/alert'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {selectors as formSelect} from '#/main/app/content/form/store/selectors'
 import {actions as formActions} from '#/main/app/content/form/store/actions'

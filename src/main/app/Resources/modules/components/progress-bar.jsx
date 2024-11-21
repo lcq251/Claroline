@@ -11,7 +11,7 @@ const ProgressBar = forwardRef((props, ref) =>
     {...omit(props, 'value', 'size', 'type', 'showLabel')}
     ref={ref}
     now={props.value}
-    variant={props.variant || props.type}
+    variant={props.variant}
     className={classes(props.className, props.size && `progress-${props.size}`)}
     label={`${precision(props.value, 1)}%`}
     visuallyHidden={!props.showLabel}
@@ -23,8 +23,6 @@ ProgressBar.propTypes = {
   value: T.number,
   size: T.oneOf(['xs']),
   variant: T.oneOf(['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'learning']),
-  /** @deprecated use variant instead */
-  type: T.oneOf(['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'learning']),
   showLabel: T.bool
 }
 

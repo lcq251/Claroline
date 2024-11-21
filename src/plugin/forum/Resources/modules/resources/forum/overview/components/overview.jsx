@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {actions as listActions} from '#/main/app/content/list/store'
-import {ContentTags} from '#/main/app/content/components/tags'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
@@ -63,25 +61,6 @@ const OverviewComponent = props => {
           lastMessages={props.lastMessages}
           path={props.path}
         />
-      }
-
-      {!isEmpty(props.tags) &&
-        <PageSection size="md" title={trans('tags')}>
-          <ContentTags
-            className="text-center"
-            tags={props.tagsCount}
-            minSize={12}
-            maxSize={28}
-            onClick={(tag) => {
-              const forumTag = props.tags.find(t => t.name === tag)
-
-              if (forumTag) {
-                props.goToList(forumTag.id)
-                props.history.push(`${props.path}/subjects`)
-              }
-            }}
-          />
-        </PageSection>
       }
     </ResourceOverview>
   )

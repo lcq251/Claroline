@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {Tool, ToolPage} from '#/main/core/tool'
 
-import {HomeEditor} from '#/plugin/home/tools/home/editor/containers/main'
+import {HomeEditor} from '#/plugin/home/tools/home/editor/components/main'
 import {flattenTabs, getTabSummary} from '#/plugin/home/tools/home/utils'
 import {HomeTab} from '#/plugin/home/tools/home/containers/tab'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'

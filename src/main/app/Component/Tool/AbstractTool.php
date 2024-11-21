@@ -7,7 +7,7 @@ use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 
 abstract class AbstractTool implements ToolInterface
 {
-    public function isRequired(string $context, ContextSubjectInterface $contextSubject = null): bool
+    public function isRequired(string $context, ?ContextSubjectInterface $contextSubject = null): bool
     {
         return false;
     }
@@ -17,36 +17,36 @@ abstract class AbstractTool implements ToolInterface
         return true;
     }
 
-    public function getStatus(string $context, ContextSubjectInterface $contextSubject = null): ?int
+    public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): ?int
     {
         return null;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(string $context, ?ContextSubjectInterface $contextSubject = null): ?array
     {
         return null;
     }
 
-    public function create(string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): void
+    public function create(string $context, ?ContextSubjectInterface $contextSubject = null, array $configData = []): void
     {
     }
 
-    public function configure(string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
-    {
-        return [];
-    }
-
-    public function search(string $context, ContextSubjectInterface $contextSubject = null, string $search = ''): ?array
+    public function configure(string $context, ?ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
     {
         return [];
     }
 
-    public function export(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array
+    public function search(string $context, ?ContextSubjectInterface $contextSubject = null, string $search = ''): ?array
     {
         return [];
     }
 
-    public function import(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null, array $data = [], array $entities = []): ?array
+    public function export(string $context, ?ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array
+    {
+        return [];
+    }
+
+    public function import(string $context, ?ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null, array $data = [], array $entities = []): ?array
     {
         return [];
     }

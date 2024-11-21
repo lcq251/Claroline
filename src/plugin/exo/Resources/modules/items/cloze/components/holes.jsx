@@ -13,7 +13,7 @@ import {SolutionScore} from '#/plugin/exo/components/score'
 const HoleInput = props =>
   props.choices ?
     <select
-      className="form-control input-sm"
+      className="form-control form-control-sm"
       disabled={props.disabled}
       value={props.value}
       onChange={e => props.onChange(e.target.value)}
@@ -25,7 +25,7 @@ const HoleInput = props =>
     </select>
     :
     <input
-      className="form-control input-sm"
+      className="form-control form-control-sm"
       disabled={props.disabled}
       type="text"
       value={props.value}

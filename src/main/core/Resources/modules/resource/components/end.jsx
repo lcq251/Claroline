@@ -8,9 +8,10 @@ import merge from 'lodash/merge'
 import {makeCancelable} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
 import {toKey} from '#/main/core/scaffolding/text'
-import {ContentHtml} from '#/main/app/content/components/html'
-import {Toolbar} from '#/main/app/action'
-import {Action as ActionTypes} from '#/main/app/action/prop-types'
+import {Toolbar, ActionTypes} from '#/main/app/action'
+import {Alert} from '#/main/app/components/alert'
+import {Html} from '#/main/app/components/html'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {constants as evalConstants} from '#/main/evaluation/constants'
 import {actions as evalActions} from '#/main/evaluation/store/actions'
@@ -18,8 +19,7 @@ import {constants} from '#/main/evaluation/resource/constants'
 import {ResourceAttempt as ResourceAttemptTypes} from '#/main/evaluation/resource/prop-types'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 import {EvaluationDetails} from '#/main/evaluation/components/details'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 
 const WorkspaceCertificatesToolbar = (props) => {
@@ -106,9 +106,9 @@ const ResourceEnd = (props) => {
                 }
 
                 {!isEmpty(props.feedbacks.closed) && props.feedbacks.closed.map(closedMessage =>
-                  <AlertBlock key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
-                    <ContentHtml>{closedMessage[1]}</ContentHtml>
-                  </AlertBlock>
+                  <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
+                    <Html>{closedMessage[1]}</Html>
+                  </Alert>
                 )}
               </section>
             }
@@ -117,7 +117,7 @@ const ResourceEnd = (props) => {
               <section className="resource-info mb-3">
                 <div className="card">
                   {typeof props.contentText === 'string' ?
-                    <ContentHtml className="card-body">{props.contentText}</ContentHtml>
+                    <Html className="card-body">{props.contentText}</Html>
                     :
                     <div className="card-body">{props.contentText}</div>
                   }

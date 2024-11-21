@@ -1,9 +1,9 @@
+import React from 'react'
 import {trans} from '#/main/app/intl/translation'
 
 import {WorkspaceCard} from '#/main/core/workspace/components/card'
 import {getActions, getDefaultAction} from '#/main/core/workspace/utils'
 import {WorkspaceIcon} from '#/main/app/contexts/workspace/components/icon'
-import React from 'react'
 
 export default (contextType, contextData, refresher, currentUser) => ({
   primaryAction: (resourceNode) => getDefaultAction(resourceNode, refresher, null, currentUser),

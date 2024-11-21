@@ -73,7 +73,9 @@ const ContextUser = (props) => {
 
   return (
     <>
-      <Poster url={poster} className="app-menu-cover" />
+      {poster &&
+        <Poster url={poster} className="app-menu-cover" />
+      }
 
       <article className="app-menu-current-user">
         <UserAvatar user={props.currentUser} noStatusTooltip={true} size="lg" />

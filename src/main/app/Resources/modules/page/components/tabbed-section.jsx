@@ -4,7 +4,7 @@ import omit from 'lodash/omit'
 
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router'
-import {ContentTabs} from '#/main/app/content/components/tabs'
+import {Nav} from '#/main/app/components/nav'
 
 import {PageSection} from '#/main/app/page/components/section'
 import {Route as RouteTypes} from '#/main/app/router/prop-types'
@@ -15,8 +15,10 @@ import {Route as RouteTypes} from '#/main/app/router/prop-types'
  */
 const PageTabbedSection = (props) =>
   <PageSection {...omit(props, 'path', 'tabs')}>
-    <ContentTabs
-      sections={props.tabs.map(tab => ({
+    <Nav
+      variant="underline"
+      orientation="horizontal"
+      items={props.tabs.map(tab => ({
         key: tab.path,
         name: tab.path,
         type: LINK_BUTTON,

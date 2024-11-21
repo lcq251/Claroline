@@ -663,7 +663,7 @@ $font-sizes: (
 // scss-docs-end font-sizes
 
 // scss-docs-start headings-variables
-$headings-margin-bottom:      $spacer * .5 !default;
+$headings-margin-bottom:      $spacer; // $spacer * .5 !default;
 $headings-font-family:        null !default;
 $headings-font-style:         null !default;
 $headings-font-weight:        $font-weight-medium !default;
@@ -689,7 +689,7 @@ $display-line-height: $headings-line-height !default;
 
 // scss-docs-start type-variables
 $lead-font-size:              $font-size-base * 1.25 !default;
-$lead-font-weight:            var(--#{$prefix}body-font-weight) !default;
+$lead-font-weight:            300; // var(--#{$prefix}body-font-weight) !default;
 
 $small-font-size:             .875em; //.75em !default;
 
@@ -1201,7 +1201,7 @@ $nav-pills-border-radius:           var(--#{$prefix}border-radius) !default;
 $nav-pills-link-active-color:       $component-active-color !default;
 $nav-pills-link-active-bg:          $component-active-bg !default;
 
-$nav-underline-gap:                     map-get($spacers, 4) !default;
+$nav-underline-gap:                     2rem !default; // 1rem !default;
 $nav-underline-border-width:            .125rem !default;
 $nav-underline-link-active-font-weight: $nav-link-font-weight !default; // custom claroline
 $nav-underline-link-active-color:       var(--#{$prefix}emphasis-color) !default;

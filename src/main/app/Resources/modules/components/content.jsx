@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {Badge} from '#/main/app/components/badge'
-import {ContentHtml} from '#/main/app/content/components/html'
+import {Html} from '#/main/app/components/html'
 
 const Content = (props) =>
   <>
@@ -13,11 +13,11 @@ const Content = (props) =>
       </div>
     }
 
-    {props.text &&
-      <ContentHtml className={props.lead && 'lead'}>{props.text}</ContentHtml>
+    {props.children &&
+      <Html className="content-text">{props.children}</Html>
     }
 
-    {(!props.text && props.placeholder) &&
+    {(!props.children && props.placeholder) &&
       <em className="lead">{props.placeholder}</em>
     }
 
@@ -32,14 +32,12 @@ const Content = (props) =>
 
 Content.propTypes = {
   meta: T.node,
-  text: T.string,
-  lead: T.bool,
+  children: T.string,
   placeholder: T.string,
   tags: T.arrayOf(T.string)
 }
 
 Content.defaultProps = {
-  lead: true,
   tags: []
 }
 

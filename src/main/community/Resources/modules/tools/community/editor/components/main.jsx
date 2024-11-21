@@ -1,32 +1,42 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {ToolEditor} from '#/main/core/tool/editor/containers/main'
-import {constants as toolConstants} from '#/main/core/tool/constants'
+import {ToolEditor} from '#/main/core/tool/editor'
+import {selectors as toolSelectors, constants as toolConstants} from '#/main/core/tool'
 
-import {EditorProfile} from '#/main/community/tools/community/editor/containers/profile'
-import {EditorParameters} from '#/main/community/tools/community/editor/containers/parameters'
+import {selectors} from '#/main/community/tools/community/store'
+
+import {CommunityEditorProfile} from '#/main/community/tools/community/editor/components/profile'
+import {CommunityEditorParameters} from '#/main/community/tools/community/editor/components/parameters'
 import {CommunityEditorActions} from '#/main/community/tools/community/editor/components/actions'
 
-const CommunityEditor = (props) =>
-  <ToolEditor
-    defaultPage="overview"
-    overviewPage={EditorParameters}
-    actionsPage={CommunityEditorActions}
-    pages={[
-      {
-        name: 'profile',
-        title: trans('user_profile'),
-        help: trans('Ajoutez des champs personnalisés pour enrichir le profil de vos utilisateurs.'),
-        component: EditorProfile,
-        disabled: props.contextType !== toolConstants.TOOL_DESKTOP
-      }
-    ]}
-  />
+const CommunityEditor = () => {
+  const contextType = useSelector(toolSelectors.contextType)
 
-CommunityEditor.propTypes = {
-  contextType: T.string.isRequired
+  // community tool params
+  const profile = useSelector(selectors.profile)
+  const parameters = useSelector(selectors.parameters)
+
+  return (
+    <ToolEditor
+      additionalData={() => ({
+        parameters: parameters,
+        profile: profile
+      })}
+      overviewPage={CommunityEditorParameters}
+      actionsPage={CommunityEditorActions}
+      pages={[
+        {
+          name: 'profile',
+          title: trans('user_profile'),
+          help: trans('Ajoutez des champs personnalisés pour enrichir le profil de vos utilisateurs.'),
+          component: CommunityEditorProfile,
+          disabled: contextType !== toolConstants.TOOL_DESKTOP
+        }
+      ]}
+    />
+  )
 }
 
 export {

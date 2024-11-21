@@ -40,10 +40,11 @@
     display: flex;
     flex-direction: column;
     background-color: var(--#{$prefix}menu-bg);
+
     color: var(--#{$prefix}menu-color);
 
     .dropdown-menu {
-        width: calc($toolbar-size - (map-get($icon-sizes, sm) + 1.5rem));
+        width: calc($toolbar-size - (map-get($icon-sizes, sm) + 1.5rem) - 2px);
     }
 }
 
@@ -53,11 +54,13 @@
 }
 
 .app-menu-cover {
-    //height: 6.5rem;
     text-align: center;
     padding-bottom: 2.5rem;
     flex-shrink: 0;
-    background: var(--#{$prefix}menu-bg);
+
+    + .app-menu-current-user .user-avatar {
+        margin-top: -(2.5rem + $thumbnail-padding);
+    }
 }
 
 .app-menu-current-user {
@@ -66,10 +69,8 @@
     align-items: center;
     padding: map-get($spacers, 3);
     padding-top: 0;
-    //min-height: 6.5rem;
 
     .user-avatar {
-        margin-top: -(2.5rem + $thumbnail-padding);
         background: var(--#{$prefix}menu-bg);
         padding: $thumbnail-padding;
     }
@@ -135,11 +136,19 @@
     margin: 0 $toolbar-link-spacer-x;
     color: var(--#{$prefix}menu-item-color);
     background: var(--#{$prefix}menu-item-bg);
+    font-size: $toolbar-link-font-size;
+    line-height: $toolbar-link-line-height;
+    font-weight: $toolbar-link-font-weight;
     border: none;
     text-align: left;
     white-space: nowrap;
 
     @include border-radius($toolbar-link-border-radius);
+
+    .fa {
+        opacity: .25;
+        font-size: 1rem;
+    }
 
     .action-subscript {
         margin-left: auto;
@@ -149,6 +158,10 @@
         color: var(--#{$prefix}menu-item-hover-color);
         background: var(--#{$prefix}menu-item-hover-bg);
         text-decoration: none;
+
+        .fa {
+            opacity: 1;
+        }
     }
 
     //&:focus,
@@ -160,6 +173,10 @@
             color: var(--#{$prefix}menu-item-active-color);
             background: var(--#{$prefix}menu-item-active-bg);
             //box-shadow: none;
+        }
+
+        .fa {
+            opacity: 1;
         }
     }
 

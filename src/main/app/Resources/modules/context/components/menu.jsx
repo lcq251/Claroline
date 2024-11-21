@@ -144,7 +144,7 @@ class ContextMenu extends Component
                   <li key={toolLink.name}>
                     <Button
                       {...toolLink}
-                      className="app-menu-item focus-ring focus-ring-secondary"
+                      className="app-menu-item focus-ring"
                       onClick={this.autoClose}
                     />
                   </li>

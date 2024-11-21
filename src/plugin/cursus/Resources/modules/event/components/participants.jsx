@@ -5,9 +5,7 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, DOWNLOAD_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 import {Routes} from '#/main/app/router/components/routes'
-import {Vertical} from '#/main/app/content/tabs/components/vertical'
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
 
@@ -20,6 +18,8 @@ import {RegistrationGroups} from '#/plugin/cursus/registration/components/groups
 import {RegistrationUsers} from '#/plugin/cursus/registration/components/users'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {PresencesList} from '#/plugin/cursus/presence/components/list'
+import {ContentNav} from '#/main/app/content/components/nav'
+import {Alert} from '#/main/app/components/alert'
 
 const EventUsers = (props) =>
   <RegistrationUsers
@@ -137,9 +137,10 @@ const EventParticipants = (props) =>
 
     <div className="row">
       <div className="col-md-3">
-        <Vertical
-          basePath={props.path+'/'+props.event.id+'/participants'}
-          tabs={[
+        <ContentNav
+          path={props.path+'/'+props.event.id+'/participants'}
+          type="vertical"
+          sections={[
             {
               icon: 'fa fa-fw fa-chalkboard-teacher',
               title: trans('tutors', {}, 'cursus'),
@@ -183,9 +184,9 @@ const EventParticipants = (props) =>
               render: () => (
                 <>
                   {isFull(props.event) &&
-                    <AlertBlock type="warning" title={trans('event_full', {}, 'cursus')}>
+                    <Alert type="warning" title={trans('event_full', {}, 'cursus')}>
                       {trans('event_full_help', {}, 'cursus')}
-                    </AlertBlock>
+                    </Alert>
                   }
 
                   <EventUsers

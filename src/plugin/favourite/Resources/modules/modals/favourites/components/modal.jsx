@@ -7,7 +7,7 @@ import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {LINK_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {ContentTabs} from '#/main/app/content/components/tabs'
+import {Nav} from '#/main/app/components/nav'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ContentLoader} from '#/main/app/content/components/loader'
 
@@ -27,8 +27,10 @@ const FavouritesModal = (props) => {
       title={trans('favourites', {}, 'favourite')}
       onEntering={props.getFavourites}
     >
-      <ContentTabs
-        sections={[
+      <Nav
+        orientation="horizontal"
+        variant="underline"
+        items={[
           {
             name: 'workspaces',
             type: CALLBACK_BUTTON,

@@ -6,10 +6,10 @@ import get from 'lodash/get'
 import {Routes} from '#/main/app/router'
 import {getPlatformRoles} from '#/main/community/utils'
 import {displayDate, trans} from '#/main/app/intl'
-import {Vertical} from '#/main/app/content/tabs/components/vertical'
 
 import {User as UserTypes} from '#/main/community/prop-types'
 import {getMainFacet} from '#/main/community/profile/utils'
+import {ContentNav} from '#/main/app/content/components/nav'
 
 const UserDetails = props =>
   <div className="user-details card mb-3">
@@ -70,9 +70,10 @@ class Profile extends Component {
           }
 
           {this.props.facets && 1 < this.props.facets.length &&
-            <Vertical
-              basePath={this.props.path}
-              tabs={this.props.facets.map(facet => ({
+            <ContentNav
+              path={this.props.path}
+              type="vertical"
+              sections={this.props.facets.map(facet => ({
                 icon: facet.icon,
                 title: facet.title,
                 path: get(facet, 'meta.main') ? '' : `/${facet.id}`,

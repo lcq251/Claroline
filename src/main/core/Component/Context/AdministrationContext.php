@@ -89,13 +89,5 @@ class AdministrationContext extends AbstractContext
         }
 
         return [];
-        /*$currentUser = $this->securityManager->getCurrentUser();
-        if (empty($currentUser)) {
-            return [];
-        }
-
-        return array_filter($currentUser->getEntityRoles(), function (Role $role) {
-            return Role::PLATFORM === $role->getType();
-        });*/
     }
 }

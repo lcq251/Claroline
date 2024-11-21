@@ -1,9 +1,11 @@
-import {ToolEditor} from '#/main/core/tool/editor/components/main'
+import {ToolEditor} from '#/main/core/tool/editor/containers/main'
+
 import {ToolEditorActions} from '#/main/core/tool/editor/components/actions'
 import {ToolEditorAppearance} from '#/main/core/tool/editor/components/appearance'
 import {ToolEditorHistory} from '#/main/core/tool/editor/components/history'
 import {ToolEditorOverview} from '#/main/core/tool/editor/components/overview'
-import {ToolEditorPermissions} from '#/main/core/tool/editor/components/permissions'
+import {ToolEditorPermissions} from '#/main/core/tool/editor/containers/permissions'
+
 import {actions, selectors} from '#/main/core/tool/editor/store'
 
 export {

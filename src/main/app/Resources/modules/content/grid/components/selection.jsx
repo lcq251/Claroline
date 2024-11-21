@@ -5,14 +5,14 @@ import uniq from 'lodash/uniq'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
-import {ContentTabs} from '#/main/app/content/components/tabs'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-
-// todo : find better naming and location
+import {Nav} from '#/main/app/components/nav'
 
 const GroupTabs = props =>
-  <ContentTabs
-    sections={props.tabs.map(tab => ({
+  <Nav
+    variant="underline"
+    orientation="horizontal"
+    items={props.tabs.map(tab => ({
       name: tab,
       label: tab,
       type: CALLBACK_BUTTON,

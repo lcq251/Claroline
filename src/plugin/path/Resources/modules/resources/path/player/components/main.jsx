@@ -13,7 +13,7 @@ import {PlayerEnd} from '#/plugin/path/resources/path/player/components/end'
 import {getNumbering} from '#/plugin/path/resources/path/utils'
 import {ResourcePage} from '#/main/core/resource'
 import {PathNav} from '#/plugin/path/resources/path/components/nav'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 import {Datetime} from '#/main/app/components/date'
 
 const PlayerMain = props => {

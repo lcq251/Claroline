@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {number} from '#/main/app/intl/number'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 
 const ProgressionDisplay = (props) => {
   const value = number(props.data || 0)
@@ -11,7 +11,7 @@ const ProgressionDisplay = (props) => {
     <ProgressBar
       id={props.id}
       className="progression-display"
-      type={props.type}
+      variant={props.type}
       value={value}
     />
   )

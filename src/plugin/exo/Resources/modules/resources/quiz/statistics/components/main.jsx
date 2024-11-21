@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router/components/routes'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentTabs} from '#/main/app/content/components/tabs'
+import {Nav} from '#/main/app/components/nav'
 
 import {AnswersStats} from '#/plugin/exo/resources/quiz/statistics/containers/answers'
 import {AttemptsStats} from '#/plugin/exo/resources/quiz/statistics/containers/attempts'
@@ -13,8 +13,10 @@ import {ResourcePage} from '#/main/core/resource'
 
 const StatisticsMain = props =>
   <ResourcePage>
-    <ContentTabs
-      sections={[
+    <Nav
+      orientation="horizontal"
+      variant="underline"
+      items={[
         {
           name: 'answers',
           type: LINK_BUTTON,

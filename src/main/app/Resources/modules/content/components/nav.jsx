@@ -10,7 +10,7 @@ import {toKey} from '#/main/core/scaffolding/text'
 // TODO : allow other navigation action types
 
 const ContentNav = (props) =>
-  <nav role="navigation" className={props.className}>
+  <nav className={props.className} role="navigation">
     <ul
       {...omit(props, 'className', 'type', 'sections', 'path')}
       className={classes('nav nav-pills', {
@@ -56,7 +56,7 @@ ContentNav.propTypes= {
     title: T.node.isRequired,
     displayed: T.bool,
     actions: T.arrayOf(T.shape({
-      // TODO : action types
+      // action types
     }))
   })).isRequired
 }

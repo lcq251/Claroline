@@ -13,7 +13,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ContentSections, ContentSection} from '#/main/app/content/components/sections'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 import {toKey} from '#/main/core/scaffolding/text'
 
 import {getType} from '#/main/app/data/types'
@@ -44,7 +44,7 @@ const FormInputCount = (props) =>
     {'percentage' === props.mode ?
       <div className="ms-auto d-inline-flex flex-direction-row gap-2 align-items-center">
         <small className={classes('fw-bold', `text-${props.variant}`)}>{percent(props.count, props.total)}%</small>
-        <ProgressBar className="flex-shrink-0" style={{width: '80px'}} type={props.variant} value={percent(props.count, props.total)} />
+        <ProgressBar className="flex-shrink-0" style={{width: '80px'}} variant={props.variant} value={percent(props.count, props.total)} />
       </div> :
       <small className={classes('ms-auto fw-bold text-nowrap', `text-${props.variant}`)}>{transChoice('stats_answers_count', props.count, {count: props.count})}</small>
     }

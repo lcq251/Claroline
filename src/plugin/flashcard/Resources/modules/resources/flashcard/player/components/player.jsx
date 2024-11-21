@@ -6,7 +6,7 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ResourcePage} from '#/main/core/resource'
 
@@ -70,7 +70,7 @@ const Player = props => {
           className="progress-minimal"
           value={(currentCardIndex+1) / maxCards * 100}
           size="xs"
-          type="learning"
+          variant="learning"
         />
       }
 

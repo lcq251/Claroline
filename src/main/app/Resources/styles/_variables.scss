@@ -31,6 +31,9 @@ $icon-sizes: (
     xl: 8rem,
 ) !default;
 
+// allows to customize content line height to increase readability in large texts set by users
+$content-text-line-height: 1.75 !default;
+
 // customize labels (form input, details, groups in actions menu, etc.)
 $label-text-transform: uppercase !default;
 $label-font-size:      $form-label-font-size !default;

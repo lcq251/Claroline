@@ -1,35 +1,20 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
-import omit from 'lodash/omit'
+
+import {Html} from '#/main/app/components/html'
 
 /**
  * Interprets and displays HTML content.
+ *
+ * @deprecated use `import {Html} from '#/main/app/components/html'`
  */
 const ContentHtml = props =>
-  <div
-    {...omit(props, 'children', 'align')}
-    className={classes('content-html', `text-${props.align}`,props.className)}
-    dangerouslySetInnerHTML={{ __html: props.children }}
-    role="presentation"
-  />
+  <Html {...props}>
+    {props.children}
+  </Html>
 
-ContentHtml.propTypes = {
-  /**
-   * HTML content to display.
-   */
-  children: T.string.isRequired,
+ContentHtml.propTypes = Html.propTypes
 
-  /**
-   * Additional classes to add to the DOM.
-   */
-  className: T.string,
-  align: T.oneOf(['start', 'center', 'end', 'justify']).isRequired
-}
-
-ContentHtml.defaultProps = {
-  align: 'justify'
-}
+ContentHtml.defaultProps = Html.defaultProps
 
 export {
   ContentHtml

@@ -2,11 +2,9 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useHistory} from 'react-router-dom'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {PageSection} from '#/main/app/page'
 import {ResourcePage} from '#/main/core/resource'
 import {UserMicro} from '#/main/core/user/components/micro'
@@ -15,7 +13,7 @@ import {Datetime} from '#/main/app/components/date'
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/resources/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/resources/announcement/modals/sending'
 import {PageHeading} from '#/main/app/page/components/heading'
-import {Badge} from '#/main/app/components/badge'
+import {Content} from '#/main/app/components/content'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()
@@ -73,30 +71,28 @@ const AnnouncementPost = (props) => {
         ]}
       />
 
-      <PageSection size="md" className="pb-5">
-        <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
-          <UserMicro
-            {...get(props.announcement, 'meta.creator', {})}
-            noStatus={true}
-            link={true}
-          />
+      <PageSection size="md" className="mb-5">
+        <Content
+          placeholder={trans('no_content')}
+          meta={
+            <>
+              <UserMicro
+                {...get(props.announcement, 'meta.creator', {})}
+                noStatus={true}
+                link={true}
+              />
 
-          <span>-</span>
+              <span>-</span>
 
-          {get(props.announcement, 'meta.publishedAt') &&
-            <Datetime value={get(props.announcement, 'meta.publishedAt')} long={true} />
+              {get(props.announcement, 'meta.publishedAt') &&
+                <Datetime value={get(props.announcement, 'meta.publishedAt')} long={true} />
+              }
+            </>
           }
-        </div>
-
-        <ContentHtml className="lead">{props.announcement.content}</ContentHtml>
-
-        {!isEmpty(props.announcement.tags) &&
-          <div className="mt-4" role="presentation">
-            {props.announcement.tags.map(tag =>
-              <Badge key={tag} variant="secondary" subtle={true} className="fs-sm lh-base">{tag}</Badge>
-            )}
-          </div>
-        }
+          tags={props.announcement.tags}
+        >
+          {props.announcement.content}
+        </Content>
       </PageSection>
     </ResourcePage>
   )

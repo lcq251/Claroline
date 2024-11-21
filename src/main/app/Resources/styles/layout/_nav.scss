@@ -4,7 +4,7 @@
 
   background: var(--#{$prefix}menu-bg);
   height: 100%;
-  padding: 1rem 0;
+  padding: $spacer 0;
 }
 
 .menu-brand {
@@ -75,6 +75,7 @@
   &.active {
     &:before {
       height: 36px;
+      background-color: var(--#{$prefix}primary);
     }
   }
 }

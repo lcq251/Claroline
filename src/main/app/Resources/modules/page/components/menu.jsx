@@ -93,15 +93,15 @@ const PageMenu = (props) => {
       }
 
       {(1 < displayedNav.length || props.actions) &&
-        <div className="ms-auto d-flex flex-nowrap me-n3">
+        <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm">
           {1 < displayedNav.length &&
             <nav className="text-nowrap">
-              <ul className="nav nav-pills flex-nowrap">
+              <ul className="nav nav-underline flex-nowrap">
                 {displayedNav.map((nav) =>
                   <li className="nav-item" key={nav.name || toKey(nav.label)}>
                     <Button
                       {...nav}
-                      className="nav-link py-3 fw-normal rounded-0"
+                      className="nav-link py-3"
                     />
                   </li>
                 )}
@@ -111,8 +111,8 @@ const PageMenu = (props) => {
 
           {props.actions &&
             <Toolbar
-              className={classes('nav nav-pills flex-nowrap', 1 >= displayedNav.length && 'ms-auto')}
-              buttonName="nav-link py-3 fw-normal rounded-0"
+              className={classes('nav nav-underline flex-nowrap gap-4', 1 >= displayedNav.length && 'ms-auto')}
+              buttonName="nav-link py-3"
               toolbar={props.toolbar}
               tooltip="bottom"
               actions={props.actions}

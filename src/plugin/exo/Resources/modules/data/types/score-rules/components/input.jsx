@@ -9,11 +9,11 @@ import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {SelectGroup}  from '#/main/core/layout/form/components/group/select-group'
 import {NumberGroup}  from '#/main/core/layout/form/components/group/number-group'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 
 import {Rule as RuleType} from '#/plugin/exo/data/types/score-rules/prop-types'
 import {constants} from '#/plugin/exo/scores/rules/constants'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {Alert} from '#/main/app/components/alert'
 
 const ScoreRule = props =>
   <li className="score-rule-item">
@@ -169,7 +169,7 @@ ScoreRule.propTypes = {
 
 const ScoreRulesInput = props =>
   <div className="score-rules-group">
-    <AlertBlock
+    <Alert
       type="info"
     >
       <div>{trans('score_rule_considered', {}, 'quiz')} <b>{trans('score_rule_correct_answers', {}, 'quiz')}</b> :</div>
@@ -183,7 +183,7 @@ const ScoreRulesInput = props =>
         <li>{trans('unselected_correct_choices', {}, 'quiz')}</li>
       </ul>
       <div>{trans('score_rules_conflict_warning', {}, 'quiz')}</div>
-    </AlertBlock>
+    </Alert>
 
     {0!== props.value.length &&
       <ul>

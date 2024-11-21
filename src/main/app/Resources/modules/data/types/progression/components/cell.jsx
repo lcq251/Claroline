@@ -2,16 +2,16 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {number} from '#/main/app/intl/number'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 
 const ProgressionCell = (props) => {
   const value = number(props.data || 0)
 
   return (
-    <div role="presentation" className="d-flex align-items-center gap-2">
+    <div className="d-flex align-items-center gap-2" role="presentation">
       <ProgressBar
         id={props.id}
-        type={props.type}
+        variant={props.type}
         value={value}
         size="xs"
         className="flex-fill"

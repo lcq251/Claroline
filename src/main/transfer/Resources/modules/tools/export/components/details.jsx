@@ -4,7 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl'
 import {Routes} from '#/main/app/router'
 import {hasPermission} from '#/main/app/security'
-import {Alert} from '#/main/app/alert/components/alert'
+import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {TransferPage} from '#/main/transfer/components/page'

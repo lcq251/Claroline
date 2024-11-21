@@ -53,7 +53,7 @@
     align-items: center;
     vertical-align: middle;
     white-space: nowrap;
-    gap: map-get($spacers, 2);
+    gap: .75rem;
 }
 
 .user-micro-list {

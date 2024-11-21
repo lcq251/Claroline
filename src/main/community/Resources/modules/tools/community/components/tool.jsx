@@ -13,7 +13,7 @@ import {RoleMain} from '#/main/community/tools/community/role/containers/main'
 import {PendingMain} from '#/main/community/tools/community/pending/containers/main'
 import {TeamMain} from '#/main/community/tools/community/team/containers/main'
 
-import {CommunityEditor} from '#/main/community/tools/community/editor/containers/main'
+import {CommunityEditor} from '#/main/community/tools/community/editor/components/main'
 
 const CommunityTool = (props) =>
   <Tool

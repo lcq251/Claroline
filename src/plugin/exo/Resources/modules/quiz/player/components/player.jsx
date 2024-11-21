@@ -9,10 +9,9 @@ import {MODAL_ALERT} from '#/main/app/modals/alert'
 import {actions as modalActions} from '#/main/app/overlays/modal/store'
 
 import {ContentHtml} from '#/main/app/content/components/html'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 import {Timer} from '#/main/core/layout/gauge/components/timer'
 import {ContentLoader} from '#/main/app/content/components/loader'
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 import {ScoreGauge} from '#/main/core/layout/gauge/components/score'
 import {selectors as resourceSelect} from '#/main/core/resource/store'
 
@@ -30,6 +29,7 @@ import {PlayerRestrictions} from '#/plugin/exo/quiz/player/components/restrictio
 import {CustomDragLayer} from '#/plugin/exo/utils/custom-drag-layer'
 import {DragDropProvider} from '#/main/app/overlays/dnd/components/provider'
 import {ResourcePage} from '#/main/core/resource'
+import {Alert} from '#/main/app/components/alert'
 
 // TODO : rethink the loading paper process (it's a little hacky to make it quickly compatible with Router)
 
@@ -154,7 +154,7 @@ class PlayerComponent extends Component {
                 className="progress-minimal"
                 value={Math.floor((this.props.progression.current / this.props.progression.total) * 100)}
                 size="xs"
-                type="learning"
+                variant="learning"
               />
             }
 
@@ -191,13 +191,13 @@ class PlayerComponent extends Component {
             }
 
             {this.props.testMode &&
-              <AlertBlock
+              <Alert
                 type="info"
                 icon="fa fa-fw fa-flask"
                 title={trans('test_mode', {}, 'quiz')} className="alert-test-mode"
               >
                 {trans('test_mode_desc', {}, 'quiz')}
-              </AlertBlock>
+              </Alert>
             }
 
             {this.state.fetching &&

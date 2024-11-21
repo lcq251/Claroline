@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 import {Button} from '#/main/app/action/components/button'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
@@ -13,13 +12,14 @@ import {route} from '#/main/community/group/routing'
 
 import {isFull} from '#/plugin/cursus/utils'
 import {Session as SessionTypes} from '#/plugin/cursus/prop-types'
+import {Alert} from '#/main/app/components/alert'
 
 const RegistrationGroups = (props) =>
   <Fragment>
     {isFull(props.session) && hasPermission('register', props.session) &&
-      <AlertBlock type="warning" title={trans('session_full', {}, 'cursus')}>
+      <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
         {trans('session_full_group_help', {}, 'cursus')}
-      </AlertBlock>
+      </Alert>
     }
 
     <ListData

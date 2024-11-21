@@ -1,10 +1,13 @@
-import React, {useEffect} from 'react'
-import {PropTypes as T} from 'prop-types'
+import React from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {constants, constants as registrationConst} from '#/main/app/security/registration/constants'
-import {ToolEditorOverview} from '#/main/core/tool/editor/components/overview'
+import {selectors as toolSelectors} from '#/main/core/tool'
+import {actions as formActions} from '#/main/app/content/form'
+import {ToolEditorOverview} from '#/main/core/tool/editor'
+
+import {constants as registrationConst} from '#/main/app/security/registration/constants'
 
 const workspaceDefinition = (contextId, update) => [
   {
@@ -65,7 +68,7 @@ const workspaceDefinition = (contextId, update) => [
   }
 ]
 
-const desktopDefinition = (contextId, update) => [
+const desktopDefinition = () => [
   {
     icon: 'fa fa-fw fa-user-plus',
     title: trans('registration'),
@@ -128,34 +131,25 @@ const desktopDefinition = (contextId, update) => [
   }
 ]
 
-const EditorParameters = (props) => {
-  useEffect(() => {
-    if (props.loaded) {
-      // load tool parameters inside the form
-      props.load(props.parameters)
-    }
-  }, [props.contextType, props.contextId, props.loaded])
+const CommunityEditorParameters = () => {
+  const contextType = useSelector(toolSelectors.contextType)
+  const contextId = useSelector(toolSelectors.contextId)
+
+  const dispatch = useDispatch()
+  const updateProp = (prop, value) => {
+    dispatch(formActions.updateProp(toolSelectors.EDITOR_NAME, 'parameters.'+prop, value))
+  }
 
   return (
     <ToolEditorOverview
-      disabled={!props.loaded}
-      definition={'desktop' === props.contextType ?
-        desktopDefinition(props.contextId, props.updateProp) :
-        workspaceDefinition(props.contextId, props.updateProp)
+      definition={'desktop' === contextType ?
+        desktopDefinition(contextId, updateProp) :
+        workspaceDefinition(contextId, updateProp)
       }
     />
   )
 }
 
-EditorParameters.propTypes = {
-  loaded: T.bool.isRequired,
-  contextType: T.string.isRequired,
-  contextId: T.string,
-  parameters: T.object,
-  load: T.func.isRequired,
-  updateProp: T.func.isRequired
-}
-
 export {
-  EditorParameters
+  CommunityEditorParameters
 }

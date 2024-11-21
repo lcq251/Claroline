@@ -5,15 +5,16 @@ import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ContentLoader} from '#/main/app/content/components/loader'
+import {ContentNav} from '#/main/app/content/components/nav'
+import {PageSection} from '#/main/app/page'
 import {ToolPage} from '#/main/core/tool'
-import {Vertical} from '#/main/app/content/tabs/components/vertical'
 
 import {BBBMetrics} from '#/integration/big-blue-button/integration/bbb/components/metrics'
 import {BBBResources} from '#/integration/big-blue-button/integration/bbb/components/resources'
 import {BBBRooms} from '#/integration/big-blue-button/integration/bbb/components/rooms'
 import {BBBRecordings} from '#/integration/big-blue-button/integration/bbb/components/recordings'
 import {BBBServers} from '#/integration/big-blue-button/integration/bbb/components/servers'
-import {PageSection} from '#/main/app/page'
+
 
 class BBBTool extends Component {
   componentDidMount() {
@@ -56,9 +57,10 @@ class BBBTool extends Component {
         <PageSection size="full">
           <div className="row" role="presentation">
             <div className="col-md-3" role="presentation">
-              <Vertical
-                basePath={this.props.path+'/bbb'}
-                tabs={[
+              <ContentNav
+                path={this.props.path+'/bbb'}
+                type="vertical"
+                sections={[
                   {
                     icon: 'fa fa-fw fa-folder',
                     title: trans('resources'),

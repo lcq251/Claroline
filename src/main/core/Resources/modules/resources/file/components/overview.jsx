@@ -4,7 +4,7 @@ import get from 'lodash/get'
 
 import {trans, fileSize} from '#/main/app/intl'
 import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
-import {Alert} from '#/main/app/alert/components/alert'
+import {Alert} from '#/main/app/components/alert'
 import {Toolbar} from '#/main/app/action'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {route} from '#/main/core/workspace/routing'

@@ -6,8 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 import {trans, displayDate, now} from '#/main/app/intl'
 import {param} from '#/main/app/config'
 import {currency} from '#/main/app/intl/currency'
-import {Alert} from '#/main/app/alert/components/alert'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
+import {Alert} from '#/main/app/components/alert'
 import {Button, Toolbar} from '#/main/app/action'
 import {LINK_BUTTON, POPOVER_BUTTON} from '#/main/app/buttons'
 import {ContentHtml} from '#/main/app/content/components/html'
@@ -23,6 +22,7 @@ import {constants} from '#/plugin/cursus/constants'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {SessionCard} from '#/plugin/cursus/session/components/card'
 import {nl2br} from '#/main/core/scaffolding/text'
+import {Html} from '#/main/app/components/html'
 
 const CurrentRegistration = (props) => {
   let registrationTitle = trans('session_registration_pending', {}, 'cursus')
@@ -33,7 +33,7 @@ const CurrentRegistration = (props) => {
   }
 
   return (
-    <AlertBlock
+    <Alert
       type={isFullyRegistered(props.registration) ? 'success' : 'warning'}
       title={trans(registrationTitle, {}, 'cursus')}
     >
@@ -47,7 +47,7 @@ const CurrentRegistration = (props) => {
       {!props.sessionFull && undefined !== props.registration.validated && !props.registration.validated &&
         <div>{trans('session_registration_manager_help', {}, 'cursus')}</div>
       }
-    </AlertBlock>
+    </Alert>
   )
 }
 
@@ -180,17 +180,15 @@ const CourseAbout = (props) => {
       <div className="col-md-9">
 
         {get(props.course, 'meta.archived') === true &&
-          <AlertBlock type="info" title={trans('course_archived_info', {}, 'cursus')}>
+          <Alert type="info" title={trans('course_archived_info', {}, 'cursus')}>
             {trans('course_archived_info_help', {}, 'cursus')}
-          </AlertBlock>
+          </Alert>
         }
 
         {get(props.activeSession, 'meta.canceled') === true &&
-          <AlertBlock type="info" title={trans('cancel_session_info', {}, 'actions')}>
-            <ContentHtml>
-              {get(props.activeSession, 'meta.cancelReason')}
-            </ContentHtml>
-          </AlertBlock>
+          <Alert type="info" title={trans('cancel_session_info', {}, 'actions')}>
+            <Html>{get(props.activeSession, 'meta.cancelReason')}</Html>
+          </Alert>
         }
 
         {!isEmpty(props.activeSession) &&
@@ -248,12 +246,9 @@ const CourseAbout = (props) => {
         }
 
         {courseRegistration &&
-          <AlertBlock
-            type="warning"
-            title={trans('course_registration_pending', {}, 'cursus')}
-          >
+          <Alert type="warning" title={trans('course_registration_pending', {}, 'cursus')}>
             {trans('course_registration_pending_help', {}, 'cursus')}
-          </AlertBlock>
+          </Alert>
         }
 
         {activeSessionRegistration &&
@@ -264,16 +259,16 @@ const CourseAbout = (props) => {
         }
 
         {!activeSessionRegistration && isFull(props.activeSession) &&
-          <AlertBlock type="warning" title={trans('session_full', {}, 'cursus')}>
+          <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
             {trans('session_full_help', {}, 'cursus')}
-          </AlertBlock>
+          </Alert>
         }
 
         {!isHtmlEmpty(get(props.course, 'description')) &&
           <div className="card mb-3">
-            <ContentHtml className="card-body">
+            <Html className="card-body">
               {get(props.course, 'description')}
-            </ContentHtml>
+            </Html>
           </div>
         }
 

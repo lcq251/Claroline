@@ -3,13 +3,11 @@ import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {trans, displayDate, displayDuration, now} from '#/main/app/intl'
+import {trans, displayDuration} from '#/main/app/intl'
 import {getTimeDiff} from '#/main/app/intl/date'
-import {Alert} from '#/main/app/alert/components/alert'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
+import {Alert} from '#/main/app/components/alert'
 import {Button} from '#/main/app/action/components/button'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {LocationCard} from '#/main/core/data/types/location/components/card'
 import {ResourceCard} from '#/main/core/resource/components/card'
@@ -20,6 +18,7 @@ import {constants} from '#/plugin/cursus/constants'
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {SessionCard} from '#/plugin/cursus/session/components/card'
 import {MODAL_COURSE_REGISTRATION} from '#/plugin/cursus/course/modals/registration'
+import {Html} from '#/main/app/components/html'
 
 const CurrentRegistration = (props) => {
   let registrationTitle = trans('event_registration_pending', {}, 'cursus')
@@ -30,7 +29,7 @@ const CurrentRegistration = (props) => {
   }
 
   return (
-    <AlertBlock
+    <Alert
       type={isFullyRegistered(props.registration) ? 'success' : 'warning'}
       title={trans(registrationTitle, {}, 'cursus')}
     >
@@ -44,7 +43,7 @@ const CurrentRegistration = (props) => {
       {!props.eventFull && undefined !== props.registration.validated && !props.registration.validated &&
         <div>{trans('event_registration_manager_help', {}, 'cursus')}</div>
       }
-    </AlertBlock>
+    </Alert>
   )
 }
 
@@ -167,15 +166,15 @@ const EventAbout = (props) =>
       }
 
       {isEmpty(props.registration) && isFull(props.event) &&
-        <AlertBlock type="warning" title={trans('event_full', {}, 'cursus')}>
+        <Alert type="warning" title={trans('event_full', {}, 'cursus')}>
           {trans('event_full_help', {}, 'cursus')}
-        </AlertBlock>
+        </Alert>
       }
 
       <div className="card mb-3">
-        <ContentHtml className="card-body">
+        <Html className="card-body">
           {get(props.event, 'description') || trans('no_description')}
-        </ContentHtml>
+        </Html>
       </div>
 
       {!isEmpty(get(props.event, 'resources')) &&

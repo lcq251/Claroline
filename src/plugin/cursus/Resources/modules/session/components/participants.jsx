@@ -7,9 +7,7 @@ import {hasPermission} from '#/main/app/security'
 import {LinkButton} from '#/main/app/buttons/link'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 import {Routes} from '#/main/app/router/components/routes'
-import {Vertical} from '#/main/app/content/tabs/components/vertical'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
@@ -23,6 +21,7 @@ import {CourseStats} from '#/plugin/cursus/course/components/stats'
 import {SessionGroups} from '#/plugin/cursus/session/containers/groups'
 import {SessionUsers} from '#/plugin/cursus/session/containers/users'
 import {ContentNav} from '#/main/app/content/components/nav'
+import {Alert} from '#/main/app/components/alert'
 
 const SessionParticipants = (props) =>
   <>
@@ -129,18 +128,18 @@ const SessionParticipants = (props) =>
               render: () => (
                 <Fragment>
                   {isFull(props.activeSession) &&
-                    <AlertBlock type="warning" title={trans('session_full', {}, 'cursus')}>
+                    <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
                       {trans('session_full_help', {}, 'cursus')}
-                    </AlertBlock>
+                    </Alert>
                   }
 
                   {get(props.activeSession, 'registration.userValidation') &&
-                    <AlertBlock title={trans('registration_user_confirmation_title', {}, 'cursus')}>
+                    <Alert title={trans('registration_user_confirmation_title', {}, 'cursus')}>
                       {trans('registration_user_confirmation_pending_help', {}, 'cursus')}
                       <br/>
                       {trans('registration_user_confirmation_manager_help', {}, 'cursus')}
                       (<LinkButton target={props.path+'/pending'}>{trans('show_pending_list', {}, 'cursus')}</LinkButton>)
-                    </AlertBlock>
+                    </Alert>
                   }
 
                   <SessionUsers
@@ -188,11 +187,11 @@ const SessionParticipants = (props) =>
             }, {
               path: '/pending',
               render: () => (
-                <Fragment>
+                <>
                   {isFull(props.activeSession) && hasPermission('register', props.activeSession) &&
-                    <AlertBlock type="warning" title={trans('session_full', {}, 'cursus')}>
+                    <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
                       {trans('session_full_pending_help', {}, 'cursus')}
-                    </AlertBlock>
+                    </Alert>
                   }
 
                   <SessionUsers
@@ -228,7 +227,7 @@ const SessionParticipants = (props) =>
                       }]
                     }}
                   />
-                </Fragment>
+                </>
               )
             }, {
               path: '/stats',

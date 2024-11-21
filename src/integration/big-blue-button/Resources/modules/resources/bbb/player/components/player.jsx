@@ -5,16 +5,16 @@ import isEmpty from 'lodash/isEmpty'
 
 import {url} from '#/main/app/api'
 import {DataInput} from '#/main/app/data/components/input'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON, LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {ContentLoader} from '#/main/app/content/components/loader'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {ContentIFrame} from '#/main/app/content/components/iframe'
 
 import {BBB as BBBTypes, Recording as RecordingTypes} from '#/integration/big-blue-button/resources/bbb/prop-types'
 import {ResourcePage} from '#/main/core/resource'
+import {Alert} from '#/main/app/components/alert'
+import {Html} from '#/main/app/components/html'
 
 class Player extends Component {
   constructor(props) {
@@ -57,22 +57,22 @@ class Player extends Component {
       <ResourcePage>
         {this.props.bbb.newTab && this.props.bbb.welcomeMessage &&
           <div className="card my-3">
-            <ContentHtml className="card-body">
+            <Html className="card-body">
               {this.props.bbb.welcomeMessage}
-            </ContentHtml>
+            </Html>
           </div>
         }
 
         {this.isClosed() &&
-          <AlertBlock type="danger" title={trans('meeting_is_closed', {}, 'bbb')} className="component-container">
+          <Alert type="danger" title={trans('meeting_is_closed', {}, 'bbb')} className="component-container">
             {trans(!get(this.props.bbb, 'restrictions.disabled', true) ? 'meetings_limit_reached':'meeting_disabled', {}, 'bbb')}
-          </AlertBlock>
+          </Alert>
         }
 
         {!this.isClosed() && !isEmpty(this.props.joinStatus) &&
-          <AlertBlock type="warning" title={trans('meeting_cannot_join', {}, 'bbb')} className="component-container">
+          <Alert type="warning" title={trans('meeting_cannot_join', {}, 'bbb')} className="component-container">
             {trans(this.props.joinStatus, {}, 'bbb')}
-          </AlertBlock>
+          </Alert>
         }
 
         {!this.isClosed() && isEmpty(this.props.joinStatus) && this.props.bbb.newTab &&
@@ -89,15 +89,15 @@ class Player extends Component {
             }
 
             {this.props.allowRecords && this.props.bbb.record &&
-              <AlertBlock type="warning" title={trans('meeting_recorded', {}, 'bbb')} className="component-container">
+              <Alert type="warning" title={trans('meeting_recorded', {}, 'bbb')} className="component-container">
                 {trans('meeting_recorded_help', {}, 'bbb')}
-              </AlertBlock>
+              </Alert>
             }
 
             {this.props.bbb.moderatorRequired &&
-              <AlertBlock type="info" title={trans('moderator_help_title', {}, 'bbb')} className="component-container">
+              <Alert type="info" title={trans('moderator_help_title', {}, 'bbb')} className="component-container">
                 {trans('moderator_help_message', {}, 'bbb')}
-              </AlertBlock>
+              </Alert>
             }
 
             <Button

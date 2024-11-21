@@ -54,26 +54,28 @@ $login-max-width: 760px !default;
 // By default it reuses some of the styles from the app header.
 // ---
 
-$toolbar-size:           24rem !default;
-$toolbar-bg:             $gray-400 !default;
-$toolbar-bg-subtle:      $gray-300 !default;
-$toolbar-color:          color-contrast($toolbar-bg-subtle) !default;
-//$toolbar-active-color:   $primary !default;
+$toolbar-size:           22.5rem; // 24rem !default;
+$toolbar-bg:             var(--#{$prefix}secondary-bg) !default; // var(--#{$prefix}body-bg) !default;
+$toolbar-bg-subtle:      var(--#{$prefix}tertiary-bg) !default;
+$toolbar-color:          null !default; //color-contrast($toolbar-bg-subtle) !default;
 
 // links
 $toolbar-link-spacer-y:       .25rem !default;
 $toolbar-link-spacer-x:       .5rem !default;
-$toolbar-link-padding-y:      .75rem !default;
+$toolbar-link-padding-y:      .5rem !default;
 $toolbar-link-padding-x:      1rem !default;
 $toolbar-link-border-radius:  $border-radius !default;
+$toolbar-link-font-size:      $font-size-sm !default;
+$toolbar-link-line-height:    1.5rem !default;
+$toolbar-link-font-weight:    $font-weight-bolder !default;
 
-$toolbar-link-color:          fade-out($toolbar-color, .375) !default;
+$toolbar-link-color:          var(--#{$prefix}secondary-color) !default;
 $toolbar-link-bg:             null !default;
-$toolbar-link-hover-color:    fade-out($toolbar-color, .125) !default;
-$toolbar-link-hover-bg:       null !default;
-$toolbar-link-active-color:   $toolbar-color !default;
-$toolbar-link-active-bg:      fade-out($toolbar-color, .9) !default;
-$toolbar-link-disabled-color: fade-out($toolbar-color, .5) !default;
+$toolbar-link-hover-color:    var(--#{$prefix}primary) !default;
+$toolbar-link-hover-bg:       rgba(0, 0, 0, .025) !default;
+$toolbar-link-active-color:   $toolbar-link-hover-color !default;
+$toolbar-link-active-bg:      $toolbar-link-hover-bg !default;
+$toolbar-link-disabled-color: var(--#{$prefix}tertiary-color) !default;
 $toolbar-link-disabled-bg:    null !default;
 
 

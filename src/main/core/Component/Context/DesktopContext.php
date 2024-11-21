@@ -2,6 +2,7 @@
 
 namespace Claroline\CoreBundle\Component\Context;
 
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\AbstractContext;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
@@ -16,7 +17,8 @@ class DesktopContext extends AbstractContext
 {
     public function __construct(
         private readonly SecurityManager $securityManager,
-        private readonly PlatformConfigurationHandler $config
+        private readonly PlatformConfigurationHandler $config,
+        private readonly SerializerProvider $serializer
     ) {
     }
 
@@ -74,8 +76,13 @@ class DesktopContext extends AbstractContext
         // for retro-compatibility, should not be exposed here
         $defaultTool = $this->config->getParameter('desktop.default_tool');
 
+        $mainOrganization = $this->securityManager->getCurrentUser()?->getMainOrganization();
+
+        $serializedOrganization = $this->serializer->serialize($mainOrganization);
+        unset($serializedOrganization['id']); // FIXME : for now some desktop tools will crash if they receive an id
+
         return [
-            'data' => [
+            'data' => array_merge_recursive($serializedOrganization, [
                 'permissions' => [
                     'open' => !$this->securityManager->isAnonymous(),
                     'administrate' => $this->securityManager->isAdmin(),
@@ -85,7 +92,7 @@ class DesktopContext extends AbstractContext
                     'target' => $defaultTool,
                     'menu' => $this->config->getParameter('desktop.menu'),
                 ],
-            ],
+            ]),
         ];
     }
 }

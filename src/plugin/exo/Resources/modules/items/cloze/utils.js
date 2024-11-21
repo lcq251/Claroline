@@ -62,7 +62,7 @@ utils.getTextWithPlacerHoldersFromHtml = (text) => {
 function getSelectInput(hole, solution, hasExpectedAnswers = true) {
   const bestAnswer = utils.getBestAnswer(solution.answers)
 
-  let input = `<select class="form-control input-sm" data-hole-id="${solution.holeId}">`
+  let input = `<select class="form-control form-control-sm" data-hole-id="${solution.holeId}">`
 
   if (hasExpectedAnswers) {
     // create correct answers group
@@ -121,7 +121,7 @@ function getTextInput(hole, solution) {
 
   return `
     <input
-      class="form-control input-sm"
+      class="form-control form-control-sm"
       data-hole-id="${hole.id}"
       type="text"
       disabled="true"

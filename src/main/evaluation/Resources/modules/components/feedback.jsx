@@ -2,8 +2,8 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
-import {AlertBlock} from '#/main/app/alert/components/alert-block'
-import {ContentHtml} from '#/main/app/content/components/html'
+import {Alert} from '#/main/app/components/alert'
+import {Html} from '#/main/app/components/html'
 
 import {constants} from '#/main/evaluation/constants'
 
@@ -41,12 +41,12 @@ const EvaluationFeedback = props => {
     }
 
     return (
-      <AlertBlock
+      <Alert
         type={alertType}
         title={alertTitle}
       >
-        <ContentHtml>{alertMessage}</ContentHtml>
-      </AlertBlock>
+        <Html>{alertMessage}</Html>
+      </Alert>
     )
   }
 

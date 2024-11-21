@@ -6,13 +6,13 @@ import {useSelector} from 'react-redux'
 import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router/components/routes'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
-import {Vertical} from '#/main/app/content/tabs/components/vertical'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {Toolbar} from '#/main/app/action'
 
 import {TemplatePage} from '#/main/template/administration/templates/containers/page'
 import {TemplateForm} from '#/main/template/administration/templates/containers/form'
 import {selectors} from '#/main/template/administration/templates/store'
+import {ContentNav} from '#/main/app/content/components/nav'
 
 const TemplateDetails = (props) => {
   if (isEmpty(props.templateType)) {
@@ -66,19 +66,20 @@ const TemplateDetails = (props) => {
 
       <div className="row">
         <div className="col-md-3">
-          <Vertical
-            basePath={props.path + '/' + props.templateType.type + '/' + props.templateType.name}
-            tabs={props.templates.map(template => ({
+          <ContentNav
+            path={props.path + '/' + props.templateType.type + '/' + props.templateType.name}
+            type="vertical"
+            sections={props.templates.map(template => ({
               id: template.id,
               title: (
-                <Fragment>
+                <>
                   {template.name}
                   {template.default &&
                     <small>
                       &nbsp;({trans('default')})
                     </small>
                   }
-                </Fragment>
+                </>
               ),
               path: `/${template.id}`,
               actions: [

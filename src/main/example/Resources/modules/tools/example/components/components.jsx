@@ -3,8 +3,8 @@ import {PropTypes as T} from 'prop-types'
 
 import {Routes} from '#/main/app/router'
 import {ToolPage} from '#/main/core/tool'
-import {ContentTabs} from '#/main/app/content/components/tabs'
 import {LINK_BUTTON} from '#/main/app/buttons'
+import {Nav} from '#/main/app/components/nav'
 
 import {ExampleAlerts} from '#/main/example/tools/example/components/alerts'
 import {ExampleButtons} from '#/main/example/tools/example/components/buttons'
@@ -17,9 +17,11 @@ const ExampleComponents = (props) =>
   <ToolPage
     title="Components"
   >
-    <ContentTabs
+    <Nav
+      orientation="horizontal"
+      variant="underline"
       className="mb-3 content-lg px-4"
-      sections={[
+      items={[
         {
           name: 'alerts',
           type: LINK_BUTTON,

@@ -1,7 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {ProgressBar} from '#/main/app/content/components/progress-bar'
+import {ProgressBar} from '#/main/app/components/progress-bar'
 
 import {Step as StepTypes} from '#/plugin/path/resources/path/prop-types'
 import {PathNav} from '#/plugin/path/resources/path/components/nav'
@@ -16,7 +16,7 @@ const PathCurrent = props => {
         className="progress-minimal"
         value={Math.floor(((currentIndex+1) / (props.all.length)) * 100)}
         size="xs"
-        type="learning"
+        variant="learning"
       />
 
       {props.children}

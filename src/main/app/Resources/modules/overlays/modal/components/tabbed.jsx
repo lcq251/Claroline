@@ -6,7 +6,7 @@ import omit from 'lodash/omit'
 import BaseModal from 'react-bootstrap/Modal'
 
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
-import {ContentTabs} from '#/main/app/content/components/tabs'
+import {Nav} from '#/main/app/components/nav'
 
 const ModalTabbed = (props) =>
   <ModalEmpty
@@ -21,9 +21,11 @@ const ModalTabbed = (props) =>
           <span className={classes('modal-icon fs-5 mb-1 align-self-center', props.icon)} aria-hidden={true} />
         }
 
-        <ContentTabs
+        <Nav
           className="border-bottom-0"
-          sections={props.tabs}
+          variant="underline"
+          orientation="horizontal"
+          items={props.tabs}
         />
       </BaseModal.Header>
     }

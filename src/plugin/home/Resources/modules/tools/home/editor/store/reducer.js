@@ -51,7 +51,7 @@ const reducer = makeFormReducer(selectors.FORM_NAME, {data: [], originalData: []
     [HOME_MOVE_TAB]: () => true
   }),
   data: makeReducer([], {
-    [makeInstanceAction(TOOL_LOAD, baseSelectors.STORE_NAME)]: (state, action) => {
+    /*[makeInstanceAction(TOOL_LOAD, baseSelectors.STORE_NAME)]: (state, action) => {
       if (!isEmpty(action.toolData.tabs)) {
         return action.toolData.tabs
       }
@@ -68,7 +68,7 @@ const reducer = makeFormReducer(selectors.FORM_NAME, {data: [], originalData: []
       return [
         baseSelectors.defaultTab({tool: {currentContext: action.context}})
       ]
-    },
+    },*/
     [HOME_MOVE_TAB]: (state, action) => {
       let newState = cloneDeep(state)
 

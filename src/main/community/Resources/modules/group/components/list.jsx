@@ -22,6 +22,7 @@ const Groups = props => {
 
   return (
     <ListData
+      name={props.name}
       primaryAction={(row) => getDefaultAction(row, refresher, props.path, props.currentUser)}
       actions={(rows) => getActions(rows, refresher, props.path, props.currentUser).then((actions) => [].concat(actions, props.customActions(rows)))}
       definition={[
@@ -59,15 +60,14 @@ const Groups = props => {
           sortable: false
         }*/
       ].concat(props.customDefinition)}
+      card={GroupCard}
 
       {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'refresher', 'invalidate')}
 
-      name={props.name}
       fetch={{
         url: props.url,
         autoload: props.autoload
       }}
-      card={GroupCard}
     />
   )
 }

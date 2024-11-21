@@ -12,7 +12,7 @@ const EditorMenuSection = (props) => {
     return (
       <nav className={classes('mb-2 ms-auto', props.className)}>
         {props.title &&
-          <h2 className="app-editor-menu-header">{props.title}</h2>
+          <h2 className="app-editor-menu-header mb-2">{props.title}</h2>
         }
 
         <div className="nav flex-column nav-pills mx-n3" role="presentation">
@@ -25,7 +25,7 @@ const EditorMenuSection = (props) => {
   return (
     <nav className={classes('mb-2 ms-auto', props.className)}>
       {props.title &&
-        <h2 className="app-editor-menu-header">{props.title}</h2>
+        <h2 className="app-editor-menu-header mb-2">{props.title}</h2>
       }
 
       <ul className="nav nav-pills flex-column mb-0 mx-n3">
@@ -62,7 +62,7 @@ const EditorMenu = (props) => {
   return (
     <nav className="app-editor-menu" aria-label={props.title}>
       {props.title &&
-        <h1 className="app-editor-menu-header">{props.title}</h1>
+        <h1 className="app-editor-menu-header mb-2">{props.title}</h1>
       }
 
       {!isEmpty(commonPages) &&

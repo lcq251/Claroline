@@ -58,11 +58,12 @@
   line-height: $input-height-sm;
   display: inline-flex;
   align-items: center;
-  margin: 2px 0; // to prevent the holes from touching
+  padding: 2px 0; // to prevent the holes from touching
 
+  max-width: 100%;
   .form-control {
     width: auto; // remove bootstrap default 100%
-    max-width: 200px;
+    max-width: 100%;
   }
 }
 

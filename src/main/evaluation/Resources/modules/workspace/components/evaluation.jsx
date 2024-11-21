@@ -1,25 +1,18 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {trans, displayDate, displayDuration, number} from '#/main/app/intl'
+import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action/components/button'
-import {Toolbar} from '#/main/app/action/components/toolbar'
-import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
-import {Alert} from '#/main/app/alert/components/alert'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {Alert} from '#/main/app/components/alert'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
 
-import {constants as baseConstants} from '#/main/evaluation/constants'
-import {constants} from '#/main/evaluation/workspace/constants'
 import {WorkspaceEvaluation as WorkspaceEvaluationTypes} from '#/main/evaluation/workspace/prop-types'
 import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {ResourceCard} from '#/main/evaluation/resource/components/card'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
-import {EvaluationDetails} from '#/main/evaluation/components/details'
-import {route} from '#/main/community/user/routing'
 import {EvaluationJumbotron} from '#/main/evaluation/components/jumbotron'
 import {PageSection} from '#/main/app/page/components/section'
 
@@ -34,8 +27,6 @@ class WorkspaceEvaluation extends Component {
   }
 
   render() {
-
-
     return (
       <>
         <EvaluationJumbotron

@@ -157,11 +157,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: $card-title-spacer-y;
 
-    > small {
+    /*> small {
         margin-top: 5px;
         display: block;
-    }
+    }*/
 }
 
 .data-card-content {

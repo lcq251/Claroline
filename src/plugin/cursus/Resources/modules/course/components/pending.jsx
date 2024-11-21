@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {Alert} from '#/main/app/alert/components/alert'
+import {Alert} from '#/main/app/components/alert'
 import {formatListField} from '#/main/app/content/form/parameters/utils'
 import {MODAL_USERS} from '#/main/community/modals/users'
 
@@ -26,7 +26,7 @@ const CoursePending = (props) => {
   }
 
   return (
-    <Fragment>
+    <>
       <Alert type="info" className="mt-3">
         {trans('Les utilisateurs suivant doivent être inscrit manuellement à une session.', {}, 'cursus')}
       </Alert>
@@ -82,7 +82,7 @@ const CoursePending = (props) => {
           }]
         }}
       />
-    </Fragment>
+    </>
   )
 }
 

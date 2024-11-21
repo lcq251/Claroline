@@ -6,13 +6,11 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {withRouter} from '#/main/app/router'
 import {CallbackButton} from '#/main/app/buttons/callback/components/button'
-import {ContentTags} from '#/main/app/content/components/tags'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {selectors} from '#/plugin/blog/resources/blog/store/selectors'
 import {constants} from '#/plugin/blog/resources/blog/constants'
-import {cleanTag} from '#/plugin/blog/resources/blog/utils'
 import {updateQueryParameters} from '#/plugin/blog/resources/blog/utils'
 
 const TagsComponent = props =>
@@ -22,18 +20,6 @@ const TagsComponent = props =>
     </div>
 
     <div className="card-body">
-      {!isEmpty(props.tags) && props.tagMode !== constants.TAGCLOUD_TYPE_LIST &&
-        <ContentTags
-          tags={props.tags}
-          minSize={12}
-          maxSize={22}
-          onClick={(tag) => {
-            props.goHome(props.history, props.path)
-            props.searchByTag(props.history, props.location.search, cleanTag(props.tagMode, tag))
-          }}
-        />
-      }
-
       {!isEmpty(props.tags) && props.tagMode === constants.TAGCLOUD_TYPE_LIST &&
         <ul>
           {props.tags && Object.keys(props.tags).sort().map((tag, index) =>(
