@@ -11,7 +11,7 @@ import {CurrencyInput} from '#/main/app/data/types/currency/components/input'
 const dataType = {
   name: 'currency',
   meta: {
-    icon: 'fa fa-fw fa fa-calculator',
+    icon: 'fa fa-fw fa fa-credit-card',
     label: trans('currency', {}, 'data'),
     description: trans('currency_desc', {}, 'data')
   },

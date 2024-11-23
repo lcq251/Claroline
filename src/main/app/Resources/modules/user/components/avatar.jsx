@@ -17,9 +17,7 @@ const UserAvatar = props =>
       thumbnail={get(props.user, 'picture')}
       name={get(props.user, 'name') || trans('unknown')}
       square={true}
-    >
-      <span className="user-avatar-placeholder fa fa-user" />
-    </Thumbnail>
+    />
 
     {get(props.user, 'status') && !props.noStatus &&
       <UserStatus

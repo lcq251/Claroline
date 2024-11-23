@@ -36,8 +36,9 @@ export default {
         displayed: true
       }, {
         name: 'tutors',
-        type: 'users',
-        label: trans('tutors', {}, 'cursus')
+        type: 'user',
+        label: trans('tutors', {}, 'cursus'),
+        options: {multiple: true}
       }, {
         name: 'restrictions.users',
         alias: 'maxUsers',
@@ -67,14 +68,6 @@ export default {
         label: trans('workspace'),
         displayable: false,
         sortable: false
-      }, {
-        name: 'organizations',
-        type: 'organizations',
-        label: trans('organizations'),
-        displayable: false,
-        displayed: false,
-        sortable: false,
-        filterable: true
       }
     ],
     card: EventCard

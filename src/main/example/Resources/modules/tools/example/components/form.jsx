@@ -53,16 +53,19 @@ const ExampleForm = () =>
               required: true
             }, {
               name: 'date',
+              icon: 'fa fa-fw fa-calendar',
               label: 'Date',
               type: 'date',
               required: true
             }, {
               name: 'datetime',
+              icon: 'fa fa-fw fa-calendar',
               label: 'Date & time',
               type: 'date',
               options: {time: true}
             }, {
               name: 'dateRange',
+              icon: 'fa fa-fw fa-calendar-week',
               label: 'Date range',
               help: 'Select a start and an end date to define a period.',
               type: 'date-range',
@@ -100,11 +103,13 @@ const ExampleForm = () =>
               ]
             }, {
               name: 'url',
+              icon: 'fa fa-fw fa-link',
               label: 'URL',
               type: 'url',
               required: true
             }, {
               name: 'tags',
+              icon: 'fa fa-fw fa-tags',
               label: 'Tags',
               type: 'tag',
               help: [
@@ -235,6 +240,7 @@ const ExampleForm = () =>
           fields: [
             {
               name: 'image',
+              icon: 'fa fa-fw fa-image',
               label: 'Image',
               type: 'image'
             }, {
@@ -276,14 +282,17 @@ const ExampleForm = () =>
           fields: [
             {
               name: 'email',
+              icon: 'fa fa-fw fa-email',
               label: 'Email',
               type: 'email'
             }, {
               name: 'phone',
+              icon: 'fa fa-fw fa-phone',
               label: 'Phone',
               type: 'phone'
             }, {
               name: 'address',
+              icon: 'fa fa-fw fa-map-marker-alt',
               label: 'Address',
               type: 'address'
             }
@@ -295,6 +304,47 @@ const ExampleForm = () =>
               name: 'locale',
               label: 'Locale',
               type: 'locale'
+            }
+          ]
+        }, {
+          icon: 'fa fa-fw fa-users',
+          title: trans('community', {}, 'tools'),
+          fields: [
+            {
+              name: 'users',
+              type: 'user',
+              icon: 'fa fa-fw fa-user',
+              label: trans('users', {}, 'community'),
+              help: 'Select one or multiple users.',
+              options: {multiple: true}
+            }, {
+              name: 'groups',
+              type: 'group',
+              icon: 'fa fa-fw fa-users',
+              label: trans('groups', {}, 'community'),
+              help: 'Select one or multiple groups.',
+              options: {multiple: true}
+            }, {
+              name: 'roles',
+              type: 'role',
+              icon: 'fa fa-fw fa-id-badge',
+              label: trans('roles', {}, 'community'),
+              help: 'Select one or multiple roles.',
+              options: {multiple: true}
+            }, {
+              name: 'teams',
+              type: 'team',
+              icon: 'fa fa-fw fa-user-group',
+              label: trans('teams', {}, 'community'),
+              help: 'Select one or multiple teams.',
+              options: {multiple: true}
+            }, {
+              name: 'organizations',
+              type: 'organization',
+              icon: 'fa fa-fw fa-building',
+              label: trans('organizations', {}, 'community'),
+              help: 'Select one or multiple organizations.',
+              options: {multiple: true}
             }
           ]
         }

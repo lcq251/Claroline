@@ -76,14 +76,6 @@ const WorkspacesModal = props => {
           options: {
             objectClass: 'Claroline\\CoreBundle\\Entity\\Workspace\\Workspace'
           }
-        }, {
-          name: 'organizations',
-          type: 'organizations',
-          label: trans('organizations'),
-          displayable: false,
-          displayed: false,
-          sortable: false,
-          filterable: true
         }
       ]}
       card={WorkspaceCard}

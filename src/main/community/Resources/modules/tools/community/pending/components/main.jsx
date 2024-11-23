@@ -86,12 +86,13 @@ const PendingMain = props =>
           }, {
             name: 'roles',
             alias: 'role',
-            type: 'roles',
-            label: trans('roles'),
+            type: 'role',
+            label: trans('roles', {}, 'community'),
             calculated: (user) => !isEmpty(props.workspace) ?
               user.roles.filter(role => role.workspace && role.workspace.id === props.workspace.id)
               :
               user.roles.filter(role => constants.ROLE_PLATFORM === role.type),
+            options: {multiple: true},
             displayed: true,
             filterable: true
           }

@@ -1,83 +1,46 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
+import {DataMicro} from '#/main/app/data/components/micro'
+import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
-import {Team as TeamTypes} from '#/main/community/prop-types'
-import {TeamList} from '#/main/community/team/components/list'
+import {TeamCard} from '#/main/community/team/components/card'
 
-import {selectors} from '#/main/community/modals/teams/store'
-
-class TeamsModal extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      initialized: false
-    }
-  }
-
-  render() {
-    const selectAction = this.props.selectAction(this.props.selected)
-
-    return (
-      <Modal
-        icon="fa fa-fw fa-user-group"
-        {...omit(this.props, 'url', 'selected', 'selectAction', 'reset', 'resetFilters', 'filters')}
-        className="data-picker-modal"
-        size="xl"
-        onEnter={() => {
-          this.props.resetFilters(this.props.filters)
-          this.setState({initialized: true})
-        }}
-        onExited={this.props.reset}
-      >
-        <TeamList
-          name={selectors.STORE_NAME}
-          url={this.props.url}
-          autoload={this.state.initialized}
-          primaryAction={undefined}
-          actions={undefined}
-        />
-
-        <Button
-          label={trans('select', {}, 'actions')}
-          {...selectAction}
-          className="modal-btn"
-          variant="btn"
-          size="lg"
-          primary={true}
-          disabled={0 === this.props.selected.length}
-          onClick={this.props.fadeModal}
-        />
-      </Modal>
-    )
-  }
-}
+const TeamsModal = (props) =>
+  <PickerModal
+    {...props}
+    icon="fa fa-fw fa-user-group"
+    name="teamsPicker"
+    definition={[
+      {
+        name: 'name',
+        type: 'string',
+        label: trans('name'),
+        displayed: true,
+        primary: true,
+        render: (row) => <DataMicro object={row} />
+      }, {
+        name: 'meta.description',
+        type: 'string',
+        label: trans('description'),
+        options: {long: true},
+        displayed: true
+      }
+    ]}
+    card={TeamCard}
+  />
 
 TeamsModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
-  filters: T.arrayOf(T.shape({
-    // list filter types
-  })),
   selectAction: T.func.isRequired,
-  fadeModal: T.func.isRequired,
-
-  selected: T.arrayOf(
-    T.shape(TeamTypes.propTypes)
-  ).isRequired,
-  reset: T.func.isRequired,
-  resetFilters: T.func.isRequired
+  multiple: T.bool
 }
 
 TeamsModal.defaultProps = {
   url:['apiv2_team_list'],
-  title: trans('teams', {}, 'community'),
-  filters: []
+  title: trans('teams', {}, 'community')
 }
 
 export {

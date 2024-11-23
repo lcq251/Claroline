@@ -16,11 +16,6 @@ $component-margin-bottom:       map-get($spacers, 3) !default;
 $padding-base-vertical:     6px !default;
 $padding-base-horizontal:   12px !default;
 
-$padding-large-vertical:    10px !default;
-$padding-large-horizontal:  15px !default;
-
-$line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
-
 
 //== Panels
 // @deprecated
@@ -46,7 +41,6 @@ $icon-fixed-width: 1.25em; // same value as fa-fw (there is no var for it in fon
 // ---
 
 $login-bg-image:  "#{$images-path}login.jpg" !default; // will fallback on $body-bg if theme has no image
-$login-max-width: 760px !default;
 
 
 // -
@@ -104,7 +98,7 @@ $brand-size:          2.5rem !default;
 //$page-header-border-color: transparent !default;
 
 //$page-title-color:          null !default;
-$page-title-font-size:      2rem !default;
+//$page-title-font-size:      2rem !default;
 //$page-title-font-weight:    $font-weight-semibold !default;
 //$page-subtitle-color:       var(--#{$prefix}secondary-color) !default;
 //$page-subtitle-font-weight: $font-weight-base !default;
@@ -182,24 +176,6 @@ $footer-box-shadow:         none !default;
 /*$footer-link-color:        $gray-500;
 $footer-link-hover-color:  $gray-dark;
 $footer-link-active-color: $gray-900;*/
-
-
-// -
-// Forms
-// @deprecated
-// ---
-
-$help-block-color:          var(--#{$prefix}secondary-color) !default;
-$help-block-font-size:      $font-size-sm !default;
-
-
-// -
-// Lists
-// ---
-
-$list-controls-bg:           var(--#{$prefix}tertiary-bg) !default;
-$list-controls-border-width: $border-width !default;
-$list-controls-border-color: var(--#{$prefix}border-color-translucent) !default;
 
 
 // -

@@ -6,12 +6,12 @@ import merge from 'lodash/merge'
 
 import {trans} from '#/main/app/intl/translation'
 import {ListData} from '#/main/app/content/list/containers/data'
-import {Thumbnail} from '#/main/app/components/thumbnail'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
 import {getActions, getDefaultAction} from '#/main/community/group/utils'
 import {GroupCard} from '#/main/community/group/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const Groups = props => {
   const refresher = merge({
@@ -33,12 +33,7 @@ const Groups = props => {
           displayed: true,
           primary: true,
           filterable: false,
-          render: (group) => (
-            <div className="d-flex flex-direction-row gap-3 align-items-center">
-              <Thumbnail thumbnail={group.thumbnail} name={group.name} size="xs" square={true} />
-              {group.name}
-            </div>
-          )
+          render: (row) => <DataMicro object={row} />
         }, {
           name: 'code',
           type: 'string',
@@ -51,14 +46,7 @@ const Groups = props => {
           options: {long: true},
           displayed: true,
           filterable: false
-        }/*, {
-          name: 'organizations',
-          label: trans('organizations'),
-          type: 'organizations',
-          displayed: false,
-          displayable: false,
-          sortable: false
-        }*/
+        }
       ].concat(props.customDefinition)}
       card={GroupCard}
 

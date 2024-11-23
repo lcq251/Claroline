@@ -50,27 +50,7 @@ export default (contextType, contextData, refresher, currentUser) => ({
       label: trans('personal_workspace'),
       type: 'boolean',
       alias: 'personal'
-    }, /*{
-      name: 'createdAfter',
-      label: trans('created_after'),
-      type: 'date',
-      displayable: false
     }, {
-      name: 'createdBefore',
-      label: trans('created_before'),
-      type: 'date'
-    }, {
-      name: 'registration.selfRegistration',
-      label: trans('public_registration'),
-      type: 'boolean',
-      alias: 'selfRegistration'
-    }, {
-      name: 'registration.waitingForRegistration',
-      label: trans('pending'),
-      type: 'boolean',
-      filterable: false,
-      sortable: false
-    }, */{
       name: 'archived',
       label: trans('archived'),
       type: 'boolean',
@@ -92,14 +72,6 @@ export default (contextType, contextData, refresher, currentUser) => ({
       options: {
         objectClass: 'Claroline\\CoreBundle\\Entity\\Workspace\\Workspace'
       }
-    }, {
-      name: 'organizations',
-      type: 'organizations',
-      label: trans('organizations'),
-      displayable: false,
-      displayed: false,
-      sortable: false,
-      filterable: true
     }
   ],
   card: WorkspaceCard

@@ -153,7 +153,8 @@ const CategoryFormModal = props => {
               }, {
                 name: 'managers',
                 label: trans('managers'),
-                type: 'users'
+                type: 'user',
+                options: {multiple: true}
               }
             ]
           }, {
@@ -168,18 +169,7 @@ const CategoryFormModal = props => {
                 component: FieldsValuesComponent
               }
             ]
-          }, /*{
-            id: 'display',
-            icon: 'fa fa-fw fa-desktop',
-            title: trans('display_parameters'),
-            fields: [
-              {
-                name: 'details.color',
-                type: 'color',
-                label: trans('color')
-              }
-            ]
-          }, */{
+          }, {
             id: 'notifications',
             icon: 'fa fa-fw fa-bell',
             title: trans('notifications'),

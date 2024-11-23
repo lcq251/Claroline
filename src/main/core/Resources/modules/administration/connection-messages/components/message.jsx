@@ -198,7 +198,8 @@ const Message = (props) =>
         linked: [{
           name: 'restrictions.roles',
           label: trans('roles'),
-          type: 'roles',
+          type: 'role',
+          options: {multiple: true},
           displayed: restrictedByRoles,
           required: true
         }]

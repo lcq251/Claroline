@@ -178,8 +178,9 @@ const Events = (props) =>
         displayed: true
       }, {
         name: 'tutors',
-        type: 'users',
-        label: trans('tutors', {}, 'cursus')
+        type: 'user',
+        label: trans('tutors', {}, 'cursus'),
+        options: {multiple: true}
       }, {
         name: 'restrictions.users',
         alias: 'maxUsers',

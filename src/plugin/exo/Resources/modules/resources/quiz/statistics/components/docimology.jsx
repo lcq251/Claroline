@@ -100,7 +100,7 @@ SuccessDistribution.propTypes = {
 const ScoreDistribution = props =>
   <div className="paper-score-distribution">
     <h2>{trans('docimology_score_distribution', {}, 'quiz')}</h2>
-    <div className="help-block">
+    <div className="text-body-secondary">
       <span className="fa fa-fw fa-circle-info" />
       {trans('docimology_note_gauges_help', {}, 'quiz')}
     </div>
@@ -193,15 +193,15 @@ const DifficultyIndex = props =>
 
         <div className="docimology-help">
           <div className="icon">
-            <span className="help-block">
+            <span className="text-body-secondary">
               <span className="fa fa-fw fa-circle-info" />
             </span>
           </div>
           <div className="text">
-            <span className="help-block">{trans('docimology_difficulty_index_help_part_1', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_difficulty_index_help_part_2', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_difficulty_index_help_part_3', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_difficulty_index_help_part_4', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_difficulty_index_help_part_1', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_difficulty_index_help_part_2', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_difficulty_index_help_part_3', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_difficulty_index_help_part_4', {}, 'quiz')}</span>
           </div>
         </div>
       </div>
@@ -238,15 +238,15 @@ const DiscriminationIndex = props =>
 
         <div className="docimology-help">
           <div className="icon">
-            <span className="help-block">
+            <span className="text-body-secondary">
               <span className="fa fa-fw fa-circle-info" />
             </span>
           </div>
           <div className="text">
-            <span className="help-block">{trans('docimology_discrimination_coefficient_help_part_1', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_discrimination_coefficient_help_part_2', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_discrimination_coefficient_help_part_3', {}, 'quiz')}</span>
-            <span className="help-block">{trans('docimology_discrimination_coefficient_help_part_4', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_discrimination_coefficient_help_part_1', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_discrimination_coefficient_help_part_2', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_discrimination_coefficient_help_part_3', {}, 'quiz')}</span>
+            <span className="text-body-secondary">{trans('docimology_discrimination_coefficient_help_part_4', {}, 'quiz')}</span>
           </div>
         </div>
       </div>

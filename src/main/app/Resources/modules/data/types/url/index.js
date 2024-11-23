@@ -4,8 +4,6 @@ import {UrlCell} from '#/main/app/data/types/url/components/cell'
 import {UrlDisplay} from '#/main/app/data/types/url/components/display'
 import {UrlInput} from '#/main/app/data/types/url/components/input'
 
-// TODO : add validation
-
 const dataType = {
   name: 'url',
   meta: {

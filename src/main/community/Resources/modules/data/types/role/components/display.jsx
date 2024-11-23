@@ -2,25 +2,27 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Role as RoleTypes} from '#/main/community/prop-types'
-import {RoleCard} from '#/main/community/role/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
-const RoleDisplay = (props) => props.data ?
-  <RoleCard
-    data={props.data}
-    size="xs"
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-fw fa-id-badge"
-    title={trans('no_role')}
+const RoleDisplay = (props) =>
+  <EntityDisplay
+    {...props}
+    placeholder={trans('no_role', {}, 'community')}
+    card={(cardProps) => <DataMicro {...cardProps} object={{name: trans(cardProps.object.translationKey)}} />}
   />
 
 RoleDisplay.propTypes = {
-  data: T.arrayOf(T.shape(
-    RoleTypes.propTypes
-  ))
+  data: T.oneOfType([
+    T.shape(
+      RoleTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      RoleTypes.propTypes
+    ))
+  ])
 }
 
 export {

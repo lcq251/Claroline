@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {Badge} from '#/main/app/components/badge'
 import {Html} from '#/main/app/components/html'
+import {Tags} from '#/main/app/components/tags'
 
 const Content = (props) =>
   <>
@@ -18,15 +19,11 @@ const Content = (props) =>
     }
 
     {(!props.children && props.placeholder) &&
-      <em className="lead">{props.placeholder}</em>
+      <em className="lead text-body-tertiary">{props.placeholder}</em>
     }
 
     {!isEmpty(props.tags) &&
-      <div className="mt-4 d-flex flex-row gap-1" role="presentation">
-        {props.tags.map(tag =>
-          <Badge key={tag} variant="secondary" subtle={true} className="fs-sm lh-base">{tag}</Badge>
-        )}
-      </div>
+      <Tags tags={props.tags} className="mt-4" />
     }
   </>
 

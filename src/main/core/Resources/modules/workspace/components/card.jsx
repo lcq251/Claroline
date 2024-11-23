@@ -39,7 +39,7 @@ const WorkspaceCard = props =>
         {props.data.name}
       </>
     }
-    contentText={get(props.data, 'meta.description') || <em>{trans('no_description')}</em>}
+    contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
     meta={
       <>
         <span className="badge bg-secondary-subtle text-secondary-emphasis">{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</span>

@@ -1,62 +1,103 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
+import {param} from '#/main/app/config'
+import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
-import {UserList} from '#/main/community/user/components/list'
-import {User as UserTypes} from '#/main/community/prop-types'
+import {UserAvatar} from '#/main/app/user/components/avatar'
+import {constants} from '#/main/app/user/constants'
+import {UserStatus} from '#/main/app/user/components/status'
+import {UserCard} from '#/main/community/user/components/card'
 
-import {selectors} from '#/main/community/modals/users/store'
-
-const UsersModal = props => {
-  const selectAction = props.selectAction(props.selected)
-
-  return (
-    <Modal
-      icon="fa fa-fw fa-user"
-      {...omit(props, 'url', 'selected', 'selectAction', 'reset')}
-      className="data-picker-modal"
-      size="xl"
-      onExited={props.reset}
-      centered={true}
-    >
-      <UserList
-        name={selectors.STORE_NAME}
-        url={props.url}
-        primaryAction={undefined}
-        actions={undefined}
-      />
-
-      <Button
-        label={trans('select', {}, 'actions')}
-        {...selectAction}
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        primary={true}
-        disabled={0 === props.selected.length}
-        onClick={props.fadeModal}
-      />
-    </Modal>
-  )
-}
+const UsersModal = (props) =>
+  <PickerModal
+    {...props}
+    icon="fa fa-fw fa-user"
+    name="usersPicker"
+    definition={[
+      {
+        name: 'username',
+        type: 'string',
+        label: trans('username'),
+        displayable: param('community.username'),
+        displayed: param('community.username'),
+        sortable: param('community.username'),
+        filterable: false,
+        primary: param('community.username'),
+        render: (user) => (
+          <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
+            <UserAvatar user={user} size="xs" />
+            {user.username}
+          </div>
+        )
+      }, {
+        name: 'status',
+        type: 'choice',
+        label: trans('status'),
+        displayable: true,
+        filterable: true,
+        sortable: false,
+        options: {
+          choices: constants.USER_STATUSES
+        },
+        render: (user) => <UserStatus user={user} variant="badge" />
+      }, {
+        name: 'firstName',
+        type: 'string',
+        label: trans('first_name'),
+        displayed: true,
+        filterable: false
+      }, {
+        name: 'lastName',
+        type: 'string',
+        label: trans('last_name'),
+        displayed: true,
+        primary: !param('community.username'),
+        filterable: false
+      }, {
+        name: 'email',
+        type: 'email',
+        label: trans('email'),
+        displayable: true,
+        filterable: false
+      }, {
+        name: 'lastActivity',
+        type: 'date',
+        label: trans('last_activity'),
+        displayed: true,
+        options: {
+          time: true
+        }
+      }, {
+        name: 'meta.created',
+        type: 'date',
+        alias: 'created',
+        label: trans('creation_date'),
+        filterable: true
+      }, {
+        name: 'restrictions.disabled',
+        alias: 'disabled',
+        type: 'boolean',
+        label: trans('disabled'),
+        displayable: false,
+        sortable: false,
+        filterable: true
+      }
+    ]}
+    card={UserCard}
+  />
 
 UsersModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
-  subtitle: T.string,
   selectAction: T.func.isRequired,
-  fadeModal: T.func.isRequired,
-  selected: T.arrayOf(T.shape(UserTypes.propTypes)).isRequired,
-  reset: T.func.isRequired
+  multiple: T.bool
 }
 
 UsersModal.defaultProps = {
   url: ['apiv2_user_list'],
-  title: trans('users')
+  title: trans('users', {}, 'community')
 }
 
 export {

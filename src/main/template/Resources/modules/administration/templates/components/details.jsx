@@ -33,7 +33,7 @@ const TemplateDetails = (props) => {
       {false && !isEmpty(currentTemplate) &&
         <div className="p-4">
           <h1 className="h4">{currentTemplate.name}</h1>
-          <p className="lead">{currentTemplate.description || <em>{trans('no_description')}</em>}</p>
+          <p className="lead">{currentTemplate.description || <em className="text-body-tertiary">{trans('no_description')}</em>}</p>
 
           <Toolbar
             primaryAction="add"

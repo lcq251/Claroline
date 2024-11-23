@@ -58,11 +58,6 @@ const BadgeFormComponent = (props) =>
             label: trans('tags'),
             type: 'tag'
           }, {
-            name: 'issuer',
-            type: 'organization',
-            label: trans('organization', {}, 'community'),
-            displayed: 'workspace' !== props.currentContext.type
-          }, {
             name: 'workspace',
             type: 'workspace',
             label: trans('workspace'),

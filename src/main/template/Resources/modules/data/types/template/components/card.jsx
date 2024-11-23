@@ -12,7 +12,7 @@ const TemplateCard = props =>
     {...props}
     id={props.data.id}
     title={props.data.name}
-    contentText={props.data.description || <em>{trans('no_description')}</em>}
+    contentText={props.data.description || <em className="text-body-tertiary">{trans('no_description')}</em>}
     icon={props.data.name && <>{props.data.name.charAt(0)}</>}
     meta={
       <>

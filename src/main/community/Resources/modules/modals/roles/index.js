@@ -1,13 +1,13 @@
 /**
  * Roles picker modal.
  *
- * Displays the groups picker inside the modal.
+ * Displays the roles picker inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {RolesModal} from '#/main/community/modals/roles/containers/modal'
+import {RolesModal} from '#/main/community/modals/roles/components/modal'
 
 const MODAL_ROLES = 'MODAL_ROLES'
 

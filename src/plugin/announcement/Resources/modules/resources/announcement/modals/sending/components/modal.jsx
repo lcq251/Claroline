@@ -68,9 +68,10 @@ const SendingModal = (props) =>
             }, {
               name: 'roles',
               label: trans('roles_to_send_to', {}, 'announcement'),
-              type: 'roles',
+              type: 'role',
               required: true,
               options: {
+                multiple: true,
                 picker: {
                   filters: [
                     {property: 'type', value: userConst.ROLE_WORKSPACE},

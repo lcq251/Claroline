@@ -34,6 +34,16 @@ class DataInput extends Component {
     }
   }
 
+  componentDidCatch(error, info) {
+    // Example "componentStack":
+    //   in ComponentThatThrows (created by App)
+    //   in ErrorBoundary (created by App)
+    //   in div (created by App)
+    //   in App
+    console.log(error)
+    console.log(info)
+  }
+
   componentDidMount() {
     this.load()
   }
@@ -128,15 +138,18 @@ class DataInput extends Component {
           value: this.props.value,
           error: this.props.error,
           required: this.props.required,
+          help: this.props.help,
           recommended: this.props.recommended,
           placeholder: this.props.placeholder,
           disabled: this.props.disabled,
           autoComplete: this.props.autoComplete,
           autoFocus: this.props.autoFocus,
           size: this.props.size,
-          validating: this.props.validating,
           onChange: this.onChange,
-          onError: this.props.onError || identity
+          onError: this.props.onError || identity,
+
+          // for retro-compatibility
+          validating: this.props.validating
         })
       )
     }
@@ -149,14 +162,16 @@ class DataInput extends Component {
       {
         id: this.props.id,
         className: this.props.className,
+        icon: this.props.icon,
         label: this.props.label,
         hideLabel: this.props.hideLabel,
         help: this.props.help,
         error: this.props.error,
-        // for retro-compatibility : use required
-        optional: !this.props.required,
         required: !this.props.required,
         recommended: this.props.recommended,
+
+        // for retro-compatibility
+        optional: !this.props.required,
         validating: this.props.validating,
         warnOnly: !this.props.validating
       },
@@ -168,8 +183,9 @@ class DataInput extends Component {
 DataInput.propTypes = {
   id: T.string.isRequired,
   className: T.string,
-  type: T.string,
+  type: T.string.isRequired,
   label: T.string.isRequired,
+  icon: T.string,
   hideLabel: T.bool,
   options: T.object, // depends on the data type
   help: T.oneOfType([T.string, T.arrayOf(T.string)]),

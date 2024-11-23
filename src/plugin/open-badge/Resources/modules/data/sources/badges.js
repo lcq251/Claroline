@@ -68,14 +68,6 @@ export default (contextType, contextData, refresher, currentUser) => {
         options: {
           objectClass: 'Claroline\\OpenBadgeBundle\\Entity\\BadgeClass'
         }
-      }, {
-        name: 'organizations',
-        type: 'organizations',
-        label: trans('organizations'),
-        displayable: false,
-        displayed: false,
-        sortable: false,
-        filterable: true
       }
     ],
     card: BadgeCard

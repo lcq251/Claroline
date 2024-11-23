@@ -70,8 +70,9 @@ const Messages = (props) =>
       displayed: true
     }, {
       name: 'restrictions.roles',
-      type: 'roles',
+      type: 'role',
       label: trans('roles'),
+      options: {multiple: true},
       displayed: true,
       filterable: false
     }, {

@@ -36,13 +36,6 @@ export default (contextType, contextData, refresher, currentUser) => {
         options: {long: true},
         displayed: true,
         sortable: false
-      }, {
-        name: 'organizations',
-        label: trans('organizations'),
-        type: 'organizations',
-        displayed: false,
-        displayable: false,
-        sortable: false
       }
     ],
     card: GroupCard

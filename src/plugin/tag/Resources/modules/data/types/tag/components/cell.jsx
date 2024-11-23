@@ -3,15 +3,18 @@ import React, {Fragment} from 'react'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {toKey} from '#/main/core/scaffolding/text'
 import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
+import {Badge} from '#/main/app/components/badge'
 
 const TagCell = (props) => {
   if (0 !== props.data.length) {
     return (
-      <Fragment>
+      <div className="d-flex flex-row gap-1" role="presentation">
         {props.data.map(tag =>
-          <span key={toKey(tag)} className="tag badge text-bg-primary">{tag}</span>
+          <Badge key={toKey(tag)} subtle={true} variant="primary">
+            {tag}
+          </Badge>
         )}
-      </Fragment>
+      </div>
     )
   }
 

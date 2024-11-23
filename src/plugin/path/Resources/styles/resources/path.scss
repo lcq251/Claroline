@@ -57,33 +57,6 @@
   flex: 1; // will push navigation to the bottom of the page
 }
 
-/*.step-poster,
-.step-title {
-  margin-top: calc($line-height-computed - 4px); // 4px is to absorb progress bar height
-}*/
-
-/*.step-poster {
-  border-radius: $step-poster-border-radius;
-
-  + .step-title {
-    margin-top: $line-height-computed; // restore default margin
-  }
-}*/
-
-/*.step-primary-resource {
-  background: $step-resource-bg;
-  border-radius: $border-radius;
-
-  .page-header {
-    background-color: $step-resource-bg;
-  }
-}
-
-.step-primary-resource,
-.step-secondary-resources {
-  margin-bottom: $component-margin-bottom;
-}*/
-
 .step-progression {
   font-size: $step-status-size !important; // override font-awesome
 

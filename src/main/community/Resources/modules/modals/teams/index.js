@@ -7,7 +7,7 @@
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {TeamsModal} from '#/main/community/modals/teams/containers/modal'
+import {TeamsModal} from '#/main/community/modals/teams/components/modal'
 
 const MODAL_TEAMS = 'MODAL_TEAMS'
 

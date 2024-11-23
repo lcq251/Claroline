@@ -112,20 +112,24 @@ const desktopDefinition = () => [
         ]
       }, {
         name: 'parameters.profile.roles_edition',
-        type: 'roles',
-        label: trans('profile_roles_for_edition')
+        type: 'role',
+        label: trans('profile_roles_for_edition'),
+        options: {multiple: true}
       }, {
         name: 'parameters.profile.roles_confidential',
-        type: 'roles',
-        label: trans('profile_roles_for_confidential_fields')
+        type: 'role',
+        label: trans('profile_roles_for_confidential_fields'),
+        options: {multiple: true}
       }, {
         name: 'parameters.profile.roles_locked',
-        type: 'roles',
-        label: trans('profile_roles_for_locked_fields')
+        type: 'role',
+        label: trans('profile_roles_for_locked_fields'),
+        options: {multiple: true}
       }, {
         name: 'parameters.profile.show_email',
-        type: 'roles',
-        label: trans('show_email')
+        type: 'role',
+        label: trans('show_email'),
+        options: {multiple: true}
       }
     ]
   }

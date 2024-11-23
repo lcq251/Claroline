@@ -93,14 +93,7 @@ const Users = (props) => {
           alias: 'created',
           label: trans('creation_date'),
           filterable: true
-        }, /*{
-          name: 'organizations',
-          label: trans('organizations'),
-          type: 'organizations',
-          displayed: false,
-          displayable: false,
-          sortable: false
-        },*/ {
+        }, {
           name: 'restrictions.disabled',
           alias: 'disabled',
           type: 'boolean',

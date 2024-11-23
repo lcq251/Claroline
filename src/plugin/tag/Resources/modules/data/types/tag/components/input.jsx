@@ -1,6 +1,7 @@
 import React, {Component, forwardRef} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {implementPropTypes} from '#/main/app/prop-types'
@@ -18,19 +19,21 @@ import {MODAL_TAGS} from '#/plugin/tag/modals/tags'
 import {Tag as TagTypes} from '#/plugin/tag/data/types/tag/prop-types'
 import {Menu, MenuOverlay} from '#/main/app/overlays/menu'
 
+import {Badge} from '#/main/app/components/badge'
+
 const TagPreview = props =>
   <CallbackButton
-    className="tag-preview"
+    className="tag-preview w-100"
     callback={props.select}
   >
-    <span className="badge text-bg-primary me-1">{props.name}</span>
+    <Badge className="me-2 lh-base fs-sm" variant="primary" subtle={true}>{props.name}</Badge>
 
     {transChoice('count_elements', props.elements, {count: props.elements})}
 
     {props.meta.description &&
-      <div className="tag-description mt-1">
+      <p className="text-body-secondary fs-sm mt-1 mb-0">
         {props.meta.description}
-      </div>
+      </p>
     }
   </CallbackButton>
 
@@ -49,7 +52,7 @@ const TagsList = forwardRef((props, ref) =>
     }
 
     {(!props.isFetching && 0 !== props.tags.length) &&
-      <ul className="tags">
+      <ul className="list-unstyled mb-0 d-flex flex-row flex-wrap align-items-start gap-2">
         {props.tags.map((tag) =>
           <li key={tag.id}>
             <TagPreview
@@ -96,28 +99,17 @@ class TagInput extends Component {
     super(props)
 
     this.state = {
-      inputFocus: false,
       listOpened: false,
       currentTag: '',
       isFetching: false,
       results: []
     }
 
-    this.focus = this.focus.bind(this)
-    this.blur = this.blur.bind(this)
     this.close = this.close.bind(this)
     this.create = this.create.bind(this)
     this.select = this.select.bind(this)
     this.remove = this.remove.bind(this)
     this.onChange = this.onChange.bind(this)
-  }
-
-  focus() {
-    this.setState({inputFocus: true})
-  }
-
-  blur() {
-    this.setState({inputFocus: false})
   }
 
   close() {
@@ -223,80 +215,89 @@ class TagInput extends Component {
 
   render() {
     return (
-      <div
-        ref={element => this.input = element}
-        className={classes('tags-control dropdown', this.props.className, {
-          open: this.state.listOpened
-        })}
-      >
-        <div className={classes('input-group', {
-          [`input-group-${this.props.size}`]: !!this.props.size
-        })}>
-          <div className={classes('form-control', {
-            focus: this.state.inputFocus
-          })}>
-            {this.props.value && this.props.value.map(tag =>
-              <span key={toKey(tag)} className="tag badge text-bg-primary">
+      <>
+        <div
+          ref={element => this.input = element}
+          className={classes('tags-control dropdown', this.props.className, {
+            open: this.state.listOpened
+          })}
+          role="presentation"
+        >
+          <div className={classes('input-group', {
+            [`input-group-${this.props.size}`]: !!this.props.size
+          })} role="presentation">
+            <Button
+              className="btn btn-body"
+              type={MODAL_BUTTON}
+              icon="fa fa-fw fa-magnifying-glass"
+              label={trans('browse_tags', {}, 'actions')}
+              tooltip="right"
+              disabled={this.props.disabled}
+              modal={[MODAL_TAGS, {
+                selectAction: (selectedTags) => ({
+                  type: CALLBACK_BUTTON,
+                  label: trans('add', {}, 'actions'),
+                  callback: () => this.select(selectedTags)
+                })
+              }]}
+            />
+
+            <input
+              id={this.props.id}
+              className="form-control"
+              type="text"
+              disabled={this.props.disabled}
+              value={this.state.currentTag}
+              onChange={this.onChange}
+              placeholder="Recherchez un tag pour l'ajouter ou le créer s'il nexiste pas."
+            />
+          </div>
+
+          <MenuOverlay
+            id={`${this.props.id}-search-menu`}
+            show={this.state.listOpened}
+            onToggle={this.close}
+          >
+            <Menu
+              className="p-2"
+              align="end"
+              as={TagsList}
+
+              currentTag={this.state.currentTag}
+              isFetching={this.state.isFetching}
+              tags={this.state.results}
+              select={this.select}
+              create={this.create}
+              canCreate={param('canCreateTags')}
+            />
+          </MenuOverlay>
+        </div>
+
+        {isEmpty(this.props.value) &&
+          <em className="text-body-tertiary mt-3 d-block">{trans('no_tag', {}, 'tag')}</em>
+        }
+
+        {!isEmpty(this.props.value) &&
+          <div className="d-flex flex-row mt-3 gap-1" role="presentation">
+            {this.props.value.map(tag =>
+              <Badge key={toKey(tag)} variant="secondary" subtle={true} className="lh-base fs-sm d-flex align-items-center gap-2">
                 {tag}
 
                 <Button
-                  className="btn-link"
+                  className="btn btn-link text-reset p-0"
                   type={CALLBACK_BUTTON}
                   icon="fa fa-fw fa-times"
-                  label={trans('delete', {}, 'actions')}
+                  label={trans('remove', {}, 'actions')}
                   tooltip="bottom"
                   disabled={this.props.disabled}
                   callback={() => this.remove(tag)}
                   size="sm"
                 />
-              </span>
+              </Badge>
             )}
-
-            <input
-              type="text"
-              disabled={this.props.disabled}
-              value={this.state.currentTag}
-              onFocus={this.focus}
-              onBlur={this.blur}
-              onChange={this.onChange}
-            />
           </div>
-
-          <Button
-            className="btn btn-body"
-            type={MODAL_BUTTON}
-            icon="fa fa-fw fa-tags"
-            label={trans('add-tags', {}, 'actions')}
-            tooltip="left"
-            disabled={this.props.disabled}
-            modal={[MODAL_TAGS, {
-              selectAction: (selectedTags) => ({
-                type: CALLBACK_BUTTON,
-                label: trans('add', {}, 'actions'),
-                callback: () => this.select(selectedTags)
-              })
-            }]}
-          />
-        </div>
-
-        <MenuOverlay
-          id={`${this.props.id}-search-menu`}
-          show={this.state.listOpened}
-          onToggle={this.close}
-        >
-          <Menu
-            align="end"
-            as={TagsList}
-
-            currentTag={this.state.currentTag}
-            isFetching={this.state.isFetching}
-            tags={this.state.results}
-            select={this.select}
-            create={this.create}
-            canCreate={param('canCreateTags')}
-          />
-        </MenuOverlay>
-      </div>
+        }
+      </>
     )
   }
 }

@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const EntityDisplay = (props) => {
   if (!isEmpty(props.data)) {
@@ -11,15 +12,14 @@ const EntityDisplay = (props) => {
       return (
         <>
           {props.data.map(object => createElement(props.card, {
-            data: object,
-            size: 'xs'
+            object: object
           }))}
         </>
       )
     }
 
     return createElement(props.card, {
-      data: props.data,
+      object: props.data,
       size: 'xs'
     })
   }
@@ -37,7 +37,7 @@ EntityDisplay.propTypes = {
     T.object, // multiple = false
     T.arrayOf(T.object) // multiple = true
   ]),
-  card: T.any.isRequired,
+  card: T.any,
   icon: T.string,
   placeholder: T.string,
   multiple: T.bool
@@ -45,7 +45,8 @@ EntityDisplay.propTypes = {
 
 EntityDisplay.defaultProps = {
   multiple: false,
-  placeholder: trans('no_value')
+  placeholder: trans('no_value'),
+  card: DataMicro
 }
 
 export {

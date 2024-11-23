@@ -86,14 +86,6 @@ export default {
           objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
         }
       }, {
-        name: 'organizations',
-        type: 'organizations',
-        label: trans('organizations'),
-        displayable: false,
-        displayed: false,
-        sortable: false,
-        filterable: true
-      }, {
         name: 'meta.canceled',
         alias: 'canceled',
         label: trans('canceled'),

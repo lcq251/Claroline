@@ -2,25 +2,25 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Group as GroupTypes} from '#/main/community/prop-types'
-import {GroupCard} from '#/main/community/group/components/card'
 
-const GroupDisplay = (props) => props.data ?
-  <GroupCard
-    data={props.data}
-    size="xs"
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-users"
-    title={trans('no_group', {}, 'community')}
+const GroupDisplay = (props) =>
+  <EntityDisplay
+    {...props}
+    placeholder={trans('no_group', {}, 'community')}
   />
 
 GroupDisplay.propTypes = {
-  data: T.arrayOf(T.shape(
-    GroupTypes.propTypes
-  ))
+  data: T.oneOfType([
+    T.shape(
+      GroupTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      GroupTypes.propTypes
+    ))
+  ])
 }
 
 export {

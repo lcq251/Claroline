@@ -14,11 +14,7 @@ const OrganizationCard = (props) =>
     poster={props.data.thumbnail}
     icon={props.data.name && <>{props.data.name.charAt(0)}</>}
     title={props.data.name}
-    flags={[
-      get(props.data, 'meta.default', false) && ['fa fa-check', trans('default')],
-      get(props.data, 'restrictions.public') && ['fa fa-globe', trans('public_organization', {}, 'community')]
-    ].filter(flag => !!flag)}
-    contentText={get(props.data, 'meta.description') || <em>{trans('no_description')}</em>}
+    contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
     asIcon={true}
   />
 

@@ -64,10 +64,6 @@ const GroupFormComponent = props => {
               options: {
                 long: true
               }
-            }, {
-              name: 'organizations',
-              type: 'organizations',
-              label: trans('organizations')
             }
           ]
         }, {

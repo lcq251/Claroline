@@ -15,6 +15,7 @@ import {CourseCard} from '#/plugin/cursus/course/components/card'
 import {getActions, getDefaultAction} from '#/plugin/cursus/course/utils'
 
 import {ContentSizing} from '#/main/app/content/components/sizing'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const Courses = (props) => {
   const refresher = merge({
@@ -33,7 +34,8 @@ const Courses = (props) => {
           type: 'string',
           label: trans('name'),
           displayed: true,
-          primary: true
+          primary: true,
+          render: (course) => <DataMicro object={course} />
         }, {
           name: 'code',
           type: 'string',

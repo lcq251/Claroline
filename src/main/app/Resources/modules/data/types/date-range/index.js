@@ -8,12 +8,10 @@ import {DateRangeInput} from '#/main/app/data/types/date-range/components/input'
 import {DateRangeGroup} from '#/main/app/data/types/date-range/components/group'
 import {DateRangeDisplay} from '#/main/app/data/types/date-range/components/display'
 
-// todo implements Search
-
 const dataType = {
   name: 'date-range',
   meta: {
-    icon: 'fa fa-fw fa-calendar',
+    icon: 'fa fa-fw fa-calendar-week',
     label: trans('date_range', {}, 'actions'),
     description: trans('date_range_desc', {}, 'actions')
   },

@@ -80,10 +80,11 @@ const UserList = props =>
         }] : []}
         customDefinition={[
           {
-            name: 'groups',
+            name: 'group',
             label: trans('groups', {}, 'community'),
-            type: 'groups',
+            type: 'group',
             options: {
+              multiple: true,
               picker: 'workspace' === props.contextType ? {
                 url: ['apiv2_workspace_list_groups', {id: get(props.contextData, 'id')}]
               } : undefined
@@ -93,7 +94,7 @@ const UserList = props =>
             sortable: false
           }, {
             name: 'roles',
-            type: 'roles',
+            type: 'role',
             label: trans('roles'),
             calculated: (user) => 'workspace' === props.contextType ?
               getWorkspaceRoles(user.roles, get(props.contextData, 'id')) :
@@ -102,6 +103,7 @@ const UserList = props =>
             filterable: true,
             sortable: false,
             options: {
+              multiple: true,
               picker: 'workspace' === props.contextType ? {
                 url: ['apiv2_workspace_list_roles_configurable', {workspace: get(props.contextData, 'id')}],
                 filters: []
@@ -116,6 +118,7 @@ const UserList = props =>
             filterable: 'workspace' === props.contextType,
             sortable: false,
             options: {
+              multiple: true,
               picker: {
                 url: ['apiv2_team_workspace_list', {id: get(props.contextData, 'id')}]
               }

@@ -59,9 +59,17 @@ class PanelFacet
         $this->help = $help;
     }
 
-    public function getFieldsFacet(): Collection
+    public function getFields(): Collection
     {
         return $this->fieldsFacet;
+    }
+
+    /**
+     * @deprecated use getFields()
+     */
+    public function getFieldsFacet(): Collection
+    {
+        return $this->getFields();
     }
 
     public function addFieldFacet(FieldFacet $fieldFacet): void

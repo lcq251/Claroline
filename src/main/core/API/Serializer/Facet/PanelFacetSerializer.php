@@ -53,7 +53,7 @@ class PanelFacetSerializer
             ],
             'fields' => array_map(function (FieldFacet $fieldFacet) use ($options) {
                 return $this->ffSerializer->serialize($fieldFacet, $options);
-            }, $panel->getFieldsFacet()->toArray()),
+            }, $panel->getFields()->toArray()),
         ];
     }
 

@@ -8,8 +8,8 @@ import {ToolPage} from '#/main/core/tool'
 
 import {selectors} from '#/plugin/tag/tools/tags/store'
 import {TagCard} from '#/plugin/tag/card/components/tag'
-import {TagIcon} from '#/plugin/tag/components/icon'
 import {PageListSection} from '#/main/app/page'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const TagList = (props) =>
   <ToolPage>
@@ -42,12 +42,7 @@ const TagList = (props) =>
             label: trans('tag', {}, 'tag'),
             primary: true,
             displayed: true,
-            render: (tag) => (
-              <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
-                <TagIcon tag={tag} size="xs" />
-                {tag.name}
-              </div>
-            )
+            render: (tag) => <DataMicro object={tag} color={tag.color} />
           }, {
             name: 'meta.description',
             type: 'string',

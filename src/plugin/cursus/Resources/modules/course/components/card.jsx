@@ -16,7 +16,7 @@ const CourseCard = (props) =>
     poster={props.data.thumbnail}
     icon={props.data.name && <>{props.data.name.charAt(0)}</>}
     title={props.data.name}
-    contentText={props.data.plainDescription || <em>{trans('no_description')}</em>}
+    contentText={props.data.plainDescription || <em className="text-body-tertiary">{trans('no_description')}</em>}
     meta={
       <>
         {(get(props.data, 'registration.selfRegistration') || get(props.data, 'registration.autoRegistration')) &&

@@ -1,27 +1,24 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
+import {PropTypes as T} from 'prop-types'
 
-import {UrlButton} from '#/main/app/buttons/url'
-import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
+import {EntityCell} from '#/main/app/data/types/entity/components/cell'
 
-import {route} from '#/main/core/administration/routing'
+import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 
-const OrganizationCell = props => {
-  if (!isEmpty(props.data)) {
-    return (
-      <UrlButton target={'#'+route('community')+'/organizations/form/'+props.data.id}>
-        {props.data.name}
-      </UrlButton>
-    )
-  }
+const OrganizationCell = props =>
+  <EntityCell
+    {...props}
+  />
 
-  return '-'
-}
-
-OrganizationCell.propTypes = DataCellTypes.propTypes
-
-OrganizationCell.defaultProps = {
-  data: {}
+OrganizationCell.propTypes = {
+  data: T.oneOfType([
+    T.shape(
+      OrganizationTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      OrganizationTypes.propTypes
+    ))
+  ])
 }
 
 export {

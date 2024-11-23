@@ -71,7 +71,7 @@ const GroupList = props =>
         customDefinition={[
           {
             name: 'roles',
-            type: 'roles',
+            type: 'role',
             label: trans('roles'),
             calculated: (group) => !isEmpty(props.contextData) ?
               getWorkspaceRoles(group.roles, props.contextData.id) :
@@ -80,6 +80,7 @@ const GroupList = props =>
             filterable: true,
             sortable: false,
             options: {
+              multiple: true,
               picker: !isEmpty(props.contextData) ? {
                 url: ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}],
                 filters: []

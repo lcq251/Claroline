@@ -1,13 +1,13 @@
 /**
  * Users picker modal.
  *
- * Displays the users picker inside the modale.
+ * Displays the users picker inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {UsersModal} from '#/main/community/modals/users/containers/modal'
+import {UsersModal} from '#/main/community/modals/users/components/modal'
 
 const MODAL_USERS = 'MODAL_USERS'
 

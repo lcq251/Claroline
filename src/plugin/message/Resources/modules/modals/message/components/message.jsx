@@ -29,13 +29,15 @@ const MessageModal = props =>
           fields: [
             {
               name: 'receivers.users',
-              type: 'users',
-              label: trans('message_form_to', {}, 'message')
+              type: 'user',
+              label: trans('message_form_to', {}, 'message'),
+              options: {multiple: true}
             }, {
               name: 'receivers.groups',
-              type: 'groups',
+              type: 'group',
               label: trans('message_form_to', {}, 'message'),
               options: {
+                multiple: true,
                 // the only readOnly group is ROLE_USER which contains all the platform users
                 // we don't want someone to be able to send a message to everyone
                 picker: {filters: !props.isAdmin ? [{property: 'meta.readOnly', value: false, locked: true}] : []}
@@ -82,13 +84,13 @@ MessageModal.propTypes = {
   saveEnabled: T.bool.isRequired,
   receivers: T.shape({
     users: T.arrayOf(T.shape({
-      // TODO : user types
+      // user types
     })),
     groups: T.arrayOf(T.shape({
-      // TODO : group types
+      // group types
     })),
     workspaces: T.arrayOf(T.shape({
-      // TODO : workspace types
+      // workspace types
     }))
   }),
   reset: T.func.isRequired,

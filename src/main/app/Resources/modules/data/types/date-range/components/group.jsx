@@ -22,6 +22,10 @@ const DateRangeGroup = props => {
             'visually-hidden': props.hideLabel
           })}
         >
+          {props.icon &&
+            <span className={classes('', props.icon)} aria-hidden={true} />
+          }
+
           {props.label}
 
           {props.optional &&

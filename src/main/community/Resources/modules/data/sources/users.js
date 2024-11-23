@@ -86,24 +86,18 @@ export default (contextType, contextData, refresher, currentUser) => {
         }
       }, {
         name: 'groups',
-        type: 'groups',
+        type: 'group',
         label: trans('groups'),
+        options: {multiple: true},
         displayable: false,
         displayed: false,
         sortable: false,
         filterable: true
       }, {
         name: 'roles',
-        type: 'roles',
+        type: 'role',
         label: trans('roles'),
-        displayable: false,
-        displayed: false,
-        sortable: false,
-        filterable: true
-      }, {
-        name: 'organizations',
-        type: 'organizations',
-        label: trans('organizations'),
+        options: {multiple: true},
         displayable: false,
         displayed: false,
         sortable: false,

@@ -11,7 +11,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 
 import {getActions, getDefaultAction} from '#/main/community/organization/utils'
 import {OrganizationCard} from '#/main/community/organization/components/card'
-import {Thumbnail} from '#/main/app/components/thumbnail'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const OrganizationListComponent = props => {
   const refresher = merge({
@@ -31,12 +31,7 @@ const OrganizationListComponent = props => {
           label: trans('name'),
           displayed: true,
           primary: true,
-          render: (organization) => (
-            <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
-              <Thumbnail thumbnail={organization.thumbnail} name={organization.name} size="xs" square={true} />
-              {organization.name}
-            </div>
-          )
+          render: (organization) => <DataMicro object={organization} />
         }, {
           name: 'code',
           type: 'string',

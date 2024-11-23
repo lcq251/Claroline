@@ -15,7 +15,6 @@
 .content-dates {
   color: var(--#{$prefix}secondary-color);
   font-style: italic;
-  //font-size: $font-size-sm; // same than .user-micro
   text-align: right;
   > span {
     display: block;

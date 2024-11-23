@@ -142,7 +142,7 @@ class MatchFeedback extends Component {
   render() {
     return (
       <div className="match-feedback">
-        <span className="help-block">
+        <span className="text-body-secondary">
           <span className="fa fa-circle-info" /> {trans('match_player_click_link_help', {}, 'quiz')}
         </span>
 

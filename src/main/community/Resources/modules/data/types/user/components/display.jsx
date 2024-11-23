@@ -2,32 +2,27 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
+import {DataMicro} from '#/main/app/data/components/micro'
 
-import {route} from '#/main/community/user/routing'
 import {User as UserTypes} from '#/main/community/prop-types'
-import {UserCard} from '#/main/community/user/components/card'
 
-const UserDisplay = (props) => props.data ?
-  <UserCard
-    data={props.data}
-    size="xs"
-    primaryAction={{
-      type: LINK_BUTTON,
-      label: trans('open', {}, 'actions'),
-      target: route(props.data)
-    }}
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-user"
-    title={trans('no_user')}
+const UserDisplay = (props) =>
+  <EntityDisplay
+    {...props}
+    placeholder={trans('no_user', {}, 'community')}
+    card={(cardProps) => <DataMicro {...cardProps} object={{thumbnail: cardProps.object.picture, name: cardProps.object.name}} />}
   />
 
 UserDisplay.propTypes = {
-  data: T.shape(
-    UserTypes.propTypes
-  )
+  data: T.oneOfType([
+    T.shape(
+      UserTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      UserTypes.propTypes
+    ))
+  ])
 }
 
 export {

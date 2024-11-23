@@ -74,7 +74,7 @@ class UserValidator implements ValidatorInterface
 
         // todo validate Facet values
         if (array_key_exists('profile', $data)) {
-            /** @var UserProfile $userProfile */
+            /** @var UserProfile[] $userProfile */
             $userProfile = $this->om->getRepository(UserProfile::class)->findAll();
             if (empty($userProfile)) {
                 return $errors;
@@ -82,7 +82,7 @@ class UserValidator implements ValidatorInterface
 
             $allFields = [];
             $required = [];
-            foreach ($userProfile->getSections() as $section) {
+            foreach ($userProfile[0]->getSections() as $section) {
                 foreach ($section->getFields() as $field) {
                     $allFields[] = $field;
                     if ($field->isRequired()) {

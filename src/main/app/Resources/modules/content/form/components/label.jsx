@@ -13,6 +13,10 @@ const FormLabel = props =>
     })}
     htmlFor={props.fieldId}
   >
+    {props.icon &&
+      <span className={classes('', props.icon)} aria-hidden={true} />
+    }
+
     {props.label}
 
     {props.optional &&
@@ -24,6 +28,7 @@ const FormLabel = props =>
 
 FormLabel.propTypes = {
   fieldId: T.string.isRequired,
+  icon: T.string,
   label: T.string.isRequired,
   displayed: T.bool,
   required: T.bool,

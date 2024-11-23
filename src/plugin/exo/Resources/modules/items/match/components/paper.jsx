@@ -184,7 +184,7 @@ class MatchPaper extends Component {
         showYours={this.props.showYours}
         yours={
           <div className="match-paper">
-            <span className="help-block">
+            <span className="text-body-secondary">
               <span className="fa fa-fw fa-circle-info me-1" />{trans('match_player_click_link_help', {}, 'quiz')}
             </span>
 
@@ -232,7 +232,7 @@ class MatchPaper extends Component {
         }
         expected={
           <div className="match-paper">
-            <span className="help-block">
+            <span className="text-body-secondary">
               <span className="fa fa-fw fa-circle-info me-1" />{trans('match_player_click_link_help', {}, 'quiz')}
             </span>
 
@@ -307,7 +307,7 @@ class MatchPaper extends Component {
         }
         stats={this.props.showStats ?
           <div className="match-paper">
-            <span className="help-block">
+            <span className="text-body-secondary">
               <span className="fa fa-fw fa-circle-info me-1" />{trans('match_player_click_link_help', {}, 'quiz')}
             </span>
 

@@ -42,7 +42,10 @@ const CourseEditorPermissions = () => {
             {
               name: 'organizations',
               label: trans('organizations'),
-              type: 'organizations'
+              icon: 'fa fa-fw fa-building',
+              type: 'organization',
+              help: trans('Choisissez les organisations dans lesquels la formation doit apparaître. Seuls les membres de ces organisations pourront voir et s\'inscrire à la formation.'),
+              options: {multiple: true}
             }
           ]
         }

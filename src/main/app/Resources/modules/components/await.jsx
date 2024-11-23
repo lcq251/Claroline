@@ -58,7 +58,6 @@ class Await extends Component {
                 error: error
               })
 
-              // TODO : find better.
               /* eslint-disable no-console */
               console.error(error)
               /* eslint-enable no-console */

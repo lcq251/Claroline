@@ -91,6 +91,7 @@ class FormFieldset extends Component {
             id={this.getFieldId(field)}
             name={field.name}
             type={field.type}
+            icon={field.icon}
             label={field.label}
             hideLabel={field.hideLabel}
             options={field.options}

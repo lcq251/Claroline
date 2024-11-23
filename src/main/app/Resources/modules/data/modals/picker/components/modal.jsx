@@ -60,9 +60,9 @@ const PickerModal = (props) => {
 
   return (
     <Modal
+      size="xl"
       {...omit(props, 'name', 'definition', 'card', 'url', 'selectAction')}
       className="data-picker-modal"
-      size="xl"
       onExited={reset}
       centered={true}
       scrollable={true}

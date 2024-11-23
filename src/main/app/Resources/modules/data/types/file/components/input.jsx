@@ -12,6 +12,7 @@ import {actions} from '#/main/app/api/store'
 
 import {FileThumbnail} from '#/main/app/data/types/file/components/thumbnail'
 import {FileDrop} from '#/main/app/overlays/dnd/components/file-drop'
+import {FormHelp} from '#/main/app/content/form/components/help'
 
 class FileComponent extends Component {
   constructor(props, context) {
@@ -68,6 +69,10 @@ class FileComponent extends Component {
         onDrop={this.onChange}
       >
         <div className={classes('file-control', this.props.className)}>
+          {param('uploadMaxFilesize') &&
+            <FormHelp help={trans('max_filesize', {size: fileSize(param('uploadMaxFilesize'))})} className="mt-n1 mb-2" />
+          }
+
           <input
             id={this.props.id}
             type="file"
@@ -82,10 +87,6 @@ class FileComponent extends Component {
             aria-required={this.props.required}
             aria-invalid={!isEmpty(this.props.error)}
           />
-
-          {param('uploadMaxFilesize') &&
-            <div className="form-text">{trans('max_filesize', {size: fileSize(param('uploadMaxFilesize'))})}</div>
-          }
 
           {!isEmpty(value) &&
             <>

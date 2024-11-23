@@ -1,13 +1,13 @@
 /**
  * Groups picker modal.
  *
- * Displays the groups picker inside the modale.
+ * Displays the groups picker inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {GroupsModal} from '#/main/community/modals/groups/containers/modal'
+import {GroupsModal} from '#/main/community/modals/groups/components/modal'
 
 const MODAL_GROUPS = 'MODAL_GROUPS'
 

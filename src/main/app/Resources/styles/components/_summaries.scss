@@ -34,53 +34,11 @@
     white-space: nowrap; // avoid buttons to be displayed in column
 }
 
-.btn-summary-primary/*,
-.btn-summary*/ {
-    //border: none;
-    //padding: ($grid-gutter-width * .5) 0;
-    //color: $summary-link-color;
-
-    &:hover {
-        //color: $summary-link-hover-color;
-    }
-
-    &:focus,
-    &:active,
-    &.active {
-        &,
-        &:hover,
-        &:focus {
-            //color: $summary-link-active-color;
-        }
-    }
-
-    &[disabled],
-    &.disabled {
-        // avoid focus or hover effect on disabled
-        &,
-        &:hover,
-        &:focus {
-            //color: $summary-link-disabled-color;
-        }
-
-        // preserve active state on disabled (because active links are disabled)
-        &.active {
-            &,
-            &:hover,
-            &:focus {
-                //color: $summary-link-active-color;
-                //opacity: 1;
-            }
-        }
-    }
-}
-
 .btn-summary-primary {
     flex: 1;
     display: flex;
     align-items: center;
     padding: $summary-link-spacer-y $summary-link-spacer-x;
-    //padding-right: 5px;
     text-decoration: none;
 
     .action-icon {

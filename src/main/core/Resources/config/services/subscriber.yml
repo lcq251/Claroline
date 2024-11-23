@@ -57,12 +57,6 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
 
-    Claroline\CoreBundle\Subscriber\Facet\OrganizationFieldSubscriber:
-        tags: [kernel.event_subscriber]
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-
     Claroline\CoreBundle\Subscriber\Scheduler\SendEmailSubscriber:
         tags: [kernel.event_subscriber]
         arguments:

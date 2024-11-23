@@ -11,6 +11,7 @@ import {Button} from '#/main/app/action/components/button'
 import {MENU_BUTTON} from '#/main/app/buttons'
 import {CalendarMenu} from '#/main/app/data/types/date/components/menu'
 import {getValidationClassName} from '#/main/app/content/form/validator'
+import {FormHelp} from '#/main/app/content/form/components/help'
 
 class DateInput extends Component {
   constructor(props) {
@@ -30,52 +31,54 @@ class DateInput extends Component {
   }
 
   render() {
-    const displayFormat = getDisplayFormat(false, this.props.time)
-
     let displayValue = this.props.value || ''
     if (this.props.value && isValidDate(this.props.value, getApiFormat())) {
       displayValue = displayDate(this.props.value, false, this.props.time)
     }
 
     return (
-      <div className={classes('date-control input-group', this.props.className, {
-        [`input-group-${this.props.size}`]: !!this.props.size,
-        'has-validation': !isEmpty(this.props.error)
-      })} role="presentation">
-        <Button
-          className="btn btn-body rounded-end-0"
-          type={MENU_BUTTON}
-          icon={this.props.calendarIcon}
-          label={trans('show-calendar', {}, 'actions')}
-          tooltip="right"
-          size={this.props.size}
-          disabled={this.props.disabled}
-          menu={
-            <CalendarMenu
-              value={this.props.value}
-              onChange={this.props.onChange}
-              minDate={this.props.minDate}
-              maxDate={this.props.maxDate}
-              time={this.props.time}
-              minTime={this.props.minTime}
-              maxTime={this.props.maxTime}
-            />
-          }
-        />
+      <>
+        <FormHelp help={trans('date_format', {dateFormat: getDisplayFormat(false, this.props.time)})} className="mt-n1 mb-2" />
 
-        <input
-          id={this.props.id}
-          type="text"
-          autoComplete={this.props.autoComplete || 'date'}
-          className={classes('form-control', getValidationClassName(this.props.error, this.props.validating))}
-          placeholder={this.props.placeholder || displayFormat}
-          value={displayValue}
-          disabled={this.props.disabled}
-          onChange={this.onInputChange}
-          aria-required={this.props.required}
-          aria-invalid={!isEmpty(this.props.error)}
-        />
-      </div>
+        <div className={classes('date-control input-group', this.props.className, {
+          [`input-group-${this.props.size}`]: !!this.props.size,
+          'has-validation': !isEmpty(this.props.error)
+        })} role="presentation">
+          <Button
+            className="btn btn-body rounded-end-0"
+            type={MENU_BUTTON}
+            icon={this.props.calendarIcon}
+            label={trans('show-calendar', {}, 'actions')}
+            tooltip="right"
+            size={this.props.size}
+            disabled={this.props.disabled}
+            menu={
+              <CalendarMenu
+                value={this.props.value}
+                onChange={this.props.onChange}
+                minDate={this.props.minDate}
+                maxDate={this.props.maxDate}
+                time={this.props.time}
+                minTime={this.props.minTime}
+                maxTime={this.props.maxTime}
+              />
+            }
+          />
+
+          <input
+            id={this.props.id}
+            type="text"
+            autoComplete={this.props.autoComplete || 'date'}
+            className={classes('form-control', getValidationClassName(this.props.error, this.props.validating))}
+            placeholder={this.props.placeholder}
+            value={displayValue}
+            disabled={this.props.disabled}
+            onChange={this.onInputChange}
+            aria-required={this.props.required}
+            aria-invalid={!isEmpty(this.props.error)}
+          />
+        </div>
+      </>
     )
   }
 }

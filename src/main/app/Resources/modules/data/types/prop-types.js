@@ -255,6 +255,7 @@ const DataGroup = {
     label: T.string,
     hideLabel: T.bool,
     help: T.oneOfType([T.string, T.arrayOf(T.string)]),
+    icon: T.string,
     /**
      * @deprecated
      */

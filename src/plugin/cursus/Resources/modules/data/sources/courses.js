@@ -1,9 +1,11 @@
+import React from 'react'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
 
 import {param} from '#/main/app/config'
 import {route} from '#/plugin/cursus/course/routing'
 import {CourseCard} from '#/plugin/cursus/course/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 export default {
   name: 'courses',
@@ -19,7 +21,8 @@ export default {
         type: 'string',
         label: trans('name'),
         displayed: true,
-        primary: true
+        primary: true,
+        render: (course) => <DataMicro object={course} />
       }, {
         name: 'code',
         type: 'string',
@@ -65,14 +68,6 @@ export default {
         label: trans('order'),
         displayable: false,
         filterable: false
-      }, {
-        name: 'organizations',
-        type: 'organizations',
-        label: trans('organizations'),
-        displayable: false,
-        displayed: false,
-        sortable: false,
-        filterable: true
       }
     ],
     card: CourseCard

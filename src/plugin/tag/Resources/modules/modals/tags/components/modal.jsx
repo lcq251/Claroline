@@ -2,16 +2,18 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
+import {constants as listConst} from '#/main/app/content/list'
 
 import {TagCard} from '#/plugin/tag/card/components/tag'
 import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
-import {TagIcon} from '#/plugin/tag/components/icon'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const TagsModal = props =>
   <PickerModal
     {...props}
     icon="fa fa-fw fa-tags"
     name="tagsPicker"
+    size="md"
     definition={[
       {
         name: 'name',
@@ -19,28 +21,22 @@ const TagsModal = props =>
         label: trans('tag', {}, 'tag'),
         primary: true,
         displayed: true,
-        render: (tag) => (
-          <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
-            <TagIcon tag={tag} size="xs" />
-            {tag.name}
-          </div>
-        )
+        render: (tag) => <DataMicro object={tag} color={tag.color} />
       }, {
         name: 'meta.description',
         type: 'string',
         label: trans('description'),
-        displayed: true,
         options: {
           long: true
         }
       }, {
         name: 'elements',
         type: 'number',
-        label: trans('elements', {}, 'tag'),
-        displayed: true
+        label: trans('elements', {}, 'tag')
       }
     ]}
     card={TagCard}
+    displayMode={listConst.DISPLAY_TABLE}
   />
 
 TagsModal.propTypes = {

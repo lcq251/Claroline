@@ -135,9 +135,10 @@ const TabForm = (props) =>
                 name: 'restrictions.roles',
                 label: trans('roles'),
                 displayed: restrictedByRoles,
-                type: 'roles',
+                type: 'role',
                 required: true,
                 options: {
+                  multiple: true,
                   picker: props.currentContext.type === 'workspace' ? {
                     url: ['apiv2_workspace_list_roles', {id: get(props.currentContext, 'data.id')}],
                     filters: []

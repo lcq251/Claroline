@@ -28,13 +28,13 @@ const Modal = (props) => {
           })}
         >
           {props.icon &&
-            <span className={classes('modal-icon fs-5', props.icon)} aria-hidden={true} />
+            <span className={classes('modal-icon fs-5 text-primary', props.icon)} aria-hidden={true} />
           }
           <BaseModal.Title className="flex-fill" as="h5" id={titleId}>
             {props.title}
 
             {props.subtitle &&
-              <small className={!props.poster && 'text-body-secondary'}>{props.subtitle}</small>
+              <small className={classes('fs-base', !props.poster && 'text-body-secondary')}>{props.subtitle}</small>
             }
           </BaseModal.Title>
         </BaseModal.Header>

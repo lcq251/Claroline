@@ -3,6 +3,7 @@ import {trans} from '#/main/app/intl/translation'
 import {TeamDisplay} from '#/main/community/data/types/team/components/display'
 import {TeamInput} from '#/main/community/data/types/team/components/input'
 import {TeamFilter} from '#/main/community/data/types/team/components/filter'
+import {TeamCell} from '#/main/community/data/types/team/components/cell'
 
 const dataType = {
   name: 'team',
@@ -16,7 +17,8 @@ const dataType = {
   components: {
     details: TeamDisplay,
     input: TeamInput,
-    search: TeamFilter
+    search: TeamFilter,
+    table: TeamCell
   }
 }
 

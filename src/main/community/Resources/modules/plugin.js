@@ -76,21 +76,17 @@ registry.add('ClarolineCommunityBundle', {
       'edit'  : () => { return import(/* webpackChunkName: "community-action-team-edit" */   '#/main/community/actions/team/edit') },
       'fill': () => { return import(/* webpackChunkName: "community-action-team-fill" */ '#/main/community/actions/team/fill') },
       'empty': () => { return import(/* webpackChunkName: "community-action-team-empty" */ '#/main/community/actions/team/empty') },
-      'delete': () => { return import(/* webpackChunkName: "community-action-team-delete" */ '#/main/community/actions/team/delete') },
+      'delete': () => { return import(/* webpackChunkName: "community-action-team-delete" */ '#/main/community/actions/team/delete') }
     },
   },
 
   data: {
     types: {
-      'group'        : () => { return import(/* webpackChunkName: "core-data-type-group" */         '#/main/community/data/types/group') },
-      'groups'       : () => { return import(/* webpackChunkName: "core-data-type-groups" */        '#/main/community/data/types/groups') },
-      'organization' : () => { return import(/* webpackChunkName: "core-data-type-organization" */  '#/main/community/data/types/organization') },
-      'organizations': () => { return import(/* webpackChunkName: "core-data-type-organizations" */ '#/main/community/data/types/organizations') },
-      'role'         : () => { return import(/* webpackChunkName: "core-data-type-role" */          '#/main/community/data/types/role') },
-      'roles'        : () => { return import(/* webpackChunkName: "core-data-type-roles" */         '#/main/community/data/types/roles') },
-      'user'         : () => { return import(/* webpackChunkName: "core-data-type-user" */          '#/main/community/data/types/user') },
-      'users'        : () => { return import(/* webpackChunkName: "core-data-type-users" */         '#/main/community/data/types/users') },
-      'team'         : () => { return import(/* webpackChunkName: "core-data-type-team" */          '#/main/community/data/types/team') },
+      'group'        : () => { return import(/* webpackChunkName: "core-data-type-group" */        '#/main/community/data/types/group') },
+      'organization' : () => { return import(/* webpackChunkName: "core-data-type-organization" */ '#/main/community/data/types/organization') },
+      'role'         : () => { return import(/* webpackChunkName: "core-data-type-role" */         '#/main/community/data/types/role') },
+      'user'         : () => { return import(/* webpackChunkName: "core-data-type-user" */         '#/main/community/data/types/user') },
+      'team'         : () => { return import(/* webpackChunkName: "core-data-type-team" */         '#/main/community/data/types/team') }
     },
     sources: {
       'users': () => { return import(/* webpackChunkName: "core-data-source-users" */ '#/main/community/data/sources/users') },
@@ -102,7 +98,7 @@ registry.add('ClarolineCommunityBundle', {
       'my-roles': () => { return import(/* webpackChunkName: "core-data-source-my-roles" */ '#/main/community/data/sources/my-roles') },
       'teams-members': () => { return import(/* webpackChunkName: "core-data-source-teams-members" */ '#/main/community/data/sources/teams-members') },
       'organizations': () => { return import(/* webpackChunkName: "core-data-source-organizations" */ '#/main/community/data/sources/organizations') },
-      'my-organizations': () => { return import(/* webpackChunkName: "core-data-source-my-organizations" */ '#/main/community/data/sources/my-organizations') },
+      'my-organizations': () => { return import(/* webpackChunkName: "core-data-source-my-organizations" */ '#/main/community/data/sources/my-organizations') }
     }
   }
 })

@@ -32,6 +32,7 @@ class DateRangeInput extends Component {
         <FormGroup
           id={`${this.props.id}-start`}
           className="flex-fill"
+          //icon="fa fa-fw fa-calendar-check"
           label={trans('start_date')}
           validating={this.props.validating}
           error={isArray(this.props.error) && get(this.props, 'error[0]') ? get(this.props, 'error[0]') : null}
@@ -53,6 +54,7 @@ class DateRangeInput extends Component {
         <FormGroup
           id={`${this.props.id}-end`}
           className="flex-fill"
+          //icon="fa fa-fw fa-calendar-xmark"
           label={trans('end_date')}
           validating={this.props.validating}
           error={isArray(this.props.error) && get(this.props, 'error[1]') ? get(this.props, 'error[1]') : null}

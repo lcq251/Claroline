@@ -87,8 +87,9 @@ const SessionList = (props) =>
         sortable: param('pricing.enabled')
       }, {
         name: 'tutors',
-        type: 'users',
-        label: trans('tutors', {}, 'cursus')
+        type: 'user',
+        label: trans('tutors', {}, 'cursus'),
+        options: {multiple: true}
       }, {
         name: 'availableSeats',
         type: 'string',

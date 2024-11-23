@@ -1,14 +1,15 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {toKey} from '#/main/core/scaffolding/text'
+import {Badge} from '#/main/app/components/badge'
 
 const TagDisplay = (props) =>
-  <Fragment>
+  <>
     {props.data.map(tag =>
-      <span key={toKey(tag)} className="tag badge text-bg-primary">{tag}</span>
+      <Badge key={toKey(tag)} variant="secondary" subtle={true}>{tag}</Badge>
     )}
-  </Fragment>
+  </>
 
 TagDisplay.propTypes = {
   data: T.arrayOf(T.string).isRequired

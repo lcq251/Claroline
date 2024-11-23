@@ -60,7 +60,7 @@ const CommentsComponent = props =>
               cancel={() => props.switchCommentFormDisplay(false)}
             />
             {!props.canModerate && !props.canEdit && props.isModerated &&
-              <span className="help-block">
+              <span className="text-body-secondary">
                 <span className="fa fa-fw fa-circle-info" />
                 {trans('icap_blog_comment_form_moderation_help', {}, 'icap_blog')}
               </span>

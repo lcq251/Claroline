@@ -20,6 +20,7 @@ const FormGroup = props =>
       <FormLabel
         label={props.label}
         fieldId={props.id}
+        icon={props.icon}
         displayed={!props.hideLabel}
         required={props.required}
         recommended={props.recommended}

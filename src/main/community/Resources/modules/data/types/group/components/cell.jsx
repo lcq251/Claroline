@@ -1,28 +1,24 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
+import {PropTypes as T} from 'prop-types'
 
-import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
-import {UrlButton} from '#/main/app/buttons'
+import {EntityCell} from '#/main/app/data/types/entity/components/cell'
 
-import {route} from '#/main/community/group/routing'
+import {Group as GroupTypes} from '#/main/community/group/prop-types'
 
-const GroupCell = props => {
-  if (!props.placeholder && isEmpty(props.data)) {
-    return '-'
-  }
+const GroupCell = props =>
+  <EntityCell
+    {...props}
+  />
 
-  return (
-    <UrlButton target={'#'+route(props.data)}>
-      {props.data.name}
-    </UrlButton>
-  )
-}
-
-GroupCell.propTypes = DataCellTypes.propTypes
-
-GroupCell.defaultProps = {
-  data: {},
-  placeholder: true
+GroupCell.propTypes = {
+  data: T.oneOfType([
+    T.shape(
+      GroupTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      GroupTypes.propTypes
+    ))
+  ])
 }
 
 export {

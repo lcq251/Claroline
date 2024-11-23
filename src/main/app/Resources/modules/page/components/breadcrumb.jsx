@@ -30,7 +30,7 @@ const PageBreadcrumb = props => {
 }
 
 PageBreadcrumb.propTypes = {
-  current: T.string.isRequired,
+  current: T.string/*.isRequired*/,
   breadcrumb: T.arrayOf(T.shape({
     label: T.string.isRequired,
     target: T.string

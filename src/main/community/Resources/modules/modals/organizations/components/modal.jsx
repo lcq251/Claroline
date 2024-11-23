@@ -3,9 +3,9 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
-import {Thumbnail} from '#/main/app/components/thumbnail'
 
 import {OrganizationCard} from '#/main/community/organization/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const OrganizationsModal = (props) =>
   <PickerModal
@@ -19,12 +19,7 @@ const OrganizationsModal = (props) =>
         label: trans('name'),
         displayed: true,
         primary: true,
-        render: (organization) => (
-          <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
-            <Thumbnail thumbnail={organization.thumbnail} name={organization.name} size="xs" square={true} />
-            {organization.name}
-          </div>
-        )
+        render: (row) => <DataMicro object={row} />
       }, {
         name: 'code',
         type: 'string',
@@ -58,9 +53,7 @@ OrganizationsModal.propTypes = {
   url: T.oneOfType([T.string, T.array]),
   title: T.string,
   selectAction: T.func.isRequired,
-  multiple: T.bool,
-  // from modal
-  fadeModal: T.func.isRequired
+  multiple: T.bool
 }
 
 OrganizationsModal.defaultProps = {

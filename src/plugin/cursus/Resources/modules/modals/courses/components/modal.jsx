@@ -6,6 +6,7 @@ import {param} from '#/main/app/config'
 import {PickerModal} from '#/main/app/data/modals/picker/components/modal'
 
 import {CourseCard} from '#/plugin/cursus/course/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const CoursesModal = (props) =>
   <PickerModal
@@ -18,7 +19,8 @@ const CoursesModal = (props) =>
         type: 'string',
         label: trans('name'),
         displayed: true,
-        primary: true
+        primary: true,
+        render: (course) => <DataMicro object={course} />
       }, {
         name: 'code',
         type: 'string',

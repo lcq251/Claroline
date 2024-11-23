@@ -11,6 +11,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 
 import {getActions, getDefaultAction} from '#/main/community/team/utils'
 import {TeamCard} from '#/main/community/team/components/card'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const Teams = props => {
   const refresher = merge({
@@ -29,7 +30,8 @@ const Teams = props => {
           type: 'string',
           label: trans('name'),
           displayed: true,
-          primary: true
+          primary: true,
+          render: (row) => <DataMicro object={row} />
         }, {
           name: 'meta.description',
           type: 'string',
