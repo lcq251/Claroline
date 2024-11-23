@@ -103,15 +103,12 @@ class ContextMenu extends Component
 
     return (
       <>
-        <aside
-          role="navigation"
-          className={classes('app-toolbar', {
-            show: this.props.opened
-          })}
-        >
+        <aside className={classes('app-toolbar', {
+          show: this.props.opened
+        })}>
           <ContextNav />
 
-          <section className={classes('app-menu', {
+          <section className={classes('app-menu app-context-menu', {
             show: this.props.opened
           })}>
             {this.props.title &&
@@ -125,7 +122,7 @@ class ContextMenu extends Component
                     buttonName="btn focus-ring focus-ring-secondary"
                     actions={actions}
                     onClick={this.autoClose}
-                    toolbar="favourite more"
+                    toolbar="more"
                     tooltip="bottom"
                   />
                 }

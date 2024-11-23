@@ -15,8 +15,8 @@ const EditorMenuSection = (props) => {
           <h2 className="app-editor-menu-header mb-2">{props.title}</h2>
         }
 
-        <div className="nav flex-column nav-pills mx-n3" role="presentation">
-          <Button className="nav-link text-start w-100 py-2 text-truncate fw-normal" {...props.links[0]} />
+        <div className="app-menu-items mx-n4" role="presentation">
+          <Button className="app-menu-item text-truncate focus-ring" {...props.links[0]} />
         </div>
       </nav>
     )
@@ -28,10 +28,10 @@ const EditorMenuSection = (props) => {
         <h2 className="app-editor-menu-header mb-2">{props.title}</h2>
       }
 
-      <ul className="nav nav-pills flex-column mb-0 mx-n3">
+      <ul className="app-menu-items list-unstyled mb-0 mx-n4">
         {props.links.map(action =>
-          <li key={action.name} className="nav-item w-100">
-            <Button className="py-2 nav-link text-start w-100 text-truncate fw-normal" {...action} />
+          <li key={action.name} className="">
+            <Button className="app-menu-item text-truncate focus-ring" {...action} />
           </li>
         )}
       </ul>
@@ -60,7 +60,7 @@ const EditorMenu = (props) => {
   delete groups['undefined']
 
   return (
-    <nav className="app-editor-menu" aria-label={props.title}>
+    <nav className="app-menu app-editor-menu" aria-label={props.title}>
       {props.title &&
         <h1 className="app-editor-menu-header mb-2">{props.title}</h1>
       }

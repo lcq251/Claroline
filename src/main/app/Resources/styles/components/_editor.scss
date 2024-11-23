@@ -16,18 +16,10 @@
 }
 
 .app-editor-menu {
-  --#{$prefix}editor-menu-color: #{$toolbar-color};
-  --#{$prefix}editor-menu-bg: #{$toolbar-bg-subtle};
-
-  height: 100%;
-  overflow-y: auto;
-  scrollbar-width: thin;
   flex: 1 0 auto;
   max-width: calc(100% / 3);
   width: 100%;
 
-  background-color: var(--#{$prefix}editor-menu-bg);
-  color: var(--#{$prefix}editor-menu-color);
   padding: map-get($spacers, 5) map-get($spacers, 4);
 
   nav {
@@ -39,7 +31,7 @@
   margin-left: auto;
   max-width: 12rem;
   font-size: $label-font-size;
-  color: $label-color;
+  color: var(--#{$prefix}menu-header-color);
   text-transform: var(--#{$prefix}label-text-transform);
   white-space: nowrap;
   text-overflow: ellipsis;

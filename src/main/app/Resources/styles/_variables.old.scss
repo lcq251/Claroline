@@ -53,6 +53,8 @@ $toolbar-bg:             var(--#{$prefix}secondary-bg) !default; // var(--#{$pre
 $toolbar-bg-subtle:      var(--#{$prefix}tertiary-bg) !default;
 $toolbar-color:          null !default; //color-contrast($toolbar-bg-subtle) !default;
 
+$toolbar-header-color: var(--#{$prefix}tertiary-color) !default;
+
 // links
 $toolbar-link-spacer-y:       .25rem !default;
 $toolbar-link-spacer-x:       .5rem !default;

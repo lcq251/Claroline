@@ -20,6 +20,8 @@ $toolbar-bg-dark:             shade-color($gray-900, 25%) !default; // shade-col
 $toolbar-bg-subtle-dark:      shade-color($gray-900, 10%) !default; // shade-color($gray-900, 10%) !default;
 $toolbar-color-dark:          null !default; // color-contrast($toolbar-bg-subtle-dark) !default;
 
+$toolbar-header-color-dark: var(--#{$prefix}tertiary-color) !default;
+
 $toolbar-link-color-dark:          var(--#{$prefix}secondary-color) !default; // fade-out($toolbar-color-dark, .375) !default;
 $toolbar-link-bg-dark:             null !default;
 $toolbar-link-hover-color-dark:    null !default; // fade-out($toolbar-color-dark, .125) !default;

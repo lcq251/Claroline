@@ -20,6 +20,7 @@
 .app-menu {
     --#{$prefix}menu-color: #{$toolbar-color};
     --#{$prefix}menu-bg: #{$toolbar-bg-subtle};
+    --#{$prefix}menu-header-color: #{$toolbar-header-color};
 
     --#{$prefix}menu-item-color: #{$toolbar-link-color};
     --#{$prefix}menu-item-bg: #{$toolbar-link-bg};
@@ -33,24 +34,28 @@
     --#{$prefix}menu-item-disabled-color: #{$toolbar-link-disabled-color};
     --#{$prefix}menu-item-disabled-bg: #{$toolbar-link-disabled-bg};
 
+    // height: 100%;
     overflow-y: auto; // gets its own scrollbar
     scrollbar-width: thin;
-    overflow-x: hidden; // do not display scrollbar during animation
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+
     background-color: var(--#{$prefix}menu-bg);
-
     color: var(--#{$prefix}menu-color);
-
-    .dropdown-menu {
-        width: calc($toolbar-size - (map-get($icon-sizes, sm) + 1.5rem) - 2px);
-    }
 }
 
 .app-menu-backdrop {
     opacity: 0;
     transition: opacity .3s ease;
+}
+
+.app-context-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; // do not display scrollbar during animation
+
+    .dropdown-menu {
+        width: calc($toolbar-size - (map-get($icon-sizes, sm) + 1.5rem) - 2px);
+    }
 }
 
 .app-menu-cover {
@@ -168,11 +173,9 @@
     &:active,
     &.active {
         &,
-        //&:focus,
         &:hover {
             color: var(--#{$prefix}menu-item-active-color);
             background: var(--#{$prefix}menu-item-active-bg);
-            //box-shadow: none;
         }
 
         .fa {
@@ -189,17 +192,6 @@
             color: var(--#{$prefix}menu-item-disabled-color);
             background: var(--#{$prefix}menu-item-disabled-bg);
         }
-
-        // preserve active state on disabled (because active links are disabled)
-        /*&.active {
-            &,
-            &:hover,
-            &:focus {
-                color: var(--#{$prefix}menu-item-active-color);
-                background: var(--#{$prefix}menu-item-active-bg);
-                opacity: 1;
-            }
-        }*/
     }
 }
 
@@ -245,6 +237,7 @@
         .app-menu {
             --#{$prefix}menu-color: #{$toolbar-color-dark};
             --#{$prefix}menu-bg: #{$toolbar-bg-subtle-dark};
+            --#{$prefix}menu-header-color: #{$toolbar-header-color-dark};
 
             --#{$prefix}menu-item-color: #{$toolbar-link-color-dark};
             --#{$prefix}menu-item-bg: #{$toolbar-link-bg-dark};
