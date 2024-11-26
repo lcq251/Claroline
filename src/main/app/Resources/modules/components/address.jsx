@@ -6,18 +6,32 @@ import {CountryFlag} from '#/main/app/components/country-flag'
 
 const Address = (props) =>
   <>
-    <p className="mb-0">
-      {props.street1}
-      {props.street2}
-    </p>
-    <p className="mb-0">
-      {props.postalCode} {props.city}
-    </p>
+    {props.name &&
+      <p className="mb-0">
+        {props.name}
+      </p>
+    }
+
+    {(props.street1 || props.street2) &&
+      <p className="mb-0">
+        {props.street1}
+        {props.street2 && <br />}
+        {props.street2}
+      </p>
+    }
+
+    {(props.postalCode || props.city) &&
+      <p className="mb-0">
+        {props.postalCode} {props.city}
+      </p>
+    }
+
     {props.state &&
       <p className="mb-0">
         {props.state}
       </p>
     }
+
     {props.country &&
       <p className="mb-0">
         <CountryFlag className="me-2" countryCode={props.country} />
@@ -27,6 +41,7 @@ const Address = (props) =>
   </>
 
 Address.propTypes = {
+  name: T.string,
   street1: T.string,
   street2: T.string,
   postalCode: T.string,

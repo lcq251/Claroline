@@ -15,7 +15,7 @@ const Html = props => {
   return (
     <div
       {...omit(props, 'children', 'align')}
-      className={classes('content-html', `text-${props.align}`,props.className)}
+      className={classes('content-html', `text-${props.align}`, props.className)}
       dangerouslySetInnerHTML={{ __html: props.children }}
       role="presentation"
     />

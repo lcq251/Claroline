@@ -2,7 +2,6 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
-import {Badge} from '#/main/app/components/badge'
 import {Html} from '#/main/app/components/html'
 import {Tags} from '#/main/app/components/tags'
 
@@ -19,7 +18,7 @@ const Content = (props) =>
     }
 
     {(!props.children && props.placeholder) &&
-      <em className="lead text-body-tertiary">{props.placeholder}</em>
+      <em className="text-body-tertiary">{props.placeholder}</em>
     }
 
     {!isEmpty(props.tags) &&

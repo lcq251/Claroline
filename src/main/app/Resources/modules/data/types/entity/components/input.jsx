@@ -65,17 +65,31 @@ PickerButton.propTypes = {
 }
 
 const EntityInput = (props) => {
-  console.log(props)
+  if (isEmpty(props.value)) {
+    return (
+      <div className="py-1" role="presentation">
+        <PickerButton
+          className="btn-add btn btn-link text-start ms-n2 px-2"
+          icon="fa fa-plus"
+          label={props.add}
+          title={props.label}
+          {...props.picker}
+          type={props.pickerType}
+          size={props.size}
+          value={props.value}
+          onChange={props.onChange}
+          multiple={props.multiple}
+          disabled={props.disabled}
+          help={props.help}
+        />
+      </div>
+    )
+  }
+
   if (props.multiple) {
     return (
       <ul className="list-group list-group-striped list-group-flush mb-0 border-top border-bottom">
-        {isEmpty(props.value) &&
-          <li className="list-group-item">
-            <em className="text-body-tertiary d-block my-1">{props.placeholder}</em>
-          </li>
-        }
-
-        {!isEmpty(props.value) && props.value.map(object => (
+        {props.value.map(object => (
           <li key={object.id} className="list-group-item d-flex align-items-center gap-3 px-0">
             {createElement(props.card, {
               object: object,
@@ -109,6 +123,7 @@ const EntityInput = (props) => {
             className="btn-add btn btn-link text-start ms-n2 px-2"
             icon="fa fa-plus"
             label={props.add}
+            title={props.label}
             {...props.picker}
             type={props.pickerType}
             size={props.size}
@@ -124,44 +139,23 @@ const EntityInput = (props) => {
   }
 
   return (
-    <>
-      {!isEmpty(props.value) &&
-        <div className="d-flex align-items-center gap-3 border-top border-bottom" role="presentation" style={{padding: '.75rem 0'}}>
-          {createElement(props.card, {
-            object: props.value,
-            className: 'fw-normal'
-          })}
+    <div className="d-flex align-items-center gap-3 border-top border-bottom" role="presentation" style={{padding: '.75rem 0'}}>
+      {createElement(props.card, {
+        object: props.value,
+        className: 'fw-normal'
+      })}
 
-          <Button
-            className="btn btn-link ms-auto me-n2"
-            size="sm"
-            {...{
-              type: CALLBACK_BUTTON,
-              label: trans('remove', {}, 'actions'),
-              displayed: !props.disabled,
-              callback: () => props.onChange(null)
-            }}
-          />
-        </div>
-      }
-
-      {isEmpty(props.value) &&
-        <div className="py-1" role="presentation">
-          <PickerButton
-            className="btn-add btn btn-link text-start ms-n2 px-2"
-            icon="fa fa-plus"
-            label={props.add}
-            {...props.picker}
-            type={props.pickerType}
-            size={props.size}
-            value={props.value}
-            onChange={props.onChange}
-            multiple={props.multiple}
-            disabled={props.disabled}
-          />
-        </div>
-      }
-    </>
+      <Button
+        className="btn btn-link ms-auto me-n2"
+        size="sm"
+        {...{
+          type: CALLBACK_BUTTON,
+          label: trans('remove', {}, 'actions'),
+          displayed: !props.disabled,
+          callback: () => props.onChange(null)
+        }}
+      />
+    </div>
   )
 }
 
@@ -190,15 +184,13 @@ implementPropTypes(EntityInput, DataInputTypes, {
   card: T.any,
   icon: T.string,
   add: T.string,
-  placeholder: T.string,
   multiple: T.bool
 }, {
   value: null,
   picker: {},
   multiple: false,
   card: DataMicro,
-  add: trans('add', {}, 'actions'),
-  placeholder: trans('no_value')
+  add: trans('add', {}, 'actions')
 })
 
 export {

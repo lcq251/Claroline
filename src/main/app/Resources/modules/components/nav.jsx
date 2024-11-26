@@ -4,6 +4,7 @@ import classes from 'classnames'
 
 import {Button} from '#/main/app/action'
 import isEmpty from 'lodash/isEmpty'
+import {Badge} from '#/main/app/components/badge'
 
 const Nav = (props) => {
   const displayedItems = props.items
@@ -26,7 +27,11 @@ const Nav = (props) => {
                 className={classes('nav-link', {
                   active: item.active
                 })}
-              />
+              >
+                {(item.badge || 0 === item.badge) &&
+                  <Badge className="icon-with-text-left" subtle={true} variant={item.active ? 'primary': 'secondary'}>{item.badge}</Badge>
+                }
+              </Button>
             </li>
           )
         }

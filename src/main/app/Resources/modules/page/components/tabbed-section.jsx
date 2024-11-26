@@ -24,6 +24,7 @@ const PageTabbedSection = (props) =>
         type: LINK_BUTTON,
         icon: tab.icon,
         label: tab.title,
+        badge: tab.badge,
         target: `${props.path}${tab.path}`,
         displayed: tab.displayed,
         exact: tab.exact,
@@ -50,7 +51,8 @@ PageTabbedSection.propTypes = {
     ...RouteTypes.propTypes,
     icon: T.string,
     title: T.string,
-    displayed: T.bool
+    displayed: T.bool,
+    badge: T.element
   }))
 }
 
