@@ -8,9 +8,14 @@
   "browse-workspaces": "Browse workspaces",
   "show-workspace": "Show workspace",
   "export-results": "Export results (.csv)",
-  "book": "Book",
   "show-results": "Show results",
   "plan-sending": "Plan sending",
   "ws-register": "Register to workspaces",
-  "show-statistics": "Show statistics"
+  "show-statistics": "Show statistics",
+  "add_workspace": "Add a workspace",
+  "add_workspaces": "Add workspaces",
+  "add_workspace_model": "Add a workspace model",
+  "add_workspace_models": "Add workspace models",
+  "add_location": "Add a location",
+  "add_locations": "Add locations"
 }

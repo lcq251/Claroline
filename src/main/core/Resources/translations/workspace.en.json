@@ -1,6 +1,7 @@
 {
   "workspace": "Workspace",
   "workspaces": "Workspaces",
+  "workspace_model": "Workspace model",
   "new_workspace": "New workspace",
   "all_workspaces": "All workspaces",
   "managed_workspaces": "Managed workspaces",
@@ -28,13 +29,6 @@
   "self_register_confirm_message": "{1} Are you sure you want to subscribe to this workspace ?|[2,Inf[ Are you sure you want to subscribe to these %count% workspaces ?",
 
   "is_archived": "This workspace is archived.",
-  "workspace_hidden": "This workspace is hidden.",
-  "workspace_model": "This workspace is a model.",
-  "workspace_personal": "This workspace is a personal workspace.",
-  "workspace_manager_registration": "Registration is managed by managers.",
-  "workspace_public_registration": "Registration is public.",
-  "workspace_manager_unregistration": "Unregistration is managed by managers.",
-  "workspace_public_unregistration": "Unregistration is public.",
   "not_found": "Workspace not found",
   "not_found_desc": "We are sorry, we could not find your workspace. It is possible that it does not exist (or no longer) or that the URL used is incorrect.",
   "loading": "We are loading your workspace...",
@@ -76,5 +70,6 @@
   "forbidden_desc": "You do not have access to this workspace. Please contact an administrator to give you the necessary rights.",
   "my_workspaces_menu": "My workspaces",
   "public_workspaces_menu": "Public workspaces",
-  "managed_workspaces_menu": "Managed workspaces"
+  "managed_workspaces_menu": "Managed workspaces",
+  "workspace_user_register_validation_message": "Do you really want to register the following users: [%users%] ?"
 }

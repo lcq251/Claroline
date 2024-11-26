@@ -15,9 +15,9 @@ import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ContentHtml} from '#/main/app/content/components/html'
 
 import {selectors} from '#/main/core/administration/connection-messages/store/selectors'
-import {ConnectionMessage as ConnectionMessageTypes, Slide as SlideTypes} from '#/main/core/data/types/connection-message/prop-types'
+import {ConnectionMessage as ConnectionMessageTypes, Slide as SlideTypes} from '#/main/core/administration/connection-messages/prop-types'
 
-import {constants} from '#/main/core/data/types/connection-message/constants'
+import {constants} from '#/main/core/administration/connection-messages/constants'
 import {MODAL_SLIDE_FORM} from '#/main/core/administration/connection-messages/modals/slide'
 
 const restrictedByDates = (message) => get(message, 'restrictions.enableDates') || (!isEmpty(get(message, 'restrictions.dates')) && (!isEmpty(get(message, 'restrictions.dates.0')) || !isEmpty(get(message, 'restrictions.dates.1'))))

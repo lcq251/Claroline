@@ -127,12 +127,10 @@ registry.add('ClarolineCoreBundle', {
 
   data: {
     types: {
-      'connection-message': () => { return import(/* webpackChunkName: "core-data-type-connection-message" */ '#/main/core/data/types/connection-message') },
-      'location'          : () => { return import(/* webpackChunkName: "core-data-type-location" */           '#/main/core/data/types/location') },
-      'resource'          : () => { return import(/* webpackChunkName: "core-data-type-resource" */           '#/main/core/data/types/resource') },
-      'resources'         : () => { return import(/* webpackChunkName: "core-data-type-resources" */          '#/main/core/data/types/resources') },
-      'workspace'         : () => { return import(/* webpackChunkName: "core-data-type-workspace" */          '#/main/core/data/types/workspace') },
-      'workspaces'        : () => { return import(/* webpackChunkName: "core-data-type-workspaces" */         '#/main/core/data/types/workspaces') }
+      'location'          : () => { return import(/* webpackChunkName: "core-data-type-location" */  '#/main/core/data/types/location') },
+      'resource'          : () => { return import(/* webpackChunkName: "core-data-type-resource" */  '#/main/core/data/types/resource') },
+      'resources'         : () => { return import(/* webpackChunkName: "core-data-type-resources" */ '#/main/core/data/types/resources') },
+      'workspace'         : () => { return import(/* webpackChunkName: "core-data-type-workspace" */ '#/main/core/data/types/workspace') }
     },
     sources: {
       'resources'    : () => { return import(/* webpackChunkName: "core-data-source-resources" */    '#/main/core/data/sources/resources') },

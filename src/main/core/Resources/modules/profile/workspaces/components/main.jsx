@@ -28,7 +28,7 @@ const ProfileWorkspaces = (props) => {
         name: 'add',
         type: MODAL_BUTTON,
         // icon: 'fa fa-fw fa-plus',
-        label: trans('add_workspace'),
+        label: trans('add_workspace', {}, 'actions'),
         displayed: props.canCreate,
         modal: [MODAL_WORKSPACE_CREATION]
       }}*/

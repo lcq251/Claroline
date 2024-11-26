@@ -1,6 +1,7 @@
 {
   "workspace": "Espace d'activités",
   "workspaces": "Espaces d'activités",
+  "workspace_model": "Modèle d'espaces d'activités",
   "new_workspace": "Nouvel espace d'activités",
   "all_workspaces": "Tous les espaces",
   "managed_workspaces": "Espaces d'activités gérés",
@@ -29,13 +30,6 @@
   "self_register_confirm_message": "{1} Êtes-vous sûr(e) de vouloir vous inscrire à cet espace d'activités ?|[2,Inf[ Êtes-vous sûr(e) de vouloir vous inscrire à ces %count% espaces d'activités ?",
 
   "is_archived": "Cet espace d'activité est archivé.",
-  "workspace_hidden": "Cet espace d'activités est caché.",
-  "workspace_model": "Cet espace d'activités est un modèle.",
-  "workspace_personal": "Cet espace d'activités est un espace personnel.",
-  "workspace_manager_registration": "Les inscriptions sont gérées par les gestionnaires.",
-  "workspace_public_registration": "Les inscriptions sont publiques.",
-  "workspace_manager_unregistration": "Les désinscriptions sont gérées par les gestionnaires.",
-  "workspace_public_unregistration": "Les désinscriptions sont publiques.",
   "not_found": "Espace d'activités non trouvé",
   "not_found_desc": "Nous sommes désolés, nous n'avons pas pu trouver votre espace d'activités. Il est possible qu'il n'existe pas (ou plus) ou que l'URL utilisée soit incorrecte.",
   "loading": "Nous chargeons votre espace d'activités...",
@@ -77,5 +71,6 @@
   "forbidden_desc": "Vous n'avez pas accès à cet espace d'activités. Veuillez contacter un administrateur afin qu'il vous donne les droits nécessaires.",
   "my_workspaces_menu": "Mes espaces",
   "public_workspaces_menu": "Espaces publics",
-  "managed_workspaces_menu": "Espaces gérés"
+  "managed_workspaces_menu": "Espaces gérés",
+  "workspace_user_register_validation_message": "Voulez-vous vraiment inscrire les utilisateurs suivants: [%users%] ?"
 }

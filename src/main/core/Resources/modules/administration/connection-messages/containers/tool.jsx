@@ -5,7 +5,7 @@ import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {actions} from '#/main/core/administration/connection-messages/store/actions'
 import {selectors} from '#/main/core/administration/connection-messages/store/selectors'
 
-import {ConnectionMessage as ConnectionMessageTypes} from '#/main/core/data/types/connection-message/prop-types'
+import {ConnectionMessage as ConnectionMessageTypes} from '#/main/core/administration/connection-messages/prop-types'
 import {ConnectionMessagesTool as ConnectionMessagesToolComponent} from '#/main/core/administration/connection-messages/components/tool'
 
 const ConnectionMessagesTool = connect(

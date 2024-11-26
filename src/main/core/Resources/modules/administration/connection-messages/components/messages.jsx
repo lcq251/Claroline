@@ -6,8 +6,8 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 import {MODAL_CONNECTION} from '#/main/app/modals/connection'
 import {selectors} from '#/main/core/administration/connection-messages/store/selectors'
-import {constants} from '#/main/core/data/types/connection-message/constants'
-import {ConnectionMessageCard} from '#/main/core/data/types/connection-message/components/card'
+import {constants} from '#/main/core/administration/connection-messages/constants'
+import {ConnectionMessageCard} from '#/main/core/administration/connection-messages/components/card'
 
 const Messages = (props) =>
   <ListData

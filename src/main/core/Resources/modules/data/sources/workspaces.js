@@ -3,7 +3,7 @@ import {trans} from '#/main/app/intl/translation'
 
 import {WorkspaceCard} from '#/main/core/workspace/components/card'
 import {getActions, getDefaultAction} from '#/main/core/workspace/utils'
-import {WorkspaceIcon} from '#/main/app/contexts/workspace/components/icon'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 export default (contextType, contextData, refresher, currentUser) => ({
   primaryAction: (resourceNode) => getDefaultAction(resourceNode, refresher, null, currentUser),
@@ -15,23 +15,18 @@ export default (contextType, contextData, refresher, currentUser) => ({
       label: trans('name'),
       displayed: true,
       primary: true,
-      render: (workspace) => (
-        <div className="d-flex flex-direction-row gap-3 align-items-center">
-          <WorkspaceIcon workspace={workspace} size="xs" />
-          {workspace.name}
-        </div>
-      )
-    }, {
-      name: 'code',
-      type: 'string',
-      label: trans('code'),
-      displayed: true
+      render: (row) => <DataMicro object={row} />
     }, {
       name: 'meta.description',
       type: 'string',
       label: trans('description'),
       sortable: false,
       options: {long: true}
+    }, {
+      name: 'code',
+      type: 'string',
+      label: trans('code'),
+      displayed: true
     }, {
       name: 'meta.created',
       label: trans('creation_date'),
@@ -45,11 +40,6 @@ export default (contextType, contextData, refresher, currentUser) => ({
       type: 'date',
       alias: 'updatedAt',
       filterable: false
-    }, {
-      name: 'meta.personal',
-      label: trans('personal_workspace'),
-      type: 'boolean',
-      alias: 'personal'
     }, {
       name: 'archived',
       label: trans('archived'),

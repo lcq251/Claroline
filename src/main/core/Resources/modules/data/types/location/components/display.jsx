@@ -2,23 +2,25 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
+import {EntityDisplay} from '#/main/app/data/types/entity'
 
-import {Location as LocationType} from '#/main/community/prop-types'
-import {LocationCard} from '#/main/core/data/types/location/components/card'
+import {Location as LocationTypes} from '#/main/community/prop-types'
 
-const LocationDisplay = (props) => props.data ?
-  <LocationCard
-    data={props.data}
-    size="xs"
-  /> :
-  <ContentPlaceholder
-    icon="fa fa-map-marker-alt"
-    title={trans('no_location')}
+const LocationDisplay = (props) =>
+  <EntityDisplay
+    {...props}
+    placeholder={trans('no_location', {}, 'location')}
   />
 
 LocationDisplay.propTypes = {
-  data: T.shape(LocationType.propTypes)
+  data: T.oneOfType([
+    T.shape(
+      LocationTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      LocationTypes.propTypes
+    ))
+  ])
 }
 
 export {

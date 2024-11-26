@@ -24,7 +24,7 @@ const LocationList = props =>
           name: 'add',
           type: LINK_BUTTON,
           // icon: 'fa fa-fw fa-plus',
-          label: trans('add_location', {}, 'location'),
+          label: trans('add_location', {}, 'actions'),
           target: `${props.path}/new`
         }}
         definition={[
@@ -34,6 +34,12 @@ const LocationList = props =>
             label: trans('name'),
             displayed: true,
             primary: true
+          }, {
+            name: 'meta.description',
+            type: 'string',
+            label: trans('description'),
+            options: {long: true},
+            sortable: false
           }, {
             name: 'address',
             type: 'address',

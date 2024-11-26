@@ -16,7 +16,7 @@ const LocationNew = (props) =>
         name: 'add',
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-plus',
-        label: trans('add_location', {}, 'location'),
+        label: trans('add_location', {}, 'actions'),
         target: `${props.path}/new`,
         group: trans('management'),
         primary: true

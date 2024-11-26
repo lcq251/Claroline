@@ -3,16 +3,17 @@ import {ToolMain as Tool} from '#/main/core/tool/components/main'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
 import {constants} from '#/main/core/tool/constants'
 import {selectors} from '#/main/core/tool/store'
+import {CommandPalette} from '#/main/core/tool/command-palette'
 
 /**
  * Declare a new tool to the application.
  * NB1. Tool MUST be registered in the `plugin.js` file of its plugin.
  * NB2. Tool component tree MUST start with the `Tool` component
  */
-function declareTool(ToolComponent, ToolEditorComponent) {
+function declareTool(ToolComponent, commands) {
   return {
     component: ToolComponent,
-    parameters: ToolEditorComponent
+    commands: commands
   }
 }
 
@@ -23,5 +24,6 @@ export {
   ToolPage,
   constants,
   selectors,
-  declareTool
+  declareTool,
+  CommandPalette
 }

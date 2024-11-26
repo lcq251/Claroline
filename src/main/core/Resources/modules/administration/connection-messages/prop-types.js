@@ -2,7 +2,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {Role as RoleTypes} from '#/main/community/prop-types'
 
-import {constants} from '#/main/core/data/types/connection-message/constants'
+import {constants} from '#/main/core/administration/connection-messages/constants'
 
 const Slide = {
   propTypes: {

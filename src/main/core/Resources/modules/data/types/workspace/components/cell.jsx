@@ -1,27 +1,24 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
+import {PropTypes as T} from 'prop-types'
 
-import {UrlButton} from '#/main/app/buttons/url'
-import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
+import {EntityCell} from '#/main/app/data/types/entity/components/cell'
 
+import {Workspace as WorkspaceTypes} from '#/main/core/workspace/prop-types'
 import {route} from '#/main/core/workspace/routing'
 
-const WorkspaceCell = props => {
-  if (!isEmpty(props.data)) {
-    return (
-      <UrlButton target={'#'+route(props.data)}>
-        {props.data.name}
-      </UrlButton>
+const WorkspaceCell = (props) =>
+  <EntityCell
+    {...props}
+    link={(item) => route(item)}
+  />
+
+WorkspaceCell.propTypes = {
+  data: T.oneOfType([
+    T.shape(WorkspaceTypes.propTypes),
+    T.arrayOf(
+      T.shape(WorkspaceTypes.propTypes)
     )
-  }
-
-  return '-'
-}
-
-WorkspaceCell.propTypes = DataCellTypes.propTypes
-
-WorkspaceCell.defaultProps = {
-  data: {}
+  ])
 }
 
 export {

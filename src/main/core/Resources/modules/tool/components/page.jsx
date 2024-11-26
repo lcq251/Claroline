@@ -11,6 +11,8 @@ import {ContextPage} from '#/main/app/context/components/page'
 import {ToolContext} from '#/main/core/tool/context'
 import {selectors, actions} from '#/main/core/tool/store'
 import {getActions} from '#/main/core/tool/utils'
+import {MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
 
 const ToolPage = props => {
   const toolDef = useContext(ToolContext)
@@ -41,7 +43,13 @@ const ToolPage = props => {
         // get actions injected through plugins and the ones defined by the current tool
         actions: getActions(toolData, currentContext, {
           update: reload
-        }, toolPath, currentUser).then(loadedActions => [].concat(loadedActions, toolDef.actions || []))
+        }, toolPath, currentUser).then(loadedActions => [{
+          name: 'search',
+          type: MODAL_BUTTON,
+          icon: 'fa fa-fw fa-wand-magic-sparkles',
+          label: trans('search', {}, 'actions') + ' (Ctrl + K)',
+          modal: [MODAL_COMMAND_PALETTE]
+        }].concat(loadedActions, toolDef.actions || []))
       }}
 
       styles={[].concat(toolDef.styles, props.styles || [])}

@@ -1,5 +1,5 @@
 {
-  "add_location": "Ajouter un lieu",
   "new_location": "Nouveau lieu",
-  "location_name": "Lieu : %name%"
+  "location_name": "Lieu : %name%",
+  "no_location": "Aucun lieu."
 }

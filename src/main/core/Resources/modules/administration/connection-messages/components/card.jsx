@@ -3,8 +3,8 @@ import {PropTypes as T} from 'prop-types'
 
 import {DataCard} from '#/main/app/data/components/card'
 
-import {constants} from '#/main/core/data/types/connection-message/constants'
-import {ConnectionMessage as ConnectionMessageTypes} from '#/main/core/data/types/connection-message/prop-types'
+import {constants} from '#/main/core/administration/connection-messages/constants'
+import {ConnectionMessage as ConnectionMessageTypes} from '#/main/core/administration/connection-messages/prop-types'
 
 const ConnectionMessageCard = props =>
   <DataCard

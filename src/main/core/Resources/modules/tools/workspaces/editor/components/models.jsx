@@ -56,7 +56,7 @@ const EditorModels = () =>
     <Button
       className="btn btn-primary mb-3 align-self-start"
       type={MODAL_BUTTON}
-      label={trans('add_workspace_model')}
+      label={trans('add_workspace_model', {}, 'actions')}
       modal={[MODAL_WORKSPACE_CREATION]}
     />
 

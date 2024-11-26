@@ -11,7 +11,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 
 import {getActions, getDefaultAction} from '#/main/core/workspace/utils'
 import {WorkspaceCard} from '#/main/core/workspace/components/card'
-import {WorkspaceIcon} from '#/main/app/contexts/workspace/components/icon'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const Workspaces = (props) => {
   const workspacesRefresher = merge({
@@ -31,12 +31,7 @@ const Workspaces = (props) => {
           label: trans('name'),
           displayed: true,
           primary: true,
-          render: (workspace) => (
-            <div className="d-flex flex-direction-row gap-3 align-items-center" role="presentation">
-              <WorkspaceIcon workspace={workspace} size="xs" />
-              {workspace.name}
-            </div>
-          )
+          render: (row) => <DataMicro object={row} />
         }, {
           name: 'meta.description',
           type: 'string',

@@ -8,9 +8,14 @@
   "browse-workspaces": "Parcourir les espaces d'activités",
   "show-workspace": "Voir l'espace d'activités",
   "export-results": "Exporter les résultats (.csv)",
-  "book": "Réserver",
   "show-results": "Voir les résultats",
   "plan-sending": "Planifier l'envoi",
   "ws-register": "Inscrire à des espaces",
-  "show-statistics": "Voir les statistiques"
+  "show-statistics": "Voir les statistiques",
+  "add_workspace": "Ajouter un espace",
+  "add_workspaces": "Ajouter des espaces",
+  "add_workspace_model": "Ajouter un modèle",
+  "add_workspace_models": "Ajouter des modèles",
+  "add_location": "Ajouter un lieu",
+  "add_locations": "Ajouter des lieux"
 }

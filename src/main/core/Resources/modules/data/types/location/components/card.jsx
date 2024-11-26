@@ -1,10 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {route} from '#/main/core/tool/routing'
-
 import {asset} from '#/main/app/config/asset'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {getAddressString} from '#/main/app/data/types/address/utils'
@@ -15,13 +12,9 @@ const LocationCard = props =>
     {...props}
     id={props.data.id}
     poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon="fa fa-map-marker-alt"
+    icon={!props.data.thumbnail ? <>{props.data.name.charAt(0)}</> : null}
     title={props.data.name}
-    contentText={getAddressString(props.data.address, true)}
-    primaryAction={{
-      type: LINK_BUTTON,
-      target: route('locations') + '/locations/' + props.data.id
-    }}
+    contentText={getAddressString(props.data.address)}
   />
 
 LocationCard.propTypes = {

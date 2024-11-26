@@ -48,7 +48,7 @@ const ResourceCard = props =>
         }
       </>
     }
-    contentText={get(props.data, 'meta.description')}
+    contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
   />
 
 ResourceCard.propTypes = {
