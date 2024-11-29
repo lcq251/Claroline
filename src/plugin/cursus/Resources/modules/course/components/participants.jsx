@@ -17,7 +17,6 @@ const CourseParticipants = (props) =>
   <>
     <SessionUsers
       className="mt-3"
-      type={constants.LEARNER_TYPE}
       course={props.course}
       name={selectors.STORE_NAME+'.sessionUsers'}
       customDefinition={[

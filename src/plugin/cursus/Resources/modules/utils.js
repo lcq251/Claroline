@@ -38,8 +38,6 @@ function isFullyRegistered(registration) {
     if (registration.session) {
       return registration.confirmed && registration.validated
     }
-
-    return true
   }
 
   return false

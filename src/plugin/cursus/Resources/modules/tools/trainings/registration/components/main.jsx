@@ -13,6 +13,9 @@ const TrainingsRegistration = (props) => {
     <ToolPage title={trans('registrations', {}, 'cursus')}>
       <Routes
         path={toolPath+'/registrations'}
+        redirect={[
+          {from: '/', exact: true, to: '/sessions'}
+        ]}
         routes={[
           {
             path: '/sessions',

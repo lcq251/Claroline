@@ -21,7 +21,7 @@ const mySessions = createSelector(
   [registrations],
   (registrations) => {
     // only get fully registered sessions
-    let sessionRegistrations = registrations.users.filter(ur => isFullyRegistered(ur))
+    let sessionRegistrations = registrations.filter(ur => isFullyRegistered(ur))
 
     return sessionRegistrations
       .map(sessionRegistration => Object.assign({

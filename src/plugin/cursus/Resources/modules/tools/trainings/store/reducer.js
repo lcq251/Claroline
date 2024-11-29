@@ -15,12 +15,7 @@ const reducer = combineReducers({
   /**
    * The list of current user registrations.
    */
-  registrations: makeReducer({
-    // direct registration
-    users: [],
-    // registration to trainings without session
-    pending: [],
-  }, {
+  registrations: makeReducer([], {
     [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
       if (!isEmpty(action.toolData.registrations)) {
         return action.toolData.registrations

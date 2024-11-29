@@ -7,7 +7,6 @@ import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {formatListField} from '#/main/app/content/form/parameters/utils'
 
-import {constants} from '#/plugin/cursus/constants'
 import {isFull} from '#/plugin/cursus/utils'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 
@@ -18,7 +17,7 @@ import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 
 const SessionUsers = (props) => {
   let customDefinition = [].concat(props.customDefinition || [])
-  if (props.course && constants.LEARNER_TYPE === props.type && get(props.course, 'registration.form')) {
+  if (props.course && get(props.course, 'registration.form')) {
     get(props.course, 'registration.form').map(formSection => {
       customDefinition = customDefinition.concat(formSection.fields.map(field => formatListField(field, customDefinition, 'data')))
     })
@@ -56,7 +55,7 @@ const SessionUsers = (props) => {
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-circle-info',
           label: trans('show-info', {}, 'actions'),
-          displayed: constants.LEARNER_TYPE === props.type && !isEmpty(get(props.course, 'registration.form')),
+          displayed: !isEmpty(get(props.course, 'registration.form')),
           modal: [MODAL_REGISTRATION_ABOUT, {
             course: props.course,
             registration: rows[0]
@@ -67,7 +66,7 @@ const SessionUsers = (props) => {
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-pencil',
           label: trans('edit', {}, 'actions'),
-          displayed: constants.LEARNER_TYPE === props.type && !isEmpty(get(props.course, 'registration.form')),
+          displayed: !isEmpty(get(props.course, 'registration.form')),
           modal: [MODAL_REGISTRATION_PARAMETERS, {
             course: props.course,
             session: rows[0] ? rows[0].session : null,
@@ -112,7 +111,7 @@ const SessionUsers = (props) => {
             filters: [{property: 'status', value: 'not_ended'}],
             selectAction: (selected) => ({
               type: CALLBACK_BUTTON,
-              callback: () => props.moveUsers(selected[0].id, rows, props.type)
+              callback: () => props.moveUsers(selected[0].id, rows)
             })
           }]
         }, {
@@ -120,7 +119,7 @@ const SessionUsers = (props) => {
           type: CALLBACK_BUTTON,
           icon: 'fa fa-fw fa-hourglass-half',
           label: trans('move-pending', {}, 'actions'),
-          displayed: constants.LEARNER_TYPE === props.type && get(props.course, 'registration.pendingRegistrations', false),
+          displayed: get(props.course, 'registration.pendingRegistrations', false),
           group: trans('management'),
           callback: () => props.movePending(props.course.id, rows)
         }
@@ -137,7 +136,6 @@ SessionUsers.propTypes = {
     SessionTypes.propTypes
   ),
   name: T.string.isRequired,
-  type: T.string.isRequired,
   customDefinition: T.arrayOf(T.shape({
     // data list prop types
   })),
