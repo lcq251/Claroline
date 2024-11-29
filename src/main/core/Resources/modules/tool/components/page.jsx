@@ -48,7 +48,8 @@ const ToolPage = props => {
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-wand-magic-sparkles',
           label: trans('search', {}, 'actions') + ' (Ctrl + K)',
-          modal: [MODAL_COMMAND_PALETTE]
+          modal: [MODAL_COMMAND_PALETTE],
+          displayed: false
         }].concat(loadedActions, toolDef.actions || []))
       }}
 

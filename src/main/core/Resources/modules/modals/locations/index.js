@@ -1,13 +1,13 @@
 /**
  * locations picker modal.
  *
- * Displays the locations picker inside the modale.
+ * Displays the locations picker inside the modal.
  */
 
 import {registry} from '#/main/app/modals/registry'
 
 // gets the modal component
-import {LocationsModal} from '#/main/core/modals/locations/containers/modal'
+import {LocationsModal} from '#/main/core/modals/locations/components/modal'
 
 const MODAL_LOCATIONS = 'MODAL_LOCATIONS'
 

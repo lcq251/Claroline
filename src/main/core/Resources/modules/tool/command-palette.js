@@ -32,6 +32,10 @@ class CommandPalette
 
     return this
   }
+
+  searchPage(searchStr) {
+
+  }
 }
 
 export {
