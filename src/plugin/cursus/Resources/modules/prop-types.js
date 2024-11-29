@@ -12,6 +12,8 @@ const Course = {
     name: T.string,
     description: T.string,
     plainDescription: T.string,
+    thumbnail: T.string,
+    poster: T.string,
     meta: T.shape({
       workspace: T.shape(WorkspaceTypes.propTypes),
       workspaceModel: T.shape(WorkspaceTypes.propTypes),
@@ -77,9 +79,6 @@ const Session = {
     meta: T.shape({
       default: T.bool
     }),
-    display: T.shape({
-      order: T.number
-    }),
     restrictions: T.shape({
       users: T.number,
       dates: T.arrayOf(T.string)
@@ -108,9 +107,6 @@ const Session = {
   defaultProps: {
     meta: {
       default: false
-    },
-    display: {
-      order: 1
     },
     registration: {
       selfRegistration: false,

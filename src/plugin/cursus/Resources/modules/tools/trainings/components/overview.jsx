@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON, CALLBACK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
-import {ContentMenu} from '#/main/app/content/components/menu'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {PageSection} from '#/main/app/page'
 import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
@@ -17,39 +16,6 @@ import {selectors} from '#/plugin/cursus/tools/trainings/store'
 
 import {SessionCourseCard} from '#/plugin/cursus/session/components/card'
 import {getPeriodStatus} from '#/plugin/cursus/utils'
-
-const MenuSection = (props) =>
-  <PageSection size="md" className="mt-5">
-    <ContentMenu
-      items={[
-        {
-          id: 'browse',
-          icon: 'search',
-          label: trans('Parcourir le catalogue de formations', {}, 'cursus'),
-          description: trans('Retrouvez toutes les formations disponible sur la plateforme', {}, 'cursus'),
-          action: {
-            type: LINK_BUTTON,
-            target: `${props.path}/course`
-          },
-          displayed: 'desktop' === props.contextType
-        }, {
-          id: 'sign-presence',
-          icon: 'signature',
-          label: trans('Valider ma présence à une séance de formation', {}, 'cursus'),
-          description: trans('Utilisez le code séance qui vous a été remis pour attester que vous étiez présent à la séance.', {}, 'cursus'),
-          action: {
-            type: CALLBACK_BUTTON,
-            callback: () => true
-          }
-        }
-      ]}
-    />
-  </PageSection>
-
-MenuSection.propTypes = {
-  path: T.string.isRequired,
-  contextType: T.string.isRequired
-}
 
 const MySessionsSection = (props) => {
   const mySessions = useSelector(selectors.mySessions)
@@ -97,12 +63,14 @@ const MySessionsSection = (props) => {
           orientation="row"
           size="sm"
           data={session}
-          primaryAction={{
+          actions={[{
+            name: 'open-workspace',
             type: LINK_BUTTON,
-            label: trans('open', {}, 'actions'),
-            disabled: 'desktop' !== props.contextType || !get(session, 'workspace'),
+            icon: 'fa fa-fw fa-chevron-right',
+            label: trans('open-training', {}, 'actions'),
+            displayed: 'desktop' === props.contextType && !!get(session, 'workspace'),
             target: get(session, 'workspace') ? workspaceRoute(get(session, 'workspace')) : ''
-          }}
+          }]}
         />
       )}
 
@@ -131,8 +99,6 @@ const TrainingsOverview = () => {
 
   return (
     <ToolPage>
-      {/*<MenuSection contextType={contextType} path={toolPath} />*/}
-
       <MySessionsSection contextType={contextType} path={toolPath} />
 
       <PageSection

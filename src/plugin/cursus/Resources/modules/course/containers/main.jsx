@@ -16,7 +16,7 @@ const Course = withReducer(selectors.STORE_NAME, reducer)(
       activeSession: selectors.activeSession(state),
       registrations: selectors.sessionRegistrations(state),
       availableSessions: selectors.availableSessions(state),
-      participantsView: selectors.participantsView(state)
+      stats: selectors.courseStats(state)
     }),
     (dispatch) => ({
       reload(courseSlug) {
@@ -28,8 +28,8 @@ const Course = withReducer(selectors.STORE_NAME, reducer)(
       openSession(sessionId) {
         dispatch(actions.openSession(sessionId))
       },
-      switchParticipantsView(viewMode) {
-        dispatch(actions.switchParticipantsView(viewMode))
+      loadStats(courseId) {
+        dispatch(actions.fetchStats(courseId))
       }
     })
   )(CourseComponent))

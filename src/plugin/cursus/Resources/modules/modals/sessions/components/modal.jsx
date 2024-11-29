@@ -50,7 +50,8 @@ const SessionsModal = (props) =>
         type: 'location',
         label: trans('location'),
         placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true
+        displayed: true,
+        options: {multiple: false}
       }, {
         name: 'restrictions.dates[0]',
         alias: 'startDate',

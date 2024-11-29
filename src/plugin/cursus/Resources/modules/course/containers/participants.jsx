@@ -15,9 +15,6 @@ const CourseParticipants = connect(
     addPending(sessionId, users) {
       dispatch(actions.addPending(sessionId, users))
     },
-    addGroups(sessionId, groups, type = constants.LEARNER_TYPE) {
-      dispatch(actions.addGroups(sessionId, groups, type))
-    },
     loadStats(courseId, sessionId) {
       dispatch(actions.fetchStats(courseId, sessionId))
     }

@@ -5,12 +5,10 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {LinkButton} from '#/main/app/buttons/link'
-import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router/components/routes'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {MODAL_USERS} from '#/main/community/modals/users'
-import {MODAL_GROUPS} from '#/main/community/modals/groups'
 
 import {selectors} from '#/plugin/cursus/course/store'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
@@ -18,7 +16,6 @@ import {constants} from '#/plugin/cursus/constants'
 import {isFull} from '#/plugin/cursus/utils'
 
 import {CourseStats} from '#/plugin/cursus/course/components/stats'
-import {SessionGroups} from '#/plugin/cursus/session/containers/groups'
 import {SessionUsers} from '#/plugin/cursus/session/containers/users'
 import {ContentNav} from '#/main/app/content/components/nav'
 import {Alert} from '#/main/app/components/alert'
@@ -73,10 +70,6 @@ const SessionParticipants = (props) =>
               title: trans('users', {}, 'community'),
               path: '/users'
             }, {
-              icon: 'fa fa-fw fa-users',
-              title: trans('groups', {}, 'community'),
-              path: '/groups'
-            }, {
               icon: 'fa fa-fw fa-hourglass-half',
               title: trans('pending'),
               path: '/pending'
@@ -86,13 +79,6 @@ const SessionParticipants = (props) =>
               path: '/stats'
             }
           ]}
-        />
-
-        <Button
-          className="btn btn-outline-secondary w-100 mb-3"
-          type={CALLBACK_BUTTON}
-          label="Voir pour toute la formation"
-          callback={props.toggleVisibility}
         />
       </div>
 
@@ -161,28 +147,6 @@ const SessionParticipants = (props) =>
                     }}
                   />
                 </Fragment>
-              )
-            }, {
-              path: '/groups',
-              render: () => (
-                <SessionGroups
-                  type={constants.LEARNER_TYPE}
-                  course={props.course}
-                  session={props.activeSession}
-                  name={selectors.STORE_NAME+'.sessionGroups'}
-                  add={{
-                    name: 'add_groups',
-                    type: MODAL_BUTTON,
-                    label: trans('add_groups', {}, 'actions'),
-                    modal: [MODAL_GROUPS, {
-                      selectAction: (selected) => ({
-                        type: CALLBACK_BUTTON,
-                        label: trans('register', {}, 'actions'),
-                        callback: () => props.addGroups(props.activeSession.id, selected, props.type)
-                      })
-                    }]
-                  }}
-                />
               )
             }, {
               path: '/pending',
@@ -256,9 +220,7 @@ SessionParticipants.propTypes = {
   stats: T.object,
   addUsers: T.func.isRequired,
   addPending: T.func.isRequired,
-  addGroups: T.func.isRequired,
-  loadStats: T.func.isRequired,
-  toggleVisibility: T.func.isRequired
+  loadStats: T.func.isRequired
 }
 
 export {

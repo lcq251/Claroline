@@ -72,28 +72,7 @@ class SessionRepository extends EntityRepository
 
     public function countLearners(Session $session): int
     {
-        $count = $this->countUsers($session, AbstractRegistration::LEARNER);
-
-        // add groups count
-        $sessionGroups = $this->getEntityManager()
-            ->createQuery('
-                SELECT sg 
-                FROM Claroline\CursusBundle\Entity\Registration\SessionGroup AS sg
-                WHERE sg.type = :registrationType
-                  AND sg.session = :session
-            ')
-            ->setParameters([
-                'registrationType' => AbstractRegistration::LEARNER,
-                'session' => $session,
-            ])
-            ->getResult();
-
-        foreach ($sessionGroups as $sessionGroup) {
-            $groupUsers = $this->getEntityManager()->getRepository(User::class)->findByGroup($sessionGroup->getGroup());
-            $count += count($groupUsers);
-        }
-
-        return $count;
+        return $this->countUsers($session, AbstractRegistration::LEARNER);
     }
 
     public function countPending(Session $session): int

@@ -5,3 +5,7 @@ services:
     Claroline\CursusBundle\Installation\Updater\Updater142000:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CursusBundle\Installation\Updater\Updater150000:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

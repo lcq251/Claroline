@@ -35,11 +35,6 @@ const courseStats = createSelector(
   (store) => store.courseStats
 )
 
-const participantsView = createSelector(
-  [store],
-  (store) => store.participantsView
-)
-
 export const selectors = {
   STORE_NAME,
   FORM_NAME,
@@ -49,6 +44,5 @@ export const selectors = {
   defaultSession,
   availableSessions,
   sessionRegistrations,
-  courseStats,
-  participantsView
+  courseStats
 }

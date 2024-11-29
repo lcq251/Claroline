@@ -22,7 +22,7 @@ const registration = createSelector(
       return store.registration.users[0]
     }
 
-    return store.registration.groups[0]
+    return null
   }
 )
 

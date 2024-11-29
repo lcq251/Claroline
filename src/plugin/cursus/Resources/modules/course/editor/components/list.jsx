@@ -8,6 +8,7 @@ import {selectors} from '#/plugin/cursus/course/store'
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 import {SessionList} from '#/plugin/cursus/session/components/list'
 import {hasPermission} from '#/main/app/security'
+import {SessionDateCard} from '#/plugin/cursus/session/components/card'
 
 const CourseEditorCanceledSessions = (props) =>
   <EditorPage
@@ -23,6 +24,7 @@ const CourseEditorCanceledSessions = (props) =>
         url: ['apiv2_cursus_session_delete'],
         displayed: (rows) => -1 !== rows.findIndex(row => hasPermission('delete', row))
       }}
+      card={SessionDateCard}
     />
   </EditorPage>
 

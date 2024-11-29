@@ -1,29 +1,25 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {UrlButton} from '#/main/app/buttons/url'
 import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
 
-import {route} from '#/plugin/cursus/course/routing'
+import {EntityCell} from '#/main/app/data/types/entity/components/cell'
+import {Session as SessionTypes} from '#/plugin/cursus/prop-types'
 
-const SessionCell = props => {
-  if (!isEmpty(props.data)) {
-    return (
-      <UrlButton target={'#'+route(props.data.course, props.data, props.path)}>
-        {props.data.name}
-      </UrlButton>
-    )
-  }
-
-  return '-'
-}
+const SessionCell = props =>
+  <EntityCell
+    {...props}
+  />
 
 implementPropTypes(SessionCell, DataCellTypes, {
-  data: T.shape({
-    name: T.string,
-    course: T.object
-  })
+  data: T.oneOfType([
+    T.shape(
+      SessionTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      SessionTypes.propTypes
+    ))
+  ])
 })
 
 export {

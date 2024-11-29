@@ -3,15 +3,15 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
 import {Tool} from '#/main/core/tool'
-import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {EventMain} from '#/plugin/cursus/tools/trainings/event/containers/main'
 import {CatalogMain} from '#/plugin/cursus/tools/trainings/catalog/containers/main'
 import {SessionMain} from '#/plugin/cursus/tools/trainings/session/containers/main'
 import {TrainingsEditor} from '#/plugin/cursus/tools/trainings/editor/containers/main'
 import {TrainingsOverview} from '#/plugin/cursus/tools/trainings/components/overview'
-import {MODAL_TRAINING_COMMANDS} from '#/plugin/cursus/tools/trainings/modals/commands'
 import {TrainingsDashboard} from '#/plugin/cursus/tools/trainings/dashboard/components/main'
+import {TrainingsRegistration} from '#/plugin/cursus/tools/trainings/registration/components/main'
 
 const TrainingsTool = (props) =>
   <Tool
@@ -50,20 +50,11 @@ const TrainingsTool = (props) =>
         name: 'dashboard',
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-gauge',
-        label: trans('Suivi'),
+        label: trans('dashboard'),
         tooltip: 'bottom',
         target: props.path + '/dashboard',
         displayed: props.canRegister
       }
-    ]}
-    actions={[
-      /*{
-        name: 'search',
-        type: MODAL_BUTTON,
-        icon: 'fa fa-fw fa-search',
-        label: trans('search', {}, 'actions'),
-        modal: [MODAL_TRAINING_COMMANDS]
-      }*/
     ]}
     pages={[
       {
@@ -71,19 +62,25 @@ const TrainingsTool = (props) =>
         component: TrainingsOverview,
         exact: true
       }, {
-        path: '/dashboard',
-        component: TrainingsDashboard,
-        disabled: !props.canRegister
-      }, {
         path: '/course',
         component: CatalogMain
       }, {
         path: '/sessions',
-        component: SessionMain
+        component: SessionMain,
+        disabled: !props.canRegister
       }, {
         path: '/events',
-        component: EventMain
-      }
+        component: EventMain,
+        disabled: !props.canRegister
+      }, {
+        path: '/registrations',
+        component: TrainingsRegistration,
+        disabled: !props.canRegister
+      }, {
+        path: '/dashboard',
+        component: TrainingsDashboard,
+        disabled: !props.canRegister
+      },
     ]}
     editor={TrainingsEditor}
   />

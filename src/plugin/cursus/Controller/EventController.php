@@ -15,7 +15,6 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
-use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -23,7 +22,6 @@ use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
-use Claroline\CursusBundle\Entity\Registration\EventGroup;
 use Claroline\CursusBundle\Entity\Registration\EventUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\EventManager;
@@ -167,10 +165,6 @@ class EventController extends AbstractCrudController
         if ($user instanceof User) {
             $registration = [
                 'users' => $this->crud->list(EventUser::class, ['filters' => [
-                    'user' => $user->getUuid(),
-                    'event' => $sessionEvent->getUuid(),
-                ]])['data'],
-                'groups' => $this->crud->list(EventGroup::class, ['filters' => [
                     'user' => $user->getUuid(),
                     'event' => $sessionEvent->getUuid(),
                 ]])['data'],
@@ -334,96 +328,6 @@ class EventController extends AbstractCrudController
         $this->manager->sendSessionEventInvitation($sessionEvent, array_map(function (EventUser $sessionUser) {
             return $sessionUser->getUser();
         }, $sessionUsers));
-
-        return new JsonResponse(null, 204);
-    }
-
-    #[Route(path: '/{id}/groups/{type}', name: 'list_groups', methods: ['GET'])]
-    public function listGroupsAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Event $sessionEvent,
-        string $type,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('OPEN', $sessionEvent, [], true);
-
-        $params = $request->query->all();
-        if (!isset($params['hiddenFilters'])) {
-            $params['hiddenFilters'] = [];
-        }
-        $params['hiddenFilters']['event'] = $sessionEvent->getUuid();
-        $params['hiddenFilters']['type'] = $type;
-
-        return new JsonResponse(
-            $this->crud->list(EventGroup::class, $params)
-        );
-    }
-
-    #[Route(path: '/{id}/groups/{type}', name: 'add_groups', methods: ['PATCH'])]
-    public function addGroupsAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Event $sessionEvent,
-        string $type,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
-
-        $groups = $this->decodeIdsString($request, Group::class);
-        $nbUsers = 0;
-
-        foreach ($groups as $group) {
-            $nbUsers += count($this->om->getRepository(User::class)->findByGroup($group));
-        }
-
-        if (AbstractRegistration::LEARNER === $type && !$this->manager->checkSessionEventCapacity($sessionEvent, $nbUsers)) {
-            return new JsonResponse(['errors' => [
-                $this->translator->trans('users_limit_reached', ['%count%' => $nbUsers], 'cursus'),
-            ]], 422); // not the best status (same as form validation errors)
-        }
-
-        $sessionGroups = $this->manager->addGroups($sessionEvent, $groups, $type);
-
-        return new JsonResponse(array_map(function (EventGroup $sessionGroup) {
-            return $this->serializer->serialize($sessionGroup);
-        }, $sessionGroups));
-    }
-
-    #[Route(path: '/{id}/groups/{type}', name: 'remove_groups', methods: ['DELETE'])]
-    public function removeGroupsAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Event $sessionEvent,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
-
-        $sessionGroups = $this->decodeIdsString($request, EventGroup::class);
-        $this->manager->removeGroups($sessionEvent, $sessionGroups);
-
-        return new JsonResponse(null, 204);
-    }
-
-    #[Route(path: '/{id}/invite/groups', name: 'invite_groups', methods: ['PUT'])]
-    public function inviteGroupsAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Event $sessionEvent,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
-
-        /** @var EventGroup[] $sessionGroups */
-        $sessionGroups = $this->decodeIdsString($request, EventGroup::class);
-
-        $users = [];
-        foreach ($sessionGroups as $sessionGroup) {
-            $groupUsers = $this->om->getRepository(User::class)->findByGroup($sessionGroup->getGroup());
-
-            // de duplicate users (a user can have multiple groups)
-            foreach ($groupUsers as $user) {
-                $users[$user->getUuid()] = $user;
-            }
-        }
-
-        $this->manager->sendSessionEventInvitation($sessionEvent, $users);
 
         return new JsonResponse(null, 204);
     }

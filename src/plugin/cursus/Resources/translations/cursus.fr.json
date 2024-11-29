@@ -94,7 +94,6 @@
     "default_session_help": "La session par défaut est affichée à l'ouverture de la formation dans le catalogue.",
     "default_session_help_registration": "La session par défaut est utilisée lors de l'inscription automatique des utilisateurs depuis une formation parente.",
     "training_hidden": "Cette formation est cachée",
-    "training_public_registration": "Les inscriptions sont publiques.",
     "available_seats": "Places disponibles",
     "available_seats_count": "{1} %count% place disponible | ]1,Inf[ %count% places disponibles",
     "available_seats_per_session": "Places disponibles par session",
@@ -170,7 +169,8 @@
     "custom_registration_form_group_help": "Le formulaire personnalisé n'est pas disponible lors de l'inscription par groupe.",
     "tutor_role_help": "Si aucun rôle n'est défini, les utilisateurs inscrits en tant que Formateur recevront le rôle \"Gestionnaire\" de l'espace d'activités sélectionné.",
     "learner_role_help": "Si aucun rôle n'est défini, les utilisateurs inscrits en tant qu'Apprenant recevront le rôle \"Collaborateur\" de l'espace d'activités sélectionné.",
-    "course_stats_help": "Les statistiques ne sont pas disponibles pour les inscriptions par groupe et les inscriptions en attente.",
+    "course_stats_help": "Les statistiques ne sont pas disponibles pour les inscriptions en attente.",
     "count_registered_users": "Nombre d'utilisateurs inscrits",
-    "training_period": "Période de formation"
+    "training_period": "Période de formation",
+    "training_duration": "Durée de la formation"
 }

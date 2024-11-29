@@ -22,8 +22,6 @@ services:
             - '@Claroline\CommunityBundle\Serializer\RoleSerializer'
             - '@Claroline\CoreBundle\API\Serializer\LocationSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
-            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
-            - '@Claroline\CursusBundle\Serializer\CourseSerializer'
             - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
 
     Claroline\CursusBundle\Serializer\EventSerializer:
@@ -44,31 +42,16 @@ services:
             - '@Claroline\CursusBundle\Serializer\EventSerializer'
 
     # Registrations
-    Claroline\CursusBundle\Serializer\Registration\CourseUserSerializer:
-        arguments:
-            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
-            - '@Claroline\CursusBundle\Serializer\CourseSerializer'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\Manager\FacetManager'
-
     Claroline\CursusBundle\Serializer\Registration\SessionUserSerializer:
         arguments:
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
+            - '@Claroline\CursusBundle\Serializer\CourseSerializer'
             - '@Claroline\CursusBundle\Serializer\SessionSerializer'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\FacetManager'
-
-    Claroline\CursusBundle\Serializer\Registration\SessionGroupSerializer:
-        arguments:
-            - '@Claroline\CommunityBundle\Serializer\GroupSerializer'
-            - '@Claroline\CursusBundle\Serializer\SessionSerializer'
+            - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
 
     Claroline\CursusBundle\Serializer\Registration\EventUserSerializer:
         arguments:
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
-            - '@Claroline\CursusBundle\Serializer\EventSerializer'
-
-    Claroline\CursusBundle\Serializer\Registration\EventGroupSerializer:
-        arguments:
-            - '@Claroline\CommunityBundle\Serializer\GroupSerializer'
             - '@Claroline\CursusBundle\Serializer\EventSerializer'

@@ -27,7 +27,7 @@ use Claroline\CursusBundle\Entity\Session;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CourseSubscriber implements EventSubscriberInterface
+final class CourseSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,

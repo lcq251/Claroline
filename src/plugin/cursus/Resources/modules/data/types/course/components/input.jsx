@@ -1,19 +1,17 @@
 import React from 'react'
 
-import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {EntityInput} from '#/main/app/data/types/entity'
 
-import {CourseCard} from '#/plugin/cursus/course/components/card'
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 import {MODAL_TRAINING_COURSES} from '#/plugin/cursus/modals/courses'
+import {trans} from '#/main/app/intl'
 
 const CourseInput = props =>
   <EntityInput
     {...props}
-    placeholder={trans('no_course', {}, 'cursus')}
-    card={CourseCard}
     pickerType={MODAL_TRAINING_COURSES}
+    add={trans(props.multiple ? 'add_courses' : 'add_course', {}, 'actions')}
   />
 
 implementPropTypes(CourseInput, EntityInput.propTypes, {

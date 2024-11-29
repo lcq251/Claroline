@@ -49,13 +49,10 @@ const CourseEditorWorkspaces = (props) =>
               {
                 name: 'workspace',
                 type: 'workspace',
-                label: get(props.course, 'workspace.meta.model', false) || 'model' === get(props.course, '_workspaceType') ? trans('workspace_model') : trans('workspace'),
+                label: get(props.course, 'workspace.meta.model', false) || 'model' === get(props.course, '_workspaceType') ? trans('workspace_model', {}, 'workspace') : trans('workspace', {}, 'workspace'),
                 required: true,
                 options: {
-                  picker: {
-                    model: get(props.course, 'workspace.meta.model', false) || 'model' === get(props.course, '_workspaceType'),
-                    title: get(props.course, 'workspace.meta.model', false) || 'model' === get(props.course, '_workspaceType') ? trans('workspace_models', {}, 'workspace') : trans('workspaces')
-                  }
+                  model: get(props.course, 'workspace.meta.model', false) || 'model' === get(props.course, '_workspaceType')
                 },
                 displayed: (course) => get(course, 'workspace', null) || ['workspace', 'model'].includes(get(course, '_workspaceType'))
               }

@@ -27,18 +27,12 @@ export const reducer = combineReducers({
       [LOAD_EVENT]: () => true
     })
   }),
-  groups: makeListReducer(selectors.STORE_NAME+'.groups', {}, {
-    invalidated: makeReducer(false, {
-      [LOAD_EVENT]: () => true
-    })
-  }),
   presences: makeListReducer(selectors.STORE_NAME+'.presences', {
     sortBy: {property: 'user', direction: 1}
   }, {
     invalidated: makeReducer(false, {
       [LOAD_EVENT]: () => true,
-      [makeInstanceAction(LIST_DATA_DELETE, selectors.STORE_NAME+'.users')]: () => true,
-      [makeInstanceAction(LIST_DATA_DELETE, selectors.STORE_NAME+'.groups')]: () => true
+      [makeInstanceAction(LIST_DATA_DELETE, selectors.STORE_NAME+'.users')]: () => true
     })
   })
 })

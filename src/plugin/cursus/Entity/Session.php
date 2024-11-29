@@ -14,7 +14,6 @@ namespace Claroline\CursusBundle\Entity;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\IdentifiableInterface;
 use Claroline\CoreBundle\Entity\Location;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CursusBundle\Finder\SessionType;
 use Claroline\CursusBundle\Repository\SessionRepository;
 use Claroline\TemplateBundle\Entity\Template;
@@ -40,22 +39,13 @@ class Session extends AbstractTraining implements IdentifiableInterface
     private bool $defaultSession = false;
 
     #[ORM\Column(name: 'max_users', type: Types::INTEGER, nullable: true)]
-    protected ?int $maxUsers = null;
+    private ?int $maxUsers = null;
 
     #[ORM\Column(name: 'start_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(name: 'end_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
-
-    /**
-     * @var Collection<int, ResourceNode>
-     */
-    #[ORM\ManyToMany(targetEntity: ResourceNode::class, orphanRemoval: true)]
-    #[ORM\JoinColumn(name: 'resource_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'session_id', referencedColumnName: 'id', unique: true)]
-    #[ORM\JoinTable(name: 'claro_cursusbundle_course_session_resources')]
-    private Collection $resources;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     #[ORM\JoinColumn(name: 'location_id', nullable: true, onDelete: 'SET NULL')]
@@ -88,13 +78,27 @@ class Session extends AbstractTraining implements IdentifiableInterface
     {
         $this->refreshUuid();
 
-        $this->resources = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
 
-    public function __toString(): string
+    public function getName(): ?string
     {
-        return $this->name;
+        return $this->course?->getName();
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->course?->getThumbnail();
+    }
+
+    public function getPoster(): ?string
+    {
+        return $this->course?->getThumbnail();
+    }
+
+    public function getPlainDescription(): ?string
+    {
+        return $this->course?->getPlainDescription();
     }
 
     public function getCourse(): ?Course
@@ -152,30 +156,6 @@ class Session extends AbstractTraining implements IdentifiableInterface
         $now = new \DateTime();
 
         return $this->endDate && $now > $this->endDate;
-    }
-
-    public function getResources(): Collection
-    {
-        return $this->resources;
-    }
-
-    public function setResources(array $resources): void
-    {
-        $this->resources = new ArrayCollection($resources);
-    }
-
-    public function addResource(ResourceNode $resource): void
-    {
-        if (!$this->resources->contains($resource)) {
-            $this->resources->add($resource);
-        }
-    }
-
-    public function removeResource(ResourceNode $resource): void
-    {
-        if ($this->resources->contains($resource)) {
-            $this->resources->removeElement($resource);
-        }
     }
 
     public function getLocation(): ?Location

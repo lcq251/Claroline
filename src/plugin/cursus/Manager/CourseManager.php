@@ -13,7 +13,6 @@ namespace Claroline\CursusBundle\Manager;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Manager\PlatformManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -22,7 +21,6 @@ use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Registration\CourseUser;
-use Claroline\CursusBundle\Entity\Registration\SessionGroup;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Doctrine\Persistence\ObjectRepository;
@@ -68,20 +66,10 @@ class CourseManager
         }
 
         $userRegistrations = $this->finder->fetch(SessionUser::class, $search);
-        $groupRegistrations = $this->finder->fetch(SessionGroup::class, $search);
-        $courseRegistrations = $this->finder->fetch(CourseUser::class, $search);
 
-        return [
-            'users' => array_map(function (SessionUser $sessionUser) {
-                return $this->serializer->serialize($sessionUser, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $userRegistrations),
-            'groups' => array_map(function (SessionGroup $sessionGroup) {
-                return $this->serializer->serialize($sessionGroup, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $groupRegistrations),
-            'pending' => array_map(function (CourseUser $courseUser) {
-                return $this->serializer->serialize($courseUser, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $courseRegistrations),
-        ];
+        return array_map(function (SessionUser $sessionUser) {
+            return $this->serializer->serialize($sessionUser/* , [SerializerInterface::SERIALIZE_MINIMAL] */);
+        }, $userRegistrations);
     }
 
     public function addUsers(Course $course, array $users, array $registrationData = []): array

@@ -4,8 +4,9 @@ import {withReducer} from '#/main/app/store/components/withReducer'
 
 import {hasPermission} from '#/main/app/security'
 import {selectors as toolSelectors} from '#/main/core/tool'
-import {actions as courseActions, reducer, selectors} from '#/plugin/cursus/course/store'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
+
+import {actions as courseActions, reducer, selectors} from '#/plugin/cursus/course/store'
 import {CourseEditor as CourseEditorComponent} from '#/plugin/cursus/course/editor/components/main'
 
 const CourseEditor = withReducer(selectors.STORE_NAME, reducer)(

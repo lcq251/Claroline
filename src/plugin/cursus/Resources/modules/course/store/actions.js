@@ -20,7 +20,6 @@ export const actions = {}
 actions.loadCourse = makeActionCreator(LOAD_COURSE, 'course', 'defaultSession', 'availableSessions', 'registrations')
 actions.loadSession = makeActionCreator(LOAD_COURSE_SESSION, 'session')
 actions.loadStats = makeActionCreator(LOAD_COURSE_STATS, 'stats')
-actions.switchParticipantsView = makeActionCreator(SWITCH_PARTICIPANTS_VIEW, 'viewMode')
 
 actions.open = (courseSlug, force = false) => (dispatch, getState) => {
   const currentCourse = selectors.course(getState())
@@ -70,16 +69,11 @@ actions.openSession = (sessionId = null, force = false) => (dispatch, getState) 
           silent: true,
           success: (data) => {
             dispatch(actions.loadSession(data))
-
-            if (!force) {
-              dispatch(actions.switchParticipantsView('session'))
-            }
           }
         }
       })
     }
   } else {
-    dispatch(actions.switchParticipantsView('course'))
     dispatch(actions.loadSession(null))
   }
 }
@@ -185,42 +179,6 @@ actions.updateUser = (sessionUser) => ({
       body: JSON.stringify(sessionUser)
     },
     success: (data, dispatch) => dispatch(actions.openSession(get(sessionUser, 'session.id'), true))
-  }
-})
-
-actions.addGroups = (sessionId, groups, type) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_cursus_session_add_groups', {id: sessionId, type: type}], {ids: groups.map(group => group.id)}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => dispatch(actions.openSession(sessionId, true))
-  }
-})
-
-actions.inviteGroups = (groups) => ({
-  [API_REQUEST]: {
-    type: actionConstants.ACTION_SEND,
-    url: url(['apiv2_training_session_group_invite'], {ids: groups.map(group => group.id)}),
-    request: {
-      method: 'PUT'
-    }
-  }
-})
-
-actions.moveGroups = (targetId, sessionGroups, type) => (dispatch, getState) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_training_session_group_move', {targetId: targetId, type: type}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify({
-        sessionGroups: sessionGroups.map(sessionGroup => sessionGroup.id)
-      })
-    },
-    success: () => {
-      const currentSession = selectors.activeSession(getState())
-      dispatch(actions.openSession(currentSession ? currentSession.id : null, true))
-    }
   }
 })
 

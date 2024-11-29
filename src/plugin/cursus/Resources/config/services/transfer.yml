@@ -6,6 +6,3 @@ services:
     parent: Claroline\TransferBundle\Transfer\Exporter\AbstractListExporter
     arguments:
       - '@Claroline\AppBundle\Persistence\ObjectManager'
-
-  Claroline\CursusBundle\Transfer\Exporter\Registration\SessionGroupListExporter:
-    parent: Claroline\TransferBundle\Transfer\Exporter\AbstractListExporter

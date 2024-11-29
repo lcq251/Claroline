@@ -7,6 +7,7 @@ import {TOOL_LOAD} from '#/main/core/tool/store'
 import {selectors} from '#/plugin/cursus/tools/trainings/store/selectors'
 import {reducer as sessionReducer} from '#/plugin/cursus/tools/trainings/session/store/reducer'
 import {reducer as eventReducer} from '#/plugin/cursus/tools/trainings/event/store/reducer'
+import {reducer as dashboardReducer} from '#/plugin/cursus/tools/trainings/dashboard/store/reducer'
 
 const reducer = combineReducers({
   session: sessionReducer,
@@ -17,8 +18,6 @@ const reducer = combineReducers({
   registrations: makeReducer({
     // direct registration
     users: [],
-    // registrations through a user group
-    groups: [],
     // registration to trainings without session
     pending: [],
   }, {
@@ -29,7 +28,8 @@ const reducer = combineReducers({
 
       return state
     }
-  })
+  }),
+  dashboard: dashboardReducer
 })
 
 export {

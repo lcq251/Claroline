@@ -62,11 +62,13 @@ class SessionUserController extends AbstractCrudController
         $params = $request->query->all();
         $params['hiddenFilters'] = $this->getDefaultHiddenFilters();
 
-        if (!empty($sessionId)) {
+        $params['hiddenFilters']['course'] = $course->getUuid();
+
+        /*if (!empty($sessionId)) {
             $params['hiddenFilters']['session'] = $sessionId;
         } else {
             $params['hiddenFilters']['course'] = $course->getUuid();
-        }
+        }*/
 
         return new JsonResponse(
             $this->crud->list(SessionUser::class, $params)

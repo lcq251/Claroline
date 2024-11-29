@@ -32,22 +32,9 @@
             }
           }
         },
-        "type": {
-          "type": "integer",
-          "description": "The session type"
-        },
         "default": {
           "type": "boolean",
           "description": "Whether the session is the default one"
-        }
-      }
-    },
-    "display": {
-      "type": "object",
-      "properties": {
-        "order": {
-          "type": "integer",
-          "description": "The session order"
         }
       }
     },
@@ -91,9 +78,9 @@
       }
     }
   },
-  "required": ["name", "code"],
+  "required": ["code"],
   "claroline": {
-    "requiredAtCreation": ["name", "code"],
+    "requiredAtCreation": ["code"],
     "ids": ["id"]
   }
 }

@@ -4,16 +4,14 @@ import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {EntityInput} from '#/main/app/data/types/entity'
 
-import {SessionCard} from '#/plugin/cursus/session/components/card'
 import {Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 
 const SessionInput = props =>
   <EntityInput
     {...props}
-    placeholder={trans('no_session', {}, 'cursus')}
-    card={SessionCard}
     pickerType={MODAL_TRAINING_SESSIONS}
+    add={trans(props.multiple ? 'add_sessions' : 'add_session', {}, 'actions')}
   />
 
 implementPropTypes(SessionInput, EntityInput.propTypes, {

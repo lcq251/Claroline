@@ -7,14 +7,12 @@ import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, DOWNLOAD_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router/components/routes'
 import {MODAL_USERS} from '#/main/community/modals/users'
-import {MODAL_GROUPS} from '#/main/community/modals/groups'
 
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {constants} from '#/plugin/cursus/constants'
 import {isFull} from '#/plugin/cursus/utils'
 
 import {selectors} from '#/plugin/cursus/event/store'
-import {RegistrationGroups} from '#/plugin/cursus/registration/components/groups'
 import {RegistrationUsers} from '#/plugin/cursus/registration/components/users'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {PresencesList} from '#/plugin/cursus/presence/components/list'
@@ -70,47 +68,6 @@ EventUsers.propTypes = {
   inviteUsers: T.func.isRequired
 }
 
-const EventGroups = (props) =>
-  <RegistrationGroups
-    session={props.event}
-    name={props.name}
-    url={['apiv2_cursus_event_list_groups', {type: props.type, id: props.event.id}]}
-    unregisterUrl={['apiv2_cursus_event_remove_groups', {type: props.type, id: props.event.id}]}
-    actions={(rows) => [
-      {
-        name: 'invite',
-        type: CALLBACK_BUTTON,
-        icon: 'fa fa-fw fa-envelope',
-        label: trans('send_invitation', {}, 'actions'),
-        callback: () => props.inviteGroups(props.event.id, rows),
-        displayed: hasPermission('register', props.event)
-      }
-    ]}
-    add={{
-      name: 'add_groups',
-      type: MODAL_BUTTON,
-      label: trans('add_groups', {}, 'actions'),
-      disabled: isFull(props.event),
-      modal: [MODAL_GROUPS, {
-        selectAction: (selected) => ({
-          type: CALLBACK_BUTTON,
-          label: trans('register', {}, 'actions'),
-          callback: () => props.addGroups(props.event.id, selected, props.type)
-        })
-      }]
-    }}
-  />
-
-EventGroups.propTypes = {
-  name: T.string.isRequired,
-  type: T.string.isRequired,
-  event: T.shape(
-    EventTypes.propTypes
-  ),
-  addGroups: T.func.isRequired,
-  inviteGroups: T.func.isRequired
-}
-
 const EventParticipants = (props) =>
   <>
     <ContentInfoBlocks
@@ -150,10 +107,6 @@ const EventParticipants = (props) =>
               icon: 'fa fa-fw fa-user',
               title: trans('users'),
               path: '/users'
-            }, {
-              icon: 'fa fa-fw fa-users',
-              title: trans('groups'),
-              path: '/groups'
             }, {
               icon: 'fa fa-fw fa-user-check',
               title: trans('presences', {}, 'cursus'),
@@ -199,17 +152,6 @@ const EventParticipants = (props) =>
                 </>
               )
             }, {
-              path: '/groups',
-              render: () => (
-                <EventGroups
-                  type={constants.LEARNER_TYPE}
-                  name={selectors.STORE_NAME+'.groups'}
-                  event={props.event}
-                  addGroups={props.addGroups}
-                  inviteGroups={props.inviteGroups}
-                />
-              )
-            }, {
               path: '/presences',
               render: () => (
                 <PresencesList
@@ -230,9 +172,7 @@ EventParticipants.propTypes = {
     EventTypes.propTypes
   ).isRequired,
   addUsers: T.func.isRequired,
-  inviteUsers: T.func.isRequired,
-  addGroups: T.func.isRequired,
-  inviteGroups: T.func.isRequired
+  inviteUsers: T.func.isRequired
 }
 
 export {

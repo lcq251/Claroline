@@ -13,15 +13,19 @@ const EventCard = props =>
     {...props}
     id={props.data.id}
     poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={!props.data.thumbnail ? 'fa fa-clock' : null}
+    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
     title={
-      <>
-        <EventStatus className="me-2" startDate={props.data.start} endDate={props.data.end} subtle={true} />
-
+      <div className="d-flex flex-row gap-2 align-items-baseline">
         {props.data.name}
-      </>
+        {'row' === props.orientation &&
+          <EventStatus className="ms-auto" startDate={props.data.start} endDate={props.data.end} subtle={true} />
+        }
+      </div>
     }
     contentText={displayDateRange(props.data.start, props.data.end)}
+    meta={
+      <EventStatus startDate={props.data.start} endDate={props.data.end} subtle={true} />
+    }
   />
 
 EventCard.propTypes = {

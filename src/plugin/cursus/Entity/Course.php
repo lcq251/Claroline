@@ -12,8 +12,12 @@
 namespace Claroline\CursusBundle\Entity;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\Display\Order;
+use Claroline\AppBundle\Entity\Display\Poster;
+use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Meta\Archived;
 use Claroline\AppBundle\Entity\Meta\IsPublic;
+use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\CommunityBundle\Model\HasOrganizations;
 use Claroline\CoreBundle\Entity\Facet\PanelFacet;
 use Claroline\CoreBundle\Entity\Organization\Organization;
@@ -24,13 +28,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PhpParser\Node\Scalar\String_;
 
 #[ORM\Table(name: 'claro_cursusbundle_course')]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 #[CrudEntity(finderClass: CourseType::class)]
 class Course extends AbstractTraining
 {
+    use Name;
+    use Order;
+    use Poster;
+    use Thumbnail;
     use HasOrganizations;
     use IsPublic;
     use Archived;
@@ -38,6 +45,9 @@ class Course extends AbstractTraining
     #[ORM\Column(length: 128, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $plainDescription = null;
 
     /**
      * If the course grants a certification at the end, explains the certificates the user can obtain.
@@ -106,6 +116,16 @@ class Course extends AbstractTraining
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getPlainDescription(): ?string
+    {
+        return $this->plainDescription;
+    }
+
+    public function setPlainDescription(string $description = null): void
+    {
+        $this->plainDescription = $description;
     }
 
     public function getCertification(): ?string

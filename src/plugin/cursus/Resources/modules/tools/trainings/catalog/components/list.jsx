@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 
 import {CourseList} from '#/plugin/cursus/course/components/list'
@@ -18,6 +18,7 @@ const CatalogList = (props) =>
     <PageListSection>
       <CourseList
         flush={true}
+        autoFocus={true}
         path={props.path}
         name={selectors.LIST_NAME}
         url={['apiv2_cursus_course_list']}

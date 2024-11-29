@@ -22,10 +22,11 @@ const mySessions = createSelector(
   (registrations) => {
     // only get fully registered sessions
     let sessionRegistrations = registrations.users.filter(ur => isFullyRegistered(ur))
-    sessionRegistrations.concat(registrations.groups.filter(gr => isFullyRegistered(gr)))
 
     return sessionRegistrations
-      .map(sessionRegistrations => sessionRegistrations.session)
+      .map(sessionRegistration => Object.assign({
+        workspace: sessionRegistration.workspace
+      }, sessionRegistration.session))
       .sort((a, b) => {
         if (get(a, 'restrictions.dates[0]') > get(b, 'restrictions.dates[0]')) {
           return 1
@@ -35,6 +36,13 @@ const mySessions = createSelector(
 
         return 0
       })
+  }
+)
+
+const myPendingRegistrations = createSelector(
+  [registrations],
+  (registrations) => {
+
   }
 )
 

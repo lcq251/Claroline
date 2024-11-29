@@ -29,34 +29,27 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
-class AbstractTraining implements TrainingInterface
+abstract class AbstractTraining implements TrainingInterface
 {
     use Id;
     use Uuid;
     use Code;
-    use Name;
     use Description;
     use Hidden;
-    use Order;
     use CreatedAt;
     use UpdatedAt;
     use Creator;
-    use Poster;
-    use Thumbnail;
-
-    #[ORM\Column(nullable: true)]
-    protected ?string $plainDescription = null;
 
     #[ORM\JoinColumn(name: 'workspace_id', nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Workspace::class)]
+    #[ORM\ManyToOne(targetEntity: Workspace::class, fetch: 'EXTRA_LAZY')]
     protected ?Workspace $workspace = null;
 
     #[ORM\JoinColumn(name: 'learner_role_id', nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, fetch: 'EXTRA_LAZY')]
     protected ?Role $learnerRole = null;
 
     #[ORM\JoinColumn(name: 'tutor_role_id', nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, fetch: 'EXTRA_LAZY')]
     protected ?Role $tutorRole = null;
 
     #[ORM\Column(name: 'public_registration', type: Types::BOOLEAN)]
@@ -88,16 +81,6 @@ class AbstractTraining implements TrainingInterface
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     protected ?string $priceDescription = null;
-
-    public function getPlainDescription(): ?string
-    {
-        return $this->plainDescription;
-    }
-
-    public function setPlainDescription(string $description = null): void
-    {
-        $this->plainDescription = $description;
-    }
 
     public function getWorkspace(): ?Workspace
     {

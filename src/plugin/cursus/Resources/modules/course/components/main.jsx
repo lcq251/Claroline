@@ -22,7 +22,7 @@ const Course = (props) =>
         {
           path: '/:id?',
           onEnter: (params = {}) => {
-            if (params.id && !['sessions', 'participants', 'pending', 'events', 'about', 'desktop'].includes(params.id)) {
+            if (params.id && !['sessions', 'participants', 'stats'].includes(params.id)) {
               props.openSession(params.id)
             } else {
               props.openSession(get(props.defaultSession, 'id') || null)
@@ -32,14 +32,12 @@ const Course = (props) =>
             <CourseDetails
               contextType={props.contextType}
               basePath={props.basePath}
-              path={props.path + (routerProps.match.params.id && !['sessions', 'participants', 'pending', 'events', 'about', 'desktop'].includes(routerProps.match.params.id) ? '/' + routerProps.match.params.id : '')}
+              path={props.path + (routerProps.match.params.id && !['sessions', 'participants', 'stats'].includes(routerProps.match.params.id) ? '/' + routerProps.match.params.id : '')}
               history={props.history}
               course={props.course}
               activeSession={props.activeSession}
               availableSessions={props.availableSessions}
               registrations={props.registrations}
-              participantsView={props.participantsView}
-              switchParticipantsView={props.switchParticipantsView}
               reload={props.reload}
               register={(course, sessionId = null, registrationData = null) => {
                 props.register(course, sessionId, registrationData).then(() => {
@@ -50,6 +48,8 @@ const Course = (props) =>
                   }
                 })
               }}
+              stats={props.stats}
+              loadStats={props.loadStats}
             />
           )
         }
@@ -74,13 +74,9 @@ Course.propTypes = {
   availableSessions: T.arrayOf(T.shape(
     SessionTypes.propTypes
   )),
-  registrations: T.shape({
-    users: T.array,
-    groups: T.array,
-    pending: T.array
-  }),
-  participantsView: T.string.isRequired,
-  switchParticipantsView: T.func.isRequired,
+  registrations: T.arrayOf(T.shape({
+    // SessionUser
+  })),
   contextType: T.string.isRequired,
   openSession: T.func.isRequired,
   reload: T.func.isRequired,

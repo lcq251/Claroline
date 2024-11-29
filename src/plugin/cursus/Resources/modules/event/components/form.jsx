@@ -96,7 +96,8 @@ const EventForm = (props) =>
                 name: 'location',
                 label: trans('location'),
                 type: 'location',
-                displayed: (event) => event.location || 'irl' === event._locationType
+                displayed: (event) => event.location || 'irl' === event._locationType,
+                options: {multiple: false}
               }
             ]
           }

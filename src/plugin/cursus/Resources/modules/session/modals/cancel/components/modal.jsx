@@ -9,69 +9,22 @@ import {trans, transChoice} from '#/main/app/intl/translation'
 
 import {FormData} from '#/main/app/content/form/containers/data'
 import {Session as SessionTypes} from '#/plugin/cursus/prop-types'
-import {SessionCard} from '#/plugin/cursus/session/components/card'
 import {selectors} from '#/plugin/cursus/session/modals/cancel/store'
 import {ConfirmModal} from '#/main/app/modals/confirm/components/modal'
+import {displayDateRange} from '#/main/app/intl'
 
 const SessionCancelModal = props =>
   <ConfirmModal
-    {...omit(props)}
-    icon="fa fa-fw fa-ban"
-    title={transChoice('cancel_session_title', props.sessions.length, {count: props.sessions.length}, 'actions')}
-    subtitle={1 === props.sessions.length ? props.sessions[0].name : transChoice('count_elements', props.sessions.length, {count: props.sessions.length})}
+    {...omit(props, 'sessions')}
     question={transChoice('cancel_session_message', props.sessions.length, {count: props.sessions.length}, 'actions')}
-    size="lg"
-    additional={
-      <Fragment>
-        <div className="modal-body">
-          {props.sessions.map(session =>
-            <SessionCard
-              key={session.id}
-              orientation="row"
-              size="xs"
-              data={session}
-            />
-          )}
-
-          <FormData
-            flush={true}
-            name={selectors.STORE_NAME}
-            className="mt-3"
-            definition={[
-              {
-                title: trans('general'),
-                hideTitle: true,
-                fields: [
-                  {
-                    name: 'meta.cancelReason',
-                    label: trans('cancel_session_reason', {}, 'actions'),
-                    type: 'html'
-                  }, {
-                    name: 'sendMail',
-                    label: trans('send_cancel_mail', {}, 'actions'),
-                    type: 'boolean',
-                    linked: [
-                      {
-                        name: 'canceledTemplate',
-                        label: trans('cancel_session_template', {}, 'actions'),
-                        type: 'template',
-                        displayed: (data) => !!data.sendMail,
-                        options: {
-                          templateType: 'training_session_canceled'
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]}
-          />
-        </div>
-      </Fragment>
-    }
+    dangerous={true}
+    items={props.sessions.map(session => ({
+      name: displayDateRange(get(session, 'restrictions.dates[0]'), get(session, 'restrictions.dates[1]')),
+      thumbnail: session.thumbnail
+    }))}
     confirmAction={{
       type: ASYNC_BUTTON,
-      label: trans('confirm', {}, 'actions'),
+      label: trans('cancel', {}, 'actions'),
       request: {
         url: url(['apiv2_cursus_session_cancel']),
         request: {
@@ -84,7 +37,40 @@ const SessionCancelModal = props =>
         }
       }
     }}
-  />
+  >
+    <FormData
+      className="mt-4"
+      name={selectors.STORE_NAME}
+      definition={[
+        {
+          title: trans('general'),
+          hideTitle: true,
+          fields: [
+            {
+              name: 'meta.cancelReason',
+              label: trans('cancel_session_reason', {}, 'actions'),
+              type: 'html'
+            }, {
+              name: 'sendMail',
+              label: trans('send_cancel_mail', {}, 'actions'),
+              type: 'boolean',
+              linked: [
+                {
+                  name: 'canceledTemplate',
+                  label: trans('cancel_session_template', {}, 'actions'),
+                  type: 'template',
+                  displayed: (data) => !!data.sendMail,
+                  options: {
+                    templateType: 'training_session_canceled'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]}
+    />
+  </ConfirmModal>
 
 SessionCancelModal.propTypes = {
   formData: T.object.isRequired,

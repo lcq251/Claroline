@@ -20,7 +20,7 @@ export default (presences, refresher) => {
     displayed: 0 !== processable.length
       && [constants.PRESENCE_STATUS_ABSENT_UNJUSTIFIED, constants.PRESENCE_STATUS_ABSENT_JUSTIFIED].includes(processable[0].status)
       && (!processable[0].evidences || processable[0].evidences.length === 0),
-    group: trans('validation', {}, 'presence'),
+    group: trans('management'),
     scope: ['object']
   }
 }

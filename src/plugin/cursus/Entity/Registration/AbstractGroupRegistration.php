@@ -5,6 +5,9 @@ namespace Claroline\CursusBundle\Entity\Registration;
 use Claroline\CoreBundle\Entity\Group;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ */
 #[ORM\MappedSuperclass]
 abstract class AbstractGroupRegistration extends AbstractRegistration
 {

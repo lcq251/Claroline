@@ -20,7 +20,7 @@ use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Manager\SessionManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SessionUserSubscriber implements EventSubscriberInterface
+final class SessionUserSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly SessionManager $sessionManager

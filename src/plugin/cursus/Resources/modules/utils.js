@@ -35,7 +35,7 @@ function isFull(session) {
 
 function isFullyRegistered(registration) {
   if (registration) {
-    if (registration.user) {
+    if (registration.session) {
       return registration.confirmed && registration.validated
     }
 
@@ -45,35 +45,17 @@ function isFullyRegistered(registration) {
   return false
 }
 
-function getCourseRegistration(registrations = {}) {
-  if (!isEmpty(registrations.pending)) {
-    return registrations.pending[0]
-  }
-
-  return null
+function getSessionRegistration(session, registrations = []) {
+  return registrations.find(registration => registration.session && session.id === registration.session.id)
 }
 
-function getSessionRegistration(session, registrations = {}) {
-  let registration = null
-
-  if (registrations.users) {
-    registration = registrations.users.find(registration => session.id === registration.session.id)
-  }
-
-  if (!registration && registrations.groups) {
-    registration = registrations.groups.find(registration => session.id === registration.session.id)
-  }
-
-  return registration
-}
-
-function isRegistered(session, registrations= {}) {
+function isRegistered(session, registrations= []) {
   const registration = getSessionRegistration(session, registrations)
 
   return !isEmpty(registration) && isFullyRegistered(registration)
 }
 
-function canSelfRegister(course, session, registrations) {
+function canSelfRegister(course, session, registrations = []) {
   return getInfo(course, session, 'registration.selfRegistration')
     && !getInfo(course, session, 'registration.autoRegistration')
     && !isRegistered(session, registrations)
@@ -97,7 +79,6 @@ export {
   getPeriodStatus,
   isFull,
   getSessionRegistration,
-  getCourseRegistration,
   isFullyRegistered,
   isRegistered,
   canSelfRegister,

@@ -16,6 +16,8 @@ import {selectors} from '#/plugin/cursus/tools/trainings/session/store/selectors
 
 import {MODAL_SESSION_FORM} from '#/plugin/cursus/session/modals/parameters'
 import {MODAL_TRAINING_COURSES} from '#/plugin/cursus/modals/courses'
+import {hasPermission} from '#/main/app/security'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const SessionMain = (props) => {
   const contextType = useSelector(toolSelectors.contextType)
@@ -56,14 +58,27 @@ const SessionMain = (props) => {
                     }],
                     displayed: canCreateSession
                   }}
+                  delete={{
+                    url: ['apiv2_cursus_session_delete'],
+                    displayed: (rows) => -1 !== rows.findIndex(row => hasPermission('delete', row))
+                  }}
                   customDefinition={[
                     {
+                      name: 'name',
+                      type: 'string',
+                      label: trans('name'),
+                      displayed: 'desktop' === contextType,
+                      displayable: 'desktop' === contextType,
+                      primary: true,
+                      render: (course) => <DataMicro object={course} />,
+                      order: 1
+                    }, {
                       name: 'course',
                       type: 'training_course',
                       label: trans('course', {}, 'cursus'),
-                      displayed: 'desktop' === contextType,
-                      primary: true,
-                      order: 1
+                      displayable: false,
+                      sortable: false,
+                      filterable: 'desktop' === contextType
                     }
                   ]}
                   customActions={(rows) => [

@@ -2,36 +2,32 @@
 
 namespace Claroline\CursusBundle\Serializer\Registration;
 
-use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
+use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CoreBundle\Manager\FacetManager;
 use Claroline\CursusBundle\Entity\Registration\AbstractUserRegistration;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
+use Claroline\CursusBundle\Serializer\CourseSerializer;
 use Claroline\CursusBundle\Serializer\SessionSerializer;
 
 class SessionUserSerializer extends AbstractUserSerializer
 {
     use SerializerTrait;
 
-    private SessionSerializer $sessionSerializer;
-    private ObjectManager $om;
-    private FacetManager $facetManager;
-
     public function __construct(
         UserSerializer $userSerializer,
-        SessionSerializer $sessionSerializer,
-        ObjectManager $om,
-        FacetManager $facetManager
+        private readonly CourseSerializer $courseSerializer,
+        private readonly SessionSerializer $sessionSerializer,
+        private readonly ObjectManager $om,
+        private readonly FacetManager $facetManager,
+        private readonly WorkspaceSerializer $workspaceSerializer
     ) {
         parent::__construct($userSerializer);
-
-        $this->sessionSerializer = $sessionSerializer;
-        $this->om = $om;
-        $this->facetManager = $facetManager;
     }
 
     public function getClass(): string
@@ -44,9 +40,17 @@ class SessionUserSerializer extends AbstractUserSerializer
      */
     public function serialize(AbstractUserRegistration $userRegistration, array $options = []): array
     {
+        $course = $userRegistration->getCourse();
+        $session = $userRegistration->getSession();
+
         $serialized = array_merge(parent::serialize($userRegistration, $options), [
-            'session' => $this->sessionSerializer->serialize($userRegistration->getSession(), [Options::SERIALIZE_MINIMAL]),
+            'course' => $this->courseSerializer->serialize($course, [SerializerInterface::SERIALIZE_MINIMAL]),
+            'session' => $session ? $this->sessionSerializer->serialize($session, [SerializerInterface::SERIALIZE_MINIMAL]) : null,
         ]);
+
+        if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
+            return $serialized;
+        }
 
         if (0 !== $userRegistration->getFacetValues()->count()) {
             $serialized['data'] = [];
@@ -58,6 +62,13 @@ class SessionUserSerializer extends AbstractUserSerializer
                     $field->getValue()
                 );
             }
+        }
+
+        if ($session && $session->getWorkspace()) {
+            // only to be able to generate a link to the workspace from the user overview
+            // we do not get it through the serialized `session` because we only have the minimal representation here
+            // and, we don't want to fetch the workspace when getting the full list of registrations.
+            $serialized['workspace'] = $this->workspaceSerializer->serialize($session->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]);
         }
 
         return $serialized;

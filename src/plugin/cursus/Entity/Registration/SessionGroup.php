@@ -13,6 +13,9 @@ namespace Claroline\CursusBundle\Entity\Registration;
 use Claroline\CursusBundle\Entity\Session;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ */
 #[ORM\Table(name: 'claro_cursusbundle_course_session_group')]
 #[ORM\UniqueConstraint(name: 'training_session_unique_group', columns: ['session_id', 'group_id'])]
 #[ORM\Entity]

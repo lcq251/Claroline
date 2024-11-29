@@ -278,17 +278,6 @@ class CourseController extends AbstractCrudController
         $registrations = [];
         if ($user instanceof User) {
             $registrations = $this->manager->getRegistrations($user, $course);
-
-            // by default display one of the session the user is registered to
-            if (!empty($registrations['users'])) {
-                $defaultSession = $this->om->getRepository(Session::class)->findOneBy([
-                    'uuid' => $registrations['users'][0]['session']['id'],
-                ]);
-            } elseif (!empty($registrations['groups'])) {
-                $defaultSession = $this->om->getRepository(Session::class)->findOneBy([
-                    'uuid' => $registrations['groups'][0]['session']['id'],
-                ]);
-            }
         }
 
         $sessions = $this->om->getRepository(Session::class)->findAvailable($course);

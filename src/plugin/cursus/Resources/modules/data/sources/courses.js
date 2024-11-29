@@ -42,7 +42,8 @@ export default {
         label: trans('location'),
         placeholder: trans('online_session', {}, 'cursus'),
         displayable: false,
-        sortable: false
+        sortable: false,
+        options: {multiple: false}
       }, {
         name: 'tags',
         type: 'tag',

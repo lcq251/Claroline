@@ -89,7 +89,8 @@ const RegistrationModal = props => {
                     type: 'location',
                     label: trans('location'),
                     placeholder: trans('online_session', {}, 'cursus'),
-                    displayed: (session) => !!get(session, 'location')
+                    displayed: (session) => !!get(session, 'location'),
+                    options: {multiple: false}
                   }, {
                     name: 'available',
                     type: 'string',

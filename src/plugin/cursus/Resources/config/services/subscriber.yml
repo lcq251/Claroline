@@ -42,19 +42,8 @@ services:
             - { name: kernel.event_subscriber }
 
     # Registrations
-    Claroline\CursusBundle\Subscriber\Crud\Registration\CourseUserSubscriber:
-        tags:
-            - { name: kernel.event_subscriber }
-
     Claroline\CursusBundle\Subscriber\Crud\Registration\SessionUserSubscriber:
         arguments:
-            - '@Claroline\CursusBundle\Manager\SessionManager'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Claroline\CursusBundle\Subscriber\Crud\Registration\SessionGroupSubscriber:
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CursusBundle\Manager\SessionManager'
         tags:
             - { name: kernel.event_subscriber }

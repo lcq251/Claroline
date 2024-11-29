@@ -42,11 +42,7 @@ class SessionUserFinder extends AbstractFinder
         foreach ($searches as $filterName => $filterValue) {
             switch ($filterName) {
                 case 'course':
-                    if (!$sessionJoin) {
-                        $qb->join('obj.session', 's');
-                        $sessionJoin = true;
-                    }
-                    $qb->join('s.course', 'c');
+                    $qb->join('obj.course', 'c');
                     $qb->andWhere("c.uuid = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
                     break;

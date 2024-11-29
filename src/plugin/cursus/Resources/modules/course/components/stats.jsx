@@ -6,13 +6,13 @@ import {Alert} from '#/main/app/components/alert'
 import {FormStats} from '#/main/app/content/form/stats/components/main'
 
 const CourseStats = (props) =>
-  <Fragment>
+  <>
     <Alert type="info">
       {trans('course_stats_help', {}, 'cursus')}
     </Alert>
 
     <FormStats stats={props.stats} className="mb-3" />
-  </Fragment>
+  </>
 
 CourseStats.propTypes = {
   course: T.object.isRequired,

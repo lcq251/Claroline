@@ -6,14 +6,12 @@ import {EntityInput} from '#/main/app/data/types/entity'
 
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {MODAL_TRAINING_EVENTS} from '#/plugin/cursus/modals/events'
-import {EventCard} from '#/plugin/cursus/event/components/card'
 
 const EventInput = props =>
   <EntityInput
     {...props}
-    placeholder={trans('no_event', {}, 'cursus')}
-    card={EventCard}
     pickerType={MODAL_TRAINING_EVENTS}
+    add={trans(props.multiple ? 'add_training_events' : 'add_training_event', {}, 'actions')}
   />
 
 implementPropTypes(EventInput, EntityInput.propTypes, {

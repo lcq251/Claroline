@@ -12,6 +12,7 @@
 namespace Claroline\CursusBundle\Entity\Registration;
 
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
+use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Session;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +23,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class SessionUser extends AbstractUserRegistration
 {
-    #[ORM\JoinColumn(name: 'session_id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'course_id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Course::class)]
+    private ?Course $course = null;
+
+    #[ORM\JoinColumn(name: 'session_id', nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Session::class)]
     private ?Session $session = null;
 
@@ -42,12 +47,22 @@ class SessionUser extends AbstractUserRegistration
         $this->facetValues = new ArrayCollection();
     }
 
-    public function getSession(): Session
+    public function getCourse(): Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(Course $course): void
+    {
+        $this->course = $course;
+    }
+
+    public function getSession(): ?Session
     {
         return $this->session;
     }
 
-    public function setSession(Session $session): void
+    public function setSession(?Session $session): void
     {
         $this->session = $session;
     }

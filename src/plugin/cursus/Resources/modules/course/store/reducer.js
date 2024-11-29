@@ -25,88 +25,21 @@ const reducer = combineReducers({
   courseAvailableSessions: makeReducer([], {
     [LOAD_COURSE]: (state, action) => action.availableSessions
   }),
-  courseSessions: makeListReducer(selectors.STORE_NAME+'.courseSessions', {
-    filters: {filters: [{property: 'status', value: 'not_ended'}]},
-    sortBy: {property: 'order', direction: 1}
-  }, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true
-    })
-  }),
   courseSessionsCanceled: makeListReducer(selectors.STORE_NAME+'.courseSessionsCanceled', {
     sortBy: {property: 'order', direction: 1},
     filters: {filters: [{property: 'status', value: 'not_ended'}]}
   }),
-  courseEvents: makeListReducer(selectors.STORE_NAME+'.courseEvents', {
-    filters: {filters: [{property: 'status', value: 'not_ended'}]},
-    sortBy: {property: 'startDate', direction: 1}
-  }, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true,
-      [LOAD_COURSE_SESSION]: () => true
-    })
-  }),
   // current user registrations to course sessions
-  courseRegistrations: makeReducer({users: [], groups: []}, {
+  courseRegistrations: makeReducer([], {
     [LOAD_COURSE]: (state, action) => action.registrations
   }),
 
-  participantsView: makeReducer('session', {
-    [SWITCH_PARTICIPANTS_VIEW]: (state, action) => action.viewMode
-  }),
-
-  coursePending: makeListReducer(selectors.STORE_NAME+'.coursePending', {}, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true
-    })
-  }),
-
-  // active session participants
-  sessionTutors: makeListReducer(selectors.STORE_NAME+'.sessionTutors', {
-    sortBy: {property: 'date', direction: -1},
-    filters: {
-      filters: [
-        {property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true},
-        {property: 'pending', value: false, locked: true, hidden: true}
-      ]
-    }
-  }, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true,
-      [LOAD_COURSE_SESSION]: () => true,
-      [SWITCH_PARTICIPANTS_VIEW]: () => true
-    })
-  }),
   sessionUsers: makeListReducer(selectors.STORE_NAME+'.sessionUsers', {
     sortBy: {property: 'date', direction: -1},
     filters: {
       filters: [
         {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
-        {property: 'pending', value: false, locked: true, hidden: true}
-      ]
-    }
-  }, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true,
-      [LOAD_COURSE_SESSION]: () => true,
-      [SWITCH_PARTICIPANTS_VIEW]: () => true
-    })
-  }),
-  sessionGroups: makeListReducer(selectors.STORE_NAME+'.sessionGroups', {
-    sortBy: {property: 'date', direction: -1}
-  }, {
-    invalidated: makeReducer(false, {
-      [LOAD_COURSE]: () => true,
-      [LOAD_COURSE_SESSION]: () => true,
-      [SWITCH_PARTICIPANTS_VIEW]: () => true
-    })
-  }),
-  sessionPending: makeListReducer(selectors.STORE_NAME+'.sessionPending', {
-    sortBy: {property: 'date', direction: -1},
-    filters: {
-      filters: [
-        {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
-        {property: 'pending', value: true, locked: true, hidden: true}
+        // {property: 'pending', value: false, locked: true, hidden: true}
       ]
     }
   }, {

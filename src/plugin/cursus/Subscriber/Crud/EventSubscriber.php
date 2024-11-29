@@ -16,12 +16,11 @@ use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\CoreBundle\Subscriber\Crud\Planning\AbstractPlannedSubscriber;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
-use Claroline\CursusBundle\Entity\Registration\SessionGroup;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\EventManager;
 
-class EventSubscriber extends AbstractPlannedSubscriber
+final class EventSubscriber extends AbstractPlannedSubscriber
 {
     public function __construct(
         private readonly EventManager $manager
@@ -85,17 +84,6 @@ class EventSubscriber extends AbstractPlannedSubscriber
                 $this->manager->addUsers($trainingEvent, array_map(function (SessionUser $sessionUser) {
                     return $sessionUser->getUser();
                 }, $sessionTutors), AbstractRegistration::TUTOR);
-            }
-
-            /** @var SessionGroup[] $sessionGroups */
-            $sessionGroups = $this->om->getRepository(SessionGroup::class)->findBy([
-                'session' => $trainingEvent->getSession(),
-            ]);
-
-            if (!empty($sessionGroups)) {
-                $this->manager->addGroups($trainingEvent, array_map(function (SessionGroup $sessionGroup) {
-                    return $sessionGroup->getGroup();
-                }, $sessionGroups));
             }
         }
     }

@@ -4,6 +4,14 @@ namespace Claroline\CursusBundle\Entity;
 
 interface TrainingInterface
 {
+    public function getName(): ?string;
+
+    public function getThumbnail(): ?string;
+
+    public function getPoster(): ?string;
+
+    public function getPlainDescription(): ?string;
+
     /**
      * Users are automatically registered when opening the linked Workspace.
      */

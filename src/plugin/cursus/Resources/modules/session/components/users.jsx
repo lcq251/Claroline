@@ -18,11 +18,27 @@ import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 
 const SessionUsers = (props) => {
   let customDefinition = [].concat(props.customDefinition || [])
-  if (constants.LEARNER_TYPE === props.type && get(props.course, 'registration.form')) {
+  if (props.course && constants.LEARNER_TYPE === props.type && get(props.course, 'registration.form')) {
     get(props.course, 'registration.form').map(formSection => {
       customDefinition = customDefinition.concat(formSection.fields.map(field => formatListField(field, customDefinition, 'data')))
     })
   }
+
+  customDefinition = customDefinition.concat([
+    {
+      name: 'confirmed',
+      type: 'boolean',
+      label: trans('confirmed'),
+      displayable: true,
+      displayed: false
+    }, {
+      name: 'validated',
+      type: 'boolean',
+      label: trans('validated'),
+      displayable: true,
+      displayed: false
+    }
+  ])
 
   return (
     <RegistrationUsers

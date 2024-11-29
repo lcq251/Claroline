@@ -47,7 +47,8 @@ const EventsModal = (props) =>
         type: 'location',
         label: trans('location'),
         placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true
+        displayed: true,
+        options: {multiple: false}
       }, {
         name: 'start',
         alias: 'startDate',

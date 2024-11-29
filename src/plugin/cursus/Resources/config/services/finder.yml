@@ -26,19 +26,7 @@ services:
         tags: [ claroline.finder ]
 
     # Registrations
-    Claroline\CursusBundle\Finder\Registration\CourseUserFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]
-
-    Claroline\CursusBundle\Finder\Registration\SessionGroupFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]
-
     Claroline\CursusBundle\Finder\Registration\SessionUserFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]
-
-    Claroline\CursusBundle\Finder\Registration\EventGroupFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]
 

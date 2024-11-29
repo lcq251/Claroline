@@ -13,12 +13,6 @@ const EventParticipants = connect(
     inviteUsers(eventId, users) {
       dispatch(actions.inviteUsers(eventId, users))
     },
-    inviteGroups(eventId, groups) {
-      dispatch(actions.inviteGroups(eventId, groups))
-    },
-    addGroups(eventId, groups, type = constants.LEARNER_TYPE) {
-      dispatch(actions.addGroups(eventId, groups, type))
-    },
     setPresenceStatus(eventId, presences, status) {
       dispatch(actions.setPresenceStatus(eventId, presences, status))
     }

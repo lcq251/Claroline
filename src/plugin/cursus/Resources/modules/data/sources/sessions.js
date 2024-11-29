@@ -59,12 +59,6 @@ export default {
         label: trans('public_registration'),
         displayed: false
       }, {
-        name: 'registration.selfUnregistration',
-        alias: 'publicUnregistration',
-        type: 'boolean',
-        label: trans('public_unregistration'),
-        displayed: false
-      }, {
         name: 'registration.validation',
         alias: 'registrationValidation',
         type: 'boolean',

@@ -92,7 +92,6 @@
     "default_session_help": "The default session is displayed when opening the training in the catalog.",
     "default_session_help_registration": "The default session is used when automatically registering users from a parent training.",
     "training_hidden": "This training is hidden",
-    "training_public_registration": "Registration is public.",
     "available_seats": "Available seats",
     "available_seats_per_session": "Available seats per session",
     "registration_requires_manager": "You must be registered by a manager to be able to participate in this training.",
@@ -166,6 +165,6 @@
     "custom_registration_form_group_help": "The custom form is not available for group registration.",
     "tutor_role_help": "If no role is defined, users registered as Tutors will be granted the role \"Manager\" of the selected workspace.",
     "learner_role_help": "If no role is defined, users registered as Learners will be granted the role \"Collaborator\" of the selected workspace.",
-    "course_stats_help": "Statistics are not available for pending and group registrations.",
+    "course_stats_help": "Statistics are not available for pending registrations.",
     "count_registered_users": "Number of registered users"
 }

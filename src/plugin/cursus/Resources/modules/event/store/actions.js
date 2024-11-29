@@ -65,26 +65,6 @@ actions.inviteUsers = (eventId, users) => ({
   }
 })
 
-actions.addGroups = (eventId, groups, type) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_cursus_event_add_groups', {id: eventId, type: type}], {ids: groups.map(group => group.id)}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => dispatch(actions.open(eventId, true))
-  }
-})
-
-actions.inviteGroups = (eventId, groups) => ({
-  [API_REQUEST]: {
-    type: actionConstants.ACTION_SEND,
-    url: url(['apiv2_cursus_event_invite_groups', {id: eventId}], {ids: groups.map(group => group.id)}),
-    request: {
-      method: 'PUT'
-    }
-  }
-})
-
 actions.setPresenceStatus = (presences, status) => ({
   [API_REQUEST]: {
     url: url(['apiv2_cursus_event_presence_update', {status: status}]),

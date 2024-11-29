@@ -22,10 +22,8 @@ use Claroline\CoreBundle\Manager\PlanningManager;
 use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
-use Claroline\CursusBundle\Entity\Registration\EventGroup;
 use Claroline\CursusBundle\Entity\Registration\EventUser;
 use Claroline\CursusBundle\Entity\Session;
-use Claroline\CursusBundle\Repository\Registration\EventGroupRepository;
 use Claroline\CursusBundle\Repository\Registration\EventUserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -35,7 +33,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class EventManager
 {
     private EventUserRepository $eventUserRepo;
-    private EventGroupRepository $eventGroupRepo;
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -46,7 +43,6 @@ class EventManager
         private readonly EventPresenceManager $presenceManager
     ) {
         $this->eventUserRepo = $om->getRepository(EventUser::class);
-        $this->eventGroupRepo = $om->getRepository(EventGroup::class);
     }
 
     public function getBySessionAndUser(Session $session, User $user): ?array
@@ -54,10 +50,6 @@ class EventManager
         return $this->eventUserRepo->findBySessionAndUser($session, $user);
     }
 
-    public function getBySessionAndGroup(Session $session, Group $group): ?array
-    {
-        return $this->eventGroupRepo->findBySessionAndUser($session, $group);
-    }
 
     public function generateFromTemplate(Event $event, string $locale): string
     {
@@ -128,80 +120,6 @@ class EventManager
 
             // clean presences
             $this->presenceManager->removePresence($event, $eventUser->getUser());
-        }
-
-        $this->om->endFlushSuite();
-    }
-
-    /**
-     * Adds groups to a session.
-     */
-    public function addGroups(Event $event, array $groups, string $type = AbstractRegistration::LEARNER): array
-    {
-        $results = [];
-        $registrationDate = new \DateTime();
-
-        $this->om->startFlushSuite();
-
-        $users = [];
-        foreach ($groups as $group) {
-            $eventGroup = $this->eventGroupRepo->findOneBy([
-                'event' => $event,
-                'group' => $group,
-                'type' => $type,
-            ]);
-
-            if (empty($eventGroup)) {
-                $eventGroup = new EventGroup();
-
-                $eventGroup->setEvent($event);
-                $eventGroup->setGroup($group);
-                $eventGroup->setType($type);
-                $eventGroup->setDate($registrationDate);
-
-                $this->om->persist($eventGroup);
-
-                $results[] = $eventGroup;
-
-                $groupUsers = $this->om->getRepository(User::class)->findByGroup($group);
-                foreach ($groupUsers as $user) {
-                    $users[$user->getUuid()] = $user;
-
-                    // add event to user planning
-                    $this->planningManager->addToPlanning($event, $user);
-                }
-            }
-        }
-
-        if ($event->getRegistrationMail()) {
-            $this->sendSessionEventInvitation($event, $users);
-        }
-
-        // initialize presences
-        $this->presenceManager->generate($event, $users);
-
-        $this->om->endFlushSuite();
-
-        return $results;
-    }
-
-    /**
-     * @param EventGroup[] $eventGroups
-     */
-    public function removeGroups(Event $event, array $eventGroups): void
-    {
-        $this->om->startFlushSuite();
-
-        foreach ($eventGroups as $eventGroup) {
-            $this->om->remove($eventGroup);
-
-            $group = $eventGroup->getGroup();
-            foreach ($group->getUsers() as $user) {
-                // remove event from user planning
-                $this->planningManager->removeFromPlanning($event, $user);
-                // clean presences
-                $this->presenceManager->removePresence($event, $user);
-            }
         }
 
         $this->om->endFlushSuite();
@@ -318,27 +236,9 @@ class EventManager
             'validated' => true,
         ]);
 
-        /** @var EventGroup[] $sessionGroups */
-        $eventGroups = $this->eventGroupRepo->findBy([
-            'event' => $event,
-            'type' => AbstractRegistration::LEARNER,
-        ]);
-
-        $users = [];
-
-        foreach ($eventLearners as $eventLearner) {
-            $user = $eventLearner->getUser();
-            $users[$user->getUuid()] = $user;
-        }
-
-        foreach ($eventGroups as $eventGroup) {
-            $groupUsers = $this->om->getRepository(User::class)->findByGroup($eventGroup->getGroup());
-            foreach ($groupUsers as $user) {
-                $users[$user->getUuid()] = $user;
-            }
-        }
-
-        return array_values($users);
+        return array_map(function (EventUser $eventUser) {
+            return $eventUser->getUser();
+        }, $eventLearners);
     }
 
     private function getTemplatePlaceholders(Event $event): array

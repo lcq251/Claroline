@@ -15,7 +15,6 @@ import {constants} from '#/plugin/cursus/constants'
 import {EventCard} from '#/plugin/cursus/event/components/card'
 import {EventStatus} from '#/plugin/cursus/components/event-status'
 import {constants as listConst} from '#/main/app/content/list/constants'
-import {MODAL_TRAINING_EVENT_ABOUT} from '#/plugin/cursus/event/modals/about'
 import {MODAL_TRAINING_EVENT_PARAMETERS} from '#/plugin/cursus/event/modals/parameters'
 
 const Events = (props) =>
@@ -27,15 +26,6 @@ const Events = (props) =>
     })}
     actions={(rows) => [
       {
-        name: 'about',
-        type: MODAL_BUTTON,
-        icon: 'fa fa-fw fa-circle-info',
-        label: trans('show-info', {}, 'actions'),
-        modal: [MODAL_TRAINING_EVENT_ABOUT, {
-          event: rows[0]
-        }],
-        scope: ['object']
-      }, {
         name: 'edit',
         type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-pencil',
@@ -109,7 +99,7 @@ const Events = (props) =>
         icon: 'fa fa-fw fa-clipboard-check',
         label: trans('presence_validation', {}, 'presence'),
         displayed: hasPermission('edit', rows[0]),
-        group: trans('validation', {}, 'presence'),
+        group: trans('presences', {}, 'cursus'),
         request: {
           url: ['apiv2_cursus_event_presence_confirm', {id: rows[0].id}],
           request: {
@@ -175,7 +165,8 @@ const Events = (props) =>
         type: 'location',
         label: trans('location'),
         placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true
+        displayed: true,
+        options: {multiple: false}
       }, {
         name: 'tutors',
         type: 'user',

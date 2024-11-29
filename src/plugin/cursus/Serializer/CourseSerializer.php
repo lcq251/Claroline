@@ -73,6 +73,7 @@ class CourseSerializer
                 'code' => $course->getCode(),
                 'slug' => $course->getSlug(),
                 'thumbnail' => $course->getThumbnail(),
+                'plainDescription' => $course->getPlainDescription(),
             ];
         }
 
@@ -93,9 +94,6 @@ class CourseSerializer
                 'duration' => $course->getDefaultSessionDuration(),
                 'public' => $course->isPublic(),
                 'archived' => $course->isArchived(),
-            ],
-            'opening' => [
-                'session' => $course->getSessionOpening(),
             ],
             'certification' => $course->getCertification(),
             'pricing' => [
@@ -130,6 +128,9 @@ class CourseSerializer
                 'display' => [
                     'order' => $course->getOrder(),
                     'hideSessions' => $course->getHideSessions(),
+                ],
+                'opening' => [
+                    'session' => $course->getSessionOpening(),
                 ],
                 'participants' => $this->courseRepo->countParticipants($course),
                 'registration' => [

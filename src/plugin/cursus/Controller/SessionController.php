@@ -18,7 +18,6 @@ use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
@@ -28,7 +27,6 @@ use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
-use Claroline\CursusBundle\Entity\Registration\SessionGroup;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\SessionManager;
@@ -239,36 +237,6 @@ class SessionController extends AbstractCrudController
         return new JsonResponse(array_map(function (SessionUser $sessionUser) {
             return $this->serializer->serialize($sessionUser);
         }, $sessionUsers));
-    }
-
-    #[Route(path: '/{id}/groups/{type}', name: 'add_groups', methods: ['PATCH'])]
-    public function addGroupsAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Session $session,
-        string $type,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
-
-        /** @var Group[] $groups */
-        $groups = $this->decodeIdsString($request, Group::class);
-        $nbUsers = 0;
-
-        foreach ($groups as $group) {
-            $nbUsers += count($this->om->getRepository(User::class)->findByGroup($group));
-        }
-
-        if (AbstractRegistration::LEARNER === $type && !$this->manager->checkSessionCapacity($session, $nbUsers)) {
-            return new JsonResponse(['errors' => [
-                $this->translator->trans('users_limit_reached', ['%count%' => $nbUsers], 'cursus'),
-            ]], 422); // not the best status (same as form validation errors)
-        }
-
-        $sessionGroups = $this->manager->addGroups($session, $groups, $type);
-
-        return new JsonResponse(array_map(function (SessionGroup $sessionGroup) {
-            return $this->serializer->serialize($sessionGroup);
-        }, $sessionGroups));
     }
 
     #[Route(path: '/{id}/pending', name: 'add_pending', methods: ['PATCH'])]

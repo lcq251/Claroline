@@ -22,8 +22,7 @@ class EventUserSerializer extends AbstractUserSerializer
 {
     use SerializerTrait;
 
-    /** @var EventSerializer */
-    private $eventSerializer;
+    private EventSerializer $eventSerializer;
 
     public function __construct(UserSerializer $userSerializer, EventSerializer $eventSerializer)
     {

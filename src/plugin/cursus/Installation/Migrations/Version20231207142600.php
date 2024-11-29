@@ -12,7 +12,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `title` = REPLACE(`title`, \'%event_start%\', \'%event_start_datetime%\')
             WHERE `title` LIKE \'%event_start%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -20,7 +20,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_start%\', \'%event_start_datetime%\')
             WHERE `content` LIKE \'%event_start%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -28,7 +28,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `title` = REPLACE(`title`, \'%event_end%\', \'%event_end_datetime%\')
             WHERE `title` LIKE \'%event_end%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -36,7 +36,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_end%\', \'%event_end_datetime%\')
             WHERE `content` LIKE \'%event_end%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -47,7 +47,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_start_datetime%\', \'%event_start%\')
             WHERE `title` LIKE \'%event_start_datetime%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -55,7 +55,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_start_datetime%\', \'%event_start%\')
             WHERE `content` LIKE \'%event_start_datetime%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -63,7 +63,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_end_datetime%\', \'%event_end%\')
             WHERE `title` LIKE \'%event_end_datetime%\' AND ctt.entity_name = \'event_invitation\'
         ');
@@ -71,7 +71,7 @@ final class Version20231207142600 extends AbstractMigration
         $this->addSql('
             UPDATE `claro_template_content`
             LEFT JOIN `claro_template` ct on ct.id = `claro_template_content`.`template_id`
-            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`claro_template_type`
+            LEFT JOIN `claro_template_type` ctt on ctt.id = ct.`entity_type`
             SET `content` = REPLACE(`content`, \'%event_end_datetime%\', \'%event_end%\')
             WHERE `content` LIKE \'%event_end_datetime%\' AND ctt.entity_name = \'event_invitation\'
         ');

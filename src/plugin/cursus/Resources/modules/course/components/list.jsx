@@ -37,6 +37,12 @@ const Courses = (props) => {
           primary: true,
           render: (course) => <DataMicro object={course} />
         }, {
+          name: 'plainDescription',
+          type: 'string',
+          label: trans('description'),
+          sortable: false,
+          options: {long: true}
+        }, {
           name: 'code',
           type: 'string',
           label: trans('code')
@@ -60,8 +66,7 @@ const Courses = (props) => {
           label: trans('price'),
           type: 'currency',
           displayable: param('pricing.enabled'),
-          displayed: param('pricing.enabled'),
-          filterable: param('pricing.enabled'),
+          filterable: false,
           sortable: param('pricing.enabled')
         }, {
           name: 'tags',
