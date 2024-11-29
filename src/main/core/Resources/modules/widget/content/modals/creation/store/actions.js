@@ -2,7 +2,7 @@ import merge from 'lodash/merge'
 
 import {API_REQUEST} from '#/main/app/api'
 import {makeActionCreator} from '#/main/app/store/actions'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {WidgetInstance as WidgetInstanceTypes} from '#/main/core/widget/content/prop-types'

@@ -7,7 +7,7 @@ import merge from 'lodash/merge'
 
 import {makeCancelable} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Toolbar, ActionTypes} from '#/main/app/action'
 import {Alert} from '#/main/app/components/alert'
 import {Html} from '#/main/app/components/html'

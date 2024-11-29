@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
 

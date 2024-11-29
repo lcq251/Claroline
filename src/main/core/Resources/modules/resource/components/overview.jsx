@@ -5,7 +5,7 @@ import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {Alert} from '#/main/app/components/alert'

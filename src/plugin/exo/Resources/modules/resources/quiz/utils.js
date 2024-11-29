@@ -1,7 +1,7 @@
 import {constants} from '#/plugin/exo/resources/quiz/constants'
 import {getItem} from '#/plugin/exo/items'
 import cloneDeep from 'lodash/cloneDeep'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 function refreshIdentifiers(item) {
   const copy = cloneDeep(item)

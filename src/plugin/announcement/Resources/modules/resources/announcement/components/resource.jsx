@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {Resource} from '#/main/core/resource'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/resources/announcement/prop-types'

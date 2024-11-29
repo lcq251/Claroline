@@ -1,7 +1,7 @@
 import invariant from 'invariant'
 
 import {makeActionCreator} from '#/main/app/store/actions'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 // actions
 export const MODAL_SHOW = 'MODAL_SHOW'

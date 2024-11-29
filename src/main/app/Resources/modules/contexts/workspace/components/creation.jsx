@@ -4,7 +4,7 @@ import merge from 'lodash/merge'
 import pick from 'lodash/pick'
 
 import {trans} from '#/main/app/intl'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentMenu} from '#/main/app/content/components/menu'
 

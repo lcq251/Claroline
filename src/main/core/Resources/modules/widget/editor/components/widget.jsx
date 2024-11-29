@@ -5,7 +5,7 @@ import sum from 'lodash/sum'
 import times from 'lodash/times'
 
 import {trans} from '#/main/app/intl/translation'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Button} from '#/main/app/action/components/button'
 import {Toolbar} from '#/main/app/action/components/toolbar'
 import {Heading} from '#/main/app/components/heading'

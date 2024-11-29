@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {Redirect, Switch} from 'react-router-dom'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Route} from '#/main/app/router/components/route'
 import {Route as RouteTypes} from '#/main/app/router/prop-types'
 

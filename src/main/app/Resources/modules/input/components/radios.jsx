@@ -2,7 +2,7 @@ import React from 'react'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
 import {Radio} from '#/main/app/input/components/radio'

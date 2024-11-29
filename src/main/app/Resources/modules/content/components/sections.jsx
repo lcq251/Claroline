@@ -5,7 +5,7 @@ import omit from 'lodash/omit'
 
 import Accordion from 'react-bootstrap/Accordion'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {Toolbar} from '#/main/app/action/components/toolbar'
 

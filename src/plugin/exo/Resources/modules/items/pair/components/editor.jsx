@@ -8,7 +8,7 @@ import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {FormGroup} from '#/main/app/content/form/components/group'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 

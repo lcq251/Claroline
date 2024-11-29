@@ -4,7 +4,7 @@ import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Toolbar} from '#/main/app/action/components/toolbar'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {FormFieldset} from '#/main/app/content/form/components/fieldset'

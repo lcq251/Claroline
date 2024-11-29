@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import get from 'lodash/get'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 
 import {constants} from '#/main/app/user/constants'

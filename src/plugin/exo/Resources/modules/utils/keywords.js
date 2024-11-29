@@ -1,7 +1,7 @@
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {notBlank, number, chainSync} from '#/main/app/data/types/validators'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 export const keywords = {}
 

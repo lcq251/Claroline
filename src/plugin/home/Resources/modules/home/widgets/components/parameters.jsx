@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'

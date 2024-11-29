@@ -5,7 +5,7 @@ import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {actions} from '#/main/core/administration/connection-messages/store/actions'

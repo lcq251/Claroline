@@ -1,9 +1,9 @@
 import merge from 'lodash/merge'
 import cloneDeep from 'lodash/cloneDeep'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 import {Step} from '#/plugin/exo/resources/quiz/prop-types'
 

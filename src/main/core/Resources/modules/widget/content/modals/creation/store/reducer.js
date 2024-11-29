@@ -1,7 +1,7 @@
 import merge from 'lodash/merge'
 
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 
 import {WidgetInstance as WidgetInstanceTypes} from '#/main/core/widget/content/prop-types'

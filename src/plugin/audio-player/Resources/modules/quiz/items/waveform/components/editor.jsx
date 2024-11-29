@@ -9,7 +9,7 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {CallbackButton} from '#/main/app/buttons/callback/components/button'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'

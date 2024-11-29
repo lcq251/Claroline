@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {notBlank, notEmpty, chainSync} from '#/main/app/data/types/validators'
 

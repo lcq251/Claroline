@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
 import {Badge} from '#/main/app/components/badge'
 

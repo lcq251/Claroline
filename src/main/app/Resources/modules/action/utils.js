@@ -5,7 +5,7 @@ import uniqWith from 'lodash/uniqWith'
 
 import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl/translation'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 import {LINK_BUTTON} from '#/main/app/buttons/link'
 import {MENU_BUTTON} from '#/main/app/buttons/menu'

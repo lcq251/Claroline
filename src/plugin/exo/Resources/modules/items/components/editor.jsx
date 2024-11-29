@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl/translation'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {NumberInput} from '#/main/app/data/types/number/components/input'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {Item as ItemTypes, ItemType as ItemTypeTypes} from '#/plugin/exo/items/prop-types'
 

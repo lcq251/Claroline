@@ -7,7 +7,7 @@ import {WordsItem as WordsItemTypes} from '#/plugin/exo/items/words/prop-types'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 import {KeywordItems} from '#/plugin/exo/components/keywords'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 const WordsEditor = (props) => {
   let newSolutions = []

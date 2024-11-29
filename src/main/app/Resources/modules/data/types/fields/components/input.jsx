@@ -6,7 +6,7 @@ import isNumber from 'lodash/isNumber'
 import merge from 'lodash/merge'
 
 import {implementPropTypes, PropTypes as T} from '#/main/app/prop-types'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {Badge} from '#/main/app/components/badge'
 import {actions as modalActions} from '#/main/app/overlays/modal/store'

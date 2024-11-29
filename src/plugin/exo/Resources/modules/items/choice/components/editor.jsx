@@ -6,7 +6,7 @@ import set from 'lodash/set'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'

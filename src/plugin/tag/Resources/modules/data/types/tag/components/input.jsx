@@ -8,7 +8,7 @@ import {implementPropTypes} from '#/main/app/prop-types'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {makeCancelable, url} from '#/main/app/api'
 import {param} from '#/main/app/config'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {CallbackButton} from '#/main/app/buttons/callback'
@@ -249,7 +249,7 @@ class TagInput extends Component {
               disabled={this.props.disabled}
               value={this.state.currentTag}
               onChange={this.onChange}
-              placeholder="Recherchez un tag pour l'ajouter ou le créer s'il nexiste pas."
+              placeholder="Recherchez un tag pour l'ajouter ou le créer s'il n'existe pas."
             />
           </div>
 

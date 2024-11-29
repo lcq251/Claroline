@@ -12,7 +12,7 @@ import {FormGroup} from '#/main/app/content/form/components/group'
 import {DataInput} from '#/main/app/data/components/input'
 import {CallbackButton} from '#/main/app/buttons/callback/components/button'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {selectors} from '#/plugin/claco-form/modals/category/store/selectors'
 import {Category as CategoryTypes} from '#/plugin/claco-form/resources/claco-form/prop-types'

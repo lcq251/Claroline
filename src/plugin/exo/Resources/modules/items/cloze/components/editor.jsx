@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {theme} from '#/main/theme/config'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {FormGroup} from '#/main/app/content/form/components/group'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'

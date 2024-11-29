@@ -4,7 +4,7 @@ import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
 
 import {Icon} from '#/plugin/exo/items/components/icon'

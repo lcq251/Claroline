@@ -5,7 +5,7 @@ import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'

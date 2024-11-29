@@ -6,7 +6,7 @@ import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {CallbackButton} from '#/main/app/buttons/callback/components/button'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {isOverlayed} from '#/plugin/audio-player/quiz/items/waveform/utils'
 import {Section as SectionType} from '#/plugin/audio-player/quiz/items/waveform/prop-types'

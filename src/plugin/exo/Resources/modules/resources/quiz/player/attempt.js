@@ -3,7 +3,7 @@ import sampleSize from 'lodash/sampleSize'
 import shuffle from 'lodash/shuffle'
 
 import {now} from '#/main/app/intl/date'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {Step} from '#/plugin/exo/resources/quiz/prop-types'
 import {constants} from '#/plugin/exo/resources/quiz/constants'

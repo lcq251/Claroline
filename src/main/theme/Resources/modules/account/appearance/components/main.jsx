@@ -74,6 +74,11 @@ const AppearanceMain = (props) =>
               noEmpty: false,
               choices: listConst.DISPLAY_MODES
             }
+          }, {
+            name: 'striped',
+            type: 'boolean',
+            label: trans('striped', {}, 'appearance'),
+            help: trans('striped_help', {}, 'appearance')
           }
         ]
       }

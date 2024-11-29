@@ -5,7 +5,7 @@ import omit from 'lodash/omit'
 
 import {Button, Toolbar} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 // TODO : allow other navigation action types
 

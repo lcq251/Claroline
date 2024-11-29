@@ -2,7 +2,7 @@ import {connect as baseConnect} from 'react-redux'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 

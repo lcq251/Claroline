@@ -13,7 +13,7 @@ import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/pr
 import {getInfo} from '#/plugin/cursus/utils'
 import {Address} from '#/main/app/components/address'
 import isEmpty from 'lodash/isEmpty'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import isNumber from 'lodash/isNumber'
 
 const SessionInfo = (props) => {

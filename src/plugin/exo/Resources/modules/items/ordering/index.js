@@ -3,7 +3,7 @@ import set from 'lodash/set'
 
 import {trans} from '#/main/app/intl/translation'
 import {notBlank} from '#/main/app/data/types/validators'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {CorrectedAnswer, Answerable} from '#/plugin/exo/items/utils'
 import {OrderingItem as OrderingItemType} from '#/plugin/exo/items/ordering/prop-types'

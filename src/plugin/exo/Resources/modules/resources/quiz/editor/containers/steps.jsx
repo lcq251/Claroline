@@ -3,8 +3,8 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import {withRouter} from '#/main/app/router'
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
-import {toKey} from '#/main/core/scaffolding/text'
+import {makeId} from '#/main/app/utils/id'
+import {toKey} from '#/main/app/utils/text'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'

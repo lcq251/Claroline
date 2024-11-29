@@ -1,5 +1,5 @@
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {CorrectedAnswer, Answerable} from '#/plugin/exo/items/utils'
 

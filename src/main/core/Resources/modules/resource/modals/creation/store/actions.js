@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {getResource} from '#/main/core/resources'

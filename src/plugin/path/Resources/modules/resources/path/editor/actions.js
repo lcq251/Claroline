@@ -3,8 +3,8 @@ import merge from 'lodash/merge'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {makeId} from '#/main/core/scaffolding/id'
-import {toKey} from '#/main/core/scaffolding/text'
+import {makeId} from '#/main/app/utils/id'
+import {toKey} from '#/main/app/utils/text'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_STEP_POSITION} from '#/plugin/path/resources/path/editor/modals/position'

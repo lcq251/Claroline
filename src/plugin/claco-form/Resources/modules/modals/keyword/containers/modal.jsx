@@ -5,7 +5,7 @@ import {actions as formActions, selectors as formSelectors} from '#/main/app/con
 
 import {KeywordModal as KeywordModalComponent} from '#/plugin/claco-form/modals/keyword/components/modal'
 import {reducer, selectors} from '#/plugin/claco-form/modals/keyword/store'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 const KeywordModal = withReducer(selectors.STORE_NAME, reducer)(
   connect(

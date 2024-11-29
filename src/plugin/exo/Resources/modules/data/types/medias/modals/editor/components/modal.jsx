@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl/translation'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {GridSelection} from '#/main/app/content/grid/components/selection'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {getItems} from '#/plugin/exo/items'
 import {Icon} from '#/plugin/exo/items/components/icon'

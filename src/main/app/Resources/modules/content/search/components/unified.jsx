@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Menu, MenuOverlay} from '#/main/app/overlays/menu'

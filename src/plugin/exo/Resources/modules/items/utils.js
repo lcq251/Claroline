@@ -1,4 +1,4 @@
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 class Answerable {
   constructor(score = null, id = null) {

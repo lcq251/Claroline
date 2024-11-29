@@ -7,7 +7,7 @@ import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Button} from '#/main/app/action/components/button'
 import {FormData} from '#/main/app/content/form/containers/data'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 

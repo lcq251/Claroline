@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 
 import {makeReducer} from '#/main/app/store/reducer'
 import {getApiFormat} from '#/main/app/intl/date'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {isQuestionType} from '#/plugin/exo/items/item-types'
 import {UserAnswer} from '#/plugin/exo/resources/quiz/prop-types'

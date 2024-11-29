@@ -5,7 +5,7 @@ import {selectors as toolSelectors} from '#/main/core/tool/store'
 
 import {TemplateDetails as TemplateDetailsComponent} from '#/main/template/administration/templates/components/details'
 import {actions, selectors} from '#/main/template/administration/templates/store'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 const TemplateDetails = connect(
   (state) => ({

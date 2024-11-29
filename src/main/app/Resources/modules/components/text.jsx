@@ -4,7 +4,7 @@ import classes from 'classnames'
 import omit from 'lodash/omit'
 import isEmpty from 'lodash/isEmpty'
 
-import {nl2br} from '#/main/core/scaffolding/text'
+import {nl2br} from '#/main/app/utils/text'
 
 /**
  * Displays a multiline text content.

@@ -5,7 +5,7 @@ import get from 'lodash/get'
 import merge from 'lodash/merge'
 import isEmpty from 'lodash/isEmpty'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {Await} from '#/main/app/components/await'
 import {getType} from '#/main/app/data/types'
 import {TableRow, TableCell} from '#/main/app/content/components/table'

@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'

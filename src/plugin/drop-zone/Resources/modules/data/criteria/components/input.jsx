@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'

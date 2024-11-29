@@ -4,7 +4,7 @@ import invariant from 'invariant'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 import {FormContent as FormContentComponent} from '#/main/app/content/form/components/content'
 import {actions, selectors} from '#/main/app/content/form/store'

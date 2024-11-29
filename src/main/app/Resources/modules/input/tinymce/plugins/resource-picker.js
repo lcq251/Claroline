@@ -1,7 +1,7 @@
 //import tinymce from 'tinymce/tinymce'
 import invariant from 'invariant'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {url} from '#/main/app/api'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl/translation'

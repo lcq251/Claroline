@@ -2,7 +2,7 @@ import merge from 'lodash/merge'
 import {checkPropTypes} from 'prop-types'
 
 import {url} from '#/main/app/api/router'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {actions} from '#/main/app/api/store'
 import {MODAL_LOGIN} from '#/main/app/modals/login'

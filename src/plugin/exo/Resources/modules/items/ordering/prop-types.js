@@ -1,6 +1,6 @@
 import {PropTypes as T} from 'prop-types'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {constants} from '#/plugin/exo/items/ordering/constants'
 

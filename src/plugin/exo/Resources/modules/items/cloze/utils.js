@@ -1,5 +1,5 @@
 import {trans} from '#/main/app/intl/translation'
-import {stripDiacritics} from '#/main/core/scaffolding/text'
+import {stripDiacritics} from '#/main/app/utils/text'
 
 export const utils = {}
 

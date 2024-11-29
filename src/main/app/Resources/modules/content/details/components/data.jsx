@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import get from 'lodash/get'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {ContentMeta} from '#/main/app/content/components/meta'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {Sections, Section} from '#/main/app/content/components/sections'

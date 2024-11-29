@@ -8,7 +8,7 @@ import set from 'lodash/set'
 import {Alert} from '#/main/app/components/alert'
 import {DataInput} from '#/main/app/data/components/input'
 import {DataDisplay} from '#/main/app/data/components/display'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {ContentHtml} from '#/main/app/content/components/html'
 
 /**

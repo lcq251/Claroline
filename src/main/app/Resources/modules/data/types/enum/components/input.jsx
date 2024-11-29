@@ -2,7 +2,7 @@ import React from 'react'
 import classes from 'classnames'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {TextGroup}  from '#/main/core/layout/form/components/group/text-group'

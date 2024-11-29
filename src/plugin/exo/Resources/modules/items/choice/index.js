@@ -3,7 +3,7 @@ import set from 'lodash/set'
 
 import {trans} from '#/main/app/intl/translation'
 import {notBlank} from '#/main/app/data/types/validators'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {emptyAnswer, CorrectedAnswer, Answerable} from '#/plugin/exo/items/utils'
 import {ChoiceItem} from '#/plugin/exo/items/choice/prop-types'

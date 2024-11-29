@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 
 import {withReducer} from '#/main/app/store/components/withReducer'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {
   actions as formActions,

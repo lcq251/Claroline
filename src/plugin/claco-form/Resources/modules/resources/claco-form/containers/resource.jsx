@@ -7,7 +7,7 @@ import {now} from '#/main/app/intl/date'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 

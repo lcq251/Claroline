@@ -8,7 +8,7 @@ import {CorrectedAnswer, Answerable} from '#/plugin/exo/items/utils'
 
 import {PairItem as PairItemType} from '#/plugin/exo/items/pair/prop-types'
 import {utils} from '#/plugin/exo/items/pair/utils'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 // components
 import {PairEditor} from '#/plugin/exo/items/pair/components/editor'

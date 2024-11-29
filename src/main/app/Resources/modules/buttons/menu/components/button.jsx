@@ -4,7 +4,7 @@ import identity from 'lodash/identity'
 import omit from 'lodash/omit'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 import {MenuOverlay, MenuToggle, Menu, MenuHeader, MenuDivider} from '#/main/app/overlays/menu'
 import {MenuAction}  from '#/main/app/buttons/menu/components/menu-action'

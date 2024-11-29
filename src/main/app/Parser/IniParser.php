@@ -14,7 +14,7 @@ namespace Claroline\AppBundle\Parser;
 /**
  * Parses ini files.
  *
- * @todo : consider using YAML to avoid having to support additional format
+ * Consider using YAML to avoid having to support additional format
  */
 class IniParser
 {
@@ -41,7 +41,7 @@ class IniParser
         }
     }
 
-    public static function updateKey($key, $value, $iniFile): void
+    public static function updateKey(string $key, mixed $value, string $iniFile): void
     {
         $values = static::parseFile($iniFile);
         $values[$key] = $value;
@@ -54,7 +54,7 @@ class IniParser
         $values = parse_ini_string($iniString);
         if (!empty($values)) {
             foreach ($values as &$value) {
-                $value = (bool) $value ? true : false;
+                $value = (bool) $value;
             }
 
             return $values;

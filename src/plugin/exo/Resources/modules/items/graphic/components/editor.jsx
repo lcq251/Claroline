@@ -6,7 +6,7 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 
 import {resizeArea} from '#/plugin/exo/items/graphic/resize'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {makeDroppable} from '#/plugin/exo//utils/dragAndDrop'

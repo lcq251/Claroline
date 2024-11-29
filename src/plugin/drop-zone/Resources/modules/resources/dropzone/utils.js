@@ -1,5 +1,5 @@
 import {now} from '#/main/app/intl/date'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 
 function generateCorrection(dropId, user, dropzone, teamId = null) {

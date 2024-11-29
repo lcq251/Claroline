@@ -4,7 +4,7 @@ import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {Toolbar} from '#/main/app/action/components/toolbar'

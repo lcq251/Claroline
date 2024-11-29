@@ -1,7 +1,7 @@
 import merge from 'lodash/merge'
 
 import {trans} from '#/main/app/intl/translation'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 

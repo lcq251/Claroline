@@ -1,6 +1,6 @@
 import {PropTypes as T} from 'prop-types'
 
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 const PairItem = {
   propTypes: {

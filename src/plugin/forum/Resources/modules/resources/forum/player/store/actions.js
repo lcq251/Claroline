@@ -1,7 +1,7 @@
 import merge from 'lodash/merge'
 
 import {now} from '#/main/app/intl/date'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 import {makeActionCreator} from '#/main/app/store/actions'
 import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'

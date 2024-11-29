@@ -14,7 +14,7 @@ import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ContentSections, ContentSection} from '#/main/app/content/components/sections'
 import {ProgressBar} from '#/main/app/components/progress-bar'
-import {toKey} from '#/main/core/scaffolding/text'
+import {toKey} from '#/main/app/utils/text'
 
 import {getType} from '#/main/app/data/types'
 import {formatField} from '#/main/app/content/form/parameters/utils'

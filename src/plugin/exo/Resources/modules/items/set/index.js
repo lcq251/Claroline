@@ -3,7 +3,7 @@ import times from 'lodash/times'
 
 import {trans} from '#/main/app/intl/translation'
 import {notBlank, number, chainSync} from '#/main/app/data/types/validators'
-import {makeId} from '#/main/core/scaffolding/id'
+import {makeId} from '#/main/app/utils/id'
 
 import {emptyAnswer, CorrectedAnswer, Answerable} from '#/plugin/exo/items/utils'
 import {SetItem as SetItemType} from '#/plugin/exo/items/set/prop-types'
