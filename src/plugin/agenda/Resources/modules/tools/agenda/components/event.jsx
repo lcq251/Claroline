@@ -44,7 +44,7 @@ class AgendaEvent extends Component {
 
     if (this.state.customDetails) {
       return createElement(this.state.customDetails, {
-        path: this.props.path + '/event',
+        path: this.props.path + '/events',
         event: this.props.event,
         reload: this.props.reload
       })

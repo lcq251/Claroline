@@ -30,10 +30,3 @@
 
     }
 }
-
-@each $size, $value in $icon-sizes {
-    .event-icon-#{$size} {
-        width: $value;
-        height: $value;
-    }
-}

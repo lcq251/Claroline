@@ -17,16 +17,17 @@ import {Event as EventTypes} from '#/plugin/agenda/prop-types'
 import {route} from '#/plugin/agenda/tools/agenda/routing'
 import {MODAL_EVENT_PARAMETERS} from '#/plugin/agenda/event/modals/parameters'
 import {CalendarIcon} from '#/main/app/calendar/components/icon'
+import {Content} from '#/main/app/components/content'
 
 const EventPage = (props) => {
   return (
     <ToolPage
       className="event-page"
       breadcrumb={[
-        {
+        /*{
           label: props.event.name,
-          target: props.path+'/event/'+props.event.id
-        }
+          target: props.path+'/events/'+props.event.id
+        }*/
       ]}
       title={props.event.name}
       description={get(props.event, 'description')}
@@ -72,21 +73,23 @@ const EventPage = (props) => {
         />
       }
 
-      <PageSection size="md" className="mb-4">
-        <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
-          {displayDateRange(get(props.event, 'start'), get(props.event, 'end'), true)}
+      <PageSection size="md" className="mb-5">
+        <Content
+          meta={
+            <>
+              {displayDateRange(get(props.event, 'start'), get(props.event, 'end'), true)}
 
-          <Badge variant="secondary" subtle={true} className="ms-auto fs-sm lh-base">
-            {trans(props.event.meta.type, {}, 'event')}
-          </Badge>
-        </div>
-
-        {props.event.description &&
-          <ContentHtml className="lead mb-4">{props.event.description}</ContentHtml>
-        }
+              <Badge variant="secondary" subtle={true} className="ms-auto fs-sm lh-base">
+                {trans(props.event.meta.type, {}, 'event')}
+              </Badge>
+            </>
+          }
+        >
+          {props.event.description}
+        </Content>
 
         {props.event.locationUrl &&
-          <div className="d-flex flex-row align-items-baseline mb-2 mb-4" role="presentation">
+          <div className="d-flex flex-row align-items-baseline mt-4" role="presentation">
             <span className="fa fa-fw fa-link me-2" aria-hidden={true} />
             <a href={props.event.locationUrl} className="text-reset">
               {props.event.locationUrl}
@@ -95,7 +98,7 @@ const EventPage = (props) => {
         }
 
         {props.event.location &&
-          <Contact {...props.event.location} className="mb-4" />
+          <Contact {...props.event.location} className="mt-4 mb-0" />
         }
       </PageSection>
 

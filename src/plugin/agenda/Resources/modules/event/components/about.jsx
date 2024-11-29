@@ -66,7 +66,8 @@ const EventAbout = (props) =>
                 name: 'location',
                 label: trans('location'),
                 type: 'location',
-                displayed: (event) => !isEmpty(event.location)
+                displayed: (event) => !isEmpty(event.location),
+                options: {multiple: false}
               }
             ]
           }
