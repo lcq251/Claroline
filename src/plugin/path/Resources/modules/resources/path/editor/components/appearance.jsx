@@ -27,6 +27,28 @@ const PathEditorAppearance = () =>
             }
           }
         ]
+      }, {
+        name: 'opening',
+        icon: 'fa fa-fw fa-sign-in',
+        title: trans('opening_parameters'),
+        subtitle: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
+        primary: true,
+        fields: [
+          {
+            name: 'opening.secondaryResources',
+            label: trans('secondary_resources_open_target', {}, 'path'),
+            type: 'choice',
+            // required: true,
+            options: {
+              noEmpty: true,
+              condensed: false,
+              choices: {
+                _self: trans('same_window'),
+                _blank: trans('new_window')
+              }
+            }
+          }
+        ]
       }
     ]}
   />
