@@ -36,7 +36,7 @@ const PendingMain = props =>
           callback: () => props.register(rows, props.workspace),
           confirm: {
             title: trans('user_registration'),
-            message: trans('workspace_user_register_validation_message', {users: rows.map(user => user.username).join(',')})
+            message: trans('workspace_user_register_validation_message', {users: rows.map(user => user.username).join(',')}, 'workspace')
           }
         }, {
           type: CALLBACK_BUTTON,

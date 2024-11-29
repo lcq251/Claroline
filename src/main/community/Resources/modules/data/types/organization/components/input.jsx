@@ -10,7 +10,6 @@ import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
 const OrganizationInput = (props) =>
   <EntityInput
     {...props}
-    placeholder={trans('no_organization', {}, 'community')}
     add={trans(props.multiple ? 'add_organizations' : 'add_organization', {}, 'actions')}
     pickerType={MODAL_ORGANIZATIONS}
   />

@@ -21,10 +21,6 @@ const OrganizationsModal = (props) =>
         primary: true,
         render: (row) => <DataMicro object={row} />
       }, {
-        name: 'code',
-        type: 'string',
-        label: trans('code')
-      }, {
         name: 'meta.description',
         type: 'string',
         label: trans('description'),
@@ -32,9 +28,9 @@ const OrganizationsModal = (props) =>
         displayed: true,
         sortable: false
       }, {
-        name: 'meta.default',
-        type: 'boolean',
-        label: trans('default')
+        name: 'code',
+        type: 'string',
+        label: trans('code')
       }, {
         name: 'email',
         type: 'email',

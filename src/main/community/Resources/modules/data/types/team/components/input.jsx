@@ -10,7 +10,6 @@ import {MODAL_TEAMS} from '#/main/community/modals/teams'
 const TeamInput = (props) =>
   <EntityInput
     {...props}
-    placeholder={trans('no_team', {}, 'community')}
     add={trans(props.multiple ? 'add_teams' : 'add_team', {}, 'actions')}
     pickerType={MODAL_TEAMS}
   />

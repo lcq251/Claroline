@@ -15,14 +15,14 @@ const RoleCell = (props) => {
 
   if (!props.multiple) {
     return (
-      <Badge key={props.data.name} subtle={true}>{trans(props.data.translationKey)}</Badge>
+      <Badge key={props.data.name} subtle={true} variant="primary">{trans(props.data.translationKey)}</Badge>
     )
   }
 
   return (
     <div className="d-flex flex-row gap-1" role="presentation">
       {props.data.map(role => 
-        <Badge key={role.name} subtle={true}>{trans(role.translationKey)}</Badge>
+        <Badge key={role.name} subtle={true} variant="primary">{trans(role.translationKey)}</Badge>
       )}
     </div>
   )

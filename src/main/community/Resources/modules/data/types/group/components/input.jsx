@@ -10,7 +10,6 @@ import {EntityInput} from '#/main/app/data/types/entity'
 const GroupInput = props =>
   <EntityInput
     {...props}
-    placeholder={trans('no_group', {}, 'community')}
     add={trans(props.multiple ? 'add_groups' : 'add_group', {}, 'actions')}
     pickerType={MODAL_GROUPS}
   />

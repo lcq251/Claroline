@@ -101,7 +101,6 @@ CommunityTool.propTypes = {
   workspace: T.object,
   hasPendingRegistrations: T.bool.isRequired,
   canEdit: T.bool.isRequired,
-  canAdministrate: T.bool.isRequired,
   canShowActivity: T.bool.isRequired
 }
 

@@ -12,13 +12,9 @@ import {Role as RoleTypes} from '#/main/community/role/prop-types'
 const RoleInput = (props) =>
   <EntityInput
     {...props}
-    placeholder={trans('no_role', {}, 'community')}
     add={trans(props.multiple ? 'add_roles' : 'add_role', {}, 'actions')}
     pickerType={MODAL_ROLES}
-    card={(cardProps) => {
-      console.log(cardProps)
-      return <DataMicro {...cardProps} object={{name: trans(cardProps.object.translationKey)}} />
-    }}
+    card={(cardProps) => <DataMicro {...cardProps} object={{name: trans(cardProps.object.translationKey)}} />}
   />
 
 implementPropTypes(RoleInput, DataInputTypes, {

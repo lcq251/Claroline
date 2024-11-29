@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
+use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
@@ -40,12 +41,32 @@ class UserType extends AbstractType
             ->add('createdAt', DateType::class)
             ->add('updatedAt', DateType::class)
             ->add('disabled', BooleanType::class, ['default' => $options['disabled']])
-            /*->add('groups', GroupType::class)
-            ->add('roles', RoleType::class, [
+            //->add('groups', GroupType::class) // breaks functional logs
+            /*->add('roles', RoleType::class, [
                 'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $queryBuilder->leftJoin(Role::class, $finder->getAlias(), Join::WITH, "$alias MEMBER OF {$finder->getAlias()}.users");
                 },
             ])*/
+            ->add('workspace', ClosureType::class, [
+                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder, array $options) {
+                    if (null !== $finder->getFilterValue()) {
+                        $alias = $finder->getAlias();
+                        if (!$finder->isRoot()) {
+                            $alias = $finder->getParent()->getAlias();
+                        }
+
+                        $queryBuilder->andWhere("EXISTS (
+                            SELECT wsr.id
+                            FROM Claroline\CoreBundle\Entity\Role AS wsr
+                            LEFT JOIN Claroline\CoreBundle\Entity\User AS wsru WITH (wsru.id = $alias.id AND wsr MEMBER OF wsru.roles)
+                            LEFT JOIN Claroline\CoreBundle\Entity\Group AS wsrg WITH (wsr MEMBER OF wsrg.roles AND wsrg MEMBER OF $alias.groups)
+                            WHERE wsr.workspace = :workspace
+                              AND (wsru IS NOT NULL OR wsrg IS NOT NULL)
+                        )");
+                        $queryBuilder->setParameter('workspace', $finder->getFilterValue());
+                    }
+                },
+            ])
             ->add('teams', TeamType::class, [
                 'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $alias = $finder->getAlias();

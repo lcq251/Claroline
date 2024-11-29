@@ -11,7 +11,6 @@ import {DataMicro} from '#/main/app/data/components/micro'
 const UserInput = (props) =>
   <EntityInput
     {...props}
-    placeholder={trans('no_user', {}, 'community')}
     add={trans(props.multiple ? 'add_users' : 'add_user', {}, 'actions')}
     pickerType={MODAL_USERS}
     card={(cardProps) => <DataMicro {...cardProps} object={{thumbnail: cardProps.object.picture, name: cardProps.object.name}} />}

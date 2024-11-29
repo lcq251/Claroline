@@ -57,13 +57,13 @@ const Teams = props => {
           displayed: false,
           filterable: true,
           type: 'boolean'
-        }, {
+        }/*, {
           name: 'registration.selfUnregistration',
           label: trans('public_unregistration'),
           displayed: false,
           filterable: true,
           type: 'boolean'
-        }
+        }*/
       ].concat(props.customDefinition)}
 
       {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'refresher', 'invalidate')}

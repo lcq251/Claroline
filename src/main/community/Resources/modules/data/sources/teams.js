@@ -49,12 +49,6 @@ export default (contextType, contextData, refresher, currentUser) => {
         displayed: false,
         filterable: true,
         type: 'boolean'
-      }, {
-        name: 'registration.selfUnregistration',
-        label: trans('public_unregistration'),
-        displayed: false,
-        filterable: true,
-        type: 'boolean'
       }
     ],
     card: TeamCard
