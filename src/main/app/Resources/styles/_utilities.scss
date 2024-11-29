@@ -44,6 +44,19 @@
     flex-direction: column;*/
 }
 
+// scrollbars
+.scroller-x {
+    overflow-x: auto;
+}
+
+.scroller-y {
+    overflow-y: auto;
+}
+
+.scroller-thin {
+    scrollbar-width: thin;
+}
+
 // Cursors
 .move, .move a {
     cursor: move !important;

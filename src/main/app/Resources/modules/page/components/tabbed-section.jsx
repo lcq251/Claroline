@@ -39,7 +39,8 @@ const PageTabbedSection = (props) =>
         render: tab.render,
         component: tab.component,
         disabled: tab.disabled || (undefined !== tab.displayed && !tab.displayed),
-        exact: tab.exact
+        exact: tab.exact,
+        onEnter: tab.onEnter
       }))}
     />
   </PageSection>

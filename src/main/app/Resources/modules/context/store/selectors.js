@@ -1,8 +1,10 @@
 import {createSelector} from 'reselect'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+import isNumber from 'lodash/isNumber'
 
 import {hasPermission} from '#/main/app/security'
+import {trans} from '#/main/app/intl'
 
 const STORE_NAME = 'context'
 const EDITOR_NAME = 'contextEditor'
@@ -106,6 +108,23 @@ const tools = createSelector(
   (store) => store.tools || []
 )
 
+const accessibleTools = createSelector(
+  [tools],
+  (tools) => [].concat(tools)
+    .filter(tool => hasPermission('open', tool))
+    .sort((a, b) => {
+      if (isNumber(a.order) && isNumber(b.order) && a.order !== b.order) {
+        return a.order - b.order
+      }
+
+      if (trans(a.name, {}, 'tools') > trans(b.name, {}, 'tools')) {
+        return 1
+      }
+
+      return -1
+    })
+)
+
 const defaultOpening = createSelector(
   [data, tools],
   (data, tools) => {
@@ -167,6 +186,7 @@ export const selectors = {
   // selectors for context config
   data,
   tools,
+  accessibleTools,
   defaultOpening,
 
   // selectors for menu

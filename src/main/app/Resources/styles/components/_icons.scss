@@ -40,6 +40,20 @@
     flex-shrink: 0 !important;
 }
 
+.thumbnail-icon-bordered {
+    box-shadow: 0 0 0 .125em var(--#{$prefix}body-bg);
+}
+
+.thumbnail-stack {
+    @each $size, $value in $icon-sizes {
+        &.thumbnail-stack-#{$size} {
+            .thumbnail-icon:not(:first-child) {
+                margin-left: calc(-1 * $value / 3);
+            }
+        }
+    }
+}
+
 .thumbnail-icon .theme-icon {
     padding: .75rem;
 }

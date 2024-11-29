@@ -5,7 +5,7 @@ import {DesktopMenu as DesktopMenuComponent} from '#/main/app/contexts/desktop/c
 
 const DesktopMenu = connect(
   (state) => ({
-    tools: selectors.tools(state)
+    tools: selectors.accessibleTools(state)
   })
 )(DesktopMenuComponent)
 

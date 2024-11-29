@@ -1,5 +1,6 @@
 import React, {createElement, useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import {makeCancelable} from '#/main/app/api'
@@ -13,8 +14,20 @@ import {ContextProfile} from '#/main/app/context/profile/containers/main'
 import {getTool} from '#/main/core/tool/utils'
 import {hasPermission} from '#/main/app/security'
 import {AppLoader} from '#/main/app/platform/components/loader'
+import {useCtrlKeyPress} from '#/main/app/dom/key'
+import {actions as modalActions} from '#/main/app/overlays/modal'
+import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
 
 const ContextMain = (props) => {
+  const dispatch = useDispatch()
+
+  useCtrlKeyPress('k', (event) => {
+    dispatch(modalActions.showModal(MODAL_COMMAND_PALETTE))
+
+    event.preventDefault()
+    event.stopPropagation()
+  })
+
   // change current context
   useEffect(() => {
     if (props.name) {
@@ -150,7 +163,7 @@ const ContextMain = (props) => {
     <>
       {createElement(props.menu)}
 
-      <div className="app-body" role="presentation">
+      <div className="app-body" role="presentation" tabIndex={-1}>
         <AppLoader />
 
         {CurrentPage}

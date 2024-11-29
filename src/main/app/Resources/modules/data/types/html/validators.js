@@ -1,6 +1,7 @@
+import isEmpty from 'lodash/isEmpty'
 
 function isHtmlEmpty(html, allowedTags = ['img', 'audio', 'iframe', 'video']) {
-  if (!html) {
+  if (isEmpty(html)) {
     return true
   }
 

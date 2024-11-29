@@ -3,10 +3,8 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import isNumber from 'lodash/isNumber'
 
 import {trans} from '#/main/app/intl'
-import {hasPermission} from '#/main/app/security/permissions'
 import {getWindowSize, constants} from '#/main/app/dom/size'
 import {Button, Toolbar} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
@@ -60,22 +58,10 @@ class ContextMenu extends Component
   }
 
   render() {
-    // TODO : create selector
     let toolLinks = []
     if (!this.props.notFound && !this.props.hasErrors) {
       toolLinks = this.props.tools
-        .filter(tool => hasPermission('open', tool) && !get(tool, 'restrictions.hidden', false))
-        .sort((a, b) => {
-          if (isNumber(a.order) && isNumber(b.order) && a.order !== b.order) {
-            return a.order - b.order
-          }
-
-          if (trans(a.name, {}, 'tools') > trans(b.name, {}, 'tools')) {
-            return 1
-          }
-
-          return -1
-        })
+        .filter(tool => !get(tool, 'restrictions.hidden', false))
         .map(tool => ({
           name: tool.name,
           type: LINK_BUTTON,
@@ -110,7 +96,7 @@ class ContextMenu extends Component
 
           <section className={classes('app-menu app-context-menu', {
             show: this.props.opened
-          })}>
+          })} tabIndex={-1}>
             {this.props.title &&
               <header className="app-menu-header my-2 ms-4 me-1 d-flex align-items-center justify-content-between">
                 <h1 className="app-menu-title text-truncate d-block">{this.props.title}</h1>

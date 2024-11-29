@@ -15,7 +15,7 @@ const WorkspaceMenu = (props) =>
   <ContextMenu
     title={
       <>
-        {!isEmpty(props.workspace) ? props.workspace.name : trans('workspace')}
+        {!isEmpty(props.workspace) ? props.workspace.name : trans('workspace', {}, 'workspace')}
         <small className="text-truncate">
           {!isEmpty(props.roles) ?
             props.roles.map(role => trans(role.translationKey)).join(', ') :

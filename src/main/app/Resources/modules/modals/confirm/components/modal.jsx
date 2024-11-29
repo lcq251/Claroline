@@ -3,13 +3,15 @@ import {PropTypes as T} from 'prop-types'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 import {Thumbnail} from '#/main/app/components/thumbnail'
+import {Html} from '#/main/app/components/html'
+
+// TODO : integrate DataMicro (there are problems with text ellipsis)
 
 const ConfirmModal = (props) =>
   <ModalEmpty
@@ -18,9 +20,9 @@ const ConfirmModal = (props) =>
     size="sm"
   >
     <div className="modal-body mt-3" role="presentation">
-      <ContentHtml className="lead" align="center">
+      <Html className="lead" align="center">
         {props.question || trans('action_confirm_message')}
-      </ContentHtml>
+      </Html>
 
       {props.items && 1 < props.items.length &&
         <ul className="list-group list-group-striped mt-4">
@@ -40,9 +42,9 @@ const ConfirmModal = (props) =>
       }
 
       {props.additional &&
-        <ContentHtml className="text-body-secondary fw-bold mt-4" align="center">
+        <Html className="text-body-secondary fw-bold mt-4" align="center">
           {props.additional}
-        </ContentHtml>
+        </Html>
       }
 
       {props.children}

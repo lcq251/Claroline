@@ -246,6 +246,13 @@ $datepicker-btn-border-radius: $btn-border-radius;
     }
 }
 
+@each $size, $value in $icon-sizes {
+    .event-icon-#{$size} {
+        width: $value;
+        height: $value;
+    }
+}
+
 .event-page { // FIXME
     .app-page-icon {
         border-radius: var(--#{$prefix}border-radius-lg) !important;

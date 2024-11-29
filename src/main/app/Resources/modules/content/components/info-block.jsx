@@ -26,12 +26,11 @@ const ContentInfoBlocks = (props) =>
     {props.items
       .filter(item => undefined === item.displayed || item.displayed)
       .map((item, index) => (
-        <Fragment>
+        <Fragment key={item.label}>
           {0 !== index &&
             <span className="vr" aria-hidden={true} />
           }
           <ContentInfoBlock
-            key={item.label}
             {...item}
             variant={props.variant || item.variant}
             size={props.size}

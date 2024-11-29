@@ -103,7 +103,7 @@ const EntityInput = (props) => {
                 name: 'remove',
                 type: CALLBACK_BUTTON,
                 label: trans('remove', {}, 'actions'),
-                displayed: !props.disabled,
+                disabled: props.disabled,
                 callback: () => {
                   const newValue = [].concat(props.value || [])
                   const index = newValue.findIndex(o => o.id === object.id)
@@ -151,7 +151,7 @@ const EntityInput = (props) => {
         {...{
           type: CALLBACK_BUTTON,
           label: trans('remove', {}, 'actions'),
-          displayed: !props.disabled,
+          disabled: props.disabled,
           callback: () => props.onChange(null)
         }}
       />

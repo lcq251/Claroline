@@ -4,7 +4,7 @@ import get from 'lodash/get'
 const pagination = (state, paginationName) => get(state, paginationName)
 
 const pageSize    = (paginationState) => paginationState.pageSize
-const currentPage = (paginationState) => paginationState.page
+const currentPage = (paginationState) => paginationState.page || 0
 
 const queryString = (searchState) => `page=${currentPage(searchState)}&limit=${pageSize(searchState)}`
 

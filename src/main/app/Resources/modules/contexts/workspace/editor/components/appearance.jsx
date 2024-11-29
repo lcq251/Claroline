@@ -32,7 +32,7 @@ const WorkspaceEditorAppearance = () => {
           ]
         }, {
           name: 'opening',
-          title: trans('Ouverture'),
+          title: trans('opening_parameters'),
           subtitle: trans('Configurez la façon dont votre espace de travail va s\'ouvrir.'),
           primary: true,
           fields: [

@@ -42,6 +42,7 @@ body {
 }
 
 .app-loader {
+    z-index: $zindex-sticky + 1;
     order: 1;
     width: 100%;
     height: $loader-height;

@@ -1,6 +1,10 @@
 .list-group {
     --#{$prefix}list-group-striped-color: var(--#{$prefix}striped-color);
     --#{$prefix}list-group-striped-bg: var(--#{$prefix}striped-bg);
+
+    // bootstrap uses `.card > .list-group {border-top: inherit;}`
+    // but it does not inherit the defined border-color for list groups
+    border-color: var(--#{$prefix}list-group-border-color) !important;
 }
 
 .list-group-striped {
@@ -10,7 +14,7 @@
     }
 }
 
-.list-group-values {
+.list-group-values { // deprecated
     .list-group-item {
         display: flex;
         align-items: center;

@@ -5,7 +5,7 @@ import classes from 'classnames'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const DataMicro = (props) =>
-  <div className={classes('d-flex flex-direction-row gap-3 align-items-center', props.className)} role="presentation">
+  <div className={classes('d-flex flex-direction-row gap-3 align-items-center text-nowrap text-truncate', props.className)} role="presentation">
     <Thumbnail
       thumbnail={props.object.thumbnail}
       name={props.object.name}

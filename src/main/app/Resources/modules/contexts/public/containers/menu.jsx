@@ -5,7 +5,7 @@ import {selectors as contextSelectors} from '#/main/app/context/store'
 
 const PublicMenu = connect(
   (state) => ({
-    tools: contextSelectors.tools(state)
+    tools: contextSelectors.accessibleTools(state)
   })
 )(PublicMenuComponent)
 

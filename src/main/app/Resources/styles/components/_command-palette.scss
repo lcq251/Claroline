@@ -1,22 +1,20 @@
 
 .command-palette {
   margin-top: 5rem;
+
+  .modal-content {
+    max-height: 70vh;
+    overflow: hidden;
+  }
+}
+
+.command-palette-content {
+  overflow-y: auto;
 }
 
 .command-palette-search {
-  position: relative;
-
-  > .fa {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 1.5rem;
-  }
-
   input {
-    padding: map-get($spacers, 3) 3.5rem;
     border: none;
-    width: 100%;
     background: transparent;
 
     &:focus {
@@ -25,14 +23,19 @@
   }
 }
 
-.command-palette-clear {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: map-get($spacers, 3) 1.5rem;
+.command-palette-search-tool {
+  &:after {
+    margin-left: map-get($spacers, 2);
+    content: $breadcrumb-divider;
+    color: $breadcrumb-divider-color;
+  }
 }
 
-.command-palette-actions {
+.command-palette-shortcut {
+  font-family: $font-family-monospace;
+}
+
+.command-palette-group {
   .btn {
     box-shadow: none;
   }
@@ -43,7 +46,12 @@
     color: color-contrast($primary) !important;
 
     .fa {
+      opacity: 1 !important;
       color: color-contrast($primary) !important;
     }
+  }
+
+  + .command-palette-group {
+    border-top: 1px solid var(--#{$prefix}border-color);
   }
 }

@@ -911,7 +911,7 @@ $input-disabled-bg:                     var(--#{$prefix}secondary-bg) !default;
 $input-disabled-border-color:           null !default;
 
 $input-color:                           var(--#{$prefix}body-color) !default;
-$input-border-color:                    var(--#{$prefix}border-color) !default;
+$input-border-color:                    var(--#{$prefix}border-color-translucent) !default;
 $input-border-width:                    $input-btn-border-width !default;
 $input-box-shadow:                      $box-shadow-inset !default;
 
@@ -955,7 +955,7 @@ $form-check-transition:                   null !default;
 $form-check-input-active-filter:          brightness(90%) !default;
 
 $form-check-input-bg:                     $input-bg !default;
-$form-check-input-border:                 var(--#{$prefix}border-width) solid var(--#{$prefix}border-color) !default;
+$form-check-input-border:                 var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent) !default;
 $form-check-input-border-radius:          .25em !default;
 $form-check-radio-border-radius:          50% !default;
 $form-check-input-focus-border:           $input-focus-border-color !default;
@@ -1189,13 +1189,13 @@ $nav-link-transition:               color .15s ease-in-out, background-color .15
 $nav-link-disabled-color:           var(--#{$prefix}tertiary-color) !default;
 $nav-link-focus-box-shadow:         $focus-ring-box-shadow !default;
 
-$nav-tabs-border-color:             var(--#{$prefix}border-color) !default;
+$nav-tabs-border-color:             var(--#{$prefix}border-color-translucent) !default;
 $nav-tabs-border-width:             var(--#{$prefix}border-width) !default;
 $nav-tabs-border-radius:            var(--#{$prefix}border-radius) !default;
 $nav-tabs-link-hover-border-color:  var(--#{$prefix}secondary-bg) var(--#{$prefix}secondary-bg) $nav-tabs-border-color !default;
 $nav-tabs-link-active-color:        var(--#{$prefix}emphasis-color) !default;
 $nav-tabs-link-active-bg:           var(--#{$prefix}body-bg) !default;
-$nav-tabs-link-active-border-color: var(--#{$prefix}border-color) var(--#{$prefix}border-color) $nav-tabs-link-active-bg !default;
+$nav-tabs-link-active-border-color: var(--#{$prefix}border-color-translucent) var(--#{$prefix}border-color-translucent) $nav-tabs-link-active-bg !default;
 
 $nav-pills-border-radius:           var(--#{$prefix}border-radius) !default;
 $nav-pills-link-active-color:       $component-active-color !default;
@@ -1327,7 +1327,7 @@ $pagination-bg:                     var(--#{$prefix}body-bg) !default;
 $pagination-border-radius:          var(--#{$prefix}border-radius) !default;
 $pagination-border-width:           var(--#{$prefix}border-width) !default;
 $pagination-margin-start:           calc(#{$pagination-border-width} * -1) !default; // stylelint-disable-line function-disallowed-list
-$pagination-border-color:           var(--#{$prefix}border-color) !default;
+$pagination-border-color:           var(--#{$prefix}border-color-translucent) !default;
 
 $pagination-focus-color:            var(--#{$prefix}link-hover-color) !default;
 $pagination-focus-bg:               var(--#{$prefix}secondary-bg) !default;
@@ -1336,7 +1336,7 @@ $pagination-focus-outline:          0 !default;
 
 $pagination-hover-color:            var(--#{$prefix}link-hover-color) !default;
 $pagination-hover-bg:               var(--#{$prefix}tertiary-bg) !default;
-$pagination-hover-border-color:     var(--#{$prefix}border-color) !default; // Todo in v6: remove this?
+$pagination-hover-border-color:     var(--#{$prefix}border-color-translucent) !default; // Todo in v6: remove this?
 
 $pagination-active-color:           $component-active-color !default;
 $pagination-active-bg:              $component-active-bg !default;
@@ -1344,7 +1344,7 @@ $pagination-active-border-color:    $component-active-bg !default;
 
 $pagination-disabled-color:         var(--#{$prefix}secondary-color) !default;
 $pagination-disabled-bg:            var(--#{$prefix}secondary-bg) !default;
-$pagination-disabled-border-color:  var(--#{$prefix}border-color) !default;
+$pagination-disabled-border-color:  var(--#{$prefix}border-color-translucent) !default;
 
 $pagination-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
 
@@ -1606,7 +1606,7 @@ $progress-bar-transition:           width .6s ease !default;
 // scss-docs-start list-group-variables
 $list-group-color:                  var(--#{$prefix}body-color) !default;
 $list-group-bg:                     var(--#{$prefix}body-bg) !default;
-$list-group-border-color:           var(--#{$prefix}border-color) !default;
+$list-group-border-color:           var(--#{$prefix}border-color-translucent) !default;
 $list-group-border-width:           var(--#{$prefix}border-width) !default;
 $list-group-border-radius:          var(--#{$prefix}border-radius) !default;
 
@@ -1639,7 +1639,7 @@ $list-group-action-active-bg:       var(--#{$prefix}secondary-bg) !default;
 $thumbnail-padding:                 .25rem !default;
 $thumbnail-bg:                      var(--#{$prefix}body-bg) !default;
 $thumbnail-border-width:            var(--#{$prefix}border-width) !default;
-$thumbnail-border-color:            var(--#{$prefix}border-color) !default;
+$thumbnail-border-color:            var(--#{$prefix}border-color-translucent) !default;
 $thumbnail-border-radius:           var(--#{$prefix}border-radius) !default;
 $thumbnail-box-shadow:              var(--#{$prefix}box-shadow-sm) !default;
 // scss-docs-end thumbnail-variables
