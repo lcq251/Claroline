@@ -140,7 +140,7 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     private Collection $organizations;
 
     // not mapped. Used for creation
-    private ?Workspace $workspaceModel;
+    private ?Workspace $workspaceModel = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $estimatedDuration = null;
@@ -349,12 +349,12 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
         return $this->defaultRole;
     }
 
-    public function setWorkspaceModel(self $model): void
+    public function setWorkspaceModel(Workspace $model): void
     {
         $this->workspaceModel = $model;
     }
 
-    public function getWorkspaceModel(): ?self
+    public function getWorkspaceModel(): ?Workspace
     {
         return $this->workspaceModel;
     }

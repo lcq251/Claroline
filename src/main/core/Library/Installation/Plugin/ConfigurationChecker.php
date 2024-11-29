@@ -25,38 +25,29 @@ use Symfony\Component\Yaml\Parser;
  */
 class ConfigurationChecker implements CheckerInterface
 {
-    /** @var Parser */
-    private $yamlParser;
-
-    /** @var EntityManager */
-    private $em;
-
     private $processedConfiguration;
 
-    public function __construct(Parser $yamlParser, EntityManager $em)
-    {
-        $this->yamlParser = $yamlParser;
-        $this->em = $em;
+    public function __construct(
+        private readonly Parser $yamlParser,
+        private readonly EntityManager $em
+    ) {
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @todo Create dedicated repository methods to retrieve tool/type names
      */
-    public function check(PluginBundleInterface $plugin, $updateMode = false)
+    public function check(PluginBundleInterface $plugin, ?bool $updateMode = false): array
     {
         if (!is_file($plugin->getConfigFile())) {
             $error = new ValidationError('config.yml file missing');
-            $errors = [$error];
 
-            return $errors;
+            return [$error];
         }
 
         $config = $this->yamlParser->parse(file_get_contents($plugin->getConfigFile()));
         $names = [];
 
-        //required for update to claroline v10 because database not updated yet from older version
+        // required for update to claroline v10 because database not updated yet from older version
         try {
             $listResource = $this->em
                 ->getRepository(ResourceType::class)
@@ -78,12 +69,12 @@ class ConfigurationChecker implements CheckerInterface
         foreach ($listTool as $tool) {
             $toolPlugin = $tool->getPlugin();
 
-            $tools[] = sprintf('%s%s', ($toolPlugin ? $toolPlugin->getBundleFQCN().'-' : ''), $tool->getName());
+            $tools[] = sprintf('%s%s', $toolPlugin ? $toolPlugin->getBundleFQCN().'-' : '', $tool->getName());
         }
 
         $resourceActions = [];
 
-        //required for update to claroline v10 because database not updated yet from older version
+        // required for update to claroline v10 because database not updated yet from older version
         try {
             $listResourceActions = $this->em
                 ->getRepository(MenuAction::class)
@@ -105,7 +96,7 @@ class ConfigurationChecker implements CheckerInterface
         foreach ($listWidget as $widget) {
             $widgetPlugin = $widget->getPlugin();
 
-            $widgets[] = sprintf('%s%s', ($widgetPlugin ? $widgetPlugin->getBundleFQCN().'-' : ''), $widget->getName());
+            $widgets[] = sprintf('%s%s', $widgetPlugin ? $widgetPlugin->getBundleFQCN().'-' : '', $widget->getName());
         }
 
         $processor = new Processor();

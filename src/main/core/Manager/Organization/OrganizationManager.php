@@ -82,8 +82,6 @@ class OrganizationManager
         $organization->setName('default');
         $organization->setCode('default');
         $organization->setDefault(true);
-        $organization->setPosition(1);
-        $organization->setParent(null);
 
         $this->om->persist($organization);
         $this->om->flush();

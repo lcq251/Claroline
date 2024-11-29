@@ -63,8 +63,7 @@ class ClarolineCoreInstaller extends AdditionalInstaller
         $workspaceManager = $this->container->get('claroline.manager.workspace_manager');
 
         // once everything is installed, we can load default models
-        $workspaceManager->getDefaultModel(false);
-        $workspaceManager->getDefaultModel(true);
+        $workspaceManager->getDefaultModel();
     }
 
     private function setInstallationDate(): void

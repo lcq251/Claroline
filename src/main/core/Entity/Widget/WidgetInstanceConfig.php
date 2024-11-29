@@ -98,7 +98,7 @@ class WidgetInstanceConfig
     }
 
     /* alias */
-    public function setPosition(int $widgetOrder): int
+    public function setPosition(int $widgetOrder): void
     {
         $this->setWidgetOrder($widgetOrder);
     }

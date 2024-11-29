@@ -62,7 +62,7 @@ class BadgesTool extends AbstractTool
             return $this->crud->search(Assertion::class, $countQuery)->count();
         }
 
-        return 0;
+        return null;
     }
 
     public function export(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array

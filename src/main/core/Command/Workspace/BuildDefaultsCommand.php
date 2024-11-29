@@ -21,8 +21,7 @@ class BuildDefaultsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->workspaceManager->getDefaultModel(false, true);
-        $this->workspaceManager->getDefaultModel(true, true);
+        $this->workspaceManager->getDefaultModel(true);
 
         return 0;
     }

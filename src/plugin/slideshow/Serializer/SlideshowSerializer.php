@@ -5,7 +5,6 @@ namespace Claroline\SlideshowBundle\Serializer;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\API\Serializer\File\PublicFileSerializer;
 use Claroline\SlideshowBundle\Entity\Resource\Slide;
 use Claroline\SlideshowBundle\Entity\Resource\Slideshow;
 

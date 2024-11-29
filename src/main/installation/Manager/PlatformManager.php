@@ -16,6 +16,7 @@ use Claroline\CoreBundle\Entity\Plugin;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\InstallationBundle\Bundle\InstallableInterface;
 use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -137,9 +138,10 @@ class PlatformManager implements LoggerAwareInterface
         try {
             $this->logger->info('Checking database connection...');
 
+            /** @var Connection $cn */
             $cn = $this->container->get('doctrine.dbal.default_connection');
             // see http://stackoverflow.com/questions/3668506/efficient-sql-test-query-or-validation-query-that-will-work-across-all-or-most
-            $cn->query('SELECT 1');
+            $cn->executeQuery('SELECT 1');
         } catch (\Exception $ex) {
             $this->logger->notice('Unable to connect to database: trying to create database...');
 

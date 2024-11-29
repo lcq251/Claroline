@@ -19,7 +19,7 @@ class UrlListener extends ResourceComponent
         return 'hevinci_url';
     }
 
-    /** @var Url $resource */
+    /** @param Url $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [

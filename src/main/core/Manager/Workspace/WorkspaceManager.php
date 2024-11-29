@@ -186,9 +186,9 @@ class WorkspaceManager implements LoggerAwareInterface
         }));
     }
 
-    public function getDefaultModel($isPersonal = false, $restore = false): Workspace
+    public function getDefaultModel(bool $restore = false): Workspace
     {
-        $name = $isPersonal ? 'default_personal' : 'default_workspace';
+        $name = 'default_workspace';
         $this->logger->debug('Search default workspace '.$name);
         $workspace = $this->workspaceRepo->findOneBy(['code' => $name]);
 
@@ -208,8 +208,6 @@ class WorkspaceManager implements LoggerAwareInterface
 
             $workspace = $this->import($this->defaultWorkspacePath, $workspace);
 
-            // just in case
-            $workspace->setPersonal($isPersonal);
             $workspace->setModel(true);
 
             $this->om->persist($workspace);

@@ -315,9 +315,10 @@ class WorkspaceController extends AbstractCrudController
         $this->checkPermission('OPEN', $workspace, [], true);
 
         $workspaceRoles = $this->roleManager->getWorkspaceRoles($workspace);
-        $finderQuery->addFilter('roles', array_map(function (Role $role) {
+        $finderQuery->addFilter('workspace', $workspace);
+        /*$finderQuery->addFilter('roles', array_map(function (Role $role) {
             return $role->getName();
-        }, $workspaceRoles));
+        }, $workspaceRoles));*/
 
         $users = $this->crud->search(User::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
