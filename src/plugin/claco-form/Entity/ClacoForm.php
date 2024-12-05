@@ -11,15 +11,13 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\ClacoFormBundle\Repository\ClacoFormRepository;
-use DateTime;
 use Claroline\AppBundle\Entity\Parameters\ListParameters;
+use Claroline\ClacoFormBundle\Repository\ClacoFormRepository;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_clacoformbundle_claco_form')]
 #[ORM\Entity(repositoryClass: ClacoFormRepository::class)]
@@ -221,9 +219,9 @@ class ClacoForm extends AbstractResource
         $this->helpMessage = $message;
     }
 
-    public function getDetails()
+    public function getDetails(): array
     {
-        return $this->details || [];
+        return $this->details ?? [];
     }
 
     public function setDetails($details): void
@@ -231,7 +229,7 @@ class ClacoForm extends AbstractResource
         $this->details = $details;
     }
 
-    public function getMaxEntries()
+    public function getMaxEntries(): int
     {
         return !is_null($this->details) && isset($this->details['max_entries']) ? $this->details['max_entries'] : 0;
     }
@@ -244,7 +242,7 @@ class ClacoForm extends AbstractResource
         $this->details['max_entries'] = $maxEntries;
     }
 
-    public function isCreationEnabled()
+    public function isCreationEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['creation_enabled']) ? $this->details['creation_enabled'] : true;
     }
@@ -257,7 +255,7 @@ class ClacoForm extends AbstractResource
         $this->details['creation_enabled'] = $creationEnabled;
     }
 
-    public function isEditionEnabled()
+    public function isEditionEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['edition_enabled']) ? $this->details['edition_enabled'] : true;
     }
@@ -270,12 +268,12 @@ class ClacoForm extends AbstractResource
         $this->details['edition_enabled'] = $editionEnabled;
     }
 
-    public function isModerated()
+    public function isModerated(): bool
     {
         return !is_null($this->details) && isset($this->details['moderated']) ? $this->details['moderated'] : false;
     }
 
-    public function setModerated($moderated)
+    public function setModerated($moderated): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -283,7 +281,7 @@ class ClacoForm extends AbstractResource
         $this->details['moderated'] = $moderated;
     }
 
-    public function getDefaultHome()
+    public function getDefaultHome(): string
     {
         return !is_null($this->details) && isset($this->details['default_home']) ? $this->details['default_home'] : 'menu';
     }
@@ -296,12 +294,12 @@ class ClacoForm extends AbstractResource
         $this->details['default_home'] = $defaultHome;
     }
 
-    public function getMenuPosition()
+    public function getMenuPosition(): string
     {
         return !is_null($this->details) && isset($this->details['menu_position']) ? $this->details['menu_position'] : 'down';
     }
 
-    public function setMenuPosition($menuPosition)
+    public function setMenuPosition(?string $menuPosition): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -309,12 +307,12 @@ class ClacoForm extends AbstractResource
         $this->details['menu_position'] = $menuPosition;
     }
 
-    public function isRandomEnabled()
+    public function isRandomEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['random_enabled']) ? $this->details['random_enabled'] : false;
     }
 
-    public function setRandomEnabled($randomEnabled)
+    public function setRandomEnabled(bool $randomEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -322,12 +320,12 @@ class ClacoForm extends AbstractResource
         $this->details['random_enabled'] = $randomEnabled;
     }
 
-    public function getRandomCategories()
+    public function getRandomCategories(): array
     {
         return !is_null($this->details) && isset($this->details['random_categories']) ? $this->details['random_categories'] : [];
     }
 
-    public function setRandomCategories(array $categories)
+    public function setRandomCategories(array $categories): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -335,14 +333,14 @@ class ClacoForm extends AbstractResource
         $this->details['random_categories'] = $categories;
     }
 
-    public function getRandomStartDate()
+    public function getRandomStartDate(): ?\DateTimeInterface
     {
         return !is_null($this->details) && isset($this->details['random_start_date']) ?
-            new DateTime($this->details['random_start_date']) :
+            new \DateTime($this->details['random_start_date']) :
             null;
     }
 
-    public function setRandomStartDate(DateTime $startDate = null)
+    public function setRandomStartDate(\DateTime $startDate = null): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -350,14 +348,14 @@ class ClacoForm extends AbstractResource
         $this->details['random_start_date'] = !is_null($startDate) ? $startDate->format('Y-m-d') : null;
     }
 
-    public function getRandomEndDate()
+    public function getRandomEndDate(): ?\DateTimeInterface
     {
         return !is_null($this->details) && isset($this->details['random_end_date']) ?
-            new DateTime($this->details['random_end_date']) :
+            new \DateTime($this->details['random_end_date']) :
             null;
     }
 
-    public function setRandomEndDate(DateTime $endDate = null)
+    public function setRandomEndDate(\DateTime $endDate = null): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -365,12 +363,12 @@ class ClacoForm extends AbstractResource
         $this->details['random_end_date'] = !is_null($endDate) ? $endDate->format('Y-m-d') : null;
     }
 
-    public function getSearchEnabled()
+    public function getSearchEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['search_enabled']) ? $this->details['search_enabled'] : true;
     }
 
-    public function setSearchEnabled($searchEnabled)
+    public function setSearchEnabled($searchEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -378,12 +376,12 @@ class ClacoForm extends AbstractResource
         $this->details['search_enabled'] = $searchEnabled;
     }
 
-    public function isSearchColumnEnabled()
+    public function isSearchColumnEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['search_column_enabled']) ? $this->details['search_column_enabled'] : true;
     }
 
-    public function setSearchColumnEnabled($searchColumnEnabled)
+    public function setSearchColumnEnabled($searchColumnEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -398,7 +396,7 @@ class ClacoForm extends AbstractResource
             ['title', 'date', 'user', 'categories', 'keywords'];
     }
 
-    public function setSearchColumns(array $searchColumns)
+    public function setSearchColumns(array $searchColumns): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -411,7 +409,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_metadata']) ? $this->details['display_metadata'] : 'none';
     }
 
-    public function setDisplayMetadata($displayMetadata)
+    public function setDisplayMetadata($displayMetadata): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -424,7 +422,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_categories']) ? $this->details['display_categories'] : false;
     }
 
-    public function setDisplayCategories($displayCategories)
+    public function setDisplayCategories($displayCategories): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -437,7 +435,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['comments_enabled']) ? $this->details['comments_enabled'] : false;
     }
 
-    public function setCommentsEnabled($commentsEnabled)
+    public function setCommentsEnabled($commentsEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -450,7 +448,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['anonymous_comments_enabled']) ? $this->details['anonymous_comments_enabled'] : false;
     }
 
-    public function setAnonymousCommentsEnabled($anonymousCommentsEnabled)
+    public function setAnonymousCommentsEnabled($anonymousCommentsEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -463,7 +461,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['moderate_comments']) ? $this->details['moderate_comments'] : 'none';
     }
 
-    public function setModerateComments($moderateComments)
+    public function setModerateComments($moderateComments): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -476,7 +474,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_comments']) ? $this->details['display_comments'] : false;
     }
 
-    public function setDisplayComments($displayComments)
+    public function setDisplayComments($displayComments): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -489,7 +487,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['open_comments']) ? $this->details['open_comments'] : false;
     }
 
-    public function setOpenComments($openComments)
+    public function setOpenComments($openComments): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -502,7 +500,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_comment_author']) ? $this->details['display_comment_author'] : true;
     }
 
-    public function setDisplayCommentAuthor($displayCommentAuthor)
+    public function setDisplayCommentAuthor($displayCommentAuthor): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -515,7 +513,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_comment_date']) ? $this->details['display_comment_date'] : true;
     }
 
-    public function setDisplayCommentDate($displayCommentDate)
+    public function setDisplayCommentDate($displayCommentDate): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -528,7 +526,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['keywords_enabled']) ? $this->details['keywords_enabled'] : false;
     }
 
-    public function setKeywordsEnabled($keywordsEnabled)
+    public function setKeywordsEnabled($keywordsEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -541,7 +539,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['new_keywords_enabled']) ? $this->details['new_keywords_enabled'] : false;
     }
 
-    public function setNewKeywordsEnabled($newKeywordsEnabled)
+    public function setNewKeywordsEnabled($newKeywordsEnabled): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -554,7 +552,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_keywords']) ? $this->details['display_keywords'] : false;
     }
 
-    public function setDisplayKeywords($displayKeywords)
+    public function setDisplayKeywords($displayKeywords): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -567,7 +565,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['use_template']) ? $this->details['use_template'] : false;
     }
 
-    public function setUseTemplate($useTemplate)
+    public function setUseTemplate($useTemplate): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -580,7 +578,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['default_display_mode']) ? $this->details['default_display_mode'] : 'table';
     }
 
-    public function setDefaultDisplayMode($defaultDisplayMode)
+    public function setDefaultDisplayMode($defaultDisplayMode): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -593,7 +591,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_title']) ? $this->details['display_title'] : 'title';
     }
 
-    public function setDisplayTitle($displayTitle)
+    public function setDisplayTitle($displayTitle): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -606,7 +604,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_subtitle']) ? $this->details['display_subtitle'] : 'title';
     }
 
-    public function setDisplaySubtitle($displaySubtitle)
+    public function setDisplaySubtitle($displaySubtitle): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -619,7 +617,7 @@ class ClacoForm extends AbstractResource
         return !is_null($this->details) && isset($this->details['display_content']) ? $this->details['display_content'] : 'title';
     }
 
-    public function setDisplayContent($displayContent)
+    public function setDisplayContent($displayContent): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -634,7 +632,7 @@ class ClacoForm extends AbstractResource
             [];
     }
 
-    public function setCommentsRoles(array $commentsRoles)
+    public function setCommentsRoles(array $commentsRoles): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -649,7 +647,7 @@ class ClacoForm extends AbstractResource
             [];
     }
 
-    public function setCommentsDisplayRoles(array $commentsDisplayRoles)
+    public function setCommentsDisplayRoles(array $commentsDisplayRoles): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -664,7 +662,7 @@ class ClacoForm extends AbstractResource
             null;
     }
 
-    public function setTitleFieldLabel($titleFieldLabel)
+    public function setTitleFieldLabel($titleFieldLabel): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -672,12 +670,12 @@ class ClacoForm extends AbstractResource
         $this->details['title_field_label'] = $titleFieldLabel;
     }
 
-    public function isSearchRestricted()
+    public function isSearchRestricted(): bool
     {
         return !is_null($this->details) && isset($this->details['search_restricted']) ? $this->details['search_restricted'] : false;
     }
 
-    public function setSearchRestricted($searchRestricted)
+    public function setSearchRestricted($searchRestricted): void
     {
         if (is_null($this->details)) {
             $this->details = [];
@@ -700,7 +698,7 @@ class ClacoForm extends AbstractResource
         $this->details['search_restricted_columns'] = $searchRestrictedColumns;
     }
 
-    public function getShowEntryNav()
+    public function getShowEntryNav(): bool
     {
         return !is_null($this->details) && isset($this->details['showEntryNav']) ? $this->details['showEntryNav'] : false;
     }

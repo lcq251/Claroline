@@ -101,7 +101,7 @@ const Editor = (props) => {
           pages={pages}
         />
 
-        <div className="app-editor-body" role="presentation">
+        <div className="app-editor-body" role="presentation" tabIndex={-1   }>
           <Routes
             path={props.path}
             redirect={props.defaultPage ? [

@@ -33,7 +33,7 @@ const Organization = (props) =>
         size="md"
         icon={get(props.organization, 'thumbnail') ?
           <Thumbnail
-            size="xl"
+            size="lg"
             thumbnail={get(props.organization, 'thumbnail')}
             name={get(props.organization, 'name')}
             square={true}

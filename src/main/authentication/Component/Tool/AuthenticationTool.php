@@ -4,11 +4,12 @@ namespace Claroline\AuthenticationBundle\Component\Tool;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AuthenticationBundle\Manager\AuthenticationManager;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 
-class AuthenticationTool extends AbstractTool
+class AuthenticationTool extends ToolComponent
 {
     public function __construct(
         private readonly SerializerProvider $serializer,
@@ -36,7 +37,7 @@ class AuthenticationTool extends AbstractTool
         return AdministrationContext::getName() === $context;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         return [
             'authentication' => $this->serializer->serialize(

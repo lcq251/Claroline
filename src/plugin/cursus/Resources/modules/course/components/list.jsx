@@ -86,7 +86,7 @@ const Courses = (props) => {
         }
       ]}
       display={{
-        current: listConst.DISPLAY_TILES_SM
+        current: listConst.DISPLAY_TILES
       }}
 
       {...omit(props, 'path', 'url', 'autoload', 'refresher', 'invalidate')}

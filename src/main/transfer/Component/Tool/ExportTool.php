@@ -5,12 +5,13 @@ namespace Claroline\TransferBundle\Component\Tool;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\TransferBundle\Transfer\ExportProvider;
 
-final class ExportTool extends AbstractTool
+final class ExportTool extends ToolComponent
 {
     public function __construct(
         private readonly ExportProvider $exportProvider,
@@ -36,7 +37,7 @@ final class ExportTool extends AbstractTool
         ]);
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $options = [];
         $extra = [];

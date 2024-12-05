@@ -11,12 +11,12 @@
 
 namespace Claroline\CoreBundle\Entity\Resource;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\Plugin;
+use Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_resource_type')]
@@ -58,6 +58,7 @@ class ResourceType
 
     /**
      * @todo find a way to remove it (it's used in some DQL queries)
+     *
      * @var Collection<int, ResourceRights>
      */
     #[ORM\ManyToMany(targetEntity: ResourceRights::class, mappedBy: 'resourceTypes')]

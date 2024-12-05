@@ -20,13 +20,13 @@ const CreationType = props =>
           .filter(resourceType => ![
             'icap_blog',
             'icap_wiki',
-            'claroline_announcement_aggregate',
             'innova_path',
             'text',
             'file',
             'hevinci_url',
             'shortcut',
-            'directory'
+            'directory',
+            'claro_slideshow',
           ].includes(resourceType))
           .sort((a, b) => {
             if (trans(a, {}, 'resource') > trans(b, {}, 'resource')) {

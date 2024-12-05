@@ -1,0 +1,55 @@
+/**
+ * Announcement resource
+ */
+
+@import "../variables";
+
+.announcements-grid {
+    display: grid;
+    column-gap: map-get($spacers, 4);
+    row-gap: map-get($spacers, 5);
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+
+    .announce-post {
+        flex-direction: column;
+        max-width: $content-sm;
+    }
+}
+
+.announcements-list {
+    display: flex;
+    flex-direction: column;
+
+    .announce-post {
+        flex-direction: row;
+
+        padding-top: map-get($spacers, 5);
+        padding-bottom: map-get($spacers, 5);
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+}
+
+.announce-post {
+    display: flex;
+    gap: map-get($spacers, 4);
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.announce-content-preview {
+    overflow: hidden;
+    // display the '...' if the text is truncated on browsers which support it
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}

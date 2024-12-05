@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import {makeCancelable} from '#/main/app/api'
+import {useKeyPress} from '#/main/app/dom/key'
+import {trans} from '#/main/app/intl'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 
 import {selectors as contextSelectors} from '#/main/app/context/store'
@@ -11,10 +15,9 @@ import {getTool} from '#/main/core/tool/utils'
 
 import {CommandPaletteRecent} from '#/main/app/context/modals/command-palette/components/recent'
 import {CommandPaletteSearch} from '#/main/app/context/modals/command-palette/components/search'
-import {useKeyPress} from '#/main/app/dom/key'
-import {trans} from '#/main/app/intl'
 import {CommandPaletteGroup} from '#/main/app/context/modals/command-palette/components/group'
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {stripDiacritics} from '#/main/app/utils/text'
+import {nextCommand, previousCommand} from '#/main/app/context/modals/command-palette/utils'
 
 const CommandPaletteModal = (props) => {
   const contextType = useSelector(contextSelectors.type)
@@ -22,7 +25,7 @@ const CommandPaletteModal = (props) => {
   const contextData = useSelector(contextSelectors.data)
   const contextPath = useSelector(contextSelectors.path)
 
-  // grab tools commands
+  // grab available commands by loading tool definitions for all tools enabled in the current context
   const openedTool = useSelector(toolSelectors.name)
   const tools = useSelector(contextSelectors.accessibleTools)
 
@@ -67,11 +70,6 @@ const CommandPaletteModal = (props) => {
   }, [contextType, contextId])
 
   const [search, setSearch] = useState('')
-  const [activeCommand, setActiveCommand] = useState('')
-
-  useKeyPress('Enter', () => {
-    // TODO : activate the selected command
-  })
 
   let pages = []
   if (currentTool) {
@@ -86,33 +84,95 @@ const CommandPaletteModal = (props) => {
         icon: 'fa fa-fw fa-'+current.icon,
         label: trans(current.name, {}, 'tools'),
         type: LINK_BUTTON,
-        target: contextPath + '/' + current.name
+        target: '/'+current.name
       })
 
-      // get other pages defined in the command palette
-      return Object.keys(toolCommands).reduce((toolPages, current) => toolPages.concat(toolCommands[current].getPages().map(page => Object.assign({}, page, {
-        name: current.name+'-'+page.name,
-        label: trans(current, {}, 'tools') + ' : ' + page.label,
-        target: contextPath + '/' + page.target
-      }))), acc)
+      if (toolCommands[current.name]) {
+        // get other pages defined in the command palette
+        console.log(toolCommands[current.name].getPages())
+        acc = acc.concat(toolCommands[current.name].getPages().map(page => Object.assign({}, page, {
+          name: current.name+'-'+page.name,
+          label: trans(current.name, {}, 'tools') + ' : ' + page.label
+        })))
+      }
+
+      return acc
     }, [])
   }
 
-  let commands = []
+  let commands = [].concat(pages
+    .filter(page => undefined === page.displayed || page.displayed)
+    .map(page => Object.assign({}, page, {
+      search: stripDiacritics(page.label.toLowerCase()),
+      commandType: 'page',
+      target: contextPath + page.target
+    }))
+  )
+
+  let actions = []
   if (currentTool) {
     // only get pages for the current tool
-    commands = toolCommands[currentTool] ? toolCommands[currentTool].getCommands() : []
+    actions = toolCommands[currentTool] ? toolCommands[currentTool].getCommands() : []
   } else {
     // get pages from all tools
-    commands = Object.keys(toolCommands).reduce((acc, current) => acc.concat(toolCommands[current].getCommands().map(command => Object.assign({}, command, {
+    actions = Object.keys(toolCommands).reduce((acc, current) => acc.concat(toolCommands[current].getCommands().map(command => Object.assign({}, command, {
       name: current+'-'+command.name,
       label: trans(current, {}, 'tools') + ' : ' + command.label
     }))), [])
   }
 
+  commands = commands.concat(actions
+    .filter(action => undefined === action.displayed || action.displayed)
+    .map(action => Object.assign({
+      search: stripDiacritics(action.label.toLowerCase()),
+      commandType: 'action'
+    }, action))
+  )
+
+  let matchCommands = []
+  if (search) {
+    const cleanSearch = stripDiacritics(search.toLowerCase())
+    commands.map(command => {
+      const searchableLabel = stripDiacritics(command.label.toLowerCase())
+
+      const match = searchableLabel.search(cleanSearch)
+      if (-1 !== match) {
+
+      }
+
+      if (searchableLabel.includes(cleanSearch)) {
+        matchCommands.push(Object.assign({}, command, {
+          label: command.label.replace(props.search, '<b class="fw-bold">'+props.search+'</b>')
+        }))
+      }
+    })
+  } else {
+    matchCommands = commands
+  }
+
+  const [activeCommand, setActiveCommand] = useState(null)
+  /*useEffect(() => {
+    if (!isEmpty(matchCommands)) {
+      setActiveCommand(matchCommands[0].name)
+    }
+  })*/
+
+  useKeyPress('Enter', () => {
+    if (activeCommand) {
+      const commandBtn = document.getElementById(`cmd-${activeCommand}`)
+      if (commandBtn) {
+        commandBtn.click()
+      }
+    }
+  })
+
+  useKeyPress('ArrowDown', () => setActiveCommand(nextCommand(matchCommands, activeCommand)))
+  useKeyPress('ArrowUp', () => setActiveCommand(previousCommand(matchCommands, activeCommand)))
+
   return (
     <ModalEmpty {...props} className="command-palette">
       <CommandPaletteSearch
+        activeCommand={activeCommand}
         currentTool={currentTool}
         search={search}
         updateSearch={setSearch}
@@ -123,21 +183,23 @@ const CommandPaletteModal = (props) => {
         <CommandPaletteRecent />
 
         <CommandPaletteGroup
+          activeCommand={activeCommand}
           name={trans('Pages', {}, 'command')}
-          search={search}
-          actions={pages}
+          actions={matchCommands.filter(command => 'page' === command.commandType)}
           onClick={(page) => {
             props.fadeModal()
           }}
+          setActiveCommand={setActiveCommand}
         />
 
         <CommandPaletteGroup
+          activeCommand={activeCommand}
           name={trans('Actions', {}, 'command')}
-          search={search}
-          actions={commands}
+          actions={matchCommands.filter(command => 'action' === command.commandType)}
           onClick={(command) => {
             props.fadeModal()
           }}
+          setActiveCommand={setActiveCommand}
         />
       </div>
     </ModalEmpty>

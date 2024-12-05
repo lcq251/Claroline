@@ -24,6 +24,7 @@ trait RemoveToolTrait
 
         if ($tool) {
             $this->om->remove($tool);
+            $this->om->flush();
         }
 
         $orderedTools = $this->connection->prepare(

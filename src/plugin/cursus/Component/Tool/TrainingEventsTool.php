@@ -6,13 +6,13 @@ use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CursusBundle\Entity\Course;
-use Claroline\CursusBundle\Entity\Session;
 
-class TrainingEventsTool extends AbstractTool
+class TrainingEventsTool extends ToolComponent
 {
     public function __construct(
         private readonly FinderProvider $finder,
@@ -36,7 +36,7 @@ class TrainingEventsTool extends AbstractTool
         return WorkspaceContext::getName() === $context;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $courses = $this->om->getRepository(Course::class)->findByWorkspace($contextSubject);
 

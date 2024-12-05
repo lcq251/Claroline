@@ -9,8 +9,8 @@ services:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
             - '@Claroline\CommunityBundle\Serializer\RoleSerializer'
 
-    Claroline\AnnouncementBundle\Serializer\AnnouncementAggregateSerializer:
-        tags: [claroline.serializer]
+    Claroline\AnnouncementBundle\Serializer\AnnouncementParametersSerializer:
+        tags: [ claroline.serializer ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'

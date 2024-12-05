@@ -68,7 +68,7 @@ const Badges = (props) => {
           }
         }
       ].concat(props.customDefinition)}
-      display={{current: listConstants.DISPLAY_LIST_SM}}
+      display={{current: listConstants.DISPLAY_LIST}}
 
       {...omit(props, 'path', 'url', 'customDefinition', 'customActions', 'refresher', 'invalidate')}
 

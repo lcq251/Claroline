@@ -22,14 +22,12 @@
   "deselect": "Déselectionner",
   "disable": "Désactiver",
   "download": "Télécharger",
-  "duplicate": "Dupliquer",
   "enable": "Activer",
   "edit": "Modifier",
-  "edit-rights": "Gérer les permissions",
   "exit": "Quitter",
   "expand": "Déplier",
   "export-csv": "Exporter (.csv)",
-  "export-pdf": "Exporter (.pdf)",
+  "export-pdf": "Télécharger (.pdf)",
   "export-ics": "Exporter (.ics)",
   "filter": "Filtrer",
   "finish": "Terminer",
@@ -98,5 +96,6 @@
   "go_to_content": "Aller au contenu",
   "see": "Voir",
   "see_all": "Voir tous",
-  "see_more": "Voir plus"
+  "see_more": "Voir plus",
+  "read_more": "Lire la suite"
 }

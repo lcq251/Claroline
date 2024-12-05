@@ -6,12 +6,9 @@ import {constants as treeConst} from '#/main/app/content/list/tree/constants'
 
 const DEFAULT_DISPLAY_MODE = tableConst.DISPLAY_TABLE
 const DEFAULT_DISPLAY_MODES = [
-  tableConst.DISPLAY_TABLE_SM,
   tableConst.DISPLAY_TABLE,
-  gridConst.DISPLAY_LIST_SM,
-  gridConst.DISPLAY_LIST,
-  gridConst.DISPLAY_TILES_SM,
-  gridConst.DISPLAY_TILES
+  gridConst.DISPLAY_TILES,
+  gridConst.DISPLAY_LIST
 ]
 
 /**
@@ -21,11 +18,8 @@ const DEFAULT_DISPLAY_MODES = [
  */
 const DISPLAY_MODES = [
   tableConst.DISPLAY_TABLE,
-  tableConst.DISPLAY_TABLE_SM,
   gridConst.DISPLAY_TILES,
-  gridConst.DISPLAY_TILES_SM,
   gridConst.DISPLAY_LIST,
-  gridConst.DISPLAY_LIST_SM,
   treeConst.DISPLAY_TREE
 ]
 

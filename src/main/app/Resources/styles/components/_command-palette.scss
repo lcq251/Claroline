@@ -31,15 +31,12 @@
   }
 }
 
-.command-palette-shortcut {
-  font-family: $font-family-monospace;
-}
-
 .command-palette-group {
   .btn {
     box-shadow: none;
   }
 
+  .command-palette-active,
   .btn:hover,
   .btn:focus {
     background: $primary !important;

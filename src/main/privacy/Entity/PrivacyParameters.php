@@ -26,22 +26,22 @@ class PrivacyParameters
     private ?string $dpoPhone = null;
 
     #[ORM\Column(name: 'dpo_address_street1', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressStreet1 = null;
+    private ?string $dpoAddressStreet1 = null;
 
     #[ORM\Column(name: 'dpo_address_street2', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressStreet2 = null;
+    private ?string $dpoAddressStreet2 = null;
 
     #[ORM\Column(name: 'dpo_address_postal_code', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressPostalCode = null;
+    private ?string $dpoAddressPostalCode = null;
 
     #[ORM\Column(name: 'dpo_address_city', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressCity = null;
+    private ?string $dpoAddressCity = null;
 
     #[ORM\Column(name: 'dpo_address_state', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressState = null;
+    private ?string $dpoAddressState = null;
 
     #[ORM\Column(name: 'dpo_address_country', type: Types::STRING, nullable: true)]
-    protected ?string $dpoAddressCountry = null;
+    private ?string $dpoAddressCountry = null;
 
     #[ORM\Column(name: 'tos_enabled', type: Types::BOOLEAN)]
     private bool $tosEnabled = false;

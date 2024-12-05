@@ -14,6 +14,7 @@ const ContextUser = connect(
     impersonated: selectors.impersonated(state),
     roles: selectors.roles(state),
 
+    help: configSelectors.param(state, 'help'),
     registration: configSelectors.param(state, 'selfRegistration'),
   }),
   (dispatch) => ({

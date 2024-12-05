@@ -13,22 +13,22 @@ $icon-primary-color: var(--#{$prefix}primary) !default;
 $icon-secondary-color: $gray-900 !default;
 
 // content sizing
-$content-sm: 42rem !default; // deprecated
+$content-sm: 42rem !default;
 $content-md: 56rem !default;
 $content-lg: 72rem !default;
 
 $content-sizes: (
-    sm: $content-sm, // deprecated
+    sm: $content-sm,
     md: $content-md,
     lg: $content-lg
 ) !default;
 
 $icon-sizes: (
-    xs: 2rem,
-    sm: 3rem,
-    md: 4rem,
-    lg: 5rem,
-    xl: 8rem,
+    xs: 2rem, // tables, data micro
+    sm: 3rem, // context menu, current user, lists, creation menu, organizations modal
+    md: 6rem, // 4rem, // cards
+    lg: 8rem, // 5rem, // pages
+    xl: 14rem // 8rem,
 ) !default;
 
 // allows to customize content line height to increase readability in large texts set by users

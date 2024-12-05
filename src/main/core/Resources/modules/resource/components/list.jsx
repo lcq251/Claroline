@@ -113,7 +113,7 @@ const Resources = props => {
         }
       ].concat(props.customDefinition)}
       display={{
-        current: listConst.DISPLAY_TILES_SM
+        current: listConst.DISPLAY_TILES
       }}
 
       {...omit(props, 'path', 'url', 'autoload', 'backAction', 'customDefinition', 'customActions', 'refresher', 'invalidate')}

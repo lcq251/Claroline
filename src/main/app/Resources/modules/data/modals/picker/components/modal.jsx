@@ -130,7 +130,7 @@ PickerModal.propTypes = {
 
 PickerModal.defaultProps = {
   multiple: true,
-  displayMode: listConst.DISPLAY_LIST_SM,
+  displayMode: listConst.DISPLAY_LIST,
   filters: []
 }
 

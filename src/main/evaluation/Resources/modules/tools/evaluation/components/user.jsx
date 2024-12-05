@@ -37,7 +37,7 @@ const EvaluationUser = (props) =>
         size="md"
         title={
           <div className="d-flex align-items-center gap-4">
-            <UserAvatar user={get(props.workspaceEvaluation, 'user')} size="sm" />
+            <UserAvatar user={get(props.workspaceEvaluation, 'user')} size="lg" />
             {get(props.workspaceEvaluation, 'user.name')}
           </div>
         }

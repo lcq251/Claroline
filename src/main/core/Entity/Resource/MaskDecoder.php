@@ -25,60 +25,44 @@ class MaskDecoder
 {
     use Id;
 
-    //this must be coherent with the MaskManager default array
-    //@todo: unify this with the MaskManager
-    const OPEN = 1;
-    const COPY = 2;
-    const EXPORT = 4;
-    const DELETE = 8;
-    const EDIT = 16;
-    const ADMINISTRATE = 32;
+    public const OPEN = 1;
+    public const COPY = 2;
+    public const EXPORT = 4;
+    public const DELETE = 8;
+    public const EDIT = 16;
+    public const ADMINISTRATE = 32;
 
     #[ORM\Column(type: Types::INTEGER)]
-    protected $value;
+    private ?int $value = 0;
 
     #[ORM\Column]
-    protected $name;
+    private ?string $name = null;
 
-    #[ORM\JoinColumn(name: 'resource_type_id', onDelete: 'CASCADE', nullable: false)]
-    #[ORM\ManyToOne(targetEntity: ResourceType::class, inversedBy: 'maskDecoders', cascade: ['persist'])]
-    protected ?ResourceType $resourceType = null;
+    #[ORM\ManyToOne(targetEntity: ResourceType::class, cascade: ['persist'], inversedBy: 'maskDecoders')]
+    #[ORM\JoinColumn(name: 'resource_type_id', nullable: false, onDelete: 'CASCADE')]
+    private ?ResourceType $resourceType = null;
 
-    /**
-     * @param $position
-     *
-     * @return MaskDecoder
-     */
-    public function setValue($position)
+    public function setValue(int $position): void
     {
         $this->value = $position;
-
-        return $this;
     }
 
-    public function getValue()
+    public function getValue(): int
     {
         return $this->value;
     }
 
-    /**
-     * @param $name
-     *
-     * @return MaskDecoder
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setResourceType(ResourceType $resourceType)
+    public function setResourceType(ResourceType $resourceType): void
     {
         if ($this->resourceType instanceof ResourceType) {
             $this->resourceType->removeMaskDecoder($this);
@@ -86,11 +70,9 @@ class MaskDecoder
 
         $this->resourceType = $resourceType;
         $this->resourceType->addMaskDecoder($this);
-
-        return $this;
     }
 
-    public function getResourceType()
+    public function getResourceType(): ?ResourceType
     {
         return $this->resourceType;
     }

@@ -4,16 +4,17 @@ namespace Claroline\ThemeBundle\Component\Tool;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\ThemeBundle\Entity\ColorCollection;
 use Claroline\ThemeBundle\Manager\IconSetManager;
 use Claroline\ThemeBundle\Manager\ThemeManager;
 
-class AppearanceTool extends AbstractTool
+class AppearanceTool extends ToolComponent
 {
     public function __construct(
         private readonly ObjectManager $om,
@@ -45,7 +46,7 @@ class AppearanceTool extends AbstractTool
         return AdministrationContext::getName() === $context;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $colorCharts = $this->om->getRepository(ColorCollection::class)->findAll();
         $parameters = $this->parametersSerializer->serialize(); // only get appearance options

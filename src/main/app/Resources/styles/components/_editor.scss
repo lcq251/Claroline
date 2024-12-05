@@ -21,6 +21,7 @@
   width: 100%;
 
   padding: map-get($spacers, 5) map-get($spacers, 4);
+  background: var(--#{$prefix}menu-bg-subtle);
 
   nav {
     max-width: 12rem;

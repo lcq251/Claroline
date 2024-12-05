@@ -46,7 +46,7 @@ class ClientSerializer
             'description' => $this->config->getParameter('meta.description'),
             'version' => $this->platformManager->getVersion(),
             'environment' => $this->platformManager->getEnv(),
-            // 'helpUrl' => $this->config->getParameter('help_url'),
+            'help' => $this->config->getParameter('help_url'),
             'selfRegistration' => $this->config->getParameter('registration.self')/* && !$this->userManager->hasReachedLimit() */,
             'community' => $this->config->getParameter('community'),
             'serverUrl' => $this->platformManager->getUrl(),

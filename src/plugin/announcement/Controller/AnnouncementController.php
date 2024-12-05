@@ -2,9 +2,8 @@
 
 namespace Claroline\AnnouncementBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AnnouncementBundle\Entity\Announcement;
-use Claroline\AnnouncementBundle\Entity\AnnouncementAggregate;
+use Claroline\AnnouncementBundle\Entity\AnnouncementParameters;
 use Claroline\AnnouncementBundle\Manager\AnnouncementManager;
 use Claroline\AnnouncementBundle\Serializer\AnnouncementSerializer;
 use Claroline\AppBundle\API\Crud;
@@ -14,10 +13,12 @@ use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Library\RoutingHelper;
 use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -27,7 +28,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Manages announces of an announcement resource.
  */
-#[Route(path: '/announcement/{aggregateId}', options: ['expose' => true])]
+#[Route(path: '/announcement', options: ['expose' => true])]
 class AnnouncementController
 {
     use RequestDecoderTrait;
@@ -55,11 +56,9 @@ class AnnouncementController
      * Creates a new announcement.
      */
     #[Route(path: '/', name: 'claro_announcement_create', methods: ['POST'])]
-    public function createAction(#[MapEntity(mapping: ['aggregateId' => 'uuid'])] AnnouncementAggregate $aggregate, Request $request): JsonResponse
+    public function createAction(Request $request): JsonResponse
     {
         $announcement = new Announcement();
-        $announcement->setAggregate($aggregate);
-
         $this->crud->create($announcement, $this->decodeRequest($request), [Options::PERSIST_TAG]);
 
         return new JsonResponse(
@@ -70,7 +69,6 @@ class AnnouncementController
 
     /**
      * Updates an existing announcement.
-     *
      */
     #[Route(path: '/{id}', name: 'claro_announcement_update', methods: ['PUT'])]
     public function updateAction(#[MapEntity(mapping: ['id' => 'uuid'])] Announcement $announcement, Request $request): JsonResponse
@@ -84,16 +82,13 @@ class AnnouncementController
 
     /**
      * Deletes an announcement.
-     *
      */
     #[Route(path: '/{id}', name: 'claro_announcement_delete', methods: ['DELETE'])]
     public function deleteAction(
-        #[MapEntity(mapping: ['aggregateId' => 'uuid'])]
-        AnnouncementAggregate $aggregate,
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Announcement $announcement
     ): JsonResponse {
-        $this->checkPermission('EDIT', $aggregate->getResourceNode(), [], true);
+        $this->checkPermission('EDIT', $announcement, [], true);
 
         $this->crud->delete($announcement);
 
@@ -102,31 +97,22 @@ class AnnouncementController
 
     /**
      * Sends an announcement (in current implementation, it's sent by email).
-     *
      */
     #[Route(path: '/{id}/validate', name: 'claro_announcement_validate', methods: ['GET'])]
     public function validateSendAction(
-        #[MapEntity(mapping: ['aggregateId' => 'uuid'])]
-        AnnouncementAggregate $aggregate,
         #[MapEntity(mapping: ['id' => 'uuid'])]
-        Announcement $announcement, Request $request
+        Announcement $announcement,
+        Request $request
     ): JsonResponse {
-        $this->checkPermission('EDIT', $aggregate->getResourceNode(), [], true);
+        $this->checkPermission('EDIT', $announcement, [], true);
+
         $ids = isset($request->query->all()['filters']) ? $request->query->all()['filters']['roles'] : [];
 
-        /** @var Role[] $roles */
-        $roles = $this->om->getRepository(Role::class)->findBy(['uuid' => $ids]);
-        $node = $announcement->getAggregate()->getResourceNode();
-
-        $rights = $node->getRights();
-
-        if (0 === count($roles)) {
-            foreach ($rights as $right) {
-                // 1 is the default "open" mask (there should be a better way to do it)
-                if ($right->getMask() & 1) {
-                    $roles[] = $right->getRole();
-                }
-            }
+        if (!empty($ids)) {
+            /** @var Role[] $roles */
+            $roles = $this->om->getRepository(Role::class)->findBy(['uuid' => $ids]);
+        } else {
+            $roles = $announcement->getRoles();
         }
 
         $all = $request->query->all();
@@ -140,17 +126,15 @@ class AnnouncementController
 
     #[Route(path: '/{id}/pdf', name: 'claro_announcement_export_pdf', methods: ['GET'])]
     public function downloadPdfAction(
-        #[MapEntity(mapping: ['aggregateId' => 'uuid'])]
-        AnnouncementAggregate $aggregate,
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Announcement $announcement
     ): StreamedResponse {
-        $this->checkPermission('EDIT', $aggregate->getResourceNode(), [], true);
+        $this->checkPermission('EDIT', $announcement, [], true);
 
-        $fileName = TextNormalizer::toKey($aggregate->getResourceNode()->getName());
-
-        $workspace = $aggregate->getResourceNode()->getWorkspace();
         $publicationDate = $announcement->getPublicationDate() ?? $announcement->getCreationDate();
+        $fileName = TextNormalizer::toKey($announcement->getTitle() ?? DateNormalizer::normalize($publicationDate));
+
+        $workspace = $announcement->getWorkspace();
 
         $placeholders = array_merge([
             'title' => $announcement->getTitle(),
@@ -161,8 +145,9 @@ class AnnouncementController
             'workspace_url' => $this->routing->workspaceUrl($workspace),
         ], $this->templateManager->formatDatePlaceholder('publication', $publicationDate));
 
-        if ($aggregate->getTemplatePdf()) {
-            $content = $this->templateManager->getTemplateContent($aggregate->getTemplatePdf(), $placeholders, '');
+        $announcementParameters = $this->om->getRepository(AnnouncementParameters::class)->findOneByWorkspace($workspace);
+        if ($announcementParameters->getTemplatePdf()) {
+            $content = $this->templateManager->getTemplateContent($announcementParameters->getTemplatePdf(), $placeholders, '');
         } else {
             $content = $this->templateManager->getTemplate('pdf_announcement', $placeholders, '');
         }

@@ -1,11 +1,7 @@
 plugin:
-    resources:
-        - name: claroline_announcement_aggregate
-          class: Claroline\AnnouncementBundle\Entity\AnnouncementAggregate
-          tags: [community]
-          actions:
-              - name: create-announce
-                decoder: create-announce
+    tools:
+        - name: announcement
+          icon: bullhorn
 
     data_sources:
         - name: announcements
@@ -28,10 +24,10 @@ plugin:
         - name: pdf_announcement
           type: pdf
           placeholders:
-            - title
-            - author
-            - content
-            - workspace_name
-            - workspace_code
-            - workspace_url
-            - publication_datetime
+              - title
+              - author
+              - content
+              - workspace_name
+              - workspace_code
+              - workspace_url
+              - publication_datetime

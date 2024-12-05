@@ -77,8 +77,6 @@ const QuizOverview = props => {
     maxAttemptsReached = get(props.userEvaluation, 'nbAttempts', 0) >= get(props.quiz, 'parameters.maxAttempts')
   }
 
-  console.log('coucou')
-
   return (
     <ResourceOverview
       evaluation={props.userEvaluation}

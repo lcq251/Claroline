@@ -5,15 +5,16 @@ namespace Claroline\CursusBundle\Component\Tool;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Manager\CourseManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class TrainingsTool extends AbstractTool
+class TrainingsTool extends ToolComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -38,7 +39,7 @@ class TrainingsTool extends AbstractTool
         return DesktopContext::getName() === $context;
     }
 
-    public function open(string $context, ?ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();
 

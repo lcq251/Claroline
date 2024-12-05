@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {url} from '#/main/app/api'
@@ -11,7 +10,6 @@ import {CALLBACK_BUTTON, LINK_BUTTON, MenuButton, URL_BUTTON} from '#/main/app/b
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {User as UserTypes} from '#/main/community/user/prop-types'
 import {constants as userConst} from '#/main/app/user/constants'
-import {Poster} from '#/main/app/components/poster'
 
 const ContextAuthentication = (props) =>
   <Toolbar
@@ -63,78 +61,95 @@ ContextImpersonation.propTypes = {
 const ContextUser = (props) => {
   if (!props.authenticated) {
     return (
-      <ContextAuthentication
-        registration={props.registration}
-      />
+      <div className="app-menu-user p-1 mt-auto d-flex flex-column align-items-stretch" role="presentation">
+        <Toolbar
+          className="d-grid gap-1 my-1 mx-3"
+          buttonName="btn"
+          primaryName="btn-primary"
+          defaultName="btn-link"
+          onClick={props.closeMenu}
+          actions={[
+            {
+              name: 'login',
+              type: LINK_BUTTON,
+              label: trans('login', {}, 'actions'),
+              target: '/login',
+              primary: true
+            }, {
+              name: 'create-account',
+              type: LINK_BUTTON,
+              label: trans('create-account', {}, 'actions'),
+              target: '/registration',
+              displayed: props.registration
+            }
+          ]}
+        />
+      </div>
     )
   }
 
-  const poster = props.poster || get(props.currentUser, 'poster')
-
   return (
-    <>
-      {poster &&
-        <Poster url={poster} className="app-menu-cover" />
-      }
+    <div className="app-menu-user p-1 mt-auto d-flex flex-column align-items-stretch" role="presentation">
+      <MenuButton
+        id="current-user-menu"
+        className="app-current-user text-start d-flex flex-row align-items-center gap-3 py-1 px-3 fs-sm fw-bolder w-100 focus-ring"
+        menu={{
+          //className: 'dropdown-menu-full',
+          items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
+            name: status,
+            type: CALLBACK_BUTTON,
+            callback: () => props.changeStatus(props.currentUser, status),
+            primary: true,
+            label: (
+              <div className="d-flex align-items-start" role="presentation">
+                <span className={classes('d-inline-block p-1 my-2 rounded-circle icon-with-text-right', `bg-${userConst.USER_STATUS_COLORS[status]}`)} aria-hidden={true} />
 
-      <article className="app-menu-current-user">
-        <UserAvatar user={props.currentUser} noStatusTooltip={true} size="lg" />
-
-        <MenuButton
-          id="current-user-menu"
-          className="app-menu-user mt-2 text-center"
-          menu={{
-            //className: 'dropdown-menu-full',
-            items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
-              name: status,
-              type: CALLBACK_BUTTON,
-              callback: () => props.changeStatus(props.currentUser, status),
-              primary: true,
-              label: (
-                <div className="d-flex align-items-start" role="presentation">
-                  <span className={classes('d-inline-block p-1 my-2 rounded-circle icon-with-text-right', `bg-${userConst.USER_STATUS_COLORS[status]}`)} aria-hidden={true} />
-
-                  <span role="presentation">
-                    {userConst.USER_STATUSES[status]}
-                    {userConst.USER_STATUS_OFFLINE === status &&
-                      <small className="text-body-secondary text-wrap d-block">{trans('user_offline_help')}</small>
-                    }
-                  </span>
-                </div>
-              )
-            })), [
-              {
-                name: 'profile',
-                type: LINK_BUTTON,
-                icon: 'fa fa-fw fa-user',
-                label: trans('my_profile'),
-                target: props.path+'/profile'
-              }, {
-                name: 'parameters',
-                type: LINK_BUTTON,
-                icon: 'fa fa-fw fa-sliders',
-                label: trans('account', {}, 'context'),
-                target: '/account'/*,
-                subscript: {
-                  type: 'text',
-                  status: 'warning',
-                  value: <span className="fa fa-warning" />
-                }*/
-              }, {
-                name: 'logout',
-                type: URL_BUTTON,
-                icon: 'fa fa-fw fa-power-off',
-                label: trans('logout'),
-                target: ['claro_security_logout']
-              }
-            ])
-          }}
-        >
+                <span role="presentation">
+                  {userConst.USER_STATUSES[status]}
+                  {userConst.USER_STATUS_OFFLINE === status &&
+                    <small className="text-body-secondary text-wrap d-block">{trans('user_offline_help')}</small>
+                  }
+                </span>
+              </div>
+            )
+          })), [
+            {
+              name: 'profile',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-user',
+              label: trans('my_profile'),
+              target: props.path+'/profile'
+            }, {
+              name: 'parameters',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-sliders',
+              label: trans('account', {}, 'context'),
+              target: '/account'
+            }, {
+              name: 'help',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-info-circle',
+              label: trans('help'),
+              target: props.help,
+              displayed: !!props.help
+            }, {
+              name: 'logout',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-power-off',
+              label: trans('logout'),
+              target: ['claro_security_logout']
+            }
+          ])
+        }}
+      >
+        <UserAvatar user={props.currentUser} noStatusTooltip={true} size="sm" />
+        <div className="flex-fill" role="presentation">
           {props.currentUser.name}
           <small className="d-block">{userConst.USER_STATUSES[props.currentUser.status]}</small>
-        </MenuButton>
-      </article>
-    </>
+        </div>
+        <span className="fa fa-chevron-down" aria-hidden={true} />
+      </MenuButton>
+    </div>
   )
 }
 
@@ -147,6 +162,7 @@ ContextUser.propTypes = {
   roles: T.arrayOf(T.shape({
     translationKey: T.string.isRequired
   })),
+  help: T.string,
   impersonated: T.bool.isRequired,
   registration: T.bool.isRequired,
   changeStatus: T.func.isRequired,

@@ -40,7 +40,7 @@ const Group = (props) =>
         size="md"
         icon={get(props.group, 'thumbnail') ?
           <Thumbnail
-            size="xl"
+            size="lg"
             thumbnail={get(props.group, 'thumbnail')}
             name={get(props.group, 'name')}
             square={true}

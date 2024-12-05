@@ -4,11 +4,12 @@ namespace Claroline\PrivacyBundle\Component\Tool;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\PrivacyBundle\Manager\PrivacyManager;
 
-class PrivacyTool extends AbstractTool
+class PrivacyTool extends ToolComponent
 {
     public function __construct(
         private readonly PrivacyManager $privacyManager,
@@ -36,7 +37,7 @@ class PrivacyTool extends AbstractTool
         return true;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $privacyParameters = $this->privacyManager->getParameters();
         $serializedParameters = $this->serializer->serialize($privacyParameters);

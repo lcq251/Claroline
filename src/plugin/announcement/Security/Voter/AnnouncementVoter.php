@@ -24,32 +24,19 @@ class AnnouncementVoter extends AbstractVoter
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $resourceNode = $object->getAggregate()->getResourceNode();
-
         switch ($attributes[0]) {
             case self::OPEN:
-                if ($this->isGranted('OPEN', $resourceNode)) {
+                if ($this->isToolGranted('OPEN', 'announcement', $object->getWorkspace())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;
 
             case self::CREATE:
-                if ($this->isGranted('CREATE-ANNOUNCE', $resourceNode)) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                return VoterInterface::ACCESS_DENIED;
-
             case self::EDIT:
             case self::DELETE:
-                // creator can edit its own announcements
-                if ($token->getUser() instanceof User && $object->getCreator() && $token->getUser()->getId() === $object->getCreator()->getId()) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                // everyone who can edit the resource node can edit its announcements
-                if ($this->isGranted('EDIT', $resourceNode)) {
+            case self::ADMINISTRATE:
+                if ($this->isToolGranted('EDIT', 'announcement', $object->getWorkspace())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
@@ -66,6 +53,6 @@ class AnnouncementVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE];
+        return [self::OPEN, self::CREATE, self::ADMINISTRATE, self::EDIT, self::DELETE];
     }
 }

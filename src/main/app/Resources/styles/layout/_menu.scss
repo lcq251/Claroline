@@ -11,6 +11,9 @@
     &.show {
         width: $toolbar-size;
     }
+
+    box-shadow: $toolbar-box-shadow;
+    z-index: $zindex-sticky + 1;
 }
 
 .app-body {
@@ -19,7 +22,8 @@
 
 .app-menu {
     --#{$prefix}menu-color: #{$toolbar-color};
-    --#{$prefix}menu-bg: #{$toolbar-bg-subtle};
+    --#{$prefix}menu-bg: #{$toolbar-bg};
+    --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle};
     --#{$prefix}menu-header-color: #{$toolbar-header-color};
 
     --#{$prefix}menu-item-color: #{$toolbar-link-color};
@@ -40,6 +44,7 @@
 
     background-color: var(--#{$prefix}menu-bg);
     color: var(--#{$prefix}menu-color);
+    border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
 
 .app-menu-backdrop {
@@ -60,35 +65,26 @@
 
 .app-menu-cover {
     text-align: center;
-    padding-bottom: 2.5rem;
+    // padding-bottom: 2.5rem;
     flex-shrink: 0;
 
-    + .app-menu-current-user .user-avatar {
+    /*+ .app-menu-current-user .user-avatar {
         margin-top: -(2.5rem + $thumbnail-padding);
-    }
+    }*/
 }
 
-.app-menu-current-user {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: map-get($spacers, 3);
-    padding-top: 0;
+.app-menu-user {
+    background: var(--#{$prefix}menu-bg-subtle);
+    color: var(--#{$prefix}menu-color);
+}
 
-    .user-avatar {
-        background: var(--#{$prefix}menu-bg);
-        padding: $thumbnail-padding;
+.app-current-user {
+    small {
+        color: var(--#{$prefix}menu-item-color);
     }
 
     .user-status-bullet {
-        border-color: var(--#{$prefix}menu-bg) !important;
-    }
-
-    .app-menu-user {
-        color: var(--#{$prefix}menu-color);
-        small {
-            color: var(--#{$prefix}menu-item-color);
-        }
+        border-color: var(--#{$prefix}menu-bg-subtle) !important;
     }
 }
 
@@ -236,7 +232,8 @@
     @include color-mode(dark) {
         .app-menu {
             --#{$prefix}menu-color: #{$toolbar-color-dark};
-            --#{$prefix}menu-bg: #{$toolbar-bg-subtle-dark};
+            --#{$prefix}menu-bg: #{$toolbar-bg-dark};
+            --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle-dark};
             --#{$prefix}menu-header-color: #{$toolbar-header-color-dark};
 
             --#{$prefix}menu-item-color: #{$toolbar-link-color-dark};

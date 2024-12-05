@@ -4,11 +4,12 @@ namespace Claroline\EvaluationBundle\Component\Tool;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 
-class EvaluationTool extends AbstractTool
+class EvaluationTool extends ToolComponent
 {
     public function __construct(
         private readonly Crud $crud
@@ -33,7 +34,7 @@ class EvaluationTool extends AbstractTool
         return 'award';
     }
 
-    public function configure(string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
+    public function configure(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
     {
         if (!empty($configData['evaluation'])) {
             $this->crud->update($contextSubject, ['evaluation' => $configData['evaluation']], [Crud::NO_PERMISSIONS]);

@@ -16,6 +16,7 @@ export default (workspaces, refresher) => {
       message: transChoice('copy_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'workspace'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
+        id: item.id,
         name: item.name
       }))
     },

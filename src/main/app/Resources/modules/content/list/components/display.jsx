@@ -21,7 +21,8 @@ const ListDisplay = props =>
     menu={{
       align: 'right',
       label: trans('list_display_modes'),
-      items: props.available.map(display => ({
+      items: props.available.filter(display => undefined !== DISPLAY_MODES[display]).map(display => ({
+        name: display,
         type: CALLBACK_BUTTON,
         icon: DISPLAY_MODES[display].icon,
         label: DISPLAY_MODES[display].label,

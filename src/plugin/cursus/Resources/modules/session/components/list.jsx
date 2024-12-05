@@ -168,7 +168,7 @@ const SessionList = (props) =>
       }
     ].concat(props.customActions ? props.customActions(rows) : [])}
     display={{
-      current: listConst.DISPLAY_LIST_SM
+      current: listConst.DISPLAY_LIST
     }}
     card={SessionCard}
 

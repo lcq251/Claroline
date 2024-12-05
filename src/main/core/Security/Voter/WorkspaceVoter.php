@@ -74,8 +74,7 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
 
         if (!$this->restrictionsManager->isStarted($object)
             || $this->restrictionsManager->isEnded($object)
-            || !$this->restrictionsManager->isUnlocked($object)
-            || !$this->restrictionsManager->isIpAuthorized($object)) {
+            || !$this->restrictionsManager->isUnlocked($object)) {
             return VoterInterface::ACCESS_DENIED;
         }
 

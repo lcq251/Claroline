@@ -137,7 +137,7 @@ const TableItem = props => {
         >
           <div className="d-flex flex-direction-row gap-3 align-items-center">
             {column.primary &&
-              <div className={classes('placeholder thumbnail thumbnail-icon thumbnail-icon-xs', props.primaryAction && 'bg-primary')} />
+              <div className={classes('placeholder thumbnail thumbnail-icon thumbnail-icon-xs ratio ratio-1x1 flex-shrink-0', props.primaryAction && 'bg-primary')} />
             }
             <div className={classes('placeholder rounded-1 w-100', column.primary && props.primaryAction && 'bg-primary')}>
               &nbsp;

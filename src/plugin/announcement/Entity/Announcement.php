@@ -11,11 +11,14 @@
 
 namespace Claroline\AnnouncementBundle\Entity;
 
+use Claroline\AnnouncementBundle\Finder\AnnouncementType;
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\Creator;
 use Claroline\CoreBundle\Entity\Role;
-use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Model\HasWorkspace;
 use Claroline\SchedulerBundle\Entity\ScheduledTask;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,11 +27,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_announcement')]
 #[ORM\Entity]
+#[CrudEntity(finderClass: AnnouncementType::class)]
 class Announcement
 {
     use Id;
     use Uuid;
     use Poster;
+    use Creator;
+    use HasWorkspace;
 
     #[ORM\Column(nullable: true)]
     private ?string $title = null;
@@ -54,14 +60,6 @@ class Announcement
     #[ORM\Column(name: 'visible_until', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $visibleUntil = null;
 
-    #[ORM\JoinColumn(name: 'creator_id', onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    private ?User $creator = null;
-
-    #[ORM\ManyToOne(targetEntity: AnnouncementAggregate::class, inversedBy: 'announcements')]
-    #[ORM\JoinColumn(name: 'aggregate_id', nullable: false, onDelete: 'CASCADE')]
-    private ?AnnouncementAggregate $aggregate = null;
-
     #[ORM\JoinColumn(name: 'task_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ScheduledTask::class)]
     private ?ScheduledTask $task = null;
@@ -76,6 +74,7 @@ class Announcement
     public function __construct()
     {
         $this->refreshUuid();
+
         $this->creationDate = new \DateTime();
         $this->roles = new ArrayCollection();
     }
@@ -160,59 +159,39 @@ class Announcement
         $this->visibleUntil = $visibleUntil;
     }
 
-    public function getCreator(): ?User
-    {
-        return $this->creator;
-    }
-
-    public function setCreator(?User $creator = null): void
-    {
-        $this->creator = $creator;
-    }
-
-    public function getAggregate(): ?AnnouncementAggregate
-    {
-        return $this->aggregate;
-    }
-
-    public function setAggregate(AnnouncementAggregate $aggregate = null): void
-    {
-        $this->aggregate = $aggregate;
-    }
-
     /**
      * @return ScheduledTask
      */
-    public function getTask()
+    public function getTask(): ?ScheduledTask
     {
         return $this->task;
     }
 
-    public function setTask(ScheduledTask $task = null)
+    public function setTask(?ScheduledTask $task = null): void
     {
         $this->task = $task;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles->toArray();
     }
 
-    public function addRole(Role $role)
+    public function addRole(Role $role): void
     {
         if (!$this->roles->contains($role)) {
             $this->roles->add($role);
         }
     }
 
-    public function removeRole(Role $role)
+    public function removeRole(Role $role): void
     {
         if ($this->roles->contains($role)) {
             $this->roles->removeElement($role);
         }
     }
 
-    public function emptyRoles()
+    public function emptyRoles(): void
     {
         $this->roles->clear();
     }

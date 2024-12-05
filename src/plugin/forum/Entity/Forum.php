@@ -28,12 +28,9 @@ class Forum extends AbstractResource
     public const VALIDATE_PRIOR_ONCE = 'PRIOR_ONCE';
     public const VALIDATE_PRIOR_ALL = 'PRIOR_ALL';
 
-    public const DISPLAY_TABLE_SM = 'table-sm';
     public const DISPLAY_TABLE = 'table';
-    public const DISPLAY_LIST_SM = 'list-sm';
     public const DISPLAY_LIST = 'list';
     public const DISPLAY_TILES = 'tiles';
-    public const DISPLAY_TILES_SM = 'tiles-sm';
 
     #[ORM\Column(type: Types::STRING)]
     private string $validationMode = self::VALIDATE_NONE;

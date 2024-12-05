@@ -26,7 +26,7 @@ final class Version20241129000000 extends AbstractMigration
             DROP FOREIGN KEY FK_DFE5E1FEEE7B114B
         ');
         $this->addSql('
-            ALTER TABLE claro_cursusbundle_presence_status CHANGE evidence evidence JSON DEFAULT NULL
+            ALTER TABLE claro_cursusbundle_presence_status CHANGE evidences evidence JSON DEFAULT NULL
         ');
         $this->addSql('
             ALTER TABLE claro_cursusbundle_presence_status 

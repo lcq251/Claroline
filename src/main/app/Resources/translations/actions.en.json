@@ -22,14 +22,12 @@
   "deselect": "Deselect",
   "disable": "Disable",
   "download": "Download",
-  "duplicate": "Duplicate",
   "enable": "Enable",
   "edit": "Edit",
-  "edit-rights": "Manage permissions",
   "exit": "Exit",
   "expand": "Expand",
   "export-csv": "Export (.csv)",
-  "export-pdf": "Export (.pdf)",
+  "export-pdf": "Download (.pdf)",
   "export-ics": "Export (.ics)",
   "filter": "Filter",
   "finish": "Finish",
@@ -98,5 +96,6 @@
   "go_to_content": "Go to content",
   "see": "See",
   "see_all": "See all",
-  "see_more": "See more"
+  "see_more": "See more",
+  "read_more": "Continue reading"
 }

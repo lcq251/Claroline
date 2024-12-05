@@ -8,34 +8,14 @@ import {constants} from '#/main/app/content/list/grid/constants'
  * Grid view modes for the ListData component
  */
 export default {
-  [constants.DISPLAY_LIST_SM]: {
-    icon: 'fa fa-fw fa-list-ul',
-    label: trans('list_display_list_sm'),
+  [constants.DISPLAY_LIST]: {
+    icon: 'fa fa-fw fa-list',
+    label: trans('list_display_list'),
     component: GridData,
     options: {
       useCard: true, // it uses card representation for rendering data
       size: 'sm',
       orientation: 'row'
-    }
-  },
-  [constants.DISPLAY_LIST]: {
-    icon: 'fa fa-fw fa-align-justify',
-    label: trans('list_display_list'),
-    component: GridData,
-    options: {
-      useCard: true, // it uses card representation for rendering data
-      size: 'md',
-      orientation: 'row'
-    }
-  },
-  [constants.DISPLAY_TILES_SM]: {
-    icon: 'fa fa-fw fa-th',
-    label: trans('list_display_tiles_sm'),
-    component: GridData,
-    options: {
-      useCard: true, // it uses card representation for rendering data
-      size: 'md',
-      orientation: 'col'
     }
   },
   [constants.DISPLAY_TILES]: {
@@ -44,7 +24,7 @@ export default {
     component: GridData,
     options: {
       useCard: true, // it uses card representation for rendering data
-      size: 'lg',
+      size: 'md',
       orientation: 'col'
     }
   }

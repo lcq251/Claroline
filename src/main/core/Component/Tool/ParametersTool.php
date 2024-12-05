@@ -3,12 +3,13 @@
 namespace Claroline\CoreBundle\Component\Tool;
 
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Manager\LocaleManager;
 
-class ParametersTool extends AbstractTool
+class ParametersTool extends ToolComponent
 {
     public function __construct(
         private readonly ParametersSerializer $serializer,
@@ -36,7 +37,7 @@ class ParametersTool extends AbstractTool
         return AdministrationContext::getName() === $context;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $parameters = $this->serializer->serialize();
 

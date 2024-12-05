@@ -119,7 +119,7 @@ const MessageInboxComponent = (props) =>
           }
         ]}
         card={MessageCard}
-        display={{current: listConst.DISPLAY_LIST_SM}}
+        display={{current: listConst.DISPLAY_LIST}}
       />
     </PageListSection>
   </ToolPage>

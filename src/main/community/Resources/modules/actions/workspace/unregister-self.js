@@ -25,6 +25,7 @@ export default (workspaces, refresher, path, currentUser) => {
       message: transChoice('self_unregister_confirm_message', processable.length, {count: processable.length}, 'workspace'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
+        id: item.id,
         name: item.name
       }))
     },

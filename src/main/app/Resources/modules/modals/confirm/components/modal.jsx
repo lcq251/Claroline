@@ -8,8 +8,8 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
-import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Html} from '#/main/app/components/html'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 // TODO : integrate DataMicro (there are problems with text ellipsis)
 
@@ -27,15 +27,8 @@ const ConfirmModal = (props) =>
       {props.items && 1 < props.items.length &&
         <ul className="list-group list-group-striped mt-4">
           {props.items.map((item) =>
-            <li className="list-group-item d-flex align-items-center">
-              <Thumbnail
-                className="me-3"
-                size="xs"
-                thumbnail={item.thumbnail}
-                name={item.name}
-                square={true}
-              />
-              <span className="text-truncate">{item.name}</span>
+            <li key={item.id} className="list-group-item">
+              <DataMicro object={item} />
             </li>
           )}
         </ul>
@@ -92,6 +85,7 @@ ConfirmModal.propTypes = {
   additional: T.string,
   items: T.arrayOf(T.shape({
     thumbnail: T.string,
+    id: T.string.isRequired,
     name: T.string.isRequired
   })),
   cancel: T.oneOfType([T.bool, T.string]),

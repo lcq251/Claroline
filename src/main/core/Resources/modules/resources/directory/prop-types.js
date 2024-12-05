@@ -13,7 +13,7 @@ const Directory = {
     list: Object.assign({}, ListParameters.defaultProps, {
       count: true,
       actions: true,
-      display: listConstants.DISPLAY_TILES_SM,
+      display: listConstants.DISPLAY_TILES,
       sorting: 'name',
       availableSort: [
         'name',

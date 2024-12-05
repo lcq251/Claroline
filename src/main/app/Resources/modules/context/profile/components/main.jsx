@@ -32,7 +32,7 @@ const ContextProfile = (props) => {
       <PageHeading
         size="md"
         title={props.currentUser.name}
-        icon={<UserAvatar user={props.currentUser} size="xl" />}
+        icon={<UserAvatar user={props.currentUser} size="lg" />}
         primaryAction="edit"
         actions={[
           {

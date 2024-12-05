@@ -21,23 +21,26 @@ import {asset} from '#/main/app/config'
  */
 const Thumbnail = (props) => {
   let styles = {}
-  if (props.thumbnail) {
-    styles = {
-      backgroundImage: `url(${asset(props.thumbnail)})`,
-      backgroundColor: 'transparent'
-    }
-  } else if (props.color) {
-    styles = {
-      color: props.color
+  if (props.loaded) {
+    if (props.thumbnail) {
+      styles = {
+        backgroundImage: `url(${asset(props.thumbnail)})`,
+        backgroundColor: 'transparent'
+      }
+    } else if (props.color) {
+      styles = {
+        color: props.color
+      }
     }
   }
 
   return (
     <div
       style={!isEmpty(styles) ? styles : undefined}
-      className={classes('thumbnail', props.className, {
-        [`thumbnail-${props.size} ratio ratio-thumbnail`]: !props.square,
-        [`thumbnail-icon thumbnail-icon-${props.size}`]: props.square
+      className={classes('thumbnail ratio', props.className, {
+        'placeholder': !props.loaded,
+        [`thumbnail-${props.size} ratio-thumbnail`]: !props.square,
+        [`thumbnail-icon thumbnail-icon-${props.size} ratio-1x1`]: props.square
       })}
       aria-hidden={true}
     >
@@ -59,12 +62,14 @@ Thumbnail.propTypes = {
   name: T.string,
   color: T.string,
   children: T.node,
-  square: T.bool
+  square: T.bool,
+  loaded: T.bool
 }
 
 Thumbnail.defaultProps = {
   size: 'md',
-  square: false
+  square: false,
+  loaded: true
 }
 
 export {

@@ -37,7 +37,7 @@ const EventPage = (props) => {
         <PageHeading
           size="md"
           icon={
-            <CalendarIcon square={true} size="xl" date={props.event.date} />
+            <CalendarIcon square={true} size="lg" date={props.event.date} />
           }
           title={get(props.event, 'name', trans('loading'))}
           actions={[

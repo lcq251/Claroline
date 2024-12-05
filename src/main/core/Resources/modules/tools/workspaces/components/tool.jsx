@@ -80,7 +80,7 @@ const WorkspacesTool = (props) => {
                   name="workspaces.registered"
                   refresher={refresher}
                   display={{
-                    current: listConst.DISPLAY_TILES_SM
+                    current: listConst.DISPLAY_TILES
                   }}
                   addAction={{
                     name: 'add',
@@ -106,7 +106,7 @@ const WorkspacesTool = (props) => {
                   name="workspaces.public"
                   refresher={refresher}
                   display={{
-                    current: listConst.DISPLAY_TILES_SM
+                    current: listConst.DISPLAY_TILES
                   }}
                   addAction={{
                     name: 'add',

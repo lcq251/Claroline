@@ -2,10 +2,10 @@
 
 namespace Claroline\ExampleBundle\Component\Tool;
 
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 
-class ExampleTool extends AbstractTool
+class ExampleTool extends ToolComponent
 {
     public static function getName(): string
     {

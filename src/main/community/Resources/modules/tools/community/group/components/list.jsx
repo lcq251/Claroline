@@ -62,6 +62,7 @@ const GroupList = props =>
               message: transChoice('group_unregister_confirm_message', rows.length, {count: '<b class="fw-bold">'+rows.length+'</b>'}, 'community'),
               items:  rows.map(item => ({
                 thumbnail: item.thumbnail,
+                id: item.id,
                 name: item.name
               }))
             },

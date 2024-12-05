@@ -16,6 +16,7 @@ export default (courses, refresher) => {
       message: transChoice('copy_course_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'actions'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
+        id: item.id,
         name: item.name
       }))
     },

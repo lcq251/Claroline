@@ -3,13 +3,14 @@
 namespace Claroline\CoreBundle\Component\Tool;
 
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class WorkspacesTool extends AbstractTool
+class WorkspacesTool extends ToolComponent
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization
@@ -34,7 +35,7 @@ class WorkspacesTool extends AbstractTool
         ]);
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         return [
             'creatable' => $this->authorization->isGranted('CREATE', new Workspace()),

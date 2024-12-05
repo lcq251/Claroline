@@ -24,18 +24,9 @@ class AnnouncementFinder extends AbstractFinder
 
     public function configureQueryBuilder(QueryBuilder $qb, array $searches = [], array $sortBy = null, ?int $page = 0, ?int $limit = -1): QueryBuilder
     {
-        $qb->leftJoin('obj.aggregate', 'a');
-        $qb->leftJoin('a.resourceNode', 'node');
-
         $workspaceJoin = false;
         foreach ($searches as $filterName => $filterValue) {
             switch ($filterName) {
-                case 'published':
-                    $qb->andWhere('node.active = :active');
-                    $qb->andWhere('node.published = :published');
-                    $qb->setParameter('active', $filterValue);
-                    $qb->setParameter('published', $filterValue);
-                    break;
                 case 'creator':
                     $qb->leftJoin('obj.creator', 'creator');
                     $qb->andWhere("creator.username LIKE :{$filterName}");
@@ -43,7 +34,7 @@ class AnnouncementFinder extends AbstractFinder
                     break;
                 case 'workspace':
                     if (!$workspaceJoin) {
-                        $qb->join('node.workspace', 'w');
+                        $qb->join('obj.workspace', 'w');
 
                         $workspaceJoin = true;
                     }
@@ -53,7 +44,7 @@ class AnnouncementFinder extends AbstractFinder
                     break;
                 case 'archived':
                     if (!$workspaceJoin) {
-                        $qb->join('node.workspace', 'w');
+                        $qb->join('obj.workspace', 'w');
 
                         $workspaceJoin = true;
                     }
@@ -85,10 +76,8 @@ class AnnouncementFinder extends AbstractFinder
                     }
                     break;
                 case 'roles':
-                    $qb->leftJoin('node.rights', 'rights');
-                    $qb->join('rights.role', 'rightsr');
-                    $qb->andWhere('rightsr.name IN (:roles)');
-                    $qb->andWhere('BIT_AND(rights.mask, 1) = 1');
+                    $qb->leftJoin('obj.roles', 'r');
+                    $qb->andWhere('r IS NULL OR r.name IN (:roles)');
                     $qb->setParameter('roles', $filterValue);
                     break;
                 default:

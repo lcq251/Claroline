@@ -21,7 +21,7 @@ const ContentMenuItem = (props) =>
     <Button
       {...props.action}
       id={props.id}
-      className="list-group-item list-group-item-action d-flex gap-3 align-items-center"
+      className="list-group-item list-group-item-action d-flex gap-3 align-items-center focus-ring"
       autoFocus={props.autoFocus}
       icon={props.icon &&
         <>

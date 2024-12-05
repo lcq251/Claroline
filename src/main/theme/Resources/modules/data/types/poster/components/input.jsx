@@ -111,7 +111,7 @@ class PosterInputComponent extends PureComponent {
         }
 
         {(!this.props.value || !this.state.file) &&
-          <div className="poster-placeholder bg-body-tertiary rounded-2 ratio ratio-poster">
+          <div className="poster-placeholder bg-body-tertiary rounded-3 ratio ratio-poster">
             <div role="presentation" className="p-3 d-flex flex-column align-items-center justify-content-center gap-3 ">
               <span className="fa fa-camera fs-1 text-secondary" />
 

@@ -13,7 +13,6 @@ namespace Claroline\CoreBundle\Event\Tool;
 
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\CoreBundle\Entity\User;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OpenToolEvent extends AbstractToolEvent
 {
@@ -48,32 +47,5 @@ class OpenToolEvent extends AbstractToolEvent
     public function getResponse(): array
     {
         return $this->data;
-    }
-
-    /**
-     * Sets data to return in the api.
-     * NB. It MUST contain serialized structures.
-     *
-     * @deprecated use addResponse(array $responseData)
-     */
-    public function setData(array $data): void
-    {
-        $this->addResponse($data);
-    }
-
-    /**
-     * @deprecated use getResponse()
-     */
-    public function getData(): array
-    {
-        return $this->getResponse();
-    }
-
-    /**
-     * @deprecated nope
-     */
-    public function getMessage(TranslatorInterface $translator): string
-    {
-        return $translator->trans('toolOpen', ['userName' => $this->user->getUsername(), 'context' => $this->getContext(), 'toolName' => $this->getToolName()], 'tools');
     }
 }

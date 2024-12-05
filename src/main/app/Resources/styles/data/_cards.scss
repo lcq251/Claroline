@@ -5,17 +5,6 @@
 @use "sass:math";
 
 // mixins
-@mixin data-card-size-variant($icon-size, $nbLines : 3) {
-    .data-card-description {
-        height: $line-height-base * $data-card-content-font * $nbLines;
-        // display the '...' if the text is truncated on browsers which support it
-        display: -webkit-box;
-        -webkit-line-clamp: $nbLines; /* number of lines to show */
-        line-clamp: $nbLines;
-        -webkit-box-orient: vertical;
-    }
-}
-
 @mixin data-card-vertical-variant() {
     flex-direction: column;
 
@@ -39,6 +28,19 @@
         position: absolute;
         top: 0;
         right: 0;
+    }
+
+    .data-card-content {
+        padding: $data-card-spacer-y*1.5 $data-card-spacer-x;
+    }
+
+    .data-card-description {
+        height: $line-height-base * $data-card-content-font * 3;
+        // display the '...' if the text is truncated on browsers which support it
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 }
 
@@ -158,11 +160,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: $card-title-spacer-y;
-
-    /*> small {
-        margin-top: 5px;
-        display: block;
-    }*/
 }
 
 .data-card-content {
@@ -191,22 +188,6 @@
 
 
 // -
-// Sizing variants
-// ---
-
-.data-card-xs, // for retro compatibility
-.data-card-sm {
-    @include data-card-size-variant(map-get($icon-sizes, sm), 1);
-}
-.data-card-md {
-    @include data-card-size-variant(map-get($icon-sizes, md), 3);
-}
-.data-card-lg {
-    @include data-card-size-variant(map-get($icon-sizes, lg), 4);
-}
-
-
-// -
 // Orientation variants
 // ---
 
@@ -214,26 +195,8 @@
     @include data-card-vertical-variant();
 }
 
-// XS screens :
-@media (max-width: map-get($grid-breakpoints, 'sm')) {
-    .data-card-row {
-        &.data-card-xs,
-        &.data-card-sm {
-            @include data-card-horizontal-variant();
-        }
-
-        // even for row card, we switch on vertical display for better rendering
-        &.data-card-lg {
-            @include data-card-vertical-variant();
-        }
-    }
-}
-
-// SM / MD / LG screens :
-@media (min-width: map-get($grid-breakpoints, 'sm')) {
-    .data-card-row {
-        @include data-card-horizontal-variant();
-    }
+.data-card-row {
+    @include data-card-horizontal-variant();
 }
 
 @if $enable-dark-mode {

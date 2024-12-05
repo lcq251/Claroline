@@ -3,14 +3,15 @@
 namespace Claroline\AgendaBundle\Component\Tool;
 
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AgendaTool extends AbstractTool
+class AgendaTool extends ToolComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -36,7 +37,7 @@ class AgendaTool extends AbstractTool
         ]);
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();
 

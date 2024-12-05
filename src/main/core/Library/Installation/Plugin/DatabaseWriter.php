@@ -33,8 +33,6 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * This class is used to save/delete a plugin and its possible dependencies (like
  * custom resource types) in the database.
- *
- * @todo break me into multiple writers (one for each config section).
  */
 class DatabaseWriter implements LoggerAwareInterface
 {

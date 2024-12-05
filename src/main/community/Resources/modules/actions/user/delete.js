@@ -23,6 +23,7 @@ export default (users, refresher) => {
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
         thumbnail: item.picture,
+        id: item.id,
         name: item.name
       }))
     },

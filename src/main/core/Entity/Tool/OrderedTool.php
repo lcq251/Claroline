@@ -11,8 +11,6 @@
 
 namespace Claroline\CoreBundle\Entity\Tool;
 
-use Claroline\CoreBundle\Repository\Tool\OrderedToolRepository;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Hidden;
 use Claroline\AppBundle\Entity\Display\Order;
@@ -21,8 +19,10 @@ use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\HasContext;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\CoreBundle\Repository\Tool\OrderedToolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_ordered_tool')]
@@ -44,12 +44,16 @@ class OrderedTool implements CrudEntityInterface
 
     /**
      * Display tool icon when the tool is rendered.
+     *
+     * @deprecated
      */
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
     private bool $showIcon = false;
 
     /**
      * Display in fullscreen when the tool is opened.
+     *
+     * @deprecated
      */
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     private bool $fullscreen = false;
@@ -91,21 +95,33 @@ class OrderedTool implements CrudEntityInterface
         $this->name = $name;
     }
 
+    /**
+     * @deprecated
+     */
     public function getShowIcon(): bool
     {
         return $this->showIcon;
     }
 
+    /**
+     * @deprecated
+     */
     public function setShowIcon(bool $showIcon): void
     {
         $this->showIcon = $showIcon;
     }
 
+    /**
+     * @deprecated
+     */
     public function getFullscreen(): bool
     {
         return $this->fullscreen;
     }
 
+    /**
+     * @deprecated
+     */
     public function setFullscreen(bool $fullscreen): void
     {
         $this->fullscreen = $fullscreen;

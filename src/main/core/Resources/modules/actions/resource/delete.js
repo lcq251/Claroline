@@ -28,6 +28,7 @@ export default (resourceNodes, nodesRefresher) => {
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
+        id: item.id,
         name: item.name
       }))
     },

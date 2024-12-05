@@ -4,11 +4,11 @@ namespace Claroline\MessageBundle\Component\Tool;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\MessageBundle\Entity\Message;
 
-class MessagesTool extends AbstractTool
+class MessagesTool extends ToolComponent
 {
     public function __construct(
         private readonly Crud $crud

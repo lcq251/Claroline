@@ -20,21 +20,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class AnnouncementSource
 {
-    /** @var FinderProvider */
-    private $finder;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
     public function __construct(
-      FinderProvider $finder,
-      TokenStorageInterface $tokenStorage
+        private readonly FinderProvider $finder,
+        private readonly TokenStorageInterface $tokenStorage
     ) {
-        $this->finder = $finder;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions() ? $event->getOptions() : [];
         $options['hiddenFilters']['visible'] = true;

@@ -112,6 +112,7 @@ const DataCard = props => {
           size={props.size}
           square={asIcon}
           className={classes({
+            'rounded-circle': asIcon,
             'my-2': 'xs' === props.size
           })}
         >

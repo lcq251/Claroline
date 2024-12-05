@@ -114,7 +114,7 @@ const BadgeDetailsComponent = (props) => {
             ]}
             card={AssertionUserCard}
             display={{
-              current: listConst.DISPLAY_LIST_SM
+              current: listConst.DISPLAY_LIST
             }}
           />
         </PageSection>

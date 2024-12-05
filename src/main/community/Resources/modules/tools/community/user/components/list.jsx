@@ -73,6 +73,7 @@ const UserList = props =>
             message: transChoice('unregister_users_confirm_message', rows.length, {count: rows.length}),
             items:  rows.filter(row => -1 !== row.roles.findIndex(r => r.context !== 'group' && -1 !== r.name.indexOf(get(props.contextData, 'id')))).map(item => ({
               thumbnail: item.picture,
+              id: item.id,
               name: item.name
             })),
             additional: trans('unregister_users_confirm_additional')

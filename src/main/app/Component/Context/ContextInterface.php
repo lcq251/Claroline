@@ -20,6 +20,9 @@ interface ContextInterface extends ComponentInterface
 
     public function isImpersonated(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool;
 
+    /**
+     * Gets roles owned by the authenticated user in the current context.
+     */
     public function getRoles(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array;
 
     public function getAccessErrors(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array;

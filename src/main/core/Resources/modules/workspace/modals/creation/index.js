@@ -1,6 +1,6 @@
 /**
  * Workspace creation modal.
- * Displays a modal to alert the user.
+ * Displays a modal to create a new workspace.
  */
 
 import {registry} from '#/main/app/modals/registry'

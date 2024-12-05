@@ -73,7 +73,7 @@ class ContextController
             $contextTools = $contextHandler->getTools($contextSubject);
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
-                'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal ?
+                'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
 
                 // 'managed' => $isManager,
                 'impersonated' => $isImpersonated,

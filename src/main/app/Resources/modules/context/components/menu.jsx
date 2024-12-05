@@ -13,6 +13,8 @@ import {ContextUser} from '#/main/app/context/containers/user'
 import {ContextNav} from '#/main/app/context/containers/nav'
 import {getActions} from '#/main/app/context/utils'
 import {route} from '#/main/app/context/routing'
+import {Poster} from '#/main/app/components/poster'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 class ContextMenu extends Component
 {
@@ -69,10 +71,10 @@ class ContextMenu extends Component
           label: trans(tool.name, {}, 'tools'),
           target: this.props.path + '/' + tool.name,
           status: tool.status,
-          subscript: (tool.status || 0 === tool.status) ? {
+          subscript: tool.status ? {
             type: 'label',
             value: tool.status,
-            status: 0 === tool.status ? 'secondary' : 'primary'
+            status: 'primary'
           } : undefined
         }))
     }
@@ -115,14 +117,19 @@ class ContextMenu extends Component
               </header>
             }
 
-            <ContextUser poster={get(this.props.contextData, 'poster')}/>
+            {(this.props.contextData && get(this.props.contextData, 'poster')) &&
+              <Thumbnail
+                thumbnail={get(this.props.contextData, 'poster')}
+                name={get(this.props.contextData, 'name')}
+              />
+            }
 
             {this.props.children && Children.map(this.props.children, child => child && cloneElement(child, {
               autoClose: this.autoClose
             }))}
 
             {1 < toolLinks.length &&
-              <ul className="app-menu-items list-unstyled">
+              <ul className="app-menu-items list-unstyled my-3 mb-auto">
                 {toolLinks.map(toolLink =>
                   <li key={toolLink.name}>
                     <Button
@@ -134,6 +141,8 @@ class ContextMenu extends Component
                 )}
               </ul>
             }
+
+            <ContextUser />
           </section>
         </aside>
         <div className="app-menu-backdrop" role="presentation" onClick={this.props.close} aria-hidden={true} />

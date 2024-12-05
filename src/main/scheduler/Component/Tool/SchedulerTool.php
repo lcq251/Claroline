@@ -2,11 +2,10 @@
 
 namespace Claroline\SchedulerBundle\Component\Tool;
 
-use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 
-class SchedulerTool extends AbstractTool
+class SchedulerTool extends ToolComponent
 {
     public static function getName(): string
     {

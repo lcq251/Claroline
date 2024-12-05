@@ -4,7 +4,7 @@ namespace Claroline\AnnouncementBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
 
-class AnnouncementEmail extends EmailComponent
+final class AnnouncementEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -21,6 +21,11 @@ class AnnouncementEmail extends EmailComponent
             'workspace_code',
             'workspace_url',
             'publication_datetime',
+            'publication_datetime_utc',
+            'publication_date',
+            'publication_date_utc',
+            'publication_time',
+            'publication_time_utc',
         ];
     }
 }

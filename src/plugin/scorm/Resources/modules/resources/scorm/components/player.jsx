@@ -15,7 +15,6 @@ import {Scorm as ScormTypes, Sco as ScoTypes} from '#/plugin/scorm/resources/sco
 import {getFirstOpenableSco} from '#/plugin/scorm/resources/scorm/utils'
 
 const Player = (props) => {
-  console.log('coucou')
   if (isEmpty(props.scos)) {
     return (
       <ResourceOverview>

@@ -2,7 +2,6 @@
 
 namespace Claroline\CoreBundle\Event\Tool;
 
-use Claroline\AppBundle\API\Utils\ArrayUtils;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 
@@ -33,7 +32,7 @@ class ExportToolEvent extends AbstractToolEvent
         return $this->data;
     }
 
-    public function addFile($path, $file): void
+    public function addFile(string $path, string $file): void
     {
         $this->fileBag->add($path, $file);
     }
@@ -41,10 +40,5 @@ class ExportToolEvent extends AbstractToolEvent
     public function getFileBag(): FileBag
     {
         return $this->fileBag;
-    }
-
-    public function overwrite($key, $value): void
-    {
-        ArrayUtils::set($this->data, $key, $value);
     }
 }

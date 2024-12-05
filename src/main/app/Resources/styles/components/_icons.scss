@@ -32,11 +32,17 @@
         text-align: center;
         position: relative;
     }
+
+    .fa {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .thumbnail-icon {
-    border-radius: 50% !important;
-    overflow: hidden;
+    border-radius: 50% /*!important*/;
+    // overflow: hidden;
     flex-shrink: 0 !important;
 }
 

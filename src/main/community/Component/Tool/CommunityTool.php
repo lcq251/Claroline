@@ -9,7 +9,7 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\ArrayUtils;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\Team;
 use Claroline\CommunityBundle\Entity\UserProfile;
@@ -17,6 +17,7 @@ use Claroline\CommunityBundle\Manager\TeamManager;
 use Claroline\CoreBundle\API\Serializer\ParametersSerializer;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
@@ -25,7 +26,7 @@ use Claroline\CoreBundle\Manager\UserManager;
 use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CommunityTool extends AbstractTool
+class CommunityTool extends ToolComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -63,7 +64,7 @@ class CommunityTool extends AbstractTool
         return false;
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $userTeams = [];
         if ($this->tokenStorage->getToken()?->getUser() instanceof User && $context === WorkspaceContext::getName()) {
@@ -82,7 +83,7 @@ class CommunityTool extends AbstractTool
         ];
     }
 
-    public function configure(string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
+    public function configure(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
     {
         $this->om->startFlushSuite();
 

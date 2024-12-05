@@ -1,0 +1,58 @@
+import {connect} from 'react-redux'
+import get from 'lodash/get'
+import merge from 'lodash/merge'
+
+import {param} from '#/main/app/config'
+import {withReducer} from '#/main/app/store/components/withReducer'
+import {actions as listActions} from '#/main/app/content/list/store/actions'
+import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
+import {selectors as toolSelectors} from '#/main/core/tool'
+
+import {SendingModal as SendingModalComponent} from '#/plugin/announcement/tools/announcement/modals/sending/components/modal'
+import {actions, reducer, selectors} from '#/plugin/announcement/tools/announcement/modals/sending/store'
+
+const SendingModal = withReducer(selectors.STORE_NAME, reducer)(
+  connect(
+    (state) => ({
+      schedulerEnabled: param('schedulerEnabled'),
+      formData: formSelectors.data(formSelectors.form(state, selectors.STORE_NAME+'.form')),
+      workspace: toolSelectors.contextData(state)
+    }),
+    (dispatch) => ({
+      send(announce) {
+        dispatch(actions.sendAnnounce(announce))
+      },
+      update(prop, value) {
+        dispatch(formActions.updateProp(selectors.STORE_NAME+'.form', prop, value))
+      },
+      reset(announcement, workspaceRoles) {
+        let data = merge({}, announcement)
+
+        if (!get(announcement, 'meta.notifyUsers')) {
+          data = merge(data, {
+            meta: {notifyUsers: 1}
+          })
+        }
+
+        if (!announcement.roles || 0 === announcement.roles.length) {
+          // by default select all ws roles for sending
+          data = merge({}, data, {
+            roles: workspaceRoles
+          })
+        }
+
+        dispatch(listActions.addFilter(selectors.STORE_NAME+'.receivers', 'roles', data.roles.map(role => role.id)))
+        dispatch(formActions.resetForm(selectors.STORE_NAME+'.form', data))
+        dispatch(listActions.invalidateData(selectors.STORE_NAME+'.receivers'))
+      },
+      updateReceivers(roleIds) {
+        dispatch(listActions.addFilter(selectors.STORE_NAME+'.receivers', 'roles', roleIds))
+        dispatch(listActions.invalidateData(selectors.STORE_NAME+'.receivers'))
+      }
+    })
+  )(SendingModalComponent)
+)
+
+export {
+  SendingModal
+}

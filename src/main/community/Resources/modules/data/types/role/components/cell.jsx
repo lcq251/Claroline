@@ -8,7 +8,6 @@ import {Badge} from '#/main/app/components/badge'
 import {Role as RoleTypes} from '#/main/community/role/prop-types'
 
 const RoleCell = (props) => {
-  console.log(props.multiple)
   if (isEmpty(props.data)) {
     return '-'
   }

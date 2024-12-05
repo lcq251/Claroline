@@ -71,5 +71,6 @@ PlaceholderText.defaultProps = {
 
 export {
   PlaceholderTitle,
-  PlaceholderText
+  PlaceholderText,
+  PlaceholderParagraph
 }

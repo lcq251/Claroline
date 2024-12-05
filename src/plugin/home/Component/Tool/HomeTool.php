@@ -6,17 +6,18 @@ use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Manager\HomeManager;
 
-class HomeTool extends AbstractTool
+class HomeTool extends ToolComponent
 {
     public function __construct(
         private readonly ObjectManager $om,
@@ -45,7 +46,7 @@ class HomeTool extends AbstractTool
         ]);
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $homeTabs = $this->om->getRepository(HomeTab::class)->findBy([
             'contextName' => $context,

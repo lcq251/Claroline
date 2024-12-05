@@ -190,7 +190,7 @@ const Events = (props) =>
       }
     ].concat(props.customDefinition)}
     display={{
-      current: listConst.DISPLAY_LIST_SM
+      current: listConst.DISPLAY_LIST
     }}
 
     {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'invalidate')}

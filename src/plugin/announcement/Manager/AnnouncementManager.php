@@ -106,26 +106,17 @@ class AnnouncementManager
      */
     private function getMessage(Announcement $announce, array $roles = []): array
     {
-        $resourceNode = $announce->getAggregate()->getResourceNode();
-
         $users = $this->finder->fetch(User::class, [
             'roles' => array_map(function (Role $role) {
                 return $role->getUuid();
             }, $roles),
         ]);
 
-        $object = !empty($announce->getTitle()) ? $announce->getTitle() : $announce->getAggregate()->getName();
-        if (empty($announce->getTitle()) && !empty($announce->getVisibleFrom())) {
-            $object .= ' ['.$announce->getVisibleFrom()->format('Y-m-d H:i').']';
-        }
-
-        $content = $announce->getContent().'<br>['.$resourceNode->getWorkspace()->getCode().'] '.$resourceNode->getWorkspace()->getName();
-
         return [
             'sender' => $announce->getCreator(),
             'receivers' => $users,
-            'object' => $object,
-            'content' => $content,
+            'object' => $announce->getTitle(),
+            'content' => $announce->getContent(),
         ];
     }
 }

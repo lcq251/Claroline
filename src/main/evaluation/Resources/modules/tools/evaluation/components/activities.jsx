@@ -48,7 +48,7 @@ const EvaluationActivities = (props) =>
         }}
         actions={undefined}
         display={{
-          current: listConst.DISPLAY_LIST_SM
+          current: listConst.DISPLAY_LIST
         }}
       />
     </PageListSection>

@@ -115,8 +115,10 @@ final class ToolProvider extends AbstractComponentProvider
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
 
+        $orderedTool = $this->getTool($toolName, $context, $contextSubject);
+
         // call handler open to grab custom data or execute side effects
-        $openResponse = $toolHandler->open($context, $contextSubject) ?? [];
+        $openResponse = $toolHandler->open($orderedTool, $context, $contextSubject) ?? [];
 
         // dispatch open event to let the app know a tool has been opened
         // this is useful for side effects or to let others plugins integrates with the tool (e.g. IntegrationTool is extensible by plugins).
@@ -131,7 +133,9 @@ final class ToolProvider extends AbstractComponentProvider
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
 
-        $configureResponse = $toolHandler->configure($context, $contextSubject, $data) ?? [];
+        $orderedTool = $this->getTool($toolName, $context, $contextSubject);
+
+        $configureResponse = $toolHandler->configure($orderedTool, $context, $contextSubject, $data) ?? [];
 
         $configureEvent = new ConfigureToolEvent($toolName, $context, $contextSubject, $data);
         $this->eventDispatcher->dispatch($configureEvent, ToolEvents::CONFIGURE);

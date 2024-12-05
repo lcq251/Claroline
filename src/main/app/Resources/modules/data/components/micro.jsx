@@ -5,24 +5,30 @@ import classes from 'classnames'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const DataMicro = (props) =>
-  <div className={classes('d-flex flex-direction-row gap-3 align-items-center text-nowrap text-truncate', props.className)} role="presentation">
+  <div className={classes('d-flex flex-row gap-3 align-items-center text-nowrap text-truncate', props.className)} role="presentation">
     <Thumbnail
+      loaded={props.loaded}
       thumbnail={props.object.thumbnail}
       name={props.object.name}
       size="xs"
       square={true}
       color={props.color}
     />
-    {props.object.name}
+    <span className={classes('text-truncate', !props.loaded && 'placeholder rounded-1 w-25')} role="presentation">{props.object.name}</span>
   </div>
 
 DataMicro.propTypes = {
+  loaded: T.bool,
   className: T.string,
   color: T.string,
   object: T.shape({
     thumbnail: T.string,
     name: T.string.isRequired
   }).isRequired
+}
+
+DataMicro.defaultProps = {
+  loaded: true
 }
 
 export {

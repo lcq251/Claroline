@@ -4,6 +4,7 @@ namespace Claroline\AnnouncementBundle\Serializer;
 
 use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\RoleSerializer;
@@ -12,7 +13,6 @@ use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
@@ -49,14 +49,12 @@ class AnnouncementSerializer
             'title' => $announce->getTitle(),
             'content' => $announce->getContent(),
             'poster' => $announce->getPoster(),
-            'workspace' => $announce->getAggregate()->getResourceNode()->getWorkspace() ?
-                $this->wsSerializer->serialize($announce->getAggregate()->getResourceNode()->getWorkspace(), [Options::SERIALIZE_MINIMAL]) :
+            'workspace' => $announce->getWorkspace() ?
+                $this->wsSerializer->serialize($announce->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]) :
                 null, // used in the announcement DataSource
             'meta' => [
-                // required to be able to open the announcement from the data source
-                'resource' => $this->nodeSerializer->serialize($announce->getAggregate()->getResourceNode(), [Options::SERIALIZE_MINIMAL]),
                 'created' => DateNormalizer::normalize($announce->getCreationDate()),
-                'creator' => $announce->getCreator() ? $this->userSerializer->serialize($announce->getCreator(), [Options::SERIALIZE_MINIMAL]) : null,
+                'creator' => $announce->getCreator() ? $this->userSerializer->serialize($announce->getCreator(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
                 'publishedAt' => DateNormalizer::normalize($announce->getPublicationDate()),
                 'author' => $announce->getAnnouncer(),
                 'notifyUsers' => !empty($announce->getTask()) ? 2 : 0,
@@ -70,7 +68,7 @@ class AnnouncementSerializer
                 ),
             ],
             'roles' => array_map(function (Role $role) {
-                return $this->roleSerializer->serialize($role, [Options::SERIALIZE_MINIMAL]);
+                return $this->roleSerializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $announce->getRoles()),
             'tags' => $this->serializeTags($announce),
         ];

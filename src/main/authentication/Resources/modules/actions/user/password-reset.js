@@ -18,6 +18,7 @@ export default (users) => {
       button: trans('reset', {}, 'actions'),
       items:  processable.map(item => ({
         thumbnail: item.picture,
+        id: item.id,
         name: item.name
       }))
     },

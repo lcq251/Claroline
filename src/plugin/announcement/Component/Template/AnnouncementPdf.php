@@ -4,7 +4,7 @@ namespace Claroline\AnnouncementBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
 
-class AnnouncementPdf extends PdfComponent
+final class AnnouncementPdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -21,6 +21,11 @@ class AnnouncementPdf extends PdfComponent
             'workspace_code',
             'workspace_url',
             'publication_datetime',
+            'publication_datetime_utc',
+            'publication_date',
+            'publication_date_utc',
+            'publication_time',
+            'publication_time_utc',
         ];
     }
 }

@@ -25,6 +25,7 @@ export default (resourceNodes, nodesRefresher) => {
       message: transChoice('resources_restore_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'resource'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
+        id: item.id,
         name: item.name
       })),
       dangerous: false

@@ -22,7 +22,7 @@ const ProfileWorkspaces = (props) => {
       name={listName}
       refresher={refresher}
       display={{
-        current: listConst.DISPLAY_TILES_SM
+        current: listConst.DISPLAY_TILES
       }}
       /*addAction={{
         name: 'add',

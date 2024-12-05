@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {PropTypes as T} from 'prop-types'
 import {useDispatch} from 'react-redux'
 
 import {PlaceholderText} from '#/main/app/components/placeholder'

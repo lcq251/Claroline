@@ -20,6 +20,7 @@ trait RemovePluginTrait
 
         if ($plugin) {
             $this->om->remove($plugin);
+            $this->om->flush();
         }
     }
 }

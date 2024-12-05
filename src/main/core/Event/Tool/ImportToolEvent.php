@@ -54,7 +54,7 @@ class ImportToolEvent extends AbstractToolEvent
         return $this->entities;
     }
 
-    public function getCreatedEntity(string $oldUuid): mixed
+    public function getCreatedEntity(string $oldUuid): ?object
     {
         if (!empty($this->entities[$oldUuid])) {
             return $this->entities[$oldUuid];
@@ -63,7 +63,7 @@ class ImportToolEvent extends AbstractToolEvent
         return null;
     }
 
-    public function addCreatedEntity(string $oldUuid, $entity): void
+    public function addCreatedEntity(string $oldUuid, object $entity): void
     {
         $this->entities[$oldUuid] = $entity;
     }

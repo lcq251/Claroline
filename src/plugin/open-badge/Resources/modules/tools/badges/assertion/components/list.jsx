@@ -60,7 +60,7 @@ const AssertionsList = (props) =>
           }
         ]}
         card={AssertionBadgeCard}
-        display={{current: listConstants.DISPLAY_LIST_SM}}
+        display={{current: listConstants.DISPLAY_LIST}}
       />
     </PageListSection>
   </ToolPage>

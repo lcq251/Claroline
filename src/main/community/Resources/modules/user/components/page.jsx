@@ -39,7 +39,7 @@ const User = (props) =>
       <PageHeading
         size="md"
         icon={
-          <UserAvatar user={props.user} size="xl" />
+          <UserAvatar user={props.user} size="lg" />
         }
         title={get(props.user, 'name', trans('loading'))}
         primaryAction="send-message"
