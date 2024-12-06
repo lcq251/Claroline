@@ -43,7 +43,7 @@ Tools need to be registered in the symfony service container with a `claroline.c
 ```yml
 services:
     Vendor\PluginNameBundle\Component\Tool\MyToolTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
 ```
 
@@ -53,12 +53,13 @@ services:
 namespace Vendor\PluginNameBundle\Component\Tool;
 
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Component\Tool\AbstractTool;
+use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\CoreBundle\Component\Context\AccountContext;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 
 class MyToolTool extends AbstractTool
 {
@@ -70,7 +71,6 @@ class MyToolTool extends AbstractTool
     public function supportsContext(string $context): bool
     {
         return in_array($context, [
-            AccountContext::getName(),
             AdministrationContext::getName(),
             DesktopContext::getName(),
             PublicContext::getName(),
@@ -78,12 +78,12 @@ class MyToolTool extends AbstractTool
         ])
     }
 
-    public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         return [];
     }
 
-    public function configure(string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
+    public function configure(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
     {
         return [];
     }
