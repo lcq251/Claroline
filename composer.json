@@ -113,7 +113,6 @@
             "Claroline\\PrivacyBundle\\": "src/main/privacy",
             "Claroline\\SchedulerBundle\\": "src/main/scheduler",
             "Claroline\\ScormBundle\\": "src/plugin/scorm",
-            "Claroline\\SlideshowBundle\\": "src/plugin/slideshow",
             "Claroline\\TagBundle\\": "src/plugin/tag",
             "Claroline\\TemplateBundle\\": "src/main/template",
             "Claroline\\TextPlayerBundle\\": "src/plugin/text-player",

@@ -1,6 +1,0 @@
-services:
-    Claroline\SlideshowBundle\Listener\Resource\SlideshowListener:
-        tags: ['claroline.component.resource', 'kernel.event_subscriber']
-        arguments:
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\CoreBundle\Manager\FileManager'

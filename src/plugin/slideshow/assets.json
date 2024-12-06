@@ -1,7 +1,0 @@
-{
-  "styles": {
-    "entry": {
-      "slideshow-resource": "resources/slideshow.scss"
-    }
-  }
-}

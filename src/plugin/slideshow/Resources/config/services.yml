@@ -1,3 +1,0 @@
-imports:
-    - { resource: services/serializer.yml }
-    - { resource: services/listener.yml }

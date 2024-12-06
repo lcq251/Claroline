@@ -33,7 +33,6 @@ Icap\LessonBundle\IcapLessonBundle = true
 Claroline\ClacoFormBundle\ClarolineClacoFormBundle = true
 Claroline\DropZoneBundle\ClarolineDropZoneBundle = true
 Claroline\LinkBundle\ClarolineLinkBundle = true
-Claroline\SlideshowBundle\ClarolineSlideshowBundle = true
 Claroline\OpenBadgeBundle\ClarolineOpenBadgeBundle = true
 Claroline\AudioPlayerBundle\ClarolineAudioPlayerBundle = true
 Claroline\CursusBundle\ClarolineCursusBundle = true

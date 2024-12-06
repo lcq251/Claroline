@@ -46,6 +46,7 @@ class Updater150000 extends Updater
         $this->removePlugin('Icap', 'FormulaPluginBundle');
         $this->removePlugin('Claroline', 'HistoryBundle');
         $this->removePlugin('HeVinci', 'CompetencyBundle');
+        $this->removePlugin('Claroline', 'SlideshowBundle');
 
         $this->removeTool('notifications');
     }
