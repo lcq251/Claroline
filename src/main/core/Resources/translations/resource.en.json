@@ -62,10 +62,6 @@
     "no_started_resource": "You have not started any resources.",
     "no_started_resource_help": "Browse your resources to see your progress in each of them here.",
     "show_resource_header" : "Show resource header",
-    "resourceOpen": "The resource resourceName has been opened by user userName",
-    "resourceEvaluation": "resourceName - statusName : userName is currently in step userProgression for a duration of durationTime sec",
-    "resourceScore": "resourceName - statusName : userName scored currentScore out on scoreMax. The min score is scoreMin",
-
     "restrictions": {
         "dismiss_help": "As a manager, you can still access the resource, even if the access conditions are not met.",
         "manager": "You are a manager of this resource.",
@@ -97,5 +93,7 @@
     "evaluate_resource": "The resource is used in the score of the workspace",
     "evaluate_resource_help": "The score obtained by users at this resource is used to calculate the score of the workspace.",
     "count_resources": "Number of resources",
-    "file_drop_help": "Drop your files to import them inside the directory"
+    "file_drop_help": "Drop your files to import them inside the directory",
+    "description_long_help": "Give a detailed description of the content of your resource and the work expected by your users (the detailed description is displayed in the \"About\" view).",
+    "description_short_help": "Briefly describe your resource (the short description is displayed in the lists)."
 }

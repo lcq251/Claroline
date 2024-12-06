@@ -42,9 +42,7 @@ const ResourceNode = {
         User.propTypes
       ),
       created: T.string,
-      updated: T.string,
-      authors: T.string,
-      license: T.string
+      updated: T.string
     }),
 
     /**

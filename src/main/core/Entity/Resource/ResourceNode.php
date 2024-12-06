@@ -72,9 +72,6 @@ class ResourceNode implements CrudEntityInterface
      */
     public const PATH_SEPARATOR = '`';
 
-    #[ORM\Column(nullable: true)]
-    private ?string $license = null;
-
     #[ORM\Column(name: 'creation_date', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeInterface $creationDate = null;
@@ -100,45 +97,42 @@ class ResourceNode implements CrudEntityInterface
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class, inversedBy: 'children')]
     #[Gedmo\TreeParent]
-    protected ?ResourceNode $parent = null;
+    private ?ResourceNode $parent = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Gedmo\TreeLevel]
-    protected ?int $lvl = 0;
+    private ?int $lvl = 0;
 
     /**
      * @var Collection<int, ResourceNode>
      */
     #[ORM\OneToMany(targetEntity: ResourceNode::class, mappedBy: 'parent')]
-    protected Collection $children;
+    private Collection $children;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\TreePath(separator: ResourceNode::PATH_SEPARATOR)]
-    protected ?string $path = null;
+    private ?string $path = null;
 
     /**
      * @var Collection<int, ResourceRights>
      */
     #[ORM\OneToMany(targetEntity: ResourceRights::class, mappedBy: 'resourceNode', orphanRemoval: true)]
-    protected Collection $rights;
+    private Collection $rights;
 
     #[ORM\Column(name: 'mime_type', nullable: true)]
-    protected ?string $mimeType = null;
-
-    #[ORM\Column(nullable: true)]
-    protected ?string $author = null;
+    private ?string $mimeType = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
-    protected bool $active = true;
+    private bool $active = true;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    protected bool $fullscreen = false;
+    private bool $fullscreen = false;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    protected ?array $accesses = [];
+    private ?array $accesses = [];
 
     #[ORM\Column(name: 'views_count', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
-    protected int $viewsCount = 0;
+    private int $viewsCount = 0;
 
     #[ORM\Column(length: 128, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
@@ -160,16 +154,6 @@ class ResourceNode implements CrudEntityInterface
     public static function getIdentifiers(): array
     {
         return ['code', 'slug'];
-    }
-
-    public function getLicense(): ?string
-    {
-        return $this->license;
-    }
-
-    public function setLicense(?string $license): void
-    {
-        $this->license = $license;
     }
 
     public function getCreationDate(): ?\DateTimeInterface
@@ -326,16 +310,6 @@ class ResourceNode implements CrudEntityInterface
         if (!$this->children->contains($resourceNode)) {
             $this->children->add($resourceNode);
         }
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?string $author): void
-    {
-        $this->author = $author;
     }
 
     public function isActive(): bool

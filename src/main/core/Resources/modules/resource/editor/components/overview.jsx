@@ -57,7 +57,7 @@ const ResourceEditorOverview = (props) =>
           {
             name: 'resourceNode.meta.description',
             label: trans('description_short'),
-            help: trans('Décrivez succintement votre ressource (La description courte est affichée dans les listes et sur la vue "À propos").'),
+            help: trans('description_short_help', {}, 'resource'),
             type: 'string',
             recommended: true,
             options: {
@@ -68,28 +68,11 @@ const ResourceEditorOverview = (props) =>
             name: 'resourceNode.meta.descriptionHtml',
             label: trans('description_long'),
             type: 'html',
-            help: trans('Décrivez de manière détaillée le contenu de votre ressource, la travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue "À propos" à la place de la description courte).'),
+            help: trans('description_long_help', {}, 'resource'),
           }, {
             name: 'resourceNode.tags',
             label: trans('tags'),
             type: 'tag'
-          }
-        ]
-      }, {
-        name: 'license',
-        //icon: 'fa fa-fw fa-copyright',
-        title: trans('authors_license'),
-        subtitle: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet tristique diam, sit amet auctor erat.'),
-        primary: true,
-        fields: [
-          {
-            name: 'resourceNode.meta.authors',
-            label: trans('authors'),
-            type: 'string'
-          }, {
-            name: 'resourceNode.meta.license',
-            label: trans('license'),
-            type: 'string'
           }
         ]
       }

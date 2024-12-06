@@ -96,8 +96,6 @@ class ResourceNodeSerializer
                 'published' => $resourceNode->isPublished(),
                 'active' => $resourceNode->isActive(),
                 'views' => $resourceNode->getViewsCount(),
-                'authors' => $resourceNode->getAuthor(),
-                'license' => $resourceNode->getLicense(),
             ],
             'workspace' => $serializedWorkspace,
             'evaluation' => [
