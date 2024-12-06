@@ -33,7 +33,7 @@ services:
         alias: Claroline\AppBundle\Component\Tool\ToolProvider
         public: true
 
-    Claroline\AppBundle\Component\Tool\AbstractTool:
+    Claroline\AppBundle\Component\Tool\ToolComponent:
         abstract: true
 
     # DataSources

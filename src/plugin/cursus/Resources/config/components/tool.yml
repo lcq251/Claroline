@@ -1,6 +1,6 @@
 services:
     Claroline\CursusBundle\Component\Tool\TrainingEventsTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@Claroline\AppBundle\API\FinderProvider'
@@ -8,7 +8,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     Claroline\CursusBundle\Component\Tool\TrainingsTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@security.token_storage'
@@ -17,9 +17,9 @@ services:
             - '@Claroline\CursusBundle\Manager\CourseManager'
 
     Claroline\CursusBundle\Component\Tool\PresenceTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
 
     Claroline\CursusBundle\Component\Tool\CatalogTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]

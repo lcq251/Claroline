@@ -1,4 +1,4 @@
 services:
     Claroline\SchedulerBundle\Component\Tool\SchedulerTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]

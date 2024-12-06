@@ -5,7 +5,7 @@ namespace Claroline\AppBundle\Component\Tool;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
-use Symfony\Component\Translation\Translator;
+
 abstract class ToolComponent implements ToolInterface
 {
     public function isRequired(string $context, ?ContextSubjectInterface $contextSubject = null): bool

@@ -1,6 +1,6 @@
 services:
     Claroline\HomeBundle\Component\Tool\HomeTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'

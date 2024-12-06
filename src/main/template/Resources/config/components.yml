@@ -1,6 +1,6 @@
 services:
     Claroline\TemplateBundle\Component\Tool\TemplatesTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@Claroline\TemplateBundle\Component\Template\TemplateProvider'

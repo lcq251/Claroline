@@ -1,25 +1,25 @@
 services:
     Claroline\CoreBundle\Component\Tool\ConnectionMessagesTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
 
     Claroline\CoreBundle\Component\Tool\IntegrationTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
 
     Claroline\CoreBundle\Component\Tool\LocationsTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
 
     Claroline\CoreBundle\Component\Tool\ParametersTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\ParametersSerializer'
             - '@Claroline\CoreBundle\Manager\LocaleManager'
 
     Claroline\CoreBundle\Component\Tool\ResourcesTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
@@ -28,7 +28,7 @@ services:
             - '@Claroline\AppBundle\API\Crud'
 
     Claroline\CoreBundle\Component\Tool\WorkspacesTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@security.authorization_checker'

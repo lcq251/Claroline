@@ -1,6 +1,6 @@
 services:
     Claroline\CommunityBundle\Component\Tool\CommunityTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
         arguments:
             - '@security.token_storage'
@@ -14,5 +14,5 @@ services:
             - '@Claroline\CommunityBundle\Manager\TeamManager'
 
     Claroline\CommunityBundle\Component\Tool\OrganizationsTool:
-        parent: Claroline\AppBundle\Component\Tool\AbstractTool
+        parent: Claroline\AppBundle\Component\Tool\ToolComponent
         tags: [ 'claroline.component.tool' ]
