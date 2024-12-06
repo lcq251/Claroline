@@ -2,7 +2,6 @@
 
 namespace Claroline\ForumBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\User;
@@ -11,6 +10,7 @@ use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
 use Claroline\ForumBundle\Manager\ForumManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,7 +39,6 @@ class ForumController extends AbstractCrudController
     }
 
     /**
-     *
      * @ApiDoc(
      *     description="Get the subjects of a forum",
      *     queryString={
@@ -54,9 +53,11 @@ class ForumController extends AbstractCrudController
      * )
      */
     #[Route(path: '/{id}/subjects', name: 'list_subjects', methods: ['GET'])]
-    public function listSubjectsAction(#[MapEntity(mapping: ['id' => 'uuid'])]
-    Forum $forum, Request $request): JsonResponse
-    {
+    public function listSubjectsAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Forum $forum,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
 
         return new JsonResponse(
@@ -67,22 +68,7 @@ class ForumController extends AbstractCrudController
         );
     }
 
-    #[Route(path: '/{id}/messages', name: 'list_messages', methods: ['GET'])]
-    public function listMessagesAction(#[MapEntity(mapping: ['id' => 'uuid'])]
-    Forum $forum, Request $request): JsonResponse
-    {
-        $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
-
-        return new JsonResponse(
-            $this->crud->list(Message::class, array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['forum' => [$forum->getUuid()], 'moderation' => false]]
-            ))
-        );
-    }
-
     /**
-     *
      * @ApiDoc(
      *     description="Create a subject in a forum",
      *     parameters={
@@ -91,9 +77,11 @@ class ForumController extends AbstractCrudController
      * )
      */
     #[Route(path: '/{id}/subject', name: 'create_subject', methods: ['POST', 'PUT'])]
-    public function createSubjectAction(#[MapEntity(mapping: ['id' => 'uuid'])]
-    Forum $forum, Request $request): JsonResponse
-    {
+    public function createSubjectAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Forum $forum,
+        Request $request
+    ): JsonResponse {
         $subject = new Subject();
         $subject->setForum($forum);
 
@@ -106,102 +94,13 @@ class ForumController extends AbstractCrudController
         );
     }
 
-    
-    #[Route(path: '/unlock/{user}/forum/{forum}', name: 'unlock_user', methods: ['PATCH'])]
-    public function unlockAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
-        $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
-
-        // unlock user
-        $validationUser = $this->manager->getValidationUser($user, $forum);
-        $validationUser->setAccess(true);
-        $this->om->persist($validationUser);
-
-        // validate all moderated subjects for this user and forum
-        $subjects = $this->om->getRepository(Subject::class)->findBy([
-            'forum' => $forum->getUuid(),
-            'creator' => $user->getUuid(),
-            'moderation' => true,
-        ]);
-
-        foreach ($subjects as $subject) {
-            $subject->setModerated(Forum::VALIDATE_NONE);
-            $this->om->persist($subject);
-        }
-        // validate all moderated messages for this user and forum
-        $messages = $this->om->getRepository(Message::class)->findBy([
-            'forum' => $forum->getUuid(),
-            'creator' => $user->getUuid(),
-            'moderation' => true,
-        ]);
-
-        foreach ($messages as $message) {
-            $message->setModerated(Forum::VALIDATE_NONE);
-            $this->om->persist($message);
-        }
-        $this->om->flush();
-
-        return new JsonResponse(true);
-    }
-
-    
-    #[Route(path: '/lock/{user}/forum/{forum}', name: 'lock_user', methods: ['PATCH'])]
-    public function lockAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
-        $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
-
-        $validationUser = $this->manager->getValidationUser($user, $forum);
-        $validationUser->setAccess(false);
-
-        $this->om->persist($validationUser);
-        $this->om->flush();
-
-        return new JsonResponse(true);
-    }
-
-    
-    #[Route(path: '/ban/{user}/forum/{forum}', name: 'ban', methods: ['PATCH'])]
-    public function banAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
-        $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
-
-        $validationUser = $this->manager->getValidationUser($user, $forum);
-        $validationUser->setBanned(true);
-
-        $this->om->persist($validationUser);
-        $this->om->flush();
-
-        return new JsonResponse(true);
-    }
-
-    
-    #[Route(path: '/unban/{user}/forum/{forum}', name: 'unban', methods: ['PATCH'])]
-    public function unbanAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
-        $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
-
-        $validationUser = $this->manager->getValidationUser($user, $forum);
-        $validationUser->setBanned(false);
-        $this->om->persist($validationUser);
-        $this->om->flush();
-
-        return new JsonResponse(true);
-    }
-
-    
     #[Route(path: '/notify/{user}/forum/{forum}', name: 'notify', methods: ['PATCH'])]
-    public function notifyAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
+    public function notifyAction(
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user,
+        #[MapEntity(mapping: ['forum' => 'uuid'])]
+        Forum $forum
+    ): JsonResponse {
         $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
 
         $validationUser = $this->manager->getValidationUser($user, $forum);
@@ -212,12 +111,13 @@ class ForumController extends AbstractCrudController
         return new JsonResponse(true);
     }
 
-    
     #[Route(path: '/unnotify/{user}/forum/{forum}', name: 'unnotifiy', methods: ['PATCH'])]
-    public function unnotifyAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
+    public function unnotifyAction(
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user,
+        #[MapEntity(mapping: ['forum' => 'uuid'])]
+        Forum $forum
+    ): JsonResponse {
         $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
 
         $validationUser = $this->manager->getValidationUser($user, $forum);

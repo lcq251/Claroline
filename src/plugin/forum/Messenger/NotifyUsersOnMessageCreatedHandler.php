@@ -48,18 +48,17 @@ class NotifyUsersOnMessageCreatedHandler
             ->findBy(['forum' => $forum, 'notified' => true]);
 
         $placeholders = array_merge([
-                'forum' => $forum->getName(),
-                'subject' => $subject->getTitle(),
-                'message' => $message->getContent(),
-                'date' => $message->getCreationDate() ? $message->getCreationDate()->format('d/m/Y H:m:s') : null,
-                'author' => $message->getCreator() ? $message->getCreator()->getFullName() : null,
-                'workspace' => $forum->getResourceNode()->getWorkspace()->getName(),
+            'forum' => $forum->getName(),
+            'subject' => $subject->getTitle(),
+            'message' => $message->getContent(),
+            'author' => $message->getCreator() ? $message->getCreator()->getFullName() : null,
+            'workspace' => $forum->getResourceNode()->getWorkspace()->getName(),
 
-                'workspace_url' => $this->routing->workspaceUrl($forum->getResourceNode()->getWorkspace()),
-                'forum_url' => $this->routing->resourceUrl($forum->getResourceNode()),
-                'subject_url' => $this->routing->resourceUrl($forum->getResourceNode()).'/subjects/show/'.$subject->getUuid(),
-            ],
-            $this->templateManager->formatDatePlaceholder('post', $message->getCreationDate()),
+            'workspace_url' => $this->routing->workspaceUrl($forum->getResourceNode()->getWorkspace()),
+            'forum_url' => $this->routing->resourceUrl($forum->getResourceNode()),
+            'subject_url' => $this->routing->resourceUrl($forum->getResourceNode()).'/subjects/show/'.$subject->getUuid(),
+        ],
+            $this->templateManager->formatDatePlaceholder('post', $message->getCreatedAt()),
         );
 
         $subject = $this->templateManager->getTemplate('forum_new_message', $placeholders, null, 'title');

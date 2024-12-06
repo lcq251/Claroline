@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SubjectVoter extends AbstractVoter
 {
-    const POST = 'POST';
+    public const POST = 'POST';
 
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {

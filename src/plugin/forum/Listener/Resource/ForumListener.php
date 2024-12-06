@@ -22,9 +22,7 @@ use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\ForumBundle\Entity\Forum;
-use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
-use Claroline\ForumBundle\Entity\Validation\User as ForumUser;
 use Claroline\ForumBundle\Manager\ForumManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,11 +31,9 @@ class ForumListener extends ResourceComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
-        private readonly FinderProvider $finder,
         private readonly ForumManager $manager
     ) {
     }
@@ -47,7 +43,7 @@ class ForumListener extends ResourceComponent
         return 'claroline_forum';
     }
 
-    /** @var Forum $resource */
+    /** @param Forum $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         /** @var User|string $user */
@@ -58,25 +54,9 @@ class ForumListener extends ResourceComponent
             $validationUser = $this->manager->getValidationUser($user, $resource);
         }
 
-        $myMessages = 0;
-        if ($this->tokenStorage->getToken()?->getUser() instanceof User) {
-            $myMessages = $this->finder->fetch(Message::class, [
-                'forum' => $resource->getUuid(),
-                'creator' => $this->tokenStorage->getToken()?->getUser()->getUuid(),
-            ], null, 0, 0, true);
-        }
-
         return [
-            'forum' => $this->serializer->serialize($resource),
-            'tags' => $this->getTags($resource),
-            'users' => $this->finder->fetch(ForumUser::class, ['forum' => $resource->getUuid(), 'banned' => false], null, 0, 0, true),
-            'subjects' => $this->finder->fetch(Subject::class, ['forum' => $resource->getUuid(), 'flagged' => false], null, 0, 0, true),
-            'messages' => $this->finder->fetch(Message::class, ['forum' => $resource->getUuid(), 'flagged' => false], null, 0, 0, true),
-
-            'isValidatedUser' => $validationUser && $validationUser->getAccess(),
-            'banned' => $validationUser && $validationUser->isBanned(),
+            'resource' => $this->serializer->serialize($resource),
             'notified' => $validationUser && $validationUser->isNotified(),
-            'myMessages' => $myMessages,
         ];
     }
 
@@ -113,7 +93,7 @@ class ForumListener extends ResourceComponent
         $this->om->endFlushSuite();
     }
 
-    /** @var Forum $resource */
+    /** @param Forum $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         $subjects = $resource->getSubjects()->toArray();
@@ -125,7 +105,7 @@ class ForumListener extends ResourceComponent
         ];
     }
 
-    /** @var Forum $resource */
+    /** @param Forum $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         if (empty($data['subjects'])) {
@@ -144,28 +124,5 @@ class ForumListener extends ResourceComponent
         }
 
         $this->om->endFlushSuite();
-    }
-
-    private function getTags(Forum $forum): array
-    {
-        $subjects = $forum->getSubjects();
-        $available = [];
-
-        foreach ($subjects as $subject) {
-            $event = new GenericDataEvent([
-                'class' => Subject::class,
-                'ids' => [$subject->getUuid()],
-            ]);
-
-            $this->eventDispatcher->dispatch(
-                $event,
-                'claroline_retrieve_used_tags_object_by_class_and_ids'
-            );
-
-            $tags = $event->getResponse() ?? [];
-            $available = array_merge($available, $tags);
-        }
-
-        return $available;
     }
 }

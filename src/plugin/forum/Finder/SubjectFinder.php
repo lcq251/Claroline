@@ -12,7 +12,6 @@
 namespace Claroline\ForumBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
-use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Subject;
 use Doctrine\ORM\QueryBuilder;
 
@@ -42,24 +41,6 @@ class SubjectFinder extends AbstractFinder
 
                     $qb->andWhere("creator.uuid = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
-                    break;
-                case 'moderation':
-                    if ($filterValue) {
-                        $qb->andWhere($qb->expr()->orX(
-                            $qb->expr()->eq('obj.moderation', ':prior_once'),
-                            $qb->expr()->eq('obj.moderation', ':prior_all')
-                        ));
-
-                        $qb->setParameter('prior_once', Forum::VALIDATE_PRIOR_ONCE);
-                        $qb->setParameter('prior_all', Forum::VALIDATE_PRIOR_ALL);
-                    } else {
-                        $qb->andWhere($qb->expr()->orX(
-                            $qb->expr()->eq('obj.moderation', ':filter_none'),
-                            $qb->expr()->isNull('obj.moderation')
-                        ));
-
-                        $qb->setParameter('filter_none', Forum::VALIDATE_NONE);
-                    }
                     break;
                 default:
                     $this->setDefaults($qb, $filterName, $filterValue);
@@ -125,7 +106,7 @@ class SubjectFinder extends AbstractFinder
                 'type' => 'datetime',
                 'description' => 'The last update date',
             ],
-            'author' => [
+            'creator' => [
                 'type' => 'string',
                 'description' => 'the author name',
             ],

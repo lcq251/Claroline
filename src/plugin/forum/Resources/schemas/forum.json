@@ -5,10 +5,6 @@
     "id": {
       "type": "string",
       "description": "The forum id"
-    },
-    "validationMode": {
-      "type": "integer",
-      "description": "The validation mode"
     }
   }
 }

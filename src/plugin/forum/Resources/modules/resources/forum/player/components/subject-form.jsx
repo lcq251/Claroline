@@ -8,7 +8,6 @@ import {withModal} from '#/main/app/overlays/modal/withModal'
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {MODAL_ALERT} from '#/main/app/modals/alert'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {actions as formActions, selectors as formSelect} from '#/main/app/content/form/store'
 import {selectors as securitySelectors} from '#/main/app/security/store'
@@ -86,82 +85,67 @@ const SubjectFormComponent = (props) => {
   const saveSubjectForm = (forumId, editingSubject, subjectId) => {
     if (editingSubject) {
       props.editSubject(forumId, subjectId, props.path)
-    } else if (!props.moderator &&
-      (props.forum.moderation === 'PRIOR_ALL' || (props.forum.moderation === 'PRIOR_ONCE' && !props.isValidatedUser))) {
-      props.showModal(MODAL_ALERT, {
-        title: trans('moderated_posts', {}, 'forum'),
-        message: trans('moderated_posts_explanation', {}, 'forum'),
-        type: 'info'
-      })
-      props.createModeratedSubject(forumId, props.path)
     } else {
       props.createSubject(forumId, subjectId, props.path)
     }
   }
 
   return (
-    <div>
-      {props.bannedUser ?
-        <div className="alert alert-danger">
-          {trans('banned_user_warning', {}, 'forum')}
-        </div> :
-        <SubjectFormWrapper
-          user={props.currentUser}
-          callback={() => saveSubjectForm(props.forum.id, props.editingSubject, props.subject.id, props.forum.moderation)}
-          cancel={() => props.history.push(`${props.path}/subjects/show/${props.subject.id}`)}
-          editingSubject={props.editingSubject}
-        >
-          <FormData
-            level={3}
-            displayLevel={2}
-            name={`${selectors.STORE_NAME}.subjects.form`}
-            flush={true}
-            definition={[
+    <SubjectFormWrapper
+      user={props.currentUser}
+      callback={() => saveSubjectForm(props.forum.id, props.editingSubject, props.subject.id, props.forum.moderation)}
+      cancel={() => props.history.push(`${props.path}/subjects/show/${props.subject.id}`)}
+      editingSubject={props.editingSubject}
+    >
+      <FormData
+        level={3}
+        displayLevel={2}
+        name={`${selectors.STORE_NAME}.subjects.form`}
+        flush={true}
+        definition={[
+          {
+            title: trans('general'),
+            primary: true,
+            fields: [
               {
-                title: trans('general'),
-                primary: true,
-                fields: [
-                  {
-                    name: 'title',
-                    type: 'string',
-                    label: trans('title'),
-                    required: true
-                  }, {
-                    name: 'content',
-                    type: 'html',
-                    label: trans('post', {}, 'forum'),
-                    required: true,
-                    options: {
-                      workspace: props.workspace
-                    }
-                  }, {
-                    name: 'tags',
-                    type: 'tag',
-                    label: trans('tags')
-                  }
-                ]
+                name: 'title',
+                type: 'string',
+                label: trans('title'),
+                required: true
               }, {
-                icon: 'fa fa-fw fa-desktop',
-                title: trans('display_parameters'),
-                fields: [
-                  {
-                    name: 'meta.sticky',
-                    alias: 'sticked',
-                    type: 'boolean',
-                    label: trans('stick', {}, 'forum'),
-                    help: trans('stick_explanation', {}, 'forum')
-                  }, {
-                    name: 'poster',
-                    label: trans('poster'),
-                    type: 'image'
-                  }
-                ]
+                name: 'content',
+                type: 'html',
+                label: trans('post', {}, 'forum'),
+                required: true,
+                options: {
+                  workspace: props.workspace
+                }
+              }, {
+                name: 'tags',
+                type: 'tag',
+                label: trans('tags')
               }
-            ]}
-          />
-        </SubjectFormWrapper>
-      }
-    </div>
+            ]
+          }, {
+            icon: 'fa fa-fw fa-desktop',
+            title: trans('display_parameters'),
+            fields: [
+              {
+                name: 'meta.sticky',
+                alias: 'sticked',
+                type: 'boolean',
+                label: trans('stick', {}, 'forum'),
+                help: trans('stick_explanation', {}, 'forum')
+              }, {
+                name: 'poster',
+                label: trans('poster'),
+                type: 'image'
+              }
+            ]
+          }
+        ]}
+      />
+    </SubjectFormWrapper>
   )
 }
 
@@ -170,22 +154,14 @@ const SubjectForm = withRouter(withModal(connect(
     path: resourceSelectors.path(state),
     currentUser: securitySelectors.currentUser(state),
     workspace: resourceSelectors.workspace(state),
-    bannedUser: selectors.bannedUser(state),
     subject: formSelect.data(formSelect.form(state, `${selectors.STORE_NAME}.subjects.form`)),
     editingSubject: selectors.editingSubject(state),
-    forum: selectors.forum(state),
-    moderator: selectors.moderator(state),
-    isValidatedUser: selectors.isValidatedUser(state)
+    forum: selectors.forum(state)
   }),
   (dispatch, ownProps) => ({
     editSubject(forumId, subjectId, path) {
       dispatch(formActions.saveForm(`${selectors.STORE_NAME}.subjects.form`, ['apiv2_forum_subject_update', {id: subjectId}])).then(() => {
         ownProps.history.push(`${path}/subjects/show/${subjectId}`)
-      })
-    },
-    createModeratedSubject(forumId, path) {
-      dispatch(formActions.saveForm(`${selectors.STORE_NAME}.subjects.form`, ['apiv2_forum_create_subject', {id: forumId}])).then(() => {
-        ownProps.history.push(`${path}/subjects`)
       })
     },
     createSubject(forumId, subjectId, path) {

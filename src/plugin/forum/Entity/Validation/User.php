@@ -11,10 +11,10 @@
 
 namespace Claroline\ForumBundle\Entity\Validation;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\ForumBundle\Entity\Forum;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\User as ClarolineUser;
+use Claroline\ForumBundle\Entity\Forum;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_forum_user')]
@@ -25,67 +25,41 @@ class User
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ClarolineUser::class, cascade: ['persist', 'remove'])]
-    protected ?ClarolineUser $user = null;
+    private ?ClarolineUser $user = null;
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Forum::class, cascade: ['persist'])]
-    protected ?Forum $forum = null;
+    private ?Forum $forum = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $access = false;
+    private bool $notified = false;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    protected $banned = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    protected $notified = false;
-
-    public function setUser(ClarolineUser $user)
+    public function setUser(ClarolineUser $user): void
     {
         $this->user = $user;
     }
 
-    public function getUser()
+    public function getUser(): ?ClarolineUser
     {
         return $this->user;
     }
 
-    public function setForum($forum)
+    public function setForum(Forum $forum): void
     {
         $this->forum = $forum;
     }
 
-    public function getForum()
+    public function getForum(): ?Forum
     {
         return $this->forum;
     }
 
-    public function setAccess($bool)
-    {
-        $this->access = $bool;
-    }
-
-    public function getAccess()
-    {
-        return $this->access;
-    }
-
-    public function setBanned($bool)
-    {
-        $this->banned = $bool;
-    }
-
-    public function isBanned()
-    {
-        return $this->banned;
-    }
-
-    public function setNotified($bool)
+    public function setNotified(bool $bool): void
     {
         $this->notified = $bool;
     }
 
-    public function isNotified()
+    public function isNotified(): bool
     {
         return $this->notified;
     }

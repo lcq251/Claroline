@@ -11,6 +11,7 @@ const Badge = (props) =>
   </span>
 
 Badge.propTypes = {
+  className: T.string,
   subtle: T.bool.isRequired,
   variant: T.oneOf(['primary', 'secondary', 'success', 'warning', 'danger', 'info']).isRequired
 }

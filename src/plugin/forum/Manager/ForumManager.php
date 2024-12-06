@@ -23,11 +23,11 @@ class ForumManager
     ) {
     }
 
-    public function getValidationUser(User $creator, Forum $forum)
+    public function getValidationUser(User $creator, Forum $forum): ?UserValidation
     {
         $user = $this->om->getRepository(UserValidation::class)->findOneBy([
-          'user' => $creator,
-          'forum' => $forum,
+            'user' => $creator,
+            'forum' => $forum,
         ]);
 
         if (!$user) {

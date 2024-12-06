@@ -5,8 +5,10 @@ namespace Claroline\ForumBundle\Serializer;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\API\Serializer\MessageSerializer as AbstractMessageSerializer;
+use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
+use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
 
@@ -14,21 +16,11 @@ class MessageSerializer
 {
     use SerializerTrait;
 
-    /** @var AbstractMessageSerializer */
-    private $messageSerializer;
-    /** @var ObjectManager */
-    private $om;
-    /** @var ResourceNodeSerializer */
-    private $nodeSerializer;
-
     public function __construct(
-        AbstractMessageSerializer $messageSerializer,
-        ObjectManager $om,
-        ResourceNodeSerializer $nodeSerializer
+        private readonly ObjectManager $om,
+        private readonly ResourceNodeSerializer $nodeSerializer,
+        private readonly UserSerializer $userSerializer
     ) {
-        $this->messageSerializer = $messageSerializer;
-        $this->om = $om;
-        $this->nodeSerializer = $nodeSerializer;
     }
 
     public function getClass(): string
@@ -56,7 +48,22 @@ class MessageSerializer
      */
     public function serialize(Message $message, ?array $options = []): array
     {
-        $data = $this->messageSerializer->serialize($message, $options);
+        $data = [
+            'id' => $message->getUuid(),
+            'content' => $message->getContent(),
+            'meta' => [
+                'creator' => !empty($message->getCreator()) ?
+                    $this->userSerializer->serialize($message->getCreator(), [Options::SERIALIZE_MINIMAL]) :
+                    null,
+                'created' => DateNormalizer::normalize($message->getCreatedAt()),
+                'updated' => DateNormalizer::normalize($message->getUpdatedAt()),
+            ],
+            'parent' => !empty($message->getParent()) ? ['id' => $message->getParent()->getId()] : null,
+            'children' => array_map(function (Message $child) use ($options) {
+                return $this->serialize($child, $options);
+            }, $message->getChildren()->toArray()),
+        ];
+
         $subject = $message->getSubject();
 
         if ($subject) {
@@ -73,7 +80,6 @@ class MessageSerializer
         }
 
         $data['meta']['flagged'] = $message->isFlagged();
-        $data['meta']['moderation'] = $message->getModerated();
 
         return $data;
     }
@@ -83,7 +89,24 @@ class MessageSerializer
      */
     public function deserialize(array $data, Message $message, ?array $options = []): Message
     {
-        $this->messageSerializer->deserialize($data, $message, $options);
+        $this->sipe('content', 'setContent', $data, $message);
+
+        if (isset($data['meta'])) {
+            if (isset($data['meta']['created'])) {
+                $message->setCreatedAt(DateNormalizer::denormalize($data['meta']['created']));
+            }
+            if (isset($data['meta']['updated'])) {
+                $message->setUpdatedAt(DateNormalizer::denormalize($data['meta']['updated']));
+            }
+
+            if (isset($data['meta']['creator'])) {
+                /** @var User $creator */
+                $creator = $this->om->getObject($data['meta']['creator'], User::class);
+                if ($creator) {
+                    $message->setCreator($creator);
+                }
+            }
+        }
 
         if (isset($data['subject'])) {
             /** @var Subject $subject */
@@ -102,7 +125,6 @@ class MessageSerializer
             }
         }
         $this->sipe('meta.flagged', 'setFlagged', $data, $message);
-        $this->sipe('meta.moderation', 'setModerated', $data, $message);
 
         return $message;
     }

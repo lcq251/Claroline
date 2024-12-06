@@ -90,7 +90,7 @@ const AnnouncementPost = (props) => {
             <>
               <UserMicro
                 {...get(props.announcement, 'meta.creator', {})}
-                noStatus={true}
+                // noStatus={true}
                 link={true}
               />
 

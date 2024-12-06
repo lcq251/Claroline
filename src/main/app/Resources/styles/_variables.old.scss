@@ -230,9 +230,10 @@ $placeholder-lg-padding:       map-get($spacers, 4) !default;
 // User
 // ---
 
-$user-message-bg:            $card-bg;
-$user-message-border:        var(--#{$prefix}border-color);
-$user-message-inner-border:  var(--#{$prefix}border-color);
+$user-message-bg:            var(--#{$prefix}tertiary-bg);
+$user-message-arrow-size:    1rem;
+$user-message-border-width:  var(--#{$prefix}border-width);
+$user-message-border-color:  transparent;
 $user-message-border-radius: $border-radius-lg;
 
 

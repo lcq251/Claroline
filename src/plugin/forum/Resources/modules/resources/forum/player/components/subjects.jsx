@@ -11,161 +11,170 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
-import {Forum as ForumType} from '#/plugin/forum/resources/forum/prop-types'
-import {Subject as SubjectType} from '#/plugin/forum/resources/forum/player/prop-types'
+import {Forum as ForumType, Subject as SubjectType} from '#/plugin/forum/resources/forum/prop-types'
 import {selectors} from '#/plugin/forum/resources/forum/store'
-import {actions} from '#/plugin/forum/resources/forum/player/store'
+import {actions} from '#/plugin/forum/resources/forum/store'
 import {SubjectCard} from '#/plugin/forum/resources/forum/data/components/subject-card'
-import {ResourcePage} from '#/main/core/resource'
 
-const SubjectsList = props =>
-  <ResourcePage
-    title={trans('subjects', {}, 'forum')}
-  >
-    <ListData
-      name={`${selectors.STORE_NAME}.subjects.list`}
-      fetch={{
-        url: ['apiv2_forum_list_subjects', {id: get(props.forum, 'id')}],
-        autoload: !!get(props.forum, 'id')
-      }}
-      delete={{
-        url: ['apiv2_forum_subject_delete'],
-        displayed: (rows) => props.currentUser && ((rows[0].meta.creator.id === props.currentUser.id) || props.moderator)
-      }}
-      primaryAction={(subject) => ({
+function canEdit(subject, moderator = false, currentUser = null) {
+  if (moderator) {
+    return true
+  }
+
+  if (!currentUser) {
+    return false
+  }
+
+  return get(subject, 'meta.creator.id') === get(currentUser, 'id')
+}
+
+const SubjectsList = (props) =>
+  <ListData
+    name={`${selectors.STORE_NAME}.subjects.list`}
+    fetch={{
+      url: ['apiv2_forum_list_subjects', {id: get(props.forum, 'id')}],
+      autoload: !!get(props.forum, 'id')
+    }}
+    delete={{
+      url: ['apiv2_forum_subject_delete'],
+      displayed: (rows) => -1 !== rows.findIndex(row => canEdit(row, props.moderator, props.currentUser))
+    }}
+    addAction={props.addAction}
+    primaryAction={(subject) => ({
+      type: LINK_BUTTON,
+      target: `${props.path}/subjects/show/${subject.id}`,
+      label: trans('open', {}, 'actions')
+    })}
+    display={{
+      current: listConst.DISPLAY_LIST,
+      available: [listConst.DISPLAY_LIST]
+    }}
+    definition={[
+      {
+        name: 'title',
+        type: 'string',
+        label: trans('title'),
+        displayed: true,
+        primary: true
+      }, {
+        name: 'meta.closed',
+        alias: 'closed',
+        type: 'boolean',
+        label: trans('closed_subject', {}, 'forum'),
+        displayed: true,
+        //filterable true if we want them
+        filterable: false
+      }, {
+        name: 'meta.sticky',
+        alias: 'sticked',
+        type: 'boolean',
+        label: trans('stuck', {}, 'forum'),
+        displayed: true,
+        //filterable true if we want them
+        filterable: false
+      }, {
+        name: 'meta.messages',
+        type: 'number',
+        label: trans('posts_count', {}, 'forum'),
+        displayed: true,
+        filterable: false,
+        sortable: true
+      }, {
+        name: 'meta.updated',
+        type: 'date',
+        label: trans('last_modification'),
+        displayed: true,
+        filterable: false,
+        sortable: false,
+        options: {
+          time: true
+        }
+      }, {
+        name: 'meta.creator',
+        type: 'user',
+        label: trans('creator'),
+        displayed: true,
+        filterable: true,
+        alias: 'creator'
+      }, {
+        name: 'tags',
+        type: 'tag',
+        label: trans('tags'),
+        displayable: false,
+        filterable: true,
+        sortable: false,
+        options: {
+          objectClass: 'Claroline\\ForumBundle\\Entity\\Subject'
+        }
+      }, {
+        name: 'lastMessage',
+        type: 'string',
+        label: trans('last_message', {}, 'forum'),
+        displayed: false,
+        displayable: true,
+        filterable: false,
+        sortable: true
+      }
+    ]}
+    actions={(rows) => [
+      {
         type: LINK_BUTTON,
-        target: `${props.path}/subjects/show/${subject.id}`,
-        label: trans('open', {}, 'actions')
-      })}
-      display={{
-        current: get(props.forum, 'display.subjectDataList') || listConst.DISPLAY_LIST
-      }}
-      definition={[
-        {
-          name: 'title',
-          type: 'string',
-          label: trans('title'),
-          displayed: true,
-          primary: true
-        }, {
-          name: 'meta.closed',
-          alias: 'closed',
-          type: 'boolean',
-          label: trans('closed_subject', {}, 'forum'),
-          displayed: true,
-          //filterable true if we want them
-          filterable: false
-        }, {
-          name: 'meta.sticky',
-          alias: 'sticked',
-          type: 'boolean',
-          label: trans('stuck', {}, 'forum'),
-          displayed: true,
-          //filterable true if we want them
-          filterable: false
-        }, {
-          name: 'meta.messages',
-          type: 'number',
-          label: trans('posts_count', {}, 'forum'),
-          displayed: true,
-          filterable: false,
-          sortable: true
-        }, {
-          name: 'meta.updated',
-          type: 'date',
-          label: trans('last_modification'),
-          displayed: true,
-          filterable: false,
-          sortable: false,
-          options: {
-            time: true
-          }
-        }, {
-          name: 'meta.creator',
-          type: 'user',
-          label: trans('creator'),
-          displayed: true,
-          filterable: true,
-          alias: 'creator'
-        }, {
-          name: 'tags',
-          type: 'tag',
-          label: trans('tags'),
-          displayable: false,
-          filterable: true,
-          sortable: false,
-          options: {
-            objectClass: 'Claroline\\ForumBundle\\Entity\\Subject'
-          }
-        }, {
-          name: 'lastMessage',
-          type: 'string',
-          label: trans('last_message', {}, 'forum'),
-          displayed: false,
-          displayable: true,
-          filterable: false,
-          sortable: true
-        }
-      ]}
-      actions={(rows) => [
-        {
-          type: LINK_BUTTON,
-          icon: 'fa fa-fw fa-pencil',
-          label: trans('edit', {}, 'actions'),
-          target: `${props.path}/subjects/form/${rows[0].id}`,
-          scope: ['object'],
-          displayed: props.currentUser && rows[0].meta.creator.id === props.currentUser.id
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-thumb-tack',
-          label: trans('stick', {}, 'forum'),
-          callback: () => props.stickSubject(rows[0]),
-          displayed: !rows[0].meta.sticky && props.moderator
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-thumb-tack',
-          label: trans('unstick', {}, 'forum'),
-          callback: () => props.unStickSubject(rows[0]),
-          displayed: rows[0].meta.sticky && props.moderator
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-flag',
-          label: trans('flag', {}, 'forum'),
-          displayed: !rows[0].meta.flagged && props.currentUser && rows[0].meta.creator.id !== props.currentUser.id,
-          callback: () => props.flagSubject(rows[0]),
-          scope: ['object']
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-flag',
-          label: trans('unflag', {}, 'forum'),
-          displayed: rows[0].meta.flagged && props.currentUser && rows[0].meta.creator.id !== props.currentUser.id,
-          callback: () => props.unFlagSubject(rows[0]),
-          scope: ['object']
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-circle-xmark',
-          label: trans('close_subject', {}, 'forum'),
-          callback: () => props.closeSubject(rows[0]),
-          displayed: !rows[0].meta.closed && props.currentUser && (rows[0].meta.creator.id === props.currentUser.id || props.moderator)
-        }, {
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-circle-check',
-          label: trans('open_subject', {}, 'forum'),
-          callback: () => props.unCloseSubject(rows[0]),
-          displayed: rows[0].meta.closed && props.currentUser && (rows[0].meta.creator.id === props.currentUser.id || props.moderator)
-        }
-      ]}
-      card={SubjectCard}
-    />
-  </ResourcePage>
+        icon: 'fa fa-fw fa-pencil',
+        label: trans('edit', {}, 'actions'),
+        target: `${props.path}/subjects/form/${rows[0].id}`,
+        scope: ['object'],
+        displayed: canEdit(rows[0], props.moderator, props.currentUser)
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-thumb-tack',
+        label: trans('stick', {}, 'forum'),
+        callback: () => props.stickSubject(rows[0]),
+        displayed: !rows[0].meta.sticky && props.moderator
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-thumb-tack',
+        label: trans('unstick', {}, 'forum'),
+        callback: () => props.unStickSubject(rows[0]),
+        displayed: rows[0].meta.sticky && props.moderator
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-flag',
+        label: trans('flag', {}, 'forum'),
+        displayed: !rows[0].meta.flagged && props.currentUser,
+        callback: () => props.flagSubject(rows[0]),
+        scope: ['object']
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-flag',
+        label: trans('unflag', {}, 'forum'),
+        displayed: rows[0].meta.flagged && props.moderator,
+        callback: () => props.unFlagSubject(rows[0]),
+        scope: ['object']
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-circle-xmark',
+        label: trans('close_subject', {}, 'forum'),
+        callback: () => props.closeSubject(rows[0]),
+        displayed: -1 !== rows.findIndex(row => !row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
+        scope: ['object']
+      }, {
+        type: CALLBACK_BUTTON,
+        icon: 'fa fa-fw fa-circle-check',
+        label: trans('open_subject', {}, 'forum'),
+        callback: () => props.unCloseSubject(rows[0]),
+        displayed: -1 !== rows.findIndex(row => row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
+        scope: ['object']
+      }
+    ]}
+    card={SubjectCard}
+  />
 
 SubjectsList.propTypes = {
   path: T.string.isRequired,
   currentUser: T.object,
   forum: T.shape(ForumType.propTypes),
   subject: T.shape(SubjectType.propTypes),
-  moderator: T.object,
-  data: T.object,
+  moderator: T.bool,
   stickSubject: T.func.isRequired,
   unStickSubject: T.func.isRequired,
   closeSubject: T.func.isRequired,

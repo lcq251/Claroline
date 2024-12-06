@@ -2,7 +2,7 @@ services:
     Claroline\ForumBundle\Subscriber\Crud\SubjectSubscriber:
         tags: [ kernel.event_subscriber ]
         arguments:
-            - '@security.authorization_checker'
+            - '@security.token_storage'
             - '@messenger.default_bus'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
@@ -10,6 +10,5 @@ services:
     Claroline\ForumBundle\Subscriber\Crud\MessageSubscriber:
         tags: [ kernel.event_subscriber ]
         arguments:
-            - '@security.authorization_checker'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.token_storage'
             - '@messenger.default_bus'

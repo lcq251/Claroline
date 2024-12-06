@@ -1,80 +1,67 @@
-import React, {createElement, Component} from 'react'
+import React, {useState, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {HtmlGroup} from '#/main/core/layout/form/components/group/html-group'
-import {TextGroup} from '#/main/core/layout/form/components/group/text-group'
 import {ContentMessage} from '#/main/app/content/components/message'
 
 import {User as UserTypes} from '#/main/community/prop-types'
+import {DataInput} from '#/main/app/data/components/input'
 
-class UserMessageForm extends Component {
-  constructor(props) {
-    super(props)
+const UserMessageForm = (props) => {
+  const [pendingChanges, setPendingChanges] = useState(false)
+  const [content, setContent] = useState(props.content)
+  const inputId = useId()
 
-    this.state = {
-      pendingChanges: false,
-      content: props.content
-    }
+  return (
+    <ContentMessage
+      className={classes('user-message-form-container', props.className)}
+      user={props.user}
+      date={props.date}
+      position={props.position}
+    >
+      <DataInput
+        id={inputId}
+        type={props.allowHtml ? 'html' : 'string'}
+        label={trans('message')}
+        value={content}
+        required={true}
+        options={{long: true}}
+        autoFocus={true}
+        hideLabel={true}
+        onChange={(updated) => {
+          setContent(updated)
+          setPendingChanges(true)
+        }}
+      />
 
-    this.updateContent = this.updateContent.bind(this)
-  }
-
-  updateContent(content) {
-    this.setState({
-      pendingChanges: true,
-      content: content
-    })
-  }
-
-  render() {
-    return (
-      <ContentMessage
-        className={classes('user-message-form-container', this.props.className)}
-        user={this.props.user}
-        date={this.props.date}
-        position={this.props.position}
-        actions={[
-          {
-            name: 'cancel',
-            type: CALLBACK_BUTTON,
-            icon: 'fa fa-fw fa-times',
-            label: trans('cancel', {}, 'actions'),
-            callback: this.props.cancel
-          }
-        ]}
-      >
-        {createElement(
-          this.props.allowHtml ? HtmlGroup : TextGroup,
-          {
-            id: 'user-message-content',
-            label: trans('message'),
-            hideLabel: true,
-            value: this.state.content,
-            long: true,
-            onChange: this.updateContent
-          }
-        )}
+      <div className="d-flex align-items-center justify-content-end gap-1" role="presentation">
+        {props.cancel &&
+          <Button
+            type={CALLBACK_BUTTON}
+            className="btn btn-body"
+            label={trans('cancel', {}, 'actions')}
+            callback={props.cancel}
+            primary={true}
+          />
+        }
 
         <Button
           type={CALLBACK_BUTTON}
-          variant="btn"
-          className="w-100 btn-save"
-          size="lg"
-          disabled={!this.state.pendingChanges || !this.state.content}
-          label={this.props.submitLabel}
+          className="btn btn-primary"
+          disabled={!pendingChanges || !content}
+          label={props.submitLabel}
           callback={() => {
-            this.props.submit(this.state.content)
-            this.setState({pendingChanges: false, content: ''})
+            props.submit(content)
+            setContent('')
+            setPendingChanges(true)
           }}
-          primary={true}
         />
-      </ContentMessage>
-    )
-  }
+      </div>
+    </ContentMessage>
+  )
 }
 
 UserMessageForm.propTypes = {

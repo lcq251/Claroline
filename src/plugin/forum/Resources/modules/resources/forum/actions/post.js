@@ -4,7 +4,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 export default (resourceNodes, nodesRefresher, path) => ({
   name: 'post',
   type: LINK_BUTTON,
-  label: trans('create_subject', {}, 'forum'),
+  label: trans('add_subject', {}, 'actions'),
   icon: 'fa fa-fw fa-plus',
   primary: true,
   target: `${path}/${resourceNodes[0].slug}/subjects/form`

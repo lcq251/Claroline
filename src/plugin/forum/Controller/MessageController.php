@@ -2,12 +2,12 @@
 
 namespace Claroline\ForumBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Message;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,7 +39,6 @@ class MessageController extends AbstractCrudController
     }
 
     /**
-     *
      * @ApiDoc(
      *     description="Create a comment in a message",
      *     parameters={
@@ -49,7 +48,7 @@ class MessageController extends AbstractCrudController
      */
     #[Route(path: '/{id}/comment', name: 'create_comment', methods: ['POST'])]
     public function createComment(#[MapEntity(mapping: ['id' => 'uuid'])]
-    Message $message, Request $request): JsonResponse
+        Message $message, Request $request): JsonResponse
     {
         $options = static::getOptions();
 
@@ -66,29 +65,17 @@ class MessageController extends AbstractCrudController
     }
 
     #[Route(path: '/forum/{forum}/messages/list/flagged', name: 'flagged_list', methods: ['GET'])]
-    public function getFlaggedMessagesAction(Request $request, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
+    public function listFlaggedAction(
+        Request $request,
+        #[MapEntity(mapping: ['forum' => 'uuid'])]
+        Forum $forum
+    ): JsonResponse {
         $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
 
         return new JsonResponse(
             $this->crud->list(self::getClass(), array_merge(
                 $request->query->all(),
                 ['hiddenFilters' => ['flagged' => true, 'forum' => $forum->getUuid()]]
-            ))
-        );
-    }
-
-    #[Route(path: '/forum/{forum}/messages/list/blocked', name: 'blocked_list', methods: ['GET'])]
-    public function getBlockedMessagesAction(Request $request, #[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-    Forum $forum): JsonResponse
-    {
-        $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
-
-        return new JsonResponse(
-            $this->crud->list(self::getClass(), array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['moderation' => true, 'forum' => $forum->getUuid()]]
             ))
         );
     }

@@ -11,7 +11,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {Forum as ForumType} from '#/plugin/forum/resources/forum/prop-types'
-import {actions} from '#/plugin/forum/resources/forum/player/store'
+import {actions} from '#/plugin/forum/resources/forum/store'
 import {selectors} from '#/plugin/forum/resources/forum/store'
 import {MessageCard} from '#/plugin/forum/resources/forum/data/components/message-card'
 import get from 'lodash/get'

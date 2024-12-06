@@ -11,15 +11,13 @@
 
 namespace Claroline\ForumBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
-use DateTime;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\File\PublicFile;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -31,82 +29,60 @@ class Subject
     use Uuid;
 
     #[ORM\Column]
-    protected $title;
+    private ?string $title = null;
 
-    /**
-     * @var DateTimeInterface
-     */
     #[ORM\Column(name: 'created', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $creationDate;
+    private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
-    protected $updated;
+    private ?\DateTimeInterface $updated = null;
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Forum::class, inversedBy: 'subjects')]
-    protected ?Forum $forum = null;
+    private ?Forum $forum = null;
 
     /**
-     *
      * @var Collection<int, Message>
      */
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'subject')]
-    #[ORM\OrderBy(['id' => 'ASC'])]
-    protected Collection $messages;
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    private Collection $messages;
 
     #[ORM\JoinColumn(name: 'user_id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    protected ?User $creator = null;
+    private ?User $creator = null;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $sticked = false;
+    private bool $sticked = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $closed = false;
+    private bool $closed = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $flagged = false;
+    private bool $flagged = false;
 
     /**
      * @var int
      */
     #[ORM\Column(type: Types::INTEGER)]
-    protected $viewCount = 0;
+    private int $viewCount = 0;
 
     /**
-     *
-     * @var PublicFile
-     *
      * @todo only store file URL
      */
     #[ORM\JoinColumn(name: 'poster_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: PublicFile::class)]
-    protected ?PublicFile $poster = null;
-
-    /**
-     * @var string
-     */
-    #[ORM\Column(type: Types::STRING)]
-    protected $moderation = Forum::VALIDATE_NONE;
+    private ?PublicFile $poster = null;
 
     public function __construct()
     {
         $this->refreshUuid();
 
         $this->messages = new ArrayCollection();
-        $this->creationDate = new DateTime();
-        $this->updated = new DateTime();
+        $this->creationDate = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     public function getTitle(): ?string
@@ -152,12 +128,12 @@ class Subject
         return $this->creator;
     }
 
-    public function getCreationDate()
+    public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    public function getMessages()
+    public function getMessages(): Collection
     {
         return $this->messages;
     }
@@ -169,7 +145,7 @@ class Subject
         }
     }
 
-    public function setSticked(bool $sticked)
+    public function setSticked(bool $sticked): void
     {
         $this->sticked = $sticked;
     }
@@ -179,68 +155,58 @@ class Subject
         return $this->sticked;
     }
 
-    public function setCreationDate($date)
+    public function setCreationDate(\DateTimeInterface $date): void
     {
         $this->creationDate = $date;
     }
 
-    public function setModificationDate($date)
+    public function setModificationDate(\DateTimeInterface $date): void
     {
         $this->updated = $date;
     }
 
-    public function getModificationDate()
+    public function getModificationDate(): ?\DateTimeInterface
     {
         return $this->updated;
     }
 
-    public function setClosed($isClosed)
+    public function setClosed(bool $isClosed): void
     {
         $this->closed = $isClosed;
     }
 
-    public function isClosed()
+    public function isClosed(): bool
     {
         return $this->closed;
     }
 
-    public function setFlagged($bool)
+    public function setFlagged(bool $flagged): void
     {
-        $this->flagged = $bool;
+        $this->flagged = $flagged;
     }
 
-    public function isFlagged()
+    public function isFlagged(): bool
     {
         return $this->flagged;
     }
 
-    public function getViewCount()
+    public function getViewCount(): int
     {
         return $this->viewCount;
     }
 
-    public function setViewCount($viewCount)
+    public function setViewCount(int $viewCount): void
     {
         $this->viewCount = $viewCount;
     }
 
-    public function setPoster(?PublicFile $file = null)
+    public function setPoster(?PublicFile $file = null): void
     {
         $this->poster = $file;
     }
 
-    public function getPoster()
+    public function getPoster(): ?PublicFile
     {
         return $this->poster;
-    }
-
-    public function setModerated($moderated)
-    {
-        $this->moderation = $moderated;
-    }
-
-    public function getModerated()
-    {
-        return $this->moderation ? $this->moderation : Forum::VALIDATE_NONE;
     }
 }

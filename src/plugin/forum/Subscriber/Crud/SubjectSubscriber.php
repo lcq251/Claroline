@@ -15,19 +15,17 @@ use Claroline\ForumBundle\Entity\Validation\User as UserValidation;
 use Claroline\ForumBundle\Messenger\NotifyUsersOnMessageCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SubjectSubscriber implements EventSubscriberInterface
 {
-    use PermissionCheckerTrait;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly MessageBusInterface $messageBus,
         private readonly ObjectManager $om,
         private readonly FileManager $fileManager
     ) {
-        $this->authorization = $authorization;
     }
 
     public static function getSubscribedEvents(): array
@@ -44,40 +42,9 @@ class SubjectSubscriber implements EventSubscriberInterface
     {
         /** @var Subject $subject */
         $subject = $event->getObject();
-        $forum = $subject->getForum();
 
-        // create user if not here
-        if ($subject->getCreator()) {
-            $user = $this->om->getRepository(UserValidation::class)->findOneBy([
-                'user' => $subject->getCreator(),
-                'forum' => $forum,
-            ]);
-
-            if (!$user) {
-                $user = new UserValidation();
-                $user->setForum($forum);
-                $user->setUser($subject->getCreator());
-            }
-        }
-
-        $moderation = Forum::VALIDATE_NONE;
-        if (!$this->checkPermission('EDIT', $forum->getResourceNode())) {
-            $moderation = $forum->getValidationMode();
-
-            if (Forum::VALIDATE_PRIOR_ONCE === $moderation && $user->getAccess()) {
-                // user has already posted an accepted message
-                $moderation = Forum::VALIDATE_NONE;
-            }
-        }
-
-        $subject->setModerated($moderation);
-
-        $messages = $subject->getMessages();
-        $first = $messages && isset($messages[0]) ? $messages[0] : null;
-        if ($first) {
-            $first->setModerated($moderation);
-
-            $this->om->persist($first);
+        if (empty($subject->getCreator())) {
+            $subject->setCreator($this->tokenStorage->getToken()?->getUser());
         }
     }
 

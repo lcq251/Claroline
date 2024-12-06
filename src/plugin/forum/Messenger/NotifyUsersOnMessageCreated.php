@@ -15,7 +15,7 @@ use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 
 class NotifyUsersOnMessageCreated implements AsyncHighMessageInterface
 {
-    private $messageId;
+    private int $messageId;
 
     public function __construct(int $messageId)
     {

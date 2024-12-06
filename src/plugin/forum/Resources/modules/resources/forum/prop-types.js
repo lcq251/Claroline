@@ -1,33 +1,37 @@
 import {PropTypes as T} from 'prop-types'
+import {User as UserType} from '#/main/community/user/prop-types'
 
 const Forum = {
   propTypes: {
-    id: T.string.isRequired,
-    display: T.shape({
-      description: T.string,
-      showOverview: T.bool.isRequired,
-      messageOrder: T.oneOf(['ASC', 'DESC']),
-      expandComments: T.bool
+    id: T.string.isRequired
+  }
+}
+
+const Subject = {
+  propTypes: {
+    id: T.string,
+    forum: T.shape({
+      id: T.string.isRequired
     }),
-    restrictions: T.shape({}),
+    content: T.string,
+    title: T.string,
+    poster: T.string,
     meta: T.shape({
-      users: T.number.isRequired,
-      subjects: T.number.isRequired,
+      views: T.number,
       messages: T.number.isRequired,
-      tags: T.arrayOf(T.shape({
-        id: T.string,
-        name: T.string
-      }))
-    })
+      creator: T.shape(UserType.propTypes),
+      created: T.string.isRequired,
+      updated: T.string.isRequired,
+      sticky: T.bool.isRequired
+    }),
+    restrictions: T.shape({})
   },
   defaultProps: {
-    display: {
-      messageOrder: 'ASC',
-      expandComments: false
-    }
+
   }
 }
 
 export {
-  Forum
+  Forum,
+  Subject
 }

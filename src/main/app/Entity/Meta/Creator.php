@@ -9,8 +9,6 @@ trait Creator
 {
     /**
      * The user who created the entity.
-     *
-     *
      */
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]

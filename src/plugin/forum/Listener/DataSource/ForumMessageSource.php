@@ -18,27 +18,18 @@ use Claroline\CoreBundle\Security\PlatformRoles;
 use Claroline\ForumBundle\Entity\Message;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ForumSource
+class ForumMessageSource
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var FinderProvider */
-    private $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions() ?: [];
         $options['hiddenFilters']['published'] = true;
-        $options['hiddenFilters']['moderation'] = false;
         $options['hiddenFilters']['flagged'] = false;
 
         if (DataSource::CONTEXT_HOME === $event->getContext()) {

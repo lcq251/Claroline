@@ -25,6 +25,16 @@ class SubjectSerializer
 
     private ObjectRepository $messageRepo;
 
+    public function __construct(
+        private readonly FinderProvider $finder,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PublicFileSerializer $fileSerializer,
+        private readonly ObjectManager $om,
+        private readonly UserSerializer $userSerializer
+    ) {
+        $this->messageRepo = $om->getRepository(Message::class);
+    }
+
     public function getClass(): string
     {
         return Subject::class;
@@ -45,25 +55,11 @@ class SubjectSerializer
         return '#/plugin/forum/subject';
     }
 
-    public function __construct(
-        private readonly FinderProvider $finder,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly PublicFileSerializer $fileSerializer,
-        private readonly ObjectManager $om,
-        private readonly UserSerializer $userSerializer,
-        private readonly ForumManager $manager
-    ) {
-        $this->messageRepo = $om->getRepository(Message::class);
-    }
-
-    /**
-     * Serializes a Subject entity.
-     */
     public function serialize(Subject $subject, ?array $options = []): array
     {
         $first = $this->messageRepo->findOneBy([
-          'subject' => $subject,
-          'first' => true,
+            'subject' => $subject,
+            'first' => true,
         ]);
 
         return [
@@ -71,11 +67,11 @@ class SubjectSerializer
             'forum' => [
                 'id' => $subject->getForum()->getUuid(),
             ],
-            'tags' => $this->serializeTags($subject),
-            'content' => $first ? $first->getContent() : null,
+            'poster' => $subject->getPoster() ? $subject->getPoster()->getUrl() : null,
             'title' => $subject->getTitle(),
+            'content' => $first ? $first->getContent() : null,
+            'tags' => $this->serializeTags($subject),
             'meta' => [
-                'moderation' => $subject->getModerated(),
                 'views' => $subject->getViewCount(),
                 // don't use Finder in a Serializer
                 'messages' => $this->finder->fetch(Message::class, ['subject' => $subject->getUuid(), 'parent' => null], null, 0, 0, true),
@@ -86,7 +82,6 @@ class SubjectSerializer
                 'closed' => $subject->isClosed(),
                 'flagged' => $subject->isFlagged(),
             ],
-            'poster' => $subject->getPoster() ? $subject->getPoster()->getUrl() : null,
         ];
     }
 
@@ -96,8 +91,8 @@ class SubjectSerializer
     public function deserialize(array $data, Subject $subject, array $options = []): Subject
     {
         $first = $this->messageRepo->findOneBy([
-          'subject' => $subject,
-          'first' => true,
+            'subject' => $subject,
+            'first' => true,
         ]);
 
         if (!in_array(Options::REFRESH_UUID, $options)) {
@@ -108,7 +103,6 @@ class SubjectSerializer
         $this->sipe('meta.sticky', 'setSticked', $data, $subject);
         $this->sipe('meta.closed', 'setClosed', $data, $subject);
         $this->sipe('meta.flagged', 'setFlagged', $data, $subject);
-        $this->sipe('meta.moderation', 'setModerated', $data, $subject);
 
         if (isset($data['content'])) {
             // TODO this should be done in the CRUD instead
@@ -116,7 +110,6 @@ class SubjectSerializer
                 $first = new Message();
                 $first->setFirst(true);
                 $first->setSubject($subject);
-                $first->setModerated($subject->getModerated());
             }
 
             $first->setContent($data['content']);
@@ -173,7 +166,7 @@ class SubjectSerializer
         return $subject;
     }
 
-    private function serializeTags(Subject $subject)
+    private function serializeTags(Subject $subject): array
     {
         $event = new GenericDataEvent([
             'class' => Subject::class,
@@ -187,7 +180,7 @@ class SubjectSerializer
     /**
      * Deserializes Item tags.
      */
-    private function deserializeTags(Subject $subject, array $tags = [], array $options = [])
+    private function deserializeTags(Subject $subject, array $tags = [], array $options = []): void
     {
         $event = new GenericDataEvent([
             'tags' => $tags,

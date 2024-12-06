@@ -25,28 +25,6 @@ const ForumEditorAppearance = () =>
                 [displayMode]: DISPLAY_MODES[displayMode].label
               }), {})
             }
-          }, {
-            name: 'resource.display.messageOrder',
-            type: 'choice',
-            label: trans('message_order', {}, 'forum'),
-            options: {
-              noEmpty: true,
-              choices: {
-                ASC: trans('from_older_to_newer', {}, 'forum'),
-                DESC: trans('from_newer_to_older', {}, 'forum')
-              }
-            }
-          }
-        ]
-      }, {
-        title: trans('comments'),
-        subtitle: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum porta dolor orci, ac venenatis sem fermentum nec.', {}, 'forum'),
-        primary: true,
-        fields: [
-          {
-            name: 'resource.display.expandComments',
-            type: 'boolean',
-            label: trans('expand_comments', {}, 'forum')
           }
         ]
       }

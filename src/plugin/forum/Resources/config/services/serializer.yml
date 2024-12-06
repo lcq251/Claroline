@@ -6,9 +6,9 @@ services:
 
     Claroline\ForumBundle\Serializer\MessageSerializer:
         arguments:
-           - '@Claroline\CoreBundle\API\Serializer\MessageSerializer'
            - '@Claroline\AppBundle\Persistence\ObjectManager'
            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
+           - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
     Claroline\ForumBundle\Serializer\SubjectSerializer:
         arguments:
@@ -17,4 +17,3 @@ services:
            - '@Claroline\CoreBundle\API\Serializer\File\PublicFileSerializer'
            - '@Claroline\AppBundle\Persistence\ObjectManager'
            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
-           - '@Claroline\ForumBundle\Manager\ForumManager'

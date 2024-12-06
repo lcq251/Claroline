@@ -12,7 +12,7 @@ import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {Forum as ForumType} from '#/plugin/forum/resources/forum/prop-types'
 import {selectors} from '#/plugin/forum/resources/forum/store'
-import {actions} from '#/plugin/forum/resources/forum/player/store'
+import {actions} from '#/plugin/forum/resources/forum/store'
 import {SubjectCard} from '#/plugin/forum/resources/forum/data/components/subject-card'
 import get from 'lodash/get'
 

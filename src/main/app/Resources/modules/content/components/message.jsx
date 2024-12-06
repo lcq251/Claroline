@@ -14,6 +14,7 @@ import {LinkButton} from '#/main/app/buttons/link/components/button'
 import {route} from '#/main/community/user/routing'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {displayUsername} from '#/main/community/utils'
+import {Datetime} from '#/main/app/components/date'
 
 /**
  * Representation of a User message.
@@ -23,39 +24,47 @@ const ContentMessage = props => {
   let SenderComponent
   if (props.user) {
     SenderComponent = (
-      <LinkButton target={route(props.user)} className="user-message-sender">
-        <UserAvatar user={props.user} size="md" />
+      <LinkButton target={route(props.user)} className="user-message-sender focus-ring">
+        <UserAvatar user={props.user} size="sm" />
       </LinkButton>
     )
   } else {
     SenderComponent = (
       <span className="user-message-sender">
-        <UserAvatar size="md" />
+        <UserAvatar size="sm" />
       </span>
     )
   }
 
   return (
-    <div className={classes('user-message-container', props.className, {
+    <article className={classes('user-message-container', props.className, {
       'user-message-left': 'left' === props.position,
       'user-message-right': 'right' === props.position
     })}>
       {SenderComponent}
 
-      <div className="user-message">
-        <div className="user-message-meta">
-          <div className="user-message-info">
-            {displayUsername(props.user)}
+      <div className="user-message p-3" role="presentation">
+        <div className="user-message-meta fs-sm mb-3 d-flex flex-row gap-2 align-items-center" role="presentation">
+          {props.user ?
+            <LinkButton target={route(props.user)} className="text-reset fw-bold">
+              {displayUsername(props.user)}
+            </LinkButton> :
+            <span className="fw-bold" role="presentation">
+              {displayUsername()}
+            </span>
+          }
 
-            {props.date &&
-              <div className="date">{trans('published_at', {date: displayDate(props.date, true, true)})}</div>
-            }
-          </div>
+          {props.date &&
+            <>
+              <span className="text-body-secondary" role="presentation">-</span>
+              <Datetime value={props.date} long={true} time={true} className="text-body-secondary" />
+            </>
+          }
 
           {0 !== props.actions.length &&
             <Toolbar
-              className="user-message-actions btn-toolbar"
-              buttonName="btn btn-text-secondary"
+              className="user-message-actions btn-toolbar ms-auto"
+              buttonName="btn btn-text-body p-0"
               tooltip="bottom"
               toolbar="more"
               actions={props.actions}
@@ -65,7 +74,7 @@ const ContentMessage = props => {
 
         {props.children}
       </div>
-    </div>
+    </article>
   )
 }
 

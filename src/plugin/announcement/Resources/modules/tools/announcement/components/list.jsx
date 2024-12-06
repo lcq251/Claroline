@@ -85,7 +85,7 @@ const Announce = (props) =>
             <UserMicro
               className="fs-sm fw-bolder"
               {...get(props.announcement, 'meta.creator', {})}
-              noStatus={true}
+              // noStatus={true}
               link={true}
             />
           }

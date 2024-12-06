@@ -3,7 +3,9 @@
     flex-direction: row;
     align-items: flex-start;
     max-width: 100%;
-    margin-bottom: $component-margin-bottom;
+    // margin-bottom: $component-margin-bottom;
+
+    gap: $user-message-arrow-size + map-get($spacers, 3);
 
     &.user-message-left {
         .user-message-sender {
@@ -12,7 +14,7 @@
 
         .user-message {
             order: 2;
-            margin-left: 30px;
+
         }
     }
 
@@ -23,58 +25,19 @@
 
         .user-message {
             order: 1;
-            margin-right: 30px;
+            // margin-right: $user-message-arrow-size + map-get($spacers, 3);
         }
     }
 }
 
-.user-message-form-container {
-    .user-message > .form-group {
-        padding: 15px;
-        margin: 0;
-    }
-
-    .btn-save {
-        @include border-radius(0 0 $user-message-border-radius $user-message-border-radius);
-    }
+.user-message-sender {
+    line-height: 1;
+    border-radius: 50%;
+    font-size: 0;
 }
 
 .user-message-meta {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    color: var(--#{$prefix}secondary-color);
-    font-size: $font-size-sm;
-    padding: 10px 0;
-    margin: 0 15px;
-    border-bottom: 1px solid $user-message-inner-border;
-
-    .user-message-info {
-        flex: 1 0 auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-
-        .date {
-            padding: 0 10px;
-            font-weight: normal;
-            font-style: italic;
-        }
-    }
-
-    .user-message-actions {
-        padding-left: 10px;
-        border-left: 1px solid $user-message-inner-border;
-        .btn {
-            padding: 0;
-            + .btn {
-                margin-left: 5px;
-            }
-        }
-    }
+    line-height: $line-height-base * 1rem;
 }
 
 .user-message {
@@ -82,7 +45,7 @@
     flex: 1;
     align-self: stretch;
     background: $user-message-bg;
-    border: 1px solid $user-message-border;
+    border: $user-message-border-width solid $user-message-border-color;
     @include border-radius($user-message-border-radius);
 }
 
@@ -92,26 +55,26 @@
 .user-message-left {
     .user-message:before {
         position: absolute;
-        left: -16px;
-        top: 14px;
+        left: calc(-1 * ($user-message-arrow-size + $user-message-border-width));
+        top: calc($user-message-arrow-size - $user-message-border-width);
         content: " ";
 
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 16px 16px 16px 0;
-        border-color: transparent $user-message-border transparent transparent;
+        border-width: calc($user-message-arrow-size + $user-message-border-width) calc($user-message-arrow-size + $user-message-border-width) calc($user-message-arrow-size + $user-message-border-width) 0;
+        border-color: transparent $user-message-border-color transparent transparent;
     }
     .user-message:after {
         position: absolute;
-        left: -15px;
-        top: 15px;
+        left: $user-message-arrow-size * -1;
+        top: $user-message-arrow-size;
         content: " ";
 
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 15px 15px 15px 0;
+        border-width: $user-message-arrow-size $user-message-arrow-size $user-message-arrow-size 0;
         border-color: transparent $user-message-bg transparent transparent;
     }
 }
@@ -119,32 +82,28 @@
 .user-message-right {
     .user-message:before {
         position: absolute;
-        right: -16px;
-        top: 14px;
+        right: calc(-1 * ($user-message-arrow-size + $user-message-border-width));
+        top: calc($user-message-arrow-size - $user-message-border-width);
         content: " ";
 
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 16px 0 16px 16px;
-        border-color: transparent transparent transparent $user-message-border;
+        border-width: calc($user-message-arrow-size + $user-message-border-width) 0 calc($user-message-arrow-size + $user-message-border-width) calc($user-message-arrow-size + $user-message-border-width);
+        border-color: transparent transparent transparent $user-message-border-color;
     }
     .user-message:after {
         position: absolute;
-        right: -15px;
-        top: 15px;
+        right: $user-message-arrow-size * -1;
+        top: $user-message-arrow-size;
         content: " ";
 
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 15px 0 15px 15px;
+        border-width: $user-message-arrow-size 0 $user-message-arrow-size $user-message-arrow-size;
         border-color: transparent transparent transparent $user-message-bg;
     }
-}
-
-.user-message-content {
-    padding: $panel-body-padding;
 }
 
 // message variants
@@ -154,23 +113,6 @@
         border-color: $primary;
         &:before {
             border-color: transparent $primary transparent transparent;
-        }
-    }
-
-    .user-message-meta {
-        border-bottom-color: $primary;
-    }
-}
-
-.user-message-hidden {
-    .user-message {
-        background: var(--#{$prefix}tertiary-bg);
-        border: 1px solid var(--#{$prefix}tertiary-bg);
-        &:before {
-            border-color: transparent var(--#{$prefix}tertiary-bg) transparent transparent;
-        }
-        &:after {
-            border-color: transparent transparent transparent var(--#{$prefix}tertiary-bg);
         }
     }
 }

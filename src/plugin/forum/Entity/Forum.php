@@ -22,34 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Forum extends AbstractResource
 {
-    use HasHomePage;
-
-    public const VALIDATE_NONE = 'NONE';
-    public const VALIDATE_PRIOR_ONCE = 'PRIOR_ONCE';
-    public const VALIDATE_PRIOR_ALL = 'PRIOR_ALL';
-
-    public const DISPLAY_TABLE = 'table';
-    public const DISPLAY_LIST = 'list';
-    public const DISPLAY_TILES = 'tiles';
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $validationMode = self::VALIDATE_NONE;
-
-    #[ORM\Column(type: Types::INTEGER)]
-    private ?int $displayMessages = 3;
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $dataListOptions = self::DISPLAY_LIST;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $lockDate = null;
-
-    #[ORM\Column(options: ['default' => 'ASC'])]
-    private string $messageOrder = 'ASC';
-
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $expandComments = false;
-
     /**
      * @var Collection<int, Subject>
      */
@@ -77,65 +49,5 @@ class Forum extends AbstractResource
     public function removeSubject(Subject $subject): void
     {
         $this->subjects->removeElement($subject);
-    }
-
-    public function setValidationMode($mode): void
-    {
-        $this->validationMode = $mode;
-    }
-
-    public function getValidationMode(): string
-    {
-        return $this->validationMode;
-    }
-
-    public function setDataListOptions($options): void
-    {
-        $this->dataListOptions = $options;
-    }
-
-    public function getDataListOptions(): string
-    {
-        return $this->dataListOptions;
-    }
-
-    public function setLockDate(\DateTimeInterface $date = null): void
-    {
-        $this->lockDate = $date;
-    }
-
-    public function getLockDate(): ?\DateTimeInterface
-    {
-        return $this->lockDate;
-    }
-
-    public function setDisplayMessage(int $count): void
-    {
-        $this->displayMessages = $count;
-    }
-
-    public function getDisplayMessages(): ?int
-    {
-        return $this->displayMessages;
-    }
-
-    public function getMessageOrder(): string
-    {
-        return $this->messageOrder;
-    }
-
-    public function setMessageOrder(string $order): void
-    {
-        $this->messageOrder = $order;
-    }
-
-    public function getExpandComments(): bool
-    {
-        return $this->expandComments;
-    }
-
-    public function setExpandComments(bool $expand): void
-    {
-        $this->expandComments = $expand;
     }
 }

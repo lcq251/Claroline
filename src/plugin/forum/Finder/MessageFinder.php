@@ -12,7 +12,6 @@
 namespace Claroline\ForumBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
-use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Message;
 use Doctrine\ORM\QueryBuilder;
 
@@ -61,24 +60,6 @@ class MessageFinder extends AbstractFinder
                     $qb->andWhere("creator.uuid = :{$filterName}");
                     $qb->setParameter($filterName, $filterValue);
                     break;
-                case 'moderation':
-                    if ($filterValue) {
-                        $qb->andWhere($qb->expr()->orX(
-                            $qb->expr()->eq('obj.moderation', ':prior_once'),
-                            $qb->expr()->eq('obj.moderation', ':prior_all')
-                        ));
-
-                        $qb->setParameter('prior_once', Forum::VALIDATE_PRIOR_ONCE);
-                        $qb->setParameter('prior_all', Forum::VALIDATE_PRIOR_ALL);
-                    } else {
-                        $qb->andWhere($qb->expr()->orX(
-                            $qb->expr()->eq('obj.moderation', ':filter_none'),
-                            $qb->expr()->isNull('obj.moderation')
-                        ));
-
-                        $qb->setParameter('filter_none', Forum::VALIDATE_NONE);
-                    }
-                    break;
                 case 'workspace':
                     if (!$workspaceJoin) {
                         $qb->join('node.workspace', 'w');
@@ -115,7 +96,7 @@ class MessageFinder extends AbstractFinder
 
             switch ($sortByProperty) {
                 case 'meta.created':
-                    $qb->orderBy('obj.creationDate', $sortByDirection);
+                    $qb->orderBy('obj.createdAt', $sortByDirection);
                     break;
                 case 'subject.title':
                     $qb->orderBy('subject.title', $sortByDirection);
@@ -147,10 +128,6 @@ class MessageFinder extends AbstractFinder
             'flagged' => [
                 'type' => 'boolean',
                 'description' => 'If the message is visible',
-            ],
-            'moderation' => [
-                'type' => 'boolean',
-                'description' => 'If the message is waiting for a moderator',
             ],
             'content' => [
                 'type' => 'string',

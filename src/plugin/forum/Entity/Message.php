@@ -11,22 +11,35 @@
 
 namespace Claroline\ForumBundle\Entity;
 
+use Claroline\AppBundle\Entity\Identifier\Id;
+use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\CreatedAt;
+use Claroline\AppBundle\Entity\Meta\Creator;
+use Claroline\AppBundle\Entity\Meta\UpdatedAt;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Entity\AbstractMessage;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_forum_message')]
 #[ORM\Entity]
-class Message extends AbstractMessage
+class Message
 {
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    use Id;
+    use Uuid;
+    use Creator;
+    use CreatedAt;
+    use UpdatedAt;
+
+    #[ORM\Column(name: 'content', type: Types::TEXT)]
+    private ?string $content = null;
+
     #[ORM\ManyToOne(targetEntity: Subject::class, cascade: ['persist'], inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Subject $subject = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Message $parent = null;
 
     /**
@@ -34,9 +47,6 @@ class Message extends AbstractMessage
      */
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'parent')]
     private Collection $children;
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $moderation = Forum::VALIDATE_NONE;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $flagged = false;
@@ -46,9 +56,22 @@ class Message extends AbstractMessage
 
     public function __construct()
     {
-        parent::__construct();
+        $this->refreshUuid();
+
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
 
         $this->children = new ArrayCollection();
+    }
+
+    public function setContent(?string $content): void
+    {
+        $this->content = $content;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
     }
 
     public function setSubject(Subject $subject): void
@@ -73,16 +96,6 @@ class Message extends AbstractMessage
         }
 
         return null;
-    }
-
-    public function setModerated($moderated): void
-    {
-        $this->moderation = $moderated;
-    }
-
-    public function getModerated(): string
-    {
-        return $this->moderation ?: Forum::VALIDATE_NONE;
     }
 
     public function setParent(?self $parent = null): void
