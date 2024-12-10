@@ -46,10 +46,10 @@ class Announcement
     private ?string $announcer = null;
 
     #[ORM\Column(name: 'creation_date', type: Types::DATETIME_MUTABLE, nullable: false)]
-    private ?\DateTimeInterface $creationDate;
+    private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(name: 'publication_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationDate;
+    private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     private ?bool $visible = true;

@@ -16,8 +16,8 @@ final class Version20241202080000 extends AbstractMigration
     {
         $this->addSql('
             INSERT INTO claro_ordered_tool
-            (uuid, context_name, context_id, tool_name)
-            SELECT UUID() as uuid, "workspace" AS context_name, w.uuid, "announcement" AS tool_name
+            (uuid, context_name, context_id, tool_name, entity_order)
+            SELECT UUID() as uuid, "workspace" AS context_name, w.uuid, "announcement" AS tool_name, 1 AS entity_order
             FROM claro_workspace AS w
             WHERE w.archived = false
         ');
