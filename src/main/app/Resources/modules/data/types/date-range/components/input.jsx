@@ -28,11 +28,10 @@ class DateRangeInput extends Component {
 
   render() {
     return (
-      <div className={classes('d-flex flex-row gap-4', this.props.className)} role="presentation">
+      <div className={classes('d-flex flex-row flex-wrap flex-md-nowrap gap-4', this.props.className)} role="presentation">
         <FormGroup
           id={`${this.props.id}-start`}
-          className="flex-fill"
-          //icon="fa fa-fw fa-calendar-check"
+          className="flex-fill w-50"
           label={trans('start_date')}
           error={isArray(this.props.error) && get(this.props, 'error[0]') ? get(this.props, 'error[0]') : null}
         >
@@ -47,13 +46,13 @@ class DateRangeInput extends Component {
             time={this.props.time}
             minTime={this.props.minTime}
             maxTime={this.props.maxTime}
+            error={isArray(this.props.error) && get(this.props, 'error[0]') ? get(this.props, 'error[0]') : null}
           />
         </FormGroup>
 
         <FormGroup
           id={`${this.props.id}-end`}
-          className="flex-fill"
-          //icon="fa fa-fw fa-calendar-xmark"
+          className="flex-fill w-50"
           label={trans('end_date')}
           error={isArray(this.props.error) && get(this.props, 'error[1]') ? get(this.props, 'error[1]') : null}
         >
@@ -68,6 +67,7 @@ class DateRangeInput extends Component {
             time={this.props.time}
             minTime={this.props.minTime}
             maxTime={this.props.maxTime}
+            error={isArray(this.props.error) && get(this.props, 'error[1]') ? get(this.props, 'error[1]') : null}
           />
         </FormGroup>
       </div>
