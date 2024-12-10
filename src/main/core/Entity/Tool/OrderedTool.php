@@ -43,22 +43,6 @@ class OrderedTool implements CrudEntityInterface
     private ?string $name;
 
     /**
-     * Display tool icon when the tool is rendered.
-     *
-     * @deprecated
-     */
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
-    private bool $showIcon = false;
-
-    /**
-     * Display in fullscreen when the tool is opened.
-     *
-     * @deprecated
-     */
-    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    private bool $fullscreen = false;
-
-    /**
      * @var Collection<int, ToolRights>
      */
     #[ORM\OneToMany(targetEntity: ToolRights::class, mappedBy: 'orderedTool')]
@@ -93,38 +77,6 @@ class OrderedTool implements CrudEntityInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getShowIcon(): bool
-    {
-        return $this->showIcon;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setShowIcon(bool $showIcon): void
-    {
-        $this->showIcon = $showIcon;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getFullscreen(): bool
-    {
-        return $this->fullscreen;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setFullscreen(bool $fullscreen): void
-    {
-        $this->fullscreen = $fullscreen;
     }
 
     public function getRights(): Collection
