@@ -75,7 +75,7 @@ class NumberInput extends PureComponent {
         })} role="presentation">
           <NumberField
             {...fieldProps}
-            className={getValidationClassName(this.props.error, this.props.validating)}
+            className={getValidationClassName(this.props.error)}
           />
 
           <span className="input-group-text">
@@ -88,7 +88,7 @@ class NumberInput extends PureComponent {
     return (
       <NumberField
         {...fieldProps}
-        className={classes(this.props.className, getValidationClassName(this.props.error, this.props.validating), {
+        className={classes(this.props.className, getValidationClassName(this.props.error), {
           [`form-control-${this.props.size}`]: !!this.props.size
         })}
       />

@@ -21,7 +21,6 @@ const Criterion = props =>
       hideLabel={true}
       value={props.criterion.instruction}
       onChange={value => props.onChange('instruction', value)}
-      warnOnly={!props.validating}
       error={props.error}
     />
 
@@ -45,7 +44,6 @@ Criterion.propTypes = {
     CriterionTypes.propTypes
   ).isRequired,
   error: T.string,
-  validating: T.bool,
   onChange: T.func.isRequired,
   onDelete: T.func.isRequired
 }
@@ -59,7 +57,6 @@ const CriteriaInput = props =>
             key={`criterion-${index}`}
             index={index}
             criterion={criterion}
-            validating={props.validating}
             error={props.error && typeof props.error !== 'string' ? props.error[index] : undefined}
             onChange={(propName, propValue) => {
               const newCriterion = Object.assign({}, criterion, {

@@ -146,10 +146,7 @@ class DataInput extends Component {
           autoFocus: this.props.autoFocus,
           size: this.props.size,
           onChange: this.onChange,
-          onError: this.props.onError || identity,
-
-          // for retro-compatibility
-          validating: this.props.validating
+          onError: this.props.onError || identity
         })
       )
     }
@@ -167,13 +164,10 @@ class DataInput extends Component {
         hideLabel: this.props.hideLabel,
         help: this.props.help,
         error: this.props.error,
-        required: !this.props.required,
+        required: this.props.required,
         recommended: this.props.recommended,
-
         // for retro-compatibility
-        optional: !this.props.required,
-        validating: this.props.validating,
-        warnOnly: !this.props.validating
+        optional: !this.props.required
       },
       this.renderInput()
     )
@@ -198,7 +192,6 @@ DataInput.propTypes = {
   required: T.bool,
   recommended: T.bool,
   disabled: T.bool,
-  validating: T.bool,
 
   // field data
   value: T.any, // depends on the data type
@@ -224,7 +217,6 @@ DataInput.defaultProps = {
   options: {},
   required: false,
   disabled: false,
-  validating: false,
   recommended: false
 }
 

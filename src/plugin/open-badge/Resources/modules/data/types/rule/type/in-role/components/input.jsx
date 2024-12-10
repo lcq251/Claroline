@@ -13,7 +13,7 @@ import {Role as RoleTypes} from '#/main/community/prop-types'
 const InRoleInput = (props) =>
   <FormGroup
     id={props.id}
-    className="form-last"
+    className="mb-0"
     label={trans('role')}
   >
     <RoleInput {...props} />

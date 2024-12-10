@@ -1,5 +1,7 @@
 {
   "show-forum": "Voir le forum",
   "show-subject": "Voir le sujet",
-  "add_subject": "Poster un sujet"
+  "add_subject": "Poster un sujet",
+  "save_subject": "Enregistrer le sujet",
+  "show_flagged_messages": "Voir les messages signalés"
 }

@@ -111,7 +111,6 @@ ContentThumbnail.propTypes = {
   handleEdit: T.func,
   handleDelete: T.func,
   sortDirection: T.string,
-  validating: T.bool,
   hasErrors: T.bool,
   showModal: T.func.isRequired,
   connectDragPreview: T.func.isRequired,

@@ -227,15 +227,7 @@ const DataInput = {
     required: T.bool,
     size: T.oneOf(['sm', 'lg']),
     onChange: T.func.isRequired,
-    onError: T.func,
-    /**
-     * @deprecated
-     */
-    warnOnly: T.bool,
-    /**
-     * @deprecated
-     */
-    validating: T.bool
+    onError: T.func
   },
   defaultProps: {
     required: false,
@@ -256,14 +248,6 @@ const DataGroup = {
     hideLabel: T.bool,
     help: T.oneOfType([T.string, T.arrayOf(T.string)]),
     icon: T.string,
-    /**
-     * @deprecated
-     */
-    warnOnly: T.bool,
-    /**
-     * @deprecated
-     */
-    validating: T.bool,
     error: T.oneOfType([T.string, T.arrayOf(T.string), T.arrayOf(T.arrayOf(T.string))]),
     /**
      * @deprecated

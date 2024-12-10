@@ -187,8 +187,7 @@ DataDisplay.defaultProps = {
   hideLabel: false,
   options: {},
   required: false,
-  disabled: false,
-  validating: false
+  disabled: false
 }
 
 export {

@@ -115,7 +115,7 @@ class PasswordInput extends PureComponent {
           <input
             id={this.props.id}
             type={this.state.visible ? 'text':'password'}
-            className={classes('form-control', getValidationClassName(this.props.error, this.props.validating))}
+            className={classes('form-control', getValidationClassName(this.props.error))}
             value={this.props.value || ''}
             disabled={this.props.disabled}
             onChange={this.onChange}

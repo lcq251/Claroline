@@ -9,7 +9,7 @@
     // Same style as an H4 for now
     font-size: $h4-font-size;
     margin-top: 0;
-    margin-bottom: floor(math.div($line-height-computed, 2));
+    margin-bottom: map-get($spacers, 3);
   }
 
   .user-answer {

@@ -113,7 +113,7 @@ const WikiSectionForm = connect(
     workspace: resourceSelectors.workspace(state),
     isNew: formSelect.isNew(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')),
     saveEnabled: formSelect.saveEnabled(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')),
-    valid: formSelect.valid(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')),
+    valid: formSelect.hasErrors(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')),
     isRoot: formSelect.data(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')).id === selectors.sectionsTree(state).id,
     sectionChoices: buildSectionMoveChoices(selectors.sectionsTree(state), formSelect.data(formSelect.form(state, selectors.STORE_NAME + '.sections.currentSection')).id)
   })

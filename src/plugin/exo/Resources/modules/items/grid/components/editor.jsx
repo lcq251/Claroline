@@ -146,7 +146,6 @@ const GridCellPopover = props =>
     title={trans('grid_edit_cell', {}, 'quiz')}
     keywords={props.solution.answers}
     _errors={props._errors}
-    validating={props.validating}
     showCaseSensitive={true}
     showScore={props.hasScore}
     hasExpectedAnswers={props.hasExpectedAnswers}
@@ -169,7 +168,6 @@ GridCellPopover.propTypes = {
   hasExpectedAnswers: T.bool.isRequired,
   _multiple: T.bool.isRequired,
   random: T.bool,
-  validating: T.bool.isRequired,
   _errors: T.shape({
     keywords: T.object
   }),
@@ -233,7 +231,6 @@ class GridCell extends Component {
                   solution={this.props.solution}
                   hasScore={this.props.hasScore}
                   hasExpectedAnswers={this.props.hasExpectedAnswers}
-                  validating={this.props.validating}
                   _multiple={this.props.cell._multiple || !isEmpty(this.props.cell.choices)}
                   random={this.props.cell.random}
                   _errors={this.props._errors}
@@ -348,7 +345,6 @@ GridCell.propTypes = {
   }),
   hasScore: T.bool.isRequired,
   hasExpectedAnswers: T.bool.isRequired,
-  validating: T.bool.isRequired,
   _errors: T.object,
   solutionOpened: T.bool.isRequired,
   update: T.func.isRequired,
@@ -372,7 +368,6 @@ const GridRow = props =>
         hasScore={props.score.type === SCORE_SUM && props.sumMode === constants.SUM_CELL}
         hasExpectedAnswers={props.hasExpectedAnswers}
         _errors={get(props, '_errors.'+cell.id)}
-        validating={props.validating}
         solutionOpened={props._popover === cell.id}
         update={(property, newValue) => props.updateCell(cell.id, property, newValue)}
         createSolution={() => props.createCellSolution(cell.id)}
@@ -427,7 +422,6 @@ GridRow.propTypes = {
     color: T.string.isRequired
   }).isRequired,
   deletable: T.bool.isRequired,
-  validating: T.bool.isRequired,
   _errors: T.object,
   _popover: T.string,
   removeRow: T.func.isRequired,
@@ -456,7 +450,6 @@ const GridTable = props =>
           hasExpectedAnswers={props.item.hasExpectedAnswers}
           sumMode={props.item.sumMode}
           deletable={utils.getNbRows(props.item.cells) > 1}
-          validating={props.validating}
           _errors={props.errors}
           _popover={props.item._popover}
           removeRow={() => props.removeRow(rowIndex)}
@@ -621,7 +614,6 @@ GridTable.propTypes = {
     _popover: T.string
   }).isRequired,
   hasScore: T.bool.isRequired,
-  validating: T.bool.isRequired,
   removeRow: T.func.isRequired,
   removeColumn: T.func.isRequired,
   openPopover: T.func.isRequired,
@@ -647,7 +639,6 @@ const GridEditor = (props) => {
     <GridTable
       item={decoratedItem}
       hasScore={props.hasAnswerScores}
-      validating={props.validating}
       update={props.update}
       removeRow={(row) => {
         const newItem = cloneDeep(decoratedItem)

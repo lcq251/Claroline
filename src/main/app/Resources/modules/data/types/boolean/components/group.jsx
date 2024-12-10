@@ -14,7 +14,6 @@ const BooleanGroup = props =>
     id={props.id}
     className={classes('form-check form-switch', props.className)}
     error={props.error}
-    warnOnly={props.warnOnly}
   >
     {props.children}
 

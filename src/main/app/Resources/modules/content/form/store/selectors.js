@@ -8,7 +8,7 @@ const form = createSelector(
     (state) => state,
     (state, formName) => formName
   ],
-  (state, formName) => get(state, formName)
+  (state, formName) => get(state, formName, {})
 )
 
 /**
@@ -19,7 +19,6 @@ const form = createSelector(
 const isNew = (formState) => formState.new
 
 const mode = (formState) => formState.mode
-const validating = (formState) => formState.validating
 const pendingChanges = (formState) => formState.pendingChanges
 const errors = (formState) => formState.errors
 const data = (formState) => formState.data
@@ -35,37 +34,25 @@ const value = (formState, prop, defaultValue) => get(data(formState), prop, defa
  */
 const originalValue = (formState, prop, defaultValue) => get(originalData(formState), prop, defaultValue)
 
-const valid = createSelector(
+const hasErrors = createSelector(
   [errors],
-  (errors) => isEmpty(errors)
+  (errors) => !isEmpty(errors)
 )
 
-/*const hasChanged = createSelector(
-  [data, originalData, pendingChanges],
-  (pendingChanges) => {
-    if (!pendingChanges) {
-      return false
-    }
-
-    return JSON.stringify(data) !== JSON.stringify(originalData)
-  }
-)*/
-
 const saveEnabled = createSelector(
-  [pendingChanges, validating, valid],
-  (pendingChanges, validating, valid) => pendingChanges && (!validating || valid)
+  [pendingChanges, hasErrors],
+  (pendingChanges, hasErrors) => pendingChanges && !hasErrors
 )
 
 export const selectors = {
   form,
   isNew,
   mode,
-  validating,
   pendingChanges,
   errors,
   data,
   originalData,
-  valid,
+  hasErrors,
   saveEnabled,
   value,
   originalValue

@@ -11,10 +11,7 @@ const FormError = (props) => {
     return (
       <ul className="list-unstyled mb-0" role="alert">
         {errors.map(error =>
-          <li key={toKey(error)} className={classes({
-            'incomplete-feedback': props.warnOnly,
-            'invalid-feedback': !props.warnOnly
-          })}>
+          <li key={toKey(error)} className="invalid-feedback">
             {error}
           </li>
         )}
@@ -23,10 +20,7 @@ const FormError = (props) => {
   }
 
   return (
-    <div className={classes({
-      'incomplete-feedback': props.warnOnly,
-      'invalid-feedback': !props.warnOnly
-    })} role="alert">
+    <div className="invalid-feedback" role="alert">
       {errors}
     </div>
   )
@@ -36,12 +30,7 @@ FormError.propTypes = {
   error: T.oneOfType([
     T.string,           // a single error message
     T.arrayOf(T.string) // a list of error messages
-  ]).isRequired,
-  warnOnly: T.bool
-}
-
-FormError.defaultProps = {
-  warnOnly: false
+  ]).isRequired
 }
 
 export {

@@ -231,7 +231,6 @@ class EntryFormComponent extends Component {
           <Form
             pendingChanges={this.props.pendingChanges}
             errors={!isEmpty(this.props.errors)}
-            validating={this.props.validating}
             save={{
               type: CALLBACK_BUTTON,
               callback: () => this.props.saveForm(this.props.entry, this.props.fields, this.props.isNew, this.props.history.push, this.props.path),
@@ -326,7 +325,6 @@ EntryFormComponent.propTypes = {
   removeKeyword: T.func.isRequired,
   history: T.object.isRequired,
   pendingChanges: T.bool.isRequired,
-  validating: T.bool.isRequired,
   showConfirm: T.bool.isRequired,
   confirmMessage: T.string
 }
@@ -352,7 +350,6 @@ const EntryForm = withRouter(connect(
     errors: formSelect.errors(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
     entry: formSelect.data(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
     pendingChanges: formSelect.pendingChanges(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
-    validating: formSelect.validating(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
     entryUser: selectors.entryUser(state),
     categories: selectors.categories(state),
     keywords: selectors.keywords(state)

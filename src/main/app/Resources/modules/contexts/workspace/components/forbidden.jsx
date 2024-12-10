@@ -213,6 +213,7 @@ class StandardRestrictions extends Component {
                     id="access-code"
                     label={trans('access_code')}
                     hideLabel={true}
+                    className="mb-4"
                   >
                     <PasswordInput
                       id="access-code"

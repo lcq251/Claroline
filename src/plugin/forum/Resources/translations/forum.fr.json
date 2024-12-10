@@ -11,7 +11,6 @@
     "new_subject": "Nouveau sujet",
     "open_subject": "Ouvrir le sujet",
     "create_subject": "Créer un sujet",
-    "post_the_subject": "Poster le sujet",
     "posts": "Messages",
     "posts_count": "Nombre de messages",
     "post": "Message",
@@ -26,12 +25,9 @@
     "see_message_context": "Voir le message en contexte",
     "see_subject": "Voir le sujet",
     "stick": "Épingler",
-    "stick_explanation": "Epingler un sujet le fera apparaitre en haut de la liste des sujets",
     "stuck": "Épinglé",
     "subject": "Sujet",
     "subjects": "Sujets",
-    "subject_edition": "Édition du sujet",
-    "subject_title":"Titre du sujet",
     "unstick": "Désépingler",
     "unflag": "Ne plus signaler"
 }

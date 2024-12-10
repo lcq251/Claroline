@@ -3,7 +3,6 @@ import merge from 'lodash/merge'
 
 import {DataProperty} from '#/main/app/data/types/prop-types'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
-import {constants} from '#/main/app/content/form/constants'
 
 const DataFormProperty = {
   propTypes: merge({}, DataProperty.propTypes, {
@@ -27,7 +26,6 @@ const DataFormProperty = {
     validate: T.func
   }),
   defaultProps: merge({}, DataProperty.defaultProps, {
-    mode: constants.FORM_MODE_SIMPLE,
     required: false,
     hideLabel: false,
     disabled: false,
@@ -73,7 +71,6 @@ const DataFormSection = {
     render: T.func
   },
   defaultProps: {
-    mode: constants.FORM_MODE_SIMPLE,
     primary: false,
     displayed: true,
     defaultOpened: false,

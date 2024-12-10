@@ -11,8 +11,8 @@ import {getValidationClassName} from '#/main/app/content/form/validator'
  */
 const FormSection = (props) =>
   <Section
-    {...omit(props, 'validating', 'errors')}
-    className={classes('form-section', props.className, getValidationClassName(props.errors, props.validating))}
+    {...omit(props, 'errors')}
+    className={classes('form-section', props.className, getValidationClassName(props.errors))}
   >
     {props.children}
   </Section>
@@ -22,12 +22,7 @@ FormSection.propTypes = {
   className: T.string,
   children: T.node.isRequired,
   disabled: T.bool,
-  validating: T.bool,
   errors: T.oneOfType([T.object, T.array])
-}
-
-FormSection.defaultProps = {
-  validating: false
 }
 
 const FormSections = props =>

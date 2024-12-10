@@ -20,7 +20,6 @@ export const FORM_RESET          = 'FORM_RESET'
  * Data are merged with the current data in the form (see FORM_RESET if you want to override all the form data)
  */
 export const FORM_LOAD           = 'FORM_LOAD'
-export const FORM_SET_MODE       = 'FORM_SET_MODE'
 export const FORM_SET_ERRORS     = 'FORM_SET_ERRORS'
 export const FORM_SUBMIT         = 'FORM_SUBMIT'
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS'
@@ -31,7 +30,6 @@ export const actions = {}
 
 actions.update = makeInstanceActionCreator(FORM_UPDATE, 'value')
 actions.updateProp = makeInstanceActionCreator(FORM_UPDATE, 'path', 'value')
-actions.setMode = makeInstanceActionCreator(FORM_SET_MODE, 'mode')
 actions.setErrors = makeInstanceActionCreator(FORM_SET_ERRORS, 'errors')
 actions.submit = makeInstanceActionCreator(FORM_SUBMIT)
 actions.submitSuccess = makeInstanceActionCreator(FORM_SUBMIT_SUCCESS, 'updatedData')

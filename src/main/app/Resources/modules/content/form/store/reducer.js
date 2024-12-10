@@ -6,20 +6,15 @@ import set from 'lodash/set'
 import {makeInstanceReducer, combineReducers, reduceReducers} from '#/main/app/store/reducer'
 import {cleanErrors} from '#/main/app/content/form/utils'
 
-import {constants} from '#/main/app/content/form/constants'
 import {
   FORM_LOAD,
   FORM_RESET,
-  FORM_SET_MODE,
   FORM_SET_ERRORS,
-  FORM_SUBMIT,
   FORM_UPDATE
 } from '#/main/app/content/form/store/actions'
 
 const defaultState = {
   new: false,
-  mode: constants.FORM_MODE_DEFAULT,
-  validating: false,
   pendingChanges: false,
   errors: {},
   data: {},
@@ -29,20 +24,6 @@ const defaultState = {
 const baseReducer = {
   new: makeInstanceReducer(defaultState.new, {
     [FORM_RESET]: (state, action) => !!action.isNew
-  }),
-
-  mode: makeInstanceReducer(defaultState.mode, {
-    [FORM_SET_MODE]: (state, action) => action.mode
-  }),
-
-  /**
-   * Reduces the validating state of the form.
-   * (becomes true on form submission)
-   */
-  validating: makeInstanceReducer(defaultState.validating, {
-    [FORM_RESET]: () => defaultState.validating,
-    [FORM_SUBMIT]: () => true,
-    [FORM_UPDATE]: () => false
   }),
 
   pendingChanges: makeInstanceReducer(defaultState.pendingChanges, {

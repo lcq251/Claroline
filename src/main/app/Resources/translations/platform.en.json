@@ -34,5 +34,6 @@
   "user_absent": "Absent",
   "user_offline": "Offline",
   "user_offline_help": "Offline",
-  "user_dont_disturb": "Do not disturb"
+  "user_dont_disturb": "Do not disturb",
+  "form_validating_desc": "Some errors or missing information prevent saving data."
 }

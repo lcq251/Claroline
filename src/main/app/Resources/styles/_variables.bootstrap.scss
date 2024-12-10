@@ -874,7 +874,7 @@ $btn-active-border-tint-amount:   10% !default;
 // Forms
 
 // scss-docs-start form-text-variables
-$form-text-margin-top:                  .25rem !default;
+$form-text-margin-top:                  map-get($spacers, 1); // .25rem !default;
 $form-text-font-size:                   $font-size-sm !default;
 $form-text-font-style:                  null !default;
 $form-text-font-weight:                 null !default;
@@ -882,7 +882,7 @@ $form-text-color:                       var(--#{$prefix}secondary-color) !defaul
 // scss-docs-end form-text-variables
 
 // scss-docs-start form-label-variables
-$form-label-margin-bottom:              .5rem !default;
+$form-label-margin-bottom:              map-get($spacers, 2); // .5rem !default;
 $form-label-font-size:                  $font-size-sm !default;
 $form-label-font-style:                 null !default;
 $form-label-font-weight:                $font-weight-semibold;
@@ -1098,14 +1098,11 @@ $form-feedback-font-style:          $form-text-font-style !default;
 $form-feedback-font-weight:         $font-weight-bold !default; // custom claroline
 $form-feedback-valid-color:         $success !default;
 $form-feedback-invalid-color:       $danger !default;
-$form-feedback-incomplete-color:    $warning !default; // custom claroline
 
 $form-feedback-icon-valid-color:      $form-feedback-valid-color !default;
 $form-feedback-icon-valid:            url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='#{$form-feedback-icon-valid-color}' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/></svg>") !default;
 $form-feedback-icon-invalid-color:    $form-feedback-invalid-color !default;
 $form-feedback-icon-invalid:          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='#{$form-feedback-icon-invalid-color}'><circle cx='6' cy='6' r='4.5'/><path stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/><circle cx='6' cy='8.2' r='.6' fill='#{$form-feedback-icon-invalid-color}' stroke='none'/></svg>") !default;
-$form-feedback-icon-incomplete-color: $form-feedback-incomplete-color !default; // custom claroline
-$form-feedback-icon-incomplete:       url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='#{$form-feedback-icon-incomplete-color}'><circle cx='6' cy='6' r='4.5'/><path stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/><circle cx='6' cy='8.2' r='.6' fill='#{$form-feedback-icon-incomplete-color}' stroke='none'/></svg>") !default; // custom claroline
 // scss-docs-end form-feedback-variables
 
 // scss-docs-start form-validation-colors
@@ -1113,8 +1110,6 @@ $form-valid-color:                  $form-feedback-valid-color !default;
 $form-valid-border-color:           $form-feedback-valid-color !default;
 $form-invalid-color:                $form-feedback-invalid-color !default;
 $form-invalid-border-color:         $form-feedback-invalid-color !default;
-$form-incomplete-color:             $form-feedback-incomplete-color !default; // custom claroline
-$form-incomplete-border-color:      $form-feedback-incomplete-color !default; // custom claroline
 // scss-docs-end form-validation-colors
 
 // scss-docs-start form-validation-states
@@ -1134,15 +1129,6 @@ $form-validation-states: (
                 "tooltip-bg-color": var(--#{$prefix}danger-bg-subtle),
                 "focus-box-shadow": 0 0 $input-btn-focus-blur $input-focus-width rgba(var(--#{$prefix}danger-rgb), $input-btn-focus-color-opacity),
                 "border-color": var(--#{$prefix}form-invalid-border-color),
-        ),
-        // custom claroline
-        "incomplete": (
-                "color": $form-incomplete-color,
-                "icon": $form-feedback-icon-incomplete,
-                "tooltip-color": var(--#{$prefix}warning-text-emphasis),
-                "tooltip-bg-color": var(--#{$prefix}warning-bg-subtle),
-                "focus-box-shadow": 0 0 $input-btn-focus-blur $input-focus-width rgba(var(--#{$prefix}warning-rgb), $input-btn-focus-color-opacity),
-                "border-color": $form-incomplete-border-color,
         ),
 ) !default;
 // scss-docs-end form-validation-states
@@ -1522,7 +1508,7 @@ $badge-border-radius:               var(--#{$prefix}border-radius-sm) !default;
 // scss-docs-start modal-variables
 $modal-inner-padding:               map-get($spacers, 4) !default;
 
-$modal-footer-margin-between:       .75rem; // .5rem !default;
+$modal-footer-margin-between:       map-get($spacers, 2); // .5rem !default;
 
 $modal-dialog-margin:               .5rem !default;
 $modal-dialog-margin-y-sm-up:       1.75rem !default;

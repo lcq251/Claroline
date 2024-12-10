@@ -15,7 +15,6 @@ use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
-use Claroline\ForumBundle\Manager\ForumManager;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -74,7 +73,7 @@ class SubjectSerializer
             'meta' => [
                 'views' => $subject->getViewCount(),
                 // don't use Finder in a Serializer
-                'messages' => $this->finder->fetch(Message::class, ['subject' => $subject->getUuid(), 'parent' => null], null, 0, 0, true),
+                'messages' => $this->finder->fetch(Message::class, ['subject' => $subject->getUuid(), 'first' => false, 'parent' => null], null, 0, 0, true),
                 'creator' => !empty($subject->getCreator()) ? $this->userSerializer->serialize($subject->getCreator(), [Options::SERIALIZE_MINIMAL]) : null,
                 'created' => DateNormalizer::normalize($subject->getCreationDate()),
                 'updated' => DateNormalizer::normalize($subject->getModificationDate()),

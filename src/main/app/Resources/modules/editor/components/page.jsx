@@ -19,7 +19,7 @@ const EditorPage = (props) => {
   return (
     <>
       <Form
-        className="app-editor-form"
+        className="app-editor-form flex-fill"
         name={editorDef.name}
         level={1}
         target={editorDef.target}

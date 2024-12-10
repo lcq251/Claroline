@@ -48,7 +48,6 @@ const Chapter = props => {
             displayLevel={2}
             title={props.chapter.title}
             numbering={numbering}
-            backAction={props.backAction}
           />
 
           <div className="card mb-3">

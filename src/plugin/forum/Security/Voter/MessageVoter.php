@@ -34,9 +34,8 @@ class MessageVoter extends AbstractVoter
 
     public function checkCreate(TokenInterface $token, Message $message): int
     {
-        $forum = $message->getForum();
-
-        if ($forum && $this->isGranted(self::OPEN, $forum->getResourceNode())) {
+        $subject = $message->getSubject();
+        if ($subject && !$subject->isClosed() && $this->isGranted(self::OPEN, $subject)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

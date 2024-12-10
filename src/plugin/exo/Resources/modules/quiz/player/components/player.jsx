@@ -30,6 +30,7 @@ import {CustomDragLayer} from '#/plugin/exo/utils/custom-drag-layer'
 import {DragDropProvider} from '#/main/app/overlays/dnd/components/provider'
 import {ResourcePage} from '#/main/core/resource'
 import {Alert} from '#/main/app/components/alert'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 // TODO : rethink the loading paper process (it's a little hacky to make it quickly compatible with Router)
 
@@ -370,9 +371,11 @@ const Player = withRouter(connect(
     navigateTo(quizId, paperId, nextStep, pendingAnswers, currentStepSend, openFeedback, confirm = false) {
       if (confirm) {
         dispatch(modalActions.showModal(MODAL_CONFIRM, {
-          title: trans('validate_step_title', {}, 'quiz'),
           question: trans('validate_step_question', {}, 'quiz'),
-          handleConfirm: () => dispatch(actions.navigateTo(quizId, paperId, nextStep, pendingAnswers, currentStepSend, openFeedback))
+          confirmAction: {
+            type: CALLBACK_BUTTON,
+            callback: () => dispatch(actions.navigateTo(quizId, paperId, nextStep, pendingAnswers, currentStepSend, openFeedback))
+          }
         }))
       } else {
         dispatch(actions.navigateTo(quizId, paperId, nextStep, pendingAnswers, currentStepSend, openFeedback))
@@ -384,9 +387,11 @@ const Player = withRouter(connect(
     finish(quizId, paper, pendingAnswers, showFeedback, showConfirm, navigate) {
       if (showConfirm) {
         dispatch(modalActions.showModal(MODAL_CONFIRM, {
-          title: trans('finish_confirm_title', {}, 'quiz'),
           question: trans('finish_confirm_question', {}, 'quiz'),
-          handleConfirm: () => dispatch(actions.finish(quizId, paper, pendingAnswers, showFeedback, navigate))
+          confirmAction: {
+            type: CALLBACK_BUTTON,
+            callback: () => dispatch(actions.finish(quizId, paper, pendingAnswers, showFeedback, navigate))
+          }
         }))
       } else {
         dispatch(actions.finish(quizId, paper, pendingAnswers, showFeedback, navigate))

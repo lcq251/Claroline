@@ -11,11 +11,9 @@ import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 import {Html} from '#/main/app/components/html'
 import {DataMicro} from '#/main/app/data/components/micro'
 
-// TODO : integrate DataMicro (there are problems with text ellipsis)
-
 const ConfirmModal = (props) =>
   <ModalEmpty
-    {...omit(props, 'dangerous', 'question', 'additional', 'items', 'confirmAction', 'handleConfirm')}
+    {...omit(props, 'dangerous', 'question', 'additional', 'items', 'confirmAction')}
     centered={true}
     size="sm"
   >
@@ -43,7 +41,7 @@ const ConfirmModal = (props) =>
       {props.children}
     </div>
 
-    <div className="modal-footer bg-transparent">
+    <div className="modal-footer bg-transparent" role="toolbar">
       {props.cancel &&
         <Button
           className="btn btn-body flex-fill"
@@ -53,29 +51,15 @@ const ConfirmModal = (props) =>
         />
       }
 
-      {props.confirmAction ?
-        <Button
-          label={trans('confirm', {}, 'actions')}
-          {...omit(props.confirmAction, 'icon', 'tooltip', 'size', 'className')}
-          className="flex-fill"
-          variant="btn"
-          onClick={props.fadeModal}
-          dangerous={props.dangerous}
-          primary={!props.dangerous}
-        /> :
-        <Button
-          type={CALLBACK_BUTTON}
-          label={props.confirmButtonText || trans('confirm', {}, 'actions')}
-          variant="btn"
-          className="flex-fill"
-          callback={() => {
-            props.handleConfirm()
-            props.fadeModal()
-          }}
-          dangerous={props.dangerous}
-          primary={!props.dangerous}
-        />
-      }
+      <Button
+        label={trans('confirm', {}, 'actions')}
+        {...omit(props.confirmAction, 'icon', 'tooltip', 'size', 'className')}
+        className="flex-fill"
+        variant="btn"
+        onClick={props.fadeModal}
+        dangerous={props.dangerous}
+        primary={!props.dangerous}
+      />
     </div>
   </ModalEmpty>
 
@@ -91,14 +75,11 @@ ConfirmModal.propTypes = {
   cancel: T.oneOfType([T.bool, T.string]),
   confirmAction: T.shape(
     ActionTypes.propTypes
-  ),
+  ).isRequired,
   children: T.any,
-  // from modal,
-  fadeModal: T.func.isRequired,
 
-  // deprecated. use props.confirmAction instead.
-  confirmButtonText: T.string,
-  handleConfirm: T.func
+  // from modal,
+  fadeModal: T.func.isRequired
 }
 
 ConfirmModal.defaultProps = {

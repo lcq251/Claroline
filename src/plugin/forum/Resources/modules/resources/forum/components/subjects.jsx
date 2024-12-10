@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {constants as listConst} from '#/main/app/content/list/constants'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {ListData} from '#/main/app/content/list/containers/data'
@@ -14,7 +14,8 @@ import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {Forum as ForumType, Subject as SubjectType} from '#/plugin/forum/resources/forum/prop-types'
 import {selectors} from '#/plugin/forum/resources/forum/store'
 import {actions} from '#/plugin/forum/resources/forum/store'
-import {SubjectCard} from '#/plugin/forum/resources/forum/data/components/subject-card'
+import {SubjectCard} from '#/plugin/forum/data/components/subject-card'
+import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 
 function canEdit(subject, moderator = false, currentUser = null) {
   if (moderator) {
@@ -42,7 +43,7 @@ const SubjectsList = (props) =>
     addAction={props.addAction}
     primaryAction={(subject) => ({
       type: LINK_BUTTON,
-      target: `${props.path}/subjects/show/${subject.id}`,
+      target: `${props.path}/subjects/${subject.id}`,
       label: trans('open', {}, 'actions')
     })}
     display={{
@@ -118,11 +119,14 @@ const SubjectsList = (props) =>
     ]}
     actions={(rows) => [
       {
-        type: LINK_BUTTON,
+        type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-pencil',
         label: trans('edit', {}, 'actions'),
-        target: `${props.path}/subjects/form/${rows[0].id}`,
         scope: ['object'],
+        modal: [MODAL_SUBJECT, {
+          subject: rows[0],
+          forumId: get(props.forum, 'id')
+        }],
         displayed: canEdit(rows[0], props.moderator, props.currentUser)
       }, {
         type: CALLBACK_BUTTON,
@@ -140,7 +144,7 @@ const SubjectsList = (props) =>
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-flag',
         label: trans('flag', {}, 'forum'),
-        displayed: !rows[0].meta.flagged && props.currentUser,
+        displayed: !rows[0].meta.flagged && !!props.currentUser,
         callback: () => props.flagSubject(rows[0]),
         scope: ['object']
       }, {

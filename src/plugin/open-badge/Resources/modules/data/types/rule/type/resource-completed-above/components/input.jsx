@@ -29,7 +29,7 @@ const ResourceCompletedAboveInput = (props) =>
 
     <FormGroup
       id={`${props.id}-progression`}
-      className="form-last"
+      className="mb-0"
       label={trans('progression')}
     >
       <NumberInput

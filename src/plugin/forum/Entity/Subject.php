@@ -63,9 +63,6 @@ class Subject
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $flagged = false;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
     private int $viewCount = 0;
 

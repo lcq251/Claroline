@@ -1,17 +1,16 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {Resource} from '#/main/core/resource'
 
+import {Forum as ForumTypes} from '#/plugin/forum/resources/forum/prop-types'
 import {ForumOverview} from '#/plugin/forum/resources/forum/components/overview'
-import {Moderation} from '#/plugin/forum/resources/forum/moderation/components/moderation'
-import {Forum as ForumType} from '#/plugin/forum/resources/forum/prop-types'
 import {ForumEditor} from '#/plugin/forum/resources/forum/editor/components/main'
-import {Subject} from '#/plugin/forum/resources/forum/player/components/subject'
+import {ForumSubject} from '#/plugin/forum/resources/forum/components/subject'
+import {MODAL_FORUM_FLAGGED} from '#/plugin/forum/resources/forum/modals/flagged'
 
 const ForumResource = props =>
   <Resource
@@ -19,92 +18,48 @@ const ForumResource = props =>
     styles={['claroline-distribution-plugin-forum-forum-resource']}
     actions={[
       {
+        name: 'enable-notification',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-bell',
         label: trans('receive_notifications', {}, 'forum'),
         displayed: !props.notified,
         callback: () => props.notify(props.forum, props.currentUser)
       }, {
+        name: 'disable-notification',
         type: CALLBACK_BUTTON,
-        icon: 'fa fa-fw fa-bell',
+        icon: 'fa fa-fw fa-bell-slash',
         label: trans('stop_receive_notifications', {}, 'forum'),
         displayed: props.notified,
         callback: () => props.stopNotify(props.forum, props.currentUser)
       }, {
-        type: LINK_BUTTON,
+        name: 'flagged-messages',
+        type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-flag',
-        label: trans('flagged_messages', {}, 'forum'),
-        group: trans('moderation', {}, 'forum'),
+        label: trans('show_flagged_messages', {}, 'actions'),
+        group: trans('management'),
         displayed: props.moderator,
-        target: `${props.path}/moderation/flagged/subjects`
+        modal: [MODAL_FORUM_FLAGGED]
       }
     ]}
     editor={ForumEditor}
     overviewPage={ForumOverview}
     pages={[
       {
-        path: '/moderation',
-        disabled: !props.moderator,
-        render: () => {
-          const component = <Moderation path={props.path} />
-
-          return component
-        }
-      }, {
-        path: '/subjects/form/:id?',
-        component: Subject,
-        onEnter: (params) => {
-          if (params.id) {
-            props.newSubject(params.id)
-          } else {
-            props.invalidateMessagesList(get(props.forum, 'display.messageOrder'))
-            props.newSubject()
-          }
-        },
-        onLeave: () => {
-          props.closeSubjectForm()
-          if (props.editingSubject){
-            props.stopSubjectEdition()
-          }
-        }
-      },{
-        path: '/subjects/show/:id',
-        component: Subject,
-        onEnter: (params) => {
-          props.invalidateMessagesList(get(props.forum, 'display.messageOrder'))
-          props.openSubject(params.id)
-        },
-        onLeave: () => {
-          if (props.showSubjectForm){
-            props.closeSubjectForm()
-          }
-        }
+        path: '/subjects/:id',
+        component: ForumSubject,
+        onEnter: (params) => props.openSubject(params.id)
       }
-    ]}
-    redirect={[
-      {from: '/', to: '/subjects', exact: true, disabled: !!get(props.forum, 'display.showOverview')}
     ]}
   />
 
 ForumResource.propTypes = {
-  path: T.string.isRequired,
   currentUser: T.object,
-  forum: T.shape(ForumType.propTypes).isRequired,
+  forum: T.shape(ForumTypes.propTypes).isRequired,
   moderator: T.bool.isRequired,
-  editable: T.bool.isRequired,
-  loadLastMessages: T.func.isRequired,
   notified: T.bool.isRequired,
   notify: T.func.isRequired,
   stopNotify: T.func.isRequired,
-  newSubject: T.func.isRequired,
-  closeSubjectForm: T.func.isRequired,
-  stopSubjectEdition: T.func.isRequired,
-  openSubject: T.func.isRequired,
-  showSubjectForm: T.bool.isRequired,
-  editingSubject: T.bool.isRequired,
-  loadSubjectList: T.func.isRequired,
-  loadSubjectForm: T.func,
-  invalidateMessagesList: T.func
+  openSubject: T.func.isRequired
 }
 
 export {

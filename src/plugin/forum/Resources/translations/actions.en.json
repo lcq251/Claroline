@@ -1,5 +1,7 @@
 {
   "show-forum": "Show forum",
   "show-subject": "Show subject",
-  "add_subject": "Post subject"
+  "add_subject": "Post subject",
+  "save_subject": "Save subject",
+  "show_flagged_messages": "Show flagged messages"
 }

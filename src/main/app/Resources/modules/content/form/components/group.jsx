@@ -15,7 +15,7 @@ import {FormLabel} from '#/main/app/content/form/components/label'
  * It is used to wrap inputs in order to render the associated meta (label, errors, etc.).
  */
 const FormGroup = props =>
-  <div className={classes('form-group mb-4', props.className, getValidationClassName(props.error, props.validating))} role="presentation">
+  <div className={classes('form-group mb-4', props.className, getValidationClassName(props.error))} role="presentation">
     {props.label &&
       <FormLabel
         label={props.label}
@@ -35,7 +35,7 @@ const FormGroup = props =>
     {props.children}
 
     {!isEmpty(props.error) &&
-      <FormError error={props.error} warnOnly={!props.validating} />
+      <FormError error={props.error} />
     }
   </div>
 

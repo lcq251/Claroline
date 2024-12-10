@@ -108,7 +108,7 @@ ModalEmpty.propTypes = {
   hideModal: T.func.isRequired,
   show: T.bool.isRequired,
   closeButton: T.bool,
-  size: T.oneOf(['sm', 'lg', 'xl']),
+  size: T.oneOf(['sm', 'md', 'lg', 'xl']),
   fullscreen: T.oneOf([true, 'sm-down','md-down', 'lg-down', 'xl-down', 'xxl-down']),
 
   // modal events (from react-bootstrap)

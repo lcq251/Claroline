@@ -194,7 +194,7 @@ const KeywordItems = props => {
   return (
     <div className="keyword-items">
       {!isEmpty(errors) &&
-        <FormError error={errors} warnOnly={!props.validating} />
+        <FormError error={errors} />
       }
 
       <ul>
@@ -257,11 +257,6 @@ KeywordItems.propTypes = {
    * The simplified content type of the keyword (eg. text, date).
    */
   contentType: T.string,
-
-  /**
-   * Current validation state.
-   */
-  validating: T.bool,
 
   /**
    * The list of validation error.
@@ -367,7 +362,6 @@ const KeywordsPopover = props =>
 
       <KeywordItems
         keywords={props.keywords}
-        validating={props.validating}
         _errors={get(props, '_errors.keywords')}
         showCaseSensitive={props.showCaseSensitive}
         contentType={props.contentType}
@@ -423,11 +417,6 @@ KeywordsPopover.propTypes = {
    * The simplified content type of the keyword (eg. text, date).
    */
   contentType: T.string.isRequired,
-
-  /**
-   * Current validation state.
-   */
-  validating: T.bool,
 
   /**
    * The list of validation error.

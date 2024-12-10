@@ -25,7 +25,6 @@ const WordsEditor = (props) => {
       hasExpectedAnswers={props.item.hasExpectedAnswers}
       keywords={newSolutions}
       contentType={props.item.contentType}
-      validating={props.validating}
       addKeyword={() => {
         newSolutions.push(keywordUtils.createNew())
         newSolutions.forEach(solution => solution._deletable = newSolutions.length > 1)

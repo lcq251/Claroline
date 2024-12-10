@@ -118,7 +118,7 @@ class ImageInputComponent extends PureComponent {
             id={this.props.id}
             style={this.state.notFound ? {display: 'none'} : undefined}
             type="file"
-            className={classes('form-control', getValidationClassName(this.props.error, this.props.validating), this.props.className, {
+            className={classes('form-control', getValidationClassName(this.props.error), this.props.className, {
               [`form-control-${this.props.size}`]: !!this.props.size
             })}
             accept="image"

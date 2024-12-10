@@ -225,7 +225,7 @@ class Association extends Component {
           }
 
           {!this.props.association._itemData &&
-            <span className="form-control input-placeholder">
+            <span className="form-control text-body-tertiary">
               {trans('item', {number: this.props.association._itemIndex + 1}, 'quiz')}
             </span>
           }
@@ -672,7 +672,7 @@ const SetEditor = (props) => {
           primary: true,
           fields: [
             {
-              className: 'form-last',
+              className: 'mb-0',
               name: 'sets',
               label: trans('answers', {}, 'quiz'),
               hideLabel: true,

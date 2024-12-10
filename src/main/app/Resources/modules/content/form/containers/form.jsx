@@ -26,8 +26,7 @@ const Form = connect(
       new: selectors.isNew(formState),
       data: selectors.data(formState),
       errors: !isEmpty(errors),
-      pendingChanges: selectors.pendingChanges(formState),
-      validating: selectors.validating(formState)
+      pendingChanges: selectors.pendingChanges(formState)
     }
   },
   (dispatch, ownProps) => ({

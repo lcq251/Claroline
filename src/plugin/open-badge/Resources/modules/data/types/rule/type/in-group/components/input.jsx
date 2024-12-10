@@ -13,7 +13,7 @@ import {Group as GroupTypes} from '#/main/community/prop-types'
 const InGroupInput = (props) =>
   <FormGroup
     id={props.id}
-    className="form-last"
+    className="mb-0"
     label={trans('group')}
   >
     <GroupInput {...props} />

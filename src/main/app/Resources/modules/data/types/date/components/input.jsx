@@ -69,7 +69,7 @@ class DateInput extends Component {
             id={this.props.id}
             type="text"
             autoComplete={this.props.autoComplete || 'date'}
-            className={classes('form-control', getValidationClassName(this.props.error, this.props.validating))}
+            className={classes('form-control', getValidationClassName(this.props.error))}
             placeholder={this.props.placeholder}
             value={displayValue}
             disabled={this.props.disabled}

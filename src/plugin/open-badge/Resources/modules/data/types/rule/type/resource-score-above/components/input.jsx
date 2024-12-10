@@ -29,7 +29,7 @@ const ResourceScoreAboveInput = (props) =>
 
     <FormGroup
       id={`${props.id}-score`}
-      className="form-last"
+      className="mb-0"
       label={trans('score')}
       help={trans('score_above_help', {}, 'badge')}
     >

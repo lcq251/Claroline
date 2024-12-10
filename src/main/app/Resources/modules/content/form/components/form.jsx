@@ -73,6 +73,7 @@ class Form extends Component {
         {(this.props.save || this.props.cancel) &&
           <FormSave
             pendingChanges={this.props.pendingChanges}
+            errors={this.props.errors}
             save={this.props.save}
             cancel={this.props.cancel}
           />
@@ -97,7 +98,6 @@ Form.propTypes = {
   displayLevel: T.number,
   title: T.string,
   errors: T.bool,
-  validating: T.bool,
   pendingChanges: T.bool,
   /**
    * Alerts the user when leaving the form with unsaved changes
@@ -111,7 +111,6 @@ Form.propTypes = {
   save: T.shape({
     type: T.string.isRequired,
     disabled: T.bool
-    // todo find a way to document custom action type props
   }),
 
   /**
@@ -120,7 +119,6 @@ Form.propTypes = {
   cancel: T.shape({
     type: T.string.isRequired,
     disabled: T.bool
-    // todo find a way to document custom action type props
   })
 }
 
@@ -128,7 +126,6 @@ Form.defaultProps = {
   disabled: false,
   level: 2,
   errors: false,
-  validating: false,
   pendingChanges: false,
   alertExit: true
 }

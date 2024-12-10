@@ -20,7 +20,7 @@ class StringInput extends PureComponent {
   render() {
     const commonProps = {
       id: this.props.id,
-      className: classes('form-control', this.props.className, getValidationClassName(this.props.error, this.props.validating), {
+      className: classes('form-control', this.props.className, getValidationClassName(this.props.error), {
         [`form-control-${this.props.size}`]: !!this.props.size
       }),
       value: this.props.value || '',

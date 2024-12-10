@@ -58,7 +58,6 @@ const HolePopover = props => {
       keywords={props.solution.answers}
       _multiple={props.hole._multiple || !!props.hole.choices}
       _errors={get(props, '_errors')}
-      validating={props.validating}
       showCaseSensitive={true}
       random={props.hole.random}
       showScore={props.hasExpectedAnswers && props.hasScore}
@@ -73,7 +72,6 @@ const HolePopover = props => {
       <FormGroup
         id={`item-${props.hole.id}-size`}
         label={trans('size', {}, 'quiz')}
-        warnOnly={!props.validating}
         error={get(props, '_errors.size')}
       >
         <input
@@ -100,7 +98,6 @@ HolePopover.propTypes = {
   solution: T.shape({
     answers: T.array.isRequired
   }).isRequired,
-  validating: T.bool,
   hasExpectedAnswers: T.bool.isRequired,
   hasScore: T.bool.isRequired,
   _errors: T.object,
@@ -383,7 +380,6 @@ class ClozeEditor extends Component {
               this.props.update('holes', newItem.holes)
               this.props.update('solutions', solutions)
             }}
-            validating={this.props.validating}
             _errors={get(this.props.item, '_errors.'+this.state.popoverHoleId)}
           />
         }

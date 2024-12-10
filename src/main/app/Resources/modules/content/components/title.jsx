@@ -41,16 +41,6 @@ const ContentTitle = props =>
   <HeadingWrapper
     {...omit(props, 'numbering', 'title', 'subtitle', 'backAction', 'actions')}
   >
-    {!isEmpty(props.backAction) &&
-      <Button
-        className="btn btn-body h-back"
-        label={trans('back')}
-        {...props.backAction}
-        icon="fa fa-fw fa-arrow-left"
-        tooltip="bottom"
-      />
-    }
-
     {props.numbering &&
       <span className="h-numbering">{props.numbering}</span>
     }
@@ -89,12 +79,6 @@ ContentTitle.propTypes = {
   subtitle: T.string,
   displayed: T.bool,
   align: T.oneOf(['left', 'center', 'right']),
-  /**
-   * @deprecated
-   */
-  backAction: T.shape({
-    // TODO : action types
-  }),
   actions: T.arrayOf(T.shape({
     // TODO : action types
   })),

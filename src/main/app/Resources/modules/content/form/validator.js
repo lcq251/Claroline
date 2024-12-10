@@ -36,16 +36,12 @@ function validateProp(propDef, propValue) {
   ]))
 }
 
-function getValidationClassName(error = null, validating = false) {
+function getValidationClassName(error = null) {
   if (isEmpty(error)) {
     return ''
   }
 
-  if (validating) {
-    return 'is-invalid'
-  }
-
-  return 'is-incomplete'
+  return 'is-invalid'
 }
 
 export {

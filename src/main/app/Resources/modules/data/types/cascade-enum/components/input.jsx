@@ -19,7 +19,6 @@ const EnumChildren = props =>
         indexes={props.indexes.concat([index])}
         item={child}
         level={props.level}
-        validating={props.validating}
         error={props.error && typeof props.error !== 'string' ? props.error : undefined}
         onChange={props.onChange}
         onDelete={props.onDelete}
@@ -38,7 +37,6 @@ EnumChildren.propTypes = {
   }).isRequired,
   level: T.number.isRequired,
   error: T.object,
-  validating: T.bool,
   onChange: T.func.isRequired,
   onDelete: T.func.isRequired,
   addChildButtonLabel: T.string,
@@ -65,7 +63,6 @@ const EnumItem = (props) => {
             const newItem = Object.assign({}, props.item, {value: value})
             props.onChange(newItem, props.indexes)
           }}
-          validating={!props.validating}
           error={props.error ? props.error[props.item.id] : props.error}
         />
 
@@ -125,7 +122,6 @@ const EnumItem = (props) => {
           indexes={props.indexes}
           item={props.item}
           level={props.level + 1}
-          validating={props.validating}
           error={props.error}
         />
       }
@@ -142,7 +138,6 @@ EnumItem.propTypes = {
   }).isRequired,
   level: T.number.isRequired,
   error: T.object,
-  validating: T.bool,
   onChange: T.func.isRequired,
   onDelete: T.func.isRequired,
   addChildButtonLabel: T.string,
@@ -159,7 +154,6 @@ const CascadeEnumInput = (props) =>
             indexes={[index]}
             item={item}
             level={1}
-            validating={props.validating}
             error={props.error && typeof props.error !== 'string' ? props.error : undefined}
             addChildButtonLabel={props.addChildButtonLabel}
             deleteButtonLabel={props.deleteButtonLabel}

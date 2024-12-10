@@ -27,8 +27,7 @@ const FormContent = connect(
       id: ownProps.id || toKey(ownProps.name),
       mode: selectors.mode(formState),
       data: data,
-      errors: errors,
-      validating: selectors.validating(formState)
+      errors: errors
     }
   },
   (dispatch, ownProps) => ({

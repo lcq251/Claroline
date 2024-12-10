@@ -38,7 +38,6 @@ const CollectionInput = props =>
           if (props.component) {
             customInput = createElement(props.component, Object.assign({}, props.options, {
               disabled: props.disabled,
-              validating: props.validating,
               error: props.error instanceof Object ? props.error[index] : undefined,
               value: value,
               onChange: (newValue) => {
@@ -65,8 +64,6 @@ const CollectionInput = props =>
                 hideLabel={true}
                 required={true}
                 disabled={props.disabled}
-                validating={props.validating}
-
                 error={props.error instanceof Object ? props.error[index] : undefined}
                 value={value}
 

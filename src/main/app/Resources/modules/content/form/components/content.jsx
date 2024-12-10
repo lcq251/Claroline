@@ -10,7 +10,6 @@ import {ContentTitle} from '#/main/app/content/components/title'
 import {FormFieldset} from '#/main/app/content/form/components/fieldset'
 import {FormSections, FormSection} from '#/main/app/content/form/components/sections'
 
-import {constants} from '#/main/app/content/form/constants'
 import {createFormDefinition} from '#/main/app/content/form/utils'
 import {DataFormSection as DataFormSectionTypes} from '#/main/app/content/form/prop-types'
 
@@ -39,7 +38,7 @@ function getSectionErrors(sectionFields = [], errors = {}) {
 }
 
 const FormContent = (props) => {
-  const sections = createFormDefinition(props.mode, props.definition, props.locked, props.data)
+  const sections = createFormDefinition(props.definition, props.locked, props.data)
 
   const primarySections = 1 === sections.length ? [sections[0]] : sections.filter(section => section.primary)
   const otherSections = 1 !== sections.length ? sections.filter(section => !section.primary) : []
@@ -90,7 +89,6 @@ const FormContent = (props) => {
               data={props.data}
               errors={props.errors}
               help={primarySection.help}
-              validating={props.validating}
               updateProp={props.updateProp}
               setErrors={props.setErrors}
               size={props.size}
@@ -119,7 +117,6 @@ const FormContent = (props) => {
               title={section.title}
               subtitle={section.description || section.subtitle}
               errors={getSectionErrors(section.fields, props.errors)}
-              validating={props.validating}
               actions={section.actions}
               fill={section.fill}
             >
@@ -131,7 +128,6 @@ const FormContent = (props) => {
                 data={props.data}
                 errors={props.errors}
                 help={section.help}
-                validating={props.validating}
                 updateProp={props.updateProp}
                 setErrors={props.setErrors}
                 size={props.size}
@@ -153,7 +149,6 @@ FormContent.propTypes = {
   displayLevel: T.number,
   flush: T.bool,
   autoFocus: T.bool,
-  mode: T.string.isRequired,
   size: T.string,
   disabled: T.oneOfType([T.bool, T.func]),
 
@@ -163,7 +158,6 @@ FormContent.propTypes = {
   locked: T.arrayOf(T.string), // a list of inputs to be locked in form
 
   errors: T.object,
-  validating: T.bool,
   data: T.object,
 
   setErrors: T.func.isRequired,
@@ -175,7 +169,6 @@ FormContent.defaultProps = {
   disabled: false,
   flush: false,
   //autoFocus: true,
-  mode: constants.FORM_MODE_DEFAULT,
   data: {}
 }
 

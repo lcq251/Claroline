@@ -1,20 +1,11 @@
 import {makeActionCreator} from '#/main/app/store/actions'
 import {API_REQUEST} from '#/main/app/api'
-import {actions as formActions} from '#/main/app/content/form'
-import {selectors} from '#/plugin/forum/resources/forum/store/selectors'
-import merge from 'lodash/merge'
-import {Subject as SubjectTypes} from '#/plugin/forum/resources/forum/prop-types'
-import {makeId} from '#/main/app/utils/id'
-import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions as listActions} from '#/main/app/content/list/store'
-import {now} from '#/main/app/intl'
+
+import {selectors} from '#/plugin/forum/resources/forum/store/selectors'
 
 export const FORUM_TOGGLE_NOTIFICATION = 'FORUM_TOGGLE_NOTIFICATION'
 export const SUBJECT_LOAD = 'SUBJECT_LOAD'
-export const SUBJECT_FORM_OPEN = 'SUBJECT_FORM_OPEN'
-export const SUBJECT_FORM_CLOSE = 'SUBJECT_FORM_CLOSE'
-export const SUBJECT_EDIT = 'SUBJECT_EDIT'
-export const SUBJECT_STOP_EDIT = 'SUBJECT_STOP_EDIT'
 
 export const actions = {}
 
@@ -39,41 +30,11 @@ actions.stopNotify = (forum, user) => (dispatch) => dispatch({
   }
 })
 
-
-actions.openSubjectForm = makeActionCreator(SUBJECT_FORM_OPEN)
-actions.closeSubjectForm = makeActionCreator(SUBJECT_FORM_CLOSE)
-actions.subjectEdition = makeActionCreator(SUBJECT_EDIT)
-actions.stopSubjectEdition = makeActionCreator(SUBJECT_STOP_EDIT)
-
-actions.newSubject = (id = null) => (dispatch, getState) => {
-  dispatch(actions.openSubjectForm())
-  if (id) {
-    dispatch(actions.subjectEdition())
-    dispatch({
-      [API_REQUEST]: {
-        url: ['apiv2_forum_subject_get', {id}],
-        success: (data, dispatch) => {
-          dispatch(formActions.resetForm(selectors.STORE_NAME+'.subjects.form', data, false))
-        }
-      }
-    })
-  } else {
-    dispatch(formActions.resetForm(
-      selectors.STORE_NAME+'.subjects.form',
-      merge({}, SubjectTypes.defaultProps, {
-        id: makeId(),
-        meta: {creator: securitySelectors.currentUser(getState())}
-      }),
-      true
-    ))
-  }
-}
-
 actions.loadSubject = makeActionCreator(SUBJECT_LOAD, 'subject')
-actions.fetchSubject = (id) => ({
+actions.fetchSubject = (id) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_get', {id}],
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(actions.loadSubject(data))
     }
   }
@@ -81,7 +42,7 @@ actions.fetchSubject = (id) => ({
 
 actions.openSubject = (id) => (dispatch, getState) => {
   const subject = selectors.subject(getState())
-  // showform state
+
   if (subject.id !== id) {
     dispatch(actions.loadSubject({id: id}))
     dispatch(actions.fetchSubject(id))
@@ -89,186 +50,168 @@ actions.openSubject = (id) => (dispatch, getState) => {
   }
 }
 
-actions.deleteSubject = (id, push, path) => ({
+actions.deleteSubject = (id, push, path) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_delete', {ids: id}],
     request: {
       method: 'DELETE'
     },
-    success: (data, dispatch) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       push(`${path}/subjects`)
     }
   }
 })
 
-actions.stickSubject = (subject) => ({
+actions.stickSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {sticky:true}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.unStickSubject = (subject) => ({
+actions.unStickSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {sticky:false}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.closeSubject = (subject) => ({
+actions.closeSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {closed:true}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.unCloseSubject = (subject) => ({
+actions.unCloseSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {closed:false}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.flagSubject = (subject) => ({
+actions.flagSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {flagged:true}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.unFlagSubject = (subject) => ({
+actions.unFlagSubject = (subject) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_update', {id: subject.id}],
     request: {
       body: JSON.stringify(Object.assign({}, subject, {meta: {flagged:false}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))
       dispatch(actions.loadSubject(data))
     }
   }
 })
 
-actions.createMessage = (subjectId, content, moderation) => (dispatch, getState) => {
-  dispatch({
+actions.createMessage = (subjectId, content, parentId = null) => (dispatch) => {
+  if (!parentId) {
+    return dispatch({
+      [API_REQUEST]: {
+        url: ['apiv2_forum_subject_create_message', {id: subjectId}],
+        request: {
+          method: 'POST',
+          body: JSON.stringify({
+            content: content
+          })
+        },
+        success: () => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
+      }
+    })
+  }
+
+  return dispatch({
     [API_REQUEST]: {
-      url: ['apiv2_forum_subject_create_message', {id: subjectId}],
+      url: ['apiv2_forum_message_create_comment', {id: parentId}],
       request: {
         method: 'POST',
         body: JSON.stringify({
-          id: makeId(),
-          content: content,
-          meta: {
-            creator: securitySelectors.currentUser(getState()),
-            created: now(false),
-            updated: now(false),
-            moderation: moderation
-          },
-          comments: []
+          content: content
         })
       },
-      success: (data, dispatch) => {
-        dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
-      }
+      success: () => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
     }
   })
 }
 
-actions.createComment = (messageId, comment) => (dispatch, getState) => {
-  dispatch({
-    [API_REQUEST]: {
-      url: ['apiv2_forum_message_create_comment', {id: messageId}],
-      request: {
-        method: 'POST',
-        body: JSON.stringify({
-          id: makeId(),
-          content: comment,
-          meta: {
-            creator: securitySelectors.currentUser(getState()),
-            created: now(false),
-            updated: now(false)
-          }
-        })
-      },
-      success: (data, dispatch) => {
-        dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
-      }
-    }
-  })
-}
-
-actions.editContent = (message, subjectId, content) => ({
+actions.editMessage = (message, subjectId, content) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_message_update', {message: message.id, subject: subjectId}],
     request: {
       body: JSON.stringify(Object.assign({}, message, {content: content})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
     }
   }
 })
 
 
-actions.flag = (message, subjectId) => ({
+actions.flag = (message, subjectId) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_message_update', {message: message.id, subject: subjectId}],
     request: {
       body: JSON.stringify(Object.assign({}, message, {meta: {flagged:true}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
     }
   }
 })
 
-actions.unFlag = (message, subjectId) => ({
+actions.unFlag = (message, subjectId) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['apiv2_forum_subject_message_update', {message: message.id, subject: subjectId}],
     request: {
       body: JSON.stringify(Object.assign({}, message, {meta: {flagged:false}})),
       method: 'PUT'
     },
-    success: (data, dispatch) => {
+    success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.messages'))
     }
   }

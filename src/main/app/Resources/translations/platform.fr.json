@@ -34,5 +34,9 @@
   "user_absent": "Absent(e)",
   "user_offline": "Hors ligne",
   "user_offline_help": "Vous apparaissez hors ligne mais pouvez accéder à toutes les fonctionnalités de la plateforme.",
-  "user_dont_disturb": "Ne pas déranger"
+  "user_dont_disturb": "Ne pas déranger",
+  "form_toolbar": "Actions du formulaire",
+  "form_pending_changes": "Attention, il reste des modifications non enregistrées.",
+  "form_errors": "Attention, des erreurs ou des informations manquantes empêchent la sauvegarde des données.",
+  "form_validating_desc": "Des erreurs ou des informations manquantes empêchent la sauvegarde des données."
 }

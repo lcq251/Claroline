@@ -24,8 +24,7 @@ const ScoreRule = props =>
         <SelectGroup
           id={`rule-${props.index}-type`}
           className={classes('score-rule-component', {
-            'has-error': props.error && props.error.type && !props.warnOnly,
-            'has-warning': props.error && props.error.type && props.warnOnly
+            'has-error': props.error && props.error.type,
           })}
           label="type"
           hideLabel={true}
@@ -40,8 +39,7 @@ const ScoreRule = props =>
           <NumberGroup
             id={`rule-${props.index}-count`}
             className={classes('score-rule-component score-rule-number-component', {
-              'has-error': props.error && props.error.count && !props.warnOnly,
-              'has-warning': props.error && props.error.count && props.warnOnly
+              'has-error': props.error && props.error.count
             })}
             label="count"
             hideLabel={true}
@@ -57,8 +55,7 @@ const ScoreRule = props =>
           <NumberGroup
             id={`rule-${props.index}-count-min`}
             className={classes('score-rule-component score-rule-number-component', {
-              'has-error': props.error && props.error.countMin && !props.warnOnly,
-              'has-warning': props.error && props.error.countMin && props.warnOnly
+              'has-error': props.error && props.error.countMin,
             })}
             label="count_min"
             hideLabel={true}
@@ -78,8 +75,7 @@ const ScoreRule = props =>
           <NumberGroup
             id={`rule-${props.index}-count-max`}
             className={classes('score-rule-component score-rule-number-component', {
-              'has-error': props.error && props.error.countMax && !props.warnOnly,
-              'has-warning': props.error && props.error.countMax && props.warnOnly
+              'has-error': props.error && props.error.countMax
             })}
             label="count_max"
             hideLabel={true}
@@ -93,8 +89,7 @@ const ScoreRule = props =>
         <SelectGroup
           id={`rule-${props.index}-source`}
           className={classes('score-rule-component', {
-            'has-error': props.error && props.error.source && !props.warnOnly,
-            'has-warning': props.error && props.error.source && props.warnOnly
+            'has-error': props.error && props.error.source
           })}
           label="source"
           hideLabel={true}
@@ -112,8 +107,7 @@ const ScoreRule = props =>
         <NumberGroup
           id={`rule-${props.index}-points`}
           className={classes('score-rule-component score-rule-number-component', {
-            'has-error': props.error && props.error.points && !props.warnOnly,
-            'has-warning': props.error && props.error.points && props.warnOnly
+            'has-error': props.error && props.error.points
           })}
           label="points"
           hideLabel={true}
@@ -126,8 +120,7 @@ const ScoreRule = props =>
         <SelectGroup
           id={`rule-${props.index}-target`}
           className={classes('score-rule-component', {
-            'has-error': props.error && props.error.target && !props.warnOnly,
-            'has-warning': props.error && props.error.target && props.warnOnly
+            'has-error': props.error && props.error.target
           })}
           label="target"
           hideLabel={true}
@@ -160,8 +153,6 @@ ScoreRule.propTypes = {
     RuleType.propTypes
   ).isRequired,
   error: T.object,
-  validating: T.bool,
-  warnOnly: T.bool,
   disabled: T.bool,
   onChange: T.func.isRequired,
   onDelete: T.func.isRequired
@@ -192,8 +183,6 @@ const ScoreRulesInput = props =>
             key={`score-rule-${index}`}
             index={index}
             rule={rule}
-            validating={props.validating}
-            warnOnly={props.warnOnly}
             disabled={props.disabled}
             error={props.error && typeof props.error !== 'string' ? props.error[index] : undefined}
             onChange={(propName, propValue) => {

@@ -101,7 +101,6 @@ class FormFieldset extends Component {
             required={field.required}
             recommended={field.recommended}
             disabled={this.props.disabled || (typeof field.disabled === 'function' ? field.disabled(this.props.data) : field.disabled)}
-            validating={this.props.validating}
             autoFocus={field.autoFocus}
 
             value={value}
@@ -158,7 +157,6 @@ FormFieldset.propTypes = {
   mode: T.string,
   size: T.oneOf(['sm', 'lg']),
   errors: T.object,
-  validating: T.bool,
   data: T.object,
   help: T.oneOfType([T.string, T.arrayOf(T.string)]),
   fields: T.arrayOf(T.shape({

@@ -5,7 +5,6 @@ namespace Claroline\ForumBundle\Controller;
 use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Claroline\ForumBundle\Entity\Forum;
 use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -78,9 +77,11 @@ class SubjectController extends AbstractCrudController
      * )
      */
     #[Route(path: '/{id}/message', name: 'create_message', methods: ['POST', 'PUT'])]
-    public function createMessage(#[MapEntity(class: 'Claroline\ForumBundle\Entity\Subject', mapping: ['id' => 'uuid'])]
-        Subject $subject, Request $request): JsonResponse
-    {
+    public function createMessage(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Subject $subject,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $subject, [], true);
 
         $options = static::getOptions();
@@ -106,28 +107,17 @@ class SubjectController extends AbstractCrudController
      */
     #[Route(path: '/{subject}/message/{message}', name: 'message_update', methods: ['PUT'])]
     public function updateMessageAction(
-        #[MapEntity(mapping: ['subject' => 'uuid'])]
-        Subject $subject,
         #[MapEntity(mapping: ['message' => 'uuid'])]
         Message $message,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('OPEN', $subject, [], true);
+        $this->checkPermission('EDIT', $message, [], true);
 
-        return parent::updateAction($message->getUuid(), $request);
-    }
-
-    #[Route(path: '/forum/{forum}/subjects/list/flagged', name: 'flagged_list', methods: ['GET'])]
-    public function listFlaggedSubjectsAction(#[MapEntity(class: 'Claroline\ForumBundle\Entity\Forum', mapping: ['forum' => 'uuid'])]
-        Forum $forum, Request $request): JsonResponse
-    {
-        $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
+        $options = static::getOptions();
+        $this->crud->update($message, $this->decodeRequest($request), $options['update'] ?? []);
 
         return new JsonResponse(
-            $this->crud->list(self::getClass(), array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['flagged' => true, 'forum' => $forum->getUuid()]]
-            ))
+            $this->serializer->serialize($message)
         );
     }
 }

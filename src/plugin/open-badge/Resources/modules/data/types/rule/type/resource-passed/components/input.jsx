@@ -28,7 +28,7 @@ const ResourcePassedInput = (props) =>
 
     <FormGroup
       id={`${props.id}-status`}
-      className="form-last"
+      className="mb-0"
       label={trans('status')}
     >
       <ChoiceInput

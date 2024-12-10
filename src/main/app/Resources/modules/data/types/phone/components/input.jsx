@@ -22,7 +22,7 @@ class PhoneInput extends PureComponent {
       <input
         id={this.props.id}
         type="phone"
-        className={classes('form-control', getValidationClassName(this.props.error, this.props.validating), this.props.className, {
+        className={classes('form-control', getValidationClassName(this.props.error), this.props.className, {
           [`form-control-${this.props.size}`]: !!this.props.size
         })}
         autoComplete={this.props.autoComplete || 'tel-local'}

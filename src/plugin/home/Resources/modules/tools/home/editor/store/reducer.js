@@ -44,9 +44,6 @@ function pushTab(tab, tabs, position) {
 }
 
 const reducer = makeFormReducer(selectors.FORM_NAME, {data: [], originalData: []}, {
-  validating: makeReducer(false, {
-    [HOME_MOVE_TAB]: () => false
-  }),
   pendingChanges: makeReducer(false, {
     [HOME_MOVE_TAB]: () => true
   }),

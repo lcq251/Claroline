@@ -11,7 +11,6 @@
     "new_subject": "New topic",
     "open_subject": "Open subject",
     "create_subject": "Create a subject",
-    "post_the_subject": "Post the subject",
     "posts": "Posts",
     "posts_count": "Number of posts",
     "post": "Post",
@@ -26,12 +25,9 @@
     "see_message_context": "See message in context",
     "see_subject": "See subject",
     "stick": "Pin",
-    "stick_explanation": "Pinning a subject will put it at the top of the subjects list",
     "stuck": "Pinned",
     "subject": "Topic",
     "subjects": "Topics",
-    "subject_edition": "Topic editing",
-    "subject_title":"Subject title",
     "unstick": "Unpin",
     "unflag": "Do not report again"
 }

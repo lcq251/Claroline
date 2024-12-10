@@ -4,21 +4,13 @@ import merge from 'lodash/merge'
 import mergeWith from 'lodash/mergeWith'
 import omitBy from 'lodash/omitBy'
 
-import {constants} from '#/main/app/content/form/constants'
 import {DataFormSection, DataFormProperty} from '#/main/app/content/form/prop-types'
-
-function isInMode(element, mode) {
-  const currentLevel = Object.keys(constants.FORM_MODES).findIndex(m => m === mode)
-  const elementLevel = Object.keys(constants.FORM_MODES).findIndex(m => m === element.mode)
-
-  return elementLevel <= currentLevel
-}
 
 function isFieldDisplayed(element, data) {
   return typeof element.displayed === 'function' ? element.displayed(data) : element.displayed
 }
 
-function createFieldDefinition(mode, field, locked = [], data) {
+function createFieldDefinition(field, locked = [], data) {
   const defaultedField = merge({}, DataFormProperty.defaultProps, field)
   if (-1 !== locked.indexOf(field.name)) {
     defaultedField.disabled = true
@@ -26,39 +18,38 @@ function createFieldDefinition(mode, field, locked = [], data) {
 
   // adds default to linked fields if any
   if (defaultedField.linked && 0 !== defaultedField.linked.length) {
-    defaultedField.linked = createFieldsetDefinition(mode, defaultedField.linked, locked, data)
+    defaultedField.linked = createFieldsetDefinition(defaultedField.linked, locked, data)
   }
 
   return defaultedField
 }
 
-function createFieldsetDefinition(mode, fields, locked = [], data) {
+function createFieldsetDefinition(fields, locked = [], data) {
   return fields
     // adds default to fields
-    .map(field => createFieldDefinition(mode, field, locked, data))
+    .map(field => createFieldDefinition(field, locked, data))
     // filters hidden fields
-    .filter(field => isInMode(field, mode) && isFieldDisplayed(field, data))
+    .filter(field =>isFieldDisplayed(field, data))
 }
 
 /**
  * Fills definition with missing default values.
  * (It excludes sections with no fields)
  *
- * @param {string} mode
  * @param {Array}  sections
  * @param {Array}  locked
  * @param {object} data
  *
  * @return {Array} - the defaulted definition
  */
-function createFormDefinition(mode, sections, locked = [], data) {
+function createFormDefinition(sections, locked = [], data) {
   return sections
     .map(section => {
       // adds defaults to the section configuration
       const defaultedSection = merge({}, DataFormSection.defaultProps, section)
-      if (isInMode(defaultedSection, mode) && isFieldDisplayed(defaultedSection, data)) {
+      if (isFieldDisplayed(defaultedSection, data)) {
         // section has fields and is displayed keep it
-        defaultedSection.fields = createFieldsetDefinition(mode, defaultedSection.fields, locked, data)
+        defaultedSection.fields = createFieldsetDefinition(defaultedSection.fields, locked, data)
 
         if (0 !== defaultedSection.fields.length || defaultedSection.component || defaultedSection.render) {
           return defaultedSection

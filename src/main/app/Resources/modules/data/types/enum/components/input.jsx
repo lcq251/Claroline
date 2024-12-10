@@ -19,7 +19,6 @@ const EnumItem = props =>
       hideLabel={true}
       value={props.item.value}
       onChange={value => props.onChange('value', value)}
-      warnOnly={!props.validating}
       error={props.error}
     />
 
@@ -46,7 +45,6 @@ EnumItem.propTypes = {
   }).isRequired,
   deleteButtonLabel: T.string.isRequired,
   error: T.string,
-  validating: T.bool,
   onChange: T.func.isRequired,
   onDelete: T.func.isRequired,
   size: T.string
@@ -66,7 +64,6 @@ const EnumInput = (props) =>
             index={index}
             item={item}
             deleteButtonLabel={props.deleteButtonLabel}
-            validating={props.validating}
             size={props.size}
             error={props.error && typeof props.error !== 'string' ? props.error[index] : undefined}
             onChange={(propName, propValue) => {
