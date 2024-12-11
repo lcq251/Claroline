@@ -34,7 +34,6 @@ const FormModal = (props) => {
     dispatch(formActions.reset(props.name, initialData, isNew))
   }, [props.name])
 
-
   const save = useCallback((target) => {
     setSaving(true)
     return dispatch(formActions.save(props.name, target)).then(
@@ -94,7 +93,8 @@ const FormModal = (props) => {
             />
             <CallbackButton
               className={classes('position-relative btn btn-primary', {
-                'opacity-100': saving
+                'opacity-100': saving,
+                'btn-wave': !saving && saveEnabled
               })}
               htmlType="submit"
               disabled={!saveEnabled || saving}

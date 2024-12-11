@@ -11,6 +11,7 @@ import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
 import {TinymceEditor} from '#/main/app/input/tinymce/components/editor'
+import {getValidationClassName} from '#/main/app/content/form/validator'
 
 class HtmlInput extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class HtmlInput extends Component {
 
     this.state = {
       minimal: props.minimal,
-      fullscreen: false
+      fullscreen: false,
+      focus: false
     }
 
     this.toggleEditor = this.toggleEditor.bind(this)
@@ -40,9 +42,10 @@ class HtmlInput extends Component {
 
   render() {
     return (
-      <div id={`${this.props.id}-container`} className={classes('editor-control text-editor', this.props.className, {
+      <div id={`${this.props.id}-container`} className={classes('editor-control text-editor', this.props.className, getValidationClassName(this.props.error), {
         minimal: this.state.minimal && !this.state.fullscreen,
-        fullscreen: this.state.fullscreen
+        fullscreen: this.state.fullscreen,
+        focus: this.state.focus
       })} role="presentation">
         {!this.state.fullscreen &&
           <Toolbar
@@ -88,11 +91,20 @@ class HtmlInput extends Component {
         <TinymceEditor
           {...omit(this.props, 'onChangeMode')}
           id={this.props.id}
+          className={getValidationClassName(this.props.error)}
           mode={classes({
             inline: !this.state.fullscreen && this.state.minimal,
             classic: !this.state.fullscreen && !this.state.minimal,
             full: this.state.fullscreen
           })}
+          onFocusIn={(e) => {
+            console.log(e)
+            this.setState({focus: true})
+          }}
+          onFocusOut={(e) => {
+            console.log(e)
+            this.setState({focus: false})
+          }}
         />
       </div>
     )

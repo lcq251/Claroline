@@ -10,6 +10,10 @@ function currentTheme() {
   return param('theme.name').toLowerCase().replace(/\s/g, '-')
 }
 
+function isDarkMode() {
+  return 'dark' === document.querySelector('html').dataset.bsTheme
+}
+
 /**
  * Gets the path to a theme file.
  * NB. If no file provided, it will return the path to the main theme file.
@@ -58,5 +62,6 @@ export {
   //currentTheme,
   theme,
   icon,
-  logo
+  logo,
+  isDarkMode
 }

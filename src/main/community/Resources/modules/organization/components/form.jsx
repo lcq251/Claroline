@@ -10,8 +10,6 @@ import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
-import {constants} from '#/main/community/organization/constants'
-
 const OrganizationFormComponent = props => {
   const history = useHistory()
 

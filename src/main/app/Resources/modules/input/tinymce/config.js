@@ -1,6 +1,6 @@
 import {locale} from '#/main/app/intl'
 import {asset, param} from '#/main/app/config'
-import {theme} from '#/main/theme/config'
+import {isDarkMode, theme} from '#/main/theme/config'
 
 //import tinymce from 'tinymce/tinymce'
 import '#/main/app/input/tinymce/plugins'
@@ -17,14 +17,13 @@ const config = {
   // this is required for templates to work
   relative_urls: false,
 
-  body_id: 'data-bs-theme="dark"',
+  body_id: isDarkMode() ? 'data-bs-theme="dark"' : 'data-bs-theme="light"',
 
   // styles
-  skin: 'oxide-dark', // we provide it through theme system
+  skin: isDarkMode() ? 'oxide-dark' : 'oxide', // we provide it through theme system
   content_css: [
     theme('bootstrap'),
-    'dark'
-  ],
+  ].concat(isDarkMode() ? ['dark'] : []),
   highlight_on_focus: false,
   // plugins
   plugins: [

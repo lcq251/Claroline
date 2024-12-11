@@ -16,10 +16,17 @@
 }
 
 .mce-content-body {
-  //padding: $input-padding-y $input-padding-x !important;
+  padding: $input-padding-y $input-padding-x !important;
 
   .btn, .btn-link {
     user-select: auto;
+  }
+
+  &[data-mce-placeholder]:not(.mce-visualblocks)::before {
+    color: $input-placeholder-color !important;
+    position: absolute;
+    padding: 0 $input-padding-x;
+    line-height: $input-line-height;
   }
 }
 

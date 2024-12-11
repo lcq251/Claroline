@@ -38,4 +38,25 @@
       }
     }
   }
+
+  .editor-control {
+    @include form-validation-state-selector($state) {
+      // border-color: $border-color;
+
+      @if $enable-validation-icons {
+        padding-right: $input-height-inner;
+        background-position: top $input-height-inner-quarter right $input-height-inner-quarter;
+      }
+
+      &.focus {
+        border-color: $border-color;
+        @if $enable-shadows {
+          @include box-shadow($input-box-shadow, $focus-box-shadow);
+        } @else {
+          // Avoid using mixin so we can pass custom focus shadow properly
+          box-shadow: $focus-box-shadow;
+        }
+      }
+    }
+  }
 }

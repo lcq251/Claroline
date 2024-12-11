@@ -11,6 +11,9 @@ import {Alert} from '#/main/app/components/alert'
 import {actions} from '#/main/app/api/store'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {Poster} from '#/main/app/components/poster'
+import classes from 'classnames'
+import {getValidationClassName} from '#/main/app/content/form/validator'
+import isEmpty from 'lodash/isEmpty'
 
 class PosterInputComponent extends PureComponent {
   constructor(props) {
@@ -87,6 +90,19 @@ class PosterInputComponent extends PureComponent {
   render() {
     return (
       <div className={this.props.className} role="presentation">
+        <input
+          id={this.props.id}
+          style={this.state.notFound ? {display: 'none'} : undefined}
+          type="file"
+          className="visually-hidden"
+          accept="image"
+          ref={input => this.input = input}
+          onChange={this.onChange}
+          disabled={this.props.disabled}
+          aria-required={this.props.required}
+          aria-invalid={!isEmpty(this.props.error)}
+        />
+
         {this.state.notFound && !this.state.file &&
           <Alert type="warning" className="mb-3">
             {trans('image_not_found')}
@@ -119,15 +135,15 @@ class PosterInputComponent extends PureComponent {
                 <Button
                   className="btn btn-primary"
                   type={CALLBACK_BUTTON}
-                  label={trans('Parcourir la gallerie')}
+                  label={trans('browse_gallery', {}, 'actions')}
                   callback={() => true}
                   size="sm"
                 />
                 <Button
-                  className="btn btn-outline-primary"
+                  className="btn btn-body"
                   type={CALLBACK_BUTTON}
-                  label={trans('Télécharger un fichier')}
-                  callback={() => true}
+                  label={trans('upload_file', {}, 'actions')}
+                  callback={() => this.input.click()}
                   size="sm"
                 />
               </div>
@@ -139,7 +155,7 @@ class PosterInputComponent extends PureComponent {
           <Poster url={this.props.value} className="poster-preview rounded-3" />
         }
 
-        {false && this.props.value && this.state.loaded &&
+        {this.props.value && this.state.loaded &&
           <Button
             id={`${this.props.id}-delete`}
             type={CALLBACK_BUTTON}

@@ -47,23 +47,24 @@ const UploadModal = (props) =>
           ]
         }
       ]}
-    />
-
-    <Button
-      className="modal-btn"
-      variant="btn"
-      size="lg"
-      type={CALLBACK_BUTTON}
-      label={trans('upload', {}, 'actions')}
-      primary={true}
-      disabled={!props.uploadEnabled}
-      callback={() => {
-        props.upload((resourceNode) => {
-          props.fadeModal()
-          props.add(resourceNode)
-        })
-      }}
-    />
+    >
+      <Button
+        className="modal-btn"
+        variant="btn"
+        size="lg"
+        hymlType="submit"
+        type={CALLBACK_BUTTON}
+        label={trans('upload', {}, 'actions')}
+        primary={true}
+        disabled={!props.uploadEnabled}
+        callback={() => {
+          props.upload((resourceNode) => {
+            props.fadeModal()
+            props.add(resourceNode)
+          })
+        }}
+      />
+    </FormData>
   </Modal>
 
 UploadModal.propTypes = {

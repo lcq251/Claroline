@@ -23,16 +23,6 @@
     }
 }
 
-.form-mode {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    .btn-link {
-        font-weight: bold;
-    }
-}
-
 .form-group.mb-4 { // FIXME : ugly selector
     margin-bottom: $form-group-spacer !important;
 }
@@ -57,8 +47,7 @@
 }
 
 .valid-feedback,
-.invalid-feedback,
-.incomplete-feedback {
+.invalid-feedback {
     // because bootstrap only display it if it's placed just after a .form-control.is-invalid
     // which is not always possible with our advanced form types
     display: block;
@@ -105,14 +94,15 @@
 .form-pending-changes {
     bottom: map-get($spacers, 3);
     z-index: $zindex-dropdown - 1;
-    background: $black;
-    color: color-contrast($black);
-
-    margin-left: calc($grid-gutter-width * -.5);
-    margin-right: calc($grid-gutter-width * -.5);
+    /*background: $black;
+    color: color-contrast($black);*/
 
     @include box-shadow($box-shadow);
     @include border-radius($border-radius);
+
+    .btn {
+        line-height: calc($line-height-base * 1rem);
+    }
 }
 
 .validation-status {
@@ -121,14 +111,6 @@
     cursor: help;
 
     @include box-shadow($box-shadow-sm);
-}
-
-/*.form-save {
-    position
-}*/
-
-.form-save-loading {
-
 }
 
 /*!
