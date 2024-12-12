@@ -8,39 +8,13 @@ import {
   CONTEXT_OPEN,
   CONTEXT_LOAD,
   CONTEXT_NOT_FOUND,
-  CONTEXT_SET_LOADED,
-  CONTEXT_MENU_CLOSE,
-  CONTEXT_MENU_OPEN,
-  CONTEXT_MENU_TOGGLE
+  CONTEXT_SET_LOADED
 } from '#/main/app/context/store/actions'
 
 import {TOOL_LOAD} from '#/main/core/tool/store'
 import {PLATFORM_SET_CURRENT_ORGANIZATION} from '#/main/app/platform/store/actions'
 
 const reducer = combineReducers({
-  menu: combineReducers({
-    untouched: makeReducer(true, {
-      [CONTEXT_MENU_OPEN]: () => false,
-      [CONTEXT_MENU_CLOSE]: () => false,
-      [CONTEXT_MENU_TOGGLE]: () => false
-    }),
-    opened: makeReducer(true, {
-      [CONTEXT_MENU_OPEN]: () => true,
-      [CONTEXT_MENU_CLOSE]: () => false,
-      [CONTEXT_MENU_TOGGLE]: (state) => !state,
-      [CONTEXT_LOAD]: (state, action) => {
-        const menuState = get(action.contextData, 'data.opening.menu')
-        if ('open' === menuState) {
-          return true
-        } else if ('close' === menuState) {
-          return false
-        }
-
-        return state
-      }
-    })
-  }),
-
   /**
    * The type of the current context.
    *
@@ -92,6 +66,11 @@ const reducer = combineReducers({
   roles: makeReducer([], {
     [CONTEXT_OPEN]: () => [],
     [CONTEXT_LOAD]: (state, action) => action.contextData.roles || []
+  }),
+
+  organizations: makeReducer([], {
+    [CONTEXT_OPEN]: () => [],
+    [CONTEXT_LOAD]: (state, action) => action.contextData.organizations || []
   }),
 
   /**

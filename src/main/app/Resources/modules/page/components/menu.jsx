@@ -1,101 +1,25 @@
-import React from 'react'
+import React, {createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useSelector, useDispatch} from 'react-redux'
 import classes from 'classnames'
 
-import {trans} from '#/main/app/intl'
 import {toKey} from '#/main/app/utils/text'
 import {Button, Toolbar} from '#/main/app/action'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
-
-import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
-import {actions as contextActions, selectors as contextSelectors} from '#/main/app/context/store'
-import {PageBreadcrumb} from '#/main/app/page/components/breadcrumb'
-
-const FavouriteButton = () => {
-  const dispatch = useDispatch()
-
-  const contextType = useSelector(contextSelectors.type)
-  if ('workspace' !== contextType) {
-    return null;
-  }
-
-  const contextData = useSelector(contextSelectors.data)
-  let favourite = useSelector((state) => platformSelectors.isContextFavorite(state, contextData))
-
-  return (
-    <Button
-      id="toggle-favorite"
-      type={CALLBACK_BUTTON}
-      label={trans(favourite ? 'remove-favourite' : 'add-favourite', {}, 'actions')}
-      icon={classes('fa', {
-        'fa-star text-warning': favourite,
-        'far fa-star': !favourite
-      })}
-      tooltip="bottom"
-      callback={() => dispatch(platformActions.saveFavorite(contextData))}
-    />
-  )
-}
-
-const MenuButton = () => {
-  const dispatch = useDispatch()
-  const menuOpened = useSelector(contextSelectors.menuOpened)
-
-  return (
-    <Button
-      id="toggle-menu"
-      type={CALLBACK_BUTTON}
-      label={trans(menuOpened ? 'hide-menu' : 'show-menu', {}, 'actions')}
-      icon="fa fa-bars"
-      tooltip="bottom"
-      aria-expanded={menuOpened}
-      callback={() => dispatch(contextActions.toggleMenu())}
-    />
-  )
-}
 
 const PageMenu = (props) => {
   const displayedNav = props.nav
     .filter(action => undefined === action.displayed || action.displayed)
 
-  const breadcrumb = [].concat(props.breadcrumb)
-  const main = breadcrumb.shift()
-
   return (
-    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-center bg-body', {
+    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-stretch bg-body', {
       'sticky-top': !props.embedded
     })} role="presentation">
-      {!props.embedded &&
-        <MenuButton />
-      }
-
-      {!props.embedded &&
-        <FavouriteButton />
-      }
-
-      {!props.embedded &&
-        <div className="text-truncate py-2" role="presentation">
-          <div role="presentation" className="d-flex align-items-center">
-            <Button
-              {...main}
-              className="text-truncate text-reset h6 d-block m-0"
-              type={LINK_BUTTON}
-              style={{fontWeight: 500}}
-            />
-          </div>
-          <PageBreadcrumb
-            breadcrumb={breadcrumb}
-            current={props.title}
-          />
-        </div>
-      }
+      {!props.embedded && props.affix && createElement(props.affix)}
 
       {(1 < displayedNav.length || props.actions) &&
         <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm">
           {1 < displayedNav.length &&
-            <nav className="text-nowrap">
+            <nav className="text-nowrap d-flex">
               <ul className="nav nav-underline flex-nowrap">
                 {displayedNav.map((nav) =>
                   <li className="nav-item" key={nav.name || toKey(nav.label)}>
@@ -111,7 +35,7 @@ const PageMenu = (props) => {
 
           {props.actions &&
             <Toolbar
-              className={classes('nav nav-underline flex-nowrap gap-4', 1 >= displayedNav.length && 'ms-auto')}
+              className={classes('nav nav-underline flex-nowrap gap-4 d-flex', 1 >= displayedNav.length && 'ms-auto')}
               buttonName="nav-link py-3"
               toolbar={props.toolbar}
               tooltip="bottom"

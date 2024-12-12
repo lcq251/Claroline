@@ -25,10 +25,6 @@ export const CONTEXT_SET_LOADED = 'CONTEXT_SET_LOADED'
  */
 export const CONTEXT_NOT_FOUND = 'CONTEXT_NOT_FOUND'
 
-export const CONTEXT_MENU_OPEN = 'MENU_OPEN'
-export const CONTEXT_MENU_CLOSE = 'MENU_CLOSE'
-export const CONTEXT_MENU_TOGGLE = 'MENU_TOGGLE'
-
 export const actions = {}
 
 actions.load = makeActionCreator(CONTEXT_LOAD, 'contextData')
@@ -61,10 +57,6 @@ actions.fetch = (contextType, contextId = null) => (dispatch) => dispatch({
     }
   }
 })
-
-actions.openMenu = makeActionCreator(CONTEXT_MENU_OPEN)
-actions.closeMenu = makeActionCreator(CONTEXT_MENU_CLOSE)
-actions.toggleMenu = makeActionCreator(CONTEXT_MENU_TOGGLE)
 
 // todo : to move in platform actions instead ?
 actions.changeStatus = (currentUser, status) => (dispatch) => dispatch({

@@ -15,7 +15,7 @@ const Html = props => {
   return (
     <div
       {...omit(props, 'children', 'align')}
-      className={classes('content-html', `text-${props.align}`, props.className)}
+      className={classes('content-html', props.align && `text-${props.align}`, props.className)}
       dangerouslySetInnerHTML={{ __html: props.children }}
       role="presentation"
     />
@@ -32,11 +32,7 @@ Html.propTypes = {
    * Additional classes to add to the DOM.
    */
   className: T.string,
-  align: T.oneOf(['start', 'center', 'end', 'justify']).isRequired
-}
-
-Html.defaultProps = {
-  align: 'justify'
+  align: T.oneOf(['start', 'center', 'end', 'justify'])
 }
 
 export {

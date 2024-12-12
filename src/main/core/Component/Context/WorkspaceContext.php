@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\AbstractContext;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
+use Claroline\AppBundle\Manager\SecurityManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -21,6 +22,7 @@ class WorkspaceContext extends AbstractContext
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
+        private readonly SecurityManager $securityManager,
         private readonly SerializerProvider $serializer,
         private readonly WorkspaceManager $manager,
         private readonly WorkspaceRestrictionsManager $restrictionsManager,
@@ -86,6 +88,18 @@ class WorkspaceContext extends AbstractContext
         $workspace = $contextSubject;
 
         return $this->manager->getTokenRoles($token, $workspace);
+    }
+
+    public function getOrganizations(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
+    {
+        if ($this->securityManager->isAdmin()) {
+            return $contextSubject->getOrganizations()->toArray();
+        }
+
+        $userOrganizations = $token->getUser()->getOrganizations();
+        $workspaceOrganizations = $contextSubject->getOrganizations()->toArray();
+
+        return array_intersect($workspaceOrganizations, $userOrganizations);
     }
 
     public function getAdditionalData(?ContextSubjectInterface $contextSubject): array

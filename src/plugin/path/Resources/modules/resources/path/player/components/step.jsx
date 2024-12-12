@@ -2,12 +2,10 @@ import React from 'react'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
-import {asset} from '#/main/app/config/asset'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {Button} from '#/main/app/action/components/button'
 import {MENU_BUTTON, CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {ResourceCard} from '#/main/core/resource/components/card'
 import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {route as resourceRoute} from '#/main/core/resource/routing'
@@ -18,6 +16,7 @@ import {PageSection} from '#/main/app/page'
 import isEmpty from 'lodash/isEmpty'
 import {getActions} from '#/main/community/group/utils'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {Html} from '#/main/app/components/html'
 
 const ManualProgression = props =>
   <div className="text-body-tertiary d-flex align-items-baseline mb-1" role="presentation">
@@ -114,7 +113,7 @@ const Step = props =>
         }
 
         {props.description &&
-          <ContentHtml className="lead mb-5">{props.description}</ContentHtml>
+          <Html className="mb-5">{props.description}</Html>
         }
 
         {(props.description && props.primaryResource) &&

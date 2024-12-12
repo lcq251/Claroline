@@ -1,18 +1,19 @@
 
 .app-toolbar {
     display: flex;
-    flex-direction: row;
+    //flex-direction: row;
     width: map-get($icon-sizes, sm) + 1.5rem;
     transition: width .4s ease;
     top: 0;
     bottom: 0;
-    overflow: hidden;
+    //overflow: hidden;
 
-    &.show {
+    /*&.show {
         width: $toolbar-size;
-    }
+    }*/
 
-    box-shadow: $toolbar-box-shadow;
+    //box-shadow: $toolbar-box-shadow;
+    border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
     z-index: $zindex-sticky + 1;
 }
 
@@ -25,18 +26,6 @@
     --#{$prefix}menu-bg: #{$toolbar-bg};
     --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle};
     --#{$prefix}menu-header-color: #{$toolbar-header-color};
-
-    --#{$prefix}menu-item-color: #{$toolbar-link-color};
-    --#{$prefix}menu-item-bg: #{$toolbar-link-bg};
-
-    --#{$prefix}menu-item-hover-color: #{$toolbar-link-hover-color};
-    --#{$prefix}menu-item-hover-bg: #{$toolbar-link-hover-bg};
-
-    --#{$prefix}menu-item-active-color: #{$toolbar-link-active-color};
-    --#{$prefix}menu-item-active-bg: #{$toolbar-link-active-bg};
-
-    --#{$prefix}menu-item-disabled-color: #{$toolbar-link-disabled-color};
-    --#{$prefix}menu-item-disabled-bg: #{$toolbar-link-disabled-bg};
 
     // height: 100%;
     overflow-y: auto; // gets its own scrollbar
@@ -52,78 +41,19 @@
     transition: opacity .3s ease;
 }
 
-.app-context-menu {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden; // do not display scrollbar during animation
-
-    .dropdown-menu {
-        width: calc($toolbar-size - (map-get($icon-sizes, sm) + 1.5rem) - 2px);
-    }
-}
-
-.app-menu-cover {
-    text-align: center;
-    // padding-bottom: 2.5rem;
-    flex-shrink: 0;
-
-    /*+ .app-menu-current-user .user-avatar {
-        margin-top: -(2.5rem + $thumbnail-padding);
-    }*/
-}
-
-.app-menu-user {
-    background: var(--#{$prefix}menu-bg-subtle);
-    color: var(--#{$prefix}menu-color);
-}
-
-.app-current-user {
-    small {
-        color: var(--#{$prefix}menu-item-color);
-    }
-
-    .user-status-bullet {
-        border-color: var(--#{$prefix}menu-bg-subtle) !important;
-    }
-}
-
-.app-menu-header {
-    .app-menu-title {
-        margin: 0;
-        padding: 0;
-        font-weight: $font-weight-medium;
-        font-size: $font-size-base;
-    }
-
-    .btn {
-        color: var(--#{$prefix}menu-item-color);
-        box-shadow: none;
-        border-color: transparent !important;
-
-        &:hover {
-            color: var(--#{$prefix}menu-item-hover-color);
-            background: var(--#{$prefix}menu-item-hover-bg);
-        }
-
-        &:focus {
-            box-shadow: inherit !important;
-        }
-
-        &:focus,
-        &:active,
-        &.active {
-            &,
-            &:hover,
-            &:focus {
-                color: var(--#{$prefix}menu-item-hover-color);
-                background: var(--#{$prefix}menu-item-hover-bg);
-            }
-        }
-    }
-}
-
 .app-menu-items {
+    --#{$prefix}menu-item-color: #{$toolbar-link-color};
+    --#{$prefix}menu-item-bg: #{$toolbar-link-bg};
+
+    --#{$prefix}menu-item-hover-color: #{$toolbar-link-hover-color};
+    --#{$prefix}menu-item-hover-bg: #{$toolbar-link-hover-bg};
+
+    --#{$prefix}menu-item-active-color: #{$toolbar-link-active-color};
+    --#{$prefix}menu-item-active-bg: #{$toolbar-link-active-bg};
+
+    --#{$prefix}menu-item-disabled-color: #{$toolbar-link-disabled-color};
+    --#{$prefix}menu-item-disabled-bg: #{$toolbar-link-disabled-bg};
+
     display: flex;
     flex-direction: column;
     justify-content: stretch;
@@ -165,7 +95,6 @@
         }
     }
 
-    //&:focus,
     &:active,
     &.active {
         &,
@@ -201,7 +130,7 @@
         position: absolute;
         z-index: $zindex-fixed;
 
-        &.show {
+        /*&.show {
             + .app-menu-backdrop {
                 position: fixed;
                 z-index: $zindex-fixed - 1;
@@ -213,14 +142,15 @@
 
                 opacity: 1;
             }
-        }
+        }*/
     }
 }
 
 // XS/SM screens :
 @media (max-width: map-get($grid-breakpoints, 'md')) {
     .app-toolbar {
-        width: 0; // also hide contexts nav
+        // width: 0; // also hide contexts nav
+        display: none;
     }
 
     .app-body {
@@ -235,7 +165,9 @@
             --#{$prefix}menu-bg: #{$toolbar-bg-dark};
             --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle-dark};
             --#{$prefix}menu-header-color: #{$toolbar-header-color-dark};
+        }
 
+        .app-menu-items {
             --#{$prefix}menu-item-color: #{$toolbar-link-color-dark};
             --#{$prefix}menu-item-bg: #{$toolbar-link-bg-dark};
 

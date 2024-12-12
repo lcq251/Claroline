@@ -10,7 +10,10 @@ import {Thumbnail} from '#/main/app/components/thumbnail'
 
 import {MODAL_CONTEXT_SEARCH} from '#/main/app/context/modals/search'
 import {NotificationButton} from '#/main/notification/components/button'
-import {PlatformOrganization} from '#/main/app/platform/components/organization'
+//import {PlatformOrganization} from '#/main/app/platform/components/organization'
+import {useSelector} from 'react-redux'
+import {selectors} from '#/main/app/platform/store'
+import {ContextUser} from '#/main/app/context/containers/user'
 
 const ContextNav = (props) => {
   if (!props.currentUser) {
@@ -25,18 +28,18 @@ const ContextNav = (props) => {
     }
   }
 
+  const currentOrganization = useSelector(selectors.currentOrganization)
+
   return (
-    <section className="app-contexts">
+    <nav className="app-contexts app-toolbar">
       <Button
         type={CALLBACK_BUTTON}
         className="app-context-jump app-context-btn focus-ring"
         icon="fa fa-fw fa-angles-right"
         label={trans('go_to_content', {}, 'actions')}
         tooltip="right"
-      callback={() => document.querySelector('#toggle-menu').focus()}
+        callback={() => document.querySelector('#toggle-menu').focus()}
       />
-
-      <PlatformOrganization />
 
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
@@ -49,19 +52,13 @@ const ContextNav = (props) => {
           >
             <Thumbnail
               size="sm"
-              thumbnail={props.currentUser.picture}
-              name={props.currentUser.name}
+              thumbnail={currentOrganization.thumbnail}
+              name={currentOrganization.name}
               square={true}
             />
           </Button>
         </li>
 
-        <li>
-          <NotificationButton
-            className="app-context-btn focus-ring"
-            tooltip="right"
-          />
-        </li>
 
         <li>
           <Button
@@ -99,7 +96,21 @@ const ContextNav = (props) => {
           ))}
         </ul>
       }
-    </section>
+
+      <hr className="app-context-separator mt-auto mx-auto" aria-hidden={true} />
+      <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
+        <li>
+          <NotificationButton
+            className="app-context-btn focus-ring"
+            tooltip="right"
+          />
+        </li>
+
+        <li>
+          <ContextUser size="sm" className="app-context-btn" />
+        </li>
+      </ul>
+    </nav>
   )
 }
 

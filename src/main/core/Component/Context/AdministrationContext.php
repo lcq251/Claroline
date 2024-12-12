@@ -90,4 +90,9 @@ class AdministrationContext extends AbstractContext
 
         return [];
     }
+
+    public function getOrganizations(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
+    {
+        return [];
+    }
 }

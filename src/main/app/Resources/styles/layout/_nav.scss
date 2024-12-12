@@ -5,13 +5,15 @@
   background: var(--#{$prefix}menu-bg);
   height: 100%;
   padding: $spacer 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.menu-brand {
+/*.menu-brand {
   max-width: map-get($icon-sizes, sm);
   max-height: $brand-size;
   margin-bottom: .5rem;
-}
+}*/
 
 .app-context-jump {
   &:not(:focus) {

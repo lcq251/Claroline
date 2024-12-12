@@ -1,0 +1,24 @@
+
+.flyout-menu {
+  max-height: 80vh;
+  overflow-y: hidden;
+  flex-direction: column;
+  min-width: 28rem;
+  &.show {
+    display: flex !important;
+  }
+}
+
+.flyout-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.flyout-menu-cols {
+  display: flex;
+  flex-direction: row;
+}
+
+.flyout-menu-col {
+  min-width: 28rem;
+}

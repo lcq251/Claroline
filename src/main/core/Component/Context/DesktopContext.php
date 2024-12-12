@@ -71,6 +71,11 @@ class DesktopContext extends AbstractContext
         });
     }
 
+    public function getOrganizations(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
+    {
+        return $token->getUser()->getOrganizations();
+    }
+
     public function getAdditionalData(?ContextSubjectInterface $contextSubject): array
     {
         // for retro-compatibility, should not be exposed here

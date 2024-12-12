@@ -17,6 +17,7 @@ import {AppLoader} from '#/main/app/platform/components/loader'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
+import {ContextNav} from '#/main/app/context/containers/nav'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
@@ -161,8 +162,7 @@ const ContextMain = (props) => {
 
   return (
     <>
-      {createElement(props.menu)}
-
+      <ContextNav/>
       <div className="app-body" role="presentation" tabIndex={-1}>
         <AppLoader />
 

@@ -39,6 +39,11 @@ class ProgressionTool extends ToolComponent
         return 'medal';
     }
 
+    public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): ?string
+    {
+        return '75%';
+    }
+
     public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();

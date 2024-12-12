@@ -89,4 +89,9 @@ class PublicContext extends AbstractContext
             ],
         ];
     }
+
+    public function getOrganizations(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
+    {
+        return [];
+    }
 }

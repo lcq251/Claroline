@@ -89,10 +89,10 @@ const ContextUser = (props) => {
   }
 
   return (
-    <div className="app-menu-user p-1 mt-auto d-flex flex-column align-items-stretch" role="presentation">
+    <div className={classes('app-menu-user d-flex flex-column align-items-stretch', props.className)} role="presentation">
       <MenuButton
         id="current-user-menu"
-        className="app-current-user text-start d-flex flex-row align-items-center gap-3 py-1 px-3 fs-sm fw-bolder w-100 focus-ring"
+        className="app-current-user text-start d-flex flex-row p-0 focus-ring rounded-circle"
         menu={{
           //className: 'dropdown-menu-full',
           items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
@@ -142,12 +142,16 @@ const ContextUser = (props) => {
           ])
         }}
       >
-        <UserAvatar user={props.currentUser} noStatusTooltip={true} size="sm" />
-        <div className="flex-fill" role="presentation">
-          {props.currentUser.name}
-          <small className="d-block">{userConst.USER_STATUSES[props.currentUser.status]}</small>
-        </div>
-        <span className="fa fa-chevron-down" aria-hidden={true} />
+        <UserAvatar user={props.currentUser} noStatusTooltip={true} size={props.size || 'xs'} />
+        {false &&
+          <>
+            <div className="flex-fill" role="presentation">
+              {props.currentUser.name}
+              <small className="d-block">{userConst.USER_STATUSES[props.currentUser.status]}</small>
+            </div>
+            <span className="fa fa-chevron-down" aria-hidden={true} />
+          </>
+        }
       </MenuButton>
     </div>
   )

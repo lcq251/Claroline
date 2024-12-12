@@ -8,6 +8,7 @@ import {trans} from '#/main/app/intl'
 import {PageFull} from '#/main/app/page'
 
 import {selectors} from '#/main/app/context/store'
+import {ContextMenu} from '#/main/app/context/containers/menu'
 
 const ContextPage = (props) => {
   const contextType = useSelector(selectors.type)
@@ -23,6 +24,7 @@ const ContextPage = (props) => {
           target: contextPath
         }
       ] : []).concat(props.breadcrumb || [])}
+      affix={ContextMenu}
       title={props.title ?
         props.title + ' | ' + get(contextData, 'name', trans(contextType, {}, 'context')) :
         get(contextData, 'name', trans(contextType, {}, 'context'))

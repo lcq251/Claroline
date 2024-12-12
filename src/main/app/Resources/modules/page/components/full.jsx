@@ -22,6 +22,7 @@ const PageFull = (props) =>
         embedded={props.embedded}
         {...props.menu}
         breadcrumb={props.breadcrumb}
+        affix={props.affix}
       />
     }
 

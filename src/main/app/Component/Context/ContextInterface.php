@@ -25,6 +25,8 @@ interface ContextInterface extends ComponentInterface
      */
     public function getRoles(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array;
 
+    public function getOrganizations(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array;
+
     public function getAccessErrors(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array;
 
     /**

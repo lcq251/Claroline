@@ -18,7 +18,7 @@ abstract class ToolComponent implements ToolInterface
         return true;
     }
 
-    public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): ?int
+    public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): mixed
     {
         return null;
     }

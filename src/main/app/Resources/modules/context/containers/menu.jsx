@@ -13,17 +13,12 @@ const ContextMenu = withRouter(
       path: selectors.path(state),
       contextType: selectors.type(state),
       contextData: selectors.data(state),
-      opened: selectors.menuOpened(state),
-      untouched: selectors.menuUntouched(state),
       notFound: selectors.notFound(state),
       hasErrors: !isEmpty(selectors.accessErrors(state)) && !selectors.managed(state)
     }),
     (dispatch) => ({
       reload() {
         dispatch(actions.reload())
-      },
-      close() {
-        dispatch(actions.closeMenu())
       }
     })
   )(ContextMenuComponent)

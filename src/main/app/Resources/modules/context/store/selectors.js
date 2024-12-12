@@ -103,6 +103,11 @@ const roles = createSelector(
   (store) => store.roles || []
 )
 
+const organizations = createSelector(
+  [store],
+  (store) => store.organizations || []
+)
+
 const tools = createSelector(
   [store],
   (store) => store.tools || []
@@ -123,6 +128,11 @@ const accessibleTools = createSelector(
 
       return -1
     })
+)
+
+const visibleTools = createSelector(
+  [accessibleTools],
+  (accessibleTools) => accessibleTools.filter(tool => !get(tool, 'restrictions.hidden', false))
 )
 
 const defaultOpening = createSelector(
@@ -150,21 +160,6 @@ const defaultOpening = createSelector(
   }
 )
 
-const menu = createSelector(
-  [store],
-  (store) => store.menu
-)
-
-const menuUntouched = createSelector(
-  [menu],
-  (menu) => !!menu && menu.untouched
-)
-
-const menuOpened = createSelector(
-  [menu],
-  (menu) => !!menu && menu.opened
-)
-
 export const selectors = {
   STORE_NAME,
   EDITOR_NAME,
@@ -182,14 +177,12 @@ export const selectors = {
   impersonated,
   managed,
   roles,
+  organizations,
 
   // selectors for context config
   data,
   tools,
   accessibleTools,
-  defaultOpening,
-
-  // selectors for menu
-  menuUntouched,
-  menuOpened
+  visibleTools,
+  defaultOpening
 }

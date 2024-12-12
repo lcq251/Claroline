@@ -11,6 +11,7 @@ use Claroline\AppBundle\Component\Tool\ToolInterface;
 use Claroline\AppBundle\Component\Tool\ToolProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Event\CatalogEvents\ContextEvents;
@@ -64,6 +65,7 @@ class ContextController
         }
 
         $contextRoles = $contextHandler->getRoles($this->tokenStorage->getToken(), $contextSubject);
+        $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
         $isImpersonated = $contextHandler->isImpersonated($this->tokenStorage->getToken(), $contextSubject);
 
         if (!$contextSubject || $this->authorization->isGranted('OPEN', $contextSubject)) {
@@ -80,6 +82,9 @@ class ContextController
                 'roles' => array_values(array_map(function (Role $role) {
                     return $this->serializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]);
                 }, $contextRoles)),
+                'organizations' => array_map(function (Organization $organization) {
+                    return $this->serializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
+                }, $contextOrganizations),
                 // 'accessErrors' => $accessErrors,
 
                 // get all enabled tools for the context, even those inaccessible to the current user
