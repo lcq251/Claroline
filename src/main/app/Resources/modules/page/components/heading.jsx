@@ -26,24 +26,24 @@ const PageHeading = props =>
         <Await for={props.actions} then={(resolvedActions) => (
           <PageActions
             actions={resolvedActions}
-            toolbar={props.toolbar}
+            toolbar={props.toolbar || 'more'}
             primaryAction={props.primaryAction}
             secondaryAction={props.secondaryAction}
-            disabled={props.disabled}
+            disabled={!!props.disabled}
           />
         )} /> :
         <PageActions
           actions={props.actions}
-          toolbar={props.toolbar}
+          toolbar={props.toolbar || 'more'}
           primaryAction={props.primaryAction}
           secondaryAction={props.secondaryAction}
-          disabled={props.disabled}
+          disabled={!!props.disabled}
         />
       }
     </div>
 
     {props.description &&
-      <p className="lead text-body-secondary mt-3">{props.description}</p>
+      <p className="lead text-body-secondary mt-3 mb-0">{props.description}</p>
     }
   </header>
 
@@ -73,12 +73,6 @@ PageHeading.propTypes = {
     )
   ]),
   disabled: T.bool
-}
-
-PageHeading.defaultProps = {
-  actions: [],
-  disabled: false,
-  toolbar: 'more'
 }
 
 export {

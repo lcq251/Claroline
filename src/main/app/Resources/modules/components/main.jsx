@@ -11,8 +11,8 @@ import {Appearance} from '#/main/theme/components/appearance'
 
 const Main = props =>
   <Provider store={props.store}>
-    <Appearance embedded={props.embedded}>
-      <Router basename={props.defaultPath} embedded={props.embedded}>
+    <Appearance embedded={!!props.embedded}>
+      <Router basename={props.defaultPath} embedded={!!props.embedded}>
         <AlertOverlay key="alert" />
 
         {props.children}
@@ -27,10 +27,6 @@ Main.propTypes = {
   embedded: T.bool,
   store: T.object.isRequired,
   children: T.any
-}
-
-Main.defaultProps = {
-  embedded: false
 }
 
 export {

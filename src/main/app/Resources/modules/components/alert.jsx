@@ -6,14 +6,14 @@ import omit from 'lodash/omit'
 /**
  * Renders a basic alert message with status contextualization (icon + color).
  */
-const Alert = props =>
+const Alert = (props) =>
   <div
     {...omit(props, 'type', 'children')}
     className={classes('alert', 'alert-'+props.type, props.className)}
     role="alert"
   >
     <span className={classes('alert-icon fa fa-fw', props.icon || {
-      'fa-info-circle': 'info' === props.type,
+      'fa-info-circle': 'info' === props.type || !props.type,
       'fa-circle-check': 'success' === props.type,
       'fa-warning': 'warning' === props.type,
       'fa-circle-xmark': 'danger' === props.type
@@ -21,7 +21,7 @@ const Alert = props =>
 
     <span className="alert-body" role="presentation">
       {props.title &&
-        <h4 className={classes('alert-heading', `text-${props.type}-emphasis`)}>{props.title}</h4>
+        <h4 className={classes('alert-heading', `text-${props.type || 'info'}-emphasis`)}>{props.title}</h4>
       }
 
       {props.children}
@@ -34,10 +34,6 @@ Alert.propTypes = {
   icon: T.string,
   title: T.string,
   children: T.node.isRequired
-}
-
-Alert.defaultProps = {
-  type: 'info'
 }
 
 export {

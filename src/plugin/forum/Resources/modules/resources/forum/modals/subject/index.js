@@ -1,6 +1,6 @@
 /**
  * Subject form modal.
- * Displays a form to configure a forum subject.
+ * Displays a form to create/configure a forum subject.
  */
 
 import {registry} from '#/main/app/modals/registry'
