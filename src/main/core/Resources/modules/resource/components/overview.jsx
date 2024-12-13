@@ -7,8 +7,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import {toKey} from '#/main/app/utils/text'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {Alert} from '#/main/app/components/alert'
+import {Html} from '#/main/app/components/html'
 
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors} from '#/main/core/resource/store'
@@ -41,7 +41,7 @@ const ResourceOverviewContent = (props) => {
           }
 
           {description &&
-            <ContentHtml className="lead mb-5">{description}</ContentHtml>
+            <Html className="content-text mb-5">{description}</Html>
           }
         </PageSection>
       }
@@ -59,7 +59,7 @@ const ResourceOverviewContent = (props) => {
 
               {!isEmpty(get(props.feedbacks, 'closed')) && props.feedbacks.closed.map(closedMessage =>
                 <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
-                  <ContentHtml>{closedMessage[1]}</ContentHtml>
+                  <Html>{closedMessage[1]}</Html>
                 </Alert>
               )}
             </PageSection>

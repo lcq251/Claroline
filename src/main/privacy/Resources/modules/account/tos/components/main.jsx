@@ -30,9 +30,8 @@ const TosMain = (props) =>
 
     {!get(props.currentUser, 'meta.acceptedTerms') &&
       <Button
-        className="btn btn-primary mt-4"
+        className="btn btn-primary mt-4 ms-auto"
         type={CALLBACK_BUTTON}
-        size="lg"
         label={trans('terms_of_service_accept', {}, 'privacy')}
         callback={() => props.acceptTerms()}
       />

@@ -113,7 +113,7 @@ const Step = props =>
         }
 
         {props.description &&
-          <Html className="mb-5">{props.description}</Html>
+          <Html className="content-text mb-5">{props.description}</Html>
         }
 
         {(props.description && props.primaryResource) &&
