@@ -38,7 +38,8 @@ const Team = (props) =>
       <PageHeading
         size="md"
         title={get(props.team, 'name', trans('loading'))}
-        primaryAction="edit"
+        description={get(props.team, 'meta.description')}
+        // primaryAction="edit"
         actions={!isEmpty(props.team) ? getActions([props.team], {
           add: () => props.reload(props.team.id),
           update: () => props.reload(props.team.id),

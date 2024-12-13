@@ -8,7 +8,6 @@ import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {DetailsData} from '#/main/app/content/details/containers/data'
 import {ContentSections} from '#/main/app/content/components/sections'
 
@@ -30,12 +29,6 @@ const RoleShow = (props) =>
     role={props.role}
     reload={(role) => props.reload(role, props.contextData)}
   >
-    {get(props.role, 'meta.description') &&
-      <PageSection size="md" className="pb-5">
-        <ContentHtml className="lead">{get(props.role, 'meta.description')}</ContentHtml>
-      </PageSection>
-    }
-
     <PageSection size="md" className="bg-body-tertiary">
       <DetailsData
         className="mt-3"

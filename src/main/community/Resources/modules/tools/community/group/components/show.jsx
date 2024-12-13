@@ -9,7 +9,6 @@ import {DetailsData} from '#/main/app/content/details/containers/data'
 import {Alert} from '#/main/app/components/alert'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
-import {ContentHtml} from '#/main/app/content/components/html'
 
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {UserList} from '#/main/community/user/components/list'
@@ -29,12 +28,6 @@ const GroupShow = (props) =>
     group={props.group}
     reload={props.reload}
   >
-    {get(props.group, 'meta.description') &&
-      <PageSection size="md" className="pb-5">
-        <ContentHtml className="lead">{get(props.group, 'meta.description')}</ContentHtml>
-      </PageSection>
-    }
-
     <PageSection size="md" className="bg-body-tertiary">
       {hasPermission('administrate', props.group) && get(props.group, 'meta.readOnly') &&
         <Alert type="info" className="my-3">{trans('group_locked', {}, 'community')}</Alert>

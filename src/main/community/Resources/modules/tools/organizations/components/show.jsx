@@ -1,13 +1,11 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {DetailsData} from '#/main/app/content/details/containers/data'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
-import {ContentHtml} from '#/main/app/content/components/html'
 
 import {UserList} from '#/main/community/user/components/list'
 import {MODAL_USERS} from '#/main/community/modals/users'
@@ -22,12 +20,6 @@ const OrganizationShow = props =>
     organization={props.organization}
     reload={props.reload}
   >
-    {get(props.organization, 'meta.description') &&
-      <PageSection size="md">
-        <ContentHtml className="lead mb-5">{get(props.organization, 'meta.description')}</ContentHtml>
-      </PageSection>
-    }
-
     <PageSection size="md" className="bg-body-tertiary">
       <DetailsData
         className="mt-3"

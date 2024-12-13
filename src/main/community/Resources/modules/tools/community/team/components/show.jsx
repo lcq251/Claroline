@@ -18,7 +18,6 @@ import {Team as TeamTypes} from '#/main/community/team/prop-types'
 import {TeamPage} from '#/main/community/team/components/page'
 import {selectors} from '#/main/community/tools/community/team/store/selectors'
 import {PageSection} from '#/main/app/page/components/section'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {route} from '#/main/community/team/routing'
 
 const TeamShow = (props) => {
@@ -30,12 +29,6 @@ const TeamShow = (props) => {
       team={props.team}
       reload={props.reload}
     >
-      {get(props.team, 'meta.description') &&
-        <PageSection size="md" className="pb-5">
-          <ContentHtml className="lead">{get(props.team, 'meta.description')}</ContentHtml>
-        </PageSection>
-      }
-
       <PageSection size="md" className="bg-body-tertiary">
         {!full && get(props.team, 'registration.selfRegistration') &&
           <Alert type="info" className="my-3">
