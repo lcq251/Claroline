@@ -11,12 +11,11 @@
 
 namespace Claroline\CoreBundle\Entity\Facet;
 
-use Claroline\CoreBundle\Repository\Facet\FieldFacetValueRepository;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_field_facet_value')]
-#[ORM\Entity(repositoryClass: FieldFacetValueRepository::class)]
+#[ORM\Entity()]
 class FieldFacetValue extends AbstractFacetValue
 {
     /**

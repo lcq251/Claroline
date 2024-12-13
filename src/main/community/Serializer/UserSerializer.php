@@ -15,15 +15,12 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Manager\FacetManager;
-use Claroline\CoreBundle\Repository\Facet\FieldFacetValueRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserSerializer
 {
     use SerializerTrait;
-
-    private FieldFacetValueRepository $fieldFacetValueRepo;
 
     private UserProfileRepository $userProfileRepo;
 
@@ -34,7 +31,6 @@ class UserSerializer
         private readonly PlatformConfigurationHandler $config,
         private readonly FacetManager $facetManager
     ) {
-        $this->fieldFacetValueRepo = $om->getRepository(FieldFacetValue::class);
         $this->userProfileRepo = $om->getRepository(UserProfile::class);
     }
 

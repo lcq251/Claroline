@@ -14,14 +14,13 @@ namespace Claroline\CoreBundle\Entity\Facet;
 use Claroline\AppBundle\Entity\Display\Order;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\CoreBundle\Repository\Facet\FieldFacetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_field_facet')]
-#[ORM\Entity(repositoryClass: FieldFacetRepository::class)]
+#[ORM\Entity()]
 class FieldFacet
 {
     use Id;
@@ -111,7 +110,7 @@ class FieldFacet
     private ?string $conditionComparator = null;
 
     #[ORM\Column(name: 'condition_value', type: Types::JSON, nullable: true)]
-    private $conditionValue;
+    private mixed $conditionValue = null;
 
     #[ORM\Column(name: 'hide_label', type: Types::BOOLEAN)]
     private bool $hideLabel = false;
