@@ -21,7 +21,7 @@ export const actions = {}
 
 actions.updateUser = makeActionCreator(SECURITY_USER_UPDATE, 'user')
 
-actions.changeUser = (user, config, impersonated = false, contexts = [], contextFavorites = [], currentOrganization = null, availableOrganizations = []) => (dispatch, getState) => {
+actions.changeUser = (user, config, impersonated = false, contexts = [], contextFavorites = [], currentOrganization = null) => (dispatch, getState) => {
   // we will dispatch action only if the user has really changed
   // this will avoid false positive as it is used by other ui components
   // to know when to invalidate/reload data for the new user
@@ -34,8 +34,7 @@ actions.changeUser = (user, config, impersonated = false, contexts = [], context
       impersonated: impersonated,
       contexts: contexts,
       contextFavorites: contextFavorites,
-      currentOrganization: currentOrganization,
-      availableOrganizations: availableOrganizations
+      currentOrganization: currentOrganization
     })
   }
 }
@@ -58,7 +57,7 @@ actions.login = (username, password) => (dispatch) => dispatch({
 
 actions.onLogin = (response) => (dispatch) => {
   const changeCurrentUser = () => {
-    return dispatch(actions.changeUser(response.user, response.config, false, response.contexts, response.contextFavorites, response.currentOrganization, response.availableOrganizations))
+    return dispatch(actions.changeUser(response.user, response.config, false, response.contexts, response.contextFavorites, response.currentOrganization))
   }
 
   if (!response.acceptedTerms && param('privacy.tos.enabled')) {

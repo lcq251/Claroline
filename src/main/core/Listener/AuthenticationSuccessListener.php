@@ -68,9 +68,6 @@ class AuthenticationSuccessListener implements AuthenticationSuccessHandlerInter
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
                 'currentOrganization' => $this->serializer->serialize($user->getMainOrganization(), [SerializerInterface::SERIALIZE_MINIMAL]),
-                'availableOrganizations' => array_map(function (Organization $organization) {
-                    return $this->serializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
-                }, $user->getOrganizations()),
             ]);
         }
 

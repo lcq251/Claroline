@@ -44,7 +44,6 @@ const isContextFavorite = (state, context) => {
 }
 
 const currentOrganization = (state) => state.currentOrganization
-const availableOrganizations = (state) => state.availableOrganizations
 
 export const selectors = {
   unavailable,
@@ -53,6 +52,5 @@ export const selectors = {
   availableContexts,
   favoriteContexts,
   isContextFavorite,
-  currentOrganization,
-  availableOrganizations
+  currentOrganization
 }

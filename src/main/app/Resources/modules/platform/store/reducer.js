@@ -25,8 +25,5 @@ export const reducer = {
   currentOrganization: makeReducer(null, {
     [SECURITY_USER_CHANGE]: (state, action) => action.currentOrganization || null,
     [PLATFORM_SET_CURRENT_ORGANIZATION]: (state, action) => action.organization
-  }),
-  availableOrganizations: makeReducer([], {
-    [SECURITY_USER_CHANGE]: (state, action) => action.availableOrganizations || []
   })
 }

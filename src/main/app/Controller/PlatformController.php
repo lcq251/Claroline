@@ -65,9 +65,6 @@ class PlatformController
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
                 'currentOrganization' => $currentUser ? $this->serializer->serialize($currentUser->getMainOrganization(), [Options::SERIALIZE_MINIMAL]) : null,
-                'availableOrganizations' => $currentUser ? array_map(function (Organization $organization) {
-                    return $this->serializer->serialize($organization, [Options::SERIALIZE_MINIMAL]);
-                }, $currentUser->getOrganizations()) : [],
                 'footer' => [
                     'content' => $this->config->getParameter('footer.content'),
                     'display' => [

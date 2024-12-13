@@ -14,7 +14,6 @@ bootstrap(
     contexts: initialData.contexts,
     contextFavorites: initialData.contextFavorites,
     currentOrganization: initialData.currentOrganization,
-    availableOrganizations: initialData.availableOrganizations,
     security: {
       impersonated: initialData.impersonated,
       currentUser: initialData.currentUser
