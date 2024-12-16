@@ -1,7 +1,7 @@
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 
-import {UrlButton} from '#/main/app/buttons/url'
+import {UrlButton} from '#/main/app/buttons'
 import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
 import {route} from '#/main/core/administration/routing'
 

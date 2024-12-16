@@ -5,7 +5,7 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions'
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline'
 
 import {trans} from '#/main/app/intl/translation'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {constants} from '#/plugin/audio-player/waveform/constants'
 

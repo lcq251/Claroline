@@ -6,9 +6,7 @@ import times from 'lodash/times'
 
 import {trans} from '#/main/app/intl/translation'
 import {now} from '#/main/app/intl/date'
-import {LinkButton} from '#/main/app/buttons/link/components/button'
-import {PopoverButton} from '#/main/app/buttons/popover/components/button'
-import {UrlButton} from '#/main/app/buttons/url/components/button'
+import {PopoverButton, LinkButton, UrlButton} from '#/main/app/buttons'
 
 import {EventMicro} from '#/plugin/agenda/event/components/micro'
 import {sortEvents} from '#/plugin/agenda/event/utils'

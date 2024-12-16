@@ -10,6 +10,7 @@ import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {createActionDefinition} from '#/main/app/action/utils'
+import {trans} from '#/main/app/intl'
 
 const ButtonComponent = forwardRef((props, ref) => {
   const button = buttonRegistry.get(props.type)
@@ -73,7 +74,7 @@ class Button extends Component {
     if (this.state.error) {
       // TODO better
       return (
-        <span className={this.props.className}>error</span>
+        <span className={this.props.className}>{trans('error')}</span>
       )
     }
 

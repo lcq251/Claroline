@@ -23,9 +23,7 @@ const SecurityPage = (props) => {
   return (
     <PageSimple
       className="auth-page"
-      meta={{
-        title: props.title + ' | ' + name
-      }}
+      title={props.title + ' | ' + name}
     >
       <div className="col auth-page-meta px-4 py-5">
         {brand &&

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
-import {LinkButton} from '#/main/app/buttons/link'
+import {LinkButton} from '#/main/app/buttons'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {ContentHtml} from '#/main/app/content/components/html'

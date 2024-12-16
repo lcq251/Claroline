@@ -12,7 +12,7 @@ import {registry} from '#/main/app/modals/registry'
 class ModalOverlay extends Component {
   render() {
     return (
-      <div className="app-modal" ref={(el) => this.container = el}>
+      <div className="app-modal" ref={(el) => this.container = el} role="presentation">
         {this.props.modals.map((modal, index) => createElement(
           // grab the correct modal component from registry
           registry.get(modal.type),

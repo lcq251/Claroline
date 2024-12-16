@@ -4,7 +4,7 @@ import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
-import {CallbackButton, CALLBACK_BUTTON} from '#/main/app/buttons/callback'
+import {CallbackButton, CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const ContentSection = props =>
   <li className="wiki-contents-item">

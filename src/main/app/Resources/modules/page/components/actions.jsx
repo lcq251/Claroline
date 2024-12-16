@@ -38,32 +38,31 @@ const PageActions = (props) => {
   }
 
   return (
-    <div className="page-actions gap-1 ms-auto d-flex flex-nowrap" role="toolbar">
+    <div className="gap-1 ms-auto d-flex flex-nowrap" role="toolbar">
       {primaryAction && (undefined === primaryAction.displayed || primaryAction.displayed) &&
         <Button
           {...primaryAction}
           className="btn btn-primary page-action-btn"
           icon={undefined}
           tooltip={undefined}
-          disabled={props.disabled}
+          disabled={props.disabled || primaryAction.disabled}
         />
       }
 
       {secondaryAction && (undefined === secondaryAction.displayed || secondaryAction.displayed) &&
         <Button
           {...secondaryAction}
-          className="btn btn-body page-actions-btn"
+          className="btn btn-body"
           icon={undefined}
           tooltip={undefined}
-          disabled={props.disabled}
+          disabled={props.disabled || secondaryAction.disabled}
         />
       }
 
       {!isEmpty(actions) &&
         <Toolbar
-          id="page-actions-toolbar"
           className="btn-toolbar gap-1 flex-nowrap"
-          buttonName="btn btn-body page-actions-btn"
+          buttonName="btn btn-body"
           tooltip="bottom"
           toolbar={props.toolbar}
           actions={actions}

@@ -1,6 +1,4 @@
 import React from 'react'
-import classes from 'classnames'
-import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {PageFull as PageFullTypes} from '#/main/app/page/prop-types'
@@ -11,11 +9,9 @@ import {Poster} from '#/main/app/components/poster'
 const PageFull = (props) =>
   <PageSimple
     {...omit(props, 'showHeader', 'title', 'description', 'poster', 'toolbar', 'menu')}
-    meta={merge({}, {
-      title: props.title,
-      description: props.description,
-      poster: props.poster
-    }, props.meta || {})}
+    title={props.title}
+    description={props.description}
+    poster={props.poster}
   >
     {props.showHeader &&
       <PageMenu

@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-import {PageSimple} from '#/main/app/page/components/simple'
-
 import {SendPasswordForm} from '#/main/app/security/password/send/containers/send'
 import {SecurityPage} from '#/main/app/security/components/page'
 import {trans} from '#/main/app/intl'

@@ -7,8 +7,7 @@ import {trans} from '#/main/app/intl/translation'
 import {isHtmlEmpty} from '#/main/app/data/types/html/validators'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {Button} from '#/main/app/action/components/button'
-import {POPOVER_BUTTON} from '#/main/app/buttons/popover'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, POPOVER_BUTTON} from '#/main/app/buttons'
 
 /**
  * Feedback button.

@@ -10,7 +10,7 @@ import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {FormGroup} from '#/main/app/content/form/components/group'
 import {DataInput} from '#/main/app/data/components/input'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
 

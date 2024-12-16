@@ -2,6 +2,9 @@ import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {selectors} from '#/plugin/tag/tools/tags/store/selectors'
+import {makeActionCreator} from '#/main/app/store/actions'
+
+export const TAG_LOAD = 'TAG_LOAD'
 
 export const actions = {}
 
@@ -17,3 +20,11 @@ actions.openForm = (tagId = null) => {
     return formActions.resetForm(selectors.STORE_NAME + '.tag.form', {}, true)
   }
 }
+
+actions.loadTag = makeActionCreator(TAG_LOAD, 'tag')
+actions.fetchTag = (tagId) => ({
+  [API_REQUEST]: {
+    url: ['apiv2_tag_get', {id: tagId}],
+    success: (response, dispatch) => dispatch(actions.loadTag(response))
+  }
+})

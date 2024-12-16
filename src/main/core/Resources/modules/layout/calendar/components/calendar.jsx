@@ -7,7 +7,7 @@ import padStart from 'lodash/padStart'
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {isValidDate, getApiFormat} from '#/main/app/intl/date'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {Calendar as CalendarTypes} from '#/main/core/layout/calendar/prop-types'
 import {constants} from '#/main/core/layout/calendar/constants'

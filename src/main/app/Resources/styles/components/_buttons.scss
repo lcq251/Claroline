@@ -7,6 +7,24 @@
     margin: map-get($spacers, 2);
 }
 
+.btn-sticky {
+    overflow: hidden;
+    .label {
+        margin-left: map-get($spacers, 3);
+        width: 100%;
+        transition: all 1s ease;
+    }
+
+    .label-hidden {
+        width: 0 !important;
+        display: none;
+    }
+
+    .btn-label-hidden {
+        //width: calc(map-get($spacers, 3) * 2 + $ic)
+    }
+}
+
 
 // Button text variants
 
@@ -82,8 +100,4 @@
     // animation ends early to create a delay between each "wave"
     25%  { left: 100%; }
     100% { left: 100%; }
-}
-
-.btn-toggle {
-    
 }

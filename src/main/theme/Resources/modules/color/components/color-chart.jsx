@@ -4,7 +4,7 @@ import tinycolor from 'tinycolor2'
 
 import {implementPropTypes} from '#/main/app/prop-types'
 import {trans} from '#/main/app/intl/translation'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {ColorChartLibrary} from '#/main/theme/color/components/library'
 import {ColorChartSelector} from '#/main/theme/color/components/selector'

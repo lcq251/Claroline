@@ -14,7 +14,17 @@ const RoleList = props =>
   <ToolPage
     title={trans('roles', {}, 'community')}
   >
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: LINK_BUTTON,
+        label: trans('add_role', {}, 'actions'),
+        icon: 'fa fa-fw fa-plus',
+        target: `${props.path}/roles/new`,
+        primary: true,
+        displayed: props.canCreate
+      }}
+    >
       <BaseRoleList
         flush={true}
         path={props.path}
@@ -23,15 +33,7 @@ const RoleList = props =>
           ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}] :
           ['apiv2_role_list']
         }
-        addAction={{
-          name: 'add',
-          type: LINK_BUTTON,
-          label: trans('add_role', {}, 'actions'),
-          // icon: 'fa fa-fw fa-plus',
-          target: `${props.path}/roles/new`,
-          primary: true,
-          displayed: props.canCreate
-        }}
+
       />
     </PageListSection>
   </ToolPage>

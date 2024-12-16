@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
 

@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {LinkButton} from '#/main/app/buttons/link/components/button'
+import {LinkButton} from '#/main/app/buttons'
 import {ProgressBar} from '#/main/app/components/progress-bar'
 
 import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-types'

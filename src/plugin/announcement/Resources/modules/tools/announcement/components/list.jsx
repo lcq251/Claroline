@@ -17,7 +17,6 @@ import {UserMicro} from '#/main/core/user/components/micro'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {Badge} from '#/main/app/components/badge'
 import {ToolPage} from '#/main/core/tool'
-import {Button} from '#/main/app/action'
 import {Html} from '#/main/app/components/html'
 import {Text} from '#/main/app/components/text'
 import {PlaceholderParagraph} from '#/main/app/components/placeholder'
@@ -26,6 +25,8 @@ import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {selectors} from '#/plugin/announcement/tools/announcement/store'
+import {ButtonSticky} from '#/main/app/button'
+import {EmptyState} from '#/main/app/components/empty-state'
 
 const Announce = (props) =>
   <Fade key={props.key} in={true} appear={true}>
@@ -122,25 +123,26 @@ const AnnouncementList = () => {
 
   return (
     <ToolPage>
-      <PageSection size="lg">
-        {hasPermission('edit', tool) &&
-          <Button
-            className="btn btn-primary ms-auto mt-5"
-            type={LINK_BUTTON}
-            label={trans('add_announcement', {}, 'actions')}
-            target={`${toolPath}/add`}
-          />
-        }
+      {(loaded && 0 === posts.length) &&
+        <EmptyState
+          //className="my-5"
+          //size="lg"
+          icon="fa fa-bullhorn"
+          title={trans('Aucune annonce', {}, 'announcement')}
+          description={trans('Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.', {}, 'announcement')}
+          addAction={{
+            type: LINK_BUTTON,
+            label: trans('add_announcement', {}, 'actions'),
+            target: `${toolPath}/add`,
+            // icon: 'fa fa-plus',
+            displayed: hasPermission('edit', tool)
+          }}
+        />
+      }
 
-        {(loaded && 0 === posts.length) &&
-          <ContentPlaceholder
-            className="my-5"
-            size="lg"
-            icon="fa fa-bullhorn"
-            title={trans('no_announcement', {}, 'announcement')}
-          />
-        }
-
+      <PageSection
+        size="lg"
+      >
         {!loaded &&
           <ul className="announcements-list list-unstyled my-5 placeholder-glow">
             <Announce key={1} path={toolPath} announcement={{}} />
@@ -162,6 +164,18 @@ const AnnouncementList = () => {
               />
             )}
           </ul>
+        }
+
+        {0 !== posts.length && hasPermission('edit', tool) &&
+          <ButtonSticky
+            {...{
+              type: LINK_BUTTON,
+              icon: 'fa fa-plus',
+              label: trans('add_announcement', {}, 'actions'),
+              target: `${toolPath}/add`,
+              // displayed: hasPermission('edit', tool)
+            }}
+          />
         }
       </PageSection>
     </ToolPage>

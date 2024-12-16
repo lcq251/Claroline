@@ -2,9 +2,11 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON, TOGGLE_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {ContentLoader} from '#/main/app/content/components/loader'
+import {PageHeading} from '#/main/app/page/components/heading'
+import {PageSection} from '#/main/app/page'
 
 const PluginMeta = props =>
   <div className="card mb-3">
@@ -64,38 +66,33 @@ const Plugin = (props) => {
           target: `${props.path}/plugins/${props.plugin.id}`
         }
       ]}
-      subtitle={trans(props.plugin.name, {}, 'plugin')}
-      primaryAction="toggle"
-      actions={[
-        {
-          name: 'toggle',
-          type: TOGGLE_BUTTON,
-          label: trans(props.plugin.enabled ? 'Désactiver le plugin' : 'Activer le plugin'),
-          enabled: props.plugin.enabled,
-          //disabled: !props.plugin.ready || props.plugin.locked,
-          disabled: true,
-          primary: true,
-          toggle: (enabled) => {
-            if (enabled) {
-              props.enable(props.plugin)
-            } else {
-              props.disable(props.plugin)
+      title={trans(props.plugin.name, {}, 'plugin')}
+    >
+      <PageHeading
+        size="md"
+        title={trans(props.plugin.name, {}, 'plugin')}
+        description={trans(props.plugin.name+'_desc', {}, 'plugin')}
+        actions={[
+          {
+            name: 'toggle',
+            type: CALLBACK_BUTTON,
+            label: trans(props.plugin.enabled ? 'disable' : 'enable', {}, 'actions'),
+            disabled: true,
+            primary: !props.plugin.enabled,
+            callback: () => {
+              if (props.plugin.enabled) {
+                props.enable(props.plugin)
+              } else {
+                props.disable(props.plugin)
+              }
             }
           }
-        }
-      ]}
-    >
-      <div className="row" style={{marginTop: 20}}>
-        <div className="col-md-3">
-          <PluginMeta plugin={props.plugin} />
-        </div>
+        ]}
+      />
 
-        <div className="col-md-9">
-          <div className="card mb-3">
-            <div className="card-body">{trans(props.plugin.name+'_desc', {}, 'plugin')}</div>
-          </div>
-        </div>
-      </div>
+      <PageSection size="md">
+        <PluginMeta plugin={props.plugin} />
+      </PageSection>
     </ToolPage>
   )
 }

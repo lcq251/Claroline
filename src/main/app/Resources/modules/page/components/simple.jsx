@@ -1,59 +1,40 @@
-import React, {createElement} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {Helmet} from 'react-helmet'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
-import {Helmet} from 'react-helmet'
 
 import {asset} from '#/main/app/config/asset'
 import {theme} from '#/main/app/config/theme'
-
-import {PageSimple as PageSimpleTypes} from '#/main/app/page/prop-types'
-
-const PageWrapper = props => createElement(!props.embedded ? 'main':'article', {
-  id: props.id,
-  className: classes('app-page', {
-    'app-page-embedded': props.embedded
-  }, props.className)
-}, props.children)
-
-PageWrapper.propTypes = {
-  id: T.string,
-  className: T.string,
-  embedded: T.bool.isRequired,
-  children: T.node
-}
 
 /**
  * Root of the current page.
  */
 const PageSimple = props =>
-  <PageWrapper
-    id={props.id}
-    embedded={props.embedded}
-    className={classes(props.className, props.size, {
-      fullscreen: props.fullscreen,
-      main: !props.embedded,
-      embedded: props.embedded
-    })}
+  <div
+    className={classes('app-page', {
+      'app-page-embedded': props.embedded
+    }, props.className)}
+    role="presentation"
   >
-    {!props.embedded && props.meta &&
+    {!props.embedded &&
       <Helmet>
-        {props.meta.title &&
-          <title>{props.meta.title}</title>
+        {props.title &&
+          <title>{props.title}</title>
         }
 
-        {props.meta.title &&
-          <meta property="og:title" content={props.meta.title}/>
+        {props.title &&
+          <meta property="og:title" content={props.title}/>
         }
 
-        <meta property="og:type" content={props.meta.type || 'website'} />
+        <meta property="og:type" content="website" />
 
-        {props.meta.poster &&
-          <meta property="og:image" content={asset(props.meta.poster)}/>
+        {props.poster &&
+          <meta property="og:image" content={asset(props.poster)}/>
         }
 
-        {props.meta.description &&
-          <meta name="description" property="og:description" content={props.meta.description} />
+        {props.description &&
+          <meta name="description" property="og:description" content={props.description} />
         }
       </Helmet>
     }
@@ -67,10 +48,37 @@ const PageSimple = props =>
     }
 
     {props.children}
-  </PageWrapper>
+  </div>
 
-PageSimple.propTypes = PageSimpleTypes.propTypes
-PageSimple.defaultProps = PageSimpleTypes.defaultProps
+PageSimple.propTypes ={
+  className: T.string,
+
+  /**
+   * Custom data used for document head.
+   */
+  title: T.string,
+  description: T.string,
+  poster: T.string,
+
+  /**
+   * A list of additional styles to add to the page.
+   */
+  styles: T.arrayOf(T.string),
+
+  /**
+   * Is the current page embedded into another one ?
+   *
+   * @type {bool}
+   */
+  embedded: T.bool,
+
+  children: T.node
+}
+
+PageSimple.defaultProps = {
+  embedded: false,
+  styles: []
+}
 
 export {
   PageSimple

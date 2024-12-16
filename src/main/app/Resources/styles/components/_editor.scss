@@ -1,11 +1,11 @@
 
-.app-editor {
+/*.app-editor {
   z-index: $zindex-fixed !important; // allow to open modals in editors (editors are just fullscreen modals)
 
   .app-loader {
-    position: absolute; // FIXME
+    position: absolute;
   }
-}
+}*/
 
 .app-editor .modal-content {
   display: flex;

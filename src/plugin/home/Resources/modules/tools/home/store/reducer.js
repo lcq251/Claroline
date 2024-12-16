@@ -14,6 +14,7 @@ import {
   TAB_SET_LOADED
 } from '#/plugin/home/tools/home/store/actions'
 import {selectors} from '#/plugin/home/tools/home/store/selectors'
+import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 
 const reducer = combineReducers({
   currentTabId: makeReducer(null, {
@@ -22,7 +23,7 @@ const reducer = combineReducers({
   }),
 
   tabs: makeReducer([], {
-    [TOOL_OPEN]: () => [],
+    [CONTEXT_OPEN]: () => [],
     [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
       const tabs = [].concat(action.toolData.tabs || [])
 
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   }),
 
   current: makeReducer(null, {
+    [CONTEXT_OPEN]: () => null,
     [TAB_LOAD]: (state, action) => action.homeTab
   }),
 

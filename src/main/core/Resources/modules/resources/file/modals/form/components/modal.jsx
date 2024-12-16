@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import omit from 'lodash/omit'
 
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {CallbackButton} from '#/main/app/buttons/callback'
+import {CallbackButton} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 
 import {trans} from '#/main/app/intl/translation'

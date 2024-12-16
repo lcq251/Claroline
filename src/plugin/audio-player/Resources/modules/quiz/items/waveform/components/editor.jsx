@@ -6,7 +6,7 @@ import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {FormData} from '#/main/app/content/form/containers/data'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
 import {makeId} from '#/main/app/utils/id'

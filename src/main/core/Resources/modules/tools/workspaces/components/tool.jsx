@@ -1,6 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
@@ -82,14 +81,6 @@ const WorkspacesTool = (props) => {
                   display={{
                     current: listConst.DISPLAY_TILES
                   }}
-                  addAction={{
-                    name: 'add',
-                    type: MODAL_BUTTON,
-                    // icon: 'fa fa-fw fa-plus',
-                    label: trans('add_workspace', {}, 'actions'),
-                    displayed: props.canCreate,
-                    modal: [MODAL_WORKSPACE_CREATION]
-                  }}
                 />
               </PageListSection>
             </ToolPage>
@@ -99,7 +90,16 @@ const WorkspacesTool = (props) => {
           exact: true,
           render: () => (
             <ToolPage title={trans('all_workspaces', {}, 'workspace')}>
-              <PageListSection>
+              <PageListSection
+                addAction={{
+                  name: 'add',
+                  type: MODAL_BUTTON,
+                  // icon: 'fa fa-fw fa-plus',
+                  label: trans('add_workspace', {}, 'actions'),
+                  displayed: props.canCreate,
+                  modal: [MODAL_WORKSPACE_CREATION]
+                }}
+              >
                 <WorkspaceList
                   flush={true}
                   url={props.contextType === toolConstants.TOOL_PUBLIC ? ['apiv2_workspace_list_public'] : ['apiv2_workspace_list']}
@@ -107,14 +107,6 @@ const WorkspacesTool = (props) => {
                   refresher={refresher}
                   display={{
                     current: listConst.DISPLAY_TILES
-                  }}
-                  addAction={{
-                    name: 'add',
-                    type: MODAL_BUTTON,
-                    // icon: 'fa fa-fw fa-plus',
-                    label: trans('add_workspace', {}, 'actions'),
-                    displayed: props.canCreate,
-                    modal: [MODAL_WORKSPACE_CREATION]
                   }}
                 />
               </PageListSection>

@@ -3,17 +3,17 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
-import {Button, Toolbar} from '#/main/app/action'
+import {Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {ContentHtml} from '#/main/app/content/components/html'
+import {Html} from '#/main/app/components/html'
 
 const PageBanner = (props) => {
   const [dismissed, setDismissed] = useState(false)
 
   if (!dismissed) {
     return (
-      <div className={classes('app-banner sticky-top d-flex flex-wrap align-items-center gap-2 p-2', `text-bg-${props.type}`)}>
-        <ContentHtml className="px-1">{props.content}</ContentHtml>
+      <div className={classes('app-banner sticky-bottom d-flex flex-wrap align-items-center gap-2 p-2 px-3', `text-bg-${props.type}`)}>
+        <Html className="px-2">{props.content}</Html>
 
         {props.children}
 

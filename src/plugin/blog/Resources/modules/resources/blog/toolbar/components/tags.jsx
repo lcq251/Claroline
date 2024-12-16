@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {withRouter} from '#/main/app/router'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 

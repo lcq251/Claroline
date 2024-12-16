@@ -4,7 +4,7 @@ import classes from 'classnames'
 import tinycolor from 'tinycolor2'
 import { Select } from '#/main/app/input/components/select'
 import { trans } from '#/main/app/intl/translation'
-import { CallbackButton } from '#/main/app/buttons/callback/components/button'
+import { CallbackButton } from '#/main/app/buttons'
 
 const ColorChartLibrary = (props) => {
   const [selectedColorChart, setSelectedColorChart] = useState('all')

@@ -4,13 +4,11 @@ const Button = {
   propTypes: {
     id: T.string,
     className: T.string,
-    size: T.oneOf(['xs', 'sm', 'lg']),
+    size: T.oneOf(['sm', 'lg']),
     variant: T.string,
     children: T.node.isRequired,
     disabled: T.bool,
-    primary: T.bool,
     active: T.bool,
-    dangerous: T.bool,
     tabIndex: T.number,
 
     /**
@@ -26,9 +24,7 @@ const Button = {
     })
   },
   defaultProps: {
-    disabled: false,
-    primary: false,
-    dangerous: false
+    disabled: false
   }
 }
 

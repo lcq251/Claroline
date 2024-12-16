@@ -42,7 +42,6 @@ class TagVoter extends AbstractVoter
                 return VoterInterface::ACCESS_DENIED;
 
             case self::OPEN:
-            case self::VIEW:
                 if ($this->isToolGranted('OPEN', 'tags')) {
                     return VoterInterface::ACCESS_GRANTED;
                 }

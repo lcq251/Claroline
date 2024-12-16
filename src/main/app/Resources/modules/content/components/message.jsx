@@ -3,13 +3,11 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import merge from 'lodash/merge'
 
-import {trans} from '#/main/app/intl/translation'
-import {displayDate} from '#/main/app/intl/date'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {Toolbar} from '#/main/app/action/components/toolbar'
 import {User as UserTypes} from '#/main/community/prop-types'
 
-import {LinkButton} from '#/main/app/buttons/link/components/button'
+import {LinkButton} from '#/main/app/buttons'
 
 import {route} from '#/main/community/user/routing'
 import {UserAvatar} from '#/main/app/user/components/avatar'

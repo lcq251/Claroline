@@ -49,7 +49,18 @@ const DirectoryPlayer = (props) => {
         <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
       }
 
-      <PageListSection>
+      <PageListSection
+        addAction={{
+          name: 'add',
+          type: MODAL_BUTTON,
+          label: trans('add_resource', {}, 'resource'),
+          modal: [MODAL_RESOURCE_CREATION, {
+            parent: props.currentNode,
+            add: props.updateNodes
+          }],
+          displayed: get(props.currentNode, 'permissions.create', []).length > 0
+        }}
+      >
         <FileDrop
           size="lg"
           disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
@@ -63,16 +74,7 @@ const DirectoryPlayer = (props) => {
               url: ['apiv2_resource_list', {contextId: get(props.currentNode, 'workspace.id', null), parent: get(props.currentNode, 'id', null)}],
               autoload: true
             }}
-            addAction={{
-              name: 'add',
-              type: MODAL_BUTTON,
-              label: trans('add_resource', {}, 'resource'),
-              modal: [MODAL_RESOURCE_CREATION, {
-                parent: props.currentNode,
-                add: props.updateNodes
-              }],
-              displayed: get(props.currentNode, 'permissions.create', []).length > 0
-            }}
+
             source={merge({}, resourcesSource('workspace', get(props.currentNode, 'workspace'), {
               update: props.updateNodes,
               delete: props.deleteNodes

@@ -19,6 +19,7 @@ const ToolMain = (props) => {
   const contextType = useSelector(selectors.contextType)
   const contextId = useSelector(selectors.contextId)
   const canEdit = useSelector((state) => hasPermission('edit', selectors.toolData(state)))
+  const canFollow = useSelector((state) => hasPermission('edit', selectors.toolData(state)))
 
   const dispatch = useDispatch()
 
@@ -46,28 +47,29 @@ const ToolMain = (props) => {
         styles: props.styles
       }}
     >
-      {(!isEmpty(props.pages) || props.children) &&
-        <Routes
-          path={toolPath}
-          routes={[
-            {
-              path: '/edit',
-              disabled: !canEdit,
-              component: props.editor
-            }
-          ]
-            .concat(props.pages || [])
-            .concat([
-              {
-                path: '/',
-                disabled: isEmpty(props.children),
-                render: () => props.children
-              }
-            ])
+      <Routes
+        path={toolPath}
+        routes={[
+          {
+            path: '/edit',
+            disabled: !canEdit,
+            component: props.editor || ToolEditor
+          }, {
+            path: '/dashboard',
+            disabled: !props.dashboard || !canFollow,
+            component: props.dashboard
           }
-          redirect={props.redirect}
-        />
-      }
+        ]
+          .concat(props.pages || [])
+          .concat(!isEmpty(props.children) ? [
+            {
+              path: '/',
+              render: () => props.children
+            }
+          ] : [])
+        }
+        redirect={props.redirect}
+      />
     </ToolContext.Provider>
   )
 }
@@ -91,6 +93,19 @@ ToolMain.propTypes = {
 
   })),
 
+  redirect: T.arrayOf(T.shape(
+    RedirectTypes.propTypes
+  )),
+
+  /**
+   * Common pages.
+   * Each common page MUST start with the corresponding component :
+   *  - editor => ToolEditor
+   *  - dashboard => ToolDashboard
+   */
+  editor: T.any,
+  dashboard: T.any,
+
   /**
    * A list of sections/pages of the tool.
    * If your tool contains only one section/page, use `children`.
@@ -100,21 +115,11 @@ ToolMain.propTypes = {
   pages: T.arrayOf(T.shape(
     RouteTypes.propTypes
   )),
-  redirect: T.arrayOf(T.shape(
-    RedirectTypes.propTypes
-  )),
 
   /**
    * The tool content if there is only one section/page in the tool.
    */
   children: T.node
-}
-
-ToolMain.defaultProps = {
-  styles: [],
-  menu: [],
-  actions: [],
-  editor: ToolEditor
 }
 
 export {

@@ -21,21 +21,22 @@ const MessageInboxComponent = (props) =>
   <ToolPage
     title={trans('messages_received', {}, 'message')}
   >
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'send',
+        type: MODAL_BUTTON,
+        icon: 'fa fa-fw fa-comment',
+        label: trans('send-message', {}, 'actions'),
+        modal: [MODAL_MESSAGE],
+        primary: true
+      }}
+    >
       <ListData
         flush={true}
         name={`${selectors.STORE_NAME}.receivedMessages`}
         fetch={{
           url: ['apiv2_message_received'],
           autoload: true
-        }}
-        addAction={{
-          name: 'send',
-          type: MODAL_BUTTON,
-          //icon: 'fa fa-fw fa-plus',
-          label: trans('send-message', {}, 'actions'),
-          modal: [MODAL_MESSAGE],
-          primary: true
         }}
         primaryAction={(message) => ({
           type: LINK_BUTTON,

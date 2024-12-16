@@ -17,7 +17,6 @@ const ProgressionTool = (props) =>
     {...props}
   >
     <ToolPage
-      /*root={true}*/
       primaryAction="start"
       size="xl"
       icon={

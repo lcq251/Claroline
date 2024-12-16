@@ -8,11 +8,16 @@ import {Router} from '#/main/app/router'
 import {ModalOverlay} from '#/main/app/overlays/modal/containers/overlay'
 import {AlertOverlay} from '#/main/app/overlays/alert/containers/overlay'
 import {Appearance} from '#/main/theme/components/appearance'
+import {AppLoader} from '#/main/app/platform/components/loader'
 
 const Main = props =>
   <Provider store={props.store}>
     <Appearance embedded={!!props.embedded}>
       <Router basename={props.defaultPath} embedded={!!props.embedded}>
+        {!props.embedded &&
+          <AppLoader />
+        }
+
         <AlertOverlay key="alert" />
 
         {props.children}

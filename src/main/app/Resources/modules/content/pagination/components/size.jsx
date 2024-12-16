@@ -2,8 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON} from '#/main/app/buttons/callback'
-import {MenuButton} from '#/main/app/buttons/menu/components/button'
+import {MenuButton, CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const PaginationSize = props =>
   <MenuButton

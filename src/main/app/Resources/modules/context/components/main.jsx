@@ -164,7 +164,7 @@ const ContextMain = (props) => {
     <>
       <ContextNav/>
       <div className="app-body" role="presentation" tabIndex={-1}>
-        <AppLoader />
+
 
         {CurrentPage}
 

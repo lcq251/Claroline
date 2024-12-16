@@ -2,5 +2,7 @@
     "elements": "Elements",
     "no_tag": "No tag.",
     "tags": "Tags",
-    "tag": "Tag"
+    "tag": "Tag",
+    "new_tag": "New tag",
+    "tag_name": "Tag: %name%"
 }

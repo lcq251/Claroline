@@ -8,7 +8,7 @@ import moment from 'moment'
 
 import {getApiFormat} from '#/main/app/intl/date'
 import {trans} from '#/main/app/intl/translation'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {Section, Sections} from '#/main/app/content/components/sections'
 import {withRouter} from '#/main/app/router'

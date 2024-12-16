@@ -1,7 +1,6 @@
 {
-  "add-tag": "Add a tag",
-  "add-tags": "Add tags",
-  "show-tags": "Show tags",
+  "add_tag": "Add a tag",
   "create-named-tag": "Create a tag \"%tagName%\"",
-  "browse_tags": "Browse tags"
+  "browse_tags": "Browse tags",
+  "save_tag": "Save tag"
 }

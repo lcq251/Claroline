@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
-import {LinkButton} from '#/main/app/buttons/link'
+import {LinkButton} from '#/main/app/buttons'
 
 import {route} from '#/main/community/user/routing'
 import {UserAvatar} from '#/main/app/user/components/avatar'

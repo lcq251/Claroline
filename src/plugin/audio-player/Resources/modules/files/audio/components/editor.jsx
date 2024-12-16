@@ -10,7 +10,7 @@ import {actions as formActions, selectors as formSelectors} from '#/main/app/con
 import {FormData} from '#/main/app/content/form/containers/data'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {FileInput} from '#/main/app/data/types/file/components/input'
-import {CallbackButton} from '#/main/app/buttons/callback/components/button'
+import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
 import {selectors as fileSelect} from '#/main/core/resources/file/store'
