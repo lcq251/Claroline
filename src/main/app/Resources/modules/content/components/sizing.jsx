@@ -9,12 +9,8 @@ const ContentSizing = (props) =>
 
 ContentSizing.propTypes = {
   className: T.string,
-  size: T.oneOf(['sm', 'md', 'lg', 'full']),
+  size: T.oneOf(['sm', 'md', 'lg', 'full']).isRequired,
   children: T.any
-}
-
-ContentSizing.defaultProps = {
-  size: 'md'
 }
 
 export {

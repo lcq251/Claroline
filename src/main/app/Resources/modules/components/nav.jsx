@@ -21,7 +21,7 @@ const Nav = (props) => {
       })}>
         {displayedItems
           .map((item) =>
-            <li className="nav-item">
+            <li className="nav-item" key={item.name}>
               <Button
                 {...item}
                 className={classes('nav-link', {

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {implementPropTypes} from '#/main/app/prop-types'
 import {AppContext as AppContextTypes} from '#/main/app/context/prop-types'
 
 import {ContextMain} from '#/main/app/context/containers/main'
@@ -15,7 +14,7 @@ const AdministrationContext = (props) =>
     loadingPage={AdministrationLoading}
   />
 
-implementPropTypes(AdministrationContext, AppContextTypes)
+AdministrationContext.propTypes = AppContextTypes.propTypes
 
 export {
   AdministrationContext

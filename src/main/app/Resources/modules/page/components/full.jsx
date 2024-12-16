@@ -8,10 +8,7 @@ import {Poster} from '#/main/app/components/poster'
 
 const PageFull = (props) =>
   <PageSimple
-    {...omit(props, 'showHeader', 'title', 'description', 'poster', 'toolbar', 'menu')}
-    title={props.title}
-    description={props.description}
-    poster={props.poster}
+    {...omit(props, 'showHeader', 'toolbar', 'menu')}
   >
     {props.showHeader &&
       <PageMenu

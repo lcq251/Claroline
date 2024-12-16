@@ -11,7 +11,7 @@ const TooltipOverlay = props => {
 
   return (
     <OverlayTrigger
-      placement={props.position}
+      placement={props.position || 'top'}
       overlay={
         <Tooltip id={props.id} role="tooltip" >{props.tip}</Tooltip>
       }
@@ -30,11 +30,6 @@ TooltipOverlay.propTypes = {
    */
   children: T.element.isRequired,
   position: T.oneOf(['top', 'right', 'bottom', 'left'])
-}
-
-TooltipOverlay.defaultProps = {
-  position: 'top',
-  disabled: false
 }
 
 export {

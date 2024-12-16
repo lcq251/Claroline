@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {implementPropTypes} from '#/main/app/prop-types'
 import {AppContext as AppContextTypes} from '#/main/app/context/prop-types'
 
 import {ContextMain} from '#/main/app/context/containers/main'
@@ -13,7 +12,7 @@ const PublicContext = (props) =>
     menu={PublicMenu}
   />
 
-implementPropTypes(PublicContext, AppContextTypes)
+PublicContext.propsTypes = AppContextTypes.propTypes
 
 export {
   PublicContext

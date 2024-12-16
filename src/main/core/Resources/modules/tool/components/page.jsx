@@ -1,7 +1,6 @@
 import React, {useCallback, useContext} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
-import get from 'lodash/get'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
@@ -53,7 +52,7 @@ const ToolPage = props => {
         }].concat(loadedActions, toolDef.actions || []))
       }}
 
-      styles={[].concat(toolDef.styles, props.styles || [])}
+      styles={[].concat(toolDef.styles || [], props.styles || [])}
       {...omit(props, 'className', 'breadcrumb', 'styles', 'root')}
     >
       {props.children}

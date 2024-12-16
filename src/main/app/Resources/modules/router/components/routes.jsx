@@ -6,27 +6,27 @@ import {toKey} from '#/main/app/utils/text'
 import {Route} from '#/main/app/router/components/route'
 import {Route as RouteTypes} from '#/main/app/router/prop-types'
 
-const Routes = props =>
+const Routes = ({routes, path = '', exact = false, redirect = []}) =>
   <Switch>
-    {props.routes
+    {routes
       .filter(route => !route.disabled)
       .map((route) =>
         <Route
           {...route}
           key={toKey(route.path)}
-          path={props.path+route.path}
+          path={path+route.path}
         />
       )
     }
 
-    {props.redirect
-      .filter(redirect => !redirect.disabled)
-      .map((redirect, redirectIndex) =>
+    {redirect
+      .filter(redirectRoute => !redirectRoute.disabled)
+      .map((redirectRoute, redirectIndex) =>
         <Redirect
-          {...redirect}
+          {...redirectRoute}
           key={`redirect-${redirectIndex}`}
-          from={props.path+redirect.from}
-          to={props.path+redirect.to}
+          from={path+redirectRoute.from}
+          to={path+redirectRoute.to}
         />
       )
     }
@@ -44,12 +44,6 @@ Routes.propTypes = {
     to: T.string.isRequired,
     exact: T.bool
   }))
-}
-
-Routes.defaultProps = {
-  path: '',
-  exact: false,
-  redirect: []
 }
 
 export {

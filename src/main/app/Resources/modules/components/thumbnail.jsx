@@ -19,17 +19,26 @@ import {asset} from '#/main/app/config'
  * - as a data card icon (size MUST be linked to the card size)
  * - as a page icon (size MUST be "xl" for details page or "md" for any other page and square=true)
  */
-const Thumbnail = (props) => {
+const Thumbnail = ({
+  className,
+  thumbnail,
+  name,
+  color,
+  children,
+  size = 'md',
+  square = false,
+  loaded = true
+}) => {
   let styles = {}
-  if (props.loaded) {
-    if (props.thumbnail) {
+  if (loaded) {
+    if (thumbnail) {
       styles = {
-        backgroundImage: `url(${asset(props.thumbnail)})`,
+        backgroundImage: `url(${asset(thumbnail)})`,
         backgroundColor: 'transparent'
       }
-    } else if (props.color) {
+    } else if (color) {
       styles = {
-        color: props.color
+        color: color
       }
     }
   }
@@ -37,19 +46,19 @@ const Thumbnail = (props) => {
   return (
     <div
       style={!isEmpty(styles) ? styles : undefined}
-      className={classes('thumbnail ratio', props.className, {
-        'placeholder': !props.loaded,
-        [`thumbnail-${props.size} ratio-thumbnail`]: !props.square,
-        [`thumbnail-icon thumbnail-icon-${props.size} ratio-1x1`]: props.square
+      className={classes('thumbnail ratio', className, {
+        'placeholder': !loaded,
+        [`thumbnail-${size} ratio-thumbnail`]: !square,
+        [`thumbnail-icon thumbnail-icon-${size} ratio-1x1`]: square
       })}
       aria-hidden={true}
     >
-      {!props.thumbnail && props.name &&
-        props.name.charAt(0)
+      {!thumbnail && name &&
+        name.charAt(0)
       }
 
-      {!props.thumbnail && !props.name &&
-        props.children
+      {!thumbnail && !name &&
+        children
       }
     </div>
   )
@@ -64,12 +73,6 @@ Thumbnail.propTypes = {
   children: T.node,
   square: T.bool,
   loaded: T.bool
-}
-
-Thumbnail.defaultProps = {
-  size: 'md',
-  square: false,
-  loaded: true
 }
 
 export {

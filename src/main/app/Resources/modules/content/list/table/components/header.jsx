@@ -114,7 +114,6 @@ const TableHeader = props => {
   )
 }
 
-
 TableHeader.propTypes = {
   count: T.number,
   data: T.array,
@@ -133,10 +132,6 @@ TableHeader.propTypes = {
   disabled: T.bool.isRequired,
   changeColumns: T.func.isRequired,
   actions: T.func
-}
-
-TableHeader.defaultProps = {
-  disabled: false
 }
 
 export {

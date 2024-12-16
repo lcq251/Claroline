@@ -13,7 +13,6 @@ import {ContextEditor} from '#/main/app/context/editor/containers/main'
 import {ContextProfile} from '#/main/app/context/profile/containers/main'
 import {getTool} from '#/main/core/tool/utils'
 import {hasPermission} from '#/main/app/security'
-import {AppLoader} from '#/main/app/platform/components/loader'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
@@ -132,7 +131,7 @@ const ContextMain = (props) => {
             component: ContextProfile
           }, {
             path: '/edit',
-            component: props.editor
+            component: props.editor || ContextEditor
           }, {
             path: '/:toolName',
             onEnter: (params = {}) => {
@@ -207,11 +206,6 @@ ContextMain.propTypes = {
     replace: T.func.isRequired
   }).isRequired,
   children: T.node
-}
-
-ContextMain.defaultProps = {
-  tools: [],
-  editor: ContextEditor
 }
 
 export {

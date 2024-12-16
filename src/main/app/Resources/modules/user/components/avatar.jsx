@@ -10,22 +10,28 @@ import {UserStatus} from '#/main/app/user/components/status'
 /**
  * Avatar of a User.
  */
-const UserAvatar = props =>
-  <span className={classes('position-relative user-avatar', props.size && `user-avatar-${props.size}`, props.className)} role="presentation">
+const UserAvatar = ({
+  className,
+  user,
+  size = 'md',
+  noStatus = false,
+  noStatusTooltip = false
+}) =>
+  <span className={classes('position-relative user-avatar', size && `user-avatar-${size}`, className)} role="presentation">
     <Thumbnail
-      size={props.size}
-      thumbnail={get(props.user, 'picture')}
-      name={get(props.user, 'name') || trans('unknown')}
+      size={size}
+      thumbnail={get(user, 'picture')}
+      name={get(user, 'name') || trans('unknown')}
       square={true}
     />
 
-    {get(props.user, 'status') && !props.noStatus &&
+    {get(user, 'status') && !noStatus &&
       <UserStatus
         className="position-absolute top-100 start-100 translate-middle"
-        user={props.user}
+        user={user}
         variant={classes({
-          tooltip: !props.noStatusTooltip,
-          bullet: props.noStatusTooltip
+          tooltip: !noStatusTooltip,
+          bullet: noStatusTooltip
         })}
       />
     }
@@ -42,12 +48,6 @@ UserAvatar.propTypes = {
   size: T.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
   noStatus: T.bool,
   noStatusTooltip: T.bool
-}
-
-UserAvatar.defaultProps = {
-  size: 'md',
-  noStatus: false,
-  noStatusTooltip: false
 }
 
 export {

@@ -5,23 +5,23 @@ import {
   MemoryRouter
 } from 'react-router-dom'
 
-const Router = props => {
-  if (!props.embedded) {
+const Router = ({ children, basename, embedded = false }) => {
+  if (!embedded) {
     return (
-      <HashRouter basename={props.basename}>
-        {props.children}
+      <HashRouter basename={basename}>
+        {children}
       </HashRouter>
     )
   }
 
   return (
     <MemoryRouter
-      initialEntries={props.basename ? [
-        props.basename
+      initialEntries={basename ? [
+        basename
       ] : undefined}
-      initialIndex={props.basename ? 0 : undefined}
+      initialIndex={basename ? 0 : undefined}
     >
-      {props.children}
+      {children}
     </MemoryRouter>
   )
 }
@@ -30,10 +30,6 @@ Router.propTypes = {
   basename: T.string,
   children: T.node.isRequired,
   embedded: T.bool
-}
-
-Router.defaultProps = {
-  embedded: false
 }
 
 export {

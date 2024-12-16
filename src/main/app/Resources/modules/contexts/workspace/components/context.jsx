@@ -106,7 +106,6 @@ const WorkspaceContext = (props) =>
   </ContextMain>
 
 WorkspaceContext.propTypes = AppContextTypes.propTypes
-WorkspaceContext.defaultProps = AppContextTypes.defaultProps
 
 export {
   WorkspaceContext

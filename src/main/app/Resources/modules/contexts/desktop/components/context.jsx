@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {implementPropTypes} from '#/main/app/prop-types'
 import {AppContext as AppContextTypes} from '#/main/app/context/prop-types'
 
 import {ContextMain} from '#/main/app/context/containers/main'
@@ -20,7 +19,7 @@ const DesktopContext = (props) =>
     forbiddenPage={DesktopForbidden}
   />
 
-implementPropTypes(DesktopContext, AppContextTypes)
+DesktopContext.propTypes = AppContextTypes.propTypes
 
 export {
   DesktopContext

@@ -119,7 +119,7 @@ const TableItem = props => {
           <input
             className="form-check-input"
             type="checkbox"
-            checked={props.selected}
+            checked={props.selected || false}
             onChange={props.onSelect}
             disabled={props.loading}
           />
@@ -198,10 +198,6 @@ TableItem.propTypes = {
   loading: T.bool.isRequired,
   loaded: T.bool.isRequired,
   invalidated: T.bool.isRequired
-}
-
-TableItem.defaultProps = {
-  selected: false
 }
 
 export {

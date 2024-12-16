@@ -16,11 +16,6 @@ TableCell.propTypes = {
   children: T.node
 }
 
-TableCell.defaultProps = {
-  align: 'left',
-  children: null
-}
-
 const TableHeaderCell = props =>
   <th scope="col" className={classes(props.className, {
     'text-center': 'center' === props.align,
@@ -35,11 +30,6 @@ TableHeaderCell.propTypes = {
   children: T.node
 }
 
-TableHeaderCell.defaultProps = {
-  align: 'left',
-  children: null
-}
-
 const TableSortingCell = props =>
   <th
     scope="col"
@@ -49,14 +39,14 @@ const TableSortingCell = props =>
     })}
     onClick={e => {
       e.stopPropagation()
-      if (!props.disabled) {
+      if (!!props.disabled) {
         props.onSort()
       }
     }}
   >
     {props.children}
 
-    <span aria-hidden="true" className={classes('fa', 0 === props.direction ? 'fa-sort' : (1 === props.direction ? 'fa-sort-asc' : 'fa-sort-desc'))} />
+    <span aria-hidden="true" className={classes('fa', !props.direction ? 'fa-sort' : (1 === props.direction ? 'fa-sort-asc' : 'fa-sort-desc'))} />
   </th>
 
 TableSortingCell.propTypes = {
@@ -66,13 +56,6 @@ TableSortingCell.propTypes = {
   onSort: T.func.isRequired,
   children: T.node,
   disabled: T.bool.isRequired
-}
-
-TableSortingCell.defaultProps = {
-  align: 'left',
-  direction: 0,
-  children: null,
-  disabled: false
 }
 
 const TableHeader = props =>
@@ -97,7 +80,7 @@ TableRow.propTypes = {
 
 const Table = props =>
   <table
-    className={classes('table', /*'table-striped table-borderless',*/ {
+    className={classes('table', {
       'table-sm': props.condensed
     }, props.className)}
   >
@@ -108,10 +91,6 @@ Table.propTypes = {
   children: T.array.isRequired,
   className: T.string,
   condensed: T.bool
-}
-
-Table.defaultProps = {
-  condensed: false
 }
 
 export {

@@ -18,8 +18,7 @@ const PageTabbedSection = (props) =>
     <Nav
       variant="underline"
       orientation="horizontal"
-      items={props.tabs.map(tab => ({
-        key: tab.path,
+      items={(props.tabs || []).map(tab => ({
         name: tab.path,
         type: LINK_BUTTON,
         icon: tab.icon,
@@ -34,7 +33,7 @@ const PageTabbedSection = (props) =>
 
     <Routes
       path={props.path}
-      routes={props.tabs.map(tab => ({
+      routes={(props.tabs || []).map(tab => ({
         path: tab.path,
         render: tab.render,
         component: tab.component,
@@ -55,10 +54,6 @@ PageTabbedSection.propTypes = {
     displayed: T.bool,
     badge: T.element
   }))
-}
-
-PageTabbedSection.defaultProps = {
-  tabs: []
 }
 
 export {

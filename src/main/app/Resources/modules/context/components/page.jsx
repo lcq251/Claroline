@@ -18,12 +18,12 @@ const ContextPage = (props) => {
   return (
     <PageFull
       className={classes('context-page', `${contextType}-page`, props.className)}
-      breadcrumb={(!props.root ? [
+      breadcrumb={[
         {
           label: get(contextData, 'name') || trans(contextType, {}, 'context'),
           target: contextPath
         }
-      ] : []).concat(props.breadcrumb || [])}
+      ].concat(props.breadcrumb || [])}
       affix={ContextMenu}
       title={props.title ?
         props.title + ' | ' + get(contextData, 'name', trans(contextType, {}, 'context')) :
