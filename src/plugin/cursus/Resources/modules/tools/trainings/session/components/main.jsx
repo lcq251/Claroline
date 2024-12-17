@@ -36,28 +36,29 @@ const SessionMain = (props) => {
             <ToolPage
               title={trans('sessions', {}, 'cursus')}
             >
-              <PageListSection>
+              <PageListSection
+                addAction={{
+                  type: MODAL_BUTTON,
+                  label: trans('plan_training_session', {}, 'actions'),
+                  modal: [MODAL_TRAINING_COURSES, {
+                    multiple: false,
+                    selectAction: (selected) => ({
+                      type: MODAL_BUTTON,
+                      label: trans('plan_training_session', {}, 'actions'),
+                      modal: [MODAL_SESSION_FORM, {
+                        course: selected[0],
+                        onSave: props.invalidateList
+                      }]
+                    })
+                  }],
+                  displayed: canCreateSession
+                }}
+              >
                 <SessionList
                   flush={true}
                   path={props.path}
                   name={selectors.STORE_NAME}
                   url={['apiv2_cursus_session_context_list', {context: contextType, contextId: contextId}]}
-                  addAction={{
-                    type: MODAL_BUTTON,
-                    label: trans('plan_training_session', {}, 'actions'),
-                    modal: [MODAL_TRAINING_COURSES, {
-                      multiple: false,
-                      selectAction: (selected) => ({
-                        type: MODAL_BUTTON,
-                        label: trans('plan_training_session', {}, 'actions'),
-                        modal: [MODAL_SESSION_FORM, {
-                          course: selected[0],
-                          onSave: props.invalidateList
-                        }]
-                      })
-                    }],
-                    displayed: canCreateSession
-                  }}
                   delete={{
                     url: ['apiv2_cursus_session_delete'],
                     displayed: (rows) => -1 !== rows.findIndex(row => hasPermission('delete', row))

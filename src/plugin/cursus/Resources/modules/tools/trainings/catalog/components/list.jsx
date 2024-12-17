@@ -15,24 +15,25 @@ const CatalogList = (props) =>
   <ToolPage
     title={trans('catalog', {}, 'cursus')}
   >
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: MODAL_BUTTON,
+        // icon: 'fa fa-fw fa-plus',
+        label: trans('add_course', {}, 'cursus'),
+        modal: [MODAL_COURSE_TYPE_CREATION, {
+          path: props.path + '/course'
+        }],
+        displayed: props.canEdit,
+        primary: true
+      }}
+    >
       <CourseList
         flush={true}
         autoFocus={true}
         path={props.path}
         name={selectors.LIST_NAME}
         url={['apiv2_cursus_course_list']}
-        addAction={{
-          name: 'add',
-          type: MODAL_BUTTON,
-          // icon: 'fa fa-fw fa-plus',
-          label: trans('add_course', {}, 'cursus'),
-          modal: [MODAL_COURSE_TYPE_CREATION, {
-            path: props.path + '/course'
-          }],
-          displayed: props.canEdit,
-          primary: true
-        }}
       >
         <p className="text-center my-5 mt-1">
           <span className="h1 fa fa-graduation-cap mb-3 text-body-tertiary" />

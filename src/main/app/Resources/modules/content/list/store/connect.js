@@ -182,7 +182,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
   // create the final list of actions
   // merge standard actions with the delete one
-  // todo find a better way to handle difference between promised actions and standard ones
   props.actions = (rows) => {
     // generates defined list actions
     let actions
@@ -194,7 +193,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       const deleteAction = {
         name: 'delete',
         type: CALLBACK_BUTTON,
-        icon: 'fa fa-fw fa-trash',
+        icon: ownProps.delete.icon || 'fa fa-fw fa-trash',
         label: ownProps.delete.label || trans('delete', {}, 'actions'),
         dangerous: true,
         confirm: {

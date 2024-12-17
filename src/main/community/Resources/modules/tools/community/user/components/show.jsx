@@ -20,6 +20,7 @@ import {Datetime} from '#/main/app/components/date'
 import {route} from '#/main/community/user/routing'
 import {Activity} from '#/main/log/activity/components/main'
 import {getProfile} from '#/main/community/user/utils'
+import {Button} from '#/main/app/action'
 
 const UserShow = (props) => {
   const [profilePages, setProfilePages] = useState([])
@@ -95,7 +96,7 @@ const UserShow = (props) => {
 
       <PageTabbedSection
         size="md"
-        className="mb-5"
+        className="mt-3"
         path={route(props.user, props.path)}
         tabs={[
           {
@@ -104,7 +105,7 @@ const UserShow = (props) => {
             title: trans('activity'),
             render: () => (
               <Activity
-                className="mt-3"
+                className="mt-4 mb-5"
                 url={['apiv2_logs_functional_list_user', {userId: props.user.id}]}
               />
             )
@@ -121,33 +122,43 @@ const UserShow = (props) => {
             exact: true,
             title: trans('groups', {}, 'community'),
             render: () => (
-              <GroupList
-                className="mt-3"
-                path={props.path}
-                name={`${selectors.FORM_NAME}.groups`}
-                url={['apiv2_user_list_groups', {id: props.user.id}]}
-                autoload={!!props.user.id}
-                addAction={{
-                  name: 'add',
-                  type: MODAL_BUTTON,
-                  icon: 'fa fa-fw fa-plus',
-                  label: trans('add_group', {}, 'actions'),
-                  tooltip: 'bottom',
-                  displayed: hasPermission('administrate', props.user),
-                  modal: [MODAL_GROUPS, {
-                    selectAction: (groups) => ({
-                      type: CALLBACK_BUTTON,
-                      label: trans('add', {}, 'actions'),
-                      callback: () => props.addGroups(props.user.id, groups.map(group => group.id))
-                    })
-                  }]
-                }}
-                delete={{
-                  url: ['apiv2_user_remove_groups', {id: props.user.id}],
-                  displayed: () => hasPermission('administrate', props.user)
-                }}
-                actions={undefined}
-              />
+              <>
+                {hasPermission('administrate', props.user) &&
+                  <Button
+                    className="btn btn-primary mt-4 me-auto"
+                    {...{
+                      name: 'add',
+                      type: MODAL_BUTTON,
+                      icon: 'fa fa-fw fa-plus',
+                      label: trans('add_group', {}, 'actions'),
+                      tooltip: 'bottom',
+                      displayed: hasPermission('administrate', props.user),
+                      modal: [MODAL_GROUPS, {
+                        selectAction: (groups) => ({
+                          type: CALLBACK_BUTTON,
+                          label: trans('add', {}, 'actions'),
+                          callback: () => props.addGroups(props.user.id, groups.map(group => group.id))
+                        })
+                      }]
+                    }}
+                  />
+                }
+
+                <GroupList
+                  className="mt-4 mb-5"
+                  path={props.path}
+                  name={`${selectors.FORM_NAME}.groups`}
+                  url={['apiv2_user_list_groups', {id: props.user.id}]}
+                  autoload={!!props.user.id}
+                  delete={{
+                    url: ['apiv2_user_remove_groups', {id: props.user.id}],
+                    icon: 'fa fa-fw fa-times',
+                    label: trans('remove', {}, 'actions'),
+                    displayed: () => hasPermission('administrate', props.user)
+                  }}
+                  actions={undefined}
+                />
+              </>
             )
           }, {
             path: '/trainings',

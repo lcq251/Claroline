@@ -21,6 +21,7 @@ import {GroupPage} from '#/main/community/group/components/page'
 import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
 import {OrganizationList} from '#/main/community/organization/components/list'
 import {route} from '#/main/community/group/routing'
+import {Button} from '#/main/app/action'
 
 const GroupShow = (props) =>
   <GroupPage
@@ -54,7 +55,7 @@ const GroupShow = (props) =>
 
     <PageTabbedSection
       size="md"
-      className="py-3 embedded-list-section"
+      className="mt-3 embedded-list-section"
       path={route(props.group, props.path)}
       tabs={[
         {
@@ -63,69 +64,86 @@ const GroupShow = (props) =>
           icon: 'fa fa-user',
           title: trans('users', {}, 'community'),
           render: () => (
-            <UserList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.users`}
-              url={['apiv2_group_list_users', {id: props.group.id}]}
-              addAction={{
-                name: 'add-users',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_users', {}, 'actions'),
-                disabled: get(props.group, 'meta.readOnly'),
-                displayed: hasPermission('administrate', props.group),
-                modal: [MODAL_USERS, {
-                  selectAction: (selected) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addUsers(props.group.id, selected)
-                  })
-                }]
-              }}
-              autoload={!!props.group.id}
-              delete={{
-                url: ['apiv2_group_remove_users', {id: props.group.id}],
-                label: trans('unregister', {}, 'actions'),
-                disabled: () => get(props.group, 'meta.readOnly'),
-                displayed: () => hasPermission('administrate', props.group)
-              }}
-              actions={undefined}
-            />
+            <>
+              {hasPermission('administrate', props.group) &&
+                <Button
+                  className="btn btn-primary mt-4 me-auto"
+                  {...{
+                    name: 'add-users',
+                    type: MODAL_BUTTON,
+                    // icon: 'fa fa-fw fa-plus',
+                    label: trans('add_users', {}, 'actions'),
+                    disabled: get(props.group, 'meta.readOnly'),
+                    displayed: hasPermission('administrate', props.group),
+                    modal: [MODAL_USERS, {
+                      selectAction: (selected) => ({
+                        type: CALLBACK_BUTTON,
+                        label: trans('add', {}, 'actions'),
+                        callback: () => props.addUsers(props.group.id, selected)
+                      })
+                    }]
+                  }}
+                />
+              }
+
+              <UserList
+                className="mt-4 mb-5"
+                path={props.path}
+                name={`${selectors.FORM_NAME}.users`}
+                url={['apiv2_group_list_users', {id: props.group.id}]}
+                autoload={!!props.group.id}
+                delete={{
+                  url: ['apiv2_group_remove_users', {id: props.group.id}],
+                  icon: 'fa fa-fw fa-times',
+                  label: trans('unregister', {}, 'actions'),
+                  disabled: () => get(props.group, 'meta.readOnly'),
+                  displayed: () => hasPermission('administrate', props.group)
+                }}
+                actions={undefined}
+              />
+            </>
           )
         }, {
           path: '/organizations',
           icon: 'fa fa-building',
           title: trans('organizations', {}, 'community'),
           render: () => (
-            <OrganizationList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.organizations`}
-              url={['apiv2_group_list_organizations', {id: props.group.id}]}
-              autoload={!!props.group.id}
-              addAction={{
-                name: 'add',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_organizations', {}, 'actions'),
-                displayed: hasPermission('administrate', props.group),
-                modal: [MODAL_ORGANIZATIONS, {
-                  selectAction: (organizations) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addOrganizations(props.group.id, organizations)
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_group_remove_organizations', {id: props.group.id}],
-                displayed: () => hasPermission('administrate', props.group)
-              }}
-              actions={undefined}
-            />
+            <>
+              {hasPermission('administrate', props.group) &&
+                <Button
+                  className="btn btn-primary mt-4 me-auto"
+                  {...{
+                    name: 'add',
+                    type: MODAL_BUTTON,
+                    // icon: 'fa fa-fw fa-plus',
+                    label: trans('add_organizations', {}, 'actions'),
+                    displayed: hasPermission('administrate', props.group),
+                    modal: [MODAL_ORGANIZATIONS, {
+                      selectAction: (organizations) => ({
+                        type: CALLBACK_BUTTON,
+                        label: trans('add', {}, 'actions'),
+                        callback: () => props.addOrganizations(props.group.id, organizations)
+                      })
+                    }]
+                  }}
+                />
+              }
+
+              <OrganizationList
+                className="mt-4 mb-5"
+                path={props.path}
+                name={`${selectors.FORM_NAME}.organizations`}
+                url={['apiv2_group_list_organizations', {id: props.group.id}]}
+                autoload={!!props.group.id}
+                delete={{
+                  url: ['apiv2_group_remove_organizations', {id: props.group.id}],
+                  icon: 'fa fa-fw fa-times',
+                  label: trans('remove', {}, 'actions'),
+                  displayed: () => hasPermission('administrate', props.group)
+                }}
+                actions={undefined}
+              />
+            </>
           )
         }, {
           path: '/roles',
@@ -133,33 +151,42 @@ const GroupShow = (props) =>
           title: trans('roles', {}, 'community'),
           displayed: hasPermission('administrate', props.group),
           render: () => (
-            <RoleList
-              className="mt-3"
-              path={props.path}
-              name={`${selectors.FORM_NAME}.roles`}
-              url={['apiv2_group_list_roles', {id: props.group.id}]}
-              autoload={!!props.group.id}
-              addAction={{
-                name: 'add-roles',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                tooltip: 'bottom',
-                label: trans('add_roles', {}, 'actions'),
-                disabled: get(props.group, 'meta.readOnly'),
-                modal: [MODAL_ROLES, {
-                  selectAction: (selected) => ({
-                    type: CALLBACK_BUTTON,
-                    label: trans('add', {}, 'actions'),
-                    callback: () => props.addRoles(props.group.id, selected)
-                  })
-                }]
-              }}
-              delete={{
-                url: ['apiv2_group_remove_roles', {id: props.group.id}],
-                disabled: () => get(props.group, 'meta.readOnly')
-              }}
-              actions={undefined}
-            />
+            <>
+              {!get(props.group, 'meta.readOnly', false) &&
+                <Button
+                  className="btn btn-primary mt-4 me-auto"
+                  {...{
+                    name: 'add-roles',
+                    type: MODAL_BUTTON,
+                    // icon: 'fa fa-fw fa-plus',
+                    label: trans('add_roles', {}, 'actions'),
+                    disabled: get(props.group, 'meta.readOnly'),
+                    modal: [MODAL_ROLES, {
+                      selectAction: (selected) => ({
+                        type: CALLBACK_BUTTON,
+                        label: trans('add', {}, 'actions'),
+                        callback: () => props.addRoles(props.group.id, selected)
+                      })
+                    }]
+                  }}
+                />
+              }
+
+              <RoleList
+                className="mt-4 mb-5"
+                path={props.path}
+                name={`${selectors.FORM_NAME}.roles`}
+                url={['apiv2_group_list_roles', {id: props.group.id}]}
+                autoload={!!props.group.id}
+                delete={{
+                  url: ['apiv2_group_remove_roles', {id: props.group.id}],
+                  icon: 'fa fa-fw fa-times',
+                  label: trans('remove', {}, 'actions'),
+                  disabled: () => get(props.group, 'meta.readOnly')
+                }}
+                actions={undefined}
+              />
+            </>
           )
         }
       ]}
