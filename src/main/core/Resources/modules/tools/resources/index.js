@@ -1,8 +1,8 @@
 import {declareTool, CommandPalette} from '#/main/core/tool'
 
-import {ResourcesTool} from '#/main/core/tools/resources/containers/tool'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ResourcesTool} from '#/main/core/tools/resources/containers/tool'
 
 /**
  * Resources tool application.

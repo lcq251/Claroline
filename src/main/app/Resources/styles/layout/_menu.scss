@@ -1,20 +1,12 @@
 
 .app-toolbar {
     display: flex;
-    //flex-direction: row;
     width: map-get($icon-sizes, sm) + 1.5rem;
     transition: width .4s ease;
     top: 0;
     bottom: 0;
-    //overflow: hidden;
 
-    /*&.show {
-        width: $toolbar-size;
-    }*/
-
-    //box-shadow: $toolbar-box-shadow;
     border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
-    // z-index: $zindex-sticky + 1;
 }
 
 .app-body {
@@ -27,7 +19,6 @@
     --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle};
     --#{$prefix}menu-header-color: #{$toolbar-header-color};
 
-    // height: 100%;
     overflow-y: auto; // gets its own scrollbar
     scrollbar-width: thin;
 
@@ -35,11 +26,6 @@
     color: var(--#{$prefix}menu-color);
     border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
-
-/*.app-menu-backdrop {
-    opacity: 0;
-    transition: opacity .3s ease;
-}*/
 
 .app-menu-items {
     --#{$prefix}menu-item-color: #{$toolbar-link-color};
@@ -122,39 +108,13 @@
 
 // MD/LG screens :
 @media (max-width: map-get($grid-breakpoints, 'xl')) {
-    .app-body {
-        // padding-left: map-get($icon-sizes, sm) + 1.5rem;
-    }
 
-    .app-toolbar {
-        /*position: absolute;
-        z-index: $zindex-fixed;*/
-
-        /*&.show {
-            + .app-menu-backdrop {
-                position: fixed;
-                z-index: $zindex-fixed - 1;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-
-                opacity: 1;
-            }
-        }*/
-    }
 }
 
 // XS/SM screens :
 @media (max-width: map-get($grid-breakpoints, 'md')) {
     .app-toolbar {
-        // width: 0; // also hide contexts nav
         display: none;
-    }
-
-    .app-body {
-        // padding-left: 0;
     }
 }
 

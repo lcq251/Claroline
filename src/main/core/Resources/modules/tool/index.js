@@ -10,11 +10,10 @@ import {CommandPalette} from '#/main/core/tool/command-palette'
  * NB1. Tool MUST be registered in the `plugin.js` file of its plugin.
  * NB2. Tool component tree MUST start with the `Tool` component
  */
-function declareTool(ToolComponent, commands, ToolPreview) {
+function declareTool(ToolComponent, commands) {
   return {
     component: ToolComponent,
-    commands: commands,
-    preview: ToolPreview
+    commands: commands
   }
 }
 

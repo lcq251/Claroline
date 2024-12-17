@@ -3,7 +3,3 @@ plugin:
         - name: logs
           icon: shoe-prints
 
-    #resource_actions:
-    #    - name: logs
-    #      decoder: administrate
-    #      scope: [object, collection]

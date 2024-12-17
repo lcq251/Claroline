@@ -1,7 +1,6 @@
-import React, {cloneElement, createElement, forwardRef, useEffect, useState} from 'react'
+import React, {forwardRef} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -18,30 +17,7 @@ import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {Menu} from '#/main/app/overlays/menu'
 import {DataMicro} from '#/main/app/data/components/micro'
 import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
-import {getTool} from '#/main/core/tool/utils'
-
-const ToolPreview = (props) => {
-  const [previewComponent, setToolPreview] = useState(null)
-
-  useEffect(() => {
-    getTool(props.name, props.contextName).then((toolApp => {
-      setToolPreview(toolApp.default.preview || null)
-    }))
-  }, [props.name, props.contextName])
-
-  console.log(previewComponent)
-
-  if (!previewComponent) {
-    return null
-  }
-
-  return cloneElement(previewComponent)
-}
-
-ToolPreview.propTypes = {
-  name: T.string.isRequired,
-  contextName: T.string.isRequired
-}
+import omit from 'lodash/omit'
 
 const ContextFlyout = forwardRef((props, ref) => {
   let toolLinks = []
@@ -73,47 +49,18 @@ const ContextFlyout = forwardRef((props, ref) => {
   }
 
   const dispatch = useDispatch()
-  const favourite = useSelector((state) => platformSelectors.isContextFavorite(state, props.contextData))
-
-  const [selectedTool, setSelectedTool] = useState(props.toolName)
 
   return (
-    <section {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref} >
-      {false && (props.contextData && get(props.contextData, 'poster')) &&
-        <Thumbnail
-          className="rounded-top-4"
-          thumbnail={get(props.contextData, 'poster')}
-          name={get(props.contextData, 'name')}
-        />
-      }
-
-      <div className="flyout-menu-content rounded-bottom-4">
-        <div className="d-flex gap-3 px-4 pt-4 align-items-center">
-          {'workspace' === props.contextType ?
-            <Button
-              id="toggle-favorite"
-              type={CALLBACK_BUTTON}
-              className={classes('btn', {
-                'btn-body': favourite,
-                'btn-primary': !favourite
-              })}
-              size="sm"
-              icon={classes('fa', {
-                'fa-star': !favourite,
-                'far fa-star': favourite
-              })}
-              label={trans(favourite ? 'remove-favourite' : 'add-favourite', {}, 'actions')}
-              callback={() => dispatch(platformActions.saveFavorite(props.contextData))}
-            /> :
-            <>
-            </>
-          }
+    <div {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref}>
+      <div className="flyout-menu-content rounded-bottom-4" role="presentation">
+        <div className="d-flex gap-3 px-4 pt-4 my-n1 align-items-center" role="presentation">
+          <FavouriteButton />
 
           {actions &&
             <Toolbar
               id="app-menu-actions"
-              className="ms-auto"
-              buttonName="btn btn-text-body me-n3 focus-ring focus-ring-secondary"
+              className="ms-auto me-n1"
+              buttonName="btn btn-text-body focus-ring p-1"
               actions={actions.then(actions => actions.filter((action) => 'configure' === action.name))}
               tooltip="bottom"
             />
@@ -121,34 +68,25 @@ const ContextFlyout = forwardRef((props, ref) => {
         </div>
 
         {1 < toolLinks.length &&
-          <div className="flyout-menu-cols">
-            <div className="flyout-menu-col w-50">
-              <ul className="app-menu-items list-unstyled my-4">
-                {toolLinks.map(toolLink =>
-                  <li key={toolLink.name}>
-                    <Button
-                      {...toolLink}
-                      className="app-menu-item focus-ring"
-                      onMouseOver={() => setSelectedTool(toolLink.name)}
-                    />
-                  </li>
-                )}
-              </ul>
-            </div>
-
-            <div className="flyout-menu-col my-4 px-4 border-start w-50">
-              {selectedTool &&
-                <ToolPreview
-                  name={selectedTool}
-                  contextName={props.contextType}
-                />
-              }
-            </div>
-          </div>
+          <ul className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
+            'flyout-menu-items-2': 6 >= toolLinks.length,
+            'flyout-menu-items-4': 6 < toolLinks.length
+          })}>
+            {toolLinks.map(toolLink =>
+              <li key={toolLink.name}>
+                <Button
+                  {...omit(toolLink, 'label')}
+                  className="flyout-menu-item focus-ring"
+                >
+                  <span className="text-truncate w-100 text-center" role="presentation">{toolLink.label}</span>
+                </Button>
+              </li>
+            )}
+          </ul>
         }
 
         {!isEmpty(props.organizations) &&
-          <div className="bg-body-tertiary p-4 rounded-bottom-4">
+          <div className="bg-body-tertiary p-4 rounded-bottom-4" role="presentation">
             <h4 className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
               {trans('organizations', {}, 'community')}
 
@@ -172,9 +110,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                 <li key={organization.id}>
                   <CallbackButton
                     className="fw-bolder btn btn-link text-reset p-1 w-100 fs-sm"
-                    callback={() => {
-                      dispatch(platformActions.changeOrganization(organization))
-                    }}
+                    callback={() => dispatch(platformActions.changeOrganization(organization))}
                   >
                     <DataMicro object={organization} />
                   </CallbackButton>
@@ -185,7 +121,7 @@ const ContextFlyout = forwardRef((props, ref) => {
           </div>
         }
       </div>
-    </section>
+    </div>
   )
 })
 
@@ -229,12 +165,16 @@ const FavouriteButton = () => {
       id="toggle-favorite"
       type={CALLBACK_BUTTON}
       label={trans(favourite ? 'remove-favourite' : 'add-favourite', {}, 'actions')}
-      icon={classes('fa', {
+      icon={classes('fa fs-base', {
         'fa-star text-warning': favourite,
         'far fa-star': !favourite
       })}
-      tooltip="bottom"
+      className={classes('btn btn-text-body p-1 focus-ring ms-n1', {
+        /*'btn-body': favourite,
+        'btn-primary': !favourite*/
+      })}
       callback={() => dispatch(platformActions.saveFavorite(contextData))}
+      size="sm"
     />
   )
 }
@@ -273,6 +213,7 @@ const MenuButton = (props) => {
         name={contextData.name}
         square={true}
       />
+
       <div className="text-start text-truncate" role="presentation">
         <b className="h6 d-block m-0 text-truncate">
           {contextData.name}
@@ -287,14 +228,8 @@ const MenuButton = (props) => {
   )
 }
 
-const ContextMenu = (props) => {
-  return (
-    <>
-      <MenuButton  {...props} />
-      {/*<FavouriteButton />*/}
-    </>
-  )
-}
+const ContextMenu = (props) =>
+  <MenuButton  {...props} />
 
 export {
   ContextMenu
