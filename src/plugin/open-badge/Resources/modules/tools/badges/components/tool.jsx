@@ -23,26 +23,26 @@ const BadgeTool = props =>
       {
         name: 'my-badges',
         label: trans('my_badges', {}, 'badge'),
-        target: props.path+'/my',
+        target: props.path,
         type: LINK_BUTTON,
-        displayed: props.contextType !== toolConstants.TOOL_WORKSPACE || !get(props.workspace, 'meta.model')
+        displayed: props.contextType !== toolConstants.TOOL_WORKSPACE || !get(props.workspace, 'meta.model'),
+        exact: true
       }, {
         name: 'all-badges',
         label: trans('all_badges', {}, 'badge'),
-        target: props.path,
-        type: LINK_BUTTON,
-        exact: true
+        target: props.path+'/all',
+        type: LINK_BUTTON
       }
     ]}
     editor={BadgesEditor}
     pages={[
       {
-        path: '/my',
-        component: Assertions
-      }, {
-        path: '',
-        component: BadgeList,
+        path: '/',
+        component: Assertions,
         exact: true
+      }, {
+        path: '/all',
+        component: BadgeList
       }, {
         path: '/new',
         onEnter: () => props.openBadge(null, props.currentContext.data),
