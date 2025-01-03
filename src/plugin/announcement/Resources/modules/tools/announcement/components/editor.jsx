@@ -8,26 +8,37 @@ import {selectors} from '#/plugin/announcement/tools/announcement/store'
 
 const AnnouncementEditorAppearance = () =>
   <ToolEditorAppearance
-    definition={[{
-      title: trans('Templates'),
-      subtitle: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum scelerisque lorem, non finibus ligula pretium et.'),
-      primary: true,
-      fields: [{
-        name: 'parameters.templateEmail',
-        label: trans('email_announcement', {}, 'template'),
-        type: 'template',
-        options: {
-          templateType: 'email_announcement'
-        }
+    definition={[
+      {
+        title: trans('announcement_list', {}, 'announcement'),
+        primary: true,
+        fields: [{
+          name: 'parameters.listFullContent',
+          type: 'boolean',
+          label: trans('list_full_content', {}, 'announcement'),
+          help: trans('list_full_content_help', {}, 'announcement')
+        }]
       }, {
-        name: 'parameters.templatePdf',
-        label: trans('pdf_announcement', {}, 'template'),
-        type: 'template',
-        options: {
-          templateType: 'pdf_announcement'
-        }
-      }]
-    }]}
+        title: trans('Templates'),
+        subtitle: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum scelerisque lorem, non finibus ligula pretium et.'),
+        primary: true,
+        fields: [{
+          name: 'parameters.templateEmail',
+          label: trans('email_announcement', {}, 'template'),
+          type: 'template',
+          options: {
+            templateType: 'email_announcement'
+          }
+        }, {
+          name: 'parameters.templatePdf',
+          label: trans('pdf_announcement', {}, 'template'),
+          type: 'template',
+          options: {
+            templateType: 'pdf_announcement'
+          }
+        }]
+      }
+    ]}
   />
 
 const AnnouncementEditor = () => {

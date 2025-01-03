@@ -31,7 +31,9 @@ class AnnouncementParametersSerializer
 
     public function serialize(AnnouncementParameters $announcement, ?array $options = []): array
     {
-        $serialized = [];
+        $serialized = [
+            'listFullContent' => $announcement->getListFullContent(),
+        ];
 
         if ($announcement->getTemplateEmail()) {
             $serialized['templateEmail'] = $this->templateSerializer->serialize($announcement->getTemplateEmail(), [SerializerInterface::SERIALIZE_MINIMAL]);
@@ -45,6 +47,8 @@ class AnnouncementParametersSerializer
 
     public function deserialize(array $data, AnnouncementParameters $announcement, ?array $options = []): AnnouncementParameters
     {
+        $this->sipe('listFullContent', 'setListFullContent', $data, $announcement);
+
         if (array_key_exists('templateEmail', $data)) {
             $template = null;
             if (!empty($data['templateEmail']) && !empty($data['templateEmail']['id'])) {

@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect'
+import get from 'lodash/get'
 
 const STORE_NAME = 'announcement'
 
@@ -27,6 +28,11 @@ const sortedPosts = createSelector(
   })
 )
 
+const listFullContent = createSelector(
+  [parameters],
+  (parameters) => get(parameters, 'listFullContent', false)
+)
+
 const announcementDetail = createSelector(
   [tool],
   (tool) => tool.announcementDetail
@@ -48,5 +54,6 @@ export const selectors = {
   sortedPosts,
   parameters,
   detail,
-  workspaceRoles
+  workspaceRoles,
+  listFullContent
 }

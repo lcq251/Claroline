@@ -14,13 +14,13 @@ import {LINK_BUTTON, LinkButton} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {PageSection} from '#/main/app/page'
 import {UserMicro} from '#/main/core/user/components/micro'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {Badge} from '#/main/app/components/badge'
 import {ToolPage} from '#/main/core/tool'
 import {Html} from '#/main/app/components/html'
 import {Text} from '#/main/app/components/text'
 import {PlaceholderParagraph} from '#/main/app/components/placeholder'
 import {DataMicro} from '#/main/app/data/components/micro'
+import {selectors as contextSelectors} from '#/main/app/context'
 import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
@@ -111,13 +111,11 @@ Announce.propTypes = {
   preview: T.bool
 }
 
-Announce.defaultProps = {
-  preview: true
-}
-
 const AnnouncementList = () => {
+  const contextPath = useSelector(contextSelectors.path)
   const toolPath = useSelector(toolSelectors.path)
   const posts = useSelector(selectors.sortedPosts)
+  const listFullContent = useSelector(selectors.listFullContent)
   const loaded = useSelector(toolSelectors.loaded)
   const tool = useSelector(toolSelectors.toolData)
 
@@ -125,17 +123,20 @@ const AnnouncementList = () => {
     <ToolPage>
       {(loaded && 0 === posts.length) &&
         <EmptyState
-          //className="my-5"
-          //size="lg"
           icon="fa fa-bullhorn"
           title={trans('Aucune annonce', {}, 'announcement')}
           description={trans('Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.', {}, 'announcement')}
-          addAction={{
+          primaryAction={{
             type: LINK_BUTTON,
             label: trans('add_announcement', {}, 'actions'),
             target: `${toolPath}/add`,
-            // icon: 'fa fa-plus',
             displayed: hasPermission('edit', tool)
+          }}
+          secondaryAction={{
+            type: LINK_BUTTON,
+            icon: 'fa fa-arrow-left',
+            label: trans('back_home', {}, 'actions'),
+            target: contextPath
           }}
         />
       }
@@ -145,11 +146,11 @@ const AnnouncementList = () => {
       >
         {!loaded &&
           <ul className="announcements-list list-unstyled my-5 placeholder-glow">
-            <Announce key={1} path={toolPath} announcement={{}} />
-            <Announce key={2} path={toolPath} announcement={{}} />
-            <Announce key={3} path={toolPath} announcement={{}} />
-            <Announce key={4} path={toolPath} announcement={{}} />
-            <Announce key={5} path={toolPath} announcement={{}} />
+            <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />
+            <Announce key={2} path={toolPath} announcement={{}} preview={!listFullContent} />
+            <Announce key={3} path={toolPath} announcement={{}} preview={!listFullContent} />
+            <Announce key={4} path={toolPath} announcement={{}} preview={!listFullContent} />
+            <Announce key={5} path={toolPath} announcement={{}} preview={!listFullContent} />
           </ul>
         }
 
@@ -161,6 +162,7 @@ const AnnouncementList = () => {
                 path={toolPath}
                 announcement={post}
                 loaded={loaded}
+                preview={!listFullContent}
               />
             )}
           </ul>
@@ -172,8 +174,7 @@ const AnnouncementList = () => {
               type: LINK_BUTTON,
               icon: 'fa fa-plus',
               label: trans('add_announcement', {}, 'actions'),
-              target: `${toolPath}/add`,
-              // displayed: hasPermission('edit', tool)
+              target: `${toolPath}/add`
             }}
           />
         }
