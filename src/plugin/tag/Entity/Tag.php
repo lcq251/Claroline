@@ -12,6 +12,7 @@
 namespace Claroline\TagBundle\Entity;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Color;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'claro_tagbundle_tag')]
 #[CrudEntity(finderClass: TagType::class)]
-class Tag
+class Tag implements CrudEntityInterface
 {
     use Id;
     use Uuid;
@@ -51,6 +52,11 @@ class Tag
         $this->refreshUuid();
 
         $this->taggedObjects = new ArrayCollection();
+    }
+
+    public static function getIdentifiers(): array
+    {
+        return ['name'];
     }
 
     public function getName(): ?string

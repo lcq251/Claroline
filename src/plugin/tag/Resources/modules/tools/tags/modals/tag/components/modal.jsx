@@ -28,7 +28,12 @@ const TagModal = (props) =>
             name: 'name',
             type: 'string',
             label: trans('name'),
-            required: true
+            required: true,
+            options: {
+              unique: {
+                check: ['apiv2_tag_get', {field: 'name'}]
+              }
+            }
           }, {
             name: 'meta.description',
             type: 'string',

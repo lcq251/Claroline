@@ -14,9 +14,6 @@ import {TaggedObjectCard} from '#/plugin/tag/card/components/tagged-object'
 
 const TagShow = (props) => {
   const [tag, status, error, errorCode] = useFetch('tag', ['apiv2_tag_get', {id: props.id}])
-  console.log(tag)
-  console.log(status)
-  //console.log(error)
 
   if (!tag) {
     return (
@@ -25,6 +22,7 @@ const TagShow = (props) => {
       </ToolPage>
     )
   }
+
   return (
     <ToolPage
       title={trans('tag_name', {name: get(tag, 'name', trans('loading'))}, 'tag')}
