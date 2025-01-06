@@ -33,5 +33,11 @@
 
   "skills_framework": "Skills framework",
   "skills_frameworks": "Skills frameworks",
-  "new_skills_framework": "New skills framework"
+  "new_skills_framework": "New skills framework",
+
+  "lesson_plan": "Lesson plan",
+  "lesson_plans": "Lesson plans",
+  "new_lesson_plan": "New lesson plan",
+  "no_lesson_plan": "No lesson plan",
+  "lesson_plan_name": "Lesson plan: %name%"
 }

@@ -118,10 +118,6 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
 
         $evaluationUpdated = $this->updateEvaluation($evaluation, $data, $date);
 
-        if (isset($data['status']) && AbstractEvaluation::STATUS_OPENED === $data['status']) {
-            $evaluation->setNbOpenings($evaluation->getNbOpenings() + 1);
-        }
-
         $this->om->endFlushSuite();
 
         if ($evaluationUpdated['status'] || $evaluationUpdated['progression'] || $evaluationUpdated['score']) {

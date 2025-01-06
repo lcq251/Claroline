@@ -2,11 +2,13 @@
 
 namespace Claroline\EvaluationBundle\Component\Tool;
 
+use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
@@ -20,7 +22,8 @@ class ProgressionTool extends ToolComponent
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
         private readonly FinderProvider $finder,
-        private readonly SerializerProvider $serializer
+        private readonly SerializerProvider $serializer,
+        private readonly Crud $crud
     ) {
     }
 
@@ -31,12 +34,15 @@ class ProgressionTool extends ToolComponent
 
     public function supportsContext(string $context): bool
     {
-        return WorkspaceContext::getName() === $context;
+        return in_array($context, [
+            DesktopContext::getName(),
+            WorkspaceContext::getName(),
+        ]);
     }
 
     public static function getIcon(): string
     {
-        return 'medal';
+        return 'route';
     }
 
     public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): ?string
@@ -66,5 +72,18 @@ class ProgressionTool extends ToolComponent
                 'filters' => ['workspace' => $contextSubject->getContextIdentifier(), 'user' => $user->getUuid()],
             ])['data'],
         ];
+    }
+
+    public function configure(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
+    {
+        if (!empty($configData['evaluation'])) {
+            $this->crud->update($contextSubject, ['evaluation' => $configData['evaluation']], [Crud::NO_PERMISSIONS]);
+
+            return [
+                'evaluation' => $configData['evaluation'],
+            ];
+        }
+
+        return [];
     }
 }

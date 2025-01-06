@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Secondary resources.
  */
-#[ORM\Table('innova_step_secondary_resource')]
+#[ORM\Table('innova_step_secondary_resource_old')]
 #[ORM\Entity]
 class SecondaryResource
 {

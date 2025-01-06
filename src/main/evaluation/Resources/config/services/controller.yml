@@ -30,3 +30,10 @@ services:
     Claroline\EvaluationBundle\Controller\SkillsFrameworkController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true
+
+    Claroline\EvaluationBundle\Controller\SequenceController:
+        parent: Claroline\AppBundle\Controller\AbstractCrudController
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'

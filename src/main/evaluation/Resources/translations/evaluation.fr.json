@@ -35,5 +35,13 @@
 
   "skills_framework": "Référentiel de compétences",
   "skills_frameworks": "Référentiels de compétences",
-  "new_skills_framework": "Nouveau référentiel de compétences"
+  "new_skills_framework": "Nouveau référentiel de compétences",
+
+  "lesson_plan": "Parcours d'apprentissage",
+  "lesson_plans": "Parcours d'apprentissage",
+  "new_lesson_plan": "Nouveau parcours",
+  "no_lesson_plan": "Aucun parcours",
+  "lesson_plan_name": "Parcours : %name%",
+  "sequence": "Séquence",
+  "sequences": "Séquences"
 }

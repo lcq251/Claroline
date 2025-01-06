@@ -6,16 +6,22 @@ services:
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
 
-    Claroline\EvaluationBundle\Serializer\ResourceUserEvaluationSerializer:
+    Claroline\EvaluationBundle\Serializer\ResourceEvaluationSerializer:
         tags: [ claroline.serializer ]
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
-    Claroline\EvaluationBundle\Serializer\ResourceEvaluationSerializer:
+    Claroline\EvaluationBundle\Serializer\ResourceAttemptSerializer:
         tags: [ claroline.serializer ]
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
+            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
+
+    Claroline\EvaluationBundle\Serializer\SequenceEvaluationSerializer:
+        tags: [ claroline.serializer ]
+        arguments:
+            - '@Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
     Claroline\EvaluationBundle\Serializer\CertificateSerializer:
@@ -26,3 +32,18 @@ services:
 
     Claroline\EvaluationBundle\Serializer\SkillsFrameworkSerializer:
         tags: [ claroline.serializer ]
+
+    Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer:
+        tags: [ claroline.serializer ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
+            - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
+            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
+            - '@Claroline\EvaluationBundle\Serializer\Sequence\StepSerializer'
+
+    Claroline\EvaluationBundle\Serializer\Sequence\StepSerializer:
+        tags: [ claroline.serializer ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'

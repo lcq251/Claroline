@@ -11,18 +11,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class WorkspaceEvaluationSerializer
 {
-    private AuthorizationCheckerInterface $authorization;
-    private UserSerializer $userSerializer;
-    private WorkspaceSerializer $workspaceSerializer;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        UserSerializer $userSerializer,
-        WorkspaceSerializer $workspaceSerializer
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly UserSerializer $userSerializer,
+        private readonly WorkspaceSerializer $workspaceSerializer
     ) {
-        $this->authorization = $authorization;
-        $this->userSerializer = $userSerializer;
-        $this->workspaceSerializer = $workspaceSerializer;
     }
 
     public function getName(): string

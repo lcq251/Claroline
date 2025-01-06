@@ -1,12 +1,34 @@
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 import {makeListReducer} from '#/main/app/content/list/store/reducer'
-import {TOOL_OPEN} from '#/main/core/tool/store'
+import {TOOL_LOAD, TOOL_OPEN} from '#/main/core/tool/store'
 
 import {USER_PROGRESSION_LOAD, USER_PROGRESSION_RESET} from '#/main/evaluation/tools/evaluation/store/actions'
 import {selectors} from '#/main/evaluation/tools/evaluation/store/selectors'
 import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
+import {makeInstanceAction} from '#/main/app/store/actions'
 
 const reducer = combineReducers({
+  current: combineReducers({
+    workspaceEvaluation: makeReducer(null, {
+      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
+        console.log(action)
+        return action.toolData.workspaceEvaluation
+      }
+    }),
+    resourceEvaluations: makeReducer([], {
+      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.resourceEvaluations
+    })
+  }),
+
+  sequences: makeListReducer(selectors.STORE_NAME+'.sequences', {}, {
+    loaded: makeReducer(false, {
+      [CONTEXT_OPEN]: () => false
+    }),
+    invalidated: makeReducer(false, {
+      [TOOL_OPEN]: () => true
+    })
+  }),
+
   /**
    * The list of all workspace evaluations for all users.
    * It is filtered by workspace for the ws tool.
@@ -32,7 +54,7 @@ const reducer = combineReducers({
   /**
    * The details information about one user evaluations.
    */
-  current: combineReducers({
+  user: combineReducers({
     loaded: makeReducer(false, {
       [TOOL_OPEN]: () => false,
       [USER_PROGRESSION_LOAD]: () => true,

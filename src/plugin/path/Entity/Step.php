@@ -18,7 +18,7 @@ use Innova\PathBundle\Entity\Path\Path;
 /**
  * Step.
  */
-#[ORM\Table('innova_step')]
+#[ORM\Table('innova_step_old')]
 #[ORM\Entity]
 class Step
 {

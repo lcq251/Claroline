@@ -6,5 +6,6 @@
   "give_attempt": "Donner une tentative supplémentaire",
   "regenerate_certificate": "Regénérer le certificat",
   "regenerate_certificates": "Regénérer les certificats",
-  "download_all_certificates": "Télécharger tous les certificats"
+  "download_all_certificates": "Télécharger tous les certificats",
+  "add_sequence": "Ajouter une séquence"
 }

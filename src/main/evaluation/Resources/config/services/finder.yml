@@ -22,3 +22,6 @@ services:
     Claroline\EvaluationBundle\Finder\ResourceUserEvaluationFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]
+
+    Claroline\EvaluationBundle\Finder\SequenceType:
+        tags: [ claroline.finder.type ]

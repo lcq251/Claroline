@@ -31,7 +31,7 @@ class EvaluationTool extends ToolComponent
 
     public static function getIcon(): string
     {
-        return 'award';
+        return 'route';
     }
 
     public function configure(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null, array $configData = []): ?array

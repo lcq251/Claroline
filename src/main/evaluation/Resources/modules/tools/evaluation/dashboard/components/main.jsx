@@ -1,14 +1,15 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 
-import { BarChart, Bar, Rectangle, Label, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts'
+import {Bar, BarChart, CartesianGrid, Label, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 
 import {trans} from '#/main/app/intl'
+
+import {PageSection} from '#/main/app/page'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
-import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
-import {PageSection} from '#/main/app/page/components/section'
 import {StatusChart} from '#/main/evaluation/charts/status/components/chart'
 import {CountGauge} from '#/main/core/layout/gauge/components/count-gauge'
+import {ToolDashboard, selectors as toolSelectors} from '#/main/core/tool'
 
 const data = [
   {
@@ -64,11 +65,11 @@ const data = [
   }
 ]
 
-const EvaluationAbout = (props) => {
+const EvaluationDashboard = () => {
   const contextId = useSelector(toolSelectors.contextId)
 
   return (
-    <ToolPage>
+    <ToolDashboard>
       {false && contextId &&
         <PageSection className="my-4" size="lg">
           <ContentInfoBlocks
@@ -197,10 +198,11 @@ const EvaluationAbout = (props) => {
           </div>
         </div>
       </PageSection>
-    </ToolPage>
+    </ToolDashboard>
   )
 }
 
+
 export {
-  EvaluationAbout
+  EvaluationDashboard
 }

@@ -122,7 +122,7 @@ class WorkspaceEvaluationController
     ): JsonResponse {
         $this->checkToolAccess('EDIT', $workspace);
 
-        $this->manager->recompute($workspace);
+        $this->manager->recomputeEvaluations($workspace);
 
         return new JsonResponse(null, 204);
     }

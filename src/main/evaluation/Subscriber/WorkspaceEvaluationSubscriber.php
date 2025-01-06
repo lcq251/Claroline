@@ -16,17 +16,14 @@ use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
-use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\CoreBundle\Event\CatalogEvents\ContextEvents;
 use Claroline\CoreBundle\Event\CatalogEvents\SecurityEvents;
-use Claroline\CoreBundle\Event\Context\OpenContextEvent;
 use Claroline\CoreBundle\Event\Security\AddRoleEvent;
 use Claroline\CoreBundle\Repository\WorkspaceRepository;
+use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
-use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;
+use Claroline\EvaluationBundle\Event\SequenceEvaluationEvent;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\CertificateManager;
@@ -56,33 +53,12 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ContextEvents::OPEN => 'onOpen',
             SecurityEvents::ADD_ROLE => 'onAddRole',
-            EvaluationEvents::RESOURCE_EVALUATION => 'onResourceEvaluate',
-            CrudEvents::getEventName(CrudEvents::POST_UPDATE, ResourceNode::class) => 'onResourcePublicationChange',
-            CrudEvents::getEventName(CrudEvents::POST_DELETE, ResourceNode::class) => 'onResourceDelete',
+            EvaluationEvents::SEQUENCE_EVALUATION => 'onSequenceEvaluate',
+            CrudEvents::getEventName(CrudEvents::POST_UPDATE, Sequence::class) => 'onSequencePublicationChange',
+            CrudEvents::getEventName(CrudEvents::POST_DELETE, Sequence::class) => 'onSequenceDelete',
             EvaluationEvents::WORKSPACE_EVALUATION => 'onWorkspaceEvaluate',
         ];
-    }
-
-    /**
-     * Updates the workspace evaluation status to "opened".
-     */
-    public function onOpen(OpenContextEvent $event): void
-    {
-        if (WorkspaceContext::getName() !== $event->getContextType()) {
-            return;
-        }
-
-        // Update current user evaluation
-        $user = $this->tokenStorage->getToken()?->getUser();
-        if ($user instanceof User) {
-            $this->manager->updateUserEvaluation(
-                $event->getContextSubject(),
-                $user,
-                ['status' => EvaluationStatus::OPENED]
-            );
-        }
     }
 
     /**
@@ -112,11 +88,11 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
     /**
      * Updates WorkspaceEvaluation each time a user is evaluated for a Resource.
      */
-    public function onResourceEvaluate(ResourceEvaluationEvent $event): void
+    public function onSequenceEvaluate(SequenceEvaluationEvent $event): void
     {
         $resourceUserEvaluation = $event->getEvaluation();
-        $resourceNode = $resourceUserEvaluation->getResourceNode();
-        $workspace = $resourceNode->getWorkspace();
+        $sequence = $resourceUserEvaluation->getSequence();
+        $workspace = $sequence->getWorkspace();
         $user = $resourceUserEvaluation->getUser();
 
         $this->manager->computeEvaluation($workspace, $user);
@@ -125,22 +101,22 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
     /**
      * Recomputes WorkspaceEvaluations when a resource is deleted.
      */
-    public function onResourceDelete(DeleteEvent $event): void
+    public function onSequenceDelete(DeleteEvent $event): void
     {
-        /** @var ResourceNode $resourceNode */
-        $resourceNode = $event->getObject();
+        /** @var Sequence $sequence */
+        $sequence = $event->getObject();
 
-        $this->manager->recompute($resourceNode->getWorkspace());
+        $this->manager->recomputeEvaluations($sequence->getWorkspace());
     }
 
-    public function onResourcePublicationChange(UpdateEvent $event): void
+    public function onSequencePublicationChange(UpdateEvent $event): void
     {
-        /** @var ResourceNode $resourceNode */
-        $resourceNode = $event->getObject();
+        /** @var Sequence $sequence */
+        $sequence = $event->getObject();
         $oldData = $event->getOldData();
 
-        if ($resourceNode->isRequired() && !empty($oldData['meta']) && ($oldData['meta']['published'] !== $resourceNode->isPublished())) {
-            $this->manager->recompute($resourceNode->getWorkspace());
+        if ($sequence->isRequired() && !empty($oldData['meta']) && ($oldData['meta']['published'] !== $sequence->isPublished())) {
+            $this->manager->recomputeEvaluations($sequence->getWorkspace());
         }
     }
 

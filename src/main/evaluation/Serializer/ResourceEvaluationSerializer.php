@@ -5,61 +5,52 @@ namespace Claroline\EvaluationBundle\Serializer;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 
 class ResourceEvaluationSerializer
 {
-    /** @var ResourceNodeSerializer */
-    private $resourceNodeSerializer;
-    /** @var UserSerializer */
-    private $userSerializer;
-
-    public function __construct(ResourceNodeSerializer $resourceNodeSerializer, UserSerializer $userSerializer)
-    {
-        $this->resourceNodeSerializer = $resourceNodeSerializer;
-        $this->userSerializer = $userSerializer;
+    public function __construct(
+        private readonly ResourceNodeSerializer $resourceNodeSerializer,
+        private readonly UserSerializer $userSerializer
+    ) {
     }
 
     public function getName(): string
     {
-        return 'resource_evaluation';
+        return 'resource_user_evaluation';
     }
 
     public function getClass(): string
     {
-        return ResourceEvaluation::class;
+        return ResourceUserEvaluation::class;
     }
 
-    public function serialize(ResourceEvaluation $resourceEvaluation, array $options = []): array
+    public function serialize(ResourceUserEvaluation $resourceUserEvaluation, ?array $options = []): array
     {
-        $score = $resourceEvaluation->getScore();
+        $score = $resourceUserEvaluation->getScore();
         if ($score) {
             $score = round($score, 2);
         }
 
         $serialized = [
-            'id' => $resourceEvaluation->getId(),
-            'date' => DateNormalizer::normalize($resourceEvaluation->getDate()),
-            'status' => $resourceEvaluation->getStatus(),
-            'duration' => $resourceEvaluation->getDuration(),
+            'id' => $resourceUserEvaluation->getId(),
+            'date' => DateNormalizer::normalize($resourceUserEvaluation->getDate()),
+            'status' => $resourceUserEvaluation->getStatus(),
+            'duration' => $resourceUserEvaluation->getDuration(),
             'score' => $score,
-            'scoreMin' => $resourceEvaluation->getScoreMin(),
-            'scoreMax' => $resourceEvaluation->getScoreMax(),
-            'progression' => $resourceEvaluation->getProgression(),
+            'scoreMin' => $resourceUserEvaluation->getScoreMin(),
+            'scoreMax' => $resourceUserEvaluation->getScoreMax(),
+            'progression' => $resourceUserEvaluation->getProgression(),
+            'nbAttempts' => $resourceUserEvaluation->getNbAttempts(),
+            // 'nbOpenings' => $resourceUserEvaluation->getNbOpenings(),
+            'required' => $resourceUserEvaluation->isRequired(),
+            'estimatedDuration' => $resourceUserEvaluation->getEstimatedDuration(),
         ];
 
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
-            $resourceUserEvaluation = $resourceEvaluation->getResourceUserEvaluation();
-
-            $serialized = array_merge($serialized, [
-                'comment' => $resourceEvaluation->getComment(),
-                'data' => $resourceEvaluation->getData(),
-
-                // used by data source, this may require another option to avoid getting it where we don't want it
-                'resourceNode' => $this->resourceNodeSerializer->serialize($resourceUserEvaluation->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]),
-                'user' => $this->userSerializer->serialize($resourceUserEvaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]),
-            ]);
+            $serialized['resourceNode'] = $this->resourceNodeSerializer->serialize($resourceUserEvaluation->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            $serialized['user'] = $this->userSerializer->serialize($resourceUserEvaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
         }
 
         return $serialized;

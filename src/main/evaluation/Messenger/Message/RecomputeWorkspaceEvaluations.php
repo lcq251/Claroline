@@ -4,26 +4,18 @@ namespace Claroline\EvaluationBundle\Messenger\Message;
 
 use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 
-class RecomputeWorkspaceEvaluations implements AsyncHighMessageInterface
+/**
+ * Sent when we want to recompute all the user evaluations linked to the workspace.
+ */
+final class RecomputeWorkspaceEvaluations implements AsyncHighMessageInterface
 {
-    /** @var int */
-    private $workspaceId;
-    /** @var int[] */
-    private $userIds;
-
-    public function __construct(int $workspaceId, array $userIds)
-    {
-        $this->workspaceId = $workspaceId;
-        $this->userIds = $userIds;
+    public function __construct(
+        private readonly int $workspaceId
+    ) {
     }
 
     public function getWorkspaceId(): int
     {
         return $this->workspaceId;
-    }
-
-    public function getUserIds(): array
-    {
-        return $this->userIds;
     }
 }

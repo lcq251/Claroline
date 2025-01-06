@@ -3,29 +3,16 @@
 namespace Claroline\EvaluationBundle\Messenger\Message;
 
 use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
-class UpdateResourceEvaluations implements AsyncHighMessageInterface
+final class UpdateResourceEvaluations implements AsyncHighMessageInterface
 {
-    /** @var int */
-    private $resourceNodeId;
-    /** @var int[] */
-    private $userIds;
-    /** @var string */
-    private $status;
-    /** @var bool */
-    private $withCreation;
-
     public function __construct(
-        int $resourceNodeId,
-        array $userIds,
-        ?string $status = AbstractEvaluation::STATUS_NOT_ATTEMPTED,
-        ?bool $withCreation = true
+        private readonly int $resourceNodeId,
+        private readonly array $userIds,
+        private readonly ?string $status = EvaluationStatus::NOT_ATTEMPTED,
+        private readonly ?bool $withCreation = true
     ) {
-        $this->resourceNodeId = $resourceNodeId;
-        $this->userIds = $userIds;
-        $this->status = $status;
-        $this->withCreation = $withCreation;
     }
 
     public function getResourceNodeId(): int

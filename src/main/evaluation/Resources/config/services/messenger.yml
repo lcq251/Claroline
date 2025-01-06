@@ -12,6 +12,12 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
 
+    Claroline\EvaluationBundle\Messenger\RecomputeSequenceEvaluationsHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
+
     Claroline\EvaluationBundle\Messenger\RecomputeWorkspaceEvaluationsHandler:
         tags: [messenger.message_handler]
         arguments:

@@ -9,9 +9,9 @@ const EvaluationUser = connect(
   (state) => ({
     path: toolSelectors.path(state),
     contextPath: toolSelectors.basePath(state),
-    loaded: selectors.currentLoaded(state),
-    workspaceEvaluation: selectors.currentWorkspaceEvaluation(state),
-    resourceEvaluations: selectors.currentResourceEvaluations(state)
+    loaded: selectors.userLoaded(state),
+    workspaceEvaluation: selectors.userWorkspaceEvaluation(state),
+    resourceEvaluations: selectors.userResourceEvaluations(state)
   })
 )(EvaluationUserComponent)
 

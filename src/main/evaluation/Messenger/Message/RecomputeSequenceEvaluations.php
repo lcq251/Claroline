@@ -1,0 +1,21 @@
+<?php
+
+namespace Claroline\EvaluationBundle\Messenger\Message;
+
+use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
+
+/**
+ * Sent when we want to recompute all the user evaluations linked to the sequence.
+ */
+final class RecomputeSequenceEvaluations implements AsyncHighMessageInterface
+{
+    public function __construct(
+        private readonly int $sequenceId
+    ) {
+    }
+
+    public function getSequenceId(): int
+    {
+        return $this->sequenceId;
+    }
+}

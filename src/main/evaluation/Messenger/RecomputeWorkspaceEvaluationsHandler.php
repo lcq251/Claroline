@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Messenger;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeWorkspaceEvaluations;
@@ -28,18 +28,12 @@ class RecomputeWorkspaceEvaluationsHandler
             return;
         }
 
-        $users = [];
-        foreach ($initMessage->getUserIds() as $userId) {
-            $user = $this->om->getRepository(User::class)->find($userId);
-            if (!empty($user)) {
-                $users[] = $user;
-            }
-        }
+        $evaluations = $this->om->getRepository(Evaluation::class)->findInProgress($workspace);
 
         $this->om->startFlushSuite();
 
-        foreach ($users as $i => $user) {
-            $this->evaluationManager->computeEvaluation($workspace, $user);
+        foreach ($evaluations as $i => $evaluation) {
+            $this->evaluationManager->refreshEvaluation($evaluation);
 
             if (0 === $i % 200) {
                 $this->om->forceFlush();

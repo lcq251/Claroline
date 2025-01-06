@@ -12,6 +12,13 @@ final class EvaluationEvents
     public const WORKSPACE_EVALUATION = 'workspace_evaluation';
 
     /**
+     * The SEQUENCE_EVALUATION event occurs when the sequence evaluation of a user has been created/updated.
+     *
+     * @Event("Claroline\EvaluationBundle\Event\SequenceEvaluationEvent")
+     */
+    public const SEQUENCE_EVALUATION = 'sequence_evaluation';
+
+    /**
      * The RESOURCE_ATTEMPT event occurs when a resource attempt has been created or updated.
      * NB. It's only dispatched if the score, progression or status of the attempt has been changed.
      *

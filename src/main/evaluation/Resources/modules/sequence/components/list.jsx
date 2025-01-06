@@ -1,0 +1,96 @@
+import React from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {PropTypes as T} from 'prop-types'
+import merge from 'lodash/merge'
+import omit from 'lodash/omit'
+
+import {trans} from '#/main/app/intl/translation'
+import {DataMicro} from '#/main/app/data/components/micro'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {ListData} from '#/main/app/content/list/containers/data'
+import {constants as listConst} from '#/main/app/content/list/constants'
+import {actions as listActions} from '#/main/app/content/list/store'
+
+import {route} from '#/main/evaluation/sequence/routing'
+import {SequenceCard} from '#/main/evaluation/sequence/components/card'
+import {LINK_BUTTON} from '#/main/app/buttons'
+
+const SequenceList = (props) => {
+  // const currentUser = useSelector(securitySelectors.currentUser)
+
+  const dispatch = useDispatch()
+
+  const refresher = merge({
+    add:    () => dispatch(listActions.invalidateData(props.name)),
+    update: () => dispatch(listActions.invalidateData(props.name)),
+    delete: () => dispatch(listActions.invalidateData(props.name))
+  }, props.refresher || {})
+
+  return (
+    <ListData
+      primaryAction={(row) => ({
+        type: LINK_BUTTON,
+        label: trans('open', {}, 'actions'),
+        target: route(row, null, props.path)
+      })}
+      /*actions={(rows) => getActions(rows, refresher, props.path, currentUser)}*/
+      definition={[
+        {
+          name: 'name',
+          type: 'string',
+          label: trans('name'),
+          displayed: true,
+          primary: true,
+          render: (course) => <DataMicro object={course} />
+        }, {
+          name: 'plainDescription',
+          type: 'string',
+          label: trans('description'),
+          sortable: false,
+          options: {long: true}
+        }, {
+          name: 'code',
+          type: 'string',
+          label: trans('code')
+        }, {
+          name: 'tags',
+          type: 'tag',
+          label: trans('tags'),
+          sortable: false,
+          options: {
+            objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
+          }
+        }
+      ]}
+      display={{
+        current: listConst.DISPLAY_TILES
+      }}
+
+      {...omit(props, 'path', 'url', 'autoload', 'refresher', 'invalidate')}
+
+      name={props.name}
+      fetch={{
+        url: props.url,
+        autoload: props.autoload
+      }}
+      card={SequenceCard}
+    />
+  )
+}
+
+SequenceList.propTypes = {
+  path: T.string.isRequired,
+  name: T.string.isRequired,
+  url: T.oneOfType([T.string, T.array]),
+  refresher: T.object,
+  children: T.node
+}
+
+SequenceList.defaultProps = {
+  url: ['apiv2_evaluation_sequence_list'],
+  autoload: true
+}
+
+export {
+  SequenceList
+}

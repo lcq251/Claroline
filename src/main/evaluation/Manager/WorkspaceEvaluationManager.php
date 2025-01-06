@@ -17,6 +17,7 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
 use Claroline\EvaluationBundle\Library\Checker\MaxFailedChecker;
@@ -43,38 +44,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
     }
 
     /**
-     * Recomputes all the evaluations of a workspace.
-     * This is called when required resources are added/removed in order to update the users progression and score.
-     */
-    public function recompute(Workspace $workspace): void
-    {
-        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
-        if (!empty($users)) {
-            $this->messageBus->dispatch(
-                new RecomputeWorkspaceEvaluations($workspace->getId(), array_map(function (User $user) {
-                    return $user->getId();
-                }, $users)), [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
-            );
-        }
-    }
-
-    /**
-     * Initializes missing evaluations for a workspace.
-     */
-    public function initialize(Workspace $workspace): void
-    {
-        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
-        if (!empty($users)) {
-            $this->messageBus->dispatch(
-                new InitializeWorkspaceEvaluations($workspace->getId(), array_map(function (User $user) {
-                    return $user->getId();
-                }, $users)), [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
-            );
-        }
-    }
-
-    /**
-     * Retrieve or create evaluation for a workspace and an user.
+     * Retrieve or create evaluation for a workspace and a user.
      */
     public function getUserEvaluation(Workspace $workspace, User $user, ?bool $withCreation = true): ?Evaluation
     {
@@ -124,6 +94,15 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         ]);
     }
 
+    public function getRequiredSequences(Workspace $workspace): array
+    {
+        return $this->om->getRepository(Sequence::class)->findBy([
+            'required' => true,
+            'published' => true,
+            'workspace' => $workspace,
+        ]);
+    }
+
     /**
      * Compute evaluation status and progression of a user in a workspace.
      */
@@ -131,11 +110,21 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
     {
         $evaluation = $this->getUserEvaluation($workspace, $user);
 
+        $this->refreshEvaluation($evaluation);
+
+        return $evaluation;
+    }
+
+    public function refreshEvaluation(Evaluation $evaluation): void
+    {
+        $workspace = $evaluation->getWorkspace();
+        $user = $evaluation->getUser();
+
         // get the list of resources which are configured to participate in the workspace evaluation.
         $resources = $this->getRequiredResources($workspace);
         if (empty($resources)) {
             // nothing to do if there is no required resources in the workspace
-            return $evaluation;
+            return;
         }
 
         $conditionCheckers = [
@@ -190,7 +179,35 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         if ($hasChanged['status'] || $hasChanged['progression'] || $hasChanged['score']) {
             $this->eventDispatcher->dispatch(new WorkspaceEvaluationEvent($evaluation, $hasChanged), EvaluationEvents::WORKSPACE_EVALUATION);
         }
+    }
 
-        return $evaluation;
+    /**
+     * Recomputes all the evaluations of a workspace.
+     * This is called when required resources are added/removed in order to update the users progression and score.
+     */
+    public function recomputeEvaluations(Workspace $workspace): void
+    {
+        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
+        if (!empty($users)) {
+            $this->messageBus->dispatch(
+                new RecomputeWorkspaceEvaluations($workspace->getId()),
+                [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+            );
+        }
+    }
+
+    /**
+     * Initializes missing evaluations for a workspace.
+     */
+    public function initialize(Workspace $workspace): void
+    {
+        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
+        if (!empty($users)) {
+            $this->messageBus->dispatch(
+                new InitializeWorkspaceEvaluations($workspace->getId(), array_map(function (User $user) {
+                    return $user->getId();
+                }, $users)), [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+            );
+        }
     }
 }

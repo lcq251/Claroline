@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The uuid of the sequence"
+    },
+    "display": {
+      "type": "object",
+      "properties": {
+        "numbering": {
+          "enum": ["none", "numeric", "literal", "custom"],
+          "description": "Numbering of the steps"
+        },
+        "manualProgressionAllowed": {
+          "type": "boolean",
+          "description": "Wether setting progression manually is allowed or not"
+        },
+        "showScore": {
+          "type": "boolean",
+          "description": "Wether the score is displayed or not"
+        }
+      }
+    },
+    "score": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "integer",
+          "description": "The percentage to obtain to pass the sequence"
+        },
+        "total": {
+          "type": "integer",
+          "description": "The displayed total for the score"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://github.com/claroline/Claroline/tree/master/src/main/evaluation/Resources/schemas/sequence-step.json"
+      }
+    },
+    "overview": {
+      "type": "object",
+      "properties": {
+        "display": {
+          "type": "boolean",
+          "description": "Wether the overview is displayed or not"
+        },
+        "message": {
+          "type": ["string", "null"],
+          "description": "The description of the sequence"
+        }
+      }
+    }
+  }
+}

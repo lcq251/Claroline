@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Innova\PathBundle\Entity\Step;
 use Innova\PathBundle\Repository\PathRepository;
 
-#[ORM\Table(name: 'innova_path')]
+#[ORM\Table(name: 'innova_path_old')]
 #[ORM\Entity(repositoryClass: PathRepository::class)]
 class Path extends AbstractResource
 {

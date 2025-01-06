@@ -13,7 +13,7 @@ export default declareTool(EvaluationTool, () => new CommandPalette('evaluation'
       name: 'add-lesson-plan',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-route',
-      label: trans('Ajouter un scenario', {}, 'command'),
+      label: trans('Ajouter un parcours d\'apprentissage', {}, 'command'),
       callback: () => true
     }, {
       name: 'correct-evaluations',
