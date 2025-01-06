@@ -154,7 +154,6 @@ ResourceOverview.propTypes = {
 }
 
 ResourceOverview.defaultProps = {
-  primaryAction: 'start',
   actions: []
 }
 

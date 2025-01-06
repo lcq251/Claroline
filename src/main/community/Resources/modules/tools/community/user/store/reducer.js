@@ -33,6 +33,9 @@ const reducer = combineReducers({
       invalidated: makeReducer(false, {
         [TOOL_OPEN]: () => true
       })
+    }),
+    logs: makeListReducer(selectors.FORM_NAME + '.logs', {
+      sortBy: { property: 'date', direction: -1 }
     })
   })
 })

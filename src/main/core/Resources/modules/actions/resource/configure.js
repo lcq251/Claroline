@@ -10,7 +10,7 @@ import {hasPermission} from '#/main/app/security'
 export default (resourceNodes, nodesRefresher, path) => ({
   name: 'configure',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-cog',
+  icon: 'fa fa-fw fa-sliders',
   label: trans('configure', {}, 'actions'),
   target: `${route(resourceNodes[0], path)}/edit`,
   displayed: -1 !== resourceNodes.findIndex(resourceNode => hasPermission('edit', resourceNode)),

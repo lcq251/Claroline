@@ -2,10 +2,10 @@ import {connect} from 'react-redux'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 
-import {ActivityMain as ActivityMainComponent} from '#/main/community/tools/community/activity/components/main'
-import {actions, selectors} from '#/main/community/tools/community/activity/store'
+import {CommunityDashboard as CommunityDashboardComponent} from '#/main/community/tools/community/dashboard/components/main'
+import {actions, selectors} from '#/main/community/tools/community/dashboard/store'
 
-const ActivityMain = connect(
+const CommunityDashboard = connect(
   (state) => ({
     path: toolSelectors.path(state),
     contextId: toolSelectors.contextId(state),
@@ -16,8 +16,8 @@ const ActivityMain = connect(
       return dispatch(actions.fetch(contextId))
     }
   })
-)(ActivityMainComponent)
+)(CommunityDashboardComponent)
 
 export {
-  ActivityMain
+  CommunityDashboard
 }

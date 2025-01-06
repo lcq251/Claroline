@@ -23,7 +23,7 @@ const PageListSection = (props) =>
 
 PageListSection.propTypes = {
   addAction: T.shape({
-    // Action type
+    // Action types
   })
 }
 

@@ -62,17 +62,16 @@ const EmptyState = (props) => {
       }
 
       <div className="mt-5 d-flex gap-2 justify-content-center">
-        <Button
-          type={CALLBACK_BUTTON}
-          className="btn btn-link "
-          icon="fa fa-arrow-left"
-          label="Retour à l'accueil"
-          callback={() => true}
-        />
-
-        {props.addAction && get(props.addAction, 'displayed', true) &&
+        {props.secondaryAction && get(props.secondaryAction, 'displayed', true) &&
           <Button
-            {...props.addAction}
+            {...props.secondaryAction}
+            className="btn btn-link"
+          />
+        }
+
+        {props.primaryAction && get(props.primaryAction, 'displayed', true) &&
+          <Button
+            {...props.primaryAction}
             className="btn btn-primary btn-wave"
           />
         }
@@ -85,7 +84,10 @@ const EmptyState = (props) => {
 EmptyState.propTypes = {
   title: T.string.isRequired,
   description: T.string,
-  addAction: T.shape({
+  primaryAction: T.shape({
+
+  }),
+  secondaryAction: T.shape({
 
   })
 }

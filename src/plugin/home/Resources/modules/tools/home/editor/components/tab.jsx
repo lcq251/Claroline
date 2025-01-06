@@ -101,7 +101,7 @@ class EditorTab extends Component {
           }, {
             name: 'configure',
             type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-cog',
+            icon: 'fa fa-fw fa-sliders',
             label: trans('configure', {}, 'actions'),
             modal: [MODAL_HOME_PARAMETERS, {
               tab: this.props.currentTab,

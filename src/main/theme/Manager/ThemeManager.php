@@ -82,7 +82,7 @@ class ThemeManager
      * Returns the current platform theme.
      *
      * NB. This method is called many times
-     *     in the platform execution (find theme assets, locate custom templates, etc).
+     *     in the platform execution (find theme assets, locate custom templates, etc.).
      *     So we cache the current theme in the service to avoid many DB calls.
      */
     public function getCurrentTheme(): Theme
@@ -105,7 +105,7 @@ class ThemeManager
      *
      * @return Theme[]
      */
-    public function all(?bool $onlyEnabled = false)
+    public function all(?bool $onlyEnabled = false): array
     {
         return $this->repository->findAll($onlyEnabled);
     }

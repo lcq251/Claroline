@@ -95,7 +95,6 @@ const impersonated = createSelector(
 )
 
 /**
- *
  * Get the list of current user's roles for the context.
  */
 const roles = createSelector(
@@ -105,7 +104,14 @@ const roles = createSelector(
 
 const organizations = createSelector(
   [store],
-  (store) => store.organizations || []
+  (store) => [].concat(store.organizations || [])
+    .sort((a, b) => {
+      if (a.name > b.name) {
+        return 1
+      }
+
+      return -1
+    })
 )
 
 const tools = createSelector(

@@ -3,7 +3,7 @@ import {makeInstanceAction} from '#/main/app/store/actions'
 
 import {TOOL_LOAD} from '#/main/core/tool/store/actions'
 
-import {reducer as activityReducer} from '#/main/community/tools/community/activity/store/reducer'
+import {reducer as dashboardReducer} from '#/main/community/tools/community/dashboard/store/reducer'
 import {reducer as pendingReducer} from '#/main/community/tools/community/pending/store/reducer'
 import {reducer as usersReducer} from '#/main/community/tools/community/user/store/reducer'
 import {reducer as groupsReducer} from '#/main/community/tools/community/group/store/reducer'
@@ -19,7 +19,7 @@ const reducer = combineReducers({
   profile: makeReducer([], {
     [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.profile || state
   }),
-  activity: activityReducer,
+  activity: dashboardReducer,
   users: usersReducer,
   groups: groupsReducer,
   roles: rolesReducer,

@@ -55,7 +55,7 @@ class ResourceNodeType extends AbstractType
             ])
             // for evaluations
             ->add('required', BooleanType::class)
-            ->add('required', BooleanType::class)
+            ->add('evaluated', BooleanType::class)
         ;
     }
 

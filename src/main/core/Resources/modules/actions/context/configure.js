@@ -7,7 +7,7 @@ import {route} from '#/main/app/context/routing'
 export default (contexts) => ({
   name: 'configure',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-cog',
+  icon: 'fa fa-fw fa-sliders',
   label: trans('configure', {}, 'actions'),
   displayed: -1 !== contexts.findIndex(context => hasPermission('administrate', context)),
   target: `${route(contexts[0].type, contexts[0].slug)}/edit`,

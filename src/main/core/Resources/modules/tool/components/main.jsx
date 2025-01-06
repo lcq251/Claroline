@@ -11,6 +11,8 @@ import {Routes, RouteTypes, RedirectTypes} from '#/main/app/router'
 import {ToolContext} from '#/main/core/tool/context'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
 import {actions, reducer, selectors} from '#/main/core/tool/store'
+import {LINK_BUTTON} from '#/main/app/buttons'
+import {trans} from '#/main/app/intl'
 
 const ToolMain = (props) => {
   useReducer(selectors.STORE_NAME, reducer)
@@ -42,7 +44,17 @@ const ToolMain = (props) => {
   return (
     <ToolContext.Provider
       value={{
-        menu: props.menu,
+        menu: (props.menu || []).concat([
+          {
+            name: 'dashboard',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-gauge',
+            label: trans('dashboard'),
+            tooltip: 'bottom',
+            target: toolPath + '/dashboard',
+            displayed: !!props.dashboard && canFollow
+          }
+        ]),
         actions: props.actions,
         styles: props.styles
       }}

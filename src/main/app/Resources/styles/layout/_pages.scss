@@ -31,6 +31,7 @@
 
 .context-menu-btn {
     max-width: 22.5rem;
+    // min-width: 18rem;
 }
 
 .app-page-menu {
@@ -101,18 +102,18 @@
 }
 
 .app-page-col-secondary {
-    flex: 1 1 30%;
+    flex: 1 1 25%;
 
     + .app-page-col-primary {
-        border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        // border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
     }
 }
 
 .app-page-col-primary {
-    flex: 1 1 70%;
+    flex: 1 1 75%;
 
     + .app-page-col-secondary {
-        border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        // border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
     }
 }
 
@@ -129,7 +130,7 @@
     .app-page-col-secondary {
         order: 1;
         border-left: none;
-        border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        // border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
     }
 
     .app-page-col-primary {

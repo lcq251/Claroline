@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Tool, constants as toolConstants} from '#/main/core/tool'
 
-import {ActivityMain} from '#/main/community/tools/community/activity/containers/main'
+import {CommunityDashboard} from '#/main/community/tools/community/dashboard/containers/main'
 import {UserMain} from '#/main/community/tools/community/user/containers/main'
 import {GroupMain} from '#/main/community/tools/community/group/containers/main'
 import {RoleMain} from '#/main/community/tools/community/role/containers/main'
@@ -53,20 +53,10 @@ const CommunityTool = (props) =>
         label: trans('roles', {}, 'community'),
         target: `${props.path}/roles`,
         displayed: props.canEdit
-      }, {
-        name: 'activity',
-        type: LINK_BUTTON,
-        label: trans('activity'),
-        target: `${props.path}/activity`,
-        displayed: props.canShowActivity && (props.contextType !== toolConstants.TOOL_WORKSPACE || !get(props.contextData, 'meta.model'))
       }
     ]}
     pages={[
       {
-        path: '/activity',
-        component: ActivityMain,
-        disabled: !props.canShowActivity || (props.contextType === toolConstants.TOOL_WORKSPACE && get(props.contextData, 'meta.model'))
-      }, {
         path: '/users',
         component: UserMain,
         disabled: props.contextType === toolConstants.TOOL_WORKSPACE && get(props.contextData, 'meta.model')
@@ -92,6 +82,7 @@ const CommunityTool = (props) =>
 
     ]}
     editor={CommunityEditor}
+    dashboard={CommunityDashboard}
   />
 
 CommunityTool.propTypes = {
@@ -100,8 +91,7 @@ CommunityTool.propTypes = {
   contextData: T.object,
   workspace: T.object,
   hasPendingRegistrations: T.bool.isRequired,
-  canEdit: T.bool.isRequired,
-  canShowActivity: T.bool.isRequired
+  canEdit: T.bool.isRequired
 }
 
 export {

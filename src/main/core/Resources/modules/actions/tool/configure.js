@@ -10,7 +10,7 @@ import {constants} from '#/main/core/tool/constants'
 export default (tool, context, toolRefresher, path) => ({
   name: 'configure',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-cog',
+  icon: 'fa fa-fw fa-sliders',
   label: trans('configure', {}, 'actions'),
   target: path + '/edit',
   displayed: -1 !== [constants.TOOL_DESKTOP, constants.TOOL_WORKSPACE].indexOf(context.type) && hasPermission('edit', tool),

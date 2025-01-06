@@ -32,7 +32,7 @@ class EvaluationManager
         return $this->resourceEvalManager->getUserEvaluation($node, $user);
     }
 
-    public function update(ResourceNode $node, User $user, float $currentTime = 0, float $totalTime = 0)
+    public function update(ResourceNode $node, User $user, float $currentTime = 0, float $totalTime = 0): ResourceEvaluation
     {
         $evaluation = $this->resourceEvalRepo->findOneInProgress($node, $user);
 

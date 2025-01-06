@@ -34,12 +34,7 @@ body {
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    // box-shadow: -1px 0 3px 0 rgba(0,0,0,.125), -1px 0 0 0 rgba(0,0,0,.05);
 }
-
-/*.app-banner {
-    order: 0;
-}*/
 
 .app-loader {
     z-index: $zindex-modal + 1;
@@ -69,9 +64,9 @@ body {
     }
 }
 
-/*.app-page-loader {
-    order: 2;
-}*/
+.app-modal {
+    z-index: $zindex-modal + 1; // required to be able to open a modal inside editors
+}
 
 @keyframes loader-wave {
     // only starts animation at the end of animation-time to create a delay between each "wave"
@@ -79,7 +74,3 @@ body {
     0%  { background-position: 0 0; }
     0% { background-position: 500% 0; }
 }
-
-/*.app-loader + .app-page {
-    margin-top: -$loader-height;
-}*/

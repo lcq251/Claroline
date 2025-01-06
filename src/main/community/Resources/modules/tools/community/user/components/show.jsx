@@ -14,13 +14,13 @@ import {MODAL_GROUPS} from '#/main/community/modals/groups'
 import {GroupList} from '#/main/community/group/components/list'
 
 import {PageSection, PageTabbedSection} from '#/main/app/page'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {DetailsData} from '#/main/app/content/details/containers/data'
 import {Datetime} from '#/main/app/components/date'
 import {route} from '#/main/community/user/routing'
 import {Activity} from '#/main/log/activity/components/main'
 import {getProfile} from '#/main/community/user/utils'
 import {Button} from '#/main/app/action'
+import {Html} from '#/main/app/components/html'
 
 const UserShow = (props) => {
   const [profilePages, setProfilePages] = useState([])
@@ -35,7 +35,6 @@ const UserShow = (props) => {
       user={props.user}
       reload={props.reload}
     >
-
       <PageSection size="md">
         <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
           <div className="d-inline-flex gap-1 align-items-baseline" role="presentation">
@@ -52,7 +51,7 @@ const UserShow = (props) => {
         </div>
 
         {get(props.user, 'meta.description') &&
-          <ContentHtml className="lead mb-5">{get(props.user, 'meta.description')}</ContentHtml>
+          <Html className="lead mb-5">{get(props.user, 'meta.description')}</Html>
         }
       </PageSection>
 
@@ -105,7 +104,7 @@ const UserShow = (props) => {
             title: trans('activity'),
             render: () => (
               <Activity
-                className="mt-4 mb-5"
+                name={selectors.FORM_NAME+'.logs'}
                 url={['apiv2_logs_functional_list_user', {userId: props.user.id}]}
               />
             )

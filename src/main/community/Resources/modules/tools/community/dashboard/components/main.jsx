@@ -1,17 +1,16 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
-import {ToolPage} from '#/main/core/tool'
+import {PageSection} from '#/main/app/page'
+import {ToolDashboard} from '#/main/core/tool'
 
-import {LogFunctionalList} from '#/main/log/components/functional-list'
-import {selectors} from '#/main/community/tools/community/activity/store'
-import {PageListSection, PageSection} from '#/main/app/page'
 import {Activity} from '#/main/log/activity/components/main'
 
-class ActivityMain extends Component {
+import {selectors} from '#/main/community/tools/community/dashboard/store'
+
+class CommunityDashboard extends Component {
   constructor(props) {
     super(props)
 
@@ -26,9 +25,7 @@ class ActivityMain extends Component {
 
   render() {
     return (
-      <ToolPage
-        title={trans('activity')}
-      >
+      <ToolDashboard>
         <PageSection size="md">
           <ContentInfoBlocks
             className="my-4"
@@ -47,39 +44,18 @@ class ActivityMain extends Component {
           />
         </PageSection>
 
-        <PageSection>
+        <PageSection size="md">
           <Activity
+            name={selectors.STORE_NAME + '.logs'}
             url={['apiv2_community_functional_logs', {contextId: this.props.contextId}]}
           />
         </PageSection>
-
-        {/*<PageListSection>
-          <LogFunctionalList
-            flush={true}
-            name={selectors.STORE_NAME + '.logs'}
-            url={['apiv2_community_functional_logs', {contextId: this.props.contextId}]}
-            customDefinition={[
-              {
-                name: 'workspace',
-                type: 'workspace',
-                label: trans('workspace'),
-                displayable: isEmpty(this.props.contextId),
-                displayed: isEmpty(this.props.contextId)
-              }, {
-                name: 'resource',
-                type: 'resource',
-                label: trans('resource'),
-                displayed: true
-              }
-            ]}
-          />
-        </PageListSection>*/}
-      </ToolPage>
+      </ToolDashboard>
     )
   }
 }
 
-ActivityMain.propTypes = {
+CommunityDashboard.propTypes = {
   path: T.string.isRequired,
   contextId: T.string.isRequired,
   count: T.shape({
@@ -90,5 +66,5 @@ ActivityMain.propTypes = {
 }
 
 export {
-  ActivityMain
+  CommunityDashboard
 }

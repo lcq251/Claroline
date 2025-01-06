@@ -16,7 +16,7 @@ import {useSelector} from 'react-redux'
 import {selectors as toolSelectors} from '#/main/core/tool'
 import {DataMicro} from '#/main/app/data/components/micro'
 
-const TrainingsDashboardCapacity = () => {
+const TrainingsDashboardCapacity = (props) => {
   const toolPath = useSelector(toolSelectors.path)
   const contextType = useSelector(toolSelectors.contextType)
   const contextId = useSelector(toolSelectors.contextId)
@@ -24,7 +24,7 @@ const TrainingsDashboardCapacity = () => {
   const [sessionCapacity, setSessionCapacity] = useState('incomplete')
 
   return (
-    <PageSection size="full">
+    <PageSection size="full" className={props.className}>
       <div className="card">
         <div className="d-flex align-items-baseline pt-3 p-4">
           <h2 className="page-section-title h6 mb-0">Capacité des sessions</h2>

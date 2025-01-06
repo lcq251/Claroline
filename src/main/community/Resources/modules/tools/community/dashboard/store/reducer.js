@@ -1,8 +1,8 @@
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 import {makeListReducer} from '#/main/app/content/list/store'
 
-import {selectors} from '#/main/community/tools/community/activity/store/selectors'
-import {COMMUNITY_ACTIVITY_LOAD} from '#/main/community/tools/community/activity/store/actions'
+import {selectors} from '#/main/community/tools/community/dashboard/store/selectors'
+import {COMMUNITY_ACTIVITY_LOAD} from '#/main/community/tools/community/dashboard/store/actions'
 
 const reducer = combineReducers({
   count: makeReducer({}, {

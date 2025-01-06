@@ -12,7 +12,6 @@
 namespace Claroline\CoreBundle\Entity;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
-use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
@@ -46,7 +45,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[CrudEntity(
     finderClass: UserType::class
 )]
-class User extends AbstractRoleSubject implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, CrudEntityInterface, ContextSubjectInterface
+class User extends AbstractRoleSubject implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, CrudEntityInterface
 {
     use Id;
     use Uuid;
@@ -211,11 +210,6 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     public function getUserIdentifier(): string
     {
         return $this->username;
-    }
-
-    public function getContextIdentifier(): string
-    {
-        return $this->uuid;
     }
 
     public function getFirstName(): ?string

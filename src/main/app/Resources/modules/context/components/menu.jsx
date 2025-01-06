@@ -1,25 +1,26 @@
 import React, {forwardRef} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
+import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
 import {Button, Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MENU_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {Thumbnail} from '#/main/app/components/thumbnail'
+import {DataMicro} from '#/main/app/data/components/micro'
+import {Menu} from '#/main/app/overlays/menu'
 
+import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
+import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
 import {getActions} from '#/main/app/context/utils'
 import {route} from '#/main/app/context/routing'
-import {Thumbnail} from '#/main/app/components/thumbnail'
-import {useDispatch, useSelector} from 'react-redux'
 import {selectors as contextSelectors} from '#/main/app/context/store'
-import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
-import {selectors as toolSelectors} from '#/main/core/tool/store'
-import {Menu} from '#/main/app/overlays/menu'
-import {DataMicro} from '#/main/app/data/components/micro'
-import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
-import omit from 'lodash/omit'
+
 
 const ContextFlyout = forwardRef((props, ref) => {
+  // get context tools
   let toolLinks = []
   if (!props.notFound && !props.hasErrors) {
     toolLinks = props.tools
@@ -38,6 +39,7 @@ const ContextFlyout = forwardRef((props, ref) => {
       }))
   }
 
+  // get context actions
   let actions
   if (!isEmpty(props.contextData)) {
     actions = getActions(props.contextType, [props.contextData], {
@@ -47,6 +49,9 @@ const ContextFlyout = forwardRef((props, ref) => {
       }
     }, props.path, props.currentUser)
   }
+
+  // get context organizations
+  const organizations = useSelector(contextSelectors.organizations)
 
   const dispatch = useDispatch()
 
@@ -85,18 +90,18 @@ const ContextFlyout = forwardRef((props, ref) => {
           </ul>
         }
 
-        {!isEmpty(props.organizations) &&
+        {1 < organizations.length &&
           <div className="bg-body-tertiary p-4 rounded-bottom-4" role="presentation">
             <h4 className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
               {trans('organizations', {}, 'community')}
 
-              {5 < props.organizations.length &&
+              {3 < organizations.length &&
                 <Button
                   className="btn btn-link ms-auto"
                   type={MODAL_BUTTON}
                   label={trans('see_all', {}, 'actions')}
                   modal={[MODAL_PLATFORM_ORGANIZATIONS, {
-                    organizations: props.organizations
+                    organizations: organizations
                   }]}
                   size="sm"
                 >
@@ -106,7 +111,7 @@ const ContextFlyout = forwardRef((props, ref) => {
             </h4>
 
             <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
-              {props.organizations.slice(0, 5).map(organization => (
+              {organizations.slice(0, 3).map(organization => (
                 <li key={organization.id}>
                   <CallbackButton
                     className="fw-bolder btn btn-link text-reset p-1 w-100 fs-sm"
@@ -117,7 +122,6 @@ const ContextFlyout = forwardRef((props, ref) => {
                 </li>
               ))}
             </ul>
-
           </div>
         }
       </div>
@@ -133,8 +137,6 @@ ContextFlyout.propTypes = {
     name: T.string.isRequired,
     permissions: T.object
   })),
-  organizations: T.arrayOf(T.object),
-  children: T.node,
 
   // from store
   contextData: T.object,
@@ -163,15 +165,12 @@ const FavouriteButton = () => {
   return (
     <Button
       id="toggle-favorite"
+      className="btn btn-text-body p-1 focus-ring ms-n1"
       type={CALLBACK_BUTTON}
       label={trans(favourite ? 'remove-favourite' : 'add-favourite', {}, 'actions')}
       icon={classes('fa fs-base', {
         'fa-star text-warning': favourite,
         'far fa-star': !favourite
-      })}
-      className={classes('btn btn-text-body p-1 focus-ring ms-n1', {
-        /*'btn-body': favourite,
-        'btn-primary': !favourite*/
       })}
       callback={() => dispatch(platformActions.saveFavorite(contextData))}
       size="sm"
@@ -183,9 +182,7 @@ const MenuButton = (props) => {
   const contextPath = useSelector(contextSelectors.path)
   const contextData = useSelector(contextSelectors.data)
   const contextType = useSelector(contextSelectors.type)
-  const toolName = useSelector(toolSelectors.name)
   const tools = useSelector(contextSelectors.visibleTools)
-  const contextOrganizations = useSelector(contextSelectors.organizations)
 
   return (
     <Button
@@ -201,29 +198,21 @@ const MenuButton = (props) => {
           path={contextPath}
           contextData={contextData}
           contextType={contextType}
-          toolName={toolName}
-          organizations={1 < contextOrganizations.length ? contextOrganizations : []}
         />
       }
     >
-      <Thumbnail
-        size="sm"
-        className="me-1"
+      {/*<Thumbnail
+        size="xs"
         thumbnail={contextData.thumbnail}
         name={contextData.name}
         square={true}
-      />
+      />*/}
 
-      <div className="text-start text-truncate" role="presentation">
-        <b className="h6 d-block m-0 text-truncate">
-          {contextData.name}
-        </b>
-        {toolName &&
-          <small className="text-truncate">{trans(toolName, {}, 'tools')}</small>
-        }
+      <span className="fa fa-bars" aria-hidden={true} />
+
+      <div className="h6 text-start text-truncate mb-0 fw-normal" role="presentation">
+        {contextData.name}
       </div>
-
-      <span className="fa fa-chevron-down fs-sm" aria-hidden={true} />
     </Button>
   )
 }

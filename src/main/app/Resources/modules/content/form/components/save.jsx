@@ -65,7 +65,8 @@ FormSave.propTypes = {
   pendingChanges: T.bool.isRequired,
   save: T.shape({
 
-  })
+  }),
+  close: T.string
 }
 
 FormSave.defaultProps = {

@@ -46,14 +46,6 @@ const TrainingsTool = (props) =>
         label: trans('registrations', {}, 'cursus'),
         target: props.path + '/registrations',
         displayed: props.canRegister
-      }, {
-        name: 'dashboard',
-        type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-gauge',
-        label: trans('dashboard'),
-        tooltip: 'bottom',
-        target: props.path + '/dashboard',
-        displayed: props.canRegister
       }
     ]}
     pages={[
@@ -76,13 +68,10 @@ const TrainingsTool = (props) =>
         path: '/registrations',
         component: TrainingsRegistration,
         disabled: !props.canRegister
-      }, {
-        path: '/dashboard',
-        component: TrainingsDashboard,
-        disabled: !props.canRegister
-      },
+      }
     ]}
     editor={TrainingsEditor}
+    dashboard={TrainingsDashboard}
   />
 
 TrainingsTool.propTypes = {

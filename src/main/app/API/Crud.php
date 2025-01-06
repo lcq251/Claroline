@@ -71,7 +71,7 @@ class Crud
         }
 
         if ($object && !in_array(static::NO_PERMISSIONS, $options)) {
-            // creates the entity if allowed
+            // opens the entity if allowed
             $this->checkPermission('OPEN', $object, [], true);
         }
 

@@ -3,29 +3,32 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 const PageColumnPrimary = (props) =>
-  <div className="app-page-column app-page-col-primary" role="presentation">
+  <div className={classes('app-page-column app-page-col-primary', props.className)} role="presentation">
     {props.children}
   </div>
 
 PageColumnPrimary.propTypes = {
+  className: T.string,
   children: T.any
 }
 
 const PageColumnSecondary = (props) =>
-  <div className="app-page-column app-page-col-secondary bg-body-tertiary" role="presentation">
+  <div className={classes('app-page-column app-page-col-secondary bg-body-tertiary', props.className)} role="presentation">
     {props.children}
   </div>
 
 PageColumnSecondary.propTypes = {
+  className: T.string,
   children: T.any
 }
 
 const PageColumns = (props) =>
-  <div className={classes('app-page-columns', props.reverse && 'app-page-columns-reverse')} role="presentation">
+  <div className={classes('app-page-columns', props.reverse && 'app-page-columns-reverse', props.className)} role="presentation">
     {props.children}
   </div>
 
 PageColumns.propTypes = {
+  className: T.string,
   children: T.any,
   reverse: T.bool
 }

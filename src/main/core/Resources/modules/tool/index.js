@@ -1,6 +1,8 @@
 import {ToolPage} from '#/main/core/tool/components/page'
 import {ToolMain as Tool} from '#/main/core/tool/components/main'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
+import {ToolDashboard} from '#/main/core/tool/components/dashboard'
+import {ToolOverview} from '#/main/core/tool/components/overview'
 import {constants} from '#/main/core/tool/constants'
 import {selectors} from '#/main/core/tool/store'
 import {CommandPalette} from '#/main/core/tool/command-palette'
@@ -21,6 +23,8 @@ function declareTool(ToolComponent, commands) {
 export {
   Tool,
   ToolEditor,
+  ToolDashboard,
+  ToolOverview,
   ToolPage,
   constants,
   selectors,

@@ -4,7 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
-import {Tool, constants as toolConstants} from '#/main/core/tool'
+import {Tool, constants as toolConstants, ToolOverview} from '#/main/core/tool'
 import {ToolPage} from '#/main/core/tool'
 
 import {WorkspaceList} from '#/main/core/workspace/components/list'
@@ -48,30 +48,31 @@ const WorkspacesTool = (props) => {
     <Tool
       {...props}
       redirect={[
-        {from: '/', exact: true, to: '/registered', disabled: props.contextType === toolConstants.TOOL_PUBLIC}
+        {from: '/', exact: true, to: '/all', disabled: props.contextType !== toolConstants.TOOL_PUBLIC}
       ]}
       menu={[
         {
           name: 'registered',
           type: LINK_BUTTON,
           label: trans('my_workspaces_menu', {}, 'workspace'),
-          target: props.path+'/registered',
-          displayed: props.contextType !== toolConstants.TOOL_PUBLIC
+          target: props.path,
+          displayed: props.contextType !== toolConstants.TOOL_PUBLIC,
+          exact: true
         }, {
           name: 'all',
           type: LINK_BUTTON,
           label: trans('all_workspaces', {}, 'workspace'),
-          target: props.path,
-          exact: true
+          target: props.path + '/all'
         }
       ]}
       editor={WorkspacesEditor}
       pages={[
         {
-          path: '/registered',
+          path: '/',
+          exact: true,
           disabled: props.contextType !== toolConstants.TOOL_DESKTOP,
           render: () => (
-            <ToolPage path={props.path} title={trans('my_workspaces', {}, 'workspace')}>
+            <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
               <PageListSection>
                 <WorkspaceList
                   flush={true}
@@ -83,11 +84,10 @@ const WorkspacesTool = (props) => {
                   }}
                 />
               </PageListSection>
-            </ToolPage>
+            </ToolOverview>
           )
         }, {
-          path: '/',
-          exact: true,
+          path: '/all',
           render: () => (
             <ToolPage title={trans('all_workspaces', {}, 'workspace')}>
               <PageListSection

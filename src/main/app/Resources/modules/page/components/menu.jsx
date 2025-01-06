@@ -16,16 +16,16 @@ const PageMenu = (props) => {
     })} role="presentation">
       {!props.embedded && props.affix && createElement(props.affix)}
 
-      {(1 < displayedNav.length || props.actions) &&
-        <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm">
-          {1 < displayedNav.length &&
+      {(0 < displayedNav.length || props.actions) &&
+        <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm" role="presentation">
+          {0 < displayedNav.length &&
             <nav className="text-nowrap d-flex">
               <ul className="nav nav-underline flex-nowrap">
                 {displayedNav.map((nav) =>
                   <li className="nav-item" key={nav.name || toKey(nav.label)}>
                     <Button
                       {...nav}
-                      className="nav-link py-3"
+                      className="nav-link fw-bolder"
                     />
                   </li>
                 )}
@@ -35,8 +35,8 @@ const PageMenu = (props) => {
 
           {props.actions &&
             <Toolbar
-              className={classes('nav nav-underline flex-nowrap gap-4 d-flex', 1 >= displayedNav.length && 'ms-auto')}
-              buttonName="nav-link py-3"
+              className="nav nav-underline flex-nowrap gap-4 d-flex"
+              buttonName="nav-link fw-bolder"
               toolbar={props.toolbar}
               tooltip="bottom"
               actions={props.actions}

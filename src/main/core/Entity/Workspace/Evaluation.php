@@ -15,11 +15,12 @@ use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
 use Claroline\EvaluationBundle\Finder\WorkspaceEvaluationType;
+use Claroline\EvaluationBundle\Repository\WorkspaceEvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_workspace_evaluation')]
 #[ORM\UniqueConstraint(name: 'workspace_user_evaluation', columns: ['workspace_id', 'user_id'])]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: WorkspaceEvaluationRepository::class)]
 #[CrudEntity(finderClass: WorkspaceEvaluationType::class)]
 class Evaluation extends AbstractUserEvaluation
 {

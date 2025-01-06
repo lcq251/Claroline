@@ -94,7 +94,6 @@ const ContextUser = (props) => {
         id="current-user-menu"
         className="app-current-user text-start d-flex flex-row p-0 focus-ring rounded-circle"
         menu={{
-          //className: 'dropdown-menu-full',
           items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
             name: status,
             type: CALLBACK_BUTTON,
@@ -143,15 +142,6 @@ const ContextUser = (props) => {
         }}
       >
         <UserAvatar user={props.currentUser} noStatusTooltip={true} size={props.size || 'xs'} />
-        {false &&
-          <>
-            <div className="flex-fill" role="presentation">
-              {props.currentUser.name}
-              <small className="d-block">{userConst.USER_STATUSES[props.currentUser.status]}</small>
-            </div>
-            <span className="fa fa-chevron-down" aria-hidden={true} />
-          </>
-        }
       </MenuButton>
     </div>
   )

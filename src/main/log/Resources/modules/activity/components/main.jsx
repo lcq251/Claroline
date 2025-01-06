@@ -1,21 +1,16 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-
-import {ActivityCalendar} from '#/main/app/chart/activity-calendar/components/main'
-import {trans} from '#/main/app/intl'
-import {selectors} from '#/main/community/tools/community/activity/store'
-import isEmpty from 'lodash/isEmpty'
+import {ActivityCalendar} from '#/main/log/activity/components/calendar'
 import {LogFunctionalList} from '#/main/log/components/functional-list'
 
 const Activity = (props) =>
   <>
-    <ActivityCalendar className="mb-4 mt-3" />
+    <ActivityCalendar className="mb-5 mt-4 mx-auto" />
 
     <LogFunctionalList
-      name={selectors.STORE_NAME + '.logs'}
+      className="mb-5"
+      name={props.name}
       url={props.url}
       customDefinition={[
         /*{
@@ -42,6 +37,7 @@ const Activity = (props) =>
   </>
 
 Activity.propTypes = {
+  name: T.string.isRequired,
   url: T.oneOfType([T.string, T.array])
 }
 

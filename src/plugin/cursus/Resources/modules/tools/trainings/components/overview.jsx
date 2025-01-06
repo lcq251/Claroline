@@ -9,7 +9,7 @@ import {Button} from '#/main/app/action'
 import {LINK_BUTTON, CALLBACK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {PageSection} from '#/main/app/page'
-import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
+import {selectors as toolSelectors, ToolOverview} from '#/main/core/tool'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 
 import {selectors} from '#/plugin/cursus/tools/trainings/store'
@@ -98,7 +98,7 @@ const TrainingsOverview = () => {
   const contextType = useSelector(toolSelectors.contextType)
 
   return (
-    <ToolPage>
+    <ToolOverview>
       <MySessionsSection contextType={contextType} path={toolPath} />
 
       <PageSection
@@ -123,7 +123,7 @@ const TrainingsOverview = () => {
           <li>Absences à justifier</li>
         </ul>
       </PageSection>
-    </ToolPage>
+    </ToolOverview>
   )
 }
 

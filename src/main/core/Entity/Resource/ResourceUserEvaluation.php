@@ -27,8 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[CrudEntity(finderClass: ResourceEvaluationType::class)]
 class ResourceUserEvaluation extends AbstractUserEvaluation
 {
-    #[ORM\JoinColumn(name: 'resource_node', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
+    #[ORM\JoinColumn(name: 'resource_node', onDelete: 'CASCADE')]
     private ?ResourceNode $resourceNode = null;
 
     #[ORM\Column(name: 'nb_attempts', type: Types::INTEGER)]

@@ -13,7 +13,6 @@
   "not_found": "Content not found",
   "loading": "Loading...",
   "forbidden": "Access forbidden",
-  "dpo": "Data protection officer",
   "next_step": "Next: %step%",
   "field_conditional_display": "Display based on the value of another field",
   "field": "Field",
@@ -35,5 +34,6 @@
   "user_offline": "Offline",
   "user_offline_help": "Offline",
   "user_dont_disturb": "Do not disturb",
-  "form_validating_desc": "Some errors or missing information prevent saving data."
+  "form_validating_desc": "Some errors or missing information prevent saving data.",
+  "recent_activity": "Recent activity"
 }

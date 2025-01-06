@@ -143,10 +143,6 @@ UserList.propTypes = {
   registerUsers: T.func.isRequired
 }
 
-UserList.defaultProps = {
-  contextData: {}
-}
-
 export {
   UserList
 }

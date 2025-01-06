@@ -44,7 +44,6 @@ const ResourcePage = (props) => {
           target: resourcePath
         }
       ] : [], props.breadcrumb || [])}
-      //poster={props.poster || get(resourceNode, 'poster')}
       title={props.title ?
         props.title + ' | ' + resourceNode.name :
         resourceNode.name

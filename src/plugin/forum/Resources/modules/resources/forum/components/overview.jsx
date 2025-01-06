@@ -22,18 +22,23 @@ const ForumOverview = () => {
 
   return (
     <ResourceOverview>
-      <PageListSection size="md" flush={false} className="mb-5">
+      <PageListSection
+        size="md"
+        flush={false}
+        className="mb-5"
+        addAction={{
+          name: 'create-subject',
+          label: trans('add_subject', {}, 'actions'),
+          type: MODAL_BUTTON,
+          displayed: hasPermission('post', resourceNode),
+          modal: [MODAL_SUBJECT, {
+            forumId: forumId,
+            onSave: (subject) => history.push(`${resourcePath}/subjects/${subject.id}`)
+          }]
+        }}
+      >
         <Subjects
-          addAction={{
-            name: 'create-subject',
-            label: trans('add_subject', {}, 'actions'),
-            type: MODAL_BUTTON,
-            displayed: hasPermission('post', resourceNode),
-            modal: [MODAL_SUBJECT, {
-              forumId: forumId,
-              onSave: (subject) => history.push(`${resourcePath}/subjects/${subject.id}`)
-            }]
-          }}
+
         />
       </PageListSection>
     </ResourceOverview>
