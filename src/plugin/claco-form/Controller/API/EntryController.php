@@ -90,7 +90,7 @@ class EntryController extends AbstractCrudController
         return new JsonResponse($data, 200);
     }
 
-    #[Route(path: '/clacoform/{clacoForm}/file/upload', name: 'file_upload')]
+    #[Route(path: '/clacoform/{clacoForm}/file/upload', name: 'file_upload', methods: ['POST'])]
     public function uploadAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
     ClacoForm $clacoForm, Request $request): JsonResponse
     {
@@ -110,7 +110,7 @@ class EntryController extends AbstractCrudController
      * Returns id of a random entry.
      *
      */
-    #[Route(path: '/{clacoForm}/random', name: 'random')]
+    #[Route(path: '/{clacoForm}/random', name: 'random', methods: ['GET'])]
     public function randomAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
     ClacoForm $clacoForm): JsonResponse
     {
@@ -125,9 +125,8 @@ class EntryController extends AbstractCrudController
      * Changes status of an entry.
      *
      */
-    #[Route(path: '/entry/{entry}/status/change', name: 'change_status')]
-    public function changeStatusAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-    Entry $entry): JsonResponse
+    #[Route(path: '/entry/{entry}/status/change', name: 'change_status', methods: ['PUT'])]
+    public function changeStatusAction(#[MapEntity(mapping: ['entry' => 'uuid'])] Entry $entry): JsonResponse
     {
         $clacoForm = $entry->getClacoForm();
 
@@ -150,8 +149,8 @@ class EntryController extends AbstractCrudController
      *
      * @param int $status
      */
-    #[Route(path: '/entries/status/{status}/change', name: 'change_status_bulk')]
-    public function changeStatusBulkAction($status, Request $request): JsonResponse
+    #[Route(path: '/entries/status/{status}/change', name: 'change_status_bulk', methods: ['PUT'])]
+    public function changeStatusBulkAction(int $status, Request $request): JsonResponse
     {
         $entries = [];
         $serializedEntries = [];

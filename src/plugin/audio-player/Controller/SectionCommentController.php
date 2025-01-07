@@ -36,7 +36,7 @@ class SectionCommentController extends AbstractCrudController
         return ['list', 'get'];
     }
 
-    #[Route(path: '/{resourceNode}/list/{type}', name: 'resource_list')]
+    #[Route(path: '/{resourceNode}/list/{type}', name: 'resource_list', methods: ['GET'])]
     public function listByResourceAction(ResourceNode $resourceNode, string $type, Request $request): JsonResponse
     {
         $params = $request->query->all();

@@ -45,7 +45,7 @@ class ActivityController
         $this->groupRepo = $om->getRepository(Group::class);
     }
 
-    #[Route(path: '/count/{contextId}', name: 'apiv2_community_activity')]
+    #[Route(path: '/count/{contextId}', name: 'apiv2_community_activity', methods: ['GET'])]
     public function openAction(string $contextId = null): JsonResponse
     {
         if (!$this->checkToolAccess('SHOW_ACTIVITY', $contextId)) {

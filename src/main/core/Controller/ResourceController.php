@@ -149,7 +149,7 @@ class ResourceController
     /**
      * Executes an action on a collection of resources.
      */
-    #[Route(path: '/collection/{action}', name: 'claro_resource_collection_action')]
+    #[Route(path: '/collection/{action}', name: 'claro_resource_collection_action', methods: ['GET', 'PUT', 'POST', 'DELETE'])]
     public function executeCollectionAction(string $action, Request $request): JsonResponse
     {
         /** @var ResourceNode[] $resourceNodes */
@@ -188,7 +188,7 @@ class ResourceController
     /**
      * Executes an action on one resource.
      */
-    #[Route(path: '/{action}/{id}', name: 'claro_resource_action')]
+    #[Route(path: '/{action}/{id}', name: 'claro_resource_action', methods: ['GET', 'PUT', 'POST', 'DELETE'])]
     public function executeAction(string $action, #[MapEntity(mapping: ['id' => 'uuid'])]
         ResourceNode $resourceNode, Request $request): Response
     {

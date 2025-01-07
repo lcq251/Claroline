@@ -63,7 +63,7 @@ actions.switchEntriesStatus = (entries, status) => ({
   [API_REQUEST]: {
     url: url(['apiv2_clacoformentry_change_status_bulk', {status: status, ids: entries.map(e => e.id)}]),
     request: {
-      method: 'PATCH'
+      method: 'PUT'
     },
     success: (data, dispatch) => dispatch(actions.updateEntries(data))
   }
@@ -83,7 +83,7 @@ actions.switchEntriesLock = (entries, locked) => ({
   [API_REQUEST]: {
     url: url(['claro_claco_form_entries_lock_switch', {locked: locked ? 1 : 0, ids: entries.map(e => e.id)}]),
     request: {
-      method: 'PATCH'
+      method: 'PUT'
     },
     success: (data, dispatch) => dispatch(actions.updateEntries(data))
   }

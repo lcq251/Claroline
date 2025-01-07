@@ -53,9 +53,8 @@ class LessonController
         );
     }
 
-    #[Route(path: '/lesson/{id}/pdf', name: 'icap_lesson_export_pdf')]
-    public function downloadPdfAction(#[MapEntity(class: 'Icap\LessonBundle\Entity\Lesson', mapping: ['id' => 'uuid'])]
-    Lesson $lesson): StreamedResponse
+    #[Route(path: '/lesson/{id}/pdf', name: 'icap_lesson_export_pdf', methods: ['GET'])]
+    public function downloadPdfAction(#[MapEntity(mapping: ['id' => 'uuid'])] Lesson $lesson): StreamedResponse
     {
         $this->checkPermission('EXPORT', $lesson->getResourceNode(), [], true);
 

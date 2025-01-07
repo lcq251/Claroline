@@ -30,7 +30,7 @@ class FavouriteController
     /**
      * Gets the current user favourites.
      */
-    #[Route(path: '/', name: 'claro_user_favourites')]
+    #[Route(path: '/', name: 'claro_user_favourites', methods: ['GET'])]
     public function listAction(#[CurrentUser] ?User $currentUser = null): JsonResponse
     {
         if (null === $currentUser) {

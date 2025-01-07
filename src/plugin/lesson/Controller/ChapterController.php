@@ -143,7 +143,7 @@ class ChapterController
         ]);
     }
 
-    #[Route(path: '/{chapter}/pdf', name: 'icap_lesson_chapter_export_pdf')]
+    #[Route(path: '/{chapter}/pdf', name: 'icap_lesson_chapter_export_pdf', methods: ['GET'])]
     public function downloadPdfAction(
         #[MapEntity(mapping: ['chapter' => 'uuid'])]
         Chapter $chapter

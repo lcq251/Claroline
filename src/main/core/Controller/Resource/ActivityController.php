@@ -28,7 +28,7 @@ class ActivityController
         $this->authorization = $authorization;
     }
 
-    #[Route(path: '/logs', name: 'apiv2_resource_functional_logs')]
+    #[Route(path: '/logs', name: 'apiv2_resource_functional_logs', methods: ['GET'])]
     public function functionalLogsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         ResourceNode $resourceNode,

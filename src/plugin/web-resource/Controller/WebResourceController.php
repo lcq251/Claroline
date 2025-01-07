@@ -25,7 +25,7 @@ class WebResourceController
     ) {
     }
 
-    #[Route(path: 'workspace/{workspace}/webResource/file/upload', name: 'apiv2_webresource_file_upload')]
+    #[Route(path: 'workspace/{workspace}/webResource/file/upload', name: 'apiv2_webresource_file_upload', methods: ['POST'])]
     public function uploadFile(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
     Workspace $workspace, Request $request): JsonResponse
     {

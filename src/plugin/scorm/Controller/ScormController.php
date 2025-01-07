@@ -49,7 +49,7 @@ class ScormController
         $this->authorization = $authorization;
     }
 
-    #[Route(path: '/workspace/{workspace}/scorm/archive/upload', name: 'apiv2_scorm_archive_upload')]
+    #[Route(path: '/workspace/{workspace}/scorm/archive/upload', name: 'apiv2_scorm_archive_upload', methods: ['POST'])]
     public function uploadAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
     Workspace $workspace, Request $request): JsonResponse
     {
@@ -100,7 +100,7 @@ class ScormController
         );
     }
 
-    #[Route(path: '/scorm/{scorm}/trackings/list', name: 'apiv2_scormscotracking_list')]
+    #[Route(path: '/scorm/{scorm}/trackings/list', name: 'apiv2_scormscotracking_list', methods: ['GET'])]
     public function listTrackingsAction(#[MapEntity(class: 'Claroline\ScormBundle\Entity\Scorm', mapping: ['scorm' => 'uuid'])]
     Scorm $scorm, Request $request): JsonResponse
     {
@@ -118,9 +118,8 @@ class ScormController
         );
     }
 
-    #[Route(path: '/scorm/{scorm}/trackings/export', name: 'apiv2_scormscotracking_export')]
-    public function exportTrackingsAction(#[MapEntity(class: 'Claroline\ScormBundle\Entity\Scorm', mapping: ['scorm' => 'uuid'])]
-    Scorm $scorm): StreamedResponse
+    #[Route(path: '/scorm/{scorm}/trackings/export', name: 'apiv2_scormscotracking_export', methods: ['GET'])]
+    public function exportTrackingsAction(#[MapEntity(mapping: ['scorm' => 'uuid'])] Scorm $scorm): StreamedResponse
     {
         $this->checkPermission('EDIT', $scorm->getResourceNode(), [], true);
 

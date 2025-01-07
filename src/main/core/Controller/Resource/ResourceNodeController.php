@@ -3,8 +3,6 @@
 namespace Claroline\CoreBundle\Controller\Resource;
 
 use Claroline\AppBundle\API\Finder\FinderQuery;
-use Claroline\CoreBundle\Security\PlatformRoles;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
@@ -12,6 +10,8 @@ use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Resource\ResourceActionManager;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Security\Collection\ResourceCollection;
+use Claroline\CoreBundle\Security\PlatformRoles;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
@@ -51,7 +51,7 @@ class ResourceNodeController extends AbstractCrudController
      * Get the list of rights for a resource node.
      * This may be directly managed by the standard action system (rights edition already is) instead.
      */
-    #[Route(path: '/{id}/rights', name: 'get_rights')]
+    #[Route(path: '/{id}/rights', name: 'get_rights', methods: ['GET'])]
     public function getRightsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         ResourceNode $resourceNode
@@ -69,7 +69,7 @@ class ResourceNodeController extends AbstractCrudController
         );
     }
 
-    #[Route(path: '/{contextId}/{parent}', name: 'list', defaults: ['contextId' => null, 'parent' => null])]
+    #[Route(path: '/{contextId}/{parent}', name: 'list', defaults: ['contextId' => null, 'parent' => null], methods: ['GET'])]
     public function listAction(
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery(),
@@ -109,7 +109,7 @@ class ResourceNodeController extends AbstractCrudController
         return $results->toResponse();
     }
 
-    #[Route(path: '/{workspace}/removed', name: 'workspace_removed_list')]
+    #[Route(path: '/{workspace}/removed', name: 'workspace_removed_list', methods: ['GET'])]
     public function listRemovedAction(
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
         Workspace $workspace, Request $request

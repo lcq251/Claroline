@@ -42,7 +42,7 @@ class PlatformController
     /**
      * Renders the Claroline web application.
      */
-    #[Route(path: '/', name: 'claro_index')]
+    #[Route(path: '/', name: 'claro_index', methods: ['GET'])]
     public function indexAction(): Response
     {
         $currentUser = null;

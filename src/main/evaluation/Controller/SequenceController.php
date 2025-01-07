@@ -36,7 +36,7 @@ class SequenceController extends AbstractCrudController
         return Sequence::class;
     }
 
-    #[Route(path: '/context/{context}/{contextId}', name: 'context_list', defaults: ['contextId' => null])]
+    #[Route(path: '/context/{context}/{contextId}', name: 'context_list', defaults: ['contextId' => null], methods: ['GET'])]
     public function listByContextAction(
         string $context,
         string $contextId = null,

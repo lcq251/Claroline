@@ -47,7 +47,7 @@ class WikiController
         }
     }
 
-    #[Route(path: '/pdf', name: 'apiv2_wiki_export_pdf')]
+    #[Route(path: '/pdf', name: 'apiv2_wiki_export_pdf', methods: ['GET'])]
     public function exportPdfAction(#[MapEntity(mapping: ['id' => 'uuid'])] Wiki $wiki, User $user = null): StreamedResponse
     {
         $resourceNode = $wiki->getResourceNode();

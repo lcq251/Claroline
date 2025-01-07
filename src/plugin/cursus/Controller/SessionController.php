@@ -198,7 +198,7 @@ class SessionController extends AbstractCrudController
         ]);
     }
 
-    #[Route(path: '/{id}/events', name: 'list_events')]
+    #[Route(path: '/{id}/events', name: 'list_events', methods: ['GET'])]
     public function listEventsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Session $session, Request $request

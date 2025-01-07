@@ -68,7 +68,7 @@ class KeywordController extends AbstractCrudController
      * Returns the keyword.
      *
      */
-    #[Route(path: '/{clacoForm}/keyword/{value}/excluding/uuid/{uuid}', name: 'check_unique', defaults: ['uuid' => null])]
+    #[Route(path: '/{clacoForm}/keyword/{value}/excluding/uuid/{uuid}', name: 'check_unique', defaults: ['uuid' => null], methods: ['GET'])]
     public function getKeywordByNameExcludingUuidAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
     ClacoForm $clacoForm, $value, string $uuid = null): JsonResponse
     {

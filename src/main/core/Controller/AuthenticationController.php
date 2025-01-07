@@ -50,7 +50,7 @@ class AuthenticationController
      * Activate and log in a user using the validation hash sent to him.
      * ATTENTION : This is used to generate the validation URL sent by email. The URL must not change overtime.
      */
-    #[Route(path: '/user/registration/activate/{hash}', name: 'claro_security_activate_user')]
+    #[Route(path: '/user/registration/activate/{hash}', name: 'claro_security_activate_user', methods: ['GET'])]
     public function activateUserAction(string $hash, Request $request): Response
     {
         if (!empty($hash)) {
@@ -146,7 +146,7 @@ class AuthenticationController
         );
     }
 
-    #[Route(path: '/send/email/validation', name: 'claro_security_validate_email_send', options: ['expose' => true])]
+    #[Route(path: '/send/email/validation', name: 'claro_security_validate_email_send', methods: ['GET'])]
     public function sendEmailValidationAction(
         #[CurrentUser] ?User $user
     ): JsonResponse {
