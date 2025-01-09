@@ -13,20 +13,21 @@ const TeamList = props =>
   <ToolPage
     title={trans('teams', {}, 'community')}
   >
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: LINK_BUTTON,
+        icon: 'fa fa-fw fa-plus',
+        label: trans('add_team', {}, 'actions'),
+        target: `${props.path}/teams/new`,
+        displayed: props.canCreate
+      }}
+    >
       <BaseTeamList
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}
         url={['apiv2_team_workspace_list', {id: props.contextData.id}]}
-        addAction={{
-          name: 'add',
-          type: LINK_BUTTON,
-          // icon: 'fa fa-fw fa-plus',
-          label: trans('add_team', {}, 'actions'),
-          target: `${props.path}/teams/new`,
-          displayed: props.canCreate
-        }}
       />
     </PageListSection>
   </ToolPage>
