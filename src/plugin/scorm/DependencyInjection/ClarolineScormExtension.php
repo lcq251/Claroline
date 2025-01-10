@@ -16,18 +16,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-/**
- * Loads the core services configuration files.
- */
 class ClarolineScormExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $locator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new YamlFileLoader($container, $locator);
         $loader->load('services.yml');
+        $loader->load('components.yml');
     }
 }

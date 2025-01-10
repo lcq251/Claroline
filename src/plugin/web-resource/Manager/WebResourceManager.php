@@ -114,7 +114,7 @@ class WebResourceManager
      *
      * @param string $hash The hash name of the resource
      */
-    public function unzip(string $hash, Workspace $workspace)
+    public function unzip(string $hash, Workspace $workspace): void
     {
         $filesPath = $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR;
         $zipPath = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR;
@@ -133,7 +133,7 @@ class WebResourceManager
      *
      * @param string $dir The path to the directory to delete
      */
-    private function unzipDelete(string $dir)
+    private function unzipDelete(string $dir): void
     {
         foreach (glob($dir.'/*') as $file) {
             if (is_dir($file)) {

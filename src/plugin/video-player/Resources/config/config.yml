@@ -1,4 +1,10 @@
 plugin:
+    resources:
+        - name: video
+          class: Claroline\VideoPlayerBundle\Entity\Video
+          tags: [ content ]
+          exportable: false
+
     resource_icons:
         - name: res_avi
           mime_types: [video]

@@ -15,7 +15,7 @@ interface ResourceInterface extends ComponentInterface
      */
     //public function embed(AbstractResource $resource): string;
 
-    //public function create(AbstractResource $resource, array $data): void;
+    public function create(AbstractResource $resource, array $data): void;
 
     public function update(AbstractResource $resource, array $data): ?array;
 

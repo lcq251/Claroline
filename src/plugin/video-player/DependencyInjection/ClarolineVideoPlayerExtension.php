@@ -23,5 +23,6 @@ class ClarolineVideoPlayerExtension extends Extension
         $locator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new YamlFileLoader($container, $locator);
         $loader->load('services.yml');
+        $loader->load('components.yml');
     }
 }

@@ -2,8 +2,10 @@ services:
     _defaults:
         public: true # because controller
 
-    Claroline\VideoPlayerBundle\Controller\EvaluationController:
+    Claroline\VideoPlayerBundle\Controller\VideoController:
         arguments:
             - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\CoreBundle\Manager\FileManager'
             - '@Claroline\VideoPlayerBundle\Manager\EvaluationManager'

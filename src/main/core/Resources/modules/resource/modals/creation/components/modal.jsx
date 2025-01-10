@@ -48,6 +48,10 @@ const ResourceCreationModal = (props) => {
         <CreationUpload
           changeStep={setCurrentStep}
           //create={props.create}
+          fromFile={props.fromFile}
+          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData).then(() => {
+            setCurrentStep('info')
+          })}
         />
       )
       break
@@ -95,6 +99,7 @@ ResourceCreationModal.propTypes = {
 
   // from redux store
   startCreation: T.func.isRequired,
+  fromFile: T.func.isRequired,
   create: T.func.isRequired,
   reset: T.func.isRequired
 }

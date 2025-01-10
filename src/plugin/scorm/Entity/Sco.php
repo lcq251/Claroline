@@ -11,11 +11,11 @@
 
 namespace Claroline\ScormBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_scorm_sco')]
@@ -25,208 +25,202 @@ class Sco
     use Id;
     use Uuid;
 
-    /**
-     *
-     * @var Scorm
-     */
-    #[ORM\JoinColumn(name: 'scorm_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Scorm::class, cascade: ['persist'], inversedBy: 'scos')]
-    protected ?Scorm $scorm = null;
+    #[ORM\JoinColumn(name: 'scorm_id', nullable: false, onDelete: 'CASCADE')]
+    private ?Scorm $scorm = null;
 
-    #[ORM\JoinColumn(name: 'sco_parent_id', nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Sco::class, inversedBy: 'scoChildren')]
-    protected ?Sco $scoParent = null;
+    #[ORM\JoinColumn(name: 'sco_parent_id', nullable: true, onDelete: 'CASCADE')]
+    private ?Sco $scoParent = null;
 
     /**
      * @var Collection<int, Sco>
      */
-    #[ORM\OneToMany(mappedBy: 'scoParent', targetEntity: Sco::class)]
-    protected Collection $scoChildren;
+    #[ORM\OneToMany(targetEntity: Sco::class, mappedBy: 'scoParent')]
+    private Collection $scoChildren;
 
     #[ORM\Column(name: 'entry_url', nullable: true)]
-    protected $entryUrl;
+    private ?string $entryUrl = null;
 
     #[ORM\Column(nullable: false)]
-    protected $identifier;
+    private ?string $identifier = null;
 
     #[ORM\Column(nullable: false)]
-    protected $title;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    protected $visible;
+    private ?bool $visible = true;
 
     #[ORM\Column(name: 'sco_parameters', type: Types::TEXT, nullable: true)]
-    protected $parameters;
+    private ?string $parameters = null;
 
     #[ORM\Column(name: 'launch_data', type: Types::TEXT, nullable: true)]
-    protected $launchData;
+    private ?string $launchData = null;
 
     #[ORM\Column(name: 'max_time_allowed', nullable: true)]
-    protected $maxTimeAllowed;
+    private ?string $maxTimeAllowed = null;
 
     #[ORM\Column(name: 'time_limit_action', nullable: true)]
-    protected $timeLimitAction;
+    private ?string $timeLimitAction = null;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    protected $block;
+    private ?bool $block = false;
 
     /**
      * Score to pass for Scorm 1.2.
      */
     #[ORM\Column(name: 'score_int', type: Types::INTEGER, nullable: true)]
-    protected $scoreToPassInt;
+    private ?int $scoreToPassInt = null;
 
     /**
      * Score to pass for Scorm 2004.
      */
     #[ORM\Column(name: 'score_decimal', type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
-    protected ?string $scoreToPassDecimal = null;
+    private ?float $scoreToPassDecimal = null;
 
     /**
      * For Scorm 2004 only.
      */
     #[ORM\Column(name: 'completion_threshold', type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
-    protected ?string $completionThreshold = null;
+    private ?float $completionThreshold = null;
 
     /**
      * For Scorm 1.2 only.
      */
     #[ORM\Column(nullable: true)]
-    protected $prerequisites;
+    private ?string $prerequisites = null;
 
     public function __construct()
     {
         $this->refreshUuid();
+
         $this->scoChildren = new ArrayCollection();
     }
 
-    /**
-     * @return Scorm
-     */
-    public function getScorm()
+    public function getScorm(): ?Scorm
     {
         return $this->scorm;
     }
 
-    public function setScorm(Scorm $scorm = null)
+    public function setScorm(Scorm $scorm = null): void
     {
         $this->scorm = $scorm;
     }
 
-    public function getScoParent()
+    public function getScoParent(): ?Sco
     {
         return $this->scoParent;
     }
 
-    public function setScoParent(Sco $scoParent = null)
+    public function setScoParent(Sco $scoParent = null): void
     {
         $this->scoParent = $scoParent;
     }
 
-    public function getScoChildren()
+    public function getScoChildren(): Collection
     {
         return $this->scoChildren;
     }
 
     /**
-     * @param Collection<int, \Claroline\ScormBundle\Entity\Sco> $scoChildren
+     * @param Collection<int, Sco> $scoChildren
      */
-    public function setScoChildren($scoChildren)
+    public function setScoChildren(Collection $scoChildren): void
     {
         $this->scoChildren = $scoChildren;
     }
 
-    public function getEntryUrl()
+    public function getEntryUrl(): ?string
     {
         return $this->entryUrl;
     }
 
-    public function setEntryUrl($entryUrl)
+    public function setEntryUrl(string $entryUrl): void
     {
         $this->entryUrl = $entryUrl;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
 
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->visible;
     }
 
-    public function setVisible($visible)
+    public function setVisible(bool $visible): void
     {
         $this->visible = $visible;
     }
 
-    public function getParameters()
+    public function getParameters(): ?string
     {
         return $this->parameters;
     }
 
-    public function setParameters($parameters)
+    public function setParameters(?string $parameters): void
     {
         $this->parameters = $parameters;
     }
 
-    public function getLaunchData()
+    public function getLaunchData(): ?string
     {
         return $this->launchData;
     }
 
-    public function setLaunchData($launchData)
+    public function setLaunchData(?string $launchData): void
     {
         $this->launchData = $launchData;
     }
 
-    public function getMaxTimeAllowed()
+    public function getMaxTimeAllowed(): ?string
     {
         return $this->maxTimeAllowed;
     }
 
-    public function setMaxTimeAllowed($maxTimeAllowed)
+    public function setMaxTimeAllowed(?string $maxTimeAllowed): void
     {
         $this->maxTimeAllowed = $maxTimeAllowed;
     }
 
-    public function getTimeLimitAction()
+    public function getTimeLimitAction(): ?string
     {
         return $this->timeLimitAction;
     }
 
-    public function setTimeLimitAction($timeLimitAction)
+    public function setTimeLimitAction(?string $timeLimitAction): void
     {
         $this->timeLimitAction = $timeLimitAction;
     }
 
-    public function isBlock()
+    public function isBlock(): bool
     {
         return $this->block;
     }
 
-    public function setBlock($block)
+    public function setBlock(bool $block): void
     {
         $this->block = $block;
     }
 
-    public function getScoreToPass()
+    public function getScoreToPass(): float|int|null
     {
         if (Scorm::SCORM_2004 === $this->scorm->getVersion()) {
             return $this->scoreToPassDecimal;
@@ -235,7 +229,7 @@ class Sco
         }
     }
 
-    public function setScoreToPass($scoreToPass)
+    public function setScoreToPass(float|int|null $scoreToPass): void
     {
         if (Scorm::SCORM_2004 === $this->scorm->getVersion()) {
             $this->setScoreToPassDecimal($scoreToPass);
@@ -244,42 +238,42 @@ class Sco
         }
     }
 
-    public function getScoreToPassInt()
+    public function getScoreToPassInt(): ?int
     {
         return $this->scoreToPassInt;
     }
 
-    public function setScoreToPassInt($scoreToPassInt)
+    public function setScoreToPassInt(?int $scoreToPassInt): void
     {
         $this->scoreToPassInt = $scoreToPassInt;
     }
 
-    public function getScoreToPassDecimal()
+    public function getScoreToPassDecimal(): ?float
     {
         return $this->scoreToPassDecimal;
     }
 
-    public function setScoreToPassDecimal($scoreToPassDecimal)
+    public function setScoreToPassDecimal(?float $scoreToPassDecimal): void
     {
         $this->scoreToPassDecimal = $scoreToPassDecimal;
     }
 
-    public function getCompletionThreshold()
+    public function getCompletionThreshold(): ?float
     {
         return $this->completionThreshold;
     }
 
-    public function setCompletionThreshold($completionThreshold)
+    public function setCompletionThreshold(?float $completionThreshold): void
     {
         $this->completionThreshold = $completionThreshold;
     }
 
-    public function getPrerequisites()
+    public function getPrerequisites(): ?string
     {
         return $this->prerequisites;
     }
 
-    public function setPrerequisites($prerequisites)
+    public function setPrerequisites(?string $prerequisites): void
     {
         $this->prerequisites = $prerequisites;
     }

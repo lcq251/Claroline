@@ -77,7 +77,6 @@ class ContextController
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
                 'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
 
-                // 'managed' => $isManager,
                 'impersonated' => $isImpersonated,
                 'roles' => array_values(array_map(function (Role $role) {
                     return $this->serializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]);
@@ -85,7 +84,6 @@ class ContextController
                 'organizations' => array_map(function (Organization $organization) {
                     return $this->serializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
                 }, $contextOrganizations),
-                // 'accessErrors' => $accessErrors,
 
                 // get all enabled tools for the context, even those inaccessible to the current user
                 // this will allow the ui to know if a user try to access a closed tool or a non-existent one.

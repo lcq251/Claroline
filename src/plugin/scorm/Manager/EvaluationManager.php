@@ -11,27 +11,17 @@ use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\ScormBundle\Entity\Sco;
 use Claroline\ScormBundle\Entity\Scorm;
 use Claroline\ScormBundle\Entity\ScoTracking;
+use Doctrine\Persistence\ObjectRepository;
 
 class EvaluationManager
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var SerializerProvider */
-    private $serializer;
-    /** @var ResourceEvaluationManager */
-    private $resourceEvalManager;
-
-    private $scoTrackingRepo;
+    private ObjectRepository $scoTrackingRepo;
 
     public function __construct(
-        ObjectManager $om,
-        SerializerProvider $serializer,
-        ResourceEvaluationManager $resourceEvalManager
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer,
+        private readonly ResourceEvaluationManager $resourceEvalManager
     ) {
-        $this->om = $om;
-        $this->serializer = $serializer;
-        $this->resourceEvalManager = $resourceEvalManager;
-
         $this->scoTrackingRepo = $om->getRepository(ScoTracking::class);
     }
 
@@ -61,7 +51,7 @@ class EvaluationManager
         return $tracking;
     }
 
-    public function updateScoTracking(Sco $sco, User $user, $data)
+    public function updateScoTracking(Sco $sco, User $user, array $data): ScoTracking
     {
         $tracking = $this->generateScoTracking($sco, $user);
 
@@ -82,8 +72,8 @@ class EvaluationManager
                 $scoreRaw = isset($data['cmi.core.score.raw']) ? intval($data['cmi.core.score.raw']) : null;
                 $scoreMin = isset($data['cmi.core.score.min']) ? intval($data['cmi.core.score.min']) : null;
                 $scoreMax = isset($data['cmi.core.score.max']) ? intval($data['cmi.core.score.max']) : null;
-                $lessonStatus = isset($data['cmi.core.lesson_status']) ? $data['cmi.core.lesson_status'] : null;
-                $sessionTime = isset($data['cmi.core.session_time']) ? $data['cmi.core.session_time'] : null;
+                $lessonStatus = $data['cmi.core.lesson_status'] ?? null;
+                $sessionTime = $data['cmi.core.session_time'] ?? null;
                 $sessionTimeInHundredth = $this->convertTimeInHundredth($sessionTime);
                 $duration = $sessionTimeInHundredth / 100;
                 $progression = isset($data['cmi.progress_measure']) ? floatval($data['cmi.progress_measure']) : 0;
@@ -129,8 +119,8 @@ class EvaluationManager
                 $duration = isset($data['cmi.session_time']) ?
                     $this->formatSessionTime($data['cmi.session_time']) :
                     'PT0S';
-                $completionStatus = isset($data['cmi.completion_status']) ? $data['cmi.completion_status'] : 'unknown';
-                $successStatus = isset($data['cmi.success_status']) ? $data['cmi.success_status'] : 'unknown';
+                $completionStatus = $data['cmi.completion_status'] ?? 'unknown';
+                $successStatus = $data['cmi.success_status'] ?? 'unknown';
                 $scoreRaw = isset($data['cmi.score.raw']) ? intval($data['cmi.score.raw']) : null;
                 $scoreMin = isset($data['cmi.score.min']) ? intval($data['cmi.score.min']) : null;
                 $scoreMax = isset($data['cmi.score.max']) ? intval($data['cmi.score.max']) : null;
@@ -163,7 +153,7 @@ class EvaluationManager
                     $tracking->setScoreScaled($scoreScaled);
                 }
 
-                // Update best success status and completion status
+                // Update the best success status and completion status
                 // merge both status in one prop to match the Claroline model
                 $lessonStatus = $completionStatus;
                 if (in_array($successStatus, ['passed', 'failed'])) {
@@ -213,7 +203,7 @@ class EvaluationManager
         return $tracking;
     }
 
-    private function generateScormEvaluation(ScoTracking $tracking, $sessionTime = null)
+    private function generateScormEvaluation(ScoTracking $tracking, $sessionTime = null): ResourceEvaluation
     {
         $scorm = $tracking->getSco()->getScorm();
 
@@ -317,7 +307,7 @@ class EvaluationManager
         return $tracking;
     }
 
-    private function convertTimeInHundredth($time)
+    private function convertTimeInHundredth($time): int
     {
         $timeInArray = explode(':', $time);
         $timeInArraySec = explode('.', $timeInArray[2]);
@@ -343,10 +333,10 @@ class EvaluationManager
      *
      * @return string
      */
-    private function retrieveIntervalFromSeconds($seconds)
+    private function retrieveIntervalFromSeconds(int $seconds): string
     {
         $result = '';
-        $remainingTime = (int) $seconds;
+        $remainingTime = $seconds;
 
         if (empty($remainingTime)) {
             $result .= 'PT0S';
@@ -363,7 +353,7 @@ class EvaluationManager
         return $result;
     }
 
-    private function formatSessionTime($sessionTime)
+    private function formatSessionTime($sessionTime): string
     {
         $formattedValue = 'PT0S';
         $generalPattern = '/^P([0-9]+Y)?([0-9]+M)?([0-9]+D)?T([0-9]+H)?([0-9]+M)?([0-9]+S)?$/';

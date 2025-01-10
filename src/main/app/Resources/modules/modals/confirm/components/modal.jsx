@@ -23,9 +23,9 @@ const ConfirmModal = (props) =>
       </Html>
 
       {props.items && 1 < props.items.length &&
-        <ul className="list-group list-group-striped mt-4">
+        <ul className="list-group list-group-flush border-top border-bottom mt-4">
           {props.items.map((item) =>
-            <li key={item.id} className="list-group-item">
+            <li key={item.id} className="list-group-item px-0">
               <DataMicro object={item} />
             </li>
           )}

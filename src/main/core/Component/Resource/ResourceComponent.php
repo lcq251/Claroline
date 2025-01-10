@@ -67,7 +67,7 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
 
     public function onCreate(CreateResourceEvent $event): void
     {
-        /*$this->create($event->getResource(), $event->getData());*/
+        $this->create($event->getResource(), $event->getData());
     }
 
     public function onUpdate(UpdateResourceEvent $event): void
@@ -114,6 +114,10 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
     public function download(AbstractResource $resource): ?string
     {
         return null;
+    }
+
+    public function create(AbstractResource $resource, array $data): void
+    {
     }
 
     public function update(AbstractResource $resource, array $data): ?array

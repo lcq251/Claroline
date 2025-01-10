@@ -13,6 +13,7 @@ namespace Claroline\ScormBundle\Library;
 
 use Claroline\ScormBundle\Entity\Sco;
 use Claroline\ScormBundle\Exception\InvalidScormArchiveException;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ScormLib
 {
@@ -24,7 +25,7 @@ class ScormLib
      * @throws InvalidScormArchiveException If a default organization
      *                                      is defined and not found
      */
-    public function parseOrganizationsNode(\DOMDocument $dom)
+    public function parseOrganizationsNode(\DOMDocument $dom): array
     {
         $organizationsList = $dom->getElementsByTagName('organizations');
         $resources = $dom->getElementsByTagName('resource');
@@ -78,7 +79,7 @@ class ScormLib
      *
      * @throws InvalidScormArchiveException
      */
-    private function parseItemNodes(\DOMNode $source, \DOMNodeList $resources, Sco $parentSco = null)
+    private function parseItemNodes(\DOMNode $source, \DOMNodeList $resources, Sco $parentSco = null): array
     {
         $item = $source->firstChild;
         $scos = [];
@@ -92,7 +93,7 @@ class ScormLib
                 $this->findNodeParams($sco, $item->firstChild);
 
                 if ($sco->isBlock()) {
-                    $sco->setScoChildren($this->parseItemNodes($item, $resources, $sco));
+                    $sco->setScoChildren(new ArrayCollection($this->parseItemNodes($item, $resources, $sco)));
                 }
             }
             $item = $item->nextSibling;
@@ -101,7 +102,7 @@ class ScormLib
         return $scos;
     }
 
-    private function parseResourceNodes(\DOMNodeList $resources)
+    private function parseResourceNodes(\DOMNodeList $resources): array
     {
         $scos = [];
 
@@ -138,11 +139,11 @@ class ScormLib
 
     /**
      * Initializes parameters of the SCO defined in attributes of the node.
-     * It also look for the associated resource if it is a SCO and not a block.
+     * It also looks for the associated resource if it is a SCO and not a block.
      *
      * @throws InvalidScormArchiveException
      */
-    private function findAttrParams(Sco $sco, \DOMNode $item, \DOMNodeList $resources)
+    private function findAttrParams(Sco $sco, \DOMNode $item, \DOMNodeList $resources): void
     {
         $identifier = $item->attributes->getNamedItem('identifier');
         $isVisible = $item->attributes->getNamedItem('isvisible');
@@ -156,7 +157,7 @@ class ScormLib
         $sco->setIdentifier($identifier->nodeValue);
 
         // visible is true by default
-        if (!is_null($isVisible) && 'false' === $isVisible) {
+        if ('false' === $isVisible) {
             $sco->setVisible(false);
         } else {
             $sco->setVisible(true);
@@ -180,7 +181,7 @@ class ScormLib
     /**
      * Initializes parameters of the SCO defined in children nodes.
      */
-    private function findNodeParams(Sco $sco, \DOMNode $item)
+    private function findNodeParams(Sco $sco, \DOMNode $item): void
     {
         while (!is_null($item)) {
             switch ($item->nodeName) {
@@ -232,7 +233,7 @@ class ScormLib
      *
      * @throws InvalidScormArchiveException
      */
-    public function findEntryUrl($identifierref, \DOMNodeList $resources)
+    public function findEntryUrl(string $identifierRef, \DOMNodeList $resources): string
     {
         foreach ($resources as $resource) {
             $identifier = $resource->attributes->getNamedItem('identifier');
@@ -240,7 +241,7 @@ class ScormLib
             if (!is_null($identifier)) {
                 $identifierValue = $identifier->nodeValue;
 
-                if ($identifierValue === $identifierref) {
+                if ($identifierValue === $identifierRef) {
                     $href = $resource->attributes->getNamedItem('href');
 
                     if (is_null($href)) {

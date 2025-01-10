@@ -88,7 +88,7 @@ const EntityInput = (props) => {
 
   if (props.multiple) {
     return (
-      <ul className="list-group list-group-striped list-group-flush mb-0 border-top border-bottom">
+      <ul className="list-group list-group-flush mb-0 border-top border-bottom">
         {props.value.map(object => (
           <li key={object.id} className="list-group-item d-flex align-items-center gap-3 px-0">
             {createElement(props.card, {

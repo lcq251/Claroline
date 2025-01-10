@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 
 class ScormRepository extends EntityRepository
 {
-    public function findNbScormWithSameSource($hashName, Workspace $workspace)
+    public function findNbScormWithSameSource(string $hashName, Workspace $workspace): int
     {
         $dql = '
             SELECT COUNT(s.id)
@@ -31,6 +31,6 @@ class ScormRepository extends EntityRepository
         $query->setParameter('hashName', $hashName);
         $query->setParameter('workspace', $workspace);
 
-        return $query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 }

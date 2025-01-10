@@ -139,6 +139,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
             - '@Claroline\CoreBundle\Manager\ResourceManager'
             - '@Claroline\CoreBundle\Manager\Resource\ResourceActionManager'
             - '@Claroline\CoreBundle\Manager\Resource\ResourceRestrictionsManager'

@@ -25,6 +25,7 @@ use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
 use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Manager\Resource\ResourceActionManager;
+use Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Manager\ResourceManager;
 use Claroline\CoreBundle\Security\Collection\ResourceCollection;
@@ -44,6 +45,7 @@ class DirectoryListener extends ResourceComponent
         private readonly FileManager $fileManager,
         private readonly ResourceManager $resourceManager,
         private readonly ResourceActionManager $actionManager,
+        private readonly ResourceLifecycleManager $lifecycleManager,
         private readonly RightsManager $rightsManager
     ) {
     }
@@ -213,6 +215,8 @@ class DirectoryListener extends ResourceComponent
         }
 
         $this->om->endFlushSuite();
+
+        $this->lifecycleManager->create($resourceNode);
 
         // initialize resource rights
         if (!empty($nodeData['rights'])) {

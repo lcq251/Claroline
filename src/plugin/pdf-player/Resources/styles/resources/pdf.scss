@@ -11,11 +11,6 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: $component-margin-bottom;
-  //border-radius: $summary-border-radius;
-  //background: $summary-bg;
-  //color: $summary-color;
-  //box-shadow: $summary-box-shadow-h;
 
   .pdf-pages,
   .pdf-zoom {
@@ -40,7 +35,7 @@
     display: inline-block;
   }
 
-  .btn {
+  /*.btn {
     padding-top: 4px;
     padding-bottom: 4px;
     color: $summary-link-color;
@@ -52,7 +47,7 @@
     &:focus {
       color: $summary-link-active-color;
     }
-  }
+  }*/
 }
 
 .pdf-container {

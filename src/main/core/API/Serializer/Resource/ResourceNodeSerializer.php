@@ -177,7 +177,7 @@ class ResourceNodeSerializer
             $resourceNode->setResourceType($resourceType);
         }
 
-        if (empty($resourceNode->getMimeType())) {
+        /*if (empty($resourceNode->getMimeType())) {*/
             if (isset($data['meta']) && !empty($data['meta']['mimeType'])) {
                 $mimeType = $data['meta']['mimeType'];
             } else {
@@ -185,7 +185,7 @@ class ResourceNodeSerializer
             }
 
             $resourceNode->setMimeType($mimeType);
-        }
+        /*}*/
 
         $this->sipe('meta.published', 'setPublished', $data, $resourceNode);
         $this->sipe('meta.description', 'setDescription', $data, $resourceNode);

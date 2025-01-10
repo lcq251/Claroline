@@ -4,6 +4,7 @@ services:
     Claroline\CoreBundle\Component\Resource\ResourceProvider:
         arguments:
             - !tagged_iterator claroline.component.resource
+            - '@Claroline\AppBundle\Manager\File\TempFileManager'
 
     claroline.resource_provider:
         alias: Claroline\CoreBundle\Component\Resource\ResourceProvider

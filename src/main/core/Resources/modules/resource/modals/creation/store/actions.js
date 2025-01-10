@@ -6,6 +6,7 @@ import {actions as formActions} from '#/main/app/content/form/store/actions'
 import {getResource} from '#/main/core/resources'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {selectors} from '#/main/core/resource/modals/creation/store/selectors'
+import {API_REQUEST} from '#/main/app/api'
 
 export const actions = {}
 
@@ -21,7 +22,7 @@ export const actions = {}
 actions.startCreation = (parent, resourceType, nodeData = {}, resourceData = {}) => (dispatch) => {
   let defaultData = {
     resource: resourceData,
-    resourceNode: merge({}, ResourceNodeTypes.defaultProps, nodeData, {
+    resourceNode: merge({}, ResourceNodeTypes.defaultProps, {
       id: makeId(),
       workspace: parent.workspace,
       meta: {
@@ -30,7 +31,7 @@ actions.startCreation = (parent, resourceType, nodeData = {}, resourceData = {})
       },
       restrictions: parent.restrictions,
       rights: parent.rights
-    })
+    }, nodeData)
   }
 
   // let the plugin add some changes to init data if it wants to
@@ -72,3 +73,25 @@ actions.create = (parent) => formActions.saveForm(selectors.STORE_NAME, ['claro_
   action: 'add',
   id: parent.id
 }])
+
+actions.fromFile = (file) => (dispatch) => {
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('fileName', file.name)
+  formData.append('sourceType', 'uploadedfile')
+
+  return dispatch({
+    [API_REQUEST]: {
+      url: ['claro_resource_check_file'],
+      type: 'upload',
+      request: {
+        method: 'POST',
+        body: formData,
+        headers: new Headers({
+          //no Content type for automatic detection of boundaries.
+          'X-Requested-With': 'XMLHttpRequest'
+        })
+      }
+    }
+  })
+}

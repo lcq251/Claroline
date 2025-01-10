@@ -12,7 +12,6 @@
 namespace Claroline\ScormBundle\Manager;
 
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\ScormBundle\Entity\Sco;
 use Claroline\ScormBundle\Entity\Scorm;
@@ -24,32 +23,15 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class ScormManager
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var SerializerProvider */
-    private $serializer;
-    /** @var ScormLib */
-    private $scormLib;
-    /** @var string */
-    private $uploadDir;
-    /** @var string */
-    private $filesDir;
-
     public function __construct(
-        ObjectManager $om,
-        SerializerProvider $serializer,
-        ScormLib $scormLib,
-        string $filesDir,
-        string $uploadDir
+        private readonly SerializerProvider $serializer,
+        private readonly ScormLib $scormLib,
+        private readonly string $filesDir,
+        private readonly string $uploadDir
     ) {
-        $this->om = $om;
-        $this->serializer = $serializer;
-        $this->scormLib = $scormLib;
-        $this->filesDir = $filesDir;
-        $this->uploadDir = $uploadDir;
     }
 
-    public function uploadScormArchive(Workspace $workspace, File $file)
+    public function uploadScormArchive(Workspace $workspace, File $file): array
     {
         // Checks if it is a valid scorm archive
         $zip = new \ZipArchive();
@@ -61,45 +43,8 @@ class ScormManager
 
         if (!$isScormArchive) {
             throw new InvalidScormArchiveException('invalid_scorm_archive_message');
-        } else {
-            return $this->generateScorm($workspace, $file);
-        }
-    }
-
-    /**
-     * @deprecated It must use Crud instead
-     */
-    public function updateScorm(Scorm $scorm, $data)
-    {
-        $newScorm = $this->serializer->deserialize($data, $scorm);
-        $this->om->persist($newScorm);
-        $this->om->flush();
-
-        return $this->serializer->serialize($newScorm);
-    }
-
-    /**
-     * Unzip a given ZIP file into the web resources directory.
-     *
-     * @param string $hashName name of the destination directory
-     */
-    public function unzipScormArchive(Workspace $workspace, File $file, $hashName)
-    {
-        $zip = new \ZipArchive();
-        $zip->open($file);
-        $ds = DIRECTORY_SEPARATOR;
-        $destinationDir = $this->uploadDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$hashName;
-
-        if (!file_exists($destinationDir)) {
-            mkdir($destinationDir, 0777, true);
         }
 
-        $zip->extractTo($destinationDir);
-        $zip->close();
-    }
-
-    private function generateScorm(Workspace $workspace, File $file)
-    {
         $ds = DIRECTORY_SEPARATOR;
         $hashName = Uuid::uuid4()->toString().'.zip';
         $scormData = $this->parseScormArchive($file);
@@ -120,7 +65,27 @@ class ScormManager
         ];
     }
 
-    public function copy(Scorm $scorm, Workspace $workspaceDest)
+    /**
+     * Unzip a given ZIP file into the web resources directory.
+     *
+     * @param string $hashName name of the destination directory
+     */
+    public function unzipScormArchive(Workspace $workspace, File $file, string $hashName): void
+    {
+        $zip = new \ZipArchive();
+        $zip->open($file);
+        $ds = DIRECTORY_SEPARATOR;
+        $destinationDir = $this->uploadDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$hashName;
+
+        if (!file_exists($destinationDir)) {
+            mkdir($destinationDir, 0777, true);
+        }
+
+        $zip->extractTo($destinationDir);
+        $zip->close();
+    }
+
+    public function copy(Scorm $scorm, Workspace $workspaceDest): void
     {
         $workspace = $scorm->getResourceNode()->getWorkspace();
 
@@ -145,7 +110,7 @@ class ScormManager
         }
     }
 
-    private function parseScormArchive(File $file)
+    public function parseScormArchive(File $file): array
     {
         $data = [];
         $contents = '';
@@ -187,6 +152,7 @@ class ScormManager
         if (0 >= count($scos)) {
             throw new InvalidScormArchiveException('no_sco_in_scorm_archive_message');
         }
+
         $data['scos'] = array_map(function (Sco $sco) {
             return $this->serializer->serialize($sco);
         }, $scos);

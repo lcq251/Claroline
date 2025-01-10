@@ -18,10 +18,17 @@ class ScoSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @return array
-     */
-    public function serialize(Sco $sco)
+    public function getClass(): string
+    {
+        return Sco::class;
+    }
+
+    public function getName(): string
+    {
+        return 'sco';
+    }
+
+    public function serialize(Sco $sco, ?array $options = []): array
     {
         $scorm = $sco->getScorm();
         $parent = $sco->getScoParent();
@@ -46,14 +53,9 @@ class ScoSerializer
                 'prerequisites' => $sco->getPrerequisites(),
             ],
             'parent' => !empty($parent) ? ['id' => $parent->getUuid()] : null,
-            'children' => array_map(function (Sco $scoChild) {
-                return $this->serialize($scoChild);
+            'children' => array_map(function (Sco $scoChild) use ($options) {
+                return $this->serialize($scoChild, $options);
             }, is_array($sco->getScoChildren()) ? $sco->getScoChildren() : $sco->getScoChildren()->toArray()),
         ];
-    }
-
-    public function getName()
-    {
-        return 'sco';
     }
 }

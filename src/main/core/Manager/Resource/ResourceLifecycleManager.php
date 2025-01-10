@@ -5,6 +5,7 @@ namespace Claroline\CoreBundle\Manager\Resource;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
 use Claroline\CoreBundle\Event\Resource\CopyResourceEvent;
 use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
 use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
@@ -36,7 +37,7 @@ class ResourceLifecycleManager
     public function create(ResourceNode $resourceNode): CreateResourceEvent
     {
         $event = new CreateResourceEvent($this->getResourceFromNode($resourceNode));
-        $this->eventDispatcher->dispatch($event, static::eventName('create', $resourceNode));
+        $this->eventDispatcher->dispatch($event, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
 
         return $event;
     }

@@ -1,21 +1,14 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useHistory} from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form'
 
-import {route} from '#/main/core/resource/routing'
-import {ResourceIcon} from '#/main/core/resource/components/icon'
 import {selectors} from '#/main/core/resource/modals/creation/store/selectors'
 
 const CreationUrl = (props) => {
-  const history = useHistory()
-
   return (
     <FormData
       name={selectors.STORE_NAME}
@@ -30,7 +23,7 @@ const CreationUrl = (props) => {
               type: 'url',
               label: trans('url'),
               hideLabel: true,
-              options: {multiple: true}
+              //options: {multiple: true}
             }
           ]
         }

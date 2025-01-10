@@ -11,9 +11,9 @@
 
 namespace Claroline\WebResourceBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\WebResourceBundle\Manager\WebResourceManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,7 +27,7 @@ class WebResourceController
 
     #[Route(path: 'workspace/{workspace}/webResource/file/upload', name: 'apiv2_webresource_file_upload', methods: ['POST'])]
     public function uploadFile(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-    Workspace $workspace, Request $request): JsonResponse
+        Workspace $workspace, Request $request): JsonResponse
     {
         $files = $request->files->all();
 

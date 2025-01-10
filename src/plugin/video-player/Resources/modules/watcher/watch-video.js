@@ -17,6 +17,8 @@ function callback(el) {
     autoplay: autoplay,
     controls: !autoplay,
     preload: 'metadata',
-    errorDisplay: true
+    errorDisplay: true,
+    //fluid: true,
+    fill: true
   })
 }

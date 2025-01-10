@@ -23,26 +23,21 @@ class ScoTrackingSerializer
 {
     use SerializerTrait;
 
-    /** @var ObjectManager */
-    private $om;
-    /** @var ScoSerializer */
-    private $scoSerializer;
-    /** @var UserSerializer */
-    private $userSerializer;
-
     public function __construct(
-        ObjectManager $om,
-        ScoSerializer $scoSerializer,
-        UserSerializer $userSerializer
+        private readonly ObjectManager $om,
+        private readonly ScoSerializer $scoSerializer,
+        private readonly UserSerializer $userSerializer
     ) {
-        $this->om = $om;
-        $this->scoSerializer = $scoSerializer;
-        $this->userSerializer = $userSerializer;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'sco_tracking';
+    }
+
+    public function getClass(): string
+    {
+        return ScoTracking::class;
     }
 
     public function serialize(ScoTracking $scoTracking): array

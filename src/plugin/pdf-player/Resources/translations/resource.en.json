@@ -1,3 +1,4 @@
 {
+  "pdf": "PDF",
   "count_pages": "{0, 1}/ %count% page|]1,Inf[/ %count% pages"
 }

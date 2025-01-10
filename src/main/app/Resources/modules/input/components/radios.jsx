@@ -22,7 +22,7 @@ const Radios = props => {
   }
 
   return (
-    <div id={props.id} className={props.className}>
+    <div id={props.id} className={props.className} role="presentation">
       {!props.noEmpty &&
         <Radio
           key="empty-value"

@@ -15,6 +15,7 @@ use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Component\Resource\ResourceProvider;
 use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
@@ -46,6 +47,7 @@ class ResourceController
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly SerializerProvider $serializer,
+        private readonly ResourceProvider $resourceProvider,
         private readonly ResourceManager $manager,
         private readonly ResourceActionManager $actionManager,
         private readonly ResourceRestrictionsManager $restrictionsManager,
@@ -67,27 +69,21 @@ class ResourceController
             return new JsonResponse('Resource not found.', 404);
         }
 
-        // gets the current user roles to check access restrictions
-        $userRoles = $this->tokenStorage->getToken()?->getRoleNames() ?? [PlatformRoles::ANONYMOUS];
-        $accessErrors = $this->restrictionsManager->getErrors($resourceNode, $userRoles);
-        $isManager = $this->manager->isManager($resourceNode);
-
-        if (empty($accessErrors) || $isManager) {
-            $loaded = $this->manager->load($resourceNode, $embedded ? true : false);
+        if ($this->authorization->isGranted('OPEN', $resourceNode)) {
+            $loaded = $this->manager->load($resourceNode, (bool) $embedded);
 
             return new JsonResponse(
                 array_merge($loaded, [
-                    'managed' => $isManager,
                     'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
-                    // append access restrictions to the loaded node if any
-                    // to let the manager knows that other users can not enter the resource
-                    'accessErrors' => $accessErrors,
                 ])
             );
         }
 
+        // return the details of access errors to display it to users
+        $userRoles = $this->tokenStorage->getToken()?->getRoleNames() ?? [PlatformRoles::ANONYMOUS];
+        $accessErrors = $this->restrictionsManager->getErrors($resourceNode, $userRoles);
+
         return new JsonResponse([
-            'managed' => false,
             'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
             'accessErrors' => $accessErrors,
         ], 403);
@@ -144,6 +140,35 @@ class ResourceController
         $this->restrictionsManager->unlock($resourceNode, json_decode($request->getContent(), true)['code']);
 
         return new JsonResponse(null, 204);
+    }
+
+    /**
+     * Checks if a resource is creatable for the submitted file.
+     */
+    #[Route(path: '/check/file', name: 'claro_resource_check_file', methods: ['POST'])]
+    public function checkFileAction(Request $request): JsonResponse
+    {
+        $files = $request->files->all();
+
+        foreach ($files as $file) {
+            $fileData = $this->resourceProvider->fromFile($file);
+            if (empty($fileData)) {
+                return new JsonResponse(null, 404);
+            }
+
+            return new JsonResponse($fileData);
+        }
+
+        return new JsonResponse(null, 404);
+    }
+
+    /**
+     * Checks if a resource is creatable for the submitted url.
+     */
+    #[Route(path: '/check/url', name: 'check_url', methods: ['POST'])]
+    public function checkUrlAction(Request $request): JsonResponse
+    {
+        return new JsonResponse();
     }
 
     /**

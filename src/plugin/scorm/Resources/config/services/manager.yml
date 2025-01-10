@@ -1,7 +1,6 @@
 services:
     Claroline\ScormBundle\Manager\ScormManager:
         arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\ScormBundle\Library\ScormLib'
             - '%claroline.param.files_directory%'

@@ -2,9 +2,9 @@
 
 namespace Claroline\CoreBundle\Subscriber\Crud\File;
 
-use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\AppBundle\Event\Crud\DeleteEvent;
+use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\CoreBundle\Entity\File\PublicFile;
 use Claroline\CoreBundle\Manager\FileManager;
 use Ramsey\Uuid\Uuid;

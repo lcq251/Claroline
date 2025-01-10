@@ -47,6 +47,7 @@ services:
             - '@Claroline\CoreBundle\Manager\FileManager'
             - '@Claroline\CoreBundle\Manager\ResourceManager'
             - '@Claroline\CoreBundle\Manager\Resource\ResourceActionManager'
+            - '@Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager'
             - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
 
     Claroline\CoreBundle\Listener\Resource\Types\FileListener:

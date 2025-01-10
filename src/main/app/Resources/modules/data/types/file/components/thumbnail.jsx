@@ -22,7 +22,7 @@ const FileThumbnail = props => {
 
       <div className="file-preview-title" id={labelId}>
         {props.file.name || props.file.url}
-        {props.file.size && <small className="text-body-secondary">{fileSize(props.file.size)}</small>}
+        {props.file.size && <small className="text-body-secondary fw-normal">{fileSize(props.file.size)}</small>}
       </div>
 
       <Toolbar

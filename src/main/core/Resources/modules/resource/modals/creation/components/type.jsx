@@ -26,7 +26,7 @@ const CreationType = props =>
             'hevinci_url',
             'shortcut',
             'directory',
-            'claro_slideshow',
+            'spreadsheet',
           ].includes(resourceType))
           .sort((a, b) => {
             if (trans(a, {}, 'resource') > trans(b, {}, 'resource')) {

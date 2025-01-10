@@ -14,11 +14,11 @@ namespace Claroline\LinkBundle\Listener\Resource\Types;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Event\Crud\DeleteEvent;
+use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\LinkBundle\Entity\Resource\Shortcut;
 use Doctrine\Persistence\ObjectRepository;
@@ -50,7 +50,7 @@ class ShortcutListener extends ResourceComponent implements EvaluatedResourceInt
         return 'shortcut';
     }
 
-    /** @var Shortcut $resource */
+    /** @var Shortcut */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [

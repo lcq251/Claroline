@@ -41,7 +41,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         return 'claroline_web_resource';
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $ds = DIRECTORY_SEPARATOR;
@@ -62,7 +62,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         ];
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function download(AbstractResource $resource): ?string
     {
         return $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.
@@ -70,7 +70,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
             DIRECTORY_SEPARATOR.$resource->getHashName();
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         $workspace = $resource->getResourceNode()->getWorkspace();
@@ -82,7 +82,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         return [];
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         $workspace = $resource->getResourceNode()->getWorkspace();
@@ -93,7 +93,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         $fileSystem->mirror($fileBag->get($resource->getHashName()), $filesPath);
     }
 
-    /** @var File $resource */
+    /** @param File $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         if ($softDelete) {
@@ -119,7 +119,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
     /**
      * Changes actual file associated to File resource.
      */
-    public function onFileChange(ResourceActionEvent $event)
+    public function onFileChange(ResourceActionEvent $event): void
     {
         $parameters = $event->getData();
         $node = $event->getResourceNode();

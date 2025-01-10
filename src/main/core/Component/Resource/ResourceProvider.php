@@ -3,11 +3,13 @@
 namespace Claroline\CoreBundle\Component\Resource;
 
 use Claroline\AppBundle\Component\AbstractComponentProvider;
+use Claroline\AppBundle\Manager\File\TempFileManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Aggregates all the resources defined in the Claroline app.
  *
- * A tool MUST :
+ * A resource MUST :
  *   - be declared as a symfony service and tagged with "claroline.component.resource".
  *   - implement the ResourceInterface interface (or the ResourceComponent class).
  */
@@ -15,6 +17,7 @@ class ResourceProvider extends AbstractComponentProvider
 {
     public function __construct(
         private readonly iterable $registeredResources,
+        private readonly TempFileManager $tempFileManager
     ) {
     }
 
@@ -30,5 +33,57 @@ class ResourceProvider extends AbstractComponentProvider
     protected function getRegisteredComponents(): iterable
     {
         return $this->registeredResources;
+    }
+
+    public function open()
+    {
+
+    }
+
+    public function create()
+    {
+
+    }
+
+    public function fromFile(UploadedFile $file): ?array
+    {
+        $fileHandler = null;
+        foreach ($this->getRegisteredComponents() as $resourceHandler) {
+            if ($resourceHandler instanceof FileAdapterInterface) {
+                // checks if the current resource supports the submitted file
+                $support = $resourceHandler->supportsFile($file);
+                if (FileAdapterInterface::SUPPORTED === $support) {
+                    // perfect file match
+                    $fileHandler = $resourceHandler;
+                    break;
+                } elseif (FileAdapterInterface::SUPPORTED_PARTIAL === $support) {
+                    // only partial support, continue searching to find a perfect support if any
+                    $fileHandler = $resourceHandler;
+                }
+            }
+        }
+
+        if (!$fileHandler) {
+            // the file type is not supported by any enabled resource
+            return null;
+        }
+
+        // clean up filename to generate the resource name
+        $extension = pathinfo($file->getClientOriginalName() ?: $file->getFilename(), PATHINFO_EXTENSION);
+        $resourceName = str_replace('.'.$extension, '', $file->getClientOriginalName() ?: $file->getFilename());
+        $resourceName = str_replace('_', ' ', $resourceName);
+        $resourceName = ucfirst($resourceName);
+
+        // move file in temp to reuse it when the user will create the resource
+        $tempName = $this->tempFileManager->copy($file, true);
+
+        return array_merge([
+            'name' => $resourceName,
+            'meta' => [
+                'type' => $fileHandler::getName(),
+                'mimeType' => $file->getMimeType(),
+            ],
+            'url' => $tempName,
+        ], $fileHandler->fromFile($file) ?? []);
     }
 }

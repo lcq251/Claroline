@@ -90,5 +90,7 @@ class TempFileManager
                 $this->filesystem->remove($file);
             }
         }
+
+        $this->files = [];
     }
 }

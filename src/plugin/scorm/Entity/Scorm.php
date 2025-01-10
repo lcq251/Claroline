@@ -22,22 +22,22 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ScormRepository::class)]
 class Scorm extends AbstractResource
 {
-    const SCORM_12 = 'scorm_12';
-    const SCORM_2004 = 'scorm_2004';
+    public const SCORM_12 = 'scorm_12';
+    public const SCORM_2004 = 'scorm_2004';
 
     #[ORM\Column]
-    protected $version;
+    private ?string $version = null;
 
     #[ORM\Column(name: 'hash_name')]
-    protected $hashName;
+    private ?string $hashName = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private $ratio = 56.25;
+    private ?float $ratio = 56.25;
 
     /**
      * @var Collection<int, Sco>
      */
-    #[ORM\OneToMany(targetEntity: Sco::class, mappedBy: 'scorm', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Sco::class, mappedBy: 'scorm', cascade: ['persist'], orphanRemoval: true)]
     protected Collection $scos;
 
     public function __construct()
@@ -47,55 +47,53 @@ class Scorm extends AbstractResource
         $this->scos = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     */
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->version = $version;
     }
 
     /**
-     * @return string
+     * @deprecated
      */
-    public function getHashName()
+    public function getHashName(): ?string
+    {
+        return $this->getUrl();
+    }
+
+    /**
+     * @deprecated
+     */
+    public function setHashName(string $hashName): void
+    {
+        $this->setUrl($hashName);
+    }
+
+    public function getUrl(): ?string
     {
         return $this->hashName;
     }
 
-    /**
-     * @param string $hashName
-     */
-    public function setHashName($hashName)
+    public function setUrl(string $url): void
     {
-        $this->hashName = $hashName;
+        $this->hashName = $url;
     }
 
-    /**
-     * @return float
-     */
-    public function getRatio()
+    public function getRatio(): ?float
     {
         return $this->ratio;
     }
 
-    /**
-     * @param float $ratio
-     */
-    public function setRatio($ratio)
+    public function setRatio(float $ratio): void
     {
         $this->ratio = $ratio;
     }
 
-    public function addSco(Sco $sco)
+    public function addSco(Sco $sco): void
     {
         if (!$this->scos->contains($sco)) {
             $this->scos->add($sco);
@@ -103,7 +101,7 @@ class Scorm extends AbstractResource
         }
     }
 
-    public function removeSco(Sco $sco)
+    public function removeSco(Sco $sco): void
     {
         if ($this->scos->contains($sco)) {
             $this->scos->removeElement($sco);
@@ -114,7 +112,7 @@ class Scorm extends AbstractResource
     /**
      * @return Sco[]
      */
-    public function getScos()
+    public function getScos(): Collection
     {
         return $this->scos;
     }
@@ -122,7 +120,7 @@ class Scorm extends AbstractResource
     /**
      * @return Sco[]
      */
-    public function getRootScos()
+    public function getRootScos(): array
     {
         $roots = [];
 
@@ -136,10 +134,5 @@ class Scorm extends AbstractResource
         }
 
         return $roots;
-    }
-
-    public function emptyScos()
-    {
-        $this->scos->clear();
     }
 }

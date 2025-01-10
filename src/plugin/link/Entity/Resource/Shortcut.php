@@ -25,8 +25,8 @@ class Shortcut extends AbstractResource
     /**
      * The targeted resource node.
      */
-    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: true)]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?ResourceNode $target = null;
 
     /**

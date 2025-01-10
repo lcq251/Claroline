@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Claroline Connect package.
  *
@@ -10,7 +11,6 @@
 
 namespace Claroline\ScormBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -25,6 +25,7 @@ use Claroline\ScormBundle\Entity\ScoTracking;
 use Claroline\ScormBundle\Exception\InvalidScormArchiveException;
 use Claroline\ScormBundle\Manager\EvaluationManager;
 use Claroline\ScormBundle\Manager\ScormManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -49,42 +50,14 @@ class ScormController
         $this->authorization = $authorization;
     }
 
-    #[Route(path: '/workspace/{workspace}/scorm/archive/upload', name: 'apiv2_scorm_archive_upload', methods: ['POST'])]
-    public function uploadAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-    Workspace $workspace, Request $request): JsonResponse
-    {
-        $files = $request->files->all();
-
-        if (empty($files)) {
-            throw new InvalidDataException('No archive to import.');
-        }
-
-        try {
-            $file = array_pop($files); // we can only accept one file
-            $data = $this->scormManager->uploadScormArchive($workspace, $file);
-        } catch (InvalidScormArchiveException $e) {
-            throw new InvalidDataException($this->translator->trans($e->getMessage(), [], 'resource'));
-        }
-
-        return new JsonResponse($data, 200);
-    }
-
-    #[Route(path: '/scorm/{scorm}', name: 'apiv2_scorm_update', methods: ['PUT'])]
-    public function updateAction(#[MapEntity(class: 'Claroline\ScormBundle\Entity\Scorm', mapping: ['scorm' => 'uuid'])]
-    Scorm $scorm, Request $request): JsonResponse
-    {
-        $this->checkPermission('EDIT', $scorm->getResourceNode(), [], true);
-
-        return new JsonResponse(
-            $this->scormManager->updateScorm($scorm, $this->decodeRequest($request))
-        );
-    }
-
-    
     #[Route(path: '/sco/{sco}/commit', name: 'apiv2_scormscotracking_update', methods: ['PUT'])]
-    public function updateTrackingAction(#[MapEntity(class: 'Claroline\ScormBundle\Entity\Sco', mapping: ['sco' => 'uuid'])]
-    Sco $sco, #[CurrentUser] ?User $user, Request $request): JsonResponse
-    {
+    public function updateTrackingAction(
+        #[MapEntity(mapping: ['sco' => 'uuid'])]
+        Sco $sco,
+        #[CurrentUser]
+        ?User $user,
+        Request $request
+    ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
         }
@@ -102,7 +75,7 @@ class ScormController
 
     #[Route(path: '/scorm/{scorm}/trackings/list', name: 'apiv2_scormscotracking_list', methods: ['GET'])]
     public function listTrackingsAction(#[MapEntity(class: 'Claroline\ScormBundle\Entity\Scorm', mapping: ['scorm' => 'uuid'])]
-    Scorm $scorm, Request $request): JsonResponse
+        Scorm $scorm, Request $request): JsonResponse
     {
         $this->checkPermission('EDIT', $scorm->getResourceNode(), [], true);
 

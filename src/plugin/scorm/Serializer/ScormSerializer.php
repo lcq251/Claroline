@@ -16,30 +16,27 @@ use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\ScormBundle\Entity\Sco;
 use Claroline\ScormBundle\Entity\Scorm;
+use Doctrine\Persistence\ObjectRepository;
 
 class ScormSerializer
 {
     use SerializerTrait;
 
-    /** @var ObjectManager */
-    private $om;
-    /** @var ScoSerializer */
-    private $scoSerializer;
+    private ObjectRepository $scoRepo;
 
-    private $scoRepo;
-
-    /**
-     * ScormSerializer constructor.
-     */
-    public function __construct(ObjectManager $om, ScoSerializer $scoSerializer)
-    {
-        $this->om = $om;
-        $this->scoSerializer = $scoSerializer;
-
+    public function __construct(
+        private readonly ObjectManager $om,
+        private readonly ScoSerializer $scoSerializer
+    ) {
         $this->scoRepo = $om->getRepository('Claroline\ScormBundle\Entity\Sco');
     }
 
-    public function getName()
+    public function getClass(): string
+    {
+        return Scorm::class;
+    }
+
+    public function getName(): string
     {
         return 'scorm';
     }
@@ -50,6 +47,7 @@ class ScormSerializer
             'id' => $scorm->getUuid(),
             'version' => $scorm->getVersion(),
             'hashName' => $scorm->getHashName(),
+            'url' => $scorm->getUrl(),
             'ratio' => $scorm->getRatio(),
         ];
 
@@ -62,7 +60,8 @@ class ScormSerializer
 
     public function deserialize(array $data, Scorm $scorm, array $options = []): Scorm
     {
-        $this->sipe('hashName', 'setHashName', $data, $scorm);
+        // $this->sipe('hashName', 'setHashName', $data, $scorm);
+        $this->sipe('url', 'setUrl', $data, $scorm);
         $this->sipe('version', 'setVersion', $data, $scorm);
         $this->sipe('ratio', 'setRatio', $data, $scorm);
 
@@ -90,7 +89,7 @@ class ScormSerializer
         return $scorm;
     }
 
-    private function serializeScos(Scorm $scorm)
+    private function serializeScos(Scorm $scorm): array
     {
         return array_map(function (Sco $sco) {
             return $this->scoSerializer->serialize($sco);

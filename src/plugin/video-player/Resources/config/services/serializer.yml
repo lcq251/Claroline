@@ -1,0 +1,5 @@
+services:
+  _defaults:
+    tags: [claroline.serializer]
+
+  Claroline\VideoPlayerBundle\Serializer\VideoSerializer: ~
