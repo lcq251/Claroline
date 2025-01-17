@@ -1,10 +1,7 @@
 plugin:
     tools:
-        - name: evaluation
-          icon: route
-
         - name: progression
-          icon: award
+          icon: route
 
     data_sources:
         - name: resource_attempts

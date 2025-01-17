@@ -10,7 +10,6 @@ registry.add('ClarolineEvaluationBundle', {
    * Provides Desktop and/or Workspace tools.
    */
   tools: {
-    'evaluation': () => { return import(/* webpackChunkName: "evaluation-tool-evaluation" */ '#/main/evaluation/tools/evaluation') },
     'progression': () => { return import(/* webpackChunkName: "evaluation-tool-progression" */ '#/main/evaluation/tools/evaluation') }
   },
 

@@ -134,6 +134,12 @@ abstract class AdditionalInstaller implements AdditionalInstallerInterface, Logg
     {
     }
 
+    /**
+     * Gets the list of Updaters to play when the plugin is updated.
+     * Keys are the target version (e.g. 15.0.0) and value is FQCN of the updater.
+     *
+     * NB. Updaters MUST extend Claroline\InstallationBundle\Updater\Updater and tagged with "claroline.platform.updater".
+     */
     public static function getUpdaters(): array
     {
         return [];

@@ -11,10 +11,18 @@
 
 namespace Claroline\EvaluationBundle\Installation;
 
+use Claroline\EvaluationBundle\Installation\Updater\Updater150000;
 use Claroline\InstallationBundle\Additional\AdditionalInstaller;
 
 class ClarolineEvaluationInstaller extends AdditionalInstaller
 {
+    public static function getUpdaters(): array
+    {
+        return [
+            '15.0.0' => Updater150000::class,
+        ];
+    }
+
     public function hasFixtures(): bool
     {
         return true;
