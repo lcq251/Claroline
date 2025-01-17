@@ -75,13 +75,13 @@ class Sco
     /**
      * Score to pass for Scorm 2004.
      */
-    #[ORM\Column(name: 'score_decimal', type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
+    #[ORM\Column(name: 'score_decimal', type: Types::FLOAT, precision: 10, scale: 7, nullable: true)]
     private ?float $scoreToPassDecimal = null;
 
     /**
      * For Scorm 2004 only.
      */
-    #[ORM\Column(name: 'completion_threshold', type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
+    #[ORM\Column(name: 'completion_threshold', type: Types::FLOAT, precision: 10, scale: 7, nullable: true)]
     private ?float $completionThreshold = null;
 
     /**
