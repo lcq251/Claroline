@@ -18,7 +18,7 @@ import {PageHeading} from '#/main/app/page/components/heading'
 import {Content} from '#/main/app/components/content'
 import {UserMicro} from '#/main/core/user/components/micro'
 import {Datetime} from '#/main/app/components/date'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {Badge} from '#/main/app/components/badge'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 import {ForumMessages} from '#/plugin/forum/resources/forum/components/messages'
@@ -46,131 +46,132 @@ class SubjectComponent extends Component {
   render() {
     return (
       <ResourcePage
-        poster={get(this.props.subject, 'poster')}
         title={get(this.props.subject, 'title', trans('loading'))}
       >
-        <PageHeading
-          size="md"
-          title={get(this.props.subject, 'title', trans('loading'))}
-          actions={[
-            {
-              name: 'edit',
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-pencil',
-              label: trans('edit', {}, 'actions'),
-              displayed: (this.props.currentUser && get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id) || this.props.moderator,
-              modal: [MODAL_SUBJECT, {
-                subject: this.props.subject,
-                forumId: this.props.forum.id
-              }]
-            }, {
-              name: 'pin',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-thumb-tack',
-              label: trans('stick', {}, 'forum'),
-              displayed: !(get(this.props.subject, 'meta.sticky', true)) && this.props.moderator,
-              callback: () => this.props.stickSubject(this.props.subject)
-            }, {
-              name: 'unpin',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-thumb-tack',
-              label: trans('unstick', {}, 'forum'),
-              displayed: get(this.props.subject, 'meta.sticky', false) && this.props.moderator,
-              callback: () => this.props.unStickSubject(this.props.subject)
-            }, {
-              name: 'close',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-circle-xmark',
-              label: trans('close_subject', {}, 'forum'),
-              displayed: !(get(this.props.subject, 'meta.closed', true)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
-              callback: () => this.props.closeSubject(this.props.subject)
-            }, {
-              name: 'open',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-circle-check',
-              label: trans('open_subject', {}, 'forum'),
-              displayed: (get(this.props.subject, 'meta.closed', false)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
-              callback: () => this.props.unCloseSubject(this.props.subject)
-            }, {
-              name: 'flag',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-flag',
-              label: trans('flag', {}, 'forum'),
-              displayed: this.props.currentUser && (get(this.props.subject, 'meta.creator.id') !== this.props.currentUser.id) && !(get(this.props.subject, 'meta.flagged', true)),
-              callback: () => this.props.flagSubject(this.props.subject)
-            }, {
-              name: 'unflag',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-flag',
-              label: trans('unflag', {}, 'forum'),
-              displayed: this.props.currentUser && (get(this.props.subject, 'meta.creator.id') !== this.props.currentUser.id) && (get(this.props.subject, 'meta.flagged', false)),
-              callback: () => this.props.unFlagSubject(this.props.subject)
-            }, {
-              name: 'delete',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-trash',
-              label: trans('delete', {}, 'actions'),
-              displayed: this.props.currentUser && get(this.props.subject, 'meta.creator.id') === this.props.currentUser.id || this.props.moderator,
-              callback: () => this.deleteSubject(this.props.subject.id),
-              confirm: trans('remove_subject_confirm_message', {}, 'forum'),
-              dangerous: true
-            }
-          ]}
-        />
-
-        <PageSection size="md" className="mb-5">
-          <Content
-            placeholder={trans('no_content')}
-            meta={
-              <>
-                <UserMicro
-                  {...get(this.props.subject, 'meta.creator', {})}
-                  // noStatus={true}
-                  link={true}
-                />
-
-                <span>-</span>
-
-                <Datetime value={get(this.props.subject, 'meta.created')} long={true} time={true} />
-
-                {get(this.props.subject, 'meta.closed') &&
-                  <Badge variant="danger" subtle={true} className="ms-auto">
-                    {trans('closed_subject', {}, 'forum')}
-                  </Badge>
-                }
-              </>
-            }
-            tags={get(this.props.subject, 'tags')}
-          >
-            {get(this.props.subject, 'content')}
-          </Content>
-
-          <div className="d-flex mt-4 gap-3" role="presentation">
-            <div className="text-body-secondary fw-bolder" role="presentation">
-              <span className="fa fa-fw fa-eye me-2" aria-hidden={true} />
-              {transChoice('display_views', get(this.props.subject, 'meta.views', 0), {count: get(this.props.subject, 'meta.views', 0)})}
-            </div>
-
-            <div className="text-body-secondary fw-bolder" role="presentation">
-              <span className="fa fa-fw fa-comment me-2" aria-hidden={true} />
-              {transChoice('replies', this.props.totalMessages || 0, {count: this.props.totalMessages || 0}, 'forum')}
-            </div>
-          </div>
-        </PageSection>
-
-        <PageSection size="md" className="mb-5">
-          <hr className="mb-4 mt-0" />
-          <ForumMessages
-            root={true}
-            messages={this.props.messages}
-            canReply={!get(this.props.subject, 'meta.closed')}
-            addMessage={(message, parent = null) => this.props.createMessage(this.props.subject.id, message, parent ? parent.id : null)}
-            updateMessage={(message, content) => this.props.editMessage(message, this.props.subject.id, content)}
-            deleteMessage={(message) => this.props.deleteMessage(message.id)}
-            reportMessage={(message) => this.props.flag(message, this.props.subject.id)}
-            unreportMessage={(message) => this.props.unFlag(message, this.props.subject.id)}
+        <PageContent poster={get(this.props.subject, 'poster')}>
+          <PageHeading
+            size="md"
+            title={get(this.props.subject, 'title', trans('loading'))}
+            actions={[
+              {
+                name: 'edit',
+                type: MODAL_BUTTON,
+                icon: 'fa fa-fw fa-pencil',
+                label: trans('edit', {}, 'actions'),
+                displayed: (this.props.currentUser && get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id) || this.props.moderator,
+                modal: [MODAL_SUBJECT, {
+                  subject: this.props.subject,
+                  forumId: this.props.forum.id
+                }]
+              }, {
+                name: 'pin',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-thumb-tack',
+                label: trans('stick', {}, 'forum'),
+                displayed: !(get(this.props.subject, 'meta.sticky', true)) && this.props.moderator,
+                callback: () => this.props.stickSubject(this.props.subject)
+              }, {
+                name: 'unpin',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-thumb-tack',
+                label: trans('unstick', {}, 'forum'),
+                displayed: get(this.props.subject, 'meta.sticky', false) && this.props.moderator,
+                callback: () => this.props.unStickSubject(this.props.subject)
+              }, {
+                name: 'close',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-circle-xmark',
+                label: trans('close_subject', {}, 'forum'),
+                displayed: !(get(this.props.subject, 'meta.closed', true)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
+                callback: () => this.props.closeSubject(this.props.subject)
+              }, {
+                name: 'open',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-circle-check',
+                label: trans('open_subject', {}, 'forum'),
+                displayed: (get(this.props.subject, 'meta.closed', false)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
+                callback: () => this.props.unCloseSubject(this.props.subject)
+              }, {
+                name: 'flag',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-flag',
+                label: trans('flag', {}, 'forum'),
+                displayed: this.props.currentUser && (get(this.props.subject, 'meta.creator.id') !== this.props.currentUser.id) && !(get(this.props.subject, 'meta.flagged', true)),
+                callback: () => this.props.flagSubject(this.props.subject)
+              }, {
+                name: 'unflag',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-flag',
+                label: trans('unflag', {}, 'forum'),
+                displayed: this.props.currentUser && (get(this.props.subject, 'meta.creator.id') !== this.props.currentUser.id) && (get(this.props.subject, 'meta.flagged', false)),
+                callback: () => this.props.unFlagSubject(this.props.subject)
+              }, {
+                name: 'delete',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-trash',
+                label: trans('delete', {}, 'actions'),
+                displayed: this.props.currentUser && get(this.props.subject, 'meta.creator.id') === this.props.currentUser.id || this.props.moderator,
+                callback: () => this.deleteSubject(this.props.subject.id),
+                confirm: trans('remove_subject_confirm_message', {}, 'forum'),
+                dangerous: true
+              }
+            ]}
           />
-        </PageSection>
+
+          <PageSection size="md" className="mb-5">
+            <Content
+              placeholder={trans('no_content')}
+              meta={
+                <>
+                  <UserMicro
+                    {...get(this.props.subject, 'meta.creator', {})}
+                    // noStatus={true}
+                    link={true}
+                  />
+
+                  <span>-</span>
+
+                  <Datetime value={get(this.props.subject, 'meta.created')} long={true} time={true} />
+
+                  {get(this.props.subject, 'meta.closed') &&
+                    <Badge variant="danger" subtle={true} className="ms-auto">
+                      {trans('closed_subject', {}, 'forum')}
+                    </Badge>
+                  }
+                </>
+              }
+              tags={get(this.props.subject, 'tags')}
+            >
+              {get(this.props.subject, 'content')}
+            </Content>
+
+            <div className="d-flex mt-4 gap-3" role="presentation">
+              <div className="text-body-secondary fw-bolder" role="presentation">
+                <span className="fa fa-fw fa-eye me-2" aria-hidden={true} />
+                {transChoice('display_views', get(this.props.subject, 'meta.views', 0), {count: get(this.props.subject, 'meta.views', 0)})}
+              </div>
+
+              <div className="text-body-secondary fw-bolder" role="presentation">
+                <span className="fa fa-fw fa-comment me-2" aria-hidden={true} />
+                {transChoice('replies', this.props.totalMessages || 0, {count: this.props.totalMessages || 0}, 'forum')}
+              </div>
+            </div>
+          </PageSection>
+
+          <PageSection size="md" className="mb-5">
+            <hr className="mb-4 mt-0" />
+            <ForumMessages
+              root={true}
+              messages={this.props.messages}
+              canReply={!get(this.props.subject, 'meta.closed')}
+              addMessage={(message, parent = null) => this.props.createMessage(this.props.subject.id, message, parent ? parent.id : null)}
+              updateMessage={(message, content) => this.props.editMessage(message, this.props.subject.id, content)}
+              deleteMessage={(message) => this.props.deleteMessage(message.id)}
+              reportMessage={(message) => this.props.flag(message, this.props.subject.id)}
+              unreportMessage={(message) => this.props.unFlag(message, this.props.subject.id)}
+            />
+          </PageSection>
+        </PageContent>
       </ResourcePage>
     )
   }

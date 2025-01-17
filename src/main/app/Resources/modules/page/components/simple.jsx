@@ -12,8 +12,9 @@ import {theme} from '#/main/app/config/theme'
  */
 const PageSimple = props =>
   <div
-    className={classes('app-page', {
-      'app-page-embedded': props.embedded
+    className={classes({
+      'app-page': !props.embedded,
+      'embedded-page': props.embedded
     }, props.className)}
     role="presentation"
   >

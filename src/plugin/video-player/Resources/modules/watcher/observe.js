@@ -4,7 +4,7 @@ export default function observe(selector, callback, containers = [document.body]
   window.MutationObserver = window.MutationObserver || window.WebKitMutationObserver
 
   const initialized = []
-  // css class to add to your video tag that do not has to be "videojsized"
+  // css class to add to your video tag that do not have to be "videojsized"
   const excludeClass = 'not-video-js'
   // create an observer instance
 
@@ -43,6 +43,6 @@ export default function observe(selector, callback, containers = [document.body]
     })
   })
 
-  var config = { attributes: false, childList: true, characterData: false, subtree: true }
+  const config = { attributes: false, childList: true, characterData: false, subtree: true }
   containers.forEach(container => observer.observe(container, config))
 }

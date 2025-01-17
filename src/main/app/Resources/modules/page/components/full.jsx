@@ -5,6 +5,7 @@ import {PageFull as PageFullTypes} from '#/main/app/page/prop-types'
 import {PageSimple} from '#/main/app/page/components/simple'
 import {PageMenu} from '#/main/app/page/components/menu'
 import {Poster} from '#/main/app/components/poster'
+import {PageBody} from '#/main/app/page/components/body'
 
 const PageFull = (props) =>
   <PageSimple
@@ -12,6 +13,7 @@ const PageFull = (props) =>
   >
     {props.showHeader &&
       <PageMenu
+        name={props.name}
         embedded={props.embedded}
         {...props.menu}
         breadcrumb={props.breadcrumb}
@@ -19,11 +21,13 @@ const PageFull = (props) =>
       />
     }
 
-    {props.showHeader && props.poster &&
-      <Poster url={props.poster} className="app-page-poster" />
-    }
+    <PageBody>
+      {props.showHeader && props.poster &&
+        <Poster url={props.poster} className="app-page-poster" />
+      }
 
-    {props.children}
+      {props.children}
+    </PageBody>
   </PageSimple>
 
 PageFull.propTypes = PageFullTypes.propTypes

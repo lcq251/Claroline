@@ -18,19 +18,17 @@ const CrudList = (props) =>
       target: `${props.path}/crud`
     }]}
     title="Simple CRUD"
-    primaryAction="add"
-    actions={[
-      {
+  >
+    <PageListSection
+      addAction={{
         name: 'add',
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-plus',
         label: 'Add',
         target: `${props.path}/crud/new`,
         primary: true
-      }
-    ]}
-  >
-    <PageListSection>
+      }}
+    >
       <ListData
         flush={true}
         name={selectors.LIST_NAME}

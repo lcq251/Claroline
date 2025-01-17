@@ -2,22 +2,22 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {Routes} from '#/main/app/router'
-import {selectors as editorSelectors} from '#/main/core/resource/editor'
 
-import {PathEditorSummary} from '#/main/evaluation/sequence/editor/components/summary'
+import {selectors} from '#/main/evaluation/sequence/editor/store'
+import {SequenceEditorSummary} from '#/main/evaluation/sequence/editor/components/summary'
 import {PathEditorStep} from '#/main/evaluation/sequence/editor/components/step'
 
-const EditorScenario = () => {
-  const resourceEditorPath = useSelector(editorSelectors.path) + '/steps'
+const SequenceEditorScenario = () => {
+  const editorPath = useSelector(selectors.path)
 
   return (
     <Routes
-      path={resourceEditorPath}
+      path={editorPath+'/steps'}
       routes={[
         {
           path: '/',
           exact: true,
-          component: PathEditorSummary
+          component: SequenceEditorSummary
         }, {
           path: '/:slug',
           component: PathEditorStep
@@ -28,5 +28,5 @@ const EditorScenario = () => {
 }
 
 export {
-  EditorScenario
+  SequenceEditorScenario
 }

@@ -3,6 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {Video as VideoTypes} from '#/integration/peertube/prop-types'
+import get from 'lodash/get'
 
 const PeerTubePlayer = (props) => {
   const embedIframe = useRef(null)
@@ -40,16 +41,16 @@ const PeerTubePlayer = (props) => {
         props.onPause(videoInfo.current.position, videoInfo.current.duration)
       }
     }
-  }, [])
+  }, [get(props.video, 'embeddedUrl')])
 
   return (
     <iframe
+      className={props.className}
       style={{minHeight: '540px'}}
       height="100%"
       ref={embedIframe}
       src={url()}
       allowFullScreen={true}
-      frameBorder="0"
       onLoad={() => {
         const PeerTubePlayer = window['PeerTubePlayer']
         let player = new PeerTubePlayer(embedIframe.current)
@@ -99,6 +100,7 @@ const PeerTubePlayer = (props) => {
 }
 
 PeerTubePlayer.propTypes = {
+  className: T.string,
   video: T.shape( VideoTypes.propTypes ).isRequired,
   progression: T.number.isRequired,
   onPlay: T.func, // get the currentTime and totalDuration as parameters

@@ -8,6 +8,7 @@ import {selectors} from '#/main/theme/administration/appearance/store'
 import {ThemeForm} from '#/main/theme/theme/components/form'
 import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
+import {PageContent} from '#/main/app/page'
 
 const AppearanceTool = (props) =>
   <Tool
@@ -36,7 +37,9 @@ const AppearanceTool = (props) =>
         path: '/theme',
         render: () => (
           <ToolPage title={trans('theme', {}, 'appearance')}>
-            <ThemeForm name={selectors.THEME_NAME} className="my-5" />
+            <PageContent>
+              <ThemeForm name={selectors.THEME_NAME} className="my-5" />
+            </PageContent>
           </ToolPage>
         )
       }

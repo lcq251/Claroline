@@ -34,7 +34,11 @@ const ToolPage = props => {
           target: toolPath
         }
       ] : []).concat(props.breadcrumb || [])}
-      title={trans(toolName, {}, 'tools')}
+      name={trans(toolName, {}, 'tools')}
+      title={props.title ?
+        props.title + ' | ' + trans(toolName, {}, 'tools') :
+        trans(toolName, {}, 'tools')
+      }
       description={trans(toolName+'_desc', {}, 'tools')}
       menu={{
         nav: toolDef.menu,
@@ -53,7 +57,7 @@ const ToolPage = props => {
       }}
 
       styles={[].concat(toolDef.styles || [], props.styles || [])}
-      {...omit(props, 'className', 'breadcrumb', 'styles', 'root')}
+      {...omit(props, 'className', 'breadcrumb', 'title', 'styles', 'root')}
     >
       {props.children}
     </ContextPage>

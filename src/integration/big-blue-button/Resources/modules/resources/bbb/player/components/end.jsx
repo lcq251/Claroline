@@ -2,17 +2,19 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 
-import {ContentHtml} from '#/main/app/content/components/html'
-
 import {selectors} from '#/integration/big-blue-button/resources/bbb/store'
 import {BBB as BBBType} from '#/integration/big-blue-button/resources/bbb/prop-types'
 import {ResourcePage} from '#/main/core/resource'
+import {Html} from '#/main/app/components/html'
+import {PageContent} from '#/main/app/page'
 
 const EndComponent = (props) =>
   <ResourcePage>
-    <ContentHtml>
-      {props.bbb.endMessage}
-    </ContentHtml>
+    <PageContent>
+      <Html className="content-text">
+        {props.bbb.endMessage}
+      </Html>
+    </PageContent>
   </ResourcePage>
 
 EndComponent.propTypes = {

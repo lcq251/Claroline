@@ -10,16 +10,15 @@ import {ResourceCard} from '#/main/evaluation/resource/components/card'
 import resourceEvaluationSource from '#/main/evaluation/data/sources/resource-evaluations'
 import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
 import {selectors} from '#/main/evaluation/resource/evaluation/store'
-import {ResourcePage} from '#/main/core/resource/components/page'
-import {PageListSection} from '#/main/app/page'
+
+import {PageSection} from '#/main/app/page'
+import {DashboardPage} from '#/main/app/dashboard'
 
 const ResourceEvaluations = (props) =>
-  <ResourcePage
-    title={trans('evaluation', {}, 'tools')}
-  >
-    <PageListSection>
+  <DashboardPage>
+    <PageSection size="full" className="d-flex flex-fill">
       <ListData
-        flush={true}
+        className="mb-5"
         name={selectors.STORE_NAME}
         fetch={{
           url: ['apiv2_resource_evaluation_list', {nodeId: props.nodeId}],
@@ -48,8 +47,8 @@ const ResourceEvaluations = (props) =>
         ]}
         card={ResourceCard}
       />
-    </PageListSection>
-  </ResourcePage>
+    </PageSection>
+  </DashboardPage>
 
 ResourceEvaluations.propTypes = {
   nodeId: T.string.isRequired

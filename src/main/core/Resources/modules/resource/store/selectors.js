@@ -124,10 +124,15 @@ const hasEvaluation = createSelector(
 )
 
 // evaluation selectors
-const resourceEvaluation = createSelector(
+const userEvaluation = createSelector(
   [store],
   (store) => store.userEvaluation
 )
+
+/**
+ * @deprecated use userEvaluation()
+ */
+const resourceEvaluation = userEvaluation
 
 const evaluationStatus = createSelector(
   [resourceEvaluation],
@@ -172,6 +177,7 @@ export const selectors = {
   mimeType,
   // evaluation
   estimatedDuration,
+  userEvaluation,
   resourceEvaluation,
   hasEvaluation,
   evaluationStatus,

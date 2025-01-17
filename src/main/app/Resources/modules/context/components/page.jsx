@@ -24,6 +24,7 @@ const ContextPage = (props) => {
           target: contextPath
         }
       ].concat(props.breadcrumb || [])}
+      name={props.name}
       affix={ContextMenu}
       title={props.title ?
         props.title + ' | ' + get(contextData, 'name', trans(contextType, {}, 'context')) :

@@ -49,14 +49,6 @@ const EventsTool = (props) =>
         type: LINK_BUTTON,
         label: (props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus'),
         target: props.path + '/presences'
-      }, {
-        name: 'follow',
-        type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-gauge',
-        label: trans('Suivi'),
-        tooltip: 'bottom',
-        target: props.path + '/follow',
-        displayed: props.canRegister
       }
     ]}
     pages={[

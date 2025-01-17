@@ -13,6 +13,7 @@ import {getActions} from '#/main/community/role/utils'
 import {Role as RoleTypes} from '#/main/community/role/prop-types'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent} from '#/main/app/page'
 
 const Role = (props) =>
   <ToolPage
@@ -34,19 +35,21 @@ const Role = (props) =>
     }
 
     {!isEmpty(props.role) &&
-      <PageHeading
-        size="md"
-        title={trans(get(props.role, 'translationKey', 'loading'))}
-        description={get(props.role, 'meta.description')}
-        actions={!isEmpty(props.role) ? getActions([props.role], {
-          add: () => props.reload(props.role.id),
-          update: () => props.reload(props.role.id),
-          delete: () => props.reload(props.role.id)
-        }, props.path, props.currentUser) : []}
-      />
-    }
+      <PageContent>
+        <PageHeading
+          size="md"
+          title={trans(get(props.role, 'translationKey', 'loading'))}
+          description={get(props.role, 'meta.description')}
+          actions={!isEmpty(props.role) ? getActions([props.role], {
+            add: () => props.reload(props.role.id),
+            update: () => props.reload(props.role.id),
+            delete: () => props.reload(props.role.id)
+          }, props.path, props.currentUser) : []}
+        />
 
-    {!isEmpty(props.role) && props.children}
+        {props.children}
+      </PageContent>
+    }
   </ToolPage>
 
 Role.propTypes = {

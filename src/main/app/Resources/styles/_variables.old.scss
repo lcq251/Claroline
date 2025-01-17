@@ -150,34 +150,16 @@ $summary-lvl-indent:        map-get($spacers, 4); // indent children of a step i
 // Links
 $summary-link-spacer-y: map-get($spacers, 3);
 $summary-link-spacer-x: map-get($spacers, 4);
-$summary-link-color:          $link-color;
+$summary-link-color:          var(--#{$prefix}body-color);
 $summary-link-bg:             var(--#{$prefix}tertiary-bg);
 $summary-link-border-radius:  var(--#{$prefix}border-radius-sm);
 
-$summary-link-hover-color:    $link-hover-color;
-//$summary-link-hover-bg:       $summary-link-bg;
-$summary-link-active-color:   $link-hover-color;
+$summary-link-hover-color:    var(--#{$prefix}primary-text-emphasis);
+$summary-link-hover-bg:       var(--#{$prefix}primary-bg-subtle);
+//$summary-link-active-color:   $link-hover-color;
 //$summary-link-active-bg:      $summary-link-bg;
-$summary-link-disabled-color: $body-color;
-$summary-link-disabled-bg:    var(--#{$prefix}tertiary-bg);
-
-
-// -
-// Footer
-// ---
-
-$footer-max-width:          none !default; // max width for the footer content (do not affect footer container)
-$footer-bg:                 none !default;
-$footer-color:              var(--#{$prefix}secondary-color) !default;
-$footer-border-width:       0 !default;
-$footer-border-color:       transparent !default;
-$footer-inner-border-color: var(--#{$prefix}border-color) !default;
-$footer-box-shadow:         none !default;
-
-// Links
-/*$footer-link-color:        $gray-500;
-$footer-link-hover-color:  $gray-dark;
-$footer-link-active-color: $gray-900;*/
+//$summary-link-disabled-color: $body-color;
+//$summary-link-disabled-bg:    var(--#{$prefix}tertiary-bg);
 
 
 // -

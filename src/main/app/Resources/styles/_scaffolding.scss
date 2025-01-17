@@ -28,17 +28,8 @@ body {
     flex-direction: row;
 }
 
-.app-body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-}
-
 .app-loader {
     z-index: $zindex-modal + 1;
-    // order: 1;
     width: 100%;
     height: $loader-height;
     flex-shrink: 0;

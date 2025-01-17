@@ -54,7 +54,7 @@ const Editor = (props) => {
       advanced: true
     }
   ]
-    .concat(props.pages)
+    .concat(props.pages || [])
     .filter(page => !page.disabled && (!page.managerOnly || props.canAdministrate))
 
   const history = useHistory()
@@ -66,7 +66,7 @@ const Editor = (props) => {
         target: props.target,
         onSave: props.onSave,
         close: props.close,
-        canAdministrate: props.canAdministrate
+        canAdministrate: !!props.canAdministrate
       }}
     >
       {(!isEmpty(props.styles) || props.title) &&
@@ -75,7 +75,7 @@ const Editor = (props) => {
             <title>{props.title} - {trans('edition')}</title>
           }
 
-          {props.styles.map(style =>
+          {!isEmpty(props.styles) && props.styles.map(style =>
             <link key={style} rel="stylesheet" type="text/css" href={theme(style)} />
           )}
         </Helmet>
@@ -104,8 +104,8 @@ const Editor = (props) => {
         <div className="app-editor-body" role="presentation" tabIndex={-1   }>
           <Routes
             path={props.path}
-            redirect={props.defaultPage ? [
-              {from: '/', exact: true, to: '/' + props.defaultPage}
+            redirect={!isEmpty(pages) ? [
+              {from: '/', exact: true, to: '/' + pages[0].name}
             ] : undefined}
             routes={pages.map(page => ({
               path: page.path || '/' + page.name,
@@ -156,7 +156,6 @@ Editor.propTypes = {
     component: T.elementType,
     render: T.func
   })),
-  defaultPage: T.string,
 
   // standard pages
   overviewPage: T.elementType,
@@ -164,13 +163,6 @@ Editor.propTypes = {
   historyPage: T.elementType,
   permissionsPage: T.elementType,
   actionsPage: T.elementType
-}
-
-Editor.defaultProps = {
-  pages: [],
-  actions: [],
-  styles: [],
-  canAdministrate: false
 }
 
 export {

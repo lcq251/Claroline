@@ -5,16 +5,22 @@ import classes from 'classnames'
 import {toKey} from '#/main/app/utils/text'
 import {Button, Toolbar} from '#/main/app/action'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
+import isEmpty from 'lodash/isEmpty'
 
 const PageMenu = (props) => {
-  const displayedNav = props.nav
-    .filter(action => undefined === action.displayed || action.displayed)
+  let displayedNav = []
+  if (!isEmpty(props.nav)) {
+    displayedNav = props.nav
+      .filter(action => undefined === action.displayed || action.displayed)
+  }
 
   return (
-    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-stretch bg-body', {
-      'sticky-top': !props.embedded
-    })} role="presentation">
-      {!props.embedded && props.affix && createElement(props.affix)}
+    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-stretch bg-body z-2')} role="presentation">
+      {!props.embedded && props.affix && createElement(props.affix, {
+        name: props.name
+      })}
+
+      {props.children}
 
       {(0 < displayedNav.length || props.actions) &&
         <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm" role="presentation">
@@ -37,7 +43,7 @@ const PageMenu = (props) => {
             <Toolbar
               className="nav nav-underline flex-nowrap gap-4 d-flex"
               buttonName="nav-link fw-bolder"
-              toolbar={props.toolbar}
+              toolbar={props.toolbar || 'more'}
               tooltip="bottom"
               actions={props.actions}
             />
@@ -71,12 +77,8 @@ PageMenu.propTypes = {
     T.shape(
       PromisedAction.propTypes
     )
-  ])
-}
-
-PageMenu.defaultProps = {
-  nav: [],
-  toolbar: 'more'
+  ]),
+  children: T.node
 }
 
 export {

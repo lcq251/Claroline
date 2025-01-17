@@ -7,7 +7,6 @@ import {actions, selectors} from '#/main/community/tools/community/dashboard/sto
 
 const CommunityDashboard = connect(
   (state) => ({
-    path: toolSelectors.path(state),
     contextId: toolSelectors.contextId(state),
     count: selectors.count(state)
   }),

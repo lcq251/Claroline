@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {ContentMenu} from '#/main/app/content/components/menu'
 
 import {selectors} from '#/main/transfer/tools/import/store'
@@ -33,11 +33,13 @@ const ImportOverview = () => {
 
   return (
     <ToolPage>
-      <PageSection size="md" className="mb-5">
-        <ContentMenu
-          items={links}
-        />
-      </PageSection>
+      <PageContent>
+        <PageSection size="md" className="mb-5">
+          <ContentMenu
+            items={links}
+          />
+        </PageSection>
+      </PageContent>
     </ToolPage>
   )
 }

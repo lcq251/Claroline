@@ -1,14 +1,33 @@
 import React from 'react'
 
 import {trans} from '#/main/app/intl'
-import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
+import {EditorPage} from '#/main/app/editor'
 
 import {constants} from '#/main/evaluation/sequence/constants'
 
-const PathEditorAppearance = () =>
-  <ResourceEditorAppearance
+const SequenceEditorAppearance = () =>
+  <EditorPage
+    title={trans('appearance')}
+    help={trans('Personnalisez les paramètres d\'affichage avancés de votre séquence et de ses contenus.')}
     definition={[
       {
+        name: 'images',
+        icon: 'fa fa-fw fa-picture',
+        title: trans('images'),
+        primary: true,
+        fields: [
+          {
+            name: 'poster',
+            label: trans('poster'),
+            type: 'image'
+          }, {
+            name: 'thumbnail',
+            label: trans('thumbnail'),
+            type: 'image',
+            recommended: true
+          }
+        ]
+      }, {
         name: 'numbering',
         icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
@@ -16,7 +35,7 @@ const PathEditorAppearance = () =>
         hideTitle: true,
         fields: [
           {
-            name: 'resource.display.numbering',
+            name: 'display.numbering',
             type: 'choice',
             label: trans('path_numbering', {}, 'path'),
             required: true,
@@ -54,5 +73,5 @@ const PathEditorAppearance = () =>
   />
 
 export {
-  PathEditorAppearance
+  SequenceEditorAppearance
 }

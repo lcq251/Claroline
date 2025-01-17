@@ -7,6 +7,11 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
 
+    Claroline\EvaluationBundle\Subscriber\SequenceEvaluationSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
+
     Claroline\EvaluationBundle\Subscriber\WorkspaceEvaluationSubscriber:
         tags: [ 'kernel.event_subscriber' ]
         arguments:
@@ -16,16 +21,12 @@ services:
             - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
             - '@Claroline\EvaluationBundle\Manager\CertificateManager'
 
-    Claroline\EvaluationBundle\Subscriber\SequenceSubscriber:
+    Claroline\EvaluationBundle\Subscriber\Crud\SequenceSubscriber:
         tags: [ 'kernel.event_subscriber' ]
         arguments:
             - '@security.token_storage'
-            - '@translator'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\CoreBundle\Manager\ResourceManager'
-            - '@Innova\PathBundle\Manager\EvaluationManager'
+            - '@Claroline\CoreBundle\Manager\FileManager'
 
     # Data sources
     Claroline\EvaluationBundle\Subscriber\DataSource\ResourceAttemptSource:

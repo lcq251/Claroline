@@ -12,7 +12,7 @@ import {getPlainText} from '#/main/app/data/types/html/utils'
 import {Datetime} from '#/main/app/components/date'
 import {LINK_BUTTON, LinkButton} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {UserMicro} from '#/main/core/user/components/micro'
 import {Badge} from '#/main/app/components/badge'
 import {ToolPage} from '#/main/core/tool'
@@ -121,64 +121,66 @@ const AnnouncementList = () => {
 
   return (
     <ToolPage>
-      {(loaded && 0 === posts.length) &&
-        <EmptyState
-          icon="fa fa-bullhorn"
-          title={trans('Aucune annonce', {}, 'announcement')}
-          description={trans('Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.', {}, 'announcement')}
-          primaryAction={{
-            type: LINK_BUTTON,
-            label: trans('add_announcement', {}, 'actions'),
-            target: `${toolPath}/add`,
-            displayed: hasPermission('edit', tool)
-          }}
-          secondaryAction={{
-            type: LINK_BUTTON,
-            icon: 'fa fa-arrow-left',
-            label: trans('back_home', {}, 'actions'),
-            target: contextPath
-          }}
-        />
-      }
-
-      <PageSection
-        size="lg"
-      >
-        {!loaded &&
-          <ul className="announcements-list list-unstyled my-5 placeholder-glow">
-            <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />
-            <Announce key={2} path={toolPath} announcement={{}} preview={!listFullContent} />
-            <Announce key={3} path={toolPath} announcement={{}} preview={!listFullContent} />
-            <Announce key={4} path={toolPath} announcement={{}} preview={!listFullContent} />
-            <Announce key={5} path={toolPath} announcement={{}} preview={!listFullContent} />
-          </ul>
-        }
-
-        {(loaded && 0 !== posts.length) &&
-          <ul className="announcements-list list-unstyled my-5">
-            {posts.map((post, index) =>
-              <Announce
-                key={index}
-                path={toolPath}
-                announcement={post}
-                loaded={loaded}
-                preview={!listFullContent}
-              />
-            )}
-          </ul>
-        }
-
-        {0 !== posts.length && hasPermission('edit', tool) &&
-          <ButtonSticky
-            {...{
+      <PageContent poster={get(tool, 'poster')}>
+        {(loaded && 0 === posts.length) &&
+          <EmptyState
+            icon="fa fa-bullhorn"
+            title={trans('Aucune annonce', {}, 'announcement')}
+            description={trans('Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.', {}, 'announcement')}
+            primaryAction={{
               type: LINK_BUTTON,
-              icon: 'fa fa-plus',
               label: trans('add_announcement', {}, 'actions'),
-              target: `${toolPath}/add`
+              target: `${toolPath}/add`,
+              displayed: hasPermission('edit', tool)
+            }}
+            secondaryAction={{
+              type: LINK_BUTTON,
+              icon: 'fa fa-arrow-left',
+              label: trans('back_home', {}, 'actions'),
+              target: contextPath
             }}
           />
         }
-      </PageSection>
+
+        <PageSection
+          size="lg"
+        >
+          {!loaded &&
+            <ul className="announcements-list list-unstyled my-5 placeholder-glow">
+              <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />
+              <Announce key={2} path={toolPath} announcement={{}} preview={!listFullContent} />
+              <Announce key={3} path={toolPath} announcement={{}} preview={!listFullContent} />
+              <Announce key={4} path={toolPath} announcement={{}} preview={!listFullContent} />
+              <Announce key={5} path={toolPath} announcement={{}} preview={!listFullContent} />
+            </ul>
+          }
+
+          {(loaded && 0 !== posts.length) &&
+            <ul className="announcements-list list-unstyled my-5">
+              {posts.map((post, index) =>
+                <Announce
+                  key={index}
+                  path={toolPath}
+                  announcement={post}
+                  loaded={loaded}
+                  preview={!listFullContent}
+                />
+              )}
+            </ul>
+          }
+
+          {0 !== posts.length && hasPermission('edit', tool) &&
+            <ButtonSticky
+              {...{
+                type: LINK_BUTTON,
+                icon: 'fa fa-plus',
+                label: trans('add_announcement', {}, 'actions'),
+                target: `${toolPath}/add`
+              }}
+            />
+          }
+        </PageSection>
+      </PageContent>
     </ToolPage>
   )
 }

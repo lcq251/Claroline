@@ -32,6 +32,7 @@ import {
 import {actions} from '#/plugin/claco-form/resources/claco-form/player/store'
 import {EntryFormData} from '#/plugin/claco-form/resources/claco-form/player/components/entry-form-data'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 // TODO : split template form and standard form in 2 different components
 
@@ -227,71 +228,73 @@ class EntryFormComponent extends Component {
 
     return (
       <ResourcePage>
-        {this.props.entry && (this.props.useTemplate && this.props.template) &&
-          <Form
-            pendingChanges={this.props.pendingChanges}
-            errors={!isEmpty(this.props.errors)}
-            save={{
-              type: CALLBACK_BUTTON,
-              callback: () => this.props.saveForm(this.props.entry, this.props.fields, this.props.isNew, this.props.history.push, this.props.path),
-              confirm: this.getConfirm()
-            }}
-            cancel={{
-              type: LINK_BUTTON,
-              target: this.props.entry.id ? `${this.props.path}/entries/${this.props.entry.id}` : this.props.path,
-              exact: true
-            }}
-          >
-            <div className="card mb-3">
-              <div className="card-body">
-                {parse(this.state.template, {
-                  replace: (element) => {
-                    if (element.attribs && element.attribs.class === 'clacoform-field' && element.attribs.id) {
-                      // this is a field, replace it with a form input
-                      // get the field ID and retrieve it
-                      const id = element.attribs.id.replace('clacoform-field-', '')
-                      const field = fields.find(f => f.id === id)
-                      if (field) {
-                        return (
-                          <DataInput
-                            id={`field-${field.id}`}
-                            {...field}
-                          />
-                        )
+        <PageContent>
+          {this.props.entry && (this.props.useTemplate && this.props.template) &&
+            <Form
+              pendingChanges={this.props.pendingChanges}
+              errors={!isEmpty(this.props.errors)}
+              save={{
+                type: CALLBACK_BUTTON,
+                callback: () => this.props.saveForm(this.props.entry, this.props.fields, this.props.isNew, this.props.history.push, this.props.path),
+                confirm: this.getConfirm()
+              }}
+              cancel={{
+                type: LINK_BUTTON,
+                target: this.props.entry.id ? `${this.props.path}/entries/${this.props.entry.id}` : this.props.path,
+                exact: true
+              }}
+            >
+              <div className="card mb-3">
+                <div className="card-body">
+                  {parse(this.state.template, {
+                    replace: (element) => {
+                      if (element.attribs && element.attribs.class === 'clacoform-field' && element.attribs.id) {
+                        // this is a field, replace it with a form input
+                        // get the field ID and retrieve it
+                        const id = element.attribs.id.replace('clacoform-field-', '')
+                        const field = fields.find(f => f.id === id)
+                        if (field) {
+                          return (
+                            <DataInput
+                              id={`field-${field.id}`}
+                              {...field}
+                            />
+                          )
+                        }
                       }
+
+                      return element
                     }
-
-                    return element
-                  }
-                })}
+                  })}
+                </div>
               </div>
-            </div>
 
-            {this.renderCategories()}
-          </Form>
-        }
+              {this.renderCategories()}
+            </Form>
+          }
 
-        {this.props.entry && (!this.props.useTemplate || !this.props.template) &&
-          <FormData
-            className="mt-3"
-            level={3}
-            buttons={true}
-            name={selectors.STORE_NAME+'.entries.current'}
-            sections={this.getSections()}
-            save={{
-              type: CALLBACK_BUTTON,
-              callback: () => this.props.saveForm(this.props.entry, this.props.fields, this.props.isNew, this.props.history.push, this.props.path),
-              confirm: this.getConfirm()
-            }}
-            cancel={{
-              type: LINK_BUTTON,
-              target: this.props.entry.id ? `${this.props.path}/entries/${this.props.entry.id}` : this.props.path,
-              exact: true
-            }}
-          >
-            {this.renderCategories()}
-          </FormData>
-        }
+          {this.props.entry && (!this.props.useTemplate || !this.props.template) &&
+            <FormData
+              className="mt-3"
+              level={3}
+              buttons={true}
+              name={selectors.STORE_NAME+'.entries.current'}
+              sections={this.getSections()}
+              save={{
+                type: CALLBACK_BUTTON,
+                callback: () => this.props.saveForm(this.props.entry, this.props.fields, this.props.isNew, this.props.history.push, this.props.path),
+                confirm: this.getConfirm()
+              }}
+              cancel={{
+                type: LINK_BUTTON,
+                target: this.props.entry.id ? `${this.props.path}/entries/${this.props.entry.id}` : this.props.path,
+                exact: true
+              }}
+            >
+              {this.renderCategories()}
+            </FormData>
+          }
+        </PageContent>
       </ResourcePage>
     )
   }

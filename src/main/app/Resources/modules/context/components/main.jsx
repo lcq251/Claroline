@@ -162,13 +162,9 @@ const ContextMain = (props) => {
   return (
     <>
       <ContextNav/>
-      <div className="app-body" role="presentation" tabIndex={-1}>
+      {CurrentPage}
 
-
-        {CurrentPage}
-
-        {props.children}
-      </div>
+      {props.children}
     </>
   )
 }

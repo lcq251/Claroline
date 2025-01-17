@@ -79,7 +79,6 @@ const QuizOverview = props => {
 
   return (
     <ResourceOverview
-      evaluation={props.userEvaluation}
       display={{
         score: props.quiz.parameters.showScoreAt !== SHOW_SCORE_AT_NEVER,
         scoreMax: get(props.quiz, 'score.total'),

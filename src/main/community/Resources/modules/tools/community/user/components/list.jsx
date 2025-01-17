@@ -19,10 +19,6 @@ const UserList = props =>
   <ToolPage
     title={trans('users')}
   >
-    {props.limitReached && props.canRegister &&
-      <Alert type="warning">{trans('users_limit_reached')}</Alert>
-    }
-
     <PageListSection
       addAction={'workspace' === props.contextType ?
         {
@@ -52,6 +48,10 @@ const UserList = props =>
         }
       }
     >
+      {props.limitReached && props.canRegister &&
+        <Alert type="warning">{trans('users_limit_reached')}</Alert>
+      }
+
       <BaseUserList
         flush={true}
         path={props.path}

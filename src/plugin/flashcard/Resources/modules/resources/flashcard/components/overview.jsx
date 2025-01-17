@@ -54,9 +54,6 @@ const Overview = (props) => {
 
   return (
     <ResourceOverview
-      primaryAction="start"
-      evaluation={props.evaluation}
-      attempt={props.attempt}
       actions={[action]}
       details={[
         [trans('session_indicator', {}, 'flashcard'), session + ' / 7'],

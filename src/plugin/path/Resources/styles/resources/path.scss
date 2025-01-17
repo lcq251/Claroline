@@ -9,46 +9,6 @@
 // Plugin vars
 @import "../variables";
 
-
-.resource-parameters {
-  .embedded-resource {
-    margin-top: $component-margin-bottom;
-  }
-}
-
-/*
- * Styles navigation buttons between steps.
- */
-
-.path-navigation {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  margin-bottom: $component-margin-bottom;
-
-  .btn-previous,
-  .btn-next {
-    flex: 1;
-    max-width: 50%;
-  }
-
-  .btn-previous {
-    text-align: left;
-    margin-right: ($grid-gutter-width * .5);
-  }
-
-  .btn-next {
-    font-weight: bold;
-    text-align: right;
-    margin-left: ($grid-gutter-width * .5);
-
-    &:first-child {
-      margin-left: auto;
-    }
-  }
-}
-
-
 /**
  * Step
  */

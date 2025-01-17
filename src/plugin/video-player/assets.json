@@ -3,11 +3,5 @@
     "entry": {
       "watcher": "watcher/watch-video"
     }
-  },
-
-  "styles": {
-    "entry": {
-      "video-file": "files/video.scss"
-    }
   }
 }

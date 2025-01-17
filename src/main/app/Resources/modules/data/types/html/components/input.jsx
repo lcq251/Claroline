@@ -79,12 +79,11 @@ class HtmlInput extends Component {
 
         {this.state.fullscreen &&
           <Button
-            className="fullscreen-close"
+            className="position-absolute top-0 end-0 m-1 btn btn-secondary z-3"
             type={CALLBACK_BUTTON}
-            label={trans('fullscreen_off')}
-            icon="fa fa-fw fa-times"
+            label={trans('close', {}, 'actions')}
+            size="sm"
             callback={() => this.toggleEditor(this.state.minimal, !this.state.fullscreen)}
-            tooltip="bottom"
           />
         }
 
@@ -97,14 +96,8 @@ class HtmlInput extends Component {
             classic: !this.state.fullscreen && !this.state.minimal,
             full: this.state.fullscreen
           })}
-          onFocusIn={(e) => {
-            console.log(e)
-            this.setState({focus: true})
-          }}
-          onFocusOut={(e) => {
-            console.log(e)
-            this.setState({focus: false})
-          }}
+          onFocusIn={(e) => this.setState({focus: true})}
+          onFocusOut={(e) => this.setState({focus: false})}
         />
       </div>
     )

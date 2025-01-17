@@ -2,12 +2,15 @@
 
 namespace Claroline\EvaluationBundle\Entity;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
+use Claroline\EvaluationBundle\Finder\SequenceEvaluationType;
 use Claroline\EvaluationBundle\Repository\SequenceEvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_evaluation_sequence_evaluation')]
 #[ORM\Entity(repositoryClass: SequenceEvaluationRepository::class)]
+#[CrudEntity(finderClass: SequenceEvaluationType::class)]
 class SequenceEvaluation extends AbstractUserEvaluation
 {
     #[ORM\ManyToOne(targetEntity: Sequence::class)]

@@ -14,136 +14,139 @@ import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {actions as papersActions, selectors as paperSelectors} from '#/plugin/exo/resources/quiz/papers/store'
 import {PaperCard} from '#/plugin/exo/resources/quiz/papers/components/card'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const Papers = props =>
   <ResourcePage>
-    <h3 className="h2 mt-3">
-      {trans('results', {}, 'quiz')}
-      <small style={{display: 'block', marginTop: '5px'}}>{trans('all_attempts', {}, 'quiz')}</small>
-    </h3>
+    <PageContent>
+      <h3 className="h2 mt-3">
+        {trans('results', {}, 'quiz')}
+        <small style={{display: 'block', marginTop: '5px'}}>{trans('all_attempts', {}, 'quiz')}</small>
+      </h3>
 
-    <ListData
-      name={paperSelectors.LIST_NAME}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        label: trans('open', {}, 'actions'),
-        target: `${props.path}/papers/${row.id}`
-      })}
-      fetch={{
-        url: ['exercise_paper_list', {exerciseId: props.quizId}],
-        autoload: true
-      }}
-      definition={[
-        {
-          name: 'number',
-          label: '#',
-          displayed: true,
-          type: 'string',
-          calculated: (rowData) => trans('attempt', {number: rowData.number}, 'quiz')
-        }, {
-          name: 'user',
-          label: trans('user'),
-          displayed: true,
-          type: 'user'
-        }, {
-          name: 'startDate',
-          alias: 'start',
-          label: trans('start_date'),
-          displayed: true,
-          filterable: false,
-          type: 'date',
-          options: {
-            time: true
-          }
-        }, {
-          name: 'endDate',
-          alias: 'end',
-          label: trans('end_date'),
-          displayed: true,
-          filterable: false,
-          type: 'date',
-          options: {
-            time: true
-          }
-        }, {
-          name: 'duration',
-          label: trans('duration'),
-          type: 'time',
-          displayed: true,
-          filterable: false,
-          sortable: false,
-          calculated: (rowData) => {
-            if (rowData.startDate && rowData.endDate) {
-              return getTimeDiff(rowData.startDate, rowData.endDate)
+      <ListData
+        name={paperSelectors.LIST_NAME}
+        primaryAction={(row) => ({
+          type: LINK_BUTTON,
+          label: trans('open', {}, 'actions'),
+          target: `${props.path}/papers/${row.id}`
+        })}
+        fetch={{
+          url: ['exercise_paper_list', {exerciseId: props.quizId}],
+          autoload: true
+        }}
+        definition={[
+          {
+            name: 'number',
+            label: '#',
+            displayed: true,
+            type: 'string',
+            calculated: (rowData) => trans('attempt', {number: rowData.number}, 'quiz')
+          }, {
+            name: 'user',
+            label: trans('user'),
+            displayed: true,
+            type: 'user'
+          }, {
+            name: 'startDate',
+            alias: 'start',
+            label: trans('start_date'),
+            displayed: true,
+            filterable: false,
+            type: 'date',
+            options: {
+              time: true
             }
-
-            return undefined
-          }
-        }, {
-          name: 'finished',
-          label: trans('finished'),
-          displayed: true,
-          type: 'boolean'
-        }, {
-          name: 'score',
-          label: trans('score'),
-          type: 'score',
-          displayed: props.hasScore,
-          displayable: props.hasScore,
-          filterable: false,
-          sortable: true,
-          calculated: (row) => {
-            if (row.total) {
-              return {
-                current: row.score,
-                total: row.total
+          }, {
+            name: 'endDate',
+            alias: 'end',
+            label: trans('end_date'),
+            displayed: true,
+            filterable: false,
+            type: 'date',
+            options: {
+              time: true
+            }
+          }, {
+            name: 'duration',
+            label: trans('duration'),
+            type: 'time',
+            displayed: true,
+            filterable: false,
+            sortable: false,
+            calculated: (rowData) => {
+              if (rowData.startDate && rowData.endDate) {
+                return getTimeDiff(rowData.startDate, rowData.endDate)
               }
+
+              return undefined
             }
+          }, {
+            name: 'finished',
+            label: trans('finished'),
+            displayed: true,
+            type: 'boolean'
+          }, {
+            name: 'score',
+            label: trans('score'),
+            type: 'score',
+            displayed: props.hasScore,
+            displayable: props.hasScore,
+            filterable: false,
+            sortable: true,
+            calculated: (row) => {
+              if (row.total) {
+                return {
+                  current: row.score,
+                  total: row.total
+                }
+              }
 
-            return null
+              return null
+            }
+          }, {
+            name: 'userDisabled',
+            label: trans('user_disabled', {}, 'community'),
+            type: 'boolean',
+            displayable: false,
+            sortable: false,
+            filterable: true
           }
-        }, {
-          name: 'userDisabled',
-          label: trans('user_disabled', {}, 'community'),
-          type: 'boolean',
-          displayable: false,
-          sortable: false,
-          filterable: true
-        }
-      ]}
+        ]}
 
-      actions={(rows) => [
-        {
-          name: 'delete',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-trash',
-          label: trans('delete', {}, 'actions'),
-          displayed: props.admin,
-          dangerous: true,
-          confirm: {
-            title: trans('deletion'),
-            subtitle: 1 === rows.length ?
-              trans('user_attempt', {
-                number: get(rows[0], 'number', '?'),
-                userName: displayUsername(get(rows[0], 'user'))
-              }, 'quiz')
-              :
-              transChoice('count_elements', rows.length, {count: rows.length}),
-            message: transChoice('papers_delete_message', rows.length, {count: rows.length})
-          },
-          callback: () => props.delete(props.quizId, rows)
-        }, {
-          name: 'give-attempt',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-repeat',
-          label: trans('give_attempt', {}, 'actions'),
-          displayed: props.admin && !!rows[0].endDate,
-          callback: () => props.giveAttempt(props.quizId, rows[0].id)
-        }
-      ]}
+        actions={(rows) => [
+          {
+            name: 'delete',
+            type: CALLBACK_BUTTON,
+            icon: 'fa fa-fw fa-trash',
+            label: trans('delete', {}, 'actions'),
+            displayed: props.admin,
+            dangerous: true,
+            confirm: {
+              title: trans('deletion'),
+              subtitle: 1 === rows.length ?
+                trans('user_attempt', {
+                  number: get(rows[0], 'number', '?'),
+                  userName: displayUsername(get(rows[0], 'user'))
+                }, 'quiz')
+                :
+                transChoice('count_elements', rows.length, {count: rows.length}),
+              message: transChoice('papers_delete_message', rows.length, {count: rows.length})
+            },
+            callback: () => props.delete(props.quizId, rows)
+          }, {
+            name: 'give-attempt',
+            type: CALLBACK_BUTTON,
+            icon: 'fa fa-fw fa-repeat',
+            label: trans('give_attempt', {}, 'actions'),
+            displayed: props.admin && !!rows[0].endDate,
+            callback: () => props.giveAttempt(props.quizId, rows[0].id)
+          }
+        ]}
 
-      card={PaperCard}
-    />
+        card={PaperCard}
+      />
+    </PageContent>
   </ResourcePage>
 
 Papers.propTypes = {

@@ -6,6 +6,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 
 import {LocationForm} from '#/main/core/tools/locations//containers/form'
+import {PageContent} from '#/main/app/page'
 
 const LocationNew = (props) =>
   <ToolPage
@@ -23,7 +24,9 @@ const LocationNew = (props) =>
       }
     ]}
   >
-    <LocationForm />
+    <PageContent>
+      <LocationForm />
+    </PageContent>
   </ToolPage>
 
 LocationNew.propTypes = {

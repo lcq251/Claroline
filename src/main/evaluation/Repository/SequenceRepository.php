@@ -2,6 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Repository;
 
+use Claroline\AppBundle\Repository\UniqueValueFinder;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
@@ -10,6 +11,8 @@ use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 
 class SequenceRepository extends EntityRepository
 {
+    use UniqueValueFinder;
+
     /**
      * Find all the Path using the $resourceNode as an overview resource or a primary resource of a Step.
      *
@@ -23,8 +26,8 @@ class SequenceRepository extends EntityRepository
                 FROM Claroline\EvaluationBundle\Entity\Sequence\Sequence AS p
                 LEFT JOIN Claroline\EvaluationBundle\Entity\Sequence\Step AS s WITH (s.path = p)
                 LEFT JOIN s.resource AS n
-                WHERE (s.resource = :resourceNode AND n.required) 
-                   OR (p.overviewResource = :resourceNode AND n.required)
+                WHERE (s.resource = :resourceNode AND n.required = true) 
+                   OR (p.overviewResource = :resourceNode AND n.required = true)
            ')
             ->setParameter('resourceNode', $resourceNode)
             ->getResult();

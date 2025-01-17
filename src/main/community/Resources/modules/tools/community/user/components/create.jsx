@@ -9,6 +9,7 @@ import {UserForm} from '#/main/community/user/components/form'
 import {selectors} from '#/main/community/tools/community/user/store'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {ContentSizing} from '#/main/app/content/components/sizing'
+import {PageContent} from '#/main/app/page'
 
 const UserCreate = (props) =>
   <ToolPage
@@ -25,13 +26,15 @@ const UserCreate = (props) =>
     }
     title={trans('new_user', {}, 'community')}
   >
-    <ContentSizing size="lg">
-      <UserForm
-        path={`${props.path}/users/new`}
-        back={`${props.path}/users`}
-        name={selectors.FORM_NAME}
-      />
-    </ContentSizing>
+    <PageContent>
+      <ContentSizing size="lg">
+        <UserForm
+          path={`${props.path}/users/new`}
+          back={`${props.path}/users`}
+          name={selectors.FORM_NAME}
+        />
+      </ContentSizing>
+    </PageContent>
   </ToolPage>
 
 UserCreate.propTypes = {

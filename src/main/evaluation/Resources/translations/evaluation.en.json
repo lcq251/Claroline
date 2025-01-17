@@ -35,9 +35,12 @@
   "skills_frameworks": "Skills frameworks",
   "new_skills_framework": "New skills framework",
 
-  "lesson_plan": "Lesson plan",
-  "lesson_plans": "Lesson plans",
-  "new_lesson_plan": "New lesson plan",
-  "no_lesson_plan": "No lesson plan",
-  "lesson_plan_name": "Lesson plan: %name%"
+  "sequence_name": "Sequence : %name%",
+  "sequence": "Sequence",
+  "sequences": "Sequences",
+  "sequence_step_count": "Step %current% on %total%",
+  "completion": "%current%% Complete",
+  "next_step": "Previous: %title%",
+  "previous_step": "Next: %title%",
+  "no_user_activity": "You have not started this activity yet."
 }

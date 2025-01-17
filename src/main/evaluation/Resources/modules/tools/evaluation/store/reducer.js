@@ -11,7 +11,6 @@ const reducer = combineReducers({
   current: combineReducers({
     workspaceEvaluation: makeReducer(null, {
       [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
-        console.log(action)
         return action.toolData.workspaceEvaluation
       }
     }),

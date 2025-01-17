@@ -1,0 +1,5 @@
+claro_video:
+    resource: "@ClarolineImagePlayerBundle/Controller/"
+    type: attribute
+    options:
+        expose: true

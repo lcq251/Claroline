@@ -10,53 +10,56 @@ import {AnswersStats} from '#/plugin/exo/resources/quiz/statistics/containers/an
 import {AttemptsStats} from '#/plugin/exo/resources/quiz/statistics/containers/attempts'
 import {Docimology} from '#/plugin/exo/resources/quiz/statistics/containers/docimology'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const StatisticsMain = props =>
   <ResourcePage>
-    <Nav
-      orientation="horizontal"
-      variant="underline"
-      items={[
-        {
-          name: 'answers',
-          type: LINK_BUTTON,
-          label: trans('Réponses des utilisateurs'),
-          target: `${props.path}/statistics/answers`,
-          exact: true
-        }, {
-          name: 'attempts',
-          type: LINK_BUTTON,
-          label: trans('Evolution des tentatives', {}, 'quiz'),
-          target: `${props.path}/statistics/attempts`
-        }, {
-          name: 'docimology',
-          type: LINK_BUTTON,
-          label: trans('Docimologie', {}, 'quiz'),
-          target: `${props.path}/statistics/docimology`
-        }
-      ]}
-    />
+    <PageContent>
+      <Nav
+        orientation="horizontal"
+        variant="underline"
+        items={[
+          {
+            name: 'answers',
+            type: LINK_BUTTON,
+            label: trans('Réponses des utilisateurs'),
+            target: `${props.path}/statistics/answers`,
+            exact: true
+          }, {
+            name: 'attempts',
+            type: LINK_BUTTON,
+            label: trans('Evolution des tentatives', {}, 'quiz'),
+            target: `${props.path}/statistics/attempts`
+          }, {
+            name: 'docimology',
+            type: LINK_BUTTON,
+            label: trans('Docimologie', {}, 'quiz'),
+            target: `${props.path}/statistics/docimology`
+          }
+        ]}
+      />
 
-    <Routes
-      path={`${props.path}/statistics`}
-      redirect={[
-        {from: '/', exact: true, to: '/answers'}
-      ]}
-      routes={[
-        {
-          path: '/answers',
-          component: AnswersStats,
-          onEnter: () => props.statistics(props.quizId)
-        }, {
-          path: '/attempts',
-          component: AttemptsStats
-        }, {
-          path: '/docimology',
-          component: Docimology,
-          onEnter: () => props.docimology(props.quizId)
-        }
-      ]}
-    />
+      <Routes
+        path={`${props.path}/statistics`}
+        redirect={[
+          {from: '/', exact: true, to: '/answers'}
+        ]}
+        routes={[
+          {
+            path: '/answers',
+            component: AnswersStats,
+            onEnter: () => props.statistics(props.quizId)
+          }, {
+            path: '/attempts',
+            component: AttemptsStats
+          }, {
+            path: '/docimology',
+            component: Docimology,
+            onEnter: () => props.docimology(props.quizId)
+          }
+        ]}
+      />
+    </PageContent>
   </ResourcePage>
 
 StatisticsMain.propTypes = {

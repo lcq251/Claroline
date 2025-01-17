@@ -7,6 +7,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {TeamForm} from '#/main/community/team/components/form'
 import {selectors} from '#/main/community/tools/community/team/store'
+import {PageContent} from '#/main/app/page'
 
 const TeamCreate = (props) =>
   <ToolPage
@@ -17,13 +18,15 @@ const TeamCreate = (props) =>
         target: `${props.path}/teams`
       }
     ]}
-    subtitle={trans('new_team', {}, 'community')}
+    title={trans('new_team', {}, 'community')}
   >
-    <TeamForm
-      className="mt-3"
-      path={props.path}
-      name={selectors.FORM_NAME}
-    />
+    <PageContent>
+      <TeamForm
+        className="mt-3"
+        path={props.path}
+        name={selectors.FORM_NAME}
+      />
+    </PageContent>
   </ToolPage>
 
 TeamCreate.propTypes = {

@@ -28,8 +28,13 @@ registry.add('ClarolineEvaluationBundle', {
   },
 
   actions: {
-    resource: {
-      //'evaluation': () => { return import(/* webpackChunkName: "evaluation-action-resource-evaluation" */ '#/main/evaluation/actions/resource/evaluation') }
+    sequence: {
+      'configure': () => { return import(/* webpackChunkName: "evaluation-action-sequence-configure" */ '#/main/evaluation/actions/sequence/configure') },
+      'copy'     : () => { return import(/* webpackChunkName: "evaluation-action-sequence-copy" */      '#/main/evaluation/actions/sequence/copy') },
+      'delete'   : () => { return import(/* webpackChunkName: "evaluation-action-sequence-delete" */    '#/main/evaluation/actions/sequence/delete') },
+      'open'     : () => { return import(/* webpackChunkName: "evaluation-action-sequence-open" */      '#/main/evaluation/actions/sequence/open') },
+      'publish'  : () => { return import(/* webpackChunkName: "evaluation-action-sequence-publish" */   '#/main/evaluation/actions/sequence/publish') },
+      'unpublish': () => { return import(/* webpackChunkName: "evaluation-action-sequence-unpublish" */ '#/main/evaluation/actions/sequence/unpublish') }
     },
 
     workspace_evaluation: {

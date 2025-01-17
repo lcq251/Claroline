@@ -21,6 +21,7 @@ import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 import {EvaluationDetails} from '#/main/evaluation/components/details'
 
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const WorkspaceCertificatesToolbar = (props) => {
   const dispatch = useDispatch()
@@ -76,75 +77,77 @@ const ResourceEnd = (props) => {
   const workspace = useSelector(resourceSelectors.workspace)
 
   return (
-    <ResourcePage poster={get(resourceNode, 'poster')}>
-      <section className="resource-end content-lg mt-3">
-        <h2 className="sr-only">{trans('resource_end', {}, 'resource')}</h2>
+    <ResourcePage>
+      <PageContent  poster={get(resourceNode, 'poster')}>
+        <section className="resource-end content-lg mt-3">
+          <h2 className="sr-only">{trans('resource_end', {}, 'resource')}</h2>
 
-        <div className="row">
-          <div className="col-md-4">
-            {!isEmpty(props.attempt) &&
-              <EvaluationDetails
-                className="mb-3"
-                evaluation={props.attempt}
-                statusTexts={merge({}, constants.EVALUATION_STATUSES, props.statusTexts || {})}
-                details={props.details}
-                showScore={get(props, 'display.score', false)}
-                scoreMax={get(props, 'display.scoreMax')}
-                successScore={get(props, 'display.successScore')}
-              />
-            }
-          </div>
+          <div className="row">
+            <div className="col-md-4">
+              {!isEmpty(props.attempt) &&
+                <EvaluationDetails
+                  className="mb-3"
+                  evaluation={props.attempt}
+                  statusTexts={merge({}, constants.EVALUATION_STATUSES, props.statusTexts || {})}
+                  details={props.details}
+                  showScore={get(props, 'display.score', false)}
+                  scoreMax={get(props, 'display.scoreMax')}
+                  successScore={get(props, 'display.successScore')}
+                />
+              }
+            </div>
 
-          <div className="col-md-8">
-            {((!isEmpty(props.attempt) && get(props, 'display.feedback', false) || !isEmpty(props.feedbacks.closed))) &&
-              <section className="resource-feedbacks">
-                {!isEmpty(props.attempt) &&
-                  <EvaluationFeedback
-                    status={props.attempt.status}
-                    {...props.feedbacks}
-                  />
-                }
-
-                {!isEmpty(props.feedbacks.closed) && props.feedbacks.closed.map(closedMessage =>
-                  <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
-                    <Html>{closedMessage[1]}</Html>
-                  </Alert>
-                )}
-              </section>
-            }
-
-            {props.contentText &&
-              <section className="resource-info mb-3">
-                <div className="card">
-                  {typeof props.contentText === 'string' ?
-                    <Html className="card-body">{props.contentText}</Html>
-                    :
-                    <div className="card-body">{props.contentText}</div>
+            <div className="col-md-8">
+              {((!isEmpty(props.attempt) && get(props, 'display.feedback', false) || !isEmpty(props.feedbacks.closed))) &&
+                <section className="resource-feedbacks">
+                  {!isEmpty(props.attempt) &&
+                    <EvaluationFeedback
+                      status={props.attempt.status}
+                      {...props.feedbacks}
+                    />
                   }
-                </div>
-              </section>
-            }
 
-            {get(props, 'display.toolbar') &&
-              <Toolbar
-                className="d-grid gap-1 mb-3"
-                variant="btn"
-                buttonName="w-100"
-                actions={props.actions}
-              />
-            }
+                  {!isEmpty(props.feedbacks.closed) && props.feedbacks.closed.map(closedMessage =>
+                    <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
+                      <Html>{closedMessage[1]}</Html>
+                    </Alert>
+                  )}
+                </section>
+              }
 
-            {get(props, 'display.certificates') && workspace && get(props.attempt, 'user') &&
-              <WorkspaceCertificatesToolbar
-                workspace={props.workspace}
-                currentUser={get(props.attempt, 'user')}
-              />
-            }
+              {props.contentText &&
+                <section className="resource-info mb-3">
+                  <div className="card">
+                    {typeof props.contentText === 'string' ?
+                      <Html className="card-body">{props.contentText}</Html>
+                      :
+                      <div className="card-body">{props.contentText}</div>
+                    }
+                  </div>
+                </section>
+              }
 
-            {props.children}
+              {get(props, 'display.toolbar') &&
+                <Toolbar
+                  className="d-grid gap-1 mb-3"
+                  variant="btn"
+                  buttonName="w-100"
+                  actions={props.actions}
+                />
+              }
+
+              {get(props, 'display.certificates') && workspace && get(props.attempt, 'user') &&
+                <WorkspaceCertificatesToolbar
+                  workspace={props.workspace}
+                  currentUser={get(props.attempt, 'user')}
+                />
+              }
+
+              {props.children}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </PageContent>
     </ResourcePage>
   )
 }

@@ -25,7 +25,6 @@
 @import "scaffolding";
 @import "utilities";
 @import "type";
-@import "layout/footer";
 @import "layout/menu";
 @import "layout/nav";
 @import "layout/pages";
@@ -36,6 +35,7 @@
 @import "content";
 @import "data";
 @import "tinymce";
+@import "video-js";
 
 // TODO : remove me
 @import "src/main/authentication/Resources/styles";

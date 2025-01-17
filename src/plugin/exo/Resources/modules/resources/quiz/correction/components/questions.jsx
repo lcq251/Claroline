@@ -11,6 +11,7 @@ import {ContentHtml} from '#/main/app/content/components/html'
 
 import {selectors as correctionSelectors} from '#/plugin/exo/resources/quiz/correction/store/selectors'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 export const QuestionRow = props =>
   <tr>
@@ -49,8 +50,8 @@ QuestionRow.propTypes = {
 
 const QuestionsComponent = props =>
   <ResourcePage>
-    {props.questions.length > 0 ?
-      <div className="questions-list">
+    <PageContent className="questions-list">
+      {props.questions.length > 0 ?
         <table className="table table-striped table-hover">
           <thead>
           <tr>
@@ -69,13 +70,12 @@ const QuestionsComponent = props =>
           )}
           </tbody>
         </table>
-      </div> :
-      <div className="questions-list">
+       :
         <div className="alert alert-warning">
           {trans('no_question_to_correct', {}, 'quiz')}
         </div>
-      </div>
-    }
+      }
+    </PageContent>
   </ResourcePage>
 
 QuestionsComponent.propTypes = {

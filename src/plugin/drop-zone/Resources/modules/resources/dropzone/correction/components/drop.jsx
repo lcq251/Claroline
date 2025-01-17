@@ -14,6 +14,7 @@ import {CorrectionCreation} from '#/plugin/drop-zone/resources/dropzone/correcti
 import {CorrectionRow} from '#/plugin/drop-zone/resources/dropzone/correction/components/correction-row'
 import {ResourcePage} from '#/main/core/resource'
 import {ContentLoader} from '#/main/app/content/components/loader'
+import {PageContent} from '#/main/app/page'
 
 const Corrections = props =>
   <FormSections>
@@ -55,7 +56,7 @@ const Drop = (props) =>
     }
 
     {props.drop &&
-      <>
+      <PageContent>
         <h2>
           {trans(
             'drop_from',
@@ -81,7 +82,7 @@ const Drop = (props) =>
         {props.drop.finished &&
           <CorrectionCreation {...props}/>
         }
-      </>
+      </PageContent>
     }
   </ResourcePage>
 

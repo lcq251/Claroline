@@ -20,7 +20,7 @@ class WorkspaceRepository extends EntityRepository
 {
     use UniqueValueFinder;
 
-    public function search(string $search, int $nbResults)
+    public function search(string $search, int $nbResults): array
     {
         return $this->createQueryBuilder('w')
             ->where('(UPPER(w.name) LIKE :search OR UPPER(w.code) LIKE :search)')
@@ -46,33 +46,13 @@ class WorkspaceRepository extends EntityRepository
     }
 
     /**
-     * Counts non personal workspaces.
-     */
-    public function countNonPersonalWorkspaces(array $organizations = null): int
-    {
-        $qb = $this
-            ->createQueryBuilder('w')
-            ->select('COUNT(w.id)')
-            ->andWhere('w.personal = :personal')
-            ->setParameter('personal', false);
-
-        if (!empty($organizations)) {
-            $qb->join('w.organizations', 'orgas')
-                ->andWhere('orgas IN (:organizations)')
-                ->setParameter('organizations', $organizations);
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
      * Returns the workspaces whose at least one tool is accessible to one of the given roles.
      *
      * @param string[] $roleNames
      *
      * @return Workspace[]
      */
-    public function findByRoles(array $roleNames)
+    public function findByRoles(array $roleNames): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -133,7 +113,7 @@ class WorkspaceRepository extends EntityRepository
         return 0 < (int) $query->getSingleScalarResult();
     }
 
-    public function findManaged(string $userId)
+    public function findManaged(string $userId): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -157,7 +137,7 @@ class WorkspaceRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByCodes(array $codes)
+    public function findByCodes(array $codes): array
     {
         $dql = '
             SELECT w

@@ -47,7 +47,7 @@ class PathSubscriber extends ResourceComponent implements EvaluatedResourceInter
     public static function getSubscribedEvents(): array
     {
         return array_merge([], parent::getSubscribedEvents(), [
-            EvaluationEvents::RESOURCE_EVALUATION => 'onEvaluation',
+            // EvaluationEvents::RESOURCE_EVALUATION => 'onEvaluation',
         ]);
     }
 

@@ -62,8 +62,6 @@ implementPropTypes(StaticToolbar, ToolbarTypes, {
   actions: T.arrayOf(T.shape(
     ActionTypes.propTypes
   ))
-}, {
-  actions: []
 })
 
 const PromisedToolbar = (props) =>

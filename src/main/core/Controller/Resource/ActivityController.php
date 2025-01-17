@@ -2,17 +2,16 @@
 
 namespace Claroline\CoreBundle\Controller\Resource;
 
-use Claroline\AppBundle\API\FinderProvider;
-use Claroline\CoreBundle\Entity\Organization\Organization;
+use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Claroline\CoreBundle\Security\PlatformRoles;
 use Claroline\LogBundle\Entity\FunctionalLog;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route(path: '/resource/{id}')]
@@ -22,8 +21,7 @@ class ActivityController
 
     public function __construct(
         AuthorizationCheckerInterface $authorization,
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly FinderProvider $finder
+        private readonly Crud $crud
     ) {
         $this->authorization = $authorization;
     }
@@ -32,27 +30,15 @@ class ActivityController
     public function functionalLogsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         ResourceNode $resourceNode,
-        Request $request
-    ): JsonResponse {
-        $this->checkPermission('ADMINISTRATE', $resourceNode, [], true);
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        $this->checkPermission('EDIT', $resourceNode, [], true);
 
-        $hiddenFilters = [
-            'resource' => $resourceNode->getUuid(),
-        ];
+        $finderQuery->addFilter('resource', $resourceNode->getUuid());
 
-        if (!$this->authorization->isGranted(PlatformRoles::ADMIN)) {
-            $user = $this->tokenStorage->getToken()?->getUser();
+        $logs = $this->crud->search(FunctionalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-            $organizations = array_map(function (Organization $organization) {
-                return $organization->getUuid();
-            }, $user->getOrganizations());
-            $hiddenFilters['organizations'] = $organizations;
-        }
-
-        return new JsonResponse(
-            $this->finder->search(FunctionalLog::class, array_merge($request->query->all(), [
-                'hiddenFilters' => $hiddenFilters,
-            ]))
-        );
+        return $logs->toResponse();
     }
 }

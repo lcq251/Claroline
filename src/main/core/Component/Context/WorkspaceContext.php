@@ -96,7 +96,7 @@ class WorkspaceContext extends AbstractContext
             return $contextSubject->getOrganizations()->toArray();
         }
 
-        $userOrganizations = $token->getUser()->getOrganizations();
+        $userOrganizations = $token?->getUser()?->getOrganizations() ?? [];
         $workspaceOrganizations = $contextSubject->getOrganizations()->toArray();
 
         return array_intersect($workspaceOrganizations, $userOrganizations);

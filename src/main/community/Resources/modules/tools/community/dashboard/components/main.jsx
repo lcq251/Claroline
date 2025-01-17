@@ -6,9 +6,8 @@ import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {PageSection} from '#/main/app/page'
 import {ToolDashboard} from '#/main/core/tool'
 
-import {Activity} from '#/main/log/activity/components/main'
-
-import {selectors} from '#/main/community/tools/community/dashboard/store'
+import {DashboardPage} from '#/main/app/dashboard'
+import {DashboardActivity} from '#/main/community/tools/community/dashboard/components/activity'
 
 class CommunityDashboard extends Component {
   constructor(props) {
@@ -25,38 +24,50 @@ class CommunityDashboard extends Component {
 
   render() {
     return (
-      <ToolDashboard>
-        <PageSection size="md">
-          <ContentInfoBlocks
-            className="my-4"
-            size="lg"
-            items={[
-              {
-                icon: 'fa fa-user',
-                label: trans('users', {}, 'community'),
-                value: !this.state.loaded ? '?' : this.props.count.users
-              }, {
-                icon: 'fa fa-users',
-                label: trans('groups', {}, 'community'),
-                value: !this.state.loaded ? '?' : this.props.count.groups
-              }
-            ]}
-          />
-        </PageSection>
-
-        <PageSection size="md">
-          <Activity
-            name={selectors.STORE_NAME + '.logs'}
-            url={['apiv2_community_functional_logs', {contextId: this.props.contextId}]}
-          />
-        </PageSection>
-      </ToolDashboard>
+      <ToolDashboard
+        pages={[
+          {
+            name: 'overview',
+            icon: 'fa fa-temperature-half',
+            title: trans('overview'),
+            render: () => (
+              <DashboardPage>
+                <PageSection size="full">
+                  <ContentInfoBlocks
+                    size="lg"
+                    items={[
+                      {
+                        icon: 'fa fa-user',
+                        label: trans('users', {}, 'community'),
+                        value: !this.state.loaded ? '?' : this.props.count.users
+                      }, {
+                        icon: 'fa fa-users',
+                        label: trans('groups', {}, 'community'),
+                        value: !this.state.loaded ? '?' : this.props.count.groups
+                      }
+                    ]}
+                  />
+                </PageSection>
+              </DashboardPage>
+            )
+          }, {
+            name: 'stats',
+            icon: 'fa fa-pie-chart',
+            title: trans('statistics'),
+            render: () => <></>
+          }, {
+            name: 'activity',
+            icon: 'fa fa-line-chart',
+            title: trans('activity'),
+            component: DashboardActivity
+          }
+        ]}
+      />
     )
   }
 }
 
 CommunityDashboard.propTypes = {
-  path: T.string.isRequired,
   contextId: T.string.isRequired,
   count: T.shape({
     users: T.number,

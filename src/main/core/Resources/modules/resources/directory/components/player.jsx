@@ -13,7 +13,7 @@ import resourcesSource from '#/main/core/data/sources/resources'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {getActions, getDefaultAction} from '#/main/core/resource/utils'
 import {FileDrop} from '#/main/app/overlays/dnd/components/file-drop'
-import {ResourceOverview} from '#/main/core/resource'
+import {ResourcePage} from '#/main/core/resource'
 import {PageListSection} from '#/main/app/page/components/list-section'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_RESOURCE_CREATION} from '#/main/core/resource/modals/creation'
@@ -41,14 +41,10 @@ function transformAction(action, resourceNodes, embedded = false) {
 
 const DirectoryPlayer = (props) => {
   return (
-    <ResourceOverview
-      root={props.isRoot}
+    <ResourcePage
+      name={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
       title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
     >
-      {props.storageLock &&
-        <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
-      }
-
       <PageListSection
         addAction={{
           name: 'add',
@@ -61,6 +57,10 @@ const DirectoryPlayer = (props) => {
           displayed: get(props.currentNode, 'permissions.create', []).length > 0
         }}
       >
+        {props.storageLock &&
+          <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
+        }
+
         <FileDrop
           size="lg"
           disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
@@ -101,7 +101,7 @@ const DirectoryPlayer = (props) => {
           />
         </FileDrop>
       </PageListSection>
-    </ResourceOverview>
+    </ResourcePage>
   )
 }
 

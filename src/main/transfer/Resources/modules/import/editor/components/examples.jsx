@@ -15,7 +15,7 @@ const ImportEditorExamples = (props) =>
         title: trans('examples', {}, 'transfer'),
         primary: true,
         render: () => (
-          <div className="list-group list-group-striped" style={{marginTop: 20}}>
+          <div className="list-group list-group-striped mt-4">
             {props.samples.map(sample =>
               <Button
                 key={sample}

@@ -2,6 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import omit from 'lodash/omit'
+import isEmpty from 'lodash/isEmpty'
 
 /**
  * Renders a basic alert message with status contextualization (icon + color).
@@ -21,7 +22,7 @@ const Alert = (props) =>
 
     <span className="alert-body" role="presentation">
       {props.title &&
-        <h4 className={classes('alert-heading', `text-${props.type || 'info'}-emphasis`)}>{props.title}</h4>
+        <h4 className={classes('alert-heading', `text-${props.type || 'info'}-emphasis`, isEmpty(props.children) && 'mb-0')}>{props.title}</h4>
       }
 
       {props.children}
@@ -33,7 +34,7 @@ Alert.propTypes = {
   type: T.oneOf(['info', 'success', 'warning', 'danger']),
   icon: T.string,
   title: T.string,
-  children: T.node.isRequired
+  children: T.node
 }
 
 export {

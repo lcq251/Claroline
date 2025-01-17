@@ -36,6 +36,7 @@ import {EntryComments} from '#/plugin/claco-form/resources/claco-form/player/com
 import {EntryMenu} from '#/plugin/claco-form/resources/claco-form/player/components/entry-menu'
 import isEmpty from 'lodash/isEmpty'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 // TODO : find a way to merge actions list with the one in entries list
 const EntryActions = props =>
@@ -232,152 +233,154 @@ class EntryComponent extends Component {
 
     return (
       <ResourcePage>
-        {['up', 'both'].indexOf(this.props.menuPosition) > -1 &&
-          <EntryMenu />
-        }
+        <PageContent>
+          {['up', 'both'].indexOf(this.props.menuPosition) > -1 &&
+            <EntryMenu />
+          }
 
-        {this.props.helpMessage &&
-          <ContentHtml className="entry-help">
-            {this.props.helpMessage}
-          </ContentHtml>
-        }
+          {this.props.helpMessage &&
+            <ContentHtml className="entry-help">
+              {this.props.helpMessage}
+            </ContentHtml>
+          }
 
-        <div className="card mb-3">
-          <div className="card-body">
-            <h2 className="entry-title">{this.props.entry.title}</h2>
+          <div className="card mb-3">
+            <div className="card-body">
+              <h2 className="entry-title">{this.props.entry.title}</h2>
 
-            <div className="entry-meta">
-              {this.canViewMetadata() &&
-                <div className="entry-info">
-                  <UserMicro {...this.props.entry.user} />
+              <div className="entry-meta">
+                {this.canViewMetadata() &&
+                  <div className="entry-info">
+                    <UserMicro {...this.props.entry.user} />
 
-                  <div className="date">
-                    {this.props.entry.publicationDate ?
-                      trans('published_at', {date: displayDate(this.props.entry.publicationDate, false, true)}) + ', ' :
-                      constants.ENTRY_STATUS_PUBLISHED !== this.props.entry.status ?
-                        trans('not_published') + ', ' :
-                        ''
-                    }
-                    {trans('last_modified_at', {date: displayDate(this.props.entry.editionDate || this.props.entry.creationDate, false, true)})}
+                    <div className="date">
+                      {this.props.entry.publicationDate ?
+                        trans('published_at', {date: displayDate(this.props.entry.publicationDate, false, true)}) + ', ' :
+                        constants.ENTRY_STATUS_PUBLISHED !== this.props.entry.status ?
+                          trans('not_published') + ', ' :
+                          ''
+                      }
+                      {trans('last_modified_at', {date: displayDate(this.props.entry.editionDate || this.props.entry.creationDate, false, true)})}
+                    </div>
                   </div>
-                </div>
-              }
+                }
 
-              {this.props.entry.id && this.props.entryUser.id &&
-                <EntryActions
-                  path={this.props.path}
-                  entryId={this.props.entry.id}
-                  entryTitle={this.props.entry.title}
-                  status={this.props.entry.status}
-                  locked={this.props.entry.locked}
-                  displayComments={this.props.displayComments}
-                  notifyEdition={this.props.entryUser.notifyEdition}
-                  notifyComment={this.props.entryUser.notifyComment}
-                  canAdministrate={this.props.canAdministrate}
-                  canEdit={this.props.canEditEntry}
-                  canGeneratePdf={this.props.canGeneratePdf}
+                {this.props.entry.id && this.props.entryUser.id &&
+                  <EntryActions
+                    path={this.props.path}
+                    entryId={this.props.entry.id}
+                    entryTitle={this.props.entry.title}
+                    status={this.props.entry.status}
+                    locked={this.props.entry.locked}
+                    displayComments={this.props.displayComments}
+                    notifyEdition={this.props.entryUser.notifyEdition}
+                    notifyComment={this.props.entryUser.notifyComment}
+                    canAdministrate={this.props.canAdministrate}
+                    canEdit={this.props.canEditEntry}
+                    canGeneratePdf={this.props.canGeneratePdf}
 
-                  changeOwner={(user) => this.props.changeEntryOwner(this.props.entry.id, user.id)}
-                  downloadPdf={() => this.props.downloadEntryPdf(this.props.entry.id)}
-                  share={(users) => this.props.shareEntry(this.props.entryId, users)}
-                  delete={() => this.props.deleteEntry(this.props.entry).then(() => this.props.history.push(`${this.props.path}/entries`))}
-                  toggleStatus={() => this.props.switchEntryStatus(this.props.entry.id)}
-                  toggleLock={() => this.props.switchEntryLock(this.props.entry.id)}
-                  updateEntryUserProp={this.props.updateEntryUserProp}
+                    changeOwner={(user) => this.props.changeEntryOwner(this.props.entry.id, user.id)}
+                    downloadPdf={() => this.props.downloadEntryPdf(this.props.entry.id)}
+                    share={(users) => this.props.shareEntry(this.props.entryId, users)}
+                    delete={() => this.props.deleteEntry(this.props.entry).then(() => this.props.history.push(`${this.props.path}/entries`))}
+                    toggleStatus={() => this.props.switchEntryStatus(this.props.entry.id)}
+                    toggleLock={() => this.props.switchEntryLock(this.props.entry.id)}
+                    updateEntryUserProp={this.props.updateEntryUserProp}
 
+                  />
+                }
+              </div>
+
+              {this.props.template && this.props.useTemplate ?
+                <ContentHtml>
+                  {generateFromTemplate(this.props.template, this.props.fields, this.props.entry, this.props.isOwner, this.props.canAdministrate)}
+                </ContentHtml> :
+                <DetailsData
+                  name={selectors.STORE_NAME+'.entries.current'}
+                  sections={this.getSections(this.props.fields)}
                 />
               }
             </div>
-
-            {this.props.template && this.props.useTemplate ?
-              <ContentHtml>
-                {generateFromTemplate(this.props.template, this.props.fields, this.props.entry, this.props.isOwner, this.props.canAdministrate)}
-              </ContentHtml> :
-              <DetailsData
-                name={selectors.STORE_NAME+'.entries.current'}
-                sections={this.getSections(this.props.fields)}
-              />
-            }
           </div>
-        </div>
 
-        {((this.props.displayCategories && this.props.entry.categories && 0 < this.props.entry.categories.length) ||
-        (this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length)) &&
-          <div className="entry-footer card-footer">
-            {this.props.displayCategories && this.props.entry.categories && 0 < this.props.entry.categories.length &&
-              <span className="title">{trans('categories')}</span>
-            }
-            {this.props.displayCategories && this.props.entry.categories && this.props.entry.categories.map(c =>
-              <span key={`category-${c.id}`} className="badge text-bg-primary">{c.name}</span>
-            )}
+          {((this.props.displayCategories && this.props.entry.categories && 0 < this.props.entry.categories.length) ||
+          (this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length)) &&
+            <div className="entry-footer card-footer">
+              {this.props.displayCategories && this.props.entry.categories && 0 < this.props.entry.categories.length &&
+                <span className="title">{trans('categories')}</span>
+              }
+              {this.props.displayCategories && this.props.entry.categories && this.props.entry.categories.map(c =>
+                <span key={`category-${c.id}`} className="badge text-bg-primary">{c.name}</span>
+              )}
 
-            {this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length &&
-              <hr/>
-            }
-            {this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length &&
-              <span className="title">{trans('keywords')}</span>
-            }
-            {this.props.displayKeywords && this.props.entry.keywords && this.props.entry.keywords.map(c =>
-              <span key={`keyword-${c.id}`} className="badge text-bg-secondary">{c.name}</span>
-            )}
-          </div>
-        }
+              {this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length &&
+                <hr/>
+              }
+              {this.props.displayKeywords && this.props.entry.keywords && 0 < this.props.entry.keywords.length &&
+                <span className="title">{trans('keywords')}</span>
+              }
+              {this.props.displayKeywords && this.props.entry.keywords && this.props.entry.keywords.map(c =>
+                <span key={`keyword-${c.id}`} className="badge text-bg-secondary">{c.name}</span>
+              )}
+            </div>
+          }
 
-        {['down', 'both'].indexOf(this.props.menuPosition) > -1 &&
-          <EntryMenu />
-        }
+          {['down', 'both'].indexOf(this.props.menuPosition) > -1 &&
+            <EntryMenu />
+          }
 
-        {this.props.canEditEntry &&
-          <FormSections level={3}>
-            <FormSection
-              id="shared-users"
-              className="embedded-list-section"
-              icon="fa fa-fw fa-share-alt"
-              title={trans('shared_with', {}, 'clacoform')}
-            >
-              <ListData
-                flush={true}
-                name={`${selectors.STORE_NAME}.entries.sharedUsers`}
-                fetch={{
-                  url: ['claro_claco_form_entry_shared_users_list', {entry: this.props.entryId}],
-                  autoload: true
-                }}
-                delete={{
-                  url: ['claro_claco_form_entry_user_unshare', {entry: this.props.entryId}]
-                }}
-                definition={[
-                  {
-                    name: 'username',
-                    type: 'string',
-                    label: trans('username'),
-                    displayed: true,
-                    primary: true
-                  }, {
-                    name: 'lastName',
-                    type: 'string',
-                    label: trans('last_name'),
-                    displayed: true
-                  }, {
-                    name: 'firstName',
-                    type: 'string',
-                    label: trans('first_name'),
-                    displayed: true
-                  }
-                ]}
-                card={UserCard}
-              />
-            </FormSection>
-          </FormSections>
-        }
+          {this.props.canEditEntry &&
+            <FormSections level={3}>
+              <FormSection
+                id="shared-users"
+                className="embedded-list-section"
+                icon="fa fa-fw fa-share-alt"
+                title={trans('shared_with', {}, 'clacoform')}
+              >
+                <ListData
+                  flush={true}
+                  name={`${selectors.STORE_NAME}.entries.sharedUsers`}
+                  fetch={{
+                    url: ['claro_claco_form_entry_shared_users_list', {entry: this.props.entryId}],
+                    autoload: true
+                  }}
+                  delete={{
+                    url: ['claro_claco_form_entry_user_unshare', {entry: this.props.entryId}]
+                  }}
+                  definition={[
+                    {
+                      name: 'username',
+                      type: 'string',
+                      label: trans('username'),
+                      displayed: true,
+                      primary: true
+                    }, {
+                      name: 'lastName',
+                      type: 'string',
+                      label: trans('last_name'),
+                      displayed: true
+                    }, {
+                      name: 'firstName',
+                      type: 'string',
+                      label: trans('first_name'),
+                      displayed: true
+                    }
+                  ]}
+                  card={UserCard}
+                />
+              </FormSection>
+            </FormSections>
+          }
 
-        {(this.props.canViewComments || this.props.canComment) &&
-          <EntryComments
-            opened={this.props.openComments}
-            canComment={this.props.canComment}
-            canManage={this.props.canAdministrate}
-            canViewComments={this.props.canViewComments}
-          />
-        }
+          {(this.props.canViewComments || this.props.canComment) &&
+            <EntryComments
+              opened={this.props.openComments}
+              canComment={this.props.canComment}
+              canManage={this.props.canAdministrate}
+              canViewComments={this.props.canViewComments}
+            />
+          }
+        </PageContent>
       </ResourcePage>
     )
   }

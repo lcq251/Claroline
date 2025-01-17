@@ -31,9 +31,24 @@ services:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true
 
-    Claroline\EvaluationBundle\Controller\SequenceController:
+    # Sequences
+    Claroline\EvaluationBundle\Controller\Sequence\ActivityController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\API\Crud'
+
+    Claroline\EvaluationBundle\Controller\Sequence\SequenceController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true
         arguments:
+            - '@security.authorization_checker'
             - '@security.token_storage'
+            - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
+
+    Claroline\EvaluationBundle\Controller\Sequence\SequenceEvaluationController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'

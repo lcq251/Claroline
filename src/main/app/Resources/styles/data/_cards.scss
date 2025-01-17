@@ -171,6 +171,8 @@
     padding: $data-card-spacer-y $data-card-spacer-x;
     flex: 1 1 auto;
     max-width: 100%;
+
+    @include border-bottom-radius($data-card-border-radius);
 }
 
 .data-card-description {

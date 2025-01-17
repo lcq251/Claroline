@@ -3,37 +3,80 @@ import {PropTypes as T} from 'prop-types'
 
 import {Video as VideoTypes} from '#/integration/peertube/prop-types'
 import {PeerTubePlayer} from '#/integration/peertube/components/player'
-import {ResourcePage} from '#/main/core/resource'
+import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
+import {PageContent, PageSection} from '#/main/app/page'
+import get from 'lodash/get'
+import {trans, transChoice} from '#/main/app/intl'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {MediaInfo} from '#/main/app/media'
+import classes from 'classnames'
+import {useSelector} from 'react-redux'
 
 const VideoPlayer = props => {
   let lastSaved = 0
 
+  const embedded = useSelector(resourceSelectors.embedded)
+  const showHeader = useSelector(resourceSelectors.showHeader)
+  const resourceNode = useSelector(resourceSelectors.resourceNode)
+
   return (
     <ResourcePage>
-      <PeerTubePlayer
-        video={props.video}
-        progression={props.progression}
-        onPlay={(currentTime, duration) => {
-          if (props.currentUser) {
-            props.updateProgression(props.video.id, currentTime, duration)
-          }
-        }}
-        onPause={(currentTime, duration) => {
-          if (props.currentUser) {
-            props.updateProgression(props.video.id, currentTime, duration)
-          }
-        }}
-        onTimeUpdate={(currentTime, duration) => {
-          if (props.currentUser) {
-            const interval = Math.round((duration / 100) * 5)
-            const roundedTime = Math.round(currentTime)
-            if (roundedTime > lastSaved && 0 === roundedTime % interval) {
-              props.updateProgression(props.video.id, currentTime, duration)
-              lastSaved = roundedTime
-            }
-          }
-        }}
-      />
+      <PageContent>
+        <PageSection size="lg" flush={embedded} className={classes({
+          'mt-4': showHeader,
+          'mb-5': !embedded
+        })}>
+          <PeerTubePlayer
+            className="rounded-4"
+            video={props.video}
+            progression={props.progression}
+            onPlay={(currentTime, duration) => {
+              if (props.currentUser) {
+                props.updateProgression(props.video.id, currentTime, duration)
+              }
+            }}
+            onPause={(currentTime, duration) => {
+              if (props.currentUser) {
+                props.updateProgression(props.video.id, currentTime, duration)
+              }
+            }}
+            onTimeUpdate={(currentTime, duration) => {
+              if (props.currentUser) {
+                const interval = Math.round((duration / 100) * 5)
+                const roundedTime = Math.round(currentTime)
+                if (roundedTime > lastSaved && 0 === roundedTime % interval) {
+                  props.updateProgression(props.video.id, currentTime, duration)
+                  lastSaved = roundedTime
+                }
+              }
+            }}
+          />
+
+          <MediaInfo
+            title={resourceNode.name}
+            description={get(resourceNode, 'meta.descriptionHtml')}
+            embedded={embedded}
+            meta={(
+              <>
+                {get(resourceNode, 'evaluation.estimatedDuration') &&
+                  <>
+                    <div role="presentation" aria-label={trans('estimated_duration')}>
+                      <span className="fa far fa-clock me-2" aria-hidden={true} />
+                      {get(resourceNode, 'evaluation.estimatedDuration') + ' ' + trans('minutes')}
+                    </div>
+                    <span role="presentation">-</span>
+                  </>
+                }
+                {transChoice('display_views', get(resourceNode, 'meta.views', 0), {count: get(resourceNode, 'meta.views', 0)})}
+              </>
+            )}
+            downloadAction={{
+              type: CALLBACK_BUTTON,
+              callback: () => true
+            }}
+          />
+        </PageSection>
+      </PageContent>
     </ResourcePage>
   )
 }

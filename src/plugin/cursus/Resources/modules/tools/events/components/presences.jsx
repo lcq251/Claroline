@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentSizing} from '#/main/app/content/components/sizing'
 import {ToolPage} from '#/main/core/tool'
 
 import {PresencesList} from '#/plugin/cursus/presence/components/list'

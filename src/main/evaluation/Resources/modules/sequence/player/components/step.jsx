@@ -2,21 +2,17 @@ import React from 'react'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
-
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {Button} from '#/main/app/action/components/button'
 import {MENU_BUTTON, CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
+import {Html} from '#/main/app/components/html'
+import {PageHeading, PageSection} from '#/main/app/page'
 import {ResourceCard} from '#/main/core/resource/components/card'
 import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 
 import {Step as StepTypes} from '#/main/evaluation/sequence/prop-types'
 import {constants} from '#/main/evaluation/sequence/constants'
-import {PageSection} from '#/main/app/page'
-import isEmpty from 'lodash/isEmpty'
-import {getActions} from '#/main/community/group/utils'
-import {PageHeading} from '#/main/app/page/components/heading'
-import {Html} from '#/main/app/components/html'
 
 const ManualProgression = props =>
   <div className="text-body-tertiary d-flex align-items-baseline mb-1" role="presentation">
@@ -83,21 +79,12 @@ const Step = props =>
   <>
     <PageHeading
       size="md"
-      title={
-        <>
-          {props.numbering &&
-            <span className="h-numbering me-3" role="presentation">{props.numbering}</span>
-          }
-
-          {props.title}
-        </>
+      poster={props.poster}
+      title={props.numbering ?
+        props.numbering + ' ' + props.title :
+        props.title
       }
-      primaryAction="edit"
-      actions={!isEmpty(props.group) ? getActions([props.group], {
-        add: () => props.reload(props.group.id),
-        update: () => props.reload(props.group.id),
-        delete: () => props.reload(props.group.id)
-      }, props.path, props.currentUser) : []}
+      subtitle={props.subtitle}
     />
 
     {props.children}
@@ -123,23 +110,25 @@ const Step = props =>
     }
 
     {props.primaryResource &&
-      <ResourceEmbedded
-        className="step-primary-resource"
-        resourceNode={props.primaryResource}
-        showHeader={props.showResourceHeader}
-        lifecycle={{
-          play: props.disableNavigation,
-          end: () => {
-            props.enableNavigation()
-            // get updated path progression
-            props.updateProgression(props.id)
-          }
-        }}
-      />
+      <PageSection size="md" className="mb-5">
+        <ResourceEmbedded
+          resourceNode={props.primaryResource}
+          showHeader={props.showResourceHeader}
+          lifecycle={{
+            play: props.disableNavigation,
+            end: () => {
+              props.enableNavigation()
+              // get updated path progression
+              props.updateProgression(props.id)
+            }
+          }}
+        />
+      </PageSection>
     }
 
     {0 !== props.secondaryResources.length &&
       <SecondaryResources
+        className="mb-5"
         resources={props.secondaryResources}
         target={props.secondaryResourcesTarget}
       />
@@ -147,6 +136,7 @@ const Step = props =>
   </>
 
 implementPropTypes(Step, StepTypes, {
+  subtitle: T.string,
   currentUser: T.object,
   progression: T.string,
   numbering: T.string,

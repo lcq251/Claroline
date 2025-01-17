@@ -27,7 +27,7 @@ const EditorPage = (props) => {
         buttons={true}
       >
         <header className="d-flex flex-row align-items-center gap-2 mb-2">
-          <Heading level={1} displayLevel={4} className="m-0">
+          <Heading level={1} displayLevel={4} className="app-editor-title m-0">
             {props.title}
           </Heading>
 
@@ -46,9 +46,10 @@ const EditorPage = (props) => {
             displayLevel={5}
             disabled={props.disabled}
             name={editorDef.name}
-            autoFocus={props.autoFocus}
+            autoFocus={undefined === props.autoFocus || props.autoFocus}
             dataPart={props.dataPart}
             definition={props.definition}
+            locked={props.locked}
           />
         }
 
@@ -57,10 +58,10 @@ const EditorPage = (props) => {
 
       <Toolbar
         className="app-editor-toolbar sticky-top"
-        buttonName="btn btn-text-body"
+        buttonName="btn btn-text-body focus-ring"
         separatorName="my-2 border-top border-1"
         tooltip="left"
-        toolbar={"close summary | " + props.actions.map(a => !['close', 'summary'].includes(a.name))}
+        toolbar={"close summary | " + (props.actions ? props.actions.map(a => !['close', 'summary'].includes(a.name)) : '')}
         actions={[
           {
             name: 'close',
@@ -89,12 +90,8 @@ EditorPage.propTypes = {
   dataPart: T.string,
   definition: T.arrayOf(T.shape(
     DataFormSectionTypes.propTypes
-  ))
-}
-
-EditorPage.defaultProps = {
-  autoFocus: true,
-  actions: []
+  )),
+  locked: T.arrayOf(T.string)
 }
 
 export {

@@ -17,12 +17,10 @@ const ShortcutPlayer = (props) =>
     }
 
     {props.resource &&
-      <div className="row">
-        <ResourceEmbedded
-          resourceNode={props.resource}
-          showHeader={false}
-        />
-      </div>
+      <ResourceEmbedded
+        resourceNode={props.resource}
+        showHeader={false}
+      />
     }
   </ResourcePage>
 

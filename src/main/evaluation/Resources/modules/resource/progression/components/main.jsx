@@ -6,6 +6,7 @@ import {trans} from '#/main/app/intl'
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {EvaluationJumbotron} from '#/main/evaluation/components/jumbotron'
+import {PageContent} from '#/main/app/page'
 
 /**
  * Display the User progression in a Resource.
@@ -17,9 +18,11 @@ const ResourceProgression = () => {
     <ResourcePage
       title={trans('my_progression')}
     >
-      <EvaluationJumbotron
-        evaluation={userEvaluation}
-      />
+      <PageContent>
+        <EvaluationJumbotron
+          evaluation={userEvaluation}
+        />
+      </PageContent>
     </ResourcePage>
   )
 }

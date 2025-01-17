@@ -128,12 +128,12 @@ class ResourceNodeSerializer
                 $serializedNode['root'] = true; // this is not used (you can check if parent is not here), it's just to preserve the exposed data model
             }
 
-            $serializedNode = array_merge($serializedNode, [
+            /*$serializedNode = array_merge($serializedNode, [
                 'display' => [
                     'fullscreen' => $resourceNode->isFullscreen(),
                     'showIcon' => $resourceNode->getShowIcon(),
                 ],
-            ]);
+            ]);*/
         }
 
         if (!in_array(Options::NO_RIGHTS, $options)) {
@@ -177,25 +177,23 @@ class ResourceNodeSerializer
             $resourceNode->setResourceType($resourceType);
         }
 
-        /*if (empty($resourceNode->getMimeType())) {*/
-            if (isset($data['meta']) && !empty($data['meta']['mimeType'])) {
-                $mimeType = $data['meta']['mimeType'];
-            } else {
-                $mimeType = 'custom/'.$resourceNode->getResourceType()->getName();
-            }
+        if (isset($data['meta']) && !empty($data['meta']['mimeType'])) {
+            $mimeType = $data['meta']['mimeType'];
+        } else {
+            $mimeType = 'custom/'.$resourceNode->getResourceType()->getName();
+        }
 
-            $resourceNode->setMimeType($mimeType);
-        /*}*/
+        $resourceNode->setMimeType($mimeType);
 
         $this->sipe('meta.published', 'setPublished', $data, $resourceNode);
         $this->sipe('meta.description', 'setDescription', $data, $resourceNode);
         $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $resourceNode);
-        $this->sipe('meta.license', 'setLicense', $data, $resourceNode);
-        $this->sipe('meta.authors', 'setAuthor', $data, $resourceNode);
+        // $this->sipe('meta.license', 'setLicense', $data, $resourceNode);
+        // $this->sipe('meta.authors', 'setAuthor', $data, $resourceNode);
 
         // display
-        $this->sipe('display.fullscreen', 'setFullscreen', $data, $resourceNode);
-        $this->sipe('display.showIcon', 'setShowIcon', $data, $resourceNode);
+        // $this->sipe('display.fullscreen', 'setFullscreen', $data, $resourceNode);
+        // $this->sipe('display.showIcon', 'setShowIcon', $data, $resourceNode);
 
         // restrictions
         if (isset($data['restrictions'])) {

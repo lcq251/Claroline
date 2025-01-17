@@ -44,14 +44,14 @@ class SummaryLink extends Component {
       <li className="summary-link-container">
         <div className={classes('summary-link', {
           active: this.props.active
-        })}>
+        })} role="presentation">
           <Button
-            className="btn btn-text-body btn-summary-primary"
+            className="btn btn-text-body btn-summary-primary align-items-baseline focus-ring"
             {...omit(this.props, 'children', 'additional', 'collapsible', 'collapsed', 'toggleCollapse', 'noCollapse')}
             label={this.props.numbering ?
               <>
                 {this.props.numbering &&
-                  <span className="h-numbering">{this.props.numbering}</span>
+                  <span className="text-body-tertiary fw-bold me-2" role="presentation">{this.props.numbering}</span>
                 }
                 {this.props.label}
               </> :
@@ -62,7 +62,7 @@ class SummaryLink extends Component {
           {(collapsible || 0 !== this.props.additional.length) &&
             <Toolbar
               name="summary-link-actions"
-              buttonName="btn btn-text-secondary btn-summary"
+              buttonName="btn btn-text-secondary btn-summary focus-ring"
               tooltip="left"
               toolbar="collapse more"
               actions={(this.props.additional || []).concat([

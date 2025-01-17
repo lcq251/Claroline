@@ -12,6 +12,8 @@ import {getActions} from '#/main/core/resource/utils'
 import {selectors, actions} from '#/main/core/resource/store'
 import {route} from '#/main/core/resource/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
+import {trans} from '#/main/app/intl'
+import {EvaluationShortcut} from '#/main/evaluation/components/shortcut'
 
 const ResourcePage = (props) => {
   const resourceDef = useContext(ResourceContext)
@@ -22,7 +24,9 @@ const ResourcePage = (props) => {
   const resourceNode = useSelector(selectors.resourceNode)
   const embedded = useSelector(selectors.embedded)
   const showHeader = useSelector(selectors.showHeader)
-  
+  const hasEvaluation = useSelector(selectors.hasEvaluation)
+  const userEvaluation = useSelector(selectors.resourceEvaluation)
+
   const dispatch = useDispatch()
   const reload = useCallback(() => dispatch(actions.reload()), [get(resourceNode, 'id')])
 
@@ -44,6 +48,7 @@ const ResourcePage = (props) => {
           target: resourcePath
         }
       ] : [], props.breadcrumb || [])}
+      name={resourceNode ? resourceNode.name : trans('loading')}
       title={props.title ?
         props.title + ' | ' + resourceNode.name :
         resourceNode.name
@@ -52,6 +57,13 @@ const ResourcePage = (props) => {
       embedded={embedded}
       showHeader={!embedded || showHeader}
       menu={{
+        children: hasEvaluation && userEvaluation && (
+          <EvaluationShortcut
+            {...userEvaluation}
+            className="my-auto"
+            target={resourcePath+'/progression'}
+          />
+        ),
         nav: resourceDef.menu,
         toolbar: 'configure more',
         // get actions injected through plugins and the ones defined by the current tool

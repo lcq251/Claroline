@@ -5,6 +5,7 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageContent} from '#/main/app/page'
 
 const TemplatePage = (props) => {
   return (
@@ -36,7 +37,9 @@ const TemplatePage = (props) => {
         }
       ]}
     >
-      {props.children}
+      <PageContent>
+        {props.children}
+      </PageContent>
     </ToolPage>
   )
 }

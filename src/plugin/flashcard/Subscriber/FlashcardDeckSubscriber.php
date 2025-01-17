@@ -35,7 +35,7 @@ class FlashcardDeckSubscriber extends ResourceComponent implements EvaluatedReso
         return 'flashcard';
     }
 
-    /** @var FlashcardDeck $resource */
+    /** @param FlashcardDeck $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -59,7 +59,7 @@ class FlashcardDeckSubscriber extends ResourceComponent implements EvaluatedReso
         ];
     }
 
-    /** @var FlashcardDeck $resource */
+    /** @param FlashcardDeck $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         return [

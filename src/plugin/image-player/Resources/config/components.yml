@@ -1,0 +1,10 @@
+services:
+    # Resource
+    Claroline\ImagePlayerBundle\Component\Resource\ImageResource:
+        tags: [ 'claroline.component.resource', 'kernel.event_subscriber' ]
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\CoreBundle\Manager\FileManager'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\ImagePlayerBundle\Manager\EvaluationManager'

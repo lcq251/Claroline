@@ -20,6 +20,7 @@ import {Workspace as WorkspaceType} from '#/main/core/workspace/prop-types'
 import {getRestrictions} from '#/main/core/workspace/utils'
 import {PageSection} from '#/main/app/page/components/section'
 import {ContextPage} from '#/main/app/context/components/page'
+import {PageContent} from '#/main/app/page'
 
 class StandardRestrictions extends Component {
   constructor(props) {
@@ -150,7 +151,9 @@ class StandardRestrictions extends Component {
                 })
               }}
               fail={{
-                title: this.props.managed ? trans('restricted_workspace.you_are_manager', {}, 'workspace') : trans('restricted_workspace.pending_registration', {}, 'workspace'),
+                title: this.props.managed ?
+                  trans('restricted_workspace.you_are_manager', {}, 'workspace') :
+                  trans('restricted_workspace.pending_registration', {}, 'workspace'),
                 help: classes({
                   [trans('restricted_workspace.wait_validation', {}, 'workspace')]: !this.props.managed,
                   [trans('restricted_workspace.contact_manager', {
@@ -252,19 +255,21 @@ const WorkspaceForbidden = (props) => {
 
   return (
     <ContextPage>
-      {!isUndefined(restrictions) && 0 !== restrictions.length &&
-        createElement(restrictions[0].component, {
-          workspace: props.workspace,
-          errors: props.errors,
-          managed: props.managed,
-          currentUser: props.currentUser,
-          dismiss: props.dismiss
-        })
-      }
+      <PageContent>
+        {!isUndefined(restrictions) && 0 !== restrictions.length &&
+          createElement(restrictions[0].component, {
+            workspace: props.workspace,
+            errors: props.errors,
+            managed: props.managed,
+            currentUser: props.currentUser,
+            dismiss: props.dismiss
+          })
+        }
 
-      {!isUndefined(restrictions) && 0 === restrictions.length &&
-        <StandardRestrictions {...props} />
-      }
+        {!isUndefined(restrictions) && 0 === restrictions.length &&
+          <StandardRestrictions {...props} />
+        }
+      </PageContent>
     </ContextPage>
   )
 }

@@ -36,6 +36,7 @@ services:
     Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer:
         tags: [ claroline.serializer ]
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'

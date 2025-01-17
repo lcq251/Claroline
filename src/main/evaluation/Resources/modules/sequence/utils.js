@@ -1,4 +1,19 @@
+import {getActions as getPluginsActions} from '#/main/app/plugins'
+
 import {constants} from '#/main/evaluation/sequence/constants'
+
+function getActions(sequences, refresher = {}, path, currentUser = null, withDefault = false) {
+  return Promise.all([
+    getPluginsActions('sequence', sequences, refresher, path, currentUser, withDefault),
+    getPluginsActions('sequence', sequences, refresher, path, currentUser, withDefault)
+  ]).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
+}
+
+function getDefaultAction(sequence, refresher = {}, path, currentUser = null) {
+  return getActions([sequence], refresher, path, currentUser, true)
+    // only get the default one
+    .then(actions => actions.find(action => action.default))
+}
 
 /**
  * Flattens a tree of steps into a one-level array.
@@ -67,7 +82,7 @@ function getNumbering(type, steps, step) {
       return '' + buildPath(steps, step)
         // make numbering start to 1 for users
         .map(i => i + 1)
-        .join('.')
+        .join('.') + '.'
 
     /**
      * The numbering label is a letter.
@@ -76,7 +91,7 @@ function getNumbering(type, steps, step) {
       return buildPath(steps, step)
         // get correct letter
         .map(i => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])
-        .join('.')
+        .join('.') + '.'
 
     /**
      * The numbering label is specified by each step.
@@ -93,7 +108,33 @@ function getNumbering(type, steps, step) {
   }
 }
 
+function getNext(steps, current) {
+  const currentIndex = steps.findIndex(step => current.id === step.id)
+
+  let next
+  if (steps.length > currentIndex + 1) {
+    next = steps[currentIndex + 1]
+  }
+
+  return next
+}
+
+function getPrevious(steps, current) {
+  const currentIndex = steps.findIndex(step => current.id === step.id)
+
+  let previous
+  if (0 !== currentIndex) {
+    previous = steps[currentIndex - 1]
+  }
+
+  return previous
+}
+
 export {
+  getActions,
+  getDefaultAction,
   flattenSteps,
-  getNumbering
+  getNumbering,
+  getPrevious,
+  getNext
 }

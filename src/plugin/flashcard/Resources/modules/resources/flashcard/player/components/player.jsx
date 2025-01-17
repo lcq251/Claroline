@@ -12,6 +12,7 @@ import {ResourcePage} from '#/main/core/resource'
 
 import {Card} from '#/plugin/flashcard/resources/flashcard/components/card'
 import {FlashcardDeck as FlashcardDeckTypes} from '#/plugin/flashcard/resources/flashcard/prop-types'
+import {PageContent} from '#/main/app/page'
 
 const Player = props => {
   const history = useHistory()
@@ -65,77 +66,79 @@ const Player = props => {
 
   return (
     <ResourcePage>
-      {props.flashcardDeck.showProgression &&
-        <ProgressBar
-          className="progress-minimal"
-          value={(currentCardIndex+1) / maxCards * 100}
-          size="xs"
-          variant="learning"
-        />
-      }
-
-      <div className="flashcard-player content-sm mt-5">
+      <PageContent>
         {props.flashcardDeck.showProgression &&
-          <div className="flashcard-counter mb-1">
-            <div>
-              Session {`${props.attempt.data.session}`}
-            </div>
-            <div>
-              {`${currentCardIndex + 1} / ${maxCards}`}
-            </div>
-          </div>
-        }
-        <div className="flashcard-deck">
-          <Card
-            card={currentCard}
-            flipped={isFlipped}
-            mode="play"
+          <ProgressBar
+            className="progress-minimal"
+            value={(currentCardIndex+1) / maxCards * 100}
+            size="xs"
+            variant="learning"
           />
+        }
 
-          { maxCards > 1 && currentCardIndex < maxCards - 1 &&
-            <div className="flashcard flashcard-1">
-              <div className="flashcard-card" />
+        <div className="flashcard-player content-sm mt-5">
+          {props.flashcardDeck.showProgression &&
+            <div className="flashcard-counter mb-1">
+              <div>
+                Session {`${props.attempt.data.session}`}
+              </div>
+              <div>
+                {`${currentCardIndex + 1} / ${maxCards}`}
+              </div>
             </div>
           }
-          { maxCards > 2 && currentCardIndex < maxCards - 2 &&
-            <div className="flashcard flashcard-2">
-              <div className="flashcard-card" />
-            </div>
-          }
-        </div>
+          <div className="flashcard-deck">
+            <Card
+              card={currentCard}
+              flipped={isFlipped}
+              mode="play"
+            />
 
-        <Toolbar
-          className="flashcard-buttons d-flex gap-1 mt-5 mb-3"
-          buttonName="btn"
-          size="lg"
-          actions={[
-            {
-              name: 'flip',
-              type: CALLBACK_BUTTON,
-              className: 'btn-primary w-100',
-              label: trans('flip_card', {}, 'flashcard'),
-              callback: () => setIsFlipped(!isFlipped),
-              displayed: !isFlipped
-            }, {
-              name: 'answer-correct',
-              type: CALLBACK_BUTTON,
-              className: 'btn-success w-50',
-              label: (props.flashcardDeck.customButtons && props.flashcardDeck.rightButtonLabel) || trans('right_answer', {}, 'flashcard'),
-              callback: () => handleAnswer(true),
-              displayed: isFlipped,
-              disabled: isAnswering
-            }, {
-              name: 'answer-incorrect',
-              type: CALLBACK_BUTTON,
-              className: 'btn-danger w-50',
-              label: (props.flashcardDeck.customButtons && props.flashcardDeck.wrongButtonLabel) || trans('wrong_answer', {}, 'flashcard'),
-              callback: () => handleAnswer(false),
-              displayed: isFlipped,
-              disabled: isAnswering
+            { maxCards > 1 && currentCardIndex < maxCards - 1 &&
+              <div className="flashcard flashcard-1">
+                <div className="flashcard-card" />
+              </div>
             }
-          ]}
-        />
-      </div>
+            { maxCards > 2 && currentCardIndex < maxCards - 2 &&
+              <div className="flashcard flashcard-2">
+                <div className="flashcard-card" />
+              </div>
+            }
+          </div>
+
+          <Toolbar
+            className="flashcard-buttons d-flex gap-1 mt-5 mb-3"
+            buttonName="btn"
+            size="lg"
+            actions={[
+              {
+                name: 'flip',
+                type: CALLBACK_BUTTON,
+                className: 'btn-primary w-100',
+                label: trans('flip_card', {}, 'flashcard'),
+                callback: () => setIsFlipped(!isFlipped),
+                displayed: !isFlipped
+              }, {
+                name: 'answer-correct',
+                type: CALLBACK_BUTTON,
+                className: 'btn-success w-50',
+                label: (props.flashcardDeck.customButtons && props.flashcardDeck.rightButtonLabel) || trans('right_answer', {}, 'flashcard'),
+                callback: () => handleAnswer(true),
+                displayed: isFlipped,
+                disabled: isAnswering
+              }, {
+                name: 'answer-incorrect',
+                type: CALLBACK_BUTTON,
+                className: 'btn-danger w-50',
+                label: (props.flashcardDeck.customButtons && props.flashcardDeck.wrongButtonLabel) || trans('wrong_answer', {}, 'flashcard'),
+                callback: () => handleAnswer(false),
+                displayed: isFlipped,
+                disabled: isAnswering
+              }
+            ]}
+          />
+        </div>
+      </PageContent>
     </ResourcePage>
   )
 }

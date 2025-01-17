@@ -15,7 +15,7 @@ import {transAction} from '#/main/transfer/utils'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {Datetime} from '#/main/app/components/date'
 import {ContentHtml} from '#/main/app/content/components/html'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {Badge} from '#/main/app/components/badge'
 
 const TransferPage = props =>
@@ -28,72 +28,72 @@ const TransferPage = props =>
     }
 
     {!isEmpty(props.transferFile) &&
-      <PageHeading
-        size="md"
-        title={props.transferFile.name || transAction(props.transferFile.action)}
-        primaryAction="edit"
-        actions={[
-          {
-            name: 'edit',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-pencil',
-            label: trans('edit', {}, 'actions'),
-            displayed: hasPermission('edit', props.transferFile),
-            disabled: 'in_progress' === props.transferFile.status,
-            target: props.path+'/edit',
-            primary: true,
-            group: trans('management')
-          }
-        ].concat(props.actions)}
-      />
-    }
+      <PageContent>
+        <PageHeading
+          size="md"
+          title={props.transferFile.name || transAction(props.transferFile.action)}
+          primaryAction="edit"
+          actions={[
+            {
+              name: 'edit',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-pencil',
+              label: trans('edit', {}, 'actions'),
+              displayed: hasPermission('edit', props.transferFile),
+              disabled: 'in_progress' === props.transferFile.status,
+              target: props.path+'/edit',
+              primary: true,
+              group: trans('management')
+            }
+          ].concat(props.actions)}
+        />
 
-    {!isEmpty(props.transferFile) &&
-      <PageSection size="md">
-        <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4 text-wrap" role="presentation">
-          <UserMicro
-            {...get(props.transferFile, 'meta.creator', {})}
-            noStatus={true}
-            link={true}
-          />
+        <PageSection size="md">
+          <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4 text-wrap" role="presentation">
+            <UserMicro
+              {...get(props.transferFile, 'meta.creator', {})}
+              noStatus={true}
+              link={true}
+            />
 
-          <span>-</span>
+            <span>-</span>
 
-          {get(props.transferFile, 'executionDate') ?
-            <Datetime value={get(props.transferFile, 'executionDate')} long={true} time={true} /> :
-            <span role="presentation">{trans('not_executed')}</span>
-          }
+            {get(props.transferFile, 'executionDate') ?
+              <Datetime value={get(props.transferFile, 'executionDate')} long={true} time={true} /> :
+              <span role="presentation">{trans('not_executed')}</span>
+            }
 
-          <div className="d-flex flex-row gap-1" role="presentation">
-            <Badge variant={classes({
-              'secondary': 'pending' === props.transferFile.status,
-              'info': 'in_progress' === props.transferFile.status,
-              'success': 'success' === props.transferFile.status,
-              'danger': 'error' === props.transferFile.status
-            })} subtle={true} className="fs-sm lh-base">{trans(props.transferFile.status)}</Badge>
-            <Badge variant="secondary" subtle={true} className="fs-sm lh-base">
-              {transAction(props.transferFile.action)}
-            </Badge>
-          </div>
+            <div className="d-flex flex-row gap-1" role="presentation">
+              <Badge variant={classes({
+                'secondary': 'pending' === props.transferFile.status,
+                'info': 'in_progress' === props.transferFile.status,
+                'success': 'success' === props.transferFile.status,
+                'danger': 'error' === props.transferFile.status
+              })} subtle={true} className="fs-sm lh-base">{trans(props.transferFile.status)}</Badge>
+              <Badge variant="secondary" subtle={true} className="fs-sm lh-base">
+                {transAction(props.transferFile.action)}
+              </Badge>
+            </div>
 
-          {false && get(props.transferFile, 'scheduler.scheduledDate') &&
-            <li className="list-group-item">
-              {trans('scheduled_date', {}, 'scheduler')}
-              <span className="value">
+            {false && get(props.transferFile, 'scheduler.scheduledDate') &&
+              <li className="list-group-item">
+                {trans('scheduled_date', {}, 'scheduler')}
+                <span className="value">
                 {displayDate(get(props.transferFile, 'scheduler.scheduledDate'), false, true)}
               </span>
-            </li>
+              </li>
+            }
+
+          </div>
+
+          {props.transferFile.description &&
+            <ContentHtml className="lead mb-5">{props.transferFile.description}</ContentHtml>
           }
+        </PageSection>
 
-        </div>
-
-        {props.transferFile.description &&
-          <ContentHtml className="lead mb-5">{props.transferFile.description}</ContentHtml>
-        }
-      </PageSection>
+        {props.children}
+      </PageContent>
     }
-
-    {!isEmpty(props.transferFile) && props.children}
   </ToolPage>
 
 TransferPage.propTypes = {

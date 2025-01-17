@@ -1,11 +1,15 @@
 import {PropTypes} from 'prop-types'
 import merge from 'lodash/merge'
+import isEmpty from 'lodash/isEmpty'
 
 function implementType(implementation, implementedType, propTypes = {}, defaultProps = {}) {
   // merge types
   implementation.propTypes = merge(implementation.propTypes || {}, implementedType.propTypes || {}, propTypes)
   // merge defaults
-  implementation.defaultProps = merge(implementation.defaultTypes || {}, implementedType.defaultProps || {}, defaultProps)
+  const defaults = merge(implementation.defaultTypes || {}, implementedType.defaultProps || {}, defaultProps)
+  if (!isEmpty(defaults)) {
+    implementation.defaultProps = defaults
+  }
 
   return implementation
 }

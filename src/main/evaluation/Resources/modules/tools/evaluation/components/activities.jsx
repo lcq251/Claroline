@@ -12,11 +12,9 @@ import {MODAL_RESOURCES} from '#/main/core/modals/resources'
 import {PageListSection} from '#/main/app/page'
 
 const EvaluationActivities = (props) =>
-  <ToolPage
-    title={trans('activities')}
-    primaryAction="add-resource"
-    actions={[
-      {
+  <ToolPage title={trans('activities')}>
+    <PageListSection
+      addAction={{
         name: 'add-resource',
         type: MODAL_BUTTON,
         label: trans('add_resources'),
@@ -27,18 +25,16 @@ const EvaluationActivities = (props) =>
             callback: () => props.addRequiredResources(props.contextId, selected)
           })
         }]
-      }
-    ]}
-  >
-    <Alert
-      className="m-0"
-      type="info"
-      title={trans('workspace_requirements_help_title', {}, 'evaluation')}
+      }}
     >
-      {trans('workspace_requirements_help_description', {}, 'evaluation')}
-    </Alert>
+      <Alert
+        className="m-0"
+        type="info"
+        title={trans('workspace_requirements_help_title', {}, 'evaluation')}
+      >
+        {trans('workspace_requirements_help_description', {}, 'evaluation')}
+      </Alert>
 
-    <PageListSection>
       <ResourceList
         flush={true}
         name={selectors.STORE_NAME+'.requiredResources'}

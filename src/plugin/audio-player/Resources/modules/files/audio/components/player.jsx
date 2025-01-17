@@ -24,6 +24,7 @@ import {Waveform} from '#/plugin/audio-player/waveform/components/waveform'
 import {SectionsComments} from '#/plugin/audio-player/files/audio/components/sections-comments'
 import {ResourcePage} from '#/main/core/resource'
 import {Toolbar} from '#/main/app/action'
+import {PageContent} from '#/main/app/page'
 
 const Transcripts = props =>
   <div className="audio-player-transcripts">
@@ -237,7 +238,7 @@ class Audio extends Component {
   render() {
     return (
       <ResourcePage>
-        <div className="audio-resource-player">
+        <PageContent className="audio-resource-player">
           {this.props.canEdit &&
             <div className="comments-buttons">
               {(constants.USER_TYPE === this.props.file.sectionsType ||
@@ -386,7 +387,7 @@ class Audio extends Component {
               resourceNodeId={this.props.resourceNodeId}
             />
           }
-        </div>
+        </PageContent>
       </ResourcePage>
     )
   }

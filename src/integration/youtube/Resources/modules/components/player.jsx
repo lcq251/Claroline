@@ -1,74 +1,80 @@
-import React, {Component}  from 'react'
+import React, {useCallback, useEffect, useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
+import get from 'lodash/get'
+
 import {Video as VideoTypes} from '#/integration/youtube/prop-types'
 
-class YouTubePlayer extends Component {
-  constructor(props) {
-    super(props)
+const YouTubePlayer = (props) => {
+  const playerId = useId()
+  const [resumed, setResumed] = useState(false)
 
-    this.player = null
-    this.timer = null
-    this.resumed = false
+  let player
 
-    this.onTimer = this.onTimer.bind(this)
-  }
+  const onTimer = useCallback(() => {
+    if (player && props.onTimeUpdate) {
+      props.onTimeUpdate(player.getCurrentTime(), player.getDuration() )
+    }
+  }, [get(props.video, 'videoId')])
 
-  componentDidMount() {
-    this.player = new window.YT.Player('youtube-player', {
+  useEffect(() => {
+    player = new window.YT.Player(playerId, {
       width: '560',
       height: '315',
-      videoId: this.props.video.videoId,
+      videoId: props.video.videoId,
       playerVars: {
-        playlist: this.props.video.videoId,
-        autoplay: this.props.video.autoplay ? 1 : 0,
-        loop: this.props.video.looping ? 1 : 0,
-        controls: this.props.video.controls ? 2 : 0,
-        start: this.props.video.timecodeStart,
-        end: this.props.video.timecodeEnd
+        playlist: props.video.videoId,
+        autoplay: props.video.autoplay ? 1 : 0,
+        loop: props.video.looping ? 1 : 0,
+        controls: props.video.controls ? 2 : 0,
+        start: props.video.timecodeStart,
+        end: props.video.timecodeEnd
       },
       events : {
         onStateChange: (event) => {
           switch (event.data) {
             case window.YT.PlayerState.PLAYING:
-              if(!this.resumed && this.props.video.resume) {
-                this.player.seekTo(event.target.getDuration() * (this.props.progression / 100) - 5, true)
-                this.resumed = true
+              if(!resumed && props.video.resume) {
+                player.seekTo(event.target.getDuration() * ((props.progression || 0) / 100) - 5, true)
+                setResumed(true)
               }
-              this.props.onPlay(event.target.getCurrentTime(), event.target.getDuration())
-              this.timer = setInterval( this.onTimer, 1000)
+
+              if (props.onPlay) {
+                props.onPlay(event.target.getCurrentTime(), event.target.getDuration())
+              }
+
+              setInterval(onTimer, 1000)
               break
             case window.YT.PlayerState.PAUSED:
-              this.props.onPause(event.target.getCurrentTime(), event.target.getDuration())
-              clearInterval(this.timer)
+              if (props.onPause) {
+                props.onPause(event.target.getCurrentTime(), event.target.getDuration())
+              }
+
+              clearInterval(onTimer)
               break
           }
         }
       }
     })
-  }
 
-  componentWillUnmount() {
-    if (this.player && this.props.onPause) {
-      this.props.onPause( this.player.getCurrentTime(), this.player.getDuration() )
+    return () => {
+      if (player && props.onPause) {
+        props.onPause(player.getCurrentTime(), player.getDuration())
+      }
     }
-  }
+  }, [get(props.video, 'videoId')])
 
-  onTimer() {
-    this.props.onTimeUpdate( this.player.getCurrentTime(), this.player.getDuration() )
-  }
-
-  render() {
-    return (
-      <div className="youtube-player-container">
-        <div id={'youtube-player'} />
-      </div>
-    )
-  }
+  return (
+    <div id={playerId} className={classes('youtube-player', props.className)} role="presentation" />
+  )
 }
 
 YouTubePlayer.propTypes = {
-  video: T.shape( VideoTypes.propTypes ).isRequired,
-  progression: T.number.isRequired,
+  className: T.string,
+  video: T.shape(
+    VideoTypes.propTypes
+  ).isRequired,
+  progression: T.number,
   onPlay: T.func,
   onPause: T.func,
   onTimeUpdate: T.func

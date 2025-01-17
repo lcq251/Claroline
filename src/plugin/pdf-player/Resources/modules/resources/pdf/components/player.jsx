@@ -13,6 +13,7 @@ import {Button} from '#/main/app/action/components/button'
 import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 class PdfPlayer extends Component {
   constructor(props) {
@@ -111,107 +112,109 @@ class PdfPlayer extends Component {
   render() {
     return (
       <ResourcePage>
-        {!this.state.loaded &&
-          <ContentLoader
-            size="lg"
-            description={trans('loading', {}, 'file')}
-          />
-        }
+        <PageContent>
+          {!this.state.loaded &&
+            <ContentLoader
+              size="lg"
+              description={trans('loading', {}, 'file')}
+            />
+          }
 
-        {this.state.loaded &&
-          <div className="pdf-menu mb-4" role="presentation">
-            <div className="pdf-pages">
-              <Button
-                className="btn btn-link"
-                type={CALLBACK_BUTTON}
-                icon="fa fa-fw fa-backward"
-                label={trans('previous')}
-                disabled={!this.state.page || 1 >= this.state.page}
-                callback={() => this.changePage(this.state.viewer, this.state.page - 1)}
-                tooltip="bottom"
-              />
+          {this.state.loaded &&
+            <div className="pdf-menu mb-4" role="presentation">
+              <div className="pdf-pages">
+                <Button
+                  className="btn btn-link"
+                  type={CALLBACK_BUTTON}
+                  icon="fa fa-fw fa-backward"
+                  label={trans('previous')}
+                  disabled={!this.state.page || 1 >= this.state.page}
+                  callback={() => this.changePage(this.state.viewer, this.state.page - 1)}
+                  tooltip="bottom"
+                />
 
-              <Button
-                className="btn btn-link"
-                type={CALLBACK_BUTTON}
-                icon="fa fa-fw fa-forward"
-                label={trans('next')}
-                disabled={!this.state.pdf || !this.state.page || this.state.pdf.numPages <= this.state.page}
-                callback={() => this.changePage(this.state.viewer, this.state.page + 1)}
-                tooltip="bottom"
-              />
+                <Button
+                  className="btn btn-link"
+                  type={CALLBACK_BUTTON}
+                  icon="fa fa-fw fa-forward"
+                  label={trans('next')}
+                  disabled={!this.state.pdf || !this.state.page || this.state.pdf.numPages <= this.state.page}
+                  callback={() => this.changePage(this.state.viewer, this.state.page + 1)}
+                  tooltip="bottom"
+                />
 
-              <input
-                type="number"
-                className="form-control input-sm"
-                value={this.state.page}
-                onChange={(e) => this.changePage(this.state.viewer, e.currentTarget.value)}
-              />
-              {transChoice('count_pages', this.state.pdf ? this.state.pdf.numPages : 0, {count: this.state.pdf ? this.state.pdf.numPages : 0}, 'resource')}
+                <input
+                  type="number"
+                  className="form-control input-sm"
+                  value={this.state.page}
+                  onChange={(e) => this.changePage(this.state.viewer, e.currentTarget.value)}
+                />
+                {transChoice('count_pages', this.state.pdf ? this.state.pdf.numPages : 0, {count: this.state.pdf ? this.state.pdf.numPages : 0}, 'resource')}
+              </div>
+
+              <div className="pdf-zoom">
+                <Button
+                  className="btn btn-link"
+                  type={CALLBACK_BUTTON}
+                  icon="fa fa-fw fa-search-plus"
+                  label={trans('zoom_in')}
+                  callback={() => this.zoom(this.state.scale + 25)}
+                  disabled={!this.state.pdf || !this.state.scale}
+                  tooltip="bottom"
+                />
+
+                <Button
+                  className="btn btn-link"
+                  type={CALLBACK_BUTTON}
+                  icon="fa fa-fw fa-search-minus"
+                  label={trans('zoom_out')}
+                  callback={() => this.zoom(this.state.scale - 25)}
+                  disabled={!this.state.pdf || !this.state.scale || 1 >= this.state.scale}
+                  tooltip="bottom"
+                />
+
+                <input
+                  type="number"
+                  min="5"
+                  className="form-control input-sm"
+                  value={this.state.scale}
+                  onChange={(e) => this.zoom(e.currentTarget.value)}
+                />
+                <span className="pdf-zoom-unit">%</span>
+
+                <Button
+                  className="btn btn-link"
+                  type={ASYNC_BUTTON}
+                  icon="fa fa-fw fa-file-download"
+                  label={trans('download', {}, 'actions')}
+                  disabled={!this.state.pdf}
+                  tooltip="bottom"
+                  request={{
+                    url: url(['claro_resource_download'], {ids: [this.props.nodeId]})
+                  }}
+                />
+              </div>
             </div>
+          }
 
-            <div className="pdf-zoom">
-              <Button
-                className="btn btn-link"
-                type={CALLBACK_BUTTON}
-                icon="fa fa-fw fa-search-plus"
-                label={trans('zoom_in')}
-                callback={() => this.zoom(this.state.scale + 25)}
-                disabled={!this.state.pdf || !this.state.scale}
-                tooltip="bottom"
-              />
-
-              <Button
-                className="btn btn-link"
-                type={CALLBACK_BUTTON}
-                icon="fa fa-fw fa-search-minus"
-                label={trans('zoom_out')}
-                callback={() => this.zoom(this.state.scale - 25)}
-                disabled={!this.state.pdf || !this.state.scale || 1 >= this.state.scale}
-                tooltip="bottom"
-              />
-
-              <input
-                type="number"
-                min="5"
-                className="form-control input-sm"
-                value={this.state.scale}
-                onChange={(e) => this.zoom(e.currentTarget.value)}
-              />
-              <span className="pdf-zoom-unit">%</span>
-
-              <Button
-                className="btn btn-link"
-                type={ASYNC_BUTTON}
-                icon="fa fa-fw fa-file-download"
-                label={trans('download', {}, 'actions')}
-                disabled={!this.state.pdf}
-                tooltip="bottom"
-                request={{
-                  url: url(['claro_resource_download'], {ids: [this.props.nodeId]})
-                }}
-              />
-            </div>
-          </div>
-        }
-
-        <div
-          className="pdf-container mb-4"
-          style={!this.state.loaded ? {display: 'none'} : {height: this.state.height}}
-        >
           <div
-            id={'pdf-' + this.props.nodeId}
-            className="pdf"
-            style={{
-              position: 'absolute',
-              overflow: 'hidden',
-              width: '100%',
-              height: '100%'
-            }}
+            className="pdf-container mb-4"
+            style={!this.state.loaded ? {display: 'none'} : {height: this.state.height}}
           >
-            <div id="viewer" className="pdfViewer" />
+            <div
+              id={'pdf-' + this.props.nodeId}
+              className="pdf"
+              style={{
+                position: 'absolute',
+                overflow: 'hidden',
+                width: '100%',
+                height: '100%'
+              }}
+            >
+              <div id="viewer" className="pdfViewer" />
+            </div>
           </div>
-        </div>
+        </PageContent>
       </ResourcePage>
     )
   }

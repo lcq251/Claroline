@@ -62,16 +62,14 @@ abstract class AbstractEvaluationManager
         return $changes;
     }
 
-    private function updateEvaluationStatus(AbstractEvaluation $evaluation, string $status): AbstractEvaluation
+    private function updateEvaluationStatus(AbstractEvaluation $evaluation, string $status): void
     {
         if (AbstractEvaluation::STATUS_PRIORITY[$status] > AbstractEvaluation::STATUS_PRIORITY[$evaluation->getStatus()]) {
             $evaluation->setStatus($status);
         }
-
-        return $evaluation;
     }
 
-    private function updateEvaluationScore(AbstractEvaluation $evaluation, float $scoreMax, float $score = null, float $scoreMin = null): AbstractEvaluation
+    private function updateEvaluationScore(AbstractEvaluation $evaluation, float $scoreMax, float $score = null, float $scoreMin = null): void
     {
         $oldScore = $evaluation->getRelativeScore();
         $newScore = $score ? $score / $scoreMax : null;
@@ -82,7 +80,5 @@ abstract class AbstractEvaluationManager
             $evaluation->setScoreMax($scoreMax);
             $evaluation->setScoreMin($scoreMin);
         }
-
-        return $evaluation;
     }
 }

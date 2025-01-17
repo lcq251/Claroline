@@ -41,6 +41,7 @@ const ResourceEditorAppearance = (props) =>
         ]
       }
     ].concat(props.definition || [])}
+    locked={props.locked}
   >
     {props.children}
   </EditorPage>
@@ -49,6 +50,7 @@ ResourceEditorAppearance.propTypes = {
   definition: T.arrayOf(T.shape(
     DataFormSectionTypes.propTypes
   )),
+  locked: T.arrayOf(T.string),
   children: T.any
 }
 

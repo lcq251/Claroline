@@ -9,123 +9,85 @@ import {toKey} from '#/main/app/utils/text'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {Alert} from '#/main/app/components/alert'
 import {Html} from '#/main/app/components/html'
+import {Toolbar} from '#/main/app/action'
+import {PageContent, PageSection} from '#/main/app/page'
 
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors} from '#/main/core/resource/store'
 
 import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
-import {PageSection} from '#/main/app/page/components/section'
 import {EvaluationProgression} from '#/main/evaluation/components/progression'
-import {Toolbar} from '#/main/app/action'
-import {EvaluationStatus} from '#/main/evaluation/components/status'
-import {PageAffix} from '#/main/app/page/components/affix'
 
-const ResourceOverviewContent = (props) => {
+
+const ResourceOverview = props => {
+  const path = useSelector(selectors.path)
   const resourceNode = useSelector(selectors.resourceNode)
+  const showHeader = useSelector(selectors.showHeader)
   const embedded = useSelector(selectors.embedded)
 
+  const userEvaluation = useSelector(selectors.userEvaluation)
   const description = get(resourceNode, 'meta.descriptionHtml', null) /*|| get(resourceNode, 'meta.description', null)*/
   const estimatedDuration = get(resourceNode, 'evaluation.estimatedDuration')
 
   return (
-    <>
-      {(props.evaluation || description || estimatedDuration) &&
-        <PageSection size="md" className={classes({
-          'pt-5': !embedded
-        })}>
-          {props.evaluation &&
-            <EvaluationProgression
-              {...props.evaluation}
-            />
-          }
+    <ResourcePage>
+      <PageContent poster={showHeader ? get(resourceNode, 'poster') : undefined}>
+        {(userEvaluation || description || estimatedDuration) &&
+          <PageSection size="md" className={classes({
+            'pt-5': !embedded || showHeader
+          })}>
+            {userEvaluation &&
+              <EvaluationProgression
+                {...userEvaluation}
+                target={path+'/progression'}
+              />
+            }
 
-          {description &&
-            <Html className="content-text mb-5">{description}</Html>
-          }
-        </PageSection>
-      }
+            {props.actions &&
+              <Toolbar
+                className="d-flex gap-1 mb-5"
+                buttonName="btn"
+                primaryName="btn-primary"
+                defaultName="btn-link"
+                actions={props.actions}
+              />
+            }
 
-      {props.evaluation &&
-        <>
-          {((!isEmpty(props.evaluation) && get(props, 'display.feedback', false)) || !isEmpty(get(props.feedbacks, 'closed'))) &&
-            <PageSection size="md" className="resource-feedbacks py-3">
-              {!isEmpty(props.evaluation) && get(props, 'display.feedback', false) &&
-                <EvaluationFeedback
-                  status={props.evaluation.status}
-                  {...props.feedbacks}
-                />
-              }
+            {description &&
+              <Html className="content-text mb-5">{description}</Html>
+            }
+          </PageSection>
+        }
 
-              {!isEmpty(get(props.feedbacks, 'closed')) && props.feedbacks.closed.map(closedMessage =>
-                <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
-                  <Html>{closedMessage[1]}</Html>
-                </Alert>
-              )}
-            </PageSection>
-          }
-        </>
-      }
+        {userEvaluation &&
+          <>
+            {((!isEmpty(userEvaluation) && get(props, 'display.feedback', false)) || !isEmpty(get(props.feedbacks, 'closed'))) &&
+              <PageSection size="md" className="resource-feedbacks py-3">
+                {!isEmpty(userEvaluation) && get(props, 'display.feedback', false) &&
+                  <EvaluationFeedback
+                    status={userEvaluation.status}
+                    {...props.feedbacks}
+                  />
+                }
 
-      {props.children}
-    </>
-  )
-}
+                {!isEmpty(get(props.feedbacks, 'closed')) && props.feedbacks.closed.map(closedMessage =>
+                  <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
+                    <Html>{closedMessage[1]}</Html>
+                  </Alert>
+                )}
+              </PageSection>
+            }
+          </>
+        }
 
-const ResourceOverviewAffix = (props) => {
-  return (
-    <div className="p-4 border rounded-3 shadow bg-body">
-      {props.evaluationStatus &&
-        <EvaluationStatus
-          status={props.evaluationStatus}
-          subtle={true}
-          className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
-        />
-      }
-      <Toolbar
-        className="d-grid gap-1"
-        buttonName="btn"
-        primaryName="btn-primary"
-        defaultName="btn-body"
-        actions={props.actions}
-      />
-
-      {props.children}
-    </div>
-  )
-}
-
-ResourceOverviewAffix.propTypes = {
-  evaluationStatus: T.string
-}
-
-const ResourceOverview = props => {
-  const resourceNode = useSelector(selectors.resourceNode)
-
-  return (
-    <ResourcePage
-      poster={get(resourceNode, 'poster')}
-    >
-      {!props.affix ?
-        <ResourceOverviewContent {...props} /> :
-        <PageAffix
-          affix={
-            <ResourceOverviewAffix actions={props.actions} evaluationStatus={get(props.evaluation, 'status')}>
-              {props.affix}
-            </ResourceOverviewAffix>
-          }
-        >
-          <ResourceOverviewContent {...props} />
-        </PageAffix>
-      }
+        {props.children}
+      </PageContent>
     </ResourcePage>
   )
 }
 
 ResourceOverview.propTypes = {
-  evaluation: T.shape(
-    ResourceEvaluationTypes.propTypes
-  ),
   display: T.shape({
     score: T.bool,
     scoreMax: T.number,

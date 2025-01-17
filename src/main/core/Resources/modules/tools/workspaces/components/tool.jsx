@@ -13,18 +13,6 @@ import {WorkspacesEditor} from '#/main/core/tools/workspaces/editor/containers/m
 import {MODAL_WORKSPACE_CREATION} from '#/main/core/workspace/modals/creation'
 import {constants as listConst} from '#/main/app/content/list/constants'
 
-const WorkspacesPage = (props) =>
-  <ToolPage title={props.title}>
-    {props.children}
-  </ToolPage>
-
-WorkspacesPage.propTypes = {
-  path: T.string,
-  title: T.string.isRequired,
-  canCreate: T.bool.isRequired,
-  children: T.any
-}
-
 const WorkspacesTool = (props) => {
   // we invalidate all the workspaces list when we execute an action on one or many workspaces
   // because actions can make the ws appear/disappear from multiple mounted lists (e.g. archive or unarchive)

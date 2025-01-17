@@ -13,175 +13,178 @@ import {AppearanceIcons} from '#/main/theme/administration/appearance/containers
 import {AppearanceColorCharts} from '#/main/theme/administration/appearance/containers/colorCharts'
 import {MODAL_ICON_SET_CREATION} from '#/main/theme/administration/appearance/modals/icon-set-creation'
 import {MODAL_PARAMETERS_COLOR_CHART} from '#/main/theme/administration/appearance/modals/color-chart-parameters'
+import {PageContent} from '#/main/app/page'
 
 const AppearanceParameters = (props) =>
   <ToolPage>
-    <FormData
-      className="my-5"
-      name={selectors.FORM_NAME}
-      target={['apiv2_parameters_update']}
-      buttons={true}
-      cancel={{
-        type: LINK_BUTTON,
-        target: props.path,
-        exact: true
-      }}
-      definition={[
-        {
-          icon: 'fa fa-fw fa-swatchbook',
-          title: trans('theme', {}, 'appearance'),
-          primary: true,
-          fields: [
-            {
-              name: 'display.theme',
-              type: 'choice',
-              label: trans('theme', {}, 'appearance'),
-              required: true,
-              //hideLabel: true,
-              options: {
-                multiple: false,
-                condensed: true,
-                noEmpty: true,
-                choices: props.availableThemes.reduce((acc, current) => Object.assign({
-                  [current.normalizedName]: current.name
-                }, acc), {})
-              }
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-icons',
-          title: trans('icons', {}, 'appearance'),
-          actions: [
-            {
-              name: 'add',
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-plus',
-              label: trans('add_icon_set', {}, 'actions'),
-              modal: [MODAL_ICON_SET_CREATION, {
-                onSave: props.addIconSet
-              }]
-            }
-          ],
-          fields: [
-            {
-              name: 'display.resource_icon_set',
-              type: 'choice',
-              label: trans('icons', {}, 'appearance'),
-              required: true,
-              hideLabel: true,
-              options: {
-                multiple: false,
-                condensed: false,
-                noEmpty: true,
-                choices: []
-                  .concat(props.availableIconSets)
-                  .sort((a, b) => {
-                    if (a.default || a.name < b.name) {
-                      return 1
-                    }
-
-                    return -1
-                  })
-                  .reduce((acc, current) => Object.assign({
-                    [current.name]: (
-                      <Fragment key={current.name}>
-                        {current.name}
-                        {current.default &&
-                          <small> &nbsp;({trans('default')})</small>
-                        }
-
-                        <Toolbar
-                          style={{marginLeft: 'auto'}}
-                          buttonName="btn btn-link btn-sm"
-                          tooltip="bottom"
-                          actions={[
-                            {
-                              name: 'export',
-                              type: DOWNLOAD_BUTTON,
-                              icon: 'fa fa-fw fa-download',
-                              label: trans('download', {}, 'actions'),
-                              file: {url: ['apiv2_icon_set_get', {iconSet: current.name}]}
-                            }, {
-                              name: 'delete',
-                              type: ASYNC_BUTTON,
-                              icon: 'fa fa-fw fa-trash',
-                              label: trans('delete', {}, 'actions'),
-                              request: {
-                                url: ['apiv2_icon_set_delete', {iconSet: current.name}],
-                                request: {
-                                  method: 'DELETE'
-                                },
-                                success: () => props.removeIconSet(current)
-                              },
-                              disabled: current.default,
-                              confirm: {
-                                title: transChoice('icon_set_delete_confirm_title', 1, {}, 'appearance'),
-                                subtitle: current.name,
-                                message: transChoice('icon_set_delete_confirm_message', 1, {count: 1}, 'appearance')
-                              },
-                              dangerous: true
-                            }
-                          ]}
-                        />
-                      </Fragment>
-                    )
+    <PageContent>
+      <FormData
+        className="my-5"
+        name={selectors.FORM_NAME}
+        target={['apiv2_parameters_update']}
+        buttons={true}
+        cancel={{
+          type: LINK_BUTTON,
+          target: props.path,
+          exact: true
+        }}
+        definition={[
+          {
+            icon: 'fa fa-fw fa-swatchbook',
+            title: trans('theme', {}, 'appearance'),
+            primary: true,
+            fields: [
+              {
+                name: 'display.theme',
+                type: 'choice',
+                label: trans('theme', {}, 'appearance'),
+                required: true,
+                //hideLabel: true,
+                options: {
+                  multiple: false,
+                  condensed: true,
+                  noEmpty: true,
+                  choices: props.availableThemes.reduce((acc, current) => Object.assign({
+                    [current.normalizedName]: current.name
                   }, acc), {})
-              }
-            }
-          ],
-          component: AppearanceIcons
-        }, {
-          icon: 'fa fa-fw fa-palette',
-          title: trans('color_charts', {}, 'appearance'),
-          actions: [
-            {
-              name: 'add',
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-plus',
-              label: trans('add_color_chart', {}, 'actions'),
-              modal: [MODAL_PARAMETERS_COLOR_CHART, {
-                onSave: props.addColorChart
-              }]
-            }
-          ],
-          component: AppearanceColorCharts,
-          fill: true
-        }, {
-          icon: 'fa fa-fw fa-copyright',
-          title: trans('footer', {}, 'appearance'),
-          displayed: false,
-          fields: [
-            {
-              name: 'footer.content',
-              type: 'html',
-              label: trans('footer', {}, 'appearance')
-            }, {
-              name: 'footer.show',
-              type: 'boolean',
-              label: trans('footer_show', {}, 'appearance'),
-              linked: [
-                {
-                  name: 'footer.show_terms_of_service',
-                  type: 'boolean',
-                  label: trans('footer_show_terms_of_service', {}, 'appearance'),
-                  displayed: (params) => get(params, 'footer.show', false)
-                }, {
-                  name: 'footer.show_help',
-                  type: 'boolean',
-                  label: trans('footer_show_help', {}, 'appearance'),
-                  displayed: (params) => get(params, 'footer.show', false)
-                }, {
-                  name: 'footer.show_locale',
-                  type: 'boolean',
-                  label: trans('footer_show_locale', {}, 'appearance'),
-                  displayed: (params) => get(params, 'footer.show', false)
                 }
-              ]
-            }
-          ]
-        }
-      ]}
-    />
+              }
+            ]
+          }, {
+            icon: 'fa fa-fw fa-icons',
+            title: trans('icons', {}, 'appearance'),
+            actions: [
+              {
+                name: 'add',
+                type: MODAL_BUTTON,
+                icon: 'fa fa-fw fa-plus',
+                label: trans('add_icon_set', {}, 'actions'),
+                modal: [MODAL_ICON_SET_CREATION, {
+                  onSave: props.addIconSet
+                }]
+              }
+            ],
+            fields: [
+              {
+                name: 'display.resource_icon_set',
+                type: 'choice',
+                label: trans('icons', {}, 'appearance'),
+                required: true,
+                hideLabel: true,
+                options: {
+                  multiple: false,
+                  condensed: false,
+                  noEmpty: true,
+                  choices: []
+                    .concat(props.availableIconSets)
+                    .sort((a, b) => {
+                      if (a.default || a.name < b.name) {
+                        return 1
+                      }
+
+                      return -1
+                    })
+                    .reduce((acc, current) => Object.assign({
+                      [current.name]: (
+                        <Fragment key={current.name}>
+                          {current.name}
+                          {current.default &&
+                            <small> &nbsp;({trans('default')})</small>
+                          }
+
+                          <Toolbar
+                            style={{marginLeft: 'auto'}}
+                            buttonName="btn btn-link btn-sm"
+                            tooltip="bottom"
+                            actions={[
+                              {
+                                name: 'export',
+                                type: DOWNLOAD_BUTTON,
+                                icon: 'fa fa-fw fa-download',
+                                label: trans('download', {}, 'actions'),
+                                file: {url: ['apiv2_icon_set_get', {iconSet: current.name}]}
+                              }, {
+                                name: 'delete',
+                                type: ASYNC_BUTTON,
+                                icon: 'fa fa-fw fa-trash',
+                                label: trans('delete', {}, 'actions'),
+                                request: {
+                                  url: ['apiv2_icon_set_delete', {iconSet: current.name}],
+                                  request: {
+                                    method: 'DELETE'
+                                  },
+                                  success: () => props.removeIconSet(current)
+                                },
+                                disabled: current.default,
+                                confirm: {
+                                  title: transChoice('icon_set_delete_confirm_title', 1, {}, 'appearance'),
+                                  subtitle: current.name,
+                                  message: transChoice('icon_set_delete_confirm_message', 1, {count: 1}, 'appearance')
+                                },
+                                dangerous: true
+                              }
+                            ]}
+                          />
+                        </Fragment>
+                      )
+                    }, acc), {})
+                }
+              }
+            ],
+            component: AppearanceIcons
+          }, {
+            icon: 'fa fa-fw fa-palette',
+            title: trans('color_charts', {}, 'appearance'),
+            actions: [
+              {
+                name: 'add',
+                type: MODAL_BUTTON,
+                icon: 'fa fa-fw fa-plus',
+                label: trans('add_color_chart', {}, 'actions'),
+                modal: [MODAL_PARAMETERS_COLOR_CHART, {
+                  onSave: props.addColorChart
+                }]
+              }
+            ],
+            component: AppearanceColorCharts,
+            fill: true
+          }, {
+            icon: 'fa fa-fw fa-copyright',
+            title: trans('footer', {}, 'appearance'),
+            displayed: false,
+            fields: [
+              {
+                name: 'footer.content',
+                type: 'html',
+                label: trans('footer', {}, 'appearance')
+              }, {
+                name: 'footer.show',
+                type: 'boolean',
+                label: trans('footer_show', {}, 'appearance'),
+                linked: [
+                  {
+                    name: 'footer.show_terms_of_service',
+                    type: 'boolean',
+                    label: trans('footer_show_terms_of_service', {}, 'appearance'),
+                    displayed: (params) => get(params, 'footer.show', false)
+                  }, {
+                    name: 'footer.show_help',
+                    type: 'boolean',
+                    label: trans('footer_show_help', {}, 'appearance'),
+                    displayed: (params) => get(params, 'footer.show', false)
+                  }, {
+                    name: 'footer.show_locale',
+                    type: 'boolean',
+                    label: trans('footer_show_locale', {}, 'appearance'),
+                    displayed: (params) => get(params, 'footer.show', false)
+                  }
+                ]
+              }
+            ]
+          }
+        ]}
+      />
+    </PageContent>
   </ToolPage>
 
 AppearanceParameters.propTypes = {

@@ -76,7 +76,8 @@ const ResourceEditorOverview = (props) =>
           }
         ]
       }
-    ].concat(props.definition)}
+    ].concat(props.definition || [])}
+    locked={props.locked}
   >
     {props.children}
   </EditorPage>
@@ -85,11 +86,8 @@ ResourceEditorOverview.propTypes = {
   definition: T.arrayOf(T.shape({
 
   })),
+  locked: T.arrayOf(T.string),
   children: T.any
-}
-
-ResourceEditorOverview.defaultProps = {
-  definition: []
 }
 
 export {

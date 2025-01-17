@@ -18,19 +18,21 @@ const ExportList = (props) =>
   <ToolPage
     title={trans('all_exports', {}, 'transfer')}
   >
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: LINK_BUTTON,
+        label: trans('new_export', {}, 'transfer'),
+        target: `${props.path}/new`,
+        group: trans('management'),
+        displayed: props.canExport,
+        primary: true
+      }}
+    >
       <ListData
         flush={true}
         name={selectors.LIST_NAME}
-        addAction={{
-          name: 'add',
-          type: LINK_BUTTON,
-          label: trans('new_export', {}, 'transfer'),
-          target: `${props.path}/new`,
-          group: trans('management'),
-          displayed: props.canExport,
-          primary: true
-        }}
+
         primaryAction={(row) => ({
           type: LINK_BUTTON,
           target: `${props.path}/${row.id}`

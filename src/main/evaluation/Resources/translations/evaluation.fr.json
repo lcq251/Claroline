@@ -37,11 +37,12 @@
   "skills_frameworks": "Référentiels de compétences",
   "new_skills_framework": "Nouveau référentiel de compétences",
 
-  "lesson_plan": "Parcours d'apprentissage",
-  "lesson_plans": "Parcours d'apprentissage",
-  "new_lesson_plan": "Nouveau parcours",
-  "no_lesson_plan": "Aucun parcours",
-  "lesson_plan_name": "Parcours : %name%",
+  "sequence_name": "Séquence : %name%",
   "sequence": "Séquence",
-  "sequences": "Séquences"
+  "sequences": "Séquences",
+  "sequence_step_count": "Étape %current% sur %total%",
+  "completion": "%current%% Terminé",
+  "next_step": "Suivant : %title%",
+  "previous_step": "Précédent : %title%",
+  "no_user_activity": "Vous n'avez pas encore commencé cette activité."
 }

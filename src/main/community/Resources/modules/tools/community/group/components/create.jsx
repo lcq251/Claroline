@@ -7,6 +7,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {GroupForm} from '#/main/community/group/components/form'
 import {selectors} from '#/main/community/tools/community/group/store'
+import {PageContent} from '#/main/app/page'
 
 const GroupCreate = (props) =>
   <ToolPage
@@ -19,11 +20,13 @@ const GroupCreate = (props) =>
     ]}
     title={trans('new_group', {}, 'community')}
   >
-    <GroupForm
-      className="mt-3"
-      path={props.path}
-      name={selectors.FORM_NAME}
-    />
+    <PageContent>
+      <GroupForm
+        className="mt-3"
+        path={props.path}
+        name={selectors.FORM_NAME}
+      />
+    </PageContent>
   </ToolPage>
 
 GroupCreate.propTypes = {

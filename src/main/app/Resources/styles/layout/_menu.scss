@@ -9,9 +9,9 @@
     border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
 
-.app-body {
+/*.app-body {
     transition: padding .4s ease;
-}
+}*/
 
 .app-menu {
     --#{$prefix}menu-color: #{$toolbar-color};

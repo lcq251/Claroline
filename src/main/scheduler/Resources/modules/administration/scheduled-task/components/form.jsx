@@ -11,109 +11,112 @@ import {constants} from '#/main/scheduler/administration/scheduled-task/constant
 import {selectors} from '#/main/scheduler/administration/scheduled-task/store'
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {ToolPage} from '#/main/core/tool'
+import {PageContent} from '#/main/app/page'
 
 const ScheduledTaskForm = props =>
   <ToolPage
     title={props.task.name ? props.task.name : trans('new_task', {}, 'scheduler')}
   >
-    <FormData
-      level={2}
-      name={selectors.STORE_NAME + '.task'}
-      target={(task, isNew) => isNew ?
-        ['apiv2_scheduled_task_create'] :
-        ['apiv2_scheduled_task_update', {id: task.id}]
-      }
-      buttons={true}
-      cancel={{
-        type: LINK_BUTTON,
-        target: props.path,
-        exact: true
-      }}
-      definition={[
-        {
-          title: trans('general'),
-          primary: true,
-          fields: [
-            {
-              name: 'name',
-              type: 'string',
-              label: trans('name'),
-              required: true
-            }, {
-              name: 'scheduledDate',
-              type: 'date',
-              label: trans('planning_date'),
-              required: true,
-              options: {
-                time: true
-              }
-            }, {
-              name: 'action',
-              type: 'choice',
-              label: trans('task'),
-              required: true,
-              disabled: !props.new,
-              options: {
-                condensed: true,
-                choices: constants.TASK_ACTIONS
-              }
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-envelope',
-          title: trans('message'),
-          fields: [
-            {
-              name: 'data.object',
-              type: 'string',
-              label: trans('object')
-            }, {
-              name: 'data.content',
-              type: 'html',
-              label: trans('content'),
-              required: true,
-              options: {
-                minRows: 5
-              }
-            }
-          ]
+    <PageContent>
+      <FormData
+        level={2}
+        name={selectors.STORE_NAME + '.task'}
+        target={(task, isNew) => isNew ?
+          ['apiv2_scheduled_task_create'] :
+          ['apiv2_scheduled_task_update', {id: task.id}]
         }
-      ]}
-    >
-      <FormSections level={3}>
-        <FormSection
-          icon="fa fa-fw fa-user"
-          className="embedded-list-section"
-          title={trans('users')}
-          disabled={!props.task.id || props.new}
-          actions={[
-            {
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-plus',
-              label: trans('add_users', {}, 'actions'),
-              modal: [MODAL_USERS, {
-                selectAction: (selected) => ({
-                  type: CALLBACK_BUTTON,
-                  label: trans('add', {}, 'actions'),
-                  callback: () => props.addUsers(props.task.id, selected.map(row => row.id))
-                })
-              }]
-            }
-          ]}
-        >
-          {props.task.id && !props.new &&
-            <UserList
-              flush={true}
-              name={selectors.STORE_NAME + '.task.users'}
-              url={['apiv2_scheduled_task_list_users', {id: props.task.id}]}
-              delete={{
-                url: ['apiv2_scheduled_task_remove_users', {id: props.task.id}]
-              }}
-            />
+        buttons={true}
+        cancel={{
+          type: LINK_BUTTON,
+          target: props.path,
+          exact: true
+        }}
+        definition={[
+          {
+            title: trans('general'),
+            primary: true,
+            fields: [
+              {
+                name: 'name',
+                type: 'string',
+                label: trans('name'),
+                required: true
+              }, {
+                name: 'scheduledDate',
+                type: 'date',
+                label: trans('planning_date'),
+                required: true,
+                options: {
+                  time: true
+                }
+              }, {
+                name: 'action',
+                type: 'choice',
+                label: trans('task'),
+                required: true,
+                disabled: !props.new,
+                options: {
+                  condensed: true,
+                  choices: constants.TASK_ACTIONS
+                }
+              }
+            ]
+          }, {
+            icon: 'fa fa-fw fa-envelope',
+            title: trans('message'),
+            fields: [
+              {
+                name: 'data.object',
+                type: 'string',
+                label: trans('object')
+              }, {
+                name: 'data.content',
+                type: 'html',
+                label: trans('content'),
+                required: true,
+                options: {
+                  minRows: 5
+                }
+              }
+            ]
           }
-        </FormSection>
-      </FormSections>
-    </FormData>
+        ]}
+      >
+        <FormSections level={3}>
+          <FormSection
+            icon="fa fa-fw fa-user"
+            className="embedded-list-section"
+            title={trans('users')}
+            disabled={!props.task.id || props.new}
+            actions={[
+              {
+                type: MODAL_BUTTON,
+                icon: 'fa fa-fw fa-plus',
+                label: trans('add_users', {}, 'actions'),
+                modal: [MODAL_USERS, {
+                  selectAction: (selected) => ({
+                    type: CALLBACK_BUTTON,
+                    label: trans('add', {}, 'actions'),
+                    callback: () => props.addUsers(props.task.id, selected.map(row => row.id))
+                  })
+                }]
+              }
+            ]}
+          >
+            {props.task.id && !props.new &&
+              <UserList
+                flush={true}
+                name={selectors.STORE_NAME + '.task.users'}
+                url={['apiv2_scheduled_task_list_users', {id: props.task.id}]}
+                delete={{
+                  url: ['apiv2_scheduled_task_remove_users', {id: props.task.id}]
+                }}
+              />
+            }
+          </FormSection>
+        </FormSections>
+      </FormData>
+    </PageContent>
   </ToolPage>
 
 ScheduledTaskForm.propTypes = {

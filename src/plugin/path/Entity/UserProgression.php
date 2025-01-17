@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * UserProgression
  * Represents the progression of a User in a Step.
  */
-#[ORM\Table(name: 'innova_path_progression')]
+#[ORM\Table(name: 'innova_path_progression_old')]
 #[ORM\Entity]
 class UserProgression
 {

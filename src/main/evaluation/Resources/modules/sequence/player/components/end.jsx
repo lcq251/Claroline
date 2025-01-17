@@ -4,7 +4,6 @@ import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {scrollTo} from '#/main/app/dom/scroll'
 import {LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {route as desktopRoute} from '#/main/core/tool/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
@@ -13,7 +12,6 @@ import {ResourceAttempt as ResourceAttemptTypes, ResourceEvaluation as ResourceE
 
 import {ResourceEnd} from '#/main/core/resource/components/end'
 import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
-import {PathSummary} from '#/main/evaluation/sequence/containers/summary'
 
 const PlayerEnd = (props) =>
   <ResourceEnd
@@ -58,12 +56,7 @@ const PlayerEnd = (props) =>
         })
       }
     ] : [])}
-  >
-    <section className="resource-parameters mb-3">
-      <h3 className="h2">{trans('summary')}</h3>
-      <PathSummary className="component-container" />
-    </section>
-  </ResourceEnd>
+  />
 
 PlayerEnd.propTypes = {
   basePath: T.string.isRequired,

@@ -37,9 +37,7 @@ const ForumOverview = () => {
           }]
         }}
       >
-        <Subjects
-
-        />
+        <Subjects />
       </PageListSection>
     </ResourceOverview>
   )

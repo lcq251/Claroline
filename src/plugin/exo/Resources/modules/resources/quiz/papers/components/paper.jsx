@@ -28,6 +28,7 @@ import {actions, selectors} from '#/plugin/exo/resources/quiz/papers/store'
 import ScoreNone from '#/plugin/exo/scores/none'
 import {EvaluationScore} from '#/main/evaluation/components/score'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 // TODO : show used hints
 
@@ -124,7 +125,7 @@ PaperStep.propTypes = {
 
 const PaperComponent = props =>
   <ResourcePage>
-    <div className="paper mt-3">
+    <PageContent className="paper">
       <ContentTitle
         level={3}
         displayLevel={2}
@@ -227,7 +228,7 @@ const PaperComponent = props =>
           }
         </div>
       </div>
-    </div>
+    </PageContent>
   </ResourcePage>
 
 PaperComponent.propTypes = {

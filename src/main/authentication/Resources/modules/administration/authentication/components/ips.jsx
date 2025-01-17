@@ -5,7 +5,7 @@ import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {Alert} from '#/main/app/components/alert'
 import {ToolPage} from '#/main/core/tool'
-import {PageListSection} from '#/main/app/page'
+import {PageContent, PageListSection} from '#/main/app/page'
 
 import {selectors} from '#/main/authentication/administration/authentication/store'
 import {MODAL_IP_PARAMETERS} from '#/main/authentication/ip/modals/parameters'
@@ -16,36 +16,38 @@ const AuthenticationIps = props =>
   <ToolPage
     title={trans('ips', {}, 'security')}
   >
-    <Alert type="info" className="mb-0">
-      {trans('ips_help', {}, 'security')}
-    </Alert>
+    <PageContent>
+      <PageListSection>
+        <Alert type="info" className="mb-0">
+          {trans('ips_help', {}, 'security')}
+        </Alert>
 
-    <PageListSection>
-      <IpList
-        flush={true}
-        name={selectors.STORE_NAME+'.ips'}
-        url={['apiv2_ip_user_list']}
-        addAction={{
-          name: 'add-ip',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-plus',
-          tooltip: 'bottom',
-          label: trans('add_ip', {}, 'security'),
-          primary: true,
-          modal: [MODAL_IP_PARAMETERS, {
-            onSave: () => props.invalidateList()
-          }]
-        }}
-        definition={[
-          {
-            name: 'user',
-            label: trans('user'),
-            type: 'user',
-            displayed: true
-          },
-        ]}
-      />
-    </PageListSection>
+        <IpList
+          flush={true}
+          name={selectors.STORE_NAME+'.ips'}
+          url={['apiv2_ip_user_list']}
+          addAction={{
+            name: 'add-ip',
+            type: MODAL_BUTTON,
+            icon: 'fa fa-fw fa-plus',
+            tooltip: 'bottom',
+            label: trans('add_ip', {}, 'security'),
+            primary: true,
+            modal: [MODAL_IP_PARAMETERS, {
+              onSave: () => props.invalidateList()
+            }]
+          }}
+          definition={[
+            {
+              name: 'user',
+              label: trans('user'),
+              type: 'user',
+              displayed: true
+            },
+          ]}
+        />
+      </PageListSection>
+    </PageContent>
   </ToolPage>
 
 AuthenticationIps.propTypes = {

@@ -14,6 +14,7 @@ use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SequenceSerializer
 {
@@ -22,6 +23,7 @@ class SequenceSerializer
     private ResourceNodeRepository $resourceNodeRepo;
 
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly UserSerializer $userSerializer,
         private readonly WorkspaceSerializer $workspaceSerializer,
@@ -63,12 +65,12 @@ class SequenceSerializer
                     'description' => $sequence->getDescription(),
                     'published' => $sequence->isPublished(), // not required but nice to have
                 ],
-                // for now this is required in the minimal representation to generate the correct resource path
+                // for now this is required in the minimal representation to generate the correct sequence path
                 'workspace' => $serializedWorkspace,
             ];
         }
 
-        return [
+        $serialized = [
             'id' => $sequence->getUuid(),
             'autoId' => $sequence->getId(),
             'name' => $sequence->getName(),
@@ -126,15 +128,37 @@ class SequenceSerializer
                 'dates' => DateRangeNormalizer::normalize($sequence->getAccessibleFrom(), $sequence->getAccessibleUntil()),
             ],
         ];
+
+        if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
+            $administrate = $this->authorization->isGranted('ADMINISTRATE', $sequence);
+
+            $serialized['permissions'] = [
+                'open' => $administrate || $this->authorization->isGranted('OPEN', $sequence),
+                'delete' => $administrate,
+                'edit' => $administrate || $this->authorization->isGranted('EDIT', $sequence),
+                'administrate' => $administrate,
+            ];
+        }
+
+        return $serialized;
     }
 
     public function deserialize(array $data, Sequence $sequence, array $options = []): Sequence
     {
         if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
             $this->sipe('id', 'setUuid', $data, $sequence);
+            $this->sipe('slug', 'setSlug', $data, $sequence);
         } else {
             $sequence->refreshUuid();
         }
+
+        $this->sipe('name', 'setName', $data, $sequence);
+        $this->sipe('code', 'setCode', $data, $sequence);
+        $this->sipe('poster', 'setPoster', $data, $sequence);
+        $this->sipe('thumbnail', 'setThumbnail', $data, $sequence);
+        $this->sipe('meta.published', 'setPublished', $data, $sequence);
+        $this->sipe('meta.description', 'setDescription', $data, $sequence);
+        $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $sequence);
 
         $this->sipe('display.numbering', 'setNumbering', $data, $sequence);
         $this->sipe('display.manualProgressionAllowed', 'setManualProgressionAllowed', $data, $sequence);
@@ -145,12 +169,16 @@ class SequenceSerializer
         $this->sipe('score.success', 'setSuccessScore', $data, $sequence);
         $this->sipe('score.total', 'setScoreTotal', $data, $sequence);
 
-        $this->sipe('evaluation.successMessage', 'setSuccessMessage', $data, $sequence);
-        $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
+        if (isset($data['evaluation'])) {
+            $this->sipe('evaluation.successMessage', 'setSuccessMessage', $data, $sequence);
+            $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
+
+            $this->sipe('evaluation.evaluated', 'setEvaluated', $data, $sequence);
+            $this->sipe('evaluation.required', 'setRequired', $data, $sequence);
+            $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
+        }
 
         if (!empty($data['overview'])) {
-            $this->sipe('overview.display', 'setShowOverview', $data, $sequence);
-            $this->sipe('overview.message', 'setOverviewMessage', $data, $sequence);
             if (array_key_exists('resource', $data['overview'])) {
                 $overviewResource = null;
                 if (!empty($data['overview']['resource'])) {

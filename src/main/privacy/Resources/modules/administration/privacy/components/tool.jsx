@@ -15,6 +15,7 @@ import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
 import {MODAL_DPO} from '#/main/privacy/administration/privacy/modals/dpo'
 import {MODAL_COUNTRY_STORAGE} from '#/main/privacy/administration/privacy/modals/country-storage'
 import {MODAL_TOS_EDITOR} from '#/main/privacy/administration/privacy/modals/terms-of-service'
+import {PageContent} from '#/main/app/page'
 
 const PrivacyTool = (props) => {
   const isDpoFilled = props.parameters.dpo && props.parameters.dpo.name &&
@@ -28,78 +29,80 @@ const PrivacyTool = (props) => {
       {...props}
     >
       <ToolPage>
-        <ContentSizing size="md">
-          <PrivacySummary
-            dpo={props.parameters.dpo || {}}
-            countryStorage={props.parameters.countryStorage}
-          />
-
-          {get(props.parameters, 'tos.enabled') &&
-            <Button
-              className="btn btn-lg btn-primary w-100 mb-3"
-              type={MODAL_BUTTON}
-              label={trans('terms_of_service_show', {}, 'privacy')}
-              modal={[MODAL_TERMS_OF_SERVICE]}
+        <PageContent>
+          <ContentSizing size="md">
+            <PrivacySummary
+              dpo={props.parameters.dpo || {}}
+              countryStorage={props.parameters.countryStorage}
             />
-          }
 
-          <Alert
-            type={get(props.parameters, 'tos.enabled') ? 'success' : 'danger'}
-            title={trans('terms_of_service', {}, 'privacy')}
-          >
-            {get(props.parameters, 'tos.enabled') ?
-              trans('terms_of_service_alert_enabled', {}, 'privacy') :
-              trans('terms_of_service_alert_disabled', {}, 'privacy')
-            }
-            <div className="btn-toolbar gap-1 mt-3 justify-content-end">
+            {get(props.parameters, 'tos.enabled') &&
               <Button
-                className={`btn btn-${get(props.parameters, 'tos.enabled') ? 'success' : 'danger'}`}
+                className="btn btn-lg btn-primary w-100 mb-3"
                 type={MODAL_BUTTON}
-                label={get(props.parameters, 'tos.enabled') ?
-                  trans('edit', {}, 'actions') :
-                  trans('terms_of_service_activation', {}, 'privacy')
-                }
-                modal={[MODAL_TOS_EDITOR]}
+                label={trans('terms_of_service_show', {}, 'privacy')}
+                modal={[MODAL_TERMS_OF_SERVICE]}
               />
-            </div>
-          </Alert>
+            }
 
-          <Alert
-            type={isDpoFilled ? 'success' : 'danger'}
-            title={trans('dpo', {}, 'privacy')}
-          >
-            {isDpoFilled ?
-              trans('dpo_alert_enabled', {}, 'privacy') :
-              trans('dpo_alert_disabled', {}, 'privacy')
-            }
-            <div className="btn-toolbar gap-1 mt-3 justify-content-end">
-              <Button
-                className={`btn btn-${isDpoFilled ? 'success' : 'danger'}`}
-                type={MODAL_BUTTON}
-                label={trans('edit', {}, 'actions')}
-                modal={[MODAL_DPO]}
-              />
-            </div>
-          </Alert>
+            <Alert
+              type={get(props.parameters, 'tos.enabled') ? 'success' : 'danger'}
+              title={trans('terms_of_service', {}, 'privacy')}
+            >
+              {get(props.parameters, 'tos.enabled') ?
+                trans('terms_of_service_alert_enabled', {}, 'privacy') :
+                trans('terms_of_service_alert_disabled', {}, 'privacy')
+              }
+              <div className="btn-toolbar gap-1 mt-3 justify-content-end">
+                <Button
+                  className={`btn btn-${get(props.parameters, 'tos.enabled') ? 'success' : 'danger'}`}
+                  type={MODAL_BUTTON}
+                  label={get(props.parameters, 'tos.enabled') ?
+                    trans('edit', {}, 'actions') :
+                    trans('terms_of_service_activation', {}, 'privacy')
+                  }
+                  modal={[MODAL_TOS_EDITOR]}
+                />
+              </div>
+            </Alert>
 
-          <Alert
-            type={props.parameters.countryStorage ? 'success' : 'danger'}
-            title={trans('country_storage', {}, 'privacy')}
-          >
-            {props.parameters.countryStorage ?
-              trans('country_storage_alert_enabled', {}, 'privacy') :
-              trans('country_storage_alert_disabled', {}, 'privacy')
-            }
-            <div className="btn-toolbar gap-1 mt-3 justify-content-end">
-              <Button
-                className={`btn btn-${props.parameters.countryStorage ? 'success' : 'danger'}`}
-                type={MODAL_BUTTON}
-                label={trans('edit', {}, 'actions')}
-                modal={[MODAL_COUNTRY_STORAGE]}
-              />
-            </div>
-          </Alert>
-        </ContentSizing>
+            <Alert
+              type={isDpoFilled ? 'success' : 'danger'}
+              title={trans('dpo', {}, 'privacy')}
+            >
+              {isDpoFilled ?
+                trans('dpo_alert_enabled', {}, 'privacy') :
+                trans('dpo_alert_disabled', {}, 'privacy')
+              }
+              <div className="btn-toolbar gap-1 mt-3 justify-content-end">
+                <Button
+                  className={`btn btn-${isDpoFilled ? 'success' : 'danger'}`}
+                  type={MODAL_BUTTON}
+                  label={trans('edit', {}, 'actions')}
+                  modal={[MODAL_DPO]}
+                />
+              </div>
+            </Alert>
+
+            <Alert
+              type={props.parameters.countryStorage ? 'success' : 'danger'}
+              title={trans('country_storage', {}, 'privacy')}
+            >
+              {props.parameters.countryStorage ?
+                trans('country_storage_alert_enabled', {}, 'privacy') :
+                trans('country_storage_alert_disabled', {}, 'privacy')
+              }
+              <div className="btn-toolbar gap-1 mt-3 justify-content-end">
+                <Button
+                  className={`btn btn-${props.parameters.countryStorage ? 'success' : 'danger'}`}
+                  type={MODAL_BUTTON}
+                  label={trans('edit', {}, 'actions')}
+                  modal={[MODAL_COUNTRY_STORAGE]}
+                />
+              </div>
+            </Alert>
+          </ContentSizing>
+        </PageContent>
       </ToolPage>
     </Tool>
   )

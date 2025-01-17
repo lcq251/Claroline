@@ -15,26 +15,22 @@ import {ToolPage} from '#/main/core/tool'
 import {PageListSection} from '#/main/app/page'
 
 const ScheduledTaskList = (props) =>
-  <ToolPage
-    primaryAction="add"
-    actions={[
-      {
+  <ToolPage>
+    <PageListSection
+      addAction={{
         name: 'execute-all',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-refresh',
         label: trans('execute_all', {}, 'actions'),
         callback: () => props.execute(),
-        disabled: !props.isSchedulerEnabled
+        displayed: props.isSchedulerEnabled
+      }}
+    >
+      {!props.isSchedulerEnabled &&
+        <Alert type="warning" title={trans('cron_not_configured', {}, 'scheduler')} style={{marginTop: 20}}>
+          {trans('cron_not_configured_help', {}, 'scheduler')}
+        </Alert>
       }
-    ]}
-  >
-    {!props.isSchedulerEnabled &&
-      <Alert type="warning" title={trans('cron_not_configured', {}, 'scheduler')} style={{marginTop: 20}}>
-        {trans('cron_not_configured_help', {}, 'scheduler')}
-      </Alert>
-    }
-
-    <PageListSection>
       <ListData
         flush={true}
         name={selectors.STORE_NAME + '.tasks'}

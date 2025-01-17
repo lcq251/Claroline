@@ -1,25 +1,21 @@
 import {connect} from 'react-redux'
 
-import {withRouter} from '#/main/app/router'
-
 import {selectors as securitySelectors} from '#/main/app/security/store'
-import {selectors as resourceSelectors} from '#/main/core/resource/store'
+import {selectors as toolSelectors} from '#/main/core/tool/store'
 
-import {PlayerMain as PlayerMainComponent} from '#/main/evaluation/sequence/player/components/main'
+import {SequencePlayer as SequencePlayerComponent} from '#/main/evaluation/sequence/player/components/main'
 import {actions, selectors} from '#/main/evaluation/sequence/store'
 import {constants} from '#/main/evaluation/sequence/constants'
 import {flattenSteps} from '#/main/evaluation/sequence/utils'
 
-const PlayerMain = withRouter(connect(
+const SequencePlayer = connect(
   state => ({
-    basePath: resourceSelectors.path(state),
+    path: toolSelectors.path(state),
     currentUser: securitySelectors.currentUser(state),
-    resourceId: resourceSelectors.id(state),
-    path: selectors.path(state),
+    sequence: selectors.sequence(state),
     navigationEnabled: selectors.navigationEnabled(state),
     steps: flattenSteps(selectors.steps(state)),
-    workspace: resourceSelectors.workspace(state),
-    attempt: selectors.attempt(state),
+    evaluation: selectors.evaluation(state),
     stepsProgression: selectors.stepsProgression(state),
     resourceEvaluations: selectors.resourceEvaluations(state)
   }),
@@ -34,8 +30,8 @@ const PlayerMain = withRouter(connect(
       dispatch(actions.disableNavigation())
     }
   })
-)(PlayerMainComponent))
+)(SequencePlayerComponent)
 
 export {
-  PlayerMain
+  SequencePlayer
 }

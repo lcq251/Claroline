@@ -1,10 +1,8 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 import get from 'lodash/get'
 
 import {currency, displayDateRange, trans} from '#/main/app/intl'
-import {Toolbar} from '#/main/app/action'
 import {Badge} from '#/main/app/components/badge'
 import {Text} from '#/main/app/components/text'
 
@@ -12,45 +10,7 @@ import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/pr
 
 import {getInfo} from '#/plugin/cursus/utils'
 import {Address} from '#/main/app/components/address'
-import isEmpty from 'lodash/isEmpty'
-import {toKey} from '#/main/app/utils/text'
-import isNumber from 'lodash/isNumber'
-
-const SessionInfo = (props) => {
-  if (isEmpty(props.info)) {
-    return null
-  }
-
-  return (
-    <ul className="list-group list-group-striped list-group-flush">
-      {props.info
-        .sort((a, b) => {
-          if (isNumber(a.order) && !isNumber(b.order)) {
-            return -1
-          } else if (!isNumber(a.order) && isNumber(b.order)) {
-            return 1
-          } else if (isNumber(a.order) && isNumber(b.order)) {
-            return a.order - b.order
-          }
-
-          return 0
-        })
-        .map(info =>
-          <li key={toKey(info.label)} className="list-group-item d-flex align-items-baseline text-body-secondary fs-sm px-4">
-            {info.icon &&
-              <span className={classes('fa-fw me-3', info.icon)} aria-hidden={true} />
-            }
-
-            <div className="" role="presentation">
-              <b className="text-uppercase d-block fs-sm mb-1 text-nowrap">{info.label}</b>
-              {info.value}
-            </div>
-          </li>
-        )
-      }
-    </ul>
-  )
-}
+import {PageAffixCard} from '#/main/app/page/components/affix'
 
 const CourseAffix = (props) => {
   const info = []
@@ -107,39 +67,30 @@ const CourseAffix = (props) => {
   }
 
   return (
-    <div className="card shadow">
-      <div className="p-4" role="presentation">
-        {!props.registered && props.sessionFull &&
-          <Badge
-            variant="warning"
-            subtle={true}
-            className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
-          >
-            {trans('full', {}, 'cursus')}
-          </Badge>
-        }
+    <PageAffixCard
+      actions={props.actions}
+      info={info}
+    >
+      {!props.registered && props.sessionFull &&
+        <Badge
+          variant="warning"
+          subtle={true}
+          className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
+        >
+          {trans('full', {}, 'cursus')}
+        </Badge>
+      }
 
-        {props.registered &&
-          <Badge
-            variant="success"
-            subtle={true}
-            className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
-          >
-            {trans('registered')}
-          </Badge>
-        }
-
-        <Toolbar
-          className="d-grid gap-1"
-          buttonName="btn"
-          primaryName="btn-primary"
-          defaultName="btn-link"
-          actions={props.actions}
-        />
-      </div>
-
-      <SessionInfo info={info} />
-    </div>
+      {props.registered &&
+        <Badge
+          variant="success"
+          subtle={true}
+          className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
+        >
+          {trans('registered')}
+        </Badge>
+      }
+    </PageAffixCard>
   )
 }
 

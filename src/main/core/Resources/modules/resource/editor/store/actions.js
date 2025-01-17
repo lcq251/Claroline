@@ -40,8 +40,11 @@ actions.updateResource = (value, propPath = null) => {
 
 actions.setRecursive = makeActionCreator(SET_RIGHTS_RECURSIVE, 'recursiveEnabled')
 
-actions.fetchRights = (resourceNode) => ({
+actions.updateRights = (perms) => formActions.updateProp(selectors.STORE_NAME, 'rights', perms)
+
+actions.fetchRights = (resourceNode) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: ['apiv2_resource_get_rights', {id: resourceNode.id}]
+    url: ['apiv2_resource_get_rights', {id: resourceNode.id}],
+    success: (response) => dispatch(formActions.load(selectors.STORE_NAME, {rights: response}))
   }
 })

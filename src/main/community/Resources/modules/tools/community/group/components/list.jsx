@@ -12,7 +12,6 @@ import {GroupList as BaseGroupList} from '#/main/community/group/components/list
 import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {MODAL_REGISTER} from '#/main/community/modals/register'
 import {PageListSection} from '#/main/app/page/components/list-section'
-import {Button} from '#/main/app/action'
 
 const GroupList = props =>
   <ToolPage

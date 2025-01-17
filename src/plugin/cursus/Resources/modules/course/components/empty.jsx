@@ -8,6 +8,7 @@ import {trans} from '#/main/app/intl/translation'
 import {ContentSizing} from '#/main/app/content/components/sizing'
 import {CreationType} from '#/plugin/cursus/course/components/type'
 import {MODAL_COURSE_TYPE_CREATION} from '#/plugin/cursus/course/modals/creation'
+import {PageContent} from '#/main/app/page'
 
 const EmptyCourse = (props) =>
   <ToolPage
@@ -28,14 +29,16 @@ const EmptyCourse = (props) =>
       }
     ]}
   >
-    <ContentSizing size="md">
-      <p className="text-center my-5">
-        <span className="h1 fa fa-graduation-cap mb-3 text-body-tertiary"/>
-        <b className="h5 d-block">{trans('no_course', {}, 'cursus')}</b>
-        <span className="text-body-secondary">{trans('no_course_help', {}, 'cursus')}</span>
-      </p>
-      <CreationType {...props} />
-    </ContentSizing>
+    <PageContent>
+      <ContentSizing size="md">
+        <p className="text-center my-5">
+          <span className="h1 fa fa-graduation-cap mb-3 text-body-tertiary"/>
+          <b className="h5 d-block">{trans('no_course', {}, 'cursus')}</b>
+          <span className="text-body-secondary">{trans('no_course_help', {}, 'cursus')}</span>
+        </p>
+        <CreationType {...props} />
+      </ContentSizing>
+    </PageContent>
   </ToolPage>
 
 EmptyCourse.propTypes = {

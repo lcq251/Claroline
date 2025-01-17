@@ -1,5 +1,6 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {ResourceEditorAppearance, actions as editorActions} from '#/main/core/resource/editor'
@@ -12,31 +13,41 @@ const ScormEditorAppearance = () => {
 
   return (
     <ResourceEditorAppearance
+      locked={[
+        'resourceNode.poster'
+      ]}
       definition={[
         {
-          id: 'display',
-          icon: 'fa fa-fw fa-desktop',
-          title: trans('display_parameters'),
+          id: 'ratio',
+          title: trans('display_ratio'),
+          description: (trans('display_ratio_help')),
+          primary: true,
           fields: [
             {
-              name: 'resource.ratioList',
+              name: 'resource._ratioList',
               type: 'choice',
-              label: trans('display_ratio_list'),
+              required: true,
+              label: trans('display_ratio'),
+              hideLabel: true,
               options: {
                 multiple: false,
                 condensed: false,
                 choices: constants.DISPLAY_RATIO_LIST
               },
-              onChange: (ratio) => updateProp('ratio', parseFloat(ratio))
-            }, {
-              name: 'resource.ratio',
-              type: 'number',
-              label: trans('display_ratio'),
-              options: {
-                min: 0,
-                unit: '%'
-              },
-              onChange: () => updateProp('ratioList', null)
+              calculated: (data) => get(data, 'resource.ratio') && constants.DISPLAY_RATIO_LIST[get(data, 'resource.ratio')] ? get(data, 'resource.ratio') : 'other',
+              onChange: (ratio) => updateProp('ratio', 'other' !== ratio ? parseFloat(ratio) : null),
+              linked: [{
+                name: 'resource.ratio',
+                type: 'number',
+                label: trans('display_ratio_percentage'),
+                options: {
+                  min: 0,
+                  unit: '%'
+                },
+                hideLabel: true,
+                required: true,
+                displayed: (data) => 'other' === get(data, 'resource.ratio', 'other') || !constants.DISPLAY_RATIO_LIST[get(data, 'resource.ratio', 'other')]
+              }]
             }
           ]
         }

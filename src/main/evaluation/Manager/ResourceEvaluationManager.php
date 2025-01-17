@@ -19,7 +19,6 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceAttemptEvent;
 use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;

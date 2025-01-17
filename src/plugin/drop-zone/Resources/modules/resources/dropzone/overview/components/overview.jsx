@@ -16,8 +16,6 @@ import {PageSection} from '#/main/app/page/components/section'
 const Overview = props =>
   <ResourceOverview
     contentText={props.dropzone.instruction}
-    evaluation={props.userEvaluation}
-    resourceNode={props.resourceNode}
     display={{
       score: props.dropzone.display.showScore,
       scoreMax: props.dropzone.parameters.scoreMax,

@@ -12,11 +12,9 @@ import {ResourceContext} from '#/main/core/resource/context'
 import {selectors} from '#/main/core/resource/store'
 import {ResourceRestrictions} from '#/main/core/resource/containers/restrictions'
 import {ResourceEditor} from '#/main/core/resource/editor/containers/main'
-import {ResourceOverview} from '#/main/core/resource/components/overview'
+import {ResourceDashboard} from '#/main/core/resource/dashboard'
 
-import {ResourceEvaluations} from '#/main/evaluation/resource/evaluation'
 import {ResourceProgression} from '#/main/evaluation/resource/progression'
-import {LogsMain} from '#/main/log/resource/logs/containers/main'
 
 const ResourceMain = props => {
   const [loaded, setLoaded] = useState(false)
@@ -24,6 +22,7 @@ const ResourceMain = props => {
   const resourcePath = useSelector(selectors.path)
   const accessErrors = useSelector(selectors.accessErrors)
   const canEdit = useSelector((state) => hasPermission('edit', selectors.resourceNode(state)))
+  const canFollow = useSelector((state) => hasPermission('edit', selectors.resourceNode(state)))
   const hasEvaluation = useSelector(selectors.hasEvaluation)
 
   useEffect(() => {
@@ -35,7 +34,16 @@ const ResourceMain = props => {
     <ResourceContext.Provider
       value={{
         menu: [
-          {
+          /*{
+            name: 'progression',
+            type: LINK_BUTTON,
+            // label: trans('my_progression'),
+            label: (
+              <EvaluationMicro {...userEvaluation} className="my-n1 mx-n2" />
+            ),
+            target: resourcePath+'/progression',
+            displayed: hasEvaluation
+          }, */{
             name: 'overview',
             type: LINK_BUTTON,
             label: trans('resource_overview', {}, 'resource'),
@@ -45,23 +53,13 @@ const ResourceMain = props => {
           }
         ].concat(props.menu || [], [
           {
-            name: 'progression',
-            type: 'link',
-            label: trans('my_progression'),
-            target: resourcePath+'/progression',
-            displayed: hasEvaluation
-          }, {
-            name: 'evaluation',
-            type: 'link',
-            label: trans('evaluation'),
-            target: resourcePath+'/evaluation',
-            displayed: hasEvaluation && canEdit
-          }, {
-            name: 'activity',
-            type: 'link',
-            label: trans('activity'),
-            target: resourcePath+'/activity',
-            displayed: canEdit
+            name: 'dashboard',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-gauge',
+            label: trans('dashboard'),
+            tooltip: 'bottom',
+            target: resourcePath+'/dashboard',
+            displayed: canFollow
           }
         ]),
         actions: props.actions,
@@ -79,20 +77,16 @@ const ResourceMain = props => {
           routes={[
             {
               path: '/edit',
-              component: props.editor,
+              component: props.editor || ResourceEditor,
               disabled: !canEdit
+            }, {
+              path: '/dashboard',
+              component: props.dashboard || ResourceDashboard,
+              disabled: !canFollow
             }, {
               path: '/progression',
               component: ResourceProgression,
               disabled: !hasEvaluation
-            }, {
-              path: '/evaluation',
-              component: ResourceEvaluations,
-              disabled: !hasEvaluation
-            }, {
-              path: '/activity',
-              component: LogsMain,
-              disabled: !canEdit
             }
           ]
             .concat(props.pages || [])
@@ -131,14 +125,14 @@ ResourceMain.propTypes = {
    * The resource editor component
    * NB. This SHOULD extend the base <ResourceEditor /> component.
    */
-  editor: T.elementType
+  editor: T.elementType,
+  dashboard: T.elementType
 }
 
 ResourceMain.defaultProps = {
   styles: [],
-  actions: [],
-  overviewPage: ResourceOverview,
-  editor: ResourceEditor
+  // actions: [],
+  // overviewPage: ResourceOverview
 }
 
 export {

@@ -438,7 +438,7 @@ const ListForm = props => {
               ]
             }
           ]
-        }, {
+        }, /*{
           id: 'list-card',
           icon: 'fa fa-fw fa-th-large',
           title: trans('cards'),
@@ -470,7 +470,7 @@ const ListForm = props => {
               }
             }
           ]
-        }
+        }*/
       ]}
     />
   )

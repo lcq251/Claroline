@@ -21,6 +21,7 @@ import {UserMessageForm} from '#/main/core/user/message/components/user-message-
 
 import {Message as MessageTypes} from '#/plugin/message/prop-types'
 import {actions, selectors} from '#/plugin/message/tools/messaging/store'
+import {PageContent} from '#/main/app/page'
 
 function flattenMessages(root) {
   let messages = [root]
@@ -73,99 +74,101 @@ class MessageComponent extends Component {
 
     return (
       <ToolPage title={this.props.message.object}>
-        {messages
-          .filter(message => !get(message, 'meta.removed') || message.id === this.props.currentId)
-          .sort((a, b) => {
-            if (get(a, 'meta.date') > get(b, 'meta.date')) {
-              return 1
-            }
+        <PageContent>
+          {messages
+            .filter(message => !get(message, 'meta.removed') || message.id === this.props.currentId)
+            .sort((a, b) => {
+              if (get(a, 'meta.date') > get(b, 'meta.date')) {
+                return 1
+              }
 
-            return - 1
-          })
-          .map(message =>
-            <UserMessage
-              className={classes({
-                'user-message-highlight': 1 < messages.length && message.id === this.props.currentId
-              })}
-              key={`message-${message.id}`}
-              user={get(message, 'from')}
-              date={get(message, 'meta.date')}
-              content={message.content}
-              allowHtml={true}
+              return - 1
+            })
+            .map(message =>
+              <UserMessage
+                className={classes({
+                  'user-message-highlight': 1 < messages.length && message.id === this.props.currentId
+                })}
+                key={`message-${message.id}`}
+                user={get(message, 'from')}
+                date={get(message, 'meta.date')}
+                content={message.content}
+                allowHtml={true}
+                actions={[
+                  {
+                    name: 'restore',
+                    type: CALLBACK_BUTTON,
+                    icon: 'fa fa-fw fa-sync-alt',
+                    label: trans('restore', {}, 'actions'),
+                    displayed: get(message, 'meta.removed'),
+                    callback: () => this.props.restore(message),
+                    confirm: {
+                      title: trans('messages_restore_title', {}, 'message'),
+                      message: trans('messages_confirm_restore', {}, 'message')
+                    }
+                  }, {
+                    name: 'hard-delete',
+                    type: CALLBACK_BUTTON,
+                    icon: 'fa fa-fw fa-trash',
+                    label: trans('delete', {}, 'actions'),
+                    callback: () => this.props.delete(message, this.props.history.push, this.props.path),
+                    dangerous: true,
+                    displayed: get(message, 'meta.removed'),
+                    confirm: {
+                      title: trans('messages_delete_title', {}, 'message'),
+                      message: trans('messages_delete_confirm_permanent', {}, 'message')
+                    }
+                  }, {
+                    name: 'soft-delete',
+                    type: CALLBACK_BUTTON,
+                    icon: 'fa fa-fw fa-trash',
+                    label: trans('delete', {}, 'actions'),
+                    callback: () => this.props.remove(message, this.props.history.push, this.props.path),
+                    dangerous: true,
+                    displayed: !get(message, 'meta.removed'),
+                    confirm: {
+                      title: trans('messages_delete_title', {}, 'message'),
+                      message: trans('remove_message_confirm_message', {}, 'message')
+                    }
+                  }
+                ]}
+              />
+            )
+          }
+
+          {(!this.state.reply && !get(this.props.message, 'meta.sent') && !get(this.props.message, 'meta.removed')) &&
+            <Toolbar
+              className="d-grid gap-1"
+              variant="btn"
+              buttonName="w-100"
               actions={[
                 {
-                  name: 'restore',
+                  name: 'reply',
                   type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-sync-alt',
-                  label: trans('restore', {}, 'actions'),
-                  displayed: get(message, 'meta.removed'),
-                  callback: () => this.props.restore(message),
-                  confirm: {
-                    title: trans('messages_restore_title', {}, 'message'),
-                    message: trans('messages_confirm_restore', {}, 'message')
-                  }
+                  label: trans('reply', {}, 'actions'),
+                  callback: () => this.setState({reply: true, all: false}),
+                  primary: true,
+                  size: 'lg'
                 }, {
-                  name: 'hard-delete',
+                  name: 'reply-all',
                   type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-trash',
-                  label: trans('delete', {}, 'actions'),
-                  callback: () => this.props.delete(message, this.props.history.push, this.props.path),
-                  dangerous: true,
-                  displayed: get(message, 'meta.removed'),
-                  confirm: {
-                    title: trans('messages_delete_title', {}, 'message'),
-                    message: trans('messages_delete_confirm_permanent', {}, 'message')
-                  }
-                }, {
-                  name: 'soft-delete',
-                  type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-trash',
-                  label: trans('delete', {}, 'actions'),
-                  callback: () => this.props.remove(message, this.props.history.push, this.props.path),
-                  dangerous: true,
-                  displayed: !get(message, 'meta.removed'),
-                  confirm: {
-                    title: trans('messages_delete_title', {}, 'message'),
-                    message: trans('remove_message_confirm_message', {}, 'message')
-                  }
+                  label: trans('reply-all', {}, 'actions'),
+                  callback: () => this.setState({reply: true, all: true})
                 }
               ]}
             />
-          )
-        }
+          }
 
-        {(!this.state.reply && !get(this.props.message, 'meta.sent') && !get(this.props.message, 'meta.removed')) &&
-          <Toolbar
-            className="d-grid gap-1"
-            variant="btn"
-            buttonName="w-100"
-            actions={[
-              {
-                name: 'reply',
-                type: CALLBACK_BUTTON,
-                label: trans('reply', {}, 'actions'),
-                callback: () => this.setState({reply: true, all: false}),
-                primary: true,
-                size: 'lg'
-              }, {
-                name: 'reply-all',
-                type: CALLBACK_BUTTON,
-                label: trans('reply-all', {}, 'actions'),
-                callback: () => this.setState({reply: true, all: true})
-              }
-            ]}
-          />
-        }
-
-        {this.state.reply &&
-          <UserMessageForm
-            user={this.props.currentUser}
-            allowHtml={true}
-            submitLabel={trans(this.state.all ? 'reply-all' : 'reply', {}, 'actions')}
-            submit={this.reply}
-            cancel={() => this.setState({reply: false, all: false})}
-          />
-        }
+          {this.state.reply &&
+            <UserMessageForm
+              user={this.props.currentUser}
+              allowHtml={true}
+              submitLabel={trans(this.state.all ? 'reply-all' : 'reply', {}, 'actions')}
+              submit={this.reply}
+              cancel={() => this.setState({reply: false, all: false})}
+            />
+          }
+        </PageContent>
       </ToolPage>
     )
   }

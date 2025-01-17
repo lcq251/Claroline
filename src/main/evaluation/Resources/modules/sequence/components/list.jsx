@@ -11,12 +11,11 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {constants as listConst} from '#/main/app/content/list/constants'
 import {actions as listActions} from '#/main/app/content/list/store'
 
-import {route} from '#/main/evaluation/sequence/routing'
+import {getActions, getDefaultAction} from '#/main/evaluation/sequence/utils'
 import {SequenceCard} from '#/main/evaluation/sequence/components/card'
-import {LINK_BUTTON} from '#/main/app/buttons'
 
 const SequenceList = (props) => {
-  // const currentUser = useSelector(securitySelectors.currentUser)
+  const currentUser = useSelector(securitySelectors.currentUser)
 
   const dispatch = useDispatch()
 
@@ -28,12 +27,8 @@ const SequenceList = (props) => {
 
   return (
     <ListData
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        label: trans('open', {}, 'actions'),
-        target: route(row, null, props.path)
-      })}
-      /*actions={(rows) => getActions(rows, refresher, props.path, currentUser)}*/
+      primaryAction={(row) => getDefaultAction(row, refresher, props.path, props.currentUser)}
+      actions={(rows) => getActions(rows, refresher, props.path, currentUser)}
       definition={[
         {
           name: 'name',
@@ -66,7 +61,7 @@ const SequenceList = (props) => {
         current: listConst.DISPLAY_TILES
       }}
 
-      {...omit(props, 'path', 'url', 'autoload', 'refresher', 'invalidate')}
+      {...omit(props, 'path', 'url', 'autoload', 'refresher')}
 
       name={props.name}
       fetch={{

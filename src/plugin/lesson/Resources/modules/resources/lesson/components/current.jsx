@@ -7,12 +7,13 @@ import {LinkButton} from '#/main/app/buttons'
 import {ProgressBar} from '#/main/app/components/progress-bar'
 
 import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-types'
+import {PageContent} from '#/main/app/page'
 
 const LessonCurrent = props => {
   const currentIndex = props.all.findIndex(chapter => props.current.id === chapter.id)
 
   return (
-    <>
+    <PageContent>
       <ProgressBar
         className="progress-minimal"
         value={Math.floor(((currentIndex+1) / props.all.length) * 100)}
@@ -56,7 +57,7 @@ const LessonCurrent = props => {
           </LinkButton>
         }
       </nav>
-    </>
+    </PageContent>
   )
 }
 

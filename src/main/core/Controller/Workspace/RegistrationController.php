@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Controller\Workspace;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\SerializerProvider;
@@ -25,6 +24,7 @@ use Claroline\CoreBundle\Entity\Workspace\WorkspaceRegistrationQueue;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceUserQueueManager;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -62,12 +62,13 @@ class RegistrationController
      *         {"name": "id",  "type": {"string", "integer"}, "description": "The workspace id or uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{id}/user/pending', name: 'apiv2_workspace_list_pending', methods: ['GET'])]
-    public function listPendingAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace): JsonResponse
-    {
+    public function listPendingAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Workspace $workspace,
+        Request $request
+    ): JsonResponse {
         return new JsonResponse($this->crud->list(
             WorkspaceRegistrationQueue::class,
             array_merge($request->query->all(), ['hiddenFilters' => ['workspace' => $workspace->getUuid()]])
@@ -84,12 +85,13 @@ class RegistrationController
      *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{id}/registration/validate', name: 'apiv2_workspace_registration_validate', methods: ['PATCH'])]
-    public function validateRegistrationAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace): JsonResponse
-    {
+    public function validateRegistrationAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Workspace $workspace,
+        Request $request
+    ): JsonResponse {
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
 
@@ -118,11 +120,10 @@ class RegistrationController
      *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{id}/registration/remove', name: 'apiv2_workspace_registration_remove', methods: ['DELETE'])]
     public function removeRegistrationAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace): JsonResponse
+        Workspace $workspace): JsonResponse
     {
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
@@ -150,11 +151,10 @@ class RegistrationController
      *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{id}/users/unregister', name: 'apiv2_workspace_unregister_users', methods: ['DELETE'])]
     public function unregisterUsersAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace): JsonResponse
+        Workspace $workspace): JsonResponse
     {
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
@@ -180,11 +180,10 @@ class RegistrationController
      *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{id}/groups/unregister', name: 'apiv2_workspace_unregister_groups', methods: ['DELETE'])]
     public function unregisterGroupsAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-    Workspace $workspace): JsonResponse
+        Workspace $workspace): JsonResponse
     {
         $query = $request->query->all();
         $groups = $this->om->getRepository(Group::class)->findBy(['uuid' => $query['ids']]);
@@ -208,10 +207,9 @@ class RegistrationController
      *     }
      * )
      *
-     *
      * @throws InvalidDataException
      */
-    #[Route(path: '/register/{role}', name: 'apiv2_workspace_register', methods: ['PATCH'], defaults: ['role' => ''], requirements: ['role' => '.+'])]
+    #[Route(path: '/register/{role}', name: 'apiv2_workspace_register', requirements: ['role' => '.+'], defaults: ['role' => ''], methods: ['PATCH'])]
     public function registerAction(string $role, Request $request): JsonResponse
     {
         $data = $this->decodeRequest($request);
@@ -274,11 +272,10 @@ class RegistrationController
      *         {"name": "workspace", "type": {"string"}, "description": "The workspace uuid"}
      *     }
      * )
-     *
      */
     #[Route(path: '/{workspace}/register/self', name: 'apiv2_workspace_self_register', methods: ['PUT'])]
     public function selfRegisterAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-    Workspace $workspace, #[CurrentUser] ?User $currentUser): JsonResponse
+        Workspace $workspace, #[CurrentUser] ?User $currentUser): JsonResponse
     {
         if (null === $currentUser || !$workspace->getSelfRegistration() || $workspace->isArchived()) {
             throw new AccessDeniedException();

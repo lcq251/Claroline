@@ -1,19 +1,39 @@
 import {createSelector} from 'reselect'
 import get from 'lodash/get'
 
-const STORE_NAME = 'innova_path'
+import {selectors as toolSelectors} from '#/main/core/tool'
 
-const store = (state) => state[STORE_NAME]
+import {route} from '#/main/evaluation/sequence'
 
-// path
-const path = createSelector(
+const STORE_NAME = 'evaluationSequence'
+
+const store = (state) => state[STORE_NAME] || {}
+
+const data = createSelector(
   [store],
-  (store) => store.resource
+  (store) => store.data
+)
+
+const sequence = createSelector(
+  [data],
+  (data) => data.sequence
+)
+
+const path = createSelector(
+  [toolSelectors.path, sequence],
+  (basePath, sequence) => {
+    return route(sequence, null, basePath)
+  }
+)
+
+const id = createSelector(
+  [sequence],
+  (sequence) => sequence.id
 )
 
 const steps = createSelector(
-  [path],
-  (path) => path.steps || []
+  [sequence],
+  (sequence) => sequence.steps || []
 )
 
 const empty = createSelector(
@@ -22,13 +42,13 @@ const empty = createSelector(
 )
 
 const showOverview = createSelector(
-  [path],
-  (path) => get(path, 'overview.display') || false
+  [sequence],
+  (sequence) => get(sequence, 'overview.display') || false
 )
 
 const showEndPage = createSelector(
-  [path],
-  (path) => get(path, 'end.display') || false
+  [sequence],
+  (sequence) => get(sequence, 'end.display') || false
 )
 
 // is step navigation enabled ?
@@ -37,32 +57,34 @@ const navigationEnabled = createSelector(
   (store) => store.navigationEnabled
 )
 
-const attempt = createSelector(
-  [store],
-  (store) => store.attempt
+const stepsProgression = createSelector(
+  [data],
+  (data) => data.stepsProgression
 )
 
-const stepsProgression = createSelector(
-  [store],
-  (store) => store.stepsProgression
+const evaluation = createSelector(
+  [data],
+  (data) => data.userEvaluation
 )
 
 // evaluation for the required resource of the path
 const resourceEvaluations = createSelector(
-  [store],
-  (store) => store.resourceEvaluations
+  [data],
+  (data) => data.resourceEvaluations
 )
 
 export const selectors = {
   STORE_NAME,
 
+  sequence,
   path,
+  id,
   steps,
   empty,
   navigationEnabled,
   showOverview,
   showEndPage,
-  attempt,
+  evaluation,
   resourceEvaluations,
   stepsProgression
 }

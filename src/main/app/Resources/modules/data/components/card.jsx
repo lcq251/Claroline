@@ -125,7 +125,7 @@ const DataCard = props => {
 
       <CardAction
         action={props.primaryAction}
-        className={classes('data-card-content text-reset text-decoration-none focus-ring', {
+        className={classes('data-card-content text-reset text-decoration-none focus-ring z-1', {
           'text-center': 'row' !== props.orientation && asIcon,
           'py-2': 'xs' === props.size
         })}

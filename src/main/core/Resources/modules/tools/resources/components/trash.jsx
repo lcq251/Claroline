@@ -6,19 +6,22 @@ import {selectors} from '#/main/core/tools/resources/store'
 import {ToolPage} from '#/main/core/tool'
 
 import {ResourceList} from '#/main/core/resource/components/list'
+import {PageListSection} from '#/main/app/page'
 
 const ResourcesTrash = (props) =>
   <ToolPage
     title={trans('trash')}
   >
-    <ResourceList
-      className="my-3"
-      path={props.path}
-      name={selectors.STORE_NAME+ '.trash'}
-      url={['apiv2_resource_workspace_removed_list', {
-        workspace: props.contextId
-      }]}
-    />
+    <PageListSection>
+      <ResourceList
+        className="my-3"
+        path={props.path}
+        name={selectors.STORE_NAME+ '.trash'}
+        url={['apiv2_resource_workspace_removed_list', {
+          workspace: props.contextId
+        }]}
+      />
+    </PageListSection>
   </ToolPage>
 
 ResourcesTrash.propTypes = {

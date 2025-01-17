@@ -48,16 +48,17 @@ class VideoSerializer
     {
         if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
             $this->sipe('id', 'setUuid', $data, $video);
-            $this->sipe('timecodeStart', 'setTimecodeStart', $data, $video);
-            $this->sipe('timecodeEnd', 'setTimecodeEnd', $data, $video);
-            $this->sipe('autoplay', 'setAutoplay', $data, $video);
-            $this->sipe('looping', 'setLooping', $data, $video);
-            $this->sipe('controls', 'setControls', $data, $video);
-            $this->sipe('peertubeLink', 'setPeertubeLink', $data, $video);
-            $this->sipe('resume', 'setResume', $data, $video);
         } else {
             $video->refreshUuid();
         }
+
+        $this->sipe('timecodeStart', 'setTimecodeStart', $data, $video);
+        $this->sipe('timecodeEnd', 'setTimecodeEnd', $data, $video);
+        $this->sipe('autoplay', 'setAutoplay', $data, $video);
+        $this->sipe('looping', 'setLooping', $data, $video);
+        $this->sipe('controls', 'setControls', $data, $video);
+        $this->sipe('peertubeLink', 'setPeertubeLink', $data, $video);
+        $this->sipe('resume', 'setResume', $data, $video);
 
         if (!empty($data['url'])) {
             $urlParts = $this->peerTubeManager->extractUrlParts($data['url']);

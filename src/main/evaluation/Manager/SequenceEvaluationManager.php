@@ -9,6 +9,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
 use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Entity\SequenceProgression;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\SequenceEvaluationEvent;
 use Claroline\EvaluationBundle\Library\Checker\ProgressionChecker;
@@ -18,7 +19,6 @@ use Claroline\EvaluationBundle\Library\GenericEvaluation;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeSequenceEvaluations;
 use Claroline\EvaluationBundle\Repository\SequenceRepository;
 use Doctrine\Persistence\ObjectRepository;
-use Innova\PathBundle\Entity\UserProgression;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -35,7 +35,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         private readonly ObjectManager $om,
         private readonly ResourceEvaluationManager $resourceEvalManager
     ) {
-        $this->progressionRepo = $this->om->getRepository(UserProgression::class);
+        $this->progressionRepo = $this->om->getRepository(SequenceProgression::class);
         $this->sequenceRepo = $this->om->getRepository(Sequence::class);
     }
 
@@ -89,7 +89,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         return $stepsProgression;
     }
 
-    public function update(Step $step, User $user, string $status): UserProgression
+    public function update(Step $step, User $user, string $status): SequenceProgression
     {
         // Retrieve the current progression for this step
         $progression = $this->progressionRepo->findOneBy([
@@ -99,7 +99,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
 
         if (empty($progression)) {
             // No progression for User => initialize a new one
-            $progression = new UserProgression();
+            $progression = new SequenceProgression();
             $progression->setStep($step);
             $progression->setUser($user);
         }
@@ -182,7 +182,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         $this->om->flush();
 
         if ($hasChanged['status'] || $hasChanged['progression'] || $hasChanged['score']) {
-            $this->eventDispatcher->dispatch(new SequenceEvaluationEvent($evaluation, $hasChanged), EvaluationEvents::WORKSPACE_EVALUATION);
+            $this->eventDispatcher->dispatch(new SequenceEvaluationEvent($evaluation, $hasChanged), EvaluationEvents::SEQUENCE_EVALUATION);
         }
     }
 

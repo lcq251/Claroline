@@ -10,31 +10,22 @@ import {ToolPage} from '#/main/core/tool'
 
 import {Location as LocationTypes} from '#/main/core/tools/locations/prop-types'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent} from '#/main/app/page'
 
-const LocationPage = (props) => {
-  if (isEmpty(props.location)) {
-    return (
+const LocationPage = (props) =>
+  <ToolPage
+    title={trans('location_name', {name: get(props.location, 'name', trans('loading'))}, 'location')}
+    description={get(props.location, 'meta.description')}
+  >
+    {isEmpty(props.location) &&
       <ContentLoader
         size="lg"
         description={trans('location_loading', {}, 'location')}
       />
-    )
-  }
+    }
 
-  return (
-    <ToolPage
-      poster={get(props.location, 'poster')}
-      title={trans('location_name', {name: get(props.location, 'name', trans('loading'))}, 'location')}
-      description={get(props.location, 'meta.description')}
-    >
-      {isEmpty(props.location) &&
-        <ContentLoader
-          size="lg"
-          description={trans('location_loading', {}, 'location')}
-        />
-      }
-
-      {!isEmpty(props.location) &&
+    {!isEmpty(props.location) &&
+      <PageContent poster={get(props.location, 'poster')}>
         <PageHeading
           size="md"
           title={get(props.location, 'name', trans('loading'))}
@@ -50,12 +41,11 @@ const LocationPage = (props) => {
             }
           ]}
         />
-      }
 
-      {!isEmpty(props.location) && props.children}
-    </ToolPage>
-  )
-}
+        {props.children}
+      </PageContent>
+    }
+  </ToolPage>
 
 LocationPage.propTypes = {
   path: T.string.isRequired,

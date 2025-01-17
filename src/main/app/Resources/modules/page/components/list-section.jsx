@@ -1,15 +1,13 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 
-import {PageSection} from '#/main/app/page/components/section'
 import {ButtonSticky} from '#/main/app/button'
+import {PageContent} from '#/main/app/page/components/body'
 
 const PageListSection = (props) =>
-  <PageSection
-    className="flex-fill d-flex flex-column"
-    size="full"
-    flush={true}
-    {...props}
+  <PageContent
+    className={classes('flex-fill d-flex flex-column', props.className)}
   >
     {props.children}
 
@@ -19,7 +17,7 @@ const PageListSection = (props) =>
         className="me-4"
       />
     }
-  </PageSection>
+  </PageContent>
 
 PageListSection.propTypes = {
   addAction: T.shape({

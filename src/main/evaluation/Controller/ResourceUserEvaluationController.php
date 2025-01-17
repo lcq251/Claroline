@@ -66,7 +66,7 @@ class ResourceUserEvaluationController
         }
 
         $finderQuery->addFilter('resourceNode', $resourceNode->getUuid());
-        if (!$this->checkPermission('ADMINISTRATE', $resourceNode)) {
+        if (!$this->checkPermission('EDIT', $resourceNode)) {
             // only display evaluation of the current user
             /** @var User $user */
             $user = $this->tokenStorage->getToken()?->getUser();

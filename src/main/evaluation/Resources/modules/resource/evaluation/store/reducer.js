@@ -5,7 +5,9 @@ import {RESOURCE_LOAD} from '#/main/core/resource/store/actions'
 
 import {selectors} from '#/main/evaluation/resource/evaluation/store/selectors'
 
-const reducer = makeListReducer(selectors.STORE_NAME, {}, {
+const reducer = makeListReducer(selectors.STORE_NAME, {
+  sortBy: { property: 'date', direction: -1 }
+}, {
   invalidated: makeReducer(false, {
     [RESOURCE_LOAD]: () => true
   })

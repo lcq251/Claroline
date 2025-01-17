@@ -13,6 +13,7 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 import {getActions} from '#/main/community/team/utils'
 import {Team as TeamTypes} from '#/main/community/team/prop-types'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent} from '#/main/app/page'
 
 const Team = (props) =>
   <ToolPage
@@ -23,7 +24,6 @@ const Team = (props) =>
         target: `${props.path}/teams`
       }
     ].concat(props.team ? props.breadcrumb : [])}
-    poster={get(props.team, 'poster')}
     title={trans('team_name', {name: get(props.team, 'name', trans('loading'))}, 'community')}
     description={get(props.team, 'meta.description')}
   >
@@ -35,20 +35,22 @@ const Team = (props) =>
     }
 
     {!isEmpty(props.team) &&
-      <PageHeading
-        size="md"
-        title={get(props.team, 'name', trans('loading'))}
-        description={get(props.team, 'meta.description')}
-        // primaryAction="edit"
-        actions={!isEmpty(props.team) ? getActions([props.team], {
-          add: () => props.reload(props.team.id),
-          update: () => props.reload(props.team.id),
-          delete: () => props.reload(props.team.id)
-        }, props.path, props.currentUser) : []}
-      />
-    }
+      <PageContent poster={get(props.team, 'poster')}>
+        <PageHeading
+          size="md"
+          title={get(props.team, 'name', trans('loading'))}
+          description={get(props.team, 'meta.description')}
+          // primaryAction="edit"
+          actions={!isEmpty(props.team) ? getActions([props.team], {
+            add: () => props.reload(props.team.id),
+            update: () => props.reload(props.team.id),
+            delete: () => props.reload(props.team.id)
+          }, props.path, props.currentUser) : []}
+        />
 
-    {!isEmpty(props.team) && props.children}
+        {props.children}
+      </PageContent>
+    }
   </ToolPage>
 
 Team.propTypes = {

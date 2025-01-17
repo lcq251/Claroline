@@ -1,37 +1,24 @@
 @use "sass:math";
 
 .app-page {
-    // order: 2;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    max-width: 100%;
-}
+    overflow: hidden;
+    // max-width: 100%;
 
-.fullscreen-close {
-    position: absolute;
-    z-index: $zindex-offcanvas;
-    top: ($grid-gutter-width * .5);
-    right: $grid-gutter-width;
-    font-size: 36px;
-    line-height: 1;
-    opacity: 0.6;
+    > .app-page-body {
+        height: 100%;
+        overflow: hidden;
 
-    @include text-movie-subtitles();
-
-    &:hover,
-    &.hover,
-    &:focus,
-    &.focus,
-    &:active,
-    &.active {
-        opacity: 1;
+        > .app-page-content {
+            overflow-y: auto;
+        }
     }
 }
 
 .context-menu-btn {
     max-width: 22.5rem;
-    // min-width: 18rem;
 }
 
 .app-page-menu {
@@ -86,54 +73,27 @@
     }
 }
 
-.app-page-columns {
-    height: 100%;
-    overflow: hidden;
+.app-page-body {
     display: flex;
     flex-direction: row;
-
-    &.app-page-columns-reverse {
-        flex-direction: row-reverse;
-    }
 }
 
-.app-page-column {
-    overflow-y: auto;
+.app-page-content {
+    height: 100%;
+    flex: 1;
 }
 
-.app-page-col-secondary {
-    flex: 1 1 25%;
-
-    + .app-page-col-primary {
-        // border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
-    }
+.app-page-aside {
+    width: $toolbar-size;
 }
 
-.app-page-col-primary {
-    flex: 1 1 75%;
-
-    + .app-page-col-secondary {
-        // border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
-    }
-}
-
-@media (max-width: map-get($grid-breakpoints, 'md')) {
-    .app-page-columns {
-        height: auto;
-        flex-direction: column;
-    }
-
-    /*.app-page-column {
-
-    }*/
-
-    .app-page-col-secondary {
-        order: 1;
-        border-left: none;
-        // border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
-    }
-
-    .app-page-col-primary {
-        order: 2;
-    }
+.app-page-aside-title {
+    font-size: $h4-font-size;
+    max-height: $headings-line-height * $h4-font-size * 2;
+    // display the '...' if the text is truncated on browsers which support it
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }

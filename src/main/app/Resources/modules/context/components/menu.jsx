@@ -8,7 +8,6 @@ import omit from 'lodash/omit'
 import {trans} from '#/main/app/intl'
 import {Button, Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MENU_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {Thumbnail} from '#/main/app/components/thumbnail'
 import {DataMicro} from '#/main/app/data/components/micro'
 import {Menu} from '#/main/app/overlays/menu'
 
@@ -17,7 +16,6 @@ import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizat
 import {getActions} from '#/main/app/context/utils'
 import {route} from '#/main/app/context/routing'
 import {selectors as contextSelectors} from '#/main/app/context/store'
-
 
 const ContextFlyout = forwardRef((props, ref) => {
   // get context tools
@@ -178,7 +176,7 @@ const FavouriteButton = () => {
   )
 }
 
-const MenuButton = (props) => {
+const ContextMenu = (props) => {
   const contextPath = useSelector(contextSelectors.path)
   const contextData = useSelector(contextSelectors.data)
   const contextType = useSelector(contextSelectors.type)
@@ -201,24 +199,23 @@ const MenuButton = (props) => {
         />
       }
     >
-      {/*<Thumbnail
-        size="xs"
-        thumbnail={contextData.thumbnail}
-        name={contextData.name}
-        square={true}
-      />*/}
-
       <span className="fa fa-bars" aria-hidden={true} />
 
-      <div className="h6 text-start text-truncate mb-0 fw-normal" role="presentation">
+      <div className="text-start text-truncate mb-0 fs-sm" role="presentation">
         {contextData.name}
+
+        {props.name &&
+          <>
+            <span className="mx-1" role="presentation"> / </span>
+            <span className="text-body-secondary">
+              {props.name}
+            </span>
+          </>
+        }
       </div>
     </Button>
   )
 }
-
-const ContextMenu = (props) =>
-  <MenuButton  {...props} />
 
 export {
   ContextMenu

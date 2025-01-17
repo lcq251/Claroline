@@ -37,8 +37,7 @@ services:
     Claroline\CoreBundle\Controller\Resource\ActivityController:
         arguments:
             - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\API\FinderProvider'
+            - '@Claroline\AppBundle\API\Crud'
 
     Claroline\CoreBundle\Controller\Workspace\ArchiveController:
         public: true

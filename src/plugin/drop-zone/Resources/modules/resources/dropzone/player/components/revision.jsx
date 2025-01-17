@@ -24,79 +24,82 @@ import {MODAL_ADD_DOCUMENT} from '#/plugin/drop-zone/resources/dropzone/player/m
 import {Documents} from '#/plugin/drop-zone/resources/dropzone/components/documents'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const RevisionComponent = props => props.revision && props.drop ?
   <ResourcePage>
-    <h2>{trans('revision', {}, 'dropzone')}</h2>
+    <PageContent>
+      <h2>{trans('revision', {}, 'dropzone')}</h2>
 
-    <table className="revision-table table table-responsive table-bordered">
-      <tbody>
-        <tr>
-          <th>{trans('creator')}</th>
-          <td>{props.revision.creator ? `${props.revision.creator.firstName} ${props.revision.creator.lastName}` : trans('unknown')}</td>
-        </tr>
-        <tr>
-          <th>{trans('creation_date')}</th>
-          <td>{displayDate(props.revision.creationDate, false, true)}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table className="revision-table table table-responsive table-bordered">
+        <tbody>
+          <tr>
+            <th>{trans('creator')}</th>
+            <td>{props.revision.creator ? `${props.revision.creator.firstName} ${props.revision.creator.lastName}` : trans('unknown')}</td>
+          </tr>
+          <tr>
+            <th>{trans('creation_date')}</th>
+            <td>{displayDate(props.revision.creationDate, false, true)}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <Documents
-      documents={props.revision.documents}
-      showMeta={true}
-      isManager={props.isManager}
-      {...props}
-    />
-
-    {matchPath(props.location.pathname, {path: `${props.path}/revisions/`}) &&
-      <Button
-        className="btn component-container"
-        icon="fa fa-fw fa-plus"
-        type={MODAL_BUTTON}
-        label={trans('add_document', {}, 'dropzone')}
-        modal={1 < props.dropzone.parameters.documents.length ?
-          [MODAL_SELECTION, {
-            icon: 'fa fa-fw fa-plus',
-            title: trans('new_document', {}, 'dropzone'),
-            items: props.dropzone.parameters.documents.map((type) => ({
-              name: type,
-              icon: constants.DOCUMENT_TYPE_ICONS[type],
-              label: constants.DOCUMENT_TYPES[type],
-              description: trans(`document_${type}_desc`, {}, 'dropzone')
-            })),
-            selectAction: (type) => ({
-              type: MODAL_BUTTON,
-              modal: [
-                MODAL_ADD_DOCUMENT, {
-                  type: type.name,
-                  save: (formData) => props.saveDocument(props.drop.id, props.revision.id, type.name, formData.data)
-                }
-              ]
-            })
-          }] :
-          [MODAL_ADD_DOCUMENT, {
-            type: props.dropzone.parameters.documents[0],
-            save: (formData) => props.saveDocument(props.drop.id, props.revision.id, props.dropzone.parameters.documents[0], formData.data)
-          }]}
+      <Documents
+        documents={props.revision.documents}
+        showMeta={true}
+        isManager={props.isManager}
+        {...props}
       />
-    }
 
-    <ContentComments
-      title={trans('drop_comments', {}, 'dropzone')}
-      currentUser={props.currentUser}
-      comments={props.drop.comments}
-      createComment={(comment) => props.saveDropComment(props.drop.id, comment)}
-      editComment={(comment) => props.saveDropComment(props.drop.id, comment)}
-    />
+      {matchPath(props.location.pathname, {path: `${props.path}/revisions/`}) &&
+        <Button
+          className="btn component-container"
+          icon="fa fa-fw fa-plus"
+          type={MODAL_BUTTON}
+          label={trans('add_document', {}, 'dropzone')}
+          modal={1 < props.dropzone.parameters.documents.length ?
+            [MODAL_SELECTION, {
+              icon: 'fa fa-fw fa-plus',
+              title: trans('new_document', {}, 'dropzone'),
+              items: props.dropzone.parameters.documents.map((type) => ({
+                name: type,
+                icon: constants.DOCUMENT_TYPE_ICONS[type],
+                label: constants.DOCUMENT_TYPES[type],
+                description: trans(`document_${type}_desc`, {}, 'dropzone')
+              })),
+              selectAction: (type) => ({
+                type: MODAL_BUTTON,
+                modal: [
+                  MODAL_ADD_DOCUMENT, {
+                    type: type.name,
+                    save: (formData) => props.saveDocument(props.drop.id, props.revision.id, type.name, formData.data)
+                  }
+                ]
+              })
+            }] :
+            [MODAL_ADD_DOCUMENT, {
+              type: props.dropzone.parameters.documents[0],
+              save: (formData) => props.saveDocument(props.drop.id, props.revision.id, props.dropzone.parameters.documents[0], formData.data)
+            }]}
+        />
+      }
 
-    <ContentComments
-      title={trans('revision_comments', {}, 'dropzone')}
-      currentUser={props.currentUser}
-      comments={props.revision.comments}
-      createComment={(comment) => props.saveRevisionComment(props.revision.id, comment)}
-      updateComment={(comment) => props.saveRevisionComment(props.revision.id, comment)}
-    />
+      <ContentComments
+        title={trans('drop_comments', {}, 'dropzone')}
+        currentUser={props.currentUser}
+        comments={props.drop.comments}
+        createComment={(comment) => props.saveDropComment(props.drop.id, comment)}
+        editComment={(comment) => props.saveDropComment(props.drop.id, comment)}
+      />
+
+      <ContentComments
+        title={trans('revision_comments', {}, 'dropzone')}
+        currentUser={props.currentUser}
+        comments={props.revision.comments}
+        createComment={(comment) => props.saveRevisionComment(props.revision.id, comment)}
+        updateComment={(comment) => props.saveRevisionComment(props.revision.id, comment)}
+      />
+    </PageContent>
   </ResourcePage> :
   <div>
   </div>

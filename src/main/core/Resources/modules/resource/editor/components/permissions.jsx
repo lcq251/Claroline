@@ -84,7 +84,7 @@ const ResourceEditorPermissions = (props) => {
               calculated: restrictedByDates,
               onChange: activated => {
                 if (!activated) {
-                  props.updateProp('restrictions.dates', [])
+                  props.updateResourceNode('restrictions.dates', [])
                 }
               },
               linked: [
@@ -106,7 +106,7 @@ const ResourceEditorPermissions = (props) => {
               calculated: restrictedByCode,
               onChange: activated => {
                 if (!activated) {
-                  props.updateProp('restrictions.code', '')
+                  props.updateResourceNode('restrictions.code', '')
                 }
               },
               linked: [
@@ -133,15 +133,12 @@ ResourceEditorPermissions.propTypes = {
   resourceNode: T.shape(
     ResourceNodeTypes.propTypes
   ).isRequired,
+  updateResourceNode: T.func.isRequired,
   updateRights: T.func.isRequired,
   loadRights: T.func.isRequired,
 
   setRecursiveEnabled: T.func.isRequired,
   recursiveEnabled: T.bool
-}
-
-ResourceEditorPermissions.defaultProps = {
-  recursiveEnabled: false
 }
 
 export {

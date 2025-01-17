@@ -155,11 +155,11 @@ const Toolbar = {
     ]).isRequired,
     onClick: T.func
   },
-  defaultProps: {
+  /*defaultProps: {
     className: 'toolbar',
     role: 'toolbar',
     disabled: false
-  }
+  }*/
 }
 
 export {

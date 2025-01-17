@@ -24,13 +24,23 @@
 
 .summary-link {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     border-radius: $summary-link-border-radius;
     background-color: $summary-link-bg;
     margin-top: $summary-gap;
+
+    &:hover {
+        background-color: $summary-link-hover-bg;
+
+        .btn,
+        .btn * { // be sure to override any bootstrap utility (eg. .text-body-secondary)
+            color: $summary-link-hover-color !important;
+        }
+    }
 }
 
 .summary-link-actions {
+    display: flex;
     white-space: nowrap; // avoid buttons to be displayed in column
 }
 
@@ -40,6 +50,7 @@
     align-items: center;
     padding: $summary-link-spacer-y $summary-link-spacer-x;
     text-decoration: none;
+    color: $summary-link-color;
 
     .action-icon {
         flex-shrink: 0;
@@ -47,5 +58,9 @@
 
     .action-subscript {
         margin-left: auto;
+    }
+
+    small {
+        font-weight: var(--#{$prefix}body-font-weight);
     }
 }

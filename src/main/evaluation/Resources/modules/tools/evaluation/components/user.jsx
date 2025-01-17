@@ -14,6 +14,7 @@ import {WorkspaceEvaluation as WorkspaceEvaluationTypes} from '#/main/evaluation
 import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {WorkspaceEvaluation} from '#/main/evaluation/workspace/components/evaluation'
 import {constants as baseConstants} from '#/main/evaluation/constants'
+import {PageContent} from '#/main/app/page'
 
 const EvaluationUser = (props) =>
   <ToolPage
@@ -33,56 +34,56 @@ const EvaluationUser = (props) =>
     }
 
     {props.loaded &&
-      <PageHeading
-        size="md"
-        title={
-          <div className="d-flex align-items-center gap-4">
-            <UserAvatar user={get(props.workspaceEvaluation, 'user')} size="lg" />
-            {get(props.workspaceEvaluation, 'user.name')}
-          </div>
-        }
-        secondaryAction="show-profile"
-        actions={get(props.workspaceEvaluation, 'user') ? [
-          {
-            name: 'show-profile',
-            type: LINK_BUTTON,
-            label: trans('show_profile', {}, 'actions'),
-            target: route(get(props.workspaceEvaluation, 'user'), props.contextPath+'/community')
-          }, {
-            name: 'download-certificate',
-            type: URL_BUTTON,
-            label: trans('download_certificate', {}, 'actions'),
-            target: ['apiv2_workspace_download_user_certificate', {
-              workspace: get(props.workspaceEvaluation, 'workspace.id'),
-              user: get(props.workspaceEvaluation, 'user.id')
-            }],
-            displayed: [
-              baseConstants.EVALUATION_STATUS_COMPLETED,
-              baseConstants.EVALUATION_STATUS_PARTICIPATED,
-              baseConstants.EVALUATION_STATUS_PASSED
-            ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
-          }, {
-            name: 'regenerate-certificate',
-            type: URL_BUTTON,
-            label: trans('regenerate_certificate', {}, 'actions'),
-            target: ['apiv2_workspace_generate_user_certificate', {
-              evaluation: [get(props.workspaceEvaluation, 'id')]
-            }],
-            displayed: [
-              baseConstants.EVALUATION_STATUS_COMPLETED,
-              baseConstants.EVALUATION_STATUS_PARTICIPATED,
-              baseConstants.EVALUATION_STATUS_PASSED
-            ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
+      <PageContent>
+        <PageHeading
+          size="md"
+          title={
+            <div className="d-flex align-items-center gap-4">
+              <UserAvatar user={get(props.workspaceEvaluation, 'user')} size="lg" />
+              {get(props.workspaceEvaluation, 'user.name')}
+            </div>
           }
-        ] : undefined}
-      />
-    }
+          secondaryAction="show-profile"
+          actions={get(props.workspaceEvaluation, 'user') ? [
+            {
+              name: 'show-profile',
+              type: LINK_BUTTON,
+              label: trans('show_profile', {}, 'actions'),
+              target: route(get(props.workspaceEvaluation, 'user'), props.contextPath+'/community')
+            }, {
+              name: 'download-certificate',
+              type: URL_BUTTON,
+              label: trans('download_certificate', {}, 'actions'),
+              target: ['apiv2_workspace_download_user_certificate', {
+                workspace: get(props.workspaceEvaluation, 'workspace.id'),
+                user: get(props.workspaceEvaluation, 'user.id')
+              }],
+              displayed: [
+                baseConstants.EVALUATION_STATUS_COMPLETED,
+                baseConstants.EVALUATION_STATUS_PARTICIPATED,
+                baseConstants.EVALUATION_STATUS_PASSED
+              ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
+            }, {
+              name: 'regenerate-certificate',
+              type: URL_BUTTON,
+              label: trans('regenerate_certificate', {}, 'actions'),
+              target: ['apiv2_workspace_generate_user_certificate', {
+                evaluation: [get(props.workspaceEvaluation, 'id')]
+              }],
+              displayed: [
+                baseConstants.EVALUATION_STATUS_COMPLETED,
+                baseConstants.EVALUATION_STATUS_PARTICIPATED,
+                baseConstants.EVALUATION_STATUS_PASSED
+              ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
+            }
+          ] : undefined}
+        />
 
-    {props.loaded &&
-      <WorkspaceEvaluation
-        workspaceEvaluation={props.workspaceEvaluation}
-        resourceEvaluations={props.resourceEvaluations}
-      />
+        <WorkspaceEvaluation
+          workspaceEvaluation={props.workspaceEvaluation}
+          resourceEvaluations={props.resourceEvaluations}
+        />
+      </PageContent>
     }
   </ToolPage>
 

@@ -13,11 +13,11 @@ import {Badge as BadgeTypes} from '#/plugin/open-badge/prop-types'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent} from '#/main/app/page'
 
 const Badge = (props) =>
   <ToolPage
     breadcrumb={props.badge ? props.breadcrumb : []}
-    poster={get(props.badge, 'poster')}
     title={trans('badge_name', {name: get(props.badge, 'name', trans('loading'))}, 'badge')}
     description={get(props.badge, 'meta.description')}
   >
@@ -29,17 +29,19 @@ const Badge = (props) =>
     }
 
     {!isEmpty(props.badge) &&
-      <PageHeading
-        size="md"
-        icon={<BadgeImage badge={props.badge} size="lg" />}
-        title={get(props.badge, 'name', trans('loading'))}
-        primaryAction="edit"
-        actions={!isEmpty(props.badge) ? getActions([props.badge], {
-          add: () => props.reload(props.badge.id),
-          update: () => props.reload(props.badge.id),
-          delete: () => props.reload(props.badge.id)
-        }, props.path, props.currentUser) : []}
-      />
+      <PageContent poster={get(props.badge, 'poster')}>
+        <PageHeading
+          size="md"
+          icon={<BadgeImage badge={props.badge} size="lg" />}
+          title={get(props.badge, 'name', trans('loading'))}
+          primaryAction="edit"
+          actions={!isEmpty(props.badge) ? getActions([props.badge], {
+            add: () => props.reload(props.badge.id),
+            update: () => props.reload(props.badge.id),
+            delete: () => props.reload(props.badge.id)
+          }, props.path, props.currentUser) : []}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.badge) && props.children}

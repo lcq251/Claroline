@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {url} from '#/main/app/api'
@@ -11,9 +12,6 @@ import {Alert} from '#/main/app/components/alert'
 import {actions} from '#/main/app/api/store'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {Poster} from '#/main/app/components/poster'
-import classes from 'classnames'
-import {getValidationClassName} from '#/main/app/content/form/validator'
-import isEmpty from 'lodash/isEmpty'
 
 class PosterInputComponent extends PureComponent {
   constructor(props) {
@@ -138,6 +136,7 @@ class PosterInputComponent extends PureComponent {
                   label={trans('browse_gallery', {}, 'actions')}
                   callback={() => true}
                   size="sm"
+                  disabled={this.props.disabled}
                 />
                 <Button
                   className="btn btn-body"
@@ -145,6 +144,7 @@ class PosterInputComponent extends PureComponent {
                   label={trans('upload_file', {}, 'actions')}
                   callback={() => this.input.click()}
                   size="sm"
+                  disabled={this.props.disabled}
                 />
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 namespace Claroline\FlashcardBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\FlashcardBundle\Entity\Flashcard;
@@ -12,15 +13,10 @@ class FlashcardDeckSerializer
 {
     use SerializerTrait;
 
-    private ObjectManager $om;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        ObjectManager $om,
-        TokenStorageInterface $tokenStorage
+        private readonly ObjectManager $om,
+        private readonly TokenStorageInterface $tokenStorage
     ) {
-        $this->om = $om;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function getClass(): string
@@ -81,9 +77,14 @@ class FlashcardDeckSerializer
         ];
     }
 
-    public function deserialize(array $data, FlashcardDeck $flashcardDeck): FlashcardDeck
+    public function deserialize(array $data, FlashcardDeck $flashcardDeck, ?array $options = []): FlashcardDeck
     {
-        $this->sipe('id', 'setUuid', $data, $flashcardDeck);
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $flashcardDeck);
+        } else {
+            $flashcardDeck->refreshUuid();
+        }
+
         $this->sipe('name', 'setName', $data, $flashcardDeck);
         $this->sipe('showProgression', 'setShowProgression', $data, $flashcardDeck);
         $this->sipe('customButtons', 'setCustomButtons', $data, $flashcardDeck);

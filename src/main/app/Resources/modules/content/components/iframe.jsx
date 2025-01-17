@@ -5,9 +5,10 @@ import classes from 'classnames'
 // todo : use in web resource bundle
 const ContentIFrame = (props) =>
   <div
-    className={classes('content-iframe-container', props.className)}
+    className={classes('content-iframe-container position-relative', {
+      'h-100': !props.ratio
+    }, props.className)}
     style={props.ratio ? {
-      position: 'relative',
       paddingBottom: `${props.ratio}%`
     } : {}}
   >

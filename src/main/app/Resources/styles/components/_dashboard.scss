@@ -1,0 +1,32 @@
+
+.app-dashboard-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 2);
+}
+
+.app-dashboard-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  // padding: map-get($spacers, 4);
+  background-color: var(--#{$prefix}tertiary-bg);
+  @include border-radius(var(--#{$prefix}border-radius));
+
+  .fa {
+    font-size: 2rem;
+    margin-right: 0;
+    margin-bottom: map-get($spacers, 3);
+  }
+
+  &:hover {
+    background-color: var(--#{$prefix}primary-bg-subtle);
+    color: var(--#{$prefix}primary-text-emphasis);
+  }
+
+  &.active {
+    background-color: $primary;
+    color: color-contrast($primary);
+  }
+}

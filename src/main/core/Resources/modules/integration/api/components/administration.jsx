@@ -6,6 +6,7 @@ import {url} from '#/main/app/api/router'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageContent} from '#/main/app/page'
 
 const ApiAdministration = (props) =>
   <ToolPage
@@ -16,9 +17,11 @@ const ApiAdministration = (props) =>
     }]}
     title={trans('api', {}, 'integration')}
   >
-    <SwaggerUI
-      url={url(['apiv2_swagger_get'])}
-    />
+    <PageContent>
+      <SwaggerUI
+        url={url(['apiv2_swagger_get'])}
+      />
+    </PageContent>
   </ToolPage>
 
 ApiAdministration.propTypes = {

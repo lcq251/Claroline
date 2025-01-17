@@ -12,20 +12,21 @@ import {PageListSection} from '#/main/app/page'
 
 const LocationList = props =>
   <ToolPage>
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: LINK_BUTTON,
+        icon: 'fa fa-fw fa-plus',
+        label: trans('add_location', {}, 'actions'),
+        target: `${props.path}/new`
+      }}
+    >
       <ListData
         name={`${selectors.STORE_NAME}.list`}
         flush={true}
         fetch={{
           url: ['apiv2_location_list'],
           autoload: true
-        }}
-        addAction={{
-          name: 'add',
-          type: LINK_BUTTON,
-          // icon: 'fa fa-fw fa-plus',
-          label: trans('add_location', {}, 'actions'),
-          target: `${props.path}/new`
         }}
         definition={[
           {

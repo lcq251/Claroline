@@ -9,41 +9,44 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
 import {selectors} from '#/plugin/drop-zone/resources/dropzone/store/selectors'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const RevisionsComponent = props =>
   <ResourcePage title={trans('revisions_list', {}, 'dropzone')}>
-    <ListData
-      name={`${selectors.STORE_NAME}.revisions`}
-      fetch={{
-        url: ['apiv2_droprevision_dropzone_list', {id: props.dropzone.id}],
-        autoload: true
-      }}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        target: `${props.path}/revisions/${row.id}`,
-        label: trans('show_revision', {}, 'dropzone')
-      })}
-      definition={[
-        {
-          name: 'creator',
-          label: trans('creator'),
-          type: 'string',
-          displayed: true,
-          render: (rowData) => rowData.creator ?
-            `${rowData.creator.firstName} ${rowData.creator.lastName}` :
-            trans('unknown')
-        }, {
-          name: 'creationDate',
-          label: trans('creation_date'),
-          type: 'date',
-          displayed: true,
-          filterable: false,
-          options: {
-            time: true
+    <PageContent>
+      <ListData
+        name={`${selectors.STORE_NAME}.revisions`}
+        fetch={{
+          url: ['apiv2_droprevision_dropzone_list', {id: props.dropzone.id}],
+          autoload: true
+        }}
+        primaryAction={(row) => ({
+          type: LINK_BUTTON,
+          target: `${props.path}/revisions/${row.id}`,
+          label: trans('show_revision', {}, 'dropzone')
+        })}
+        definition={[
+          {
+            name: 'creator',
+            label: trans('creator'),
+            type: 'string',
+            displayed: true,
+            render: (rowData) => rowData.creator ?
+              `${rowData.creator.firstName} ${rowData.creator.lastName}` :
+              trans('unknown')
+          }, {
+            name: 'creationDate',
+            label: trans('creation_date'),
+            type: 'date',
+            displayed: true,
+            filterable: false,
+            options: {
+              time: true
+            }
           }
-        }
-      ]}
-    />
+        ]}
+      />
+    </PageContent>
   </ResourcePage>
 
 RevisionsComponent.propTypes = {

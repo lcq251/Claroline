@@ -36,7 +36,8 @@ const COMPLETION_STATUS_LIST_2004 = {
 const DISPLAY_RATIO_LIST = {
   '56.25': '16:9',
   '75': '4:3',
-  '100': '1:1'
+  '100': '1:1',
+  'other': 'Autre'
 }
 
 export const constants = {

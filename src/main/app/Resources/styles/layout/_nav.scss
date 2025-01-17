@@ -9,12 +9,6 @@
   flex-direction: column;
 }
 
-/*.menu-brand {
-  max-width: map-get($icon-sizes, sm);
-  max-height: $brand-size;
-  margin-bottom: .5rem;
-}*/
-
 .app-context-jump {
   &:not(:focus) {
     overflow: hidden;

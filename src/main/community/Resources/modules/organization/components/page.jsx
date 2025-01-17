@@ -13,11 +13,11 @@ import {Organization as OrganizationTypes} from '#/main/community/organization/p
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
+import {PageContent} from '#/main/app/page'
 
 const Organization = (props) =>
   <ToolPage
     breadcrumb={props.breadcrumb}
-    poster={get(props.organization, 'poster')}
     title={trans('organization_name', {name: get(props.organization, 'name', trans('loading'))}, 'community')}
     description={get(props.organization, 'meta.description')}
   >
@@ -29,30 +29,31 @@ const Organization = (props) =>
     }
 
     {!isEmpty(props.organization) &&
-      <PageHeading
-        size="md"
-        icon={get(props.organization, 'thumbnail') ?
-          <Thumbnail
-            size="lg"
-            thumbnail={get(props.organization, 'thumbnail')}
-            name={get(props.organization, 'name')}
-            square={true}
-          >
-            <span className="fa fa-building" aria-hidden={true} />
-          </Thumbnail> :
-          undefined
-        }
-        title={get(props.organization, 'name', trans('loading'))}
-        description={get(props.organization, 'meta.description')}
-        actions={!isEmpty(props.organization) ? getActions([props.organization], {
-          add: () => props.reload(props.organization.id),
-          update: () => props.reload(props.organization.id),
-          delete: () => props.reload(props.organization.id)
-        }, props.path, props.currentUser) : []}
-      />
+      <PageContent poster={get(props.organization, 'poster')}>
+        <PageHeading
+          size="md"
+          icon={get(props.organization, 'thumbnail') ?
+            <Thumbnail
+              size="lg"
+              thumbnail={get(props.organization, 'thumbnail')}
+              name={get(props.organization, 'name')}
+              square={true}
+            >
+              <span className="fa fa-building" aria-hidden={true} />
+            </Thumbnail> :
+            undefined
+          }
+          title={get(props.organization, 'name', trans('loading'))}
+          description={get(props.organization, 'meta.description')}
+          actions={!isEmpty(props.organization) ? getActions([props.organization], {
+            add: () => props.reload(props.organization.id),
+            update: () => props.reload(props.organization.id),
+            delete: () => props.reload(props.organization.id)
+          }, props.path, props.currentUser) : []}
+        />
+        {props.children}
+      </PageContent>
     }
-
-    {!isEmpty(props.organization) && props.children}
   </ToolPage>
 
 Organization.propTypes = {

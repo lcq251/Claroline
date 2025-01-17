@@ -1,69 +1,67 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
+import {scrollTo} from '#/main/app/dom/scroll'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {EditorPage} from '#/main/app/editor'
 
-import {selectors as resourceSelectors} from '#/main/core/resource/store'
-import {actions as editorActions, selectors as editorSelectors} from '#/main/core/resource/editor'
-
 import {selectors} from '#/main/evaluation/sequence/editor/store'
-import {flattenSteps, getNumbering} from '#/main/evaluation/sequence/utils'
+import {flattenSteps, getNext, getNumbering, getPrevious} from '#/main/evaluation/sequence/utils'
 import {getFormDataPart} from '#/main/evaluation/sequence/editor/utils'
-import {getStepActions} from '#/main/evaluation/sequence/editor/actions'
-import {PathNav} from '#/main/evaluation/sequence/components/nav'
-import {scrollTo} from '#/main/app/dom/scroll'
 
 const PathEditorStep = props => {
-  const dispatch = useDispatch()
-  const update = (steps) => dispatch(editorActions.updateResource(steps, 'steps'))
-
-  const resourceEditorPath = useSelector(editorSelectors.path)
+  const editorPath = useSelector(selectors.path)
   const steps = useSelector(selectors.steps)
   const flatSteps = flattenSteps(steps)
   const step = flatSteps.find(s => props.match.params.slug === s.slug || props.match.params.slug === s.id)
   if (!step) {
-    props.history.push(resourceEditorPath+'/steps')
+    props.history.push(editorPath+'/steps')
   }
 
-  const workspaceId = useSelector(resourceSelectors.workspaceId)
+  const workspace = useSelector(selectors.workspace)
   const hasCustomNumbering = useSelector(selectors.hasCustomNumbering)
   const numbering = useSelector(selectors.numbering)
   const stepNumbering = getNumbering(numbering, steps, step)
 
-  const actions = getStepActions(
-    steps,
-    step,
-    update,
-    (path) => props.history.push(resourceEditorPath+path),
-    true
-  )
+  const next = getNext(steps, step)
+  const previous = getPrevious(steps, step)
 
   return (
     <EditorPage
-      title={
-        <>
-          {stepNumbering &&
-            <span className="h-numbering">{stepNumbering}</span>
-          }
-
-          {step.title || trans('step', {}, 'path')}
-        </>
-      }
-      dataPart={'resource.'+getFormDataPart(step.id, steps)}
+      title={(stepNumbering ? stepNumbering + ' ' + step.title : step.title) || trans('step', {}, 'path')}
+      dataPart={getFormDataPart(step.id, steps)}
       actions={[
         {
           name: 'summary',
           type: LINK_BUTTON,
           icon: 'fa fa-fw fa-list',
           label: trans('open-summary', {}, 'actions'),
-          target: resourceEditorPath+'/steps',
-          exact: true
+          target: editorPath+'/steps',
+          exact: true,
+          onClick: () => scrollTo('.app-editor-body')
         }
-      ].concat(actions)}
+      ].concat([
+        {
+          name: 'previous',
+          type: LINK_BUTTON,
+          icon: 'fa fa-fw fa-chevron-up',
+          label: previous ? trans('previous_step', {title: previous.title}, 'evaluation') : trans('summary'),
+          target: editorPath+'/steps/' + (previous ? previous.slug : ''),
+          exact: true,
+          onClick: () => scrollTo('.app-editor-body')
+        }, {
+          name: 'next',
+          type: LINK_BUTTON,
+          icon: 'fa fa-fw fa-chevron-down',
+          label: next ? trans('next_step', {title: next.title}, 'evaluation') : null,
+          target: editorPath+'/steps/' + (next ? next.slug : ''),
+          disabled: !next,
+          onClick: () => scrollTo('.app-editor-body')
+        }
+      ])}
       definition={[
         {
           title: trans('general'),
@@ -96,7 +94,7 @@ const PathEditorStep = props => {
                 embedded: true,
                 showHeader: true,
                 picker: {
-                  contextId: workspaceId
+                  contextId: workspace.id
                 }
               },
               linked: [
@@ -105,25 +103,6 @@ const PathEditorStep = props => {
                   type: 'boolean',
                   label: trans('show_resource_header', {}, 'resource'),
                   displayed: (step) => !isEmpty(step.primaryResource)
-                }
-              ]
-            }, {
-              name: '_enableSecondaryResources',
-              type: 'boolean',
-              label: trans('Ajouter des ressources complémentaires', {}, 'path'),
-              help: trans('Ajoutez des liens vers les ressources qui peuvent être utiles à la réalisation de l\'activité.', {}, 'path'),
-              calculated: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
-              linked: [
-                {
-                  name: 'secondaryResources',
-                  type: 'resources',
-                  label: trans('secondary_resources', {}, 'path'),
-                  displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
-                  options: {
-                    picker: {
-                      contextId: workspaceId
-                    }
-                  }
                 }
               ]
             }
@@ -142,25 +121,35 @@ const PathEditorStep = props => {
               name: 'description',
               type: 'html',
               label: trans('description'),
+              help: trans('Décrivez le travail à réaliser et/ou les objectifs d\'apprentissage de l\'activité.'),
+              recommended: true,
               options: {
-                workspace: props.workspace
+                workspace: workspace
               }
             }, {
-              name: 'poster',
-              type: 'image',
-              label: trans('poster'),
+              name: '_enableSecondaryResources',
+              type: 'boolean',
+              label: trans('Ajouter des ressources complémentaires', {}, 'path'),
+              help: trans('Ajoutez des liens vers les ressources qui peuvent être utiles à la réalisation de l\'activité.', {}, 'path'),
+              calculated: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
+              linked: [
+                {
+                  name: 'secondaryResources',
+                  type: 'resources',
+                  label: trans('secondary_resources', {}, 'path'),
+                  displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
+                  options: {
+                    picker: {
+                      contextId: workspace.id
+                    }
+                  }
+                }
+              ]
             }
           ]
         }
       ]}
-    >
-      <PathNav
-        current={step}
-        all={flatSteps}
-        path={resourceEditorPath+'/steps'}
-        onNavigate={() => scrollTo(`.app-editor-form`)}
-      />
-    </EditorPage>
+    />
   )
 }
 

@@ -12,6 +12,7 @@ import {selectors} from '#/plugin/scorm/resources/scorm/store'
 import {flattenScos} from '#/plugin/scorm/resources/scorm/utils'
 import {EvaluationScore} from '#/main/evaluation/components/score'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const ResultsComponent = props =>
   <ResourcePage
@@ -29,112 +30,114 @@ const ResultsComponent = props =>
       }
     ]}
   >
-    <ListData
-      name={selectors.STORE_NAME+'.results'}
-      fetch={{
-        url: ['apiv2_scormscotracking_list', {scorm: props.scorm.id}],
-        autoload: true
-      }}
-      definition={[
-        {
-          name: 'user',
-          label: trans('user'),
-          type: 'user',
-          displayed: true
-        }, {
-          name: 'userEmail',
-          label: trans('email'),
-          type: 'email'
-        }, {
-          name: 'sco',
-          label: trans('sco', {}, 'scorm'),
-          displayed: 1 < props.scos.length,
-          filterable: 1 < props.scos.length,
-          sortable: 1 < props.scos.length,
-          render: (rowData) => rowData.sco && rowData.sco.data.title ? rowData.sco.data.title : '-'
-        }, {
-          name: 'latestDate',
-          type: 'date',
-          label: trans('last_session_date', {}, 'scorm'),
-          displayed: true,
-          filterable: false,
-          options: {
-            time: true
-          }
-        }, {
-          name: 'totalTime',
-          type: 'string',
-          label: trans('total_time'),
-          displayed: true,
-          filterable: false
-        }, {
-          name: 'scoreRaw',
-          type: 'number',
-          label: trans('best_score', {}, 'scorm'),
-          displayed: true,
-          render: (rowData) => {
-            let Score
-            if ((rowData.scoreRaw || 0 === rowData.scoreRaw) && (rowData.scoreMax || 0 === rowData.scoreMax)) {
-              Score = <EvaluationScore size="sm" score={rowData.scoreRaw} scoreMax={rowData.scoreMax} />
-            } else {
-              Score = rowData.scoreRaw
+    <PageContent>
+      <ListData
+        name={selectors.STORE_NAME+'.results'}
+        fetch={{
+          url: ['apiv2_scormscotracking_list', {scorm: props.scorm.id}],
+          autoload: true
+        }}
+        definition={[
+          {
+            name: 'user',
+            label: trans('user'),
+            type: 'user',
+            displayed: true
+          }, {
+            name: 'userEmail',
+            label: trans('email'),
+            type: 'email'
+          }, {
+            name: 'sco',
+            label: trans('sco', {}, 'scorm'),
+            displayed: 1 < props.scos.length,
+            filterable: 1 < props.scos.length,
+            sortable: 1 < props.scos.length,
+            render: (rowData) => rowData.sco && rowData.sco.data.title ? rowData.sco.data.title : '-'
+          }, {
+            name: 'latestDate',
+            type: 'date',
+            label: trans('last_session_date', {}, 'scorm'),
+            displayed: true,
+            filterable: false,
+            options: {
+              time: true
             }
+          }, {
+            name: 'totalTime',
+            type: 'string',
+            label: trans('total_time'),
+            displayed: true,
+            filterable: false
+          }, {
+            name: 'scoreRaw',
+            type: 'number',
+            label: trans('best_score', {}, 'scorm'),
+            displayed: true,
+            render: (rowData) => {
+              let Score
+              if ((rowData.scoreRaw || 0 === rowData.scoreRaw) && (rowData.scoreMax || 0 === rowData.scoreMax)) {
+                Score = <EvaluationScore size="sm" score={rowData.scoreRaw} scoreMax={rowData.scoreMax} />
+              } else {
+                Score = rowData.scoreRaw
+              }
 
-            return Score
+              return Score
+            }
+          }, {
+            name: 'lessonStatus',
+            type: 'string',
+            label: trans('status'),
+            displayed: true,
+            filterable: false,
+            calculated: (rowData) => trans(rowData.lessonStatus, {}, 'scorm')
+          }, {
+            name: 'lessonStatusSelect',
+            alias: 'lessonStatus',
+            type: 'choice',
+            label: trans('status'),
+            displayed: false,
+            displayable: false,
+            filterable: true,
+            sortable: false,
+            options: {
+              choices: constants.SCORM_12 === props.scorm.version ?
+                constants.LESSON_STATUS_LIST_12 :
+                constants.LESSON_STATUS_LIST_2004
+            }
+          }, {
+            name: 'views',
+            label: trans('views'),
+            type: 'number',
+            displayed: true,
+            filterable: false,
+            sortable: false
+          }, {
+            name: 'attempts',
+            label: trans('attempts'),
+            type: 'number',
+            displayed: true,
+            filterable: false,
+            sortable: false
+          }, {
+            name: 'progression',
+            type: 'string',
+            label: trans('progression'),
+            displayed: true,
+            filterable: false,
+            sortable: constants.SCORM_2004 === props.scorm.version,
+            calculated: (rowData) => rowData.progression + '%'
+          }, {
+            name: 'userDisabled',
+            label: trans('user_disabled', {}, 'community'),
+            type: 'boolean',
+            displayable: false,
+            sortable: false,
+            filterable: true
           }
-        }, {
-          name: 'lessonStatus',
-          type: 'string',
-          label: trans('status'),
-          displayed: true,
-          filterable: false,
-          calculated: (rowData) => trans(rowData.lessonStatus, {}, 'scorm')
-        }, {
-          name: 'lessonStatusSelect',
-          alias: 'lessonStatus',
-          type: 'choice',
-          label: trans('status'),
-          displayed: false,
-          displayable: false,
-          filterable: true,
-          sortable: false,
-          options: {
-            choices: constants.SCORM_12 === props.scorm.version ?
-              constants.LESSON_STATUS_LIST_12 :
-              constants.LESSON_STATUS_LIST_2004
-          }
-        }, {
-          name: 'views',
-          label: trans('views'),
-          type: 'number',
-          displayed: true,
-          filterable: false,
-          sortable: false
-        }, {
-          name: 'attempts',
-          label: trans('attempts'),
-          type: 'number',
-          displayed: true,
-          filterable: false,
-          sortable: false
-        }, {
-          name: 'progression',
-          type: 'string',
-          label: trans('progression'),
-          displayed: true,
-          filterable: false,
-          sortable: constants.SCORM_2004 === props.scorm.version,
-          calculated: (rowData) => rowData.progression + '%'
-        }, {
-          name: 'userDisabled',
-          label: trans('user_disabled', {}, 'community'),
-          type: 'boolean',
-          displayable: false,
-          sortable: false,
-          filterable: true
-        }
-      ]}
-    />
+        ]}
+      />
+    </PageContent>
   </ResourcePage>
 
 ResultsComponent.propTypes = {

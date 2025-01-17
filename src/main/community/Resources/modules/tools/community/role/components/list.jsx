@@ -33,7 +33,6 @@ const RoleList = props =>
           ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}] :
           ['apiv2_role_list']
         }
-
       />
     </PageListSection>
   </ToolPage>

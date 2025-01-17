@@ -5,7 +5,7 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {UserMicro} from '#/main/core/user/components/micro'
 import {Datetime} from '#/main/app/components/date'
 
@@ -27,7 +27,6 @@ const AnnouncementPost = (props) => {
 
   return (
     <ToolPage
-      poster={props.announcement.poster}
       title={props.announcement.title}
       breadcrumb={[
         {
@@ -36,76 +35,78 @@ const AnnouncementPost = (props) => {
         }
       ]}
     >
-      <PageHeading
-        size="md"
-        title={props.announcement.title}
-        actions={[
-          {
-            name: 'download',
-            type: CALLBACK_BUTTON,
-            icon: 'fa fa-fw fa-file-pdf',
-            label: trans('export-pdf',{}, 'actions'),
-            callback: () => props.exportPDF(props.announcement)
-          }, {
-            name: 'send',
-            type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-paper-plane',
-            label: trans('send', {}, 'actions'),
-            target: `${props.path}/${props.announcement.id}/send`,
-            modal: [MODAL_ANNOUNCEMENT_SENDING, {
-              announcement: props.announcement,
-              workspaceRoles: props.workspaceRoles
-            }],
-            displayed: props.editable
-          }, {
-            name: 'edit',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-pencil',
-            label: trans('edit', {}, 'actions'),
-            target: `${props.path}/${props.announcement.id}/edit`,
-            displayed: props.editable
-          }, {
-            name: 'delete',
-            type: CALLBACK_BUTTON,
-            icon: 'fa fa-fw fa-trash',
-            label: trans('delete', {}, 'actions'),
-            callback: () => {
-              props.remove(props.announcement)
-              history.push(props.path)
-            },
-            dangerous: true,
-            confirm: {
-              title: trans('announcement_delete_confirm_title', {}, 'announcement'),
-              message: trans('announcement_delete_confirm_message', {}, 'announcement'),
-            },
-            displayed: props.editable
-          }
-        ]}
-      />
+      <PageContent poster={props.announcement.poster}>
+        <PageHeading
+          size="md"
+          title={props.announcement.title}
+          actions={[
+            {
+              name: 'download',
+              type: CALLBACK_BUTTON,
+              icon: 'fa fa-fw fa-file-pdf',
+              label: trans('export-pdf',{}, 'actions'),
+              callback: () => props.exportPDF(props.announcement)
+            }, {
+              name: 'send',
+              type: MODAL_BUTTON,
+              icon: 'fa fa-fw fa-paper-plane',
+              label: trans('send', {}, 'actions'),
+              target: `${props.path}/${props.announcement.id}/send`,
+              modal: [MODAL_ANNOUNCEMENT_SENDING, {
+                announcement: props.announcement,
+                workspaceRoles: props.workspaceRoles
+              }],
+              displayed: props.editable
+            }, {
+              name: 'edit',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-pencil',
+              label: trans('edit', {}, 'actions'),
+              target: `${props.path}/${props.announcement.id}/edit`,
+              displayed: props.editable
+            }, {
+              name: 'delete',
+              type: CALLBACK_BUTTON,
+              icon: 'fa fa-fw fa-trash',
+              label: trans('delete', {}, 'actions'),
+              callback: () => {
+                props.remove(props.announcement)
+                history.push(props.path)
+              },
+              dangerous: true,
+              confirm: {
+                title: trans('announcement_delete_confirm_title', {}, 'announcement'),
+                message: trans('announcement_delete_confirm_message', {}, 'announcement'),
+              },
+              displayed: props.editable
+            }
+          ]}
+        />
 
-      <PageSection size="md" className="mb-5">
-        <Content
-          placeholder={trans('no_content')}
-          meta={
-            <>
-              <UserMicro
-                {...get(props.announcement, 'meta.creator', {})}
-                // noStatus={true}
-                link={true}
-              />
+        <PageSection size="md" className="mb-5">
+          <Content
+            placeholder={trans('no_content')}
+            meta={
+              <>
+                <UserMicro
+                  {...get(props.announcement, 'meta.creator', {})}
+                  // noStatus={true}
+                  link={true}
+                />
 
-              <span>-</span>
+                <span>-</span>
 
-              {get(props.announcement, 'meta.publishedAt') &&
-                <Datetime value={get(props.announcement, 'meta.publishedAt')} long={true} />
-              }
-            </>
-          }
-          tags={props.announcement.tags}
-        >
-          {props.announcement.content}
-        </Content>
-      </PageSection>
+                {get(props.announcement, 'meta.publishedAt') &&
+                  <Datetime value={get(props.announcement, 'meta.publishedAt')} long={true} />
+                }
+              </>
+            }
+            tags={props.announcement.tags}
+          >
+            {props.announcement.content}
+          </Content>
+        </PageSection>
+      </PageContent>
     </ToolPage>
   )
 }

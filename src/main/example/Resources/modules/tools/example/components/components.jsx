@@ -12,85 +12,88 @@ import {ExampleNavs} from '#/main/example/tools/example/components/navs'
 import {ExampleContent} from '#/main/example/tools/example/components/content'
 import {ExampleUsers} from '#/main/example/tools/example/components/users'
 import {ExampleProgression} from '#/main/example/tools/example/components/progression'
+import {PageContent} from '#/main/app/page'
 
 const ExampleComponents = (props) =>
   <ToolPage
     title="Components"
   >
-    <Nav
-      orientation="horizontal"
-      variant="underline"
-      className="mb-3 content-lg px-4"
-      items={[
-        {
-          name: 'alerts',
-          type: LINK_BUTTON,
-          label: 'Alerts',
-          target: props.path+'/components/alerts'
-        }, {
-          name: 'buttons',
-          type: LINK_BUTTON,
-          label: 'Buttons',
-          target: props.path+'/components/buttons'
-        }, {
-          name: 'navs',
-          type: LINK_BUTTON,
-          label: 'Navs',
-          target: props.path+'/components/navs'
-        }, {
-          name: 'content',
-          type: LINK_BUTTON,
-          label: 'Content',
-          target: props.path+'/components/content'
-        }, {
-          name: 'users',
-          type: LINK_BUTTON,
-          label: 'Users',
-          target: props.path+'/components/users',
-          displayed: false
-        }, {
-          name: 'progression',
-          type: LINK_BUTTON,
-          label: 'Progression',
-          target: props.path+'/components/progression'
-        }, {
-          name: 'users',
-          type: LINK_BUTTON,
-          label: 'Users',
-          target: props.path+'/components/users'
-        }
-      ]}
-    />
-    <Routes
-      path={props.path+'/components'}
-      redirect={[
-        {from: '/', to: '/alerts', exact: true}
-      ]}
-      routes={[
-        {
-          path: '/alerts',
-          component: ExampleAlerts
-        }, {
-          path: '/buttons',
-          component: ExampleButtons
-        }, {
-          path: '/navs',
-          render: () => <ExampleNavs path={props.path+'/components/navs'} />
-        }, {
-          path: '/content',
-          component: ExampleContent
-        }, {
-          path: '/users',
-          component: ExampleUsers
-        }, {
-          path: '/progression',
-          component: ExampleProgression
-        }, {
-          path: '/users',
-          component: ExampleUsers
-        }
-      ]}
-    />
+    <PageContent>
+      <Nav
+        orientation="horizontal"
+        variant="underline"
+        className="mb-3 content-lg px-4"
+        items={[
+          {
+            name: 'alerts',
+            type: LINK_BUTTON,
+            label: 'Alerts',
+            target: props.path+'/components/alerts'
+          }, {
+            name: 'buttons',
+            type: LINK_BUTTON,
+            label: 'Buttons',
+            target: props.path+'/components/buttons'
+          }, {
+            name: 'navs',
+            type: LINK_BUTTON,
+            label: 'Navs',
+            target: props.path+'/components/navs'
+          }, {
+            name: 'content',
+            type: LINK_BUTTON,
+            label: 'Content',
+            target: props.path+'/components/content'
+          }, {
+            name: 'users',
+            type: LINK_BUTTON,
+            label: 'Users',
+            target: props.path+'/components/users',
+            displayed: false
+          }, {
+            name: 'progression',
+            type: LINK_BUTTON,
+            label: 'Progression',
+            target: props.path+'/components/progression'
+          }, {
+            name: 'users',
+            type: LINK_BUTTON,
+            label: 'Users',
+            target: props.path+'/components/users'
+          }
+        ]}
+      />
+      <Routes
+        path={props.path+'/components'}
+        redirect={[
+          {from: '/', to: '/alerts', exact: true}
+        ]}
+        routes={[
+          {
+            path: '/alerts',
+            component: ExampleAlerts
+          }, {
+            path: '/buttons',
+            component: ExampleButtons
+          }, {
+            path: '/navs',
+            render: () => <ExampleNavs path={props.path+'/components/navs'} />
+          }, {
+            path: '/content',
+            component: ExampleContent
+          }, {
+            path: '/users',
+            component: ExampleUsers
+          }, {
+            path: '/progression',
+            component: ExampleProgression
+          }, {
+            path: '/users',
+            component: ExampleUsers
+          }
+        ]}
+      />
+    </PageContent>
   </ToolPage>
 
 ExampleComponents.propTypes = {

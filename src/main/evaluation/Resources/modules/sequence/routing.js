@@ -12,7 +12,7 @@ function route(sequence, step = null, basePath = null) {
   sequencePath = `${sequencePath}/sequences/${sequence.id}`
 
   if (step) {
-    return `${sequencePath}/${step.id}`
+    return `${sequencePath}/play/${step.id}`
   }
 
   return sequencePath

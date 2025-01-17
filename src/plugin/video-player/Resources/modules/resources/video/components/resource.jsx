@@ -7,13 +7,7 @@ import {VideoPlayer} from '#/plugin/video-player/resources/video/containers/play
 const VideoResource = (props) =>
   <Resource
     {...props}
-    pages={[
-      {
-        path: '/',
-        exact: true,
-        component: VideoPlayer
-      }
-    ]}
+    overviewPage={VideoPlayer}
   />
 
 export {

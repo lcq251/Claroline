@@ -6,7 +6,7 @@ import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 
 const PluginMeta = props =>
   <div className="card mb-3">
@@ -68,31 +68,33 @@ const Plugin = (props) => {
       ]}
       title={trans(props.plugin.name, {}, 'plugin')}
     >
-      <PageHeading
-        size="md"
-        title={trans(props.plugin.name, {}, 'plugin')}
-        description={trans(props.plugin.name+'_desc', {}, 'plugin')}
-        actions={[
-          {
-            name: 'toggle',
-            type: CALLBACK_BUTTON,
-            label: trans(props.plugin.enabled ? 'disable' : 'enable', {}, 'actions'),
-            disabled: true,
-            primary: !props.plugin.enabled,
-            callback: () => {
-              if (props.plugin.enabled) {
-                props.enable(props.plugin)
-              } else {
-                props.disable(props.plugin)
+      <PageContent>
+        <PageHeading
+          size="md"
+          title={trans(props.plugin.name, {}, 'plugin')}
+          description={trans(props.plugin.name+'_desc', {}, 'plugin')}
+          actions={[
+            {
+              name: 'toggle',
+              type: CALLBACK_BUTTON,
+              label: trans(props.plugin.enabled ? 'disable' : 'enable', {}, 'actions'),
+              disabled: true,
+              primary: !props.plugin.enabled,
+              callback: () => {
+                if (props.plugin.enabled) {
+                  props.enable(props.plugin)
+                } else {
+                  props.disable(props.plugin)
+                }
               }
             }
-          }
-        ]}
-      />
+          ]}
+        />
 
-      <PageSection size="md">
-        <PluginMeta plugin={props.plugin} />
-      </PageSection>
+        <PageSection size="md">
+          <PluginMeta plugin={props.plugin} />
+        </PageSection>
+      </PageContent>
     </ToolPage>
   )
 }

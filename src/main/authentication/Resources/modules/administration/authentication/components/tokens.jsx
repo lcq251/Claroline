@@ -10,6 +10,7 @@ import {ToolPage} from '#/main/core/tool'
 import {MODAL_TOKEN_PARAMETERS} from '#/main/authentication/token/modals/parameters'
 import {TokenList} from '#/main/authentication/token/components/list'
 import {selectors} from '#/main/authentication/administration/authentication/store'
+import {PageContent} from '#/main/app/page'
 
 const AuthenticationTokens = props =>
   <ToolPage
@@ -28,33 +29,35 @@ const AuthenticationTokens = props =>
       }
     ]}
   >
-    <TokenList
-      name={selectors.STORE_NAME+'.tokens'}
-      definition={[
-        {
-          name: 'user',
-          label: trans('user'),
-          type: 'user',
-          displayed: true,
-          order: 0
-        }
-      ]}
-      actions={(rows) => [
-        {
-          name: 'edit',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-pencil',
-          label: trans('edit', {}, 'actions'),
-          modal: [MODAL_TOKEN_PARAMETERS, {
-            token: rows[0],
-            onSave: () => props.invalidateList()
-          }],
-          disabled: !hasPermission('edit', rows[0]) || get(rows[0], 'restrictions.locked', false),
-          scope: ['object'],
-          group: trans('management')
-        }
-      ]}
-    />
+    <PageContent>
+      <TokenList
+        name={selectors.STORE_NAME+'.tokens'}
+        definition={[
+          {
+            name: 'user',
+            label: trans('user'),
+            type: 'user',
+            displayed: true,
+            order: 0
+          }
+        ]}
+        actions={(rows) => [
+          {
+            name: 'edit',
+            type: MODAL_BUTTON,
+            icon: 'fa fa-fw fa-pencil',
+            label: trans('edit', {}, 'actions'),
+            modal: [MODAL_TOKEN_PARAMETERS, {
+              token: rows[0],
+              onSave: () => props.invalidateList()
+            }],
+            disabled: !hasPermission('edit', rows[0]) || get(rows[0], 'restrictions.locked', false),
+            scope: ['object'],
+            group: trans('management')
+          }
+        ]}
+      />
+    </PageContent>
   </ToolPage>
 
 AuthenticationTokens.propTypes = {

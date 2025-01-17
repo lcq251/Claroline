@@ -7,6 +7,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {RoleForm} from '#/main/community/role/components/form'
 import {selectors} from '#/main/community/tools/community/role/store'
+import {PageContent} from '#/main/app/page'
 
 const RoleCreate = (props) =>
   <ToolPage
@@ -19,11 +20,13 @@ const RoleCreate = (props) =>
     ]}
     title={trans('new_role', {}, 'community')}
   >
-    <RoleForm
-      className="mt-3"
-      path={props.path}
-      name={selectors.FORM_NAME}
-    />
+    <PageContent>
+      <RoleForm
+        className="mt-3"
+        path={props.path}
+        name={selectors.FORM_NAME}
+      />
+    </PageContent>
   </ToolPage>
 
 RoleCreate.propTypes = {

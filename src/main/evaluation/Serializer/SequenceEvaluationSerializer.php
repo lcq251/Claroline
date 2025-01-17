@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer;
 
 class SequenceEvaluationSerializer
@@ -30,7 +31,12 @@ class SequenceEvaluationSerializer
     {
         $score = $sequenceEvaluation->getScore();
         if ($score) {
-            $score = round($score, 2);
+            $score = round($score, EvaluationOptions::SCORE_PRECISION);
+        }
+
+        $progression = $sequenceEvaluation->getProgression();
+        if ($progression) {
+            $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
@@ -41,7 +47,7 @@ class SequenceEvaluationSerializer
             'score' => $score,
             'scoreMin' => $sequenceEvaluation->getScoreMin(),
             'scoreMax' => $sequenceEvaluation->getScoreMax(),
-            'progression' => $sequenceEvaluation->getProgression(),
+            'progression' => $progression,
             'required' => $sequenceEvaluation->isRequired(),
             'estimatedDuration' => $sequenceEvaluation->getEstimatedDuration(),
         ];

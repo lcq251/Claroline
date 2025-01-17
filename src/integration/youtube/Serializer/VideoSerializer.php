@@ -2,6 +2,7 @@
 
 namespace Claroline\YouTubeBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\YouTubeBundle\Entity\Video;
 
@@ -35,8 +36,14 @@ class VideoSerializer
         ];
     }
 
-    public function deserialize(array $data, Video $video): Video
+    public function deserialize(array $data, Video $video, ?array $options = []): Video
     {
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $video);
+        } else {
+            $video->refreshUuid();
+        }
+
         parse_str(parse_url($data['url'], PHP_URL_QUERY), $params);
         $data['videoId'] = $params['v'];
 

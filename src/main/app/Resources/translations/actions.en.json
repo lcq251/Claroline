@@ -100,5 +100,8 @@
   "see_more": "See more",
   "read_more": "Continue reading",
   "upload_file": "Upload file",
-  "back_home": "Back to home"
+  "back_home": "Back to home",
+  "show_description": "Show description",
+  "hide_description": "Hide description",
+  "resume": "Resume"
 }

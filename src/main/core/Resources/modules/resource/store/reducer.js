@@ -34,10 +34,6 @@ const reducer = combineReducers({
 
   showHeader: makeReducer(true),
 
-  managed: makeReducer(false, {
-    [RESOURCE_LOAD]: (state, action) => action.resourceData.managed || false
-  }),
-
   /**
    * Manages the ResourceNode of the resource.
    */

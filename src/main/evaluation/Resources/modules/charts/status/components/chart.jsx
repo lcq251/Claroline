@@ -59,27 +59,29 @@ const StatusChart = (props) => {
   const [activeIndex, setActiveIndex] = useState(max)
 
   return (
-    <ResponsiveContainer height={260} width={260}>
-      <PieChart>
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          data={data}
-          startAngle={180}
-          endAngle={0}
-          innerRadius={90}
-          outerRadius={120}
-          paddingAngle={2}
-          dataKey="value"
-          onClick={(_, index) => setActiveIndex(index)}
-          onMouseEnter={(_, index) => setActiveIndex(index)}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={`var(--bs-${constants.EVALUATION_STATUS_COLOR[entry.name]})`} strokeWidth={0} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="mx-auto d-flex align-items-center gap-5" role="presentation">
+      <ResponsiveContainer height={260} width={260}>
+        <PieChart>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={data}
+            startAngle={180}
+            endAngle={0}
+            innerRadius={90}
+            outerRadius={120}
+            paddingAngle={2}
+            dataKey="value"
+            onClick={(_, index) => setActiveIndex(index)}
+            onMouseEnter={(_, index) => setActiveIndex(index)}
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={`var(--bs-${constants.EVALUATION_STATUS_COLOR[entry.name]})`} strokeWidth={0} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 

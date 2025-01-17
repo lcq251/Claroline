@@ -10,6 +10,7 @@ import {selectors} from '#/plugin/drop-zone/resources/dropzone/store/selectors'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 import {getCorrectionKey} from '#/plugin/drop-zone/resources/dropzone/utils'
 import {ResourcePage} from '#/main/core/resource'
+import {PageContent} from '#/main/app/page'
 
 const Corrections = props => props.corrections && props.corrections.length > 0 ?
   <table className="table">
@@ -51,7 +52,7 @@ const Corrector = props =>
   <ResourcePage>
     {!props.drop || !props.corrections ?
       <span className="fa fa-fw fa-circle-notch fa-spin"></span> :
-      <div id="corrector-container">
+      <PageContent>
         <h2>
           {trans(
             'corrections_list_from',
@@ -66,7 +67,7 @@ const Corrector = props =>
           corrections={props.corrections[getCorrectionKey(props.drop, props.dropzone)] || []}
           dropzone={props.dropzone}
         />
-      </div>
+      </PageContent>
     }
   </ResourcePage>
 

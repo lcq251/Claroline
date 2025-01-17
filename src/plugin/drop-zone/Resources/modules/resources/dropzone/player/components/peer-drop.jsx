@@ -15,6 +15,7 @@ import {Documents} from '#/plugin/drop-zone/resources/dropzone/components/docume
 import {CorrectionForm} from '#/plugin/drop-zone/resources/dropzone/correction/components/correction-form'
 import {ResourcePage} from '#/main/core/resource'
 import {Alert} from '#/main/app/components/alert'
+import {PageContent} from '#/main/app/page'
 
 class PeerDrop extends Component {
   constructor(props) {
@@ -53,21 +54,23 @@ class PeerDrop extends Component {
     if (this.props.drop) {
       return (
         <ResourcePage>
-          <Documents
-            documents={this.props.drop.documents}
-            canEdit={false}
-            showMeta={false}
-            {...this.props}
-          />
-          <CorrectionForm
-            navigate={this.props.history.push}
-            correction={generateCorrectionGrades(this.getCorrection(), this.props.dropzone)}
-            dropzone={this.props.dropzone}
-            saveCorrection={this.saveCorrection}
-            showSubmitButton={true}
-            submitCorrection={(correctionId, navigate) => this.props.submitCorrection(correctionId, navigate, this.props.path)}
-            cancelCorrection={this.cancelCorrection}
-          />
+          <PageContent>
+            <Documents
+              documents={this.props.drop.documents}
+              canEdit={false}
+              showMeta={false}
+              {...this.props}
+            />
+            <CorrectionForm
+              navigate={this.props.history.push}
+              correction={generateCorrectionGrades(this.getCorrection(), this.props.dropzone)}
+              dropzone={this.props.dropzone}
+              saveCorrection={this.saveCorrection}
+              showSubmitButton={true}
+              submitCorrection={(correctionId, navigate) => this.props.submitCorrection(correctionId, navigate, this.props.path)}
+              cancelCorrection={this.cancelCorrection}
+            />
+          </PageContent>
         </ResourcePage>
       )
     }

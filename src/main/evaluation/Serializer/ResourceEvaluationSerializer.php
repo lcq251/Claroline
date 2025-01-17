@@ -7,6 +7,7 @@ use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
+use Claroline\EvaluationBundle\Library\EvaluationOptions;
 
 class ResourceEvaluationSerializer
 {
@@ -30,7 +31,12 @@ class ResourceEvaluationSerializer
     {
         $score = $resourceUserEvaluation->getScore();
         if ($score) {
-            $score = round($score, 2);
+            $score = round($score, EvaluationOptions::SCORE_PRECISION);
+        }
+
+        $progression = $resourceUserEvaluation->getProgression();
+        if ($progression) {
+            $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
@@ -41,9 +47,9 @@ class ResourceEvaluationSerializer
             'score' => $score,
             'scoreMin' => $resourceUserEvaluation->getScoreMin(),
             'scoreMax' => $resourceUserEvaluation->getScoreMax(),
-            'progression' => $resourceUserEvaluation->getProgression(),
+            'progression' => $progression,
             'nbAttempts' => $resourceUserEvaluation->getNbAttempts(),
-            // 'nbOpenings' => $resourceUserEvaluation->getNbOpenings(),
+            'nbOpenings' => $resourceUserEvaluation->getNbOpenings(),
             'required' => $resourceUserEvaluation->isRequired(),
             'estimatedDuration' => $resourceUserEvaluation->getEstimatedDuration(),
         ];

@@ -12,10 +12,9 @@ import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/compon
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {EvaluationOverview} from '#/main/evaluation/tools/evaluation/components/overview'
 import {EvaluationActivities} from '#/main/evaluation/tools/evaluation/containers/activities'
-import {EvaluationDashboard} from '#/main/evaluation/tools/evaluation/dashboard/components/main'
+import {EvaluationDashboard} from '#/main/evaluation/tools/evaluation/dashboard/containers/main'
 import {EvaluationSequences} from '#/main/evaluation/tools/evaluation/components/sequences'
-import {SequenceShow} from '#/main/evaluation/sequence/components/show'
-import {TagShow} from '#/plugin/tag/tools/tags/components/show'
+import {SequenceShow} from '#/main/evaluation/sequence/containers/show'
 
 const EvaluationTool = (props) => {
   const canFollow = useSelector((state) => hasPermission('edit', toolSelectors.toolData(state)))

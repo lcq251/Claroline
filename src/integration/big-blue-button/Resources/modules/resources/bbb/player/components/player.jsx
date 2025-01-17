@@ -15,6 +15,7 @@ import {BBB as BBBTypes, Recording as RecordingTypes} from '#/integration/big-bl
 import {ResourcePage} from '#/main/core/resource'
 import {Alert} from '#/main/app/components/alert'
 import {Html} from '#/main/app/components/html'
+import {PageContent} from '#/main/app/page'
 
 class Player extends Component {
   constructor(props) {
@@ -55,95 +56,97 @@ class Player extends Component {
 
     return (
       <ResourcePage>
-        {this.props.bbb.newTab && this.props.bbb.welcomeMessage &&
-          <div className="card my-3">
-            <Html className="card-body">
-              {this.props.bbb.welcomeMessage}
-            </Html>
-          </div>
-        }
+        <PageContent>
+          {this.props.bbb.newTab && this.props.bbb.welcomeMessage &&
+            <div className="card my-3">
+              <Html className="card-body">
+                {this.props.bbb.welcomeMessage}
+              </Html>
+            </div>
+          }
 
-        {this.isClosed() &&
-          <Alert type="danger" title={trans('meeting_is_closed', {}, 'bbb')} className="component-container">
-            {trans(!get(this.props.bbb, 'restrictions.disabled', true) ? 'meetings_limit_reached':'meeting_disabled', {}, 'bbb')}
-          </Alert>
-        }
+          {this.isClosed() &&
+            <Alert type="danger" title={trans('meeting_is_closed', {}, 'bbb')} className="component-container">
+              {trans(!get(this.props.bbb, 'restrictions.disabled', true) ? 'meetings_limit_reached':'meeting_disabled', {}, 'bbb')}
+            </Alert>
+          }
 
-        {!this.isClosed() && !isEmpty(this.props.joinStatus) &&
-          <Alert type="warning" title={trans('meeting_cannot_join', {}, 'bbb')} className="component-container">
-            {trans(this.props.joinStatus, {}, 'bbb')}
-          </Alert>
-        }
+          {!this.isClosed() && !isEmpty(this.props.joinStatus) &&
+            <Alert type="warning" title={trans('meeting_cannot_join', {}, 'bbb')} className="component-container">
+              {trans(this.props.joinStatus, {}, 'bbb')}
+            </Alert>
+          }
 
-        {!this.isClosed() && isEmpty(this.props.joinStatus) && this.props.bbb.newTab &&
-          <form action="#" style={{marginTop: '20px'}}>
-            {this.props.bbb.customUsernames &&
-              <DataInput
-                id="custom-username"
-                type="string"
-                label={trans('username')}
-                value={this.state.username}
-                required={true}
-                onChange={(value) => this.setState({username: value})}
+          {!this.isClosed() && isEmpty(this.props.joinStatus) && this.props.bbb.newTab &&
+            <form action="#" style={{marginTop: '20px'}}>
+              {this.props.bbb.customUsernames &&
+                <DataInput
+                  id="custom-username"
+                  type="string"
+                  label={trans('username')}
+                  value={this.state.username}
+                  required={true}
+                  onChange={(value) => this.setState({username: value})}
+                />
+              }
+
+              {this.props.allowRecords && this.props.bbb.record &&
+                <Alert type="warning" title={trans('meeting_recorded', {}, 'bbb')} className="component-container">
+                  {trans('meeting_recorded_help', {}, 'bbb')}
+                </Alert>
+              }
+
+              {this.props.bbb.moderatorRequired &&
+                <Alert type="info" title={trans('moderator_help_title', {}, 'bbb')} className="component-container">
+                  {trans('moderator_help_message', {}, 'bbb')}
+                </Alert>
+              }
+
+              <Button
+                type={CALLBACK_BUTTON}
+                className="w-100 mb-3"
+                variant="btn"
+                size="lg"
+                label={trans('join', {}, 'bbb')}
+                callback={() => this.openTab()}
+                disabled={!this.state.ready}
+                htmlType="submit"
+                primary={true}
               />
-            }
+            </form>
+          }
 
-            {this.props.allowRecords && this.props.bbb.record &&
-              <Alert type="warning" title={trans('meeting_recorded', {}, 'bbb')} className="component-container">
-                {trans('meeting_recorded_help', {}, 'bbb')}
-              </Alert>
-            }
-
-            {this.props.bbb.moderatorRequired &&
-              <Alert type="info" title={trans('moderator_help_title', {}, 'bbb')} className="component-container">
-                {trans('moderator_help_message', {}, 'bbb')}
-              </Alert>
-            }
-
+          {(this.isClosed() || !isEmpty(this.props.joinStatus)) && this.props.allowRecords && this.props.bbb.record && get(this.props.lastRecording, 'media.presentation') && this.props.bbb.newTab &&
             <Button
-              type={CALLBACK_BUTTON}
-              className="w-100 mb-3"
+              type={URL_BUTTON}
+              className="w-100"
               variant="btn"
-              size="lg"
-              label={trans('join', {}, 'bbb')}
-              callback={() => this.openTab()}
-              disabled={!this.state.ready}
-              htmlType="submit"
+              label={trans('show-last-record', {}, 'actions')}
+              target={this.props.lastRecording.media.presentation}
               primary={true}
+              size="lg"
+              open="_blank"
             />
-          </form>
-        }
+          }
 
-        {(this.isClosed() || !isEmpty(this.props.joinStatus)) && this.props.allowRecords && this.props.bbb.record && get(this.props.lastRecording, 'media.presentation') && this.props.bbb.newTab &&
-          <Button
-            type={URL_BUTTON}
-            className="w-100"
-            variant="btn"
-            label={trans('show-last-record', {}, 'actions')}
-            target={this.props.lastRecording.media.presentation}
-            primary={true}
-            size="lg"
-            open="_blank"
-          />
-        }
+          {this.props.bbb.newTab && this.props.allowRecords && this.props.bbb.record && !isEmpty(this.props.lastRecording) &&
+            <Button
+              type={LINK_BUTTON}
+              className="w-100"
+              variant="btn"
+              label={trans('show-records', {}, 'actions')}
+              target={`${this.props.path}/records`}
+            />
+          }
 
-        {this.props.bbb.newTab && this.props.allowRecords && this.props.bbb.record && !isEmpty(this.props.lastRecording) &&
-          <Button
-            type={LINK_BUTTON}
-            className="w-100"
-            variant="btn"
-            label={trans('show-records', {}, 'actions')}
-            target={`${this.props.path}/records`}
-          />
-        }
-
-        {!this.isClosed() && isEmpty(this.props.joinStatus) && !this.props.bbb.newTab &&
-          <ContentIFrame
-            className="row"
-            url={url(['apiv2_bbb_meeting_join', {id: this.props.bbb.id}])}
-            ratio={this.props.bbb.ratio}
-          />
-        }
+          {!this.isClosed() && isEmpty(this.props.joinStatus) && !this.props.bbb.newTab &&
+            <ContentIFrame
+              className="row"
+              url={url(['apiv2_bbb_meeting_join', {id: this.props.bbb.id}])}
+              ratio={this.props.bbb.ratio}
+            />
+          }
+        </PageContent>
       </ResourcePage>
     )
   }

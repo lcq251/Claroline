@@ -1,4 +1,10 @@
 plugin:
+    resources:
+        - name: image
+          class: Claroline\ImagePlayerBundle\Entity\Image
+          tags: [ content ]
+          exportable: false
+
     resource_icons:
         - name: res_jpeg
           mime_types: [image, image/jpeg, image/pjpeg]

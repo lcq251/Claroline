@@ -132,7 +132,7 @@ const EvaluationEditorOverview = () => {
               linked: [
                 {
                   name: 'evaluation.successCondition.minSuccess',
-                  label: trans('count_resources', {}, 'resource'),
+                  label: trans('resources_count', {}, 'resource'),
                   type: 'number',
                   required: true,
                   displayed: enableSuccessMinSuccess,
@@ -155,7 +155,7 @@ const EvaluationEditorOverview = () => {
               linked: [
                 {
                   name: 'evaluation.successCondition.maxFailed',
-                  label: trans('count_resources', {}, 'resource'),
+                  label: trans('resources_count', {}, 'resource'),
                   type: 'number',
                   required: true,
                   displayed: enableSuccessMaxFailed,
