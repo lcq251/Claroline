@@ -43,6 +43,15 @@ final class Version20241220071744 extends AbstractMigration
             REFERENCES innova_path (id) 
             ON DELETE CASCADE
         ');
+
+        $this->addSql('
+            INSERT INTO claro_evaluation_sequence_evaluation
+            (sequence_id, user_id, evaluation_date, evaluation_status, duration, score, score_min, score_max, progression)
+            SELECT p.id as sequence_id, e.user_id, e.evaluation_date, e.evaluation_status, e.duration, e.score, e.score_min, e.score_max, e.progression
+            FROM claro_resource_user_evaluation AS e
+            LEFT JOIN claro_resource_node AS n ON e.resource_node = n.id
+            LEFT JOIN innova_path AS p ON p.resourceNode_id = n.id
+        ');
     }
 
     public function down(Schema $schema): void

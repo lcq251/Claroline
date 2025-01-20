@@ -53,7 +53,7 @@ abstract class AbstractEvaluation implements EvaluationInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected int $duration = 0;
 
-    #[ORM\Column(name: 'score', type: Types::FLOAT, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     protected ?float $score = null;
 
     #[ORM\Column(name: 'score_min', type: Types::FLOAT, nullable: true)]
@@ -62,7 +62,7 @@ abstract class AbstractEvaluation implements EvaluationInterface
     #[ORM\Column(name: 'score_max', type: Types::FLOAT, nullable: true)]
     protected ?float $scoreMax = null;
 
-    #[ORM\Column(name: 'progression', type: Types::FLOAT)]
+    #[ORM\Column(type: Types::FLOAT)]
     protected ?float $progression = 0;
 
     public function getDate(): ?\DateTimeInterface
