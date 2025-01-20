@@ -13,6 +13,7 @@ namespace Claroline\PdfPlayerBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
@@ -89,6 +90,17 @@ class PdfResource extends ResourceComponent implements EvaluatedResourceInterfac
     public function download(AbstractResource $resource): ?string
     {
         return $resource->getUrl();
+    }
+
+    /** @param Pdf $resource */
+    public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
+    {
+        if (!$softDelete && $this->fileManager->exists($resource->getUrl())) {
+            $pathName = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+            $fileBag->add($resource->getUrl(), $pathName);
+        }
+
+        return true;
     }
 
     public function supportsFile(File $file): int

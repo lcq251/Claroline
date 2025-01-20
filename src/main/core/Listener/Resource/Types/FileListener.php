@@ -78,7 +78,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     /** @param File $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
-        if ($softDelete && $this->fileManager->exists($resource->getHashName())) {
+        if (!$softDelete && $this->fileManager->exists($resource->getHashName())) {
             $pathName = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
             $fileBag->add($resource->getHashName(), $pathName);
         }
