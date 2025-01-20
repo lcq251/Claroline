@@ -14,14 +14,14 @@ final class Version20241111074450 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        /*$this->addSql('
+        $this->addSql('
             ALTER TABLE claro_template 
             DROP FOREIGN KEY FK_DFB26A757428AC44
         ');
         $this->addSql('
             DROP INDEX IDX_DFB26A757428AC44 ON claro_template
-        ');*/
-        /*$this->addSql('
+        ');
+        $this->addSql('
             ALTER TABLE claro_template 
             ADD entity_type VARCHAR(255) NOT NULL, 
             ADD is_default TINYINT(1) NOT NULL, 
@@ -44,7 +44,7 @@ final class Version20241111074450 extends AbstractMigration
         $this->addSql('
             ALTER TABLE claro_template
             DROP claro_template_type
-        ');*/
+        ');
     }
 
     public function down(Schema $schema): void
