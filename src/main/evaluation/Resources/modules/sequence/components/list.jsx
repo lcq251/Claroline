@@ -38,7 +38,7 @@ const SequenceList = (props) => {
           primary: true,
           render: (course) => <DataMicro object={course} />
         }, {
-          name: 'plainDescription',
+          name: 'meta.description',
           type: 'string',
           label: trans('description'),
           sortable: false,
@@ -53,7 +53,7 @@ const SequenceList = (props) => {
           label: trans('tags'),
           sortable: false,
           options: {
-            objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
+            objectClass: 'Claroline\\EvaluationBundle\\Entity\\Sequence'
           }
         }
       ]}

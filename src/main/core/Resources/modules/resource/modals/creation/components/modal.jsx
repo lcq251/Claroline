@@ -80,7 +80,7 @@ const ResourceCreationModal = (props) => {
     <Modal
       {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add')}
       title={trans('new_resource', {}, 'resource')}
-      subtitle={trans('Lorem ipsum dolor sit amet.')}
+      subtitle={trans('new_resource_desc', {}, 'resource')}
       centered={true}
       onExited={props.reset}
     >

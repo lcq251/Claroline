@@ -104,6 +104,8 @@ class Sequence
 
     public function __construct()
     {
+        $this->refreshUuid();
+
         $this->steps = new ArrayCollection();
     }
 

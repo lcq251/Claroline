@@ -2,12 +2,13 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageListSection} from '#/main/app/page'
 import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
 
 import {SequenceList} from '#/main/evaluation/sequence/components/list'
 import {selectors} from '#/main/evaluation/tools/evaluation/store'
+import {MODAL_SEQUENCE_CREATION} from '#/main/evaluation/sequence/modals/creation'
 
 const EvaluationSequences = () => {
   const toolPath = useSelector(toolSelectors.path)
@@ -20,7 +21,10 @@ const EvaluationSequences = () => {
         addAction={{
           icon: 'fa fa-fw fa-plus',
           label: trans('add_sequence', {}, 'actions'),
-          type: CALLBACK_BUTTON,
+          type: MODAL_BUTTON,
+          modal: [MODAL_SEQUENCE_CREATION, {
+
+          }],
           callback: () => true
         }}
       >

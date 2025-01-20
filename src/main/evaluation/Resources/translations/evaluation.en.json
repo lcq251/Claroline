@@ -36,6 +36,7 @@
   "new_skills_framework": "New skills framework",
 
   "sequence_name": "Sequence : %name%",
+  "new_sequence": "New sequence",
   "sequence": "Sequence",
   "sequences": "Sequences",
   "sequence_step_count": "Step %current% on %total%",

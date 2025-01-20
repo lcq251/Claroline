@@ -34,7 +34,7 @@ const Sequence = {
   propTypes: {
     id: T.string.isRequired,
     display: T.shape({
-      showOverview: T.bool,
+      // showOverview: T.bool,
       numbering: T.oneOf(['none', 'numeric', 'literal', 'custom']),
       manualProgressionAllowed: T.bool,
       showScore: T.bool
@@ -51,7 +51,7 @@ const Sequence = {
     )),
     overview: T.shape({
       display: T.bool,
-      message: T.string,
+      // message: T.string,
       resource: T.shape({
         id: T.string.isRequired,
         meta: T.shape({

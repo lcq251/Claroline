@@ -38,7 +38,7 @@ const ResourceCreation = (props) =>
         id: 'create-from-file',
         icon: 'file',
         label: trans('Importer un fichier'),
-        description: trans('Déposez un fichier pour l\'ajouter à la plateforme. Le type de ressource créé dépend du fichier déposé.'),
+        description: trans('Déposez un fichier pour l\'ajouter à  votre espace. Le type de ressource créé dépend du fichier déposé.'),
         action: {
           type: CALLBACK_BUTTON,
           callback: () => props.changeStep('upload')
@@ -48,7 +48,7 @@ const ResourceCreation = (props) =>
         id: 'create-from-url',
         icon: 'link',
         label: trans('Créer à partir d\'une URL'),
-        description: trans('Créez un espace vide pour pouvoir le configurer comme vous le souhaitez.'),
+        description: trans('Saisissez une URL pour pouvoir l\'utiliser dans votre espace. Le type de ressource créé dépend de l\'URL saisie.'),
         action: {
           type: CALLBACK_BUTTON,
           callback: () => props.changeStep('url')

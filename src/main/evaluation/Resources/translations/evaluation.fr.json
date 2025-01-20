@@ -38,6 +38,8 @@
   "new_skills_framework": "Nouveau référentiel de compétences",
 
   "sequence_name": "Séquence : %name%",
+  "new_sequence": "Nouvelle séquence",
+  "new_sequence_desc": "Organisez vos activités en scénario pédagogique pour guider vos utilisateurs tout au long de leur formation.",
   "sequence": "Séquence",
   "sequences": "Séquences",
   "sequence_step_count": "Étape %current% sur %total%",

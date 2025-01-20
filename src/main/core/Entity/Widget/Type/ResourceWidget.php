@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ResourceWidget.
  *
- * Permits to embedded a Resource.
+ * Permits to embed a Resource.
  */
 #[ORM\Table(name: 'claro_widget_resource')]
 #[ORM\Entity]

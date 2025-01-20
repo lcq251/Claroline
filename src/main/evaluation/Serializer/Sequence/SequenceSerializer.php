@@ -9,6 +9,7 @@ use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
@@ -176,6 +177,13 @@ class SequenceSerializer
             $this->sipe('evaluation.evaluated', 'setEvaluated', $data, $sequence);
             $this->sipe('evaluation.required', 'setRequired', $data, $sequence);
             $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
+        }
+
+        if (!empty($data['workspace'])) {
+            $workspace = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $data['workspace']['id']]);
+            if ($workspace) {
+                $sequence->setWorkspace($workspace);
+            }
         }
 
         if (!empty($data['overview'])) {

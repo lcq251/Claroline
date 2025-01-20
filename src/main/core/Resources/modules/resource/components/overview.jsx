@@ -32,7 +32,7 @@ const ResourceOverview = props => {
 
   return (
     <ResourcePage>
-      <PageContent poster={showHeader ? get(resourceNode, 'poster') : undefined}>
+      <PageContent poster={showHeader ? get(resourceNode, 'poster') : undefined} className="d-flex flex-column">
         {(userEvaluation || description || estimatedDuration) &&
           <PageSection size="md" className={classes({
             'pt-5': !embedded || showHeader
