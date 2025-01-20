@@ -31,6 +31,25 @@ final class Version20250107083047 extends AbstractMigration
             REFERENCES claro_resource_node (id) 
             ON DELETE CASCADE
         ');
+
+        $this->addSql('
+            INSERT INTO claro_video_resource
+            (uuid, url, resourceNode_id)
+            SELECT f.uuid, f.hash_name AS url, n.id AS resourceNode_id
+            FROM claro_file AS f
+            LEFT JOIN claro_resource_node AS n ON f.resourceNode_id = n.id
+            WHERE n.mime_type LIKE "video%"
+        ');
+
+        $this->addSql('
+            DELETE f FROM claro_file AS f
+            WHERE EXISTS (
+                SELECT n.id
+                FROM claro_resource_node AS n
+                WHERE n.mime_type LIKE "video%"
+                  AND f.resourceNode_id = n.id
+            )
+        ');
     }
 
     public function down(Schema $schema): void

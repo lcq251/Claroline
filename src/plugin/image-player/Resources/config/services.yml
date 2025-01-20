@@ -12,3 +12,10 @@ services:
 
     Claroline\ImagePlayerBundle\Serializer\ImageSerializer:
         tags: [claroline.serializer]
+
+    # Updaters
+    Claroline\ImagePlayerBundle\Installation\Updater\Updater150000:
+        tags: [ 'claroline.platform.updater' ]
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

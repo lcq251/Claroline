@@ -18,3 +18,10 @@ services:
     # Serializers
     Claroline\PdfPlayerBundle\Serializer\PdfSerializer:
         tags: [ claroline.serializer ]
+
+    # Updaters
+    Claroline\PdfPlayerBundle\Installation\Updater\Updater150000:
+        tags: [ 'claroline.platform.updater' ]
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
