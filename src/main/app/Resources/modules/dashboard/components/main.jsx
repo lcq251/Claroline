@@ -23,7 +23,7 @@ const Dashboard = (props) => {
           displayed: !page.disabled
         }))}
       />
-      <PageContent className="d-flex" role="presentation">
+      <PageContent className="d-flex">
         <Routes
           path={props.path}
           redirect={!isEmpty(props.pages) ? [

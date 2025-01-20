@@ -38,14 +38,12 @@ const CreationType = (props) => {
           action: {
             type: MODAL_BUTTON,
             modal: [MODAL_WORKSPACES, {
-              url: ['apiv2_workspace_list_managed'],
+              // url: ['apiv2_workspace_list_managed'],
               multiple: false,
-              selectAction: (selected) => (
-                {
-                  type: CALLBACK_BUTTON,
-                  callback: () => handleNavigation(props, history, selected[0])
-                }
-              )
+              selectAction: (selected) => ({
+                type: CALLBACK_BUTTON,
+                callback: () => handleNavigation(props, history, selected[0])
+              })
             }]
           }
         }, {

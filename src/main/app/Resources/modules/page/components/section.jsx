@@ -38,10 +38,6 @@ PageSection.propTypes = {
   flush: T.bool
 }
 
-PageSection.defaultProps = {
-  flush: false,
-}
-
 export {
   PageSection
 }

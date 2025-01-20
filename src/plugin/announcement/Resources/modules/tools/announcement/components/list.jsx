@@ -86,7 +86,6 @@ const Announce = (props) =>
             <UserMicro
               className="fs-sm fw-bolder"
               {...get(props.announcement, 'meta.creator', {})}
-              // noStatus={true}
               link={true}
             />
           }
@@ -114,14 +113,15 @@ Announce.propTypes = {
 const AnnouncementList = () => {
   const contextPath = useSelector(contextSelectors.path)
   const toolPath = useSelector(toolSelectors.path)
-  const posts = useSelector(selectors.sortedPosts)
-  const listFullContent = useSelector(selectors.listFullContent)
   const loaded = useSelector(toolSelectors.loaded)
   const tool = useSelector(toolSelectors.toolData)
 
+  const posts = useSelector(selectors.sortedPosts)
+  const listFullContent = useSelector(selectors.listFullContent)
+
   return (
     <ToolPage>
-      <PageContent poster={get(tool, 'poster')}>
+      <PageContent poster={get(tool, 'poster')} className="d-flex flex-column">
         {(loaded && 0 === posts.length) &&
           <EmptyState
             icon="fa fa-bullhorn"

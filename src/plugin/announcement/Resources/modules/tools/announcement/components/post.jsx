@@ -35,9 +35,16 @@ const AnnouncementPost = (props) => {
         }
       ]}
     >
-      <PageContent poster={props.announcement.poster}>
+      <PageContent>
         <PageHeading
           size="md"
+          backAction={{
+            type: LINK_BUTTON,
+            label: trans('Retour aux annonces', {}, 'announcement'),
+            target: props.path,
+            exact: true
+          }}
+          poster={props.announcement.poster}
           title={props.announcement.title}
           actions={[
             {

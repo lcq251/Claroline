@@ -28,12 +28,12 @@ const ToolPage = props => {
   return (
     <ContextPage
       className={classes('tool-page', `${toolName}-page`, props.className)}
-      breadcrumb={(!props.root ? [
+      breadcrumb={[
         {
           label: trans(toolName, {}, 'tools'),
           target: toolPath
         }
-      ] : []).concat(props.breadcrumb || [])}
+      ].concat(props.breadcrumb || [])}
       name={trans(toolName, {}, 'tools')}
       title={props.title ?
         props.title + ' | ' + trans(toolName, {}, 'tools') :

@@ -16,16 +16,6 @@ const PageSimple = {
     children: T.node,
 
     /**
-     * Custom data used for document head.
-     */
-    meta: T.shape({
-      title: T.string,
-      description: T.string,
-      poster: T.string,
-      type: T.string
-    }),
-
-    /**
      * A list of additional styles to add to the page.
      */
     styles: T.arrayOf(T.string)
@@ -43,10 +33,6 @@ const PageSimple = {
  */
 const PageFull = {
   propTypes: merge({}, PageSimple.propTypes, {
-    showHeader: T.bool,
-
-    disabled: T.bool,
-
     /**
      * The path of the page inside the application (used to build the breadcrumb).
      */
@@ -54,7 +40,6 @@ const PageFull = {
       label: T.string.isRequired,
       target: T.string
     })),
-    root: T.bool,
 
     /**
      * The title of the page.
@@ -76,12 +61,11 @@ const PageFull = {
      * @type {string}
      */
     poster: T.string,
+    showHeader: T.bool
   }),
   defaultProps: merge({}, PageSimple.defaultProps, {
     showHeader: true,
-    disabled: false,
-    breadcrumb: [],
-    root: false
+    breadcrumb: []
   })
 }
 

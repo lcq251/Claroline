@@ -25,9 +25,10 @@ const LocationPage = (props) =>
     }
 
     {!isEmpty(props.location) &&
-      <PageContent poster={get(props.location, 'poster')}>
+      <PageContent>
         <PageHeading
           size="md"
+          poster={get(props.location, 'poster')}
           title={get(props.location, 'name', trans('loading'))}
           primaryAction="edit"
           actions={[

@@ -34,7 +34,6 @@ const EventPage = (props) => {
       className="event-page"
       title={get(props.event, 'name')}
       description={props.event.description}
-      poster={get(props.event, 'poster')}
     >
       {!isEmpty(props.event) &&
         <PageContent>
@@ -43,6 +42,7 @@ const EventPage = (props) => {
             icon={
               <CalendarIcon square={true} size="lg" date={props.event.date} />
             }
+            poster={get(props.event, 'poster')}
             title={get(props.event, 'name', trans('loading'))}
             actions={[
               {

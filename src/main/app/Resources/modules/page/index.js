@@ -9,6 +9,7 @@ import {
   PageContent
 } from '#/main/app/page/components/body'
 
+import {PagePoster} from '#/main/app/page/components/poster'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageListSection} from '#/main/app/page/components/list-section'
@@ -20,6 +21,7 @@ export {
   PageAside,
   PageBody,
   PageContent,
+  PagePoster,
   PageHeading,
   PageSection,
   PageListSection,

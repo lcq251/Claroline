@@ -19,12 +19,12 @@ const AnnouncementTool = (props) =>
     styles={['claroline-distribution-plugin-announcement-announcement-tool']}
     editor={AnnouncementEditor}
     menu={[
-      {
+      /*{
         name: 'announcements',
         type: LINK_BUTTON,
         label: trans('announcements', {}, 'announcement'),
         target: props.path
-      }
+      }*/
     ]}
     pages={[
       {

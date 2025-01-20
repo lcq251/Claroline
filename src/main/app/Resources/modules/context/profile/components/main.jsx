@@ -20,7 +20,7 @@ const ContextProfile = (props) => {
     <ContextPage
       size="xl"
       title={trans('my_profile')}
-      poster={props.currentUser.poster}
+      // poster={props.currentUser.poster}
       breadcrumb={[
         {
           type: LINK_BUTTON,
@@ -31,6 +31,7 @@ const ContextProfile = (props) => {
     >
       <PageHeading
         size="md"
+        poster={props.currentUser.poster}
         title={props.currentUser.name}
         icon={<UserAvatar user={props.currentUser} size="lg" />}
         primaryAction="edit"

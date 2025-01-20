@@ -23,7 +23,7 @@ const PageFull = (props) =>
 
     <PageBody>
       {props.showHeader && props.poster &&
-        <Poster url={props.poster} className="app-page-poster" />
+        <Poster url={props.poster} className="app-page-poster z-n1" />
       }
 
       {props.children}

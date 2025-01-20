@@ -35,9 +35,10 @@ const Team = (props) =>
     }
 
     {!isEmpty(props.team) &&
-      <PageContent poster={get(props.team, 'poster')}>
+      <PageContent>
         <PageHeading
           size="md"
+          poster={get(props.team, 'poster')}
           title={get(props.team, 'name', trans('loading'))}
           description={get(props.team, 'meta.description')}
           // primaryAction="edit"

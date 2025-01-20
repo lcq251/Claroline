@@ -29,9 +29,10 @@ const Badge = (props) =>
     }
 
     {!isEmpty(props.badge) &&
-      <PageContent poster={get(props.badge, 'poster')}>
+      <PageContent>
         <PageHeading
           size="md"
+          poster={get(props.badge, 'poster')}
           icon={<BadgeImage badge={props.badge} size="lg" />}
           title={get(props.badge, 'name', trans('loading'))}
           primaryAction="edit"

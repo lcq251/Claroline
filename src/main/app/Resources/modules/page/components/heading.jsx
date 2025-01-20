@@ -5,12 +5,14 @@ import classes from 'classnames'
 import {Await} from '#/main/app/components/await'
 import {Action as ActionTypes, PromisedAction as PromisedActionTypes} from '#/main/app/action/prop-types'
 import {PageActions} from '#/main/app/page/components/actions'
-import {Poster} from '#/main/app/components/poster'
+import {PagePoster} from '#/main/app/page/components/poster'
+import {trans} from '#/main/app/intl'
+import {Button} from '#/main/app/action'
 
 const PageHeading = props =>
   <>
     {props.poster &&
-      <Poster url={props.poster} className="app-page-poster" />
+      <PagePoster poster={props.poster} />
     }
 
     <header className={classes('app-page-heading px-4 mb-5', props.className, props.size && `content-${props.size}`)}>
@@ -20,9 +22,21 @@ const PageHeading = props =>
         </div>
       }
 
+      {props.backAction &&
+        <Button
+          className={classes('btn btn-link ms-n3 mt-5 focus-ring', {
+            'mt-5': !props.icon,
+            'mt-2': !!props.icon
+          })}
+          icon="fa fa-arrow-left"
+          label={trans('back')}
+          {...props.backAction}
+        />
+      }
+
       <div className={classes('d-flex gap-3 align-items-end flex-wrap flex-md-nowrap', {
-        'mt-5': !props.icon,
-        'mt-2': !!props.icon
+        'mt-5': !props.icon && !props.backAction,
+        'mt-2': !!props.icon || !!props.backAction
       })} role="presentation">
         <h1 className="app-page-title m-0">
           {props.subtitle &&
@@ -75,6 +89,7 @@ PageHeading.propTypes = {
   primaryAction: T.string,
   secondaryAction: T.string,
   toolbar: T.string,
+  backAction: T.array,
   actions: T.oneOfType([
     // a regular array of actions
     T.arrayOf(T.shape(

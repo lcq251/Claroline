@@ -29,8 +29,9 @@ const Organization = (props) =>
     }
 
     {!isEmpty(props.organization) &&
-      <PageContent poster={get(props.organization, 'poster')}>
+      <PageContent>
         <PageHeading
+          poster={get(props.organization, 'poster')}
           size="md"
           icon={get(props.organization, 'thumbnail') ?
             <Thumbnail

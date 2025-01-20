@@ -52,7 +52,7 @@ PageBody.propTypes = {
 const PageContent = (props) =>
   <div className={classes('app-page-content', props.className)} role="presentation">
     {props.poster &&
-      <Poster url={props.poster} className="app-page-poster" />
+      <Poster url={props.poster} className="app-page-poster z-n1" />
     }
 
     {props.children}

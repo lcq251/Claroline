@@ -36,9 +36,10 @@ const User = (props) =>
     }
 
     {!isEmpty(props.user) &&
-      <PageContent poster={get(props.user, 'poster')}>
+      <PageContent>
         <PageHeading
           size="md"
+          poster={get(props.user, 'poster')}
           icon={
             <UserAvatar user={props.user} size="lg" />
           }

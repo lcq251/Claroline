@@ -5,7 +5,7 @@ import get from 'lodash/get'
 
 import {withRouter} from '#/main/app/router'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions as listActions, selectors as listSelectors} from '#/main/app/content/list/store'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
@@ -48,9 +48,16 @@ class SubjectComponent extends Component {
       <ResourcePage
         title={get(this.props.subject, 'title', trans('loading'))}
       >
-        <PageContent poster={get(this.props.subject, 'poster')}>
+        <PageContent>
           <PageHeading
             size="md"
+            backAction={{
+              type: LINK_BUTTON,
+              target: this.props.path,
+              label: trans('Retour aux sujets', {}, 'forum'),
+              exact: true
+            }}
+            poster={get(this.props.subject, 'poster')}
             title={get(this.props.subject, 'title', trans('loading'))}
             actions={[
               {

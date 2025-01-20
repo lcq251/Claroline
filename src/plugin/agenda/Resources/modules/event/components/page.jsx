@@ -26,12 +26,13 @@ const EventPage = (props) => {
       description={get(props.event, 'description')}
     >
       {!isEmpty(props.event) &&
-        <PageContent poster={get(props.event, 'thumbnail')}>
+        <PageContent>
           <PageHeading
             size="md"
             icon={
               <CalendarIcon square={true} size="lg" date={props.event.date} />
             }
+            poster={get(props.event, 'thumbnail')}
             title={get(props.event, 'name', trans('loading'))}
             actions={[
               {

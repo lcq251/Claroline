@@ -10,45 +10,53 @@ import {theme} from '#/main/app/config/theme'
 /**
  * Root of the current page.
  */
-const PageSimple = props =>
+const PageSimple = ({
+  className,
+  title,
+  description,
+  poster,
+  children,
+  styles = [],
+  embedded = false,
+}) =>
   <div
     className={classes({
-      'app-page': !props.embedded,
-      'embedded-page': props.embedded
-    }, props.className)}
+      'app-page': !embedded,
+      'embedded-page': embedded
+    }, className)}
     role="presentation"
   >
-    {!props.embedded &&
+    {!embedded &&
       <Helmet>
-        {props.title &&
-          <title>{props.title}</title>
+        {title &&
+          <title>{title}</title>
         }
 
-        {props.title &&
-          <meta property="og:title" content={props.title}/>
+        {title &&
+          <meta property="og:title" content={title}/>
         }
 
         <meta property="og:type" content="website" />
 
-        {props.poster &&
-          <meta property="og:image" content={asset(props.poster)}/>
+        {poster &&
+          <meta property="og:image" content={asset(poster)}/>
         }
 
-        {props.description &&
-          <meta name="description" property="og:description" content={props.description} />
+        {description &&
+          <meta name="description" property="og:description" content={description} />
         }
       </Helmet>
     }
 
-    {!isEmpty(props.styles) &&
+    {!isEmpty(styles) &&
       <Helmet>
-        {props.styles.map(style =>
+        {styles.map(style =>
           <link key={style} rel="stylesheet" type="text/css" href={theme(style)} />
         )}
       </Helmet>
     }
 
-    {props.children}
+    {children}
   </div>
 
 PageSimple.propTypes ={
@@ -74,11 +82,6 @@ PageSimple.propTypes ={
   embedded: T.bool,
 
   children: T.node
-}
-
-PageSimple.defaultProps = {
-  embedded: false,
-  styles: []
 }
 
 export {

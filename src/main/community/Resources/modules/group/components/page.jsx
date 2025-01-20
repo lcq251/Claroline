@@ -36,9 +36,10 @@ const Group = (props) =>
     }
 
     {!isEmpty(props.group) &&
-      <PageContent poster={get(props.group, 'poster')}>
+      <PageContent>
         <PageHeading
           size="md"
+          poster={get(props.group, 'poster')}
           icon={get(props.group, 'thumbnail') ?
             <Thumbnail
               size="lg"
