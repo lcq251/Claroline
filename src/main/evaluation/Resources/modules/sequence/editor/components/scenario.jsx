@@ -5,7 +5,7 @@ import {Routes} from '#/main/app/router'
 
 import {selectors} from '#/main/evaluation/sequence/editor/store'
 import {SequenceEditorSummary} from '#/main/evaluation/sequence/editor/components/summary'
-import {PathEditorStep} from '#/main/evaluation/sequence/editor/components/step'
+import {SequenceEditorStep} from '#/main/evaluation/sequence/editor/components/step'
 
 const SequenceEditorScenario = () => {
   const editorPath = useSelector(selectors.path)
@@ -20,7 +20,7 @@ const SequenceEditorScenario = () => {
           component: SequenceEditorSummary
         }, {
           path: '/:slug',
-          component: PathEditorStep
+          component: SequenceEditorStep
         }
       ]}
     />

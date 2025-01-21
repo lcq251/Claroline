@@ -17,10 +17,10 @@ class WidgetsTab extends AbstractTab
     /**
      * @var Collection<int, WidgetContainer>
      */
+    #[ORM\ManyToMany(targetEntity: WidgetContainer::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinTable(name: 'claro_home_tab_widgets_containers')]
     #[ORM\JoinColumn(name: 'tab_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'container_id', referencedColumnName: 'id', onDelete: 'CASCADE', unique: true)]
-    #[ORM\ManyToMany(targetEntity: WidgetContainer::class, cascade: ['persist', 'remove'])]
+    #[ORM\InverseJoinColumn(name: 'container_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
     private Collection $widgetContainers;
 
     public function __construct()

@@ -31,7 +31,7 @@ const HomeTool = props => {
           render: (routeProps) => {
             const flattened = flattenTabs(props.tabs)
             if (flattened.find(tab => tab.slug === routeProps.match.params.slug)) {
-              return <HomeTab root={!isEmpty(props.tabs) && 1 === props.tabs.length} />
+              return <HomeTab />
             }
 
             // tab does not exist

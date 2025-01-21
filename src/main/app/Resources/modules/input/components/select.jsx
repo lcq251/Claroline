@@ -1,8 +1,7 @@
 import React from 'react'
+import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
-
-import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
+import isEmpty from 'lodash/isEmpty'
 
 const getSelectedValues = (e) => {
   const values = []
@@ -19,7 +18,9 @@ const getSelectedValues = (e) => {
 const Select = props =>
   <select
     id={props.id}
+    style={props.style}
     autoComplete={props.autoComplete}
+    autoFocus={props.autoFocus}
     className={classes('form-select', props.className, {
       [`form-select-${props.size}`]: !!props.size})
     }
@@ -44,25 +45,35 @@ const Select = props =>
       <option
         key={option}
         value={option}
-        disabled={-1 !== props.disabledChoices.indexOf(option)}
+        disabled={!isEmpty(props.disabledChoices) && -1 !== props.disabledChoices.indexOf(option)}
       >
         {props.choices[option]}
       </option>
     )}
   </select>
 
-implementPropTypes(Select, DataInputTypes, {
+Select.propTypes = {
+  id: T.string.isRequired,
+  className: T.string,
   choices: T.object.isRequired,
   disabledChoices: T.arrayOf(T.string),
+  size: T.oneOf(['sm', 'lg']),
   value: T.oneOfType([T.string, T.number, T.array]),
   multiple: T.bool,
-  noEmpty: T.bool
-}, {
-  //value: '',
+  noEmpty: T.bool,
+  style: T.object,
+  placeholder: T.any,
+  autoComplete: T.string,
+  autoFocus: T.bool,
+  disabled: T.bool
+}
+
+Select.defaultProps = {
   disabledChoices: [],
   multiple: false,
-  noEmpty: false
-})
+  noEmpty: false,
+  disabled: false
+}
 
 export {
   Select

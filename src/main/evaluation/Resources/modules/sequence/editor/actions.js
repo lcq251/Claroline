@@ -87,7 +87,7 @@ function addStep(steps, step, parentId = null) {
 }
 
 /**
- * Creates a copy af a copy and push it at the requested position.
+ * Creates a copy af a step and push it at the requested position.
  */
 function copyStep(steps, stepId, position) {
   let newState = cloneDeep(steps)

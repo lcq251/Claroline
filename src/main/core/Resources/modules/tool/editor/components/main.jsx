@@ -26,6 +26,7 @@ const ToolEditor = (props) => {
       path={props.path+'/edit'}
       title={trans(props.name, {}, 'tools')}
       name={selectors.STORE_NAME}
+      styles={props.styles}
       target={['claro_tool_configure', {
         name: props.name,
         context: props.contextType,

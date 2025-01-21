@@ -2,10 +2,9 @@ import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import merge from 'lodash/merge'
 
-import {makeActionCreator} from '#/main/app/store/actions'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
-import {getFormDataPart, getTabPath} from '#/plugin/home/tools/home/editor/utils'
+import {getFormDataPart, getTabParent, getTabPath} from '#/plugin/home/tools/home/editor/utils'
 import {selectors} from '#/plugin/home/tools/home/editor/store/selectors'
 
 export const HOME_MOVE_TAB = 'HOME_MOVE_TAB'
@@ -13,22 +12,80 @@ export const HOME_MOVE_TAB = 'HOME_MOVE_TAB'
 // action creators
 export const actions = {}
 
-actions.moveTab = makeActionCreator(HOME_MOVE_TAB, 'id', 'position')
+function pushTab(tab, tabs, position) {
+  const newTabs = cloneDeep(tabs)
 
-actions.createTab = (parent = null, tab, navigate) => (dispatch, getState) => {
-  const tabs = selectors.editorTabs(getState())
+  switch (position.order) {
+    case 'first':
+      newTabs.unshift(tab)
+      break
+
+    case 'before':
+    case 'after':
+      if ('before' === position.order) {
+        newTabs.splice(tabs.findIndex(t => t.id === position.tab), 0, tab)
+      } else {
+        newTabs.splice(tabs.findIndex(t => t.id === position.tab) + 1, 0, tab)
+      }
+      break
+
+    case 'last':
+      newTabs.push(tab)
+      break
+  }
+
+  return newTabs
+    // recompute tabs positions
+    .map((tab, index) => merge({}, tab, {
+      position: index + 1
+    }))
+}
+
+actions.moveTab = (tabs, id, position) => {
+  let newTabs = cloneDeep(tabs)
+
+  // get the tab to move
+  const original = get({tabs: newTabs}, getFormDataPart(id, newTabs))
+
+  // remove the tab from its current position
+  const parent = getTabParent(id, newTabs)
+  if (parent) {
+    const currentPos = parent.children.findIndex(child => child.id === id)
+    parent.children.splice(currentPos, 1)
+  } else {
+    const currentPos = tabs.findIndex(child => child.id === id)
+    newTabs.splice(currentPos, 1)
+  }
+
+  // move the tab at the new position
+  if (position.parent) {
+    const parent = get({tabs: newTabs}, getFormDataPart(position.parent, newTabs))
+
+    parent.children = pushTab(original, parent.children, position)
+  } else {
+    newTabs = pushTab(original, newTabs, position)
+  }
+
+  // inject updated data into the form
+  return formActions.updateProp(selectors.FORM_NAME, 'tabs', newTabs
+    // recalculate tabs positions
+    .sort((a, b) => a.position - b.position)
+    .map((tab, index) => merge({}, tab, {
+      position: index + 1
+    }))
+  )
+}
+
+actions.createTab = (parent = null, tab) => (dispatch, getState) => {
+  const tabs = selectors.tabs(getState())
   if (parent) {
     const tabPath = `${getFormDataPart(parent.id, tabs)}.children`
     const children = get(tabs, tabPath, [])
 
-    dispatch(formActions.updateProp(selectors.FORM_NAME, `${getFormDataPart(parent.id, tabs)}.children`, [].concat(children, tab)))
-  } else {
-    dispatch(formActions.updateProp(selectors.FORM_NAME, `[${tabs.length}]`, tab))
+    return dispatch(formActions.updateProp(selectors.FORM_NAME, `${getFormDataPart(parent.id, tabs)}.children`, [].concat(children, tab)))
   }
 
-
-  // open new tab
-  navigate(tab.slug)
+  return dispatch(formActions.updateProp(selectors.FORM_NAME, `tabs[${tabs.length}]`, tab))
 }
 
 actions.updateTab = (tabs, tabId, data, path) => {
@@ -40,7 +97,7 @@ actions.updateTab = (tabs, tabId, data, path) => {
   return formActions.updateProp(selectors.FORM_NAME, tabPath, data)
 }
 
-actions.deleteTab = (tabs, tabToDelete) => (dispatch) => {
+actions.deleteTab = (tabs, tabToDelete) => {
   const newTabs = cloneDeep(tabs)
   const tabPath = getTabPath(tabToDelete.id, newTabs)
 
@@ -56,11 +113,11 @@ actions.deleteTab = (tabs, tabToDelete) => (dispatch) => {
   }
 
   // inject updated data into the form
-  dispatch(formActions.update(selectors.FORM_NAME, newTabs
+  return formActions.updateProp(selectors.FORM_NAME, 'tabs', newTabs
     // recalculate tabs positions
     .sort((a, b) => a.position - b.position)
     .map((tab, index) => merge({}, tab, {
       position: index + 1
     }))
-  ))
+  )
 }

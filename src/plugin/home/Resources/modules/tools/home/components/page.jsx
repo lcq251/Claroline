@@ -28,10 +28,6 @@ HomePage.propTypes = {
   children: T.any
 }
 
-HomePage.defaultProps = {
-  path: '',
-}
-
 export {
   HomePage
 }

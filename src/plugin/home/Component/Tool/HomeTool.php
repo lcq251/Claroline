@@ -4,6 +4,7 @@ namespace Claroline\HomeBundle\Component\Tool;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\ToolComponent;
@@ -16,12 +17,14 @@ use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Manager\HomeManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeTool extends ToolComponent
 {
     public function __construct(
         private readonly ObjectManager $om,
         private readonly Crud $crud,
+        private readonly SerializerProvider $serializer,
         private readonly HomeManager $manager
     ) {
     }
@@ -50,7 +53,7 @@ class HomeTool extends ToolComponent
     {
         $homeTabs = $this->om->getRepository(HomeTab::class)->findBy([
             'contextName' => $context,
-            'contextId' => $contextSubject ? $contextSubject->getContextIdentifier() : null,
+            'contextId' => $contextSubject?->getContextIdentifier(),
         ], ['order' => 'ASC']);
 
         return [
@@ -58,11 +61,68 @@ class HomeTool extends ToolComponent
         ];
     }
 
+    public function configure(OrderedTool $tool, string $context, ?ContextSubjectInterface $contextSubject = null, array $configData = []): ?array
+    {
+        $tabs = $configData['tabs'];
+
+        // retrieve existing tabs for the context to remove deleted ones
+        /** @var HomeTab[] $installedTabs */
+        $installedTabs = $this->om->getRepository(HomeTab::class)->findBy([
+            'contextName' => $context,
+            'contextId' => $contextSubject?->getContextIdentifier(),
+        ]);
+
+        $this->om->startFlushSuite();
+
+        $ids = [];
+        $updated = [];
+        foreach ($tabs as $tab) {
+            $new = true;
+            $existingTab = null;
+            if (isset($tab['id'])) {
+                foreach ($installedTabs as $installedTab) {
+                    if ($installedTab->getUuid() === $tab['id']) {
+                        $existingTab = $installedTab;
+                        $new = false;
+                        break;
+                    }
+                }
+            }
+
+            if (empty($existingTab)) {
+                $existingTab = new HomeTab();
+                $existingTab->setContextName($context);
+                $existingTab->setContextId($contextSubject?->getContextIdentifier());
+            }
+
+            if ($new) {
+                $this->crud->create($existingTab, $tab);
+            } else {
+                $this->crud->update($existingTab, $tab);
+            }
+
+            $updated[] = $existingTab;
+            $ids = array_merge($ids, [$existingTab->getUuid()], array_map(function (HomeTab $child) {
+                return $child->getUuid();
+            }, $existingTab->getChildren()->toArray())); // will be used to determine deleted tabs
+        }
+
+        $this->cleanDatabase($installedTabs, $ids);
+
+        $this->om->endFlushSuite();
+
+        return [
+            'tabs' => array_values(array_map(function (HomeTab $tab) {
+                return $this->serializer->serialize($tab);
+            }, $updated)),
+        ];
+    }
+
     public function export(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array
     {
         $homeTabs = $this->om->getRepository(HomeTab::class)->findBy([
             'contextName' => $context,
-            'contextId' => $contextSubject ? $contextSubject->getContextIdentifier() : null,
+            'contextId' => $contextSubject?->getContextIdentifier(),
         ], ['order' => 'ASC']);
 
         return [
@@ -95,7 +155,7 @@ class HomeTool extends ToolComponent
 
             $new = new HomeTab();
             $new->setContextName($context);
-            $new->setContextId($contextSubject ? $contextSubject->getContextIdentifier() : null);
+            $new->setContextId($contextSubject?->getContextIdentifier());
 
             $this->crud->create($new, $tab, [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION, SerializerInterface::REFRESH_UUID]);
 
@@ -105,5 +165,15 @@ class HomeTool extends ToolComponent
         $this->om->endFlushSuite();
 
         return $entities;
+    }
+
+    private function cleanDatabase(array $installedTabs, array $ids): void
+    {
+        foreach ($installedTabs as $installedTab) {
+            if (!in_array($installedTab->getUuid(), $ids)) {
+                // the tab no longer exist we can remove it
+                $this->crud->delete($installedTab);
+            }
+        }
     }
 }

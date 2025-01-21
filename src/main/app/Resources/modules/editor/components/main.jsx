@@ -10,7 +10,6 @@ import {trans} from '#/main/app/intl'
 import {Routes} from '#/main/app/router'
 
 import {EditorMenu} from '#/main/app/editor/components/menu'
-import {AppLoader} from '#/main/app/platform/components/loader'
 import {EditorContext} from '#/main/app/editor/context'
 
 import {theme} from '#/main/app/config/theme'
@@ -93,8 +92,6 @@ const Editor = (props) => {
           history.push(props.close)
         }}
       >
-        <AppLoader />
-
         <EditorMenu
           path={props.path}
           title={props.title}

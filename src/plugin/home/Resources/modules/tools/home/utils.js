@@ -1,7 +1,7 @@
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import isEmpty from 'lodash/isEmpty'
 import {LINK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
 
 /**

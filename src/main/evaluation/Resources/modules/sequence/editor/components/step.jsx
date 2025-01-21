@@ -12,7 +12,7 @@ import {selectors} from '#/main/evaluation/sequence/editor/store'
 import {flattenSteps, getNext, getNumbering, getPrevious} from '#/main/evaluation/sequence/utils'
 import {getFormDataPart} from '#/main/evaluation/sequence/editor/utils'
 
-const PathEditorStep = props => {
+const SequenceEditorStep = props => {
   const editorPath = useSelector(selectors.path)
   const steps = useSelector(selectors.steps)
   const flatSteps = flattenSteps(steps)
@@ -26,8 +26,8 @@ const PathEditorStep = props => {
   const numbering = useSelector(selectors.numbering)
   const stepNumbering = getNumbering(numbering, steps, step)
 
-  const next = getNext(steps, step)
-  const previous = getPrevious(steps, step)
+  const next = getNext(flatSteps, step)
+  const previous = getPrevious(flatSteps, step)
 
   return (
     <EditorPage
@@ -153,7 +153,7 @@ const PathEditorStep = props => {
   )
 }
 
-PathEditorStep.propTypes = {
+SequenceEditorStep.propTypes = {
   // from Route
   match: T.shape({
     params: T.shape({
@@ -166,5 +166,5 @@ PathEditorStep.propTypes = {
 }
 
 export {
-  PathEditorStep
+  SequenceEditorStep
 }

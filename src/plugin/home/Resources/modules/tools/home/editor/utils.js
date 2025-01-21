@@ -1,7 +1,7 @@
 
 function getFormDataPart(id, tabs) {
   const tabPath = getTabPath(id, tabs)
-  let formDataPart = `[${tabPath[0]}]`
+  let formDataPart = `tabs[${tabPath[0]}]`
 
   for (let i = 1; i < tabPath.length; ++i) {
     formDataPart += `.children[${tabPath[i]}]`

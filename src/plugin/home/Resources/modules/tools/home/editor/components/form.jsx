@@ -21,6 +21,11 @@ const TabForm = (props) =>
         primary: true,
         fields: [
           {
+            name: 'poster',
+            type: 'poster',
+            hideLabel: true,
+            title: trans('poster')
+          }, {
             name: 'longTitle',
             type: 'string',
             label: trans('title'),
@@ -61,7 +66,7 @@ const TabForm = (props) =>
         icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
         fields: [
-          {
+          /*{
             name: 'display.color',
             label: trans('color'),
             type: 'color'
@@ -69,7 +74,7 @@ const TabForm = (props) =>
             name: 'poster',
             label: trans('poster'),
             type: 'image'
-          }, {
+          }, */{
             name: 'restrictions.hidden',
             type: 'boolean',
             label: trans('restrict_hidden')
