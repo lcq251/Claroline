@@ -1,6 +1,7 @@
 
 import {ResourceWidget} from '#/main/core/widget/types/resource/containers/widget'
 import {ResourceWidgetParameters} from '#/main/core/widget/types/resource/components/parameters'
+import {declareWidget} from '#/main/core/widget'
 
 export const Parameters = () => ({
   component: ResourceWidgetParameters
@@ -12,3 +13,5 @@ export const Parameters = () => ({
 export const App = () => ({
   component: ResourceWidget
 })
+
+export default declareWidget(ResourceWidget, ResourceWidgetParameters)

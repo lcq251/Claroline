@@ -1,21 +1,28 @@
-import React from 'react'
+import React, {createElement, useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {Await} from '#/main/app/components/await'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {selectors as formSelectors} from '#/main/app/content/form/store/selectors'
 
 import {getWidget} from '#/main/core/widget/types'
 import {WidgetContentIcon, WidgetSourceIcon} from '#/main/core/widget/content/components/icon'
 import {WidgetInstance as WidgetInstanceTypes} from '#/main/core/widget/content/prop-types'
+import isEmpty from 'lodash/isEmpty'
 
 const WidgetContentFormComponent = (props) => {
-  let widget
-  if (props.instance && props.instance.type) {
-    widget = getWidget(props.instance.type)
-  }
+  const [widgetApp, setWidgetApp] = useState(null)
+  useEffect(() => {
+    if (!isEmpty(props.instance)) {
+      getWidget(props.instance.type).then(module => {
+        if (get(module, 'default.editor')) {
+          setWidgetApp({component: get(module, 'default.editor')})
+        }
+      })
+    }
+  }, [get(props.instance, 'type')])
 
   return (
     <FormData
@@ -57,22 +64,11 @@ const WidgetContentFormComponent = (props) => {
         }
       ]}
     >
-      {widget &&
-        <Await
-          for={widget}
-          then={module => {
-            if (module.Parameters) {
-              const parametersApp = module.Parameters()
-
-              return React.createElement(parametersApp.component, {
-                name: props.name,
-                currentContext: props.currentContext,
-                instance: props.instance
-              })
-            }
-          }}
-        />
-      }
+      {!isEmpty(widgetApp) && createElement(widgetApp.component, {
+        name: props.name,
+        currentContext: props.currentContext,
+        instance: props.instance
+      })}
     </FormData>
   )
 }
