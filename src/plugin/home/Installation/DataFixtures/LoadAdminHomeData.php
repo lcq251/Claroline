@@ -67,7 +67,7 @@ class LoadAdminHomeData extends AbstractFixture implements PostInstallInterface
                             'type' => 'list',
                             'source' => 'admin_tools',
                             'parameters' => [
-                                'display' => 'tiles-sm',
+                                'display' => 'tiles',
                                 'enableDisplays' => false,
                                 'availableDisplays' => [],
                                 'card' => [

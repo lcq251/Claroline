@@ -68,7 +68,7 @@ class LoadDesktopHomeData extends AbstractFixture implements PostInstallInterfac
                             'type' => 'list',
                             'source' => 'my_workspaces',
                             'parameters' => [
-                                'display' => 'tiles-sm',
+                                'display' => 'tiles',
                                 'enableDisplays' => false,
                                 'availableDisplays' => [],
                                 'card' => [

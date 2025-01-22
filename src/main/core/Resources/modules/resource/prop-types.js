@@ -73,7 +73,7 @@ const ResourceNode = {
   },
   defaultProps: {
     meta: {
-      published: false,
+      published: true,
       active: true,
       views: 0
     },

@@ -2,7 +2,6 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import merge from 'lodash/merge'
 import union from 'lodash/union'
 
 import {trans} from '#/main/app/intl/translation'
@@ -26,14 +25,6 @@ const isSortable = (parameters) => parameters.sortable || !isEmpty(parameters.av
 const isMultiDisplays = (parameters) => parameters.enableDisplays || !isEmpty(parameters.availableDisplays)
 const isColumnsFilterable = (parameters) => parameters.columnsFilterable || !isEmpty(parameters.availableColumns)
 
-const hasLargeCard = (parameters) => {
-  const availableDisplays = get(parameters, 'availableDisplays') || []
-
-  return (parameters.display && DISPLAY_MODES[parameters.display].options.useCard && 'lg' === DISPLAY_MODES[parameters.display].options.size)
-    || !!availableDisplays
-      .find(displayMode => DISPLAY_MODES[displayMode].options.useCard && 'lg' === DISPLAY_MODES[displayMode].options.size)
-}
-
 const ListForm = props => {
   const definition = createListDefinition(get(props.list, 'definition') || [])
 
@@ -45,6 +36,8 @@ const ListForm = props => {
     // grab all implemented display modes
     displayModes = constants.DISPLAY_MODES
   }
+
+  displayModes.filter(displayMode => !!DISPLAY_MODES[displayMode])
 
   if (!get(props.list, 'card')) {
     // the list implementation does not define cards, we need to disable cards based displays
@@ -396,8 +389,8 @@ const ListForm = props => {
           displayed: (parameters) => {
             const availableDisplays = get(parameters, 'availableDisplays') || []
 
-            return (parameters.display && DISPLAY_MODES[parameters.display].options.filterColumns)
-              || !!availableDisplays.find(displayMode => DISPLAY_MODES[displayMode].options.filterColumns)
+            return (parameters.display && DISPLAY_MODES[parameters.display] && DISPLAY_MODES[parameters.display].options.filterColumns)
+              || !!availableDisplays.find(displayMode => DISPLAY_MODES[displayMode] && DISPLAY_MODES[displayMode].options.filterColumns)
           },
           fields: [
             {

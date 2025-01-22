@@ -202,7 +202,7 @@ const ContextMenu = (props) => {
       <span className="fa fa-bars" aria-hidden={true} />
 
       <div className="text-start text-truncate mb-0 fs-sm" role="presentation">
-        {contextData.name}
+        {contextData.name || trans(contextType, {}, 'context')}
 
         {props.name &&
           <>

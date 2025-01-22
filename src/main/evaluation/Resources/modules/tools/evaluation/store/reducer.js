@@ -19,7 +19,9 @@ const reducer = combineReducers({
     })
   }),
 
-  sequences: makeListReducer(selectors.STORE_NAME+'.sequences', {}, {
+  sequences: makeListReducer(selectors.STORE_NAME+'.sequences', {
+    sortBy: {property: 'name', direction: -1}
+  }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
     }),

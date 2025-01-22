@@ -6,8 +6,8 @@ import {getActions, getDefaultAction} from '#/main/core/workspace/utils'
 import {DataMicro} from '#/main/app/data/components/micro'
 
 export default (contextType, contextData, refresher, currentUser) => ({
-  primaryAction: (resourceNode) => getDefaultAction(resourceNode, refresher, null, currentUser),
-  actions: (resourceNodes) => getActions(resourceNodes, refresher, null, currentUser),
+  primaryAction: (workspace) => getDefaultAction(workspace, refresher, null, currentUser),
+  actions: (workspaces) => getActions(workspaces, refresher, null, currentUser),
   definition: [
     {
       name: 'name',

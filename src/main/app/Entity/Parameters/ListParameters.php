@@ -6,129 +6,81 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contains all properties required to configure an UI ListData.
+ * Contains all properties required to configure a UI ListData.
  *
  * NB. maybe create an entity with this and create a rel in the entities using it.
  */
 trait ListParameters
 {
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $filterable = false;
+    protected bool $filterable = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $sortable = false;
+    protected bool $sortable = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $paginated = true;
+    protected bool $paginated = true;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $columnsFilterable = false;
+    protected bool $columnsFilterable = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $count = false;
+    protected bool $count = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected $actions = true;
+    protected bool $actions = true;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(nullable: true)]
-    protected $sortBy = null;
+    protected ?string $sortBy = null;
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $availableSort = [];
+    protected ?array $availableSort = [];
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
-    protected $pageSize = 15;
+    protected int $pageSize = 15;
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $availablePageSizes = [15, 30, 60, 120, -1];
+    protected array $availablePageSizes = [15, 30, 60, 120, -1];
 
-    /**
-     * @var string
-     */
     #[ORM\Column]
-    protected $display = 'tiles-sm';
+    protected string $display = 'list';
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $availableDisplays = ['tiles-sm'];
+    protected array $availableDisplays = ['list'];
 
-    /**
-     * @var string
-     */
     #[ORM\Column(nullable: true)]
-    protected $searchMode = null;
+    protected ?string $searchMode = null;
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $filters = [];
+    protected array $filters = [];
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $availableFilters = [];
+    protected array $availableFilters = [];
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $availableColumns = [];
+    protected array $availableColumns = [];
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: Types::JSON)]
-    protected $displayedColumns = [];
+    protected array $displayedColumns = [];
 
     /**
      * The configuration of the card.
-     *
-     *
-     * @var array
      */
     #[ORM\Column(type: Types::JSON)]
-    protected $card = [];
+    protected array $card = [
+        'icon',
+        'flags',
+        'subtitle',
+        'description',
+        'footer',
+    ];
 
     public function isFilterable(): bool
     {
         return $this->filterable;
     }
 
-    public function setFilterable(bool $filterable)
+    public function setFilterable(bool $filterable): void
     {
         $this->filterable = $filterable;
     }
@@ -138,7 +90,7 @@ trait ListParameters
         return $this->sortable;
     }
 
-    public function setSortable(bool $sortable)
+    public function setSortable(bool $sortable): void
     {
         $this->sortable = $sortable;
     }
@@ -148,7 +100,7 @@ trait ListParameters
         return $this->paginated;
     }
 
-    public function setPaginated(bool $paginated)
+    public function setPaginated(bool $paginated): void
     {
         $this->paginated = $paginated;
     }
@@ -158,7 +110,7 @@ trait ListParameters
         return $this->columnsFilterable;
     }
 
-    public function setColumnsFilterable(bool $columnsFilterable)
+    public function setColumnsFilterable(bool $columnsFilterable): void
     {
         $this->columnsFilterable = $columnsFilterable;
     }
@@ -168,7 +120,7 @@ trait ListParameters
         return $this->count;
     }
 
-    public function setCount(bool $count)
+    public function setCount(bool $count): void
     {
         $this->count = $count;
     }
@@ -178,7 +130,7 @@ trait ListParameters
         return $this->actions;
     }
 
-    public function setActions(bool $actions)
+    public function setActions(bool $actions): void
     {
         $this->actions = $actions;
     }
@@ -188,7 +140,7 @@ trait ListParameters
         return $this->sortBy;
     }
 
-    public function setSortBy(string $sortBy = null)
+    public function setSortBy(string $sortBy = null): void
     {
         $this->sortBy = $sortBy;
     }
@@ -198,7 +150,7 @@ trait ListParameters
         return $this->availableSort ?? [];
     }
 
-    public function setAvailableSort(array $availableSort)
+    public function setAvailableSort(array $availableSort): void
     {
         $this->availableSort = $availableSort;
     }
@@ -208,7 +160,7 @@ trait ListParameters
         return $this->pageSize;
     }
 
-    public function setPageSize(int $pageSize)
+    public function setPageSize(int $pageSize): void
     {
         $this->pageSize = $pageSize;
     }
@@ -218,7 +170,7 @@ trait ListParameters
         return $this->availablePageSizes ?? [];
     }
 
-    public function setAvailablePageSizes(array $availablePageSizes)
+    public function setAvailablePageSizes(array $availablePageSizes): void
     {
         $this->availablePageSizes = $availablePageSizes;
     }
@@ -228,7 +180,7 @@ trait ListParameters
         return $this->display;
     }
 
-    public function setDisplay(string $display)
+    public function setDisplay(string $display): void
     {
         $this->display = $display;
     }
@@ -238,7 +190,7 @@ trait ListParameters
         return $this->availableDisplays ?? [];
     }
 
-    public function setAvailableDisplays(array $availableDisplays)
+    public function setAvailableDisplays(array $availableDisplays): void
     {
         $this->availableDisplays = $availableDisplays;
     }
@@ -248,7 +200,7 @@ trait ListParameters
         return $this->searchMode;
     }
 
-    public function setSearchMode(string $searchMode = null)
+    public function setSearchMode(string $searchMode = null): void
     {
         $this->searchMode = $searchMode;
     }
@@ -258,7 +210,7 @@ trait ListParameters
         return $this->filters ?? [];
     }
 
-    public function setFilters(array $filters)
+    public function setFilters(array $filters): void
     {
         $this->filters = $filters;
     }
@@ -268,7 +220,7 @@ trait ListParameters
         return $this->availableFilters ?? [];
     }
 
-    public function setAvailableFilters(array $availableFilters)
+    public function setAvailableFilters(array $availableFilters): void
     {
         $this->availableFilters = $availableFilters;
     }
@@ -278,7 +230,7 @@ trait ListParameters
         return $this->availableColumns ?? [];
     }
 
-    public function setAvailableColumns(array $availableColumns)
+    public function setAvailableColumns(array $availableColumns): void
     {
         $this->availableColumns = $availableColumns;
     }
@@ -288,7 +240,7 @@ trait ListParameters
         return $this->displayedColumns ?? [];
     }
 
-    public function setDisplayedColumns(array $displayedColumns)
+    public function setDisplayedColumns(array $displayedColumns): void
     {
         $this->displayedColumns = $displayedColumns;
     }
@@ -298,7 +250,7 @@ trait ListParameters
         return $this->card ?? [];
     }
 
-    public function setCard(array $card)
+    public function setCard(array $card): void
     {
         $this->card = $card;
     }
