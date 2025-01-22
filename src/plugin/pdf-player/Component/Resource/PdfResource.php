@@ -76,8 +76,10 @@ class PdfResource extends ResourceComponent implements EvaluatedResourceInterfac
         $workspace = $resourceNode->getWorkspace();
         $workspaceDir = 'WORKSPACE_'.$workspace->getId();
 
-        $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir);
-        $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf');
+        if (!$filesystem->exists($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf')) {
+            $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf');
+        }
+
         $finalPath = $workspaceDir.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$file->guessExtension();
         $filesystem->rename($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$finalPath);
 
