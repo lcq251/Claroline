@@ -12,10 +12,6 @@
     }
 
     // customize view modes
-    .data-tree {
-        margin-right: $data-tree-gutter*.5;
-    }
-
     .data-grid-col {
         margin-left: map-get($spacers, 4);
         margin-right: map-get($spacers, 4);

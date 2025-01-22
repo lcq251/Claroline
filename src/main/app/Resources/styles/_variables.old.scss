@@ -226,15 +226,6 @@ $data-grid-gutter: map-get($spacers, 4);
 
 
 // -
-// Data tree
-// ---
-
-$data-tree-gutter:      $data-grid-gutter;
-$data-tree-indent:      $data-tree-gutter*2;
-$data-tree-lines-color: var(--#{$prefix}secondary-color);
-
-
-// -
 // Data card
 // ---
 

@@ -120,13 +120,6 @@
     }
 }
 
-.data-tree-item:hover {
-    .data-tree-item-select {
-        z-index: 3;
-        transform: translateY(-2px);
-    }
-}
-
 .data-card-selected {
     &.data-card-col,
     &.data-card-row {
