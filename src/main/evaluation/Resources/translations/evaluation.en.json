@@ -43,5 +43,6 @@
   "completion": "%current%% Complete",
   "next_step": "Previous: %title%",
   "previous_step": "Next: %title%",
-  "no_user_activity": "You have not started this activity yet."
+  "no_user_activity": "You have not started this activity yet.",
+  "resources_delete_message": "{1} Are you sure you want to delete this sequence? | [2,Inf[ Are you sure you want to delete these %count% sequences?"
 }

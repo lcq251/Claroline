@@ -46,5 +46,6 @@
   "completion": "%current%% Terminé",
   "next_step": "Suivant : %title%",
   "previous_step": "Précédent : %title%",
-  "no_user_activity": "Vous n'avez pas encore commencé cette activité."
+  "no_user_activity": "Vous n'avez pas encore commencé cette activité.",
+  "sequences_delete_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cette séquence ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% séquences ?"
 }
