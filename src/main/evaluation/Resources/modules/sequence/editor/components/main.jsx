@@ -7,7 +7,7 @@ import {hasPermission} from '#/main/app/security'
 import {Editor} from '#/main/app/editor'
 import {selectors as toolSelectors} from '#/main/core/tool'
 
-import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
+import {selectors as sequenceSelectors, actions as sequenceActions} from '#/main/evaluation/sequence/store'
 import {route} from '#/main/evaluation/sequence'
 import {SequenceEditorScenario} from '#/main/evaluation/sequence/editor/components/scenario'
 import {SequenceEditorAppearance} from '#/main/evaluation/sequence/editor/components/appearance'
@@ -38,6 +38,7 @@ const SequenceEditor = () => {
       target={['apiv2_evaluation_sequence_update', {
         id: get(sequence, 'id')
       }]}
+      onSave={(savedData) => dispatch(sequenceActions.reload(savedData))}
       close={route(sequence, null, toolPath)}
       overviewPage={SequenceEditorOverview}
       appearancePage={SequenceEditorAppearance}

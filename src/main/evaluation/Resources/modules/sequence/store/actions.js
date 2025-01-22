@@ -4,6 +4,7 @@ import {actions as workspaceActions} from '#/main/app/contexts/workspace/store'
 
 import {constants} from '#/main/evaluation/sequence/constants'
 
+export const SEQUENCE_RELOAD = 'SEQUENCE_RELOAD'
 export const SEQUENCE_EVALUATION_UPDATE    = 'SEQUENCE_EVALUATION_UPDATE'
 export const STEP_ENABLE_NAVIGATION = 'STEP_ENABLE_NAVIGATION'
 export const STEP_DISABLE_NAVIGATION = 'STEP_DISABLE_NAVIGATION'
@@ -14,6 +15,8 @@ export const actions = {}
 actions.enableNavigation = makeActionCreator(STEP_ENABLE_NAVIGATION)
 actions.disableNavigation = makeActionCreator(STEP_DISABLE_NAVIGATION)
 actions.updateStepProgression = makeActionCreator(STEP_UPDATE_PROGRESSION, 'stepId', 'status')
+
+actions.reload = makeActionCreator(SEQUENCE_RELOAD, 'sequence')
 
 actions.updateProgression = (stepId, status = constants.STATUS_SEEN, silent = true) => ({
   [API_REQUEST]: {

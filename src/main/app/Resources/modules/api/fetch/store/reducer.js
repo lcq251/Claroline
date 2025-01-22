@@ -1,8 +1,14 @@
-import merge from 'lodash/merge'
-import {combineReducers, makeInstanceReducer, reduceReducers} from '#/main/app/store/reducer'
 import difference from 'lodash/difference'
+import merge from 'lodash/merge'
 
-import {API_FETCH_FAILED, API_FETCH_FULFILLED, API_FETCH_PENDING} from '#/main/app/api/fetch/store/actions'
+import {combineReducers, makeInstanceReducer, reduceReducers} from '#/main/app/store/reducer'
+
+import {
+  API_FETCH_FAILED,
+  API_FETCH_FULFILLED,
+  API_FETCH_INVALIDATE,
+  API_FETCH_PENDING
+} from '#/main/app/api/fetch/store/actions'
 
 const defaultState = {
   status: 'idle', // 'idle' | 'pending' | 'succeeded' | 'failed',
@@ -15,7 +21,8 @@ const baseReducer = {
   status: makeInstanceReducer(defaultState.status, {
     [API_FETCH_PENDING]: () => 'pending',
     [API_FETCH_FULFILLED]: () => 'succeeded',
-    [API_FETCH_FAILED]: () => 'failed'
+    [API_FETCH_FAILED]: () => 'failed',
+    [API_FETCH_INVALIDATE]: () => 'idle'
   }),
 
   errorCode: makeInstanceReducer(defaultState.errorCode, {

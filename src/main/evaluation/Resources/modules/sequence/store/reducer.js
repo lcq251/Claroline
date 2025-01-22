@@ -2,6 +2,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
 
 import {
+  SEQUENCE_RELOAD,
   STEP_ENABLE_NAVIGATION,
   STEP_DISABLE_NAVIGATION,
   SEQUENCE_EVALUATION_UPDATE,
@@ -20,7 +21,7 @@ const reducer = makeFetchReducer(selectors.STORE_NAME, {
 }, {
   data: combineReducers({
     sequence: makeReducer(null, {
-      // [makeInstanceAction(RESOURCE_LOAD, 'innova_path')]: (state, action) => action.resourceData.resource || state,
+      [SEQUENCE_RELOAD]: (state, action) => action.sequence
     }),
     userEvaluation: makeReducer([], {
       [SEQUENCE_EVALUATION_UPDATE]: (state, action) => action.userEvaluation || state,

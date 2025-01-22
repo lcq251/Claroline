@@ -4,10 +4,6 @@ import {selectors} from '#/main/evaluation/sequence/editor/store/selectors'
 
 export const actions = {}
 
-actions.refresh = (sequenceData) => {
-
-}
-
 actions.reset = (sequence) => formActions.reset(selectors.STORE_NAME, sequence)
 
 actions.update = (value, propPath = null) => {

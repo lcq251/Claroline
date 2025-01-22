@@ -4,8 +4,8 @@ import {API_REQUEST} from '#/main/app/api'
 export const API_FETCH_PENDING = 'API_FETCH_PENDING'
 export const API_FETCH_FULFILLED = 'API_FETCH_FULFILLED'
 export const API_FETCH_RELOAD = 'API_FETCH_RELOAD'
-
 export const API_FETCH_FAILED = 'API_FETCH_FAILED'
+export const API_FETCH_INVALIDATE = 'API_FETCH_INVALIDATE'
 
 export const actions = {}
 
@@ -18,6 +18,8 @@ actions.load = makeInstanceActionCreator(API_FETCH_FULFILLED, 'response')
  * Loads new data in the store.
  */
 actions.reload = makeInstanceActionCreator(API_FETCH_RELOAD, 'data')
+
+actions.invalidate = makeInstanceActionCreator(API_FETCH_INVALIDATE)
 
 /**
  * Starts an API call.
