@@ -91,7 +91,7 @@ const SequencePlayer = props => {
 
                   <PageContent className="d-flex flex-column">
                     <LinkButton
-                      className="btn btn-secondary w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none"
+                      className="btn text-secondary-emphasis bg-secondary-subtle w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none"
                       size="lg"
                       target={classes({
                         [`${basePath}`]: !previous,
@@ -111,23 +111,24 @@ const SequencePlayer = props => {
                       </div>
                     </LinkButton>
 
-                    <Step
-                      {...step}
-                      subtitle={trans('sequence_step_count', {current: stepIndex+1, total: props.steps.length}, 'evaluation')}
-                      currentUser={props.currentUser}
-                      numbering={getNumbering(props.sequence.display.numbering, props.sequence.steps, step)}
-                      progression={props.stepsProgression[step.id]}
-                      manualProgressionAllowed={props.sequence.display.manualProgressionAllowed}
-                      updateProgression={props.updateProgression}
-                      enableNavigation={props.enableNavigation}
-                      disableNavigation={props.disableNavigation}
-                      secondaryResourcesTarget={props.sequence.opening.secondaryResources}
-                    />
+                    <div role="presentation" className="h-100 flex-shrink-0 d-flex flex-column">
+                      <Step
+                        {...step}
+                        subtitle={trans('sequence_step_count', {current: stepIndex+1, total: props.steps.length}, 'evaluation')}
+                        currentUser={props.currentUser}
+                        numbering={getNumbering(props.sequence.display.numbering, props.sequence.steps, step)}
+                        progression={props.stepsProgression[step.id]}
+                        manualProgressionAllowed={props.sequence.display.manualProgressionAllowed}
+                        updateProgression={props.updateProgression}
+                        enableNavigation={props.enableNavigation}
+                        disableNavigation={props.disableNavigation}
+                        secondaryResourcesTarget={props.sequence.opening.secondaryResources}
+                      />
 
-                    {props.navigationEnabled &&
-                      <div className="content-md mb-5 px-4 mt-auto" role="presentation">
+                      {props.navigationEnabled &&
                         <LinkButton
-                          className="btn btn-primary w-100"
+                          // className="btn btn-primary w-100"
+                          className="btn btn-primary w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none mt-auto"
                           size="lg"
                           target={classes({
                             [`${basePath}/play/end`]: !next && get(props.sequence, 'end.display'),
@@ -136,10 +137,19 @@ const SequencePlayer = props => {
                           })}
                           exact={true}
                         >
-                          {trans(next ? 'continue' : 'finish', {}, 'actions')}
+                          <div className="content-md px-4" role="presentation">
+                            <span className="fa fa-fw fa-arrow-down icon-with-text-right" aria-hidden={true} />
+                            {!next ?
+                              trans('home') :
+                              (getNumbering(props.sequence.display.numbering, props.sequence.steps, next) ?
+                                  getNumbering(props.sequence.display.numbering, props.sequence.steps, next) + ' ' + next.title :
+                                  next.title
+                              )
+                            }
+                          </div>
                         </LinkButton>
-                      </div>
-                    }
+                      }
+                    </div>
                   </PageContent>
                 </SequencePage>
               )
