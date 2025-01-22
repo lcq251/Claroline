@@ -3,6 +3,7 @@
 namespace Claroline\EvaluationBundle\Manager;
 
 use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 abstract class AbstractEvaluationManager
 {
@@ -64,7 +65,7 @@ abstract class AbstractEvaluationManager
 
     private function updateEvaluationStatus(AbstractEvaluation $evaluation, string $status): void
     {
-        if (AbstractEvaluation::STATUS_PRIORITY[$status] > AbstractEvaluation::STATUS_PRIORITY[$evaluation->getStatus()]) {
+        if (EvaluationStatus::PRIORITY[$status] > EvaluationStatus::PRIORITY[$evaluation->getStatus()]) {
             $evaluation->setStatus($status);
         }
     }

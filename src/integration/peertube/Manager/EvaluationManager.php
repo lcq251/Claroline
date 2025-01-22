@@ -7,7 +7,7 @@ use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
 
@@ -39,7 +39,7 @@ class EvaluationManager
         $progression = $currentTime;
         $progressionMax = $totalTime;
 
-        $status = AbstractEvaluation::STATUS_OPENED;
+        $status = EvaluationStatus::NOT_ATTEMPTED;
         if ($progressionMax) {
             $progression = ($progression / $progressionMax) * 100;
 
@@ -49,9 +49,9 @@ class EvaluationManager
             }
 
             if ($progression >= 100) {
-                $status = AbstractEvaluation::STATUS_COMPLETED;
+                $status = EvaluationStatus::COMPLETED;
             } else {
-                $status = AbstractEvaluation::STATUS_INCOMPLETE;
+                $status = EvaluationStatus::INCOMPLETE;
             }
         }
 

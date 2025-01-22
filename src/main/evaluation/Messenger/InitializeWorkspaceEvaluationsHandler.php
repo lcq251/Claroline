@@ -51,7 +51,7 @@ class InitializeWorkspaceEvaluationsHandler
         // event if they have not opened the workspace yet.
         $requiredResources = $this->evaluationManager->getRequiredResources($workspace);
         foreach ($requiredResources as $requiredResource) {
-            $this->messageBus->dispatch(new UpdateResourceEvaluations($requiredResource->getId(), $initMessage->getUserIds(), AbstractEvaluation::STATUS_TODO));
+            $this->messageBus->dispatch(new UpdateResourceEvaluations($requiredResource->getId(), $initMessage->getUserIds()));
         }
     }
 }

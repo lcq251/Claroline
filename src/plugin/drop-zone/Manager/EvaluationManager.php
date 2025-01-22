@@ -10,7 +10,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\DropZoneBundle\Entity\Drop;
 use Claroline\DropZoneBundle\Entity\Dropzone;
 use Claroline\DropZoneBundle\Repository\DropRepository;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 
 /**
@@ -69,7 +69,7 @@ class EvaluationManager
                     $this->resourceEvalManager->createAttempt(
                         $dropzone->getResourceNode(),
                         $teamUser,
-                        ['status' => AbstractEvaluation::STATUS_INCOMPLETE]
+                        ['status' => EvaluationStatus::INCOMPLETE]
                     );
                 }
             } elseif (!$drop->hasUser($user)) {
@@ -78,7 +78,7 @@ class EvaluationManager
                 $this->resourceEvalManager->createAttempt(
                     $dropzone->getResourceNode(),
                     $user,
-                    ['status' => AbstractEvaluation::STATUS_INCOMPLETE]
+                    ['status' => EvaluationStatus::INCOMPLETE]
                 );
             }
 
@@ -118,7 +118,7 @@ class EvaluationManager
                     $this->resourceEvalManager->createAttempt(
                         $dropzone->getResourceNode(),
                         $user,
-                        ['status' => AbstractEvaluation::STATUS_COMPLETED, 'progression' => 100]
+                        ['status' => EvaluationStatus::COMPLETED, 'progression' => 100]
                     );
                 } elseif (!empty($drop)) {
                     $this->updateDropProgression($dropzone, $drop, 100);
@@ -163,8 +163,8 @@ class EvaluationManager
             $scoreToPass = $dropzone->getScoreToPass();
             $scoreMax = $dropzone->getScoreMax();
             $status = !empty($scoreMax) && (($score / $scoreMax) * 100) >= $scoreToPass ?
-                AbstractEvaluation::STATUS_PASSED :
-                AbstractEvaluation::STATUS_FAILED;
+                EvaluationStatus::PASSED :
+                EvaluationStatus::FAILED;
 
             foreach ($users as $user) {
                 $this->resourceEvalManager->createAttempt(
@@ -250,7 +250,7 @@ class EvaluationManager
         $this->resourceEvalManager->createAttempt(
             $dropzone->getResourceNode(),
             $user,
-            ['status' => AbstractEvaluation::STATUS_INCOMPLETE]
+            ['status' => EvaluationStatus::INCOMPLETE]
         );
 
         $this->om->endFlushSuite();

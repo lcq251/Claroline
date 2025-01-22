@@ -2,8 +2,8 @@
 
 namespace Claroline\EvaluationBundle\Library\Checker;
 
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationInterface;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 class ProgressionChecker implements CheckerInterface
 {
@@ -26,13 +26,13 @@ class ProgressionChecker implements CheckerInterface
     public function vote(EvaluationInterface $evaluation): ?string
     {
         if (0 >= $evaluation->getProgression()) {
-            return AbstractEvaluation::STATUS_NOT_ATTEMPTED;
+            return EvaluationStatus::NOT_ATTEMPTED;
         }
 
         if ($this->threshold > $evaluation->getProgression()) {
-            return AbstractEvaluation::STATUS_INCOMPLETE;
+            return EvaluationStatus::INCOMPLETE;
         }
 
-        return AbstractEvaluation::STATUS_COMPLETED;
+        return EvaluationStatus::COMPLETED;
     }
 }

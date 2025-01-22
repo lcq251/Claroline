@@ -9,9 +9,14 @@ const WorkspaceEvaluation = {
     date: T.string,
     status: T.string,
     duration: T.number,
-    score: T.number,
-    scoreMin: T.number,
-    scoreMax: T.number,
+    displayScore: T.shape({
+      current: T.number,
+      total: T.number.isRequired
+    }),
+    rawScore: T.shape({
+      current: T.number,
+      total: T.number.isRequired
+    }),
     progression: T.number,
     user: T.shape(
       User.propTypes

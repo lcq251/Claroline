@@ -54,7 +54,6 @@ const WorkspaceCertificatesToolbar = (props) => {
           callback: () => dispatch(evalActions.downloadCertificate(workspaceId, userId)),
           displayed: [
             evalConstants.EVALUATION_STATUS_COMPLETED,
-            evalConstants.EVALUATION_STATUS_PARTICIPATED,
             evalConstants.EVALUATION_STATUS_PASSED
           ].includes(get(wsEval, 'status', evalConstants.EVALUATION_STATUS_UNKNOWN))
         }

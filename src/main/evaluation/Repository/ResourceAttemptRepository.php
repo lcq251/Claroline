@@ -14,7 +14,6 @@ namespace Claroline\EvaluationBundle\Repository;
 use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Doctrine\ORM\EntityRepository;
 
@@ -29,7 +28,6 @@ class ResourceAttemptRepository extends EntityRepository
             ->andWhere('rue.resourceNode = :resourceNode')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::TODO,
                 EvaluationStatus::OPENED,
                 EvaluationStatus::INCOMPLETE,
             ])
@@ -51,46 +49,5 @@ class ResourceAttemptRepository extends EntityRepository
             ->setParameter('resourceNode', $node)
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    public function findInProgress(ResourceNode $node)
-    {
-        return $this->createQueryBuilder('re')
-            ->join('re.resourceUserEvaluation', 'rue')
-            ->where('re.status IN (:status)')
-            ->andWhere('rue.resourceNode = :resourceNode')
-            ->setParameter('status', [
-                EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::TODO,
-                EvaluationStatus::OPENED,
-                EvaluationStatus::INCOMPLETE,
-            ])
-            ->setParameter('resourceNode', $node)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function countTerminated(ResourceNode $resourceNode, User $user): int
-    {
-        return (int) $this->getEntityManager()
-            ->createQuery('
-                SELECT COUNT(a)
-                FROM Claroline\CoreBundle\Entity\Resource\ResourceEvaluation AS a
-                JOIN a.resourceUserEvaluation AS e
-                WHERE e.user = :user
-                  AND e.resourceNode = :resourceNode
-                  AND a.status IN (:status)
-            ')
-            ->setParameters([
-                'resourceNode' => $resourceNode,
-                'user' => $user,
-                'status' => [
-                    EvaluationStatus::COMPLETED,
-                    EvaluationStatus::PASSED,
-                    EvaluationStatus::PARTICIPATED,
-                    EvaluationStatus::FAILED,
-                ],
-            ])
-            ->getSingleScalarResult();
     }
 }

@@ -5,7 +5,7 @@ namespace Claroline\FlashcardBundle\Manager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\FlashcardBundle\Entity\CardDrawnProgression;
 use Claroline\FlashcardBundle\Entity\FlashcardDeck;
@@ -127,7 +127,7 @@ class FlashcardManager
 
         if (!$attempt) {
             $attempt = $this->resourceEvalManager->createAttempt($node, $user, [
-                'status' => AbstractEvaluation::STATUS_OPENED,
+                'status' => EvaluationStatus::NOT_ATTEMPTED,
                 'progression' => 0,
                 'data' => [
                     'session' => $session,
@@ -172,7 +172,7 @@ class FlashcardManager
 
         if (0 === count($cardsSession) && 1 === $session) {
             $attempt = $this->resourceEvalManager->updateAttempt($attempt, [
-                'status' => AbstractEvaluation::STATUS_OPENED,
+                'status' => EvaluationStatus::NOT_ATTEMPTED,
                 'progression' => 0,
                 'data' => [
                     'session' => 1,
@@ -222,12 +222,12 @@ class FlashcardManager
 
         if (7 === $session && 0 === count($cardsSession)) {
             if (100 === $progression) {
-                $status = AbstractEvaluation::STATUS_COMPLETED;
+                $status = EvaluationStatus::COMPLETED;
             } else {
-                $status = AbstractEvaluation::STATUS_FAILED;
+                $status = EvaluationStatus::FAILED;
             }
         } else {
-            $status = AbstractEvaluation::STATUS_INCOMPLETE;
+            $status = EvaluationStatus::INCOMPLETE;
         }
 
         $attempt = $this->resourceEvalManager->updateAttempt($attempt, [
@@ -248,7 +248,7 @@ class FlashcardManager
         ]);
 
         if (!$deck->getShowOverview() && !$deck->getShowEndPage()) {
-            if (AbstractEvaluation::STATUS_COMPLETED === $status || AbstractEvaluation::STATUS_FAILED === $status) {
+            if (EvaluationStatus::COMPLETED === $status || EvaluationStatus::FAILED === $status) {
                 $attempt = $this->calculateSession(null, $deck, $user);
             }
         }

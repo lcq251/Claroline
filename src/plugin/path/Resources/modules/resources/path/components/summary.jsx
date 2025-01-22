@@ -56,9 +56,9 @@ const PathSummary = (props) => {
 
                 <span className={classes('fa fa-fw icon-with-text-left', {
                   // status for steps with a required resource
-                  'fa-circle not_started': [constants.EVALUATION_STATUS_NOT_ATTEMPTED, constants.EVALUATION_STATUS_TODO, constants.EVALUATION_STATUS_OPENED].includes(resourceEvaluation.status),
-                  'fa-circle-notch fa-spin': [constants.EVALUATION_STATUS_INCOMPLETE].includes(resourceEvaluation.status),
-                  'fa-circle-check': [constants.EVALUATION_STATUS_COMPLETED, constants.EVALUATION_STATUS_PARTICIPATED, constants.EVALUATION_STATUS_PASSED].includes(resourceEvaluation.status),
+                  'fa-circle not_started': constants.EVALUATION_STATUS_NOT_ATTEMPTED === resourceEvaluation.status,
+                  'fa-circle-notch fa-spin': constants.EVALUATION_STATUS_INCOMPLETE === resourceEvaluation.status,
+                  'fa-circle-check': [constants.EVALUATION_STATUS_COMPLETED, constants.EVALUATION_STATUS_PASSED].includes(resourceEvaluation.status),
                   'fa-circle-xmark': constants.EVALUATION_STATUS_FAILED === resourceEvaluation.status
                 })} />
               </Fragment>

@@ -19,8 +19,8 @@ const DEFAULT_DISPLAY_MODES = [
 const DISPLAY_MODES = [
   tableConst.DISPLAY_TABLE,
   gridConst.DISPLAY_TILES,
-  gridConst.DISPLAY_LIST,
-  treeConst.DISPLAY_TREE
+  gridConst.DISPLAY_LIST/*,
+  treeConst.DISPLAY_TREE*/
 ]
 
 // reexport pagination constants here for retro compatibility

@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import get from 'lodash/get'
 
-import {asset} from '#/main/app/config'
 import {trans} from '#/main/app/intl/translation'
 import {DataCard} from '#/main/app/data/components/card'
 

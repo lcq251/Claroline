@@ -32,6 +32,7 @@
 
     .data-card-content {
         padding: $data-card-spacer-y*1.5 $data-card-spacer-x;
+        @include border-bottom-radius($data-card-border-radius);
     }
 
     .data-card-description {
@@ -171,8 +172,6 @@
     padding: $data-card-spacer-y $data-card-spacer-x;
     flex: 1 1 auto;
     max-width: 100%;
-
-    @include border-bottom-radius($data-card-border-radius);
 }
 
 .data-card-description {
@@ -188,6 +187,17 @@
     color: $data-card-color-muted;
 }
 
+.data-card-status {
+    position: absolute;
+    font-size: $font-size-base;
+    top: 2.5rem;
+    text-transform: $label-text-transform;
+    padding: map-get($spacers, 2) map-get($spacers, 4);
+    z-index: 1;
+
+    @include border-start-radius(0);
+    @include border-end-radius(var(--#{$prefix}border-radius-pill));
+}
 
 // -
 // Orientation variants

@@ -5,7 +5,7 @@ import {route as toolRoute} from '#/main/core/tool/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 
 import {constants} from '#/main/evaluation/constants'
-import {WorkspaceCard} from '#/main/evaluation/workspace/components/card'
+import {EvaluationWorkspaceCard} from '#/main/evaluation/workspace/components/card'
 import {getActions, getDefaultAction} from '#/main/evaluation//workspace/utils'
 import {EvaluationStatus} from '#/main/evaluation/components/status'
 
@@ -33,7 +33,7 @@ export default (contextType, contextData, refresher, currentUser) => {
       }, {
         name: 'workspace',
         type: 'workspace',
-        label: trans('workspace'),
+        label: trans('workspace', {}, 'workspace'),
         displayed: true
       }, {
         name: 'date',
@@ -95,6 +95,6 @@ export default (contextType, contextData, refresher, currentUser) => {
         filterable: true
       }
     ],
-    card: WorkspaceCard
+    card: EvaluationWorkspaceCard
   }
 }

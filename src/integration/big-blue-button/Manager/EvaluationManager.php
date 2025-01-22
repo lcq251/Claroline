@@ -30,7 +30,7 @@ class EvaluationManager
         $evaluation = $this->attemptRepository->findOneInProgress($resourceNode, $user);
 
         $evaluationData = [
-            'status' => EvaluationStatus::PARTICIPATED,
+            'status' => EvaluationStatus::COMPLETED,
             'progression' => 100,
         ];
 

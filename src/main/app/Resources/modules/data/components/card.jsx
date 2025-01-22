@@ -17,6 +17,7 @@ import {
 } from '#/main/app/action/prop-types'
 import {DataCard as DataCardTypes} from '#/main/app/data/prop-types'
 import {Thumbnail} from '#/main/app/components/thumbnail'
+import {Badge} from '#/main/app/components/badge'
 
 const StaticCardAction = props => {
   if (isEmpty(props.action) || props.action.disabled || (props.action.displayed !== undefined && !props.action.displayed)) {
@@ -105,6 +106,12 @@ const DataCard = props => {
       'data-card-clickable': props.primaryAction && !props.primaryAction.disabled,
       'data-card-poster': !props.asIcon && (!!props.poster || !!props.color || !!props.icon),
     })}>
+      {'col' === props.orientation && props.status &&
+        <Badge className="data-card-status" variant={props.status.variant}>
+          {props.status.text}
+        </Badge>
+      }
+
       {(props.poster || props.icon) &&
         <Thumbnail
           thumbnail={props.poster}
@@ -139,7 +146,7 @@ const DataCard = props => {
           {props.title}
         </Heading>
 
-        {-1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
+        {!props.children && -1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
           <p className={classes('data-card-description text-body-secondary', {
             'mb-0': -1 !== ['xs', 'sm'].indexOf(props.size) || !props.meta || (-1 === props.display.indexOf('meta') && -1 === props.display.indexOf('flags'))
           })}>

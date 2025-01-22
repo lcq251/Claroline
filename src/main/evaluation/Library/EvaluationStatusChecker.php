@@ -2,7 +2,6 @@
 
 namespace Claroline\EvaluationBundle\Library;
 
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Library\Checker\CheckerInterface;
 
 class EvaluationStatusChecker
@@ -27,7 +26,7 @@ class EvaluationStatusChecker
         foreach ($this->checkers as $checker) {
             if ($checker->supports($evaluation)) {
                 $checkerStatus = $checker->vote($evaluation);
-                if ($checkerStatus && (!$status || AbstractEvaluation::STATUS_PRIORITY[$checkerStatus] > AbstractEvaluation::STATUS_PRIORITY[$status])) {
+                if ($checkerStatus && (!$status || EvaluationStatus::PRIORITY[$checkerStatus] > EvaluationStatus::PRIORITY[$status])) {
                     $status = $checkerStatus;
                 }
             }

@@ -10,7 +10,6 @@ const GroupCard = props =>
   <DataCard
     {...props}
     id={props.data.id}
-    /*icon={!props.data.thumbnail ? 'fa fa-fw fa-users' : null}*/
     poster={props.data.thumbnail}
     title={props.data.name}
     icon={props.data.name && <>{props.data.name.charAt(0)}</>}

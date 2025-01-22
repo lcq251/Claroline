@@ -22,28 +22,6 @@ abstract class AbstractEvaluation implements EvaluationInterface
 {
     use Id;
 
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_NOT_ATTEMPTED = EvaluationStatus::NOT_ATTEMPTED;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_TODO = EvaluationStatus::TODO;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_UNKNOWN = EvaluationStatus::UNKNOWN;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_OPENED = EvaluationStatus::OPENED;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_PARTICIPATED = EvaluationStatus::PARTICIPATED;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_INCOMPLETE = EvaluationStatus::INCOMPLETE;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_FAILED = EvaluationStatus::FAILED;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_COMPLETED = EvaluationStatus::COMPLETED;
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_PASSED = EvaluationStatus::PASSED;
-
-    /** @deprecated use Claroline\EvaluationBundle\Library\EvaluationStatus instead */
-    public const STATUS_PRIORITY = EvaluationStatus::PRIORITY;
-
     #[ORM\Column(name: 'evaluation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $date = null;
 

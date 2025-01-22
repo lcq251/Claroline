@@ -78,7 +78,7 @@ const SessionForm = (props) =>
         ]
       }, {
         icon: 'fa fa-fw fa-book',
-        title: trans('workspace'),
+        title: trans('workspace', {}, 'workspace'),
         displayed: (session) => get(session, 'workspace', null),
         fields: [
           {

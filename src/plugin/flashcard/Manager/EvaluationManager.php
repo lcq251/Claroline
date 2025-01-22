@@ -8,6 +8,7 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
 use Claroline\FlashcardBundle\Entity\CardDrawnProgression;
@@ -57,15 +58,15 @@ class EvaluationManager
         }
 
         if (7 === $session && $seenCount >= $drawnCardCount && $successCount >= $drawnCardCount) {
-            $status = AbstractEvaluation::STATUS_COMPLETED;
+            $status = EvaluationStatus::COMPLETED;
         } elseif (7 === $session && $seenCount >= $drawnCardCount) {
-            $status = AbstractEvaluation::STATUS_FAILED;
+            $status = EvaluationStatus::FAILED;
         } else {
-            $status = AbstractEvaluation::STATUS_INCOMPLETE;
+            $status = EvaluationStatus::INCOMPLETE;
         }
 
         if ($seenCount >= $drawnCardCount) {
-            if (AbstractEvaluation::STATUS_COMPLETED != $status && AbstractEvaluation::STATUS_FAILED != $status) {
+            if (EvaluationStatus::COMPLETED != $status && EvaluationStatus::FAILED != $status) {
                 ++$session;
             }
             $seenCount = 0;

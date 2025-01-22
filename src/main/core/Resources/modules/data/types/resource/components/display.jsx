@@ -10,9 +10,6 @@ import {route} from '#/main/core/resource/routing'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {ResourceCard} from '#/main/core/resource/components/card'
 
-// todo embedded option
-// todo add resource actions
-
 const ResourceDisplay = (props) => {
   if (!isEmpty(props.data)) {
     return (

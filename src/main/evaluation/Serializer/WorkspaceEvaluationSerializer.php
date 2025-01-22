@@ -7,6 +7,7 @@ use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
+use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class WorkspaceEvaluationSerializer
@@ -30,12 +31,17 @@ class WorkspaceEvaluationSerializer
 
     public function serialize(Evaluation $evaluation, ?array $options = []): array
     {
+        $progression = $evaluation->getProgression();
+        if ($progression) {
+            $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
+        }
+
         $serialized = [
             'id' => $evaluation->getUuid(),
             'date' => DateNormalizer::normalize($evaluation->getDate()),
             'status' => $evaluation->getStatus(),
             'duration' => $evaluation->getDuration(),
-            'progression' => $evaluation->getProgression(),
+            'progression' => $progression,
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 

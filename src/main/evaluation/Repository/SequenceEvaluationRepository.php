@@ -29,7 +29,6 @@ class SequenceEvaluationRepository extends EntityRepository
             ->andWhere('e.sequence = :sequence')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::TODO,
                 EvaluationStatus::OPENED,
                 EvaluationStatus::INCOMPLETE,
             ])

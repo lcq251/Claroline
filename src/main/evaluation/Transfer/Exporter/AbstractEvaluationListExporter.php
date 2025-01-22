@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Transfer\Exporter;
 
 use Claroline\AppBundle\API\Options;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\TransferBundle\Transfer\Exporter\AbstractListExporter;
 
 abstract class AbstractEvaluationListExporter extends AbstractListExporter
@@ -93,15 +93,12 @@ abstract class AbstractEvaluationListExporter extends AbstractListExporter
                 'type' => 'choice',
                 'options' => [
                     'choices' => [
-                        AbstractEvaluation::STATUS_NOT_ATTEMPTED => $this->translator->trans('evaluation_not_attempted_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_TODO => $this->translator->trans('evaluation_todo_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_UNKNOWN => $this->translator->trans('evaluation_unknown_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_OPENED => $this->translator->trans('evaluation_opened_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_INCOMPLETE => $this->translator->trans('evaluation_incomplete_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_PARTICIPATED => $this->translator->trans('evaluation_participated_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_FAILED => $this->translator->trans('evaluation_failed_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_COMPLETED => $this->translator->trans('evaluation_completed_short', [], 'evaluation'),
-                        AbstractEvaluation::STATUS_PASSED => $this->translator->trans('evaluation_passed_short', [], 'evaluation'),
+                        EvaluationStatus::NOT_ATTEMPTED => $this->translator->trans('evaluation_not_attempted_short', [], 'evaluation'),
+                        EvaluationStatus::UNKNOWN => $this->translator->trans('evaluation_unknown_short', [], 'evaluation'),
+                        EvaluationStatus::INCOMPLETE => $this->translator->trans('evaluation_incomplete_short', [], 'evaluation'),
+                        EvaluationStatus::FAILED => $this->translator->trans('evaluation_failed_short', [], 'evaluation'),
+                        EvaluationStatus::COMPLETED => $this->translator->trans('evaluation_completed_short', [], 'evaluation'),
+                        EvaluationStatus::PASSED => $this->translator->trans('evaluation_passed_short', [], 'evaluation'),
                     ],
                 ],
             ], [

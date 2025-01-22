@@ -2,8 +2,8 @@
 
 namespace Claroline\EvaluationBundle\Library\Checker;
 
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationInterface;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 class ScoreChecker implements CheckerInterface
 {
@@ -41,10 +41,10 @@ class ScoreChecker implements CheckerInterface
         $successScore = ($this->successScore * $evaluation->getScoreMax()) / 100;
         if ($evaluation->getScore() >= $successScore) {
             // condition is met
-            return AbstractEvaluation::STATUS_PASSED;
+            return EvaluationStatus::PASSED;
         }
 
         // condition is not met
-        return AbstractEvaluation::STATUS_FAILED;
+        return EvaluationStatus::FAILED;
     }
 }

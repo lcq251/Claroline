@@ -60,7 +60,6 @@ const EvaluationUser = (props) =>
               }],
               displayed: [
                 baseConstants.EVALUATION_STATUS_COMPLETED,
-                baseConstants.EVALUATION_STATUS_PARTICIPATED,
                 baseConstants.EVALUATION_STATUS_PASSED
               ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
             }, {
@@ -72,7 +71,6 @@ const EvaluationUser = (props) =>
               }],
               displayed: [
                 baseConstants.EVALUATION_STATUS_COMPLETED,
-                baseConstants.EVALUATION_STATUS_PARTICIPATED,
                 baseConstants.EVALUATION_STATUS_PASSED
               ].includes(get(props.workspaceEvaluation, 'status', baseConstants.EVALUATION_STATUS_UNKNOWN))
             }

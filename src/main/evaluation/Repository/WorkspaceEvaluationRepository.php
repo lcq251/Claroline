@@ -28,7 +28,6 @@ class WorkspaceEvaluationRepository extends EntityRepository
             ->andWhere('we.workspace = :workspace')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::TODO,
                 EvaluationStatus::OPENED,
                 EvaluationStatus::INCOMPLETE,
             ])

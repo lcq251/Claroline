@@ -7,7 +7,7 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 import {constants} from '#/main/evaluation/constants'
 import {selectors} from '#/main/evaluation/tools/evaluation/store'
-import {WorkspaceCard} from '#/main/evaluation/workspace/components/card'
+import {EvaluationWorkspaceCard} from '#/main/evaluation/workspace/components/card'
 import {getActions, getDefaultAction} from '#/main/evaluation/workspace/utils'
 import {EvaluationStatus} from '#/main/evaluation/components/status'
 import {EvaluationScore} from '#/main/evaluation/components/score'
@@ -109,7 +109,7 @@ const EvaluationUsers = (props) => {
               filterable: true
             }
           ]}
-          card={WorkspaceCard}
+          card={EvaluationWorkspaceCard}
         />
       </PageListSection>
     </ToolPage>

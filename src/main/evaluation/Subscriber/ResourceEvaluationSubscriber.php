@@ -12,9 +12,7 @@ use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\AppBundle\Event\CrudEvents;
-use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
-use Claroline\CoreBundle\Event\Resource\LoadResourceEvent;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\UpdateResourceEvaluations;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -66,7 +64,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
                 }, $registeredUsers);
 
                 $this->messageBus->dispatch(
-                    new UpdateResourceEvaluations($resourceNode->getId(), $registeredUserIds, AbstractEvaluation::STATUS_TODO),
+                    new UpdateResourceEvaluations($resourceNode->getId(), $registeredUserIds),
                     [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
                 );
             }
@@ -91,17 +89,10 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
                     return $user->getId();
                 }, $registeredUsers);
 
-                if ($resourceNode->isRequired()) {
-                    $this->messageBus->dispatch(
-                        new UpdateResourceEvaluations($resourceNode->getId(), $registeredUserIds, AbstractEvaluation::STATUS_TODO),
-                        [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
-                    );
-                } else {
-                    $this->messageBus->dispatch(
-                        new UpdateResourceEvaluations($resourceNode->getId(), $registeredUserIds, AbstractEvaluation::STATUS_NOT_ATTEMPTED, false),
-                        [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
-                    );
-                }
+                $this->messageBus->dispatch(
+                    new UpdateResourceEvaluations($resourceNode->getId(), $registeredUserIds, EvaluationStatus::NOT_ATTEMPTED, false),
+                    [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+                );
             }
         }
     }
