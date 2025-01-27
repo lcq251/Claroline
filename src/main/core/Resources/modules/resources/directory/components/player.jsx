@@ -17,6 +17,8 @@ import {ResourcePage} from '#/main/core/resource'
 import {PageListSection} from '#/main/app/page/components/list-section'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_RESOURCE_CREATION} from '#/main/core/resource/modals/creation'
+import {PageContent} from '#/main/app/page'
+import {ButtonSticky} from '#/main/app/button'
 
 /**
  * Transform resource node actions.
@@ -45,28 +47,16 @@ const DirectoryPlayer = (props) => {
       name={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
       title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
     >
-      <PageListSection
-        addAction={{
-          name: 'add',
-          type: MODAL_BUTTON,
-          label: trans('add_resource', {}, 'resource'),
-          modal: [MODAL_RESOURCE_CREATION, {
-            parent: props.currentNode,
-            add: props.updateNodes
-          }],
-          displayed: get(props.currentNode, 'permissions.create', []).length > 0
-        }}
-      >
-        {props.storageLock &&
-          <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
-        }
-
+      <PageContent>
         <FileDrop
           size="lg"
           disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
           onDrop={(files) => props.createFiles(props.currentNode, files).then(props.updateNodes)}
           help={trans('file_drop_help', {}, 'resource')}
         >
+          {props.storageLock &&
+            <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
+          }
           <ListSource
             flush={true}
             name={props.listName}
@@ -99,8 +89,24 @@ const DirectoryPlayer = (props) => {
             })}
             parameters={props.listConfiguration}
           />
+
+          {get(props.currentNode, 'permissions.create', []).length > 0 &&
+            <ButtonSticky
+              {...{
+                name: 'add',
+                type: MODAL_BUTTON,
+                label: trans('add_resource', {}, 'resource'),
+                modal: [MODAL_RESOURCE_CREATION, {
+                  parent: props.currentNode,
+                  add: props.updateNodes
+                }],
+                displayed: get(props.currentNode, 'permissions.create', []).length > 0
+              }}
+              className="me-4"
+            />
+          }
         </FileDrop>
-      </PageListSection>
+      </PageContent>
     </ResourcePage>
   )
 }
