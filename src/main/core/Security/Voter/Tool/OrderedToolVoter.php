@@ -50,7 +50,7 @@ class OrderedToolVoter extends AbstractVoter
     {
         // No rights management for PublicContext for now
         if (PublicContext::getName() === $object->getContextName()) {
-            if (self::OPEN === $attributes[0] || $this->isGranted('ROLE_HOME_MANAGER')) {
+            if (self::OPEN === $attributes[0]) {
                 return VoterInterface::ACCESS_GRANTED;
             }
 

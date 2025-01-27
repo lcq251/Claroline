@@ -57,9 +57,5 @@ class PlatformRolesData extends AbstractFixture implements PreInstallInterface, 
         if (!$this->roleManager->getRoleByName(PlatformRoles::ANONYMOUS)) {
             $this->roleManager->createBaseRole(PlatformRoles::ANONYMOUS, 'anonymous');
         }
-
-        if (!$this->roleManager->getRoleByName('ROLE_HOME_MANAGER')) {
-            $this->roleManager->createBaseRole('ROLE_HOME_MANAGER', 'home_manager');
-        }
     }
 }
