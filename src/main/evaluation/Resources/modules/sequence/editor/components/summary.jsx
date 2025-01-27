@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import classes from 'classnames'
@@ -20,13 +20,14 @@ import {addStep, getStepActions} from '#/main/evaluation/sequence/editor/actions
 const SequenceEditorSummary = () => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const update = (steps) => dispatch(actions.update(steps, 'steps'))
 
   const editorPath = useSelector(selectors.path)
   const errors = useSelector(selectors.errors)
 
   const baseNumbering = useSelector(selectors.numbering)
   const steps = useSelector(selectors.steps)
+
+  const update = useCallback((steps) => dispatch(actions.update(steps, 'steps')), [editorPath])
 
   function getStepSummary(step) {
     return {

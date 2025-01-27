@@ -9,6 +9,7 @@ services:
     Claroline\EvaluationBundle\Serializer\ResourceEvaluationSerializer:
         tags: [ claroline.serializer ]
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
@@ -21,6 +22,7 @@ services:
     Claroline\EvaluationBundle\Serializer\SequenceEvaluationSerializer:
         tags: [ claroline.serializer ]
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 

@@ -16,6 +16,7 @@ import {UserEditorHistory} from '#/main/community/user/editor/components/history
 import {UserEditorIntl} from '#/main/community/user/editor/components/intl'
 import {UserEditorNotifications} from '#/main/community/user/editor/components/notifications'
 import {getAccount} from '#/main/community/user/utils'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const UserEditor = (props) => {
   const [accountPages, setAccountPages] = useState([])
@@ -33,6 +34,15 @@ const UserEditor = (props) => {
       path={props.path}
       title={get(props.formData, 'name') || trans('user')}
       name={selectors.FORM_NAME}
+      thumbnail={
+        <Thumbnail
+          className="mx-auto"
+          thumbnail={get(props.formData, 'picture')}
+          name={get(props.formData, 'name')}
+          size="md"
+          square={true}
+        />
+      }
       //onSave={props.refresh}
       target={['apiv2_user_update', {
         id: get(props.formData, 'id')
@@ -40,11 +50,9 @@ const UserEditor = (props) => {
       canAdministrate={props.formData && hasPermission('administrate', props.formData)}
       close={route(props.formData)}
       overviewPage={UserEditorOverview}
-      //appearancePage={props.appearancePage}
       historyPage={UserEditorHistory}
       actionsPage={UserEditorActions}
       permissionsPage={UserEditorPermissions}
-      defaultPage="overview"
       pages={[
         {
           name: 'locale',

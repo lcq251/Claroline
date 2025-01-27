@@ -9,42 +9,64 @@ import {EvaluationStatus} from '#/main/evaluation/components/status'
 import {GaugeContainer} from '#/main/core/layout/gauge/components/gauge'
 
 const EvaluationProgress = (props) => {
-  const circleX = scaleLinear().range([-(2 * Math.PI) / 3, (2 * Math.PI) / 3]).domain([0, 100])
-
-  const gutter =  arc()
-    .startAngle(circleX(0))
-    .endAngle(circleX(80))
-    .outerRadius(75)
-    .innerRadius(70)
-
-  const progress =  arc()
-    .startAngle(circleX(0))
-    .endAngle(circleX(props.progression))
-    .outerRadius(75)
-    .innerRadius(70)
-
   const radius = 80
 
-  return (
-    <GaugeContainer type={props.type} width={160} height={160} radius={radius} >
-      <path className="bg" d={gutter()} transform={`translate(${radius}, ${radius})`}/>
+  const circleX = scaleLinear().range([-(2 * Math.PI) / 3, (2 * Math.PI) / 3]).domain([0, 100])
+  const circleY = scaleLinear().range([0, radius]).domain([0, radius])
 
-      {props.progression &&
-        <path className="meter" d={progress()} transform={`translate(${radius}, ${radius})`}/>
-      }
+  const outerRadius = circleY(radius)
+  const innerRadius = circleY(radius - (0.08 * radius))
+
+  const gutter = arc()
+    .startAngle(circleX(0))
+    .endAngle(circleX(100))
+    .outerRadius(outerRadius)
+    .innerRadius(innerRadius)
+
+  const progress = arc()
+    .startAngle(circleX(0))
+    .endAngle(circleX(props.progression))
+    .outerRadius(outerRadius)
+    .innerRadius(innerRadius)
+
+  return (
+    <GaugeContainer className={classes('mx-auto', props.size && `evaluation-gauge-${props.size}`)} type={props.type} width={radius * 2} height={radius * 2} radius={radius} >
+      <g transform={`translate(${radius}, ${radius})`}>
+        <path
+          className="bg"
+          d={gutter()}
+          strokeLinecap="round"
+          strokeMiterlimit="round"
+        />
+
+        {props.progression &&
+          <path
+            className="meter"
+            d={progress()}
+            strokeLinecap="round"
+            strokeMiterlimit="round"
+          />
+        }
+        <span className="fa fa-check h1" />
+      </g>
     </GaugeContainer>
   )
 }
 
 EvaluationProgress.propTypes = {
+  size: T.string,
   progression: T.number,
   type: T.string
 }
 
 const EvaluationGauge = (props) =>
-  <div className={classes('evaluation-gauge', props.size && `evaluation-gauge-${props.size}`, props.className, constants.EVALUATION_STATUS_COLOR[props.status])}>
-    <EvaluationProgress progression={props.progression} type={constants.EVALUATION_STATUS_COLOR[props.status]} />
-    <EvaluationStatus status={props.status} />
+  <div className={classes('evaluation-gauge', props.className, constants.EVALUATION_STATUS_COLOR[props.status])}>
+    <EvaluationProgress
+      size={props.size}
+      progression={props.progression}
+      type={constants.EVALUATION_STATUS_COLOR[props.status]}
+    />
+    <EvaluationStatus className="py-2 px-3" status={props.status} />
   </div>
 
 EvaluationGauge.propTypes = {

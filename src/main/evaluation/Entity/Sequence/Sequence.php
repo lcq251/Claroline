@@ -71,12 +71,6 @@ class Sequence
     #[ORM\Column]
     private string $numbering = 'none';
 
-    /**
-     * Is it possible for the user to manually set the progression.
-     */
-    #[ORM\Column(name: 'manual_progression_allowed', type: Types::BOOLEAN)]
-    private bool $manualProgressionAllowed = false;
-
     #[ORM\JoinColumn(name: 'resource_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     private ?ResourceNode $overviewResource = null;
@@ -151,16 +145,6 @@ class Sequence
     public function setNumbering(string $numbering): void
     {
         $this->numbering = $numbering;
-    }
-
-    public function isManualProgressionAllowed(): bool
-    {
-        return $this->manualProgressionAllowed;
-    }
-
-    public function setManualProgressionAllowed(bool $manualProgressionAllowed): void
-    {
-        $this->manualProgressionAllowed = $manualProgressionAllowed;
     }
 
     /**

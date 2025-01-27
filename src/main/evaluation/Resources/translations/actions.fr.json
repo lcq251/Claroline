@@ -7,5 +7,6 @@
   "regenerate_certificate": "Regénérer le certificat",
   "regenerate_certificates": "Regénérer les certificats",
   "download_all_certificates": "Télécharger tous les certificats",
-  "add_sequence": "Ajouter une séquence"
+  "add_sequence": "Ajouter une séquence",
+  "finish_sequence": "Terminer la séquence"
 }

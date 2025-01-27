@@ -1,21 +1,27 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
+import {PageContent, PageSection} from '#/main/app/page'
 import {route as desktopRoute} from '#/main/core/tool/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 import {route as resourceRoute} from '#/main/core/resource/routing'
-import {ResourceAttempt as ResourceAttemptTypes, ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 
 import {ResourceEnd} from '#/main/core/resource/components/end'
-import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
 
-const PlayerEnd = (props) =>
+import {constants} from '#/main/evaluation/constants'
+import {selectors} from '#/main/evaluation/sequence/store'
+import {EvaluationGauge} from '#/main/evaluation/components/gauge'
+import {Toolbar} from '#/main/app/action'
+import {Html} from '#/main/app/components/html'
+import {isHtmlEmpty} from '#/main/app/data/types/html/validators'
+
+const Old = (props) =>
   <ResourceEnd
-    contentText={get(props.path, 'end.message') ||
+    contentText={get(props.sequence, 'end.message') ||
       <>
         <h2 className="h3">{trans('attempt_end_title', {}, 'path')}</h2>
         <p>{trans('attempt_end_info', {}, 'path')}</p>
@@ -23,55 +29,125 @@ const PlayerEnd = (props) =>
     }
     attempt={props.attempt}
     display={{
-      score: get(props.path, 'display.showScore'),
-      scoreMax: get(props.path, 'score.total'),
-      successScore: get(props.path, 'score.success'),
-      feedback: !!get(props.path, 'evaluation.successMessage') || !!get(props.path, 'evaluation.failureMessage'),
-      toolbar: get(props.path, 'end.navigation'),
-      certificates: get(props.path, 'end.workspaceCertificates')
+      score: get(props.sequence, 'display.showScore'),
+      scoreMax: get(props.sequence, 'score.total'),
+      successScore: get(props.sequence, 'score.success'),
+      feedback: !!get(props.sequence, 'evaluation.successMessage') || !!get(props.sequence, 'evaluation.failureMessage'),
+      toolbar: get(props.sequence, 'end.navigation')
     }}
     feedbacks={{
-      success: get(props.path, 'evaluation.successMessage'),
-      failure: get(props.path, 'evaluation.failureMessage')
+      success: get(props.sequence, 'evaluation.successMessage'),
+      failure: get(props.sequence, 'evaluation.failureMessage')
     }}
     actions={[
       {
         name: 'restart',
         type: LINK_BUTTON,
         label: trans('restart', {}, 'actions'),
-        target: `${props.basePath}/play`,
+        target: `${props.path}/play`,
         exact: true,
         primary: true,
         size: 'lg'
       }
-    ].concat(get(props.path, 'end.back.type') ? [
+    ].concat(get(props.sequence, 'end.back.type') ? [
       {
         name: 'home',
         type: URL_BUTTON, // we require a URL_BUTTON here to escape the embedded resource router
-        label: get(props.path, 'end.back.label') || trans('return-home', {}, 'actions'),
+        label: get(props.sequence, 'end.back.label') || trans('return-home', {}, 'actions'),
         target: '#'+classes({
-          [desktopRoute()]: 'desktop' === get(props.path, 'end.back.type'),
-          [props.workspace ? workspaceRoute(props.workspace) : undefined]: 'workspace' === get(props.path, 'end.back.type'),
-          [get(props.path, 'end.back.target') ? resourceRoute(get(props.path, 'end.back.target')) : undefined]: 'resource' === get(props.path, 'end.back.type')
+          [desktopRoute()]: 'desktop' === get(props.sequence, 'end.back.type'),
+          [props.workspace ? workspaceRoute(props.workspace) : undefined]: 'workspace' === get(props.sequence, 'end.back.type'),
+          [get(props.sequence, 'end.back.target') ? resourceRoute(get(props.sequence, 'end.back.target')) : undefined]: 'resource' === get(props.sequence, 'end.back.type')
         })
       }
     ] : [])}
   />
 
-PlayerEnd.propTypes = {
-  basePath: T.string.isRequired,
-  path: T.shape(
-    SequenceTypes.propTypes
-  ).isRequired,
-  workspace: T.object,
-  currentUser: T.object,
-  attempt: T.shape(
-    ResourceAttemptTypes.propTypes
-  ),
-  resourceEvaluations: T.arrayOf(T.shape(
-    ResourceEvaluationTypes.propTypes
-  )),
-  stepsProgression: T.object
+const PlayerEnd = () => {
+  const path = useSelector(selectors.path)
+  const sequence = useSelector(selectors.sequence)
+  const workspace = useSelector(selectors.workspace)
+  const userEvaluation = useSelector(selectors.evaluation)
+  const userFeedback = useSelector(selectors.userFeedback)
+
+  return (
+    <PageContent className="py-4 d-flex flex-column justify-content-center">
+      {userEvaluation &&
+        <PageSection size="md" className="py-4">
+          <h2 className="visually-hidden">Résultats</h2>
+          <EvaluationGauge
+            size="xl"
+            className="mx-auto"
+            {...userEvaluation}
+          />
+        </PageSection>
+      }
+
+      <PageSection size="md" className="py-4 text-center">
+        <h2 className="visually-hidden">Messages</h2>
+        <p className="h4 mb-0">Félicitations vous avez terminé la séquence.</p>
+        {!isHtmlEmpty(userFeedback) &&
+          <Html className="content-text mt-3">
+            {userFeedback}
+          </Html>
+        }
+      </PageSection>
+
+      <PageSection size="md" className="py-4">
+        <h2 className="visually-hidden">Navigation</h2>
+
+        <Toolbar
+          className="d-flex align-items-start"
+          buttonName="btn d-flex flex-column align-items-center text-uppercase text-wrap flex-fill w-25 focus-ring"
+          defaultName="btn-text-body"
+          primaryName="btn-text-body"
+          actions={[
+            {
+              name: 'finish',
+              type: CALLBACK_BUTTON,
+              displayed: !!userEvaluation && constants.EVALUATION_STATUS_INCOMPLETE === userEvaluation.status,
+              icon: 'fa fa-fw fa-arrow-rotate-left me-0 mb-3 fs-2',
+              label: trans('finish', {}, 'actions'),
+              callback: () => true,
+              primary: true
+            }, {
+              name: 'restart',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-arrow-rotate-left me-0 mb-3 fs-2',
+              label: trans('restart', {}, 'actions'),
+              target: `${path}/play`,
+              exact: true,
+              displayed: !!userEvaluation && constants.EVALUATION_STATUS_INCOMPLETE !== userEvaluation.status,
+              primary: true
+            }, {
+              name: 'download-certificate',
+              type: CALLBACK_BUTTON,
+              icon: 'fa fa-fw fa-download me-0 mb-3 fs-2',
+              label: trans('download_certificate', {}, 'actions'),
+              callback: () => true,
+              displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
+            }, {
+              name: 'show-results',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-check-double me-0 mb-3 fs-2',
+              label: trans('show-results', {}, 'actions'),
+              target: `${path}/progression`
+            }, {
+              name: 'home',
+              type: URL_BUTTON, // we require a URL_BUTTON here to escape the embedded resource router
+              label: get(sequence, 'end.back.label') || trans('exit', {}, 'actions'),
+              icon: 'fa fa-fw fa-times me-0 mb-3 fs-2',
+              target: '#'+classes({
+                [desktopRoute()]: 'desktop' === get(sequence, 'end.back.type'),
+                [workspace ? workspaceRoute(workspace) : undefined]: 'workspace' === get(sequence, 'end.back.type'),
+                [get(sequence, 'end.back.target') ? resourceRoute(get(sequence, 'end.back.target')) : undefined]: 'resource' === get(sequence, 'end.back.type')
+              })
+            }
+          ]}
+        />
+      </PageSection>
+    </PageContent>
+  )
 }
 
 export {

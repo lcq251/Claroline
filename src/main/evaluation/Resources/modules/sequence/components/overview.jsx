@@ -24,6 +24,7 @@ import {EvaluationProgression} from '#/main/evaluation/components/progression'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 
 import {selectors} from '#/main/evaluation/sequence/store'
+import {constants} from '#/main/evaluation/constants'
 
 const SequenceOverviewContent = (props) => {
   const description = get(props.sequence, 'meta.descriptionHtml', null)
@@ -131,13 +132,30 @@ const SequenceOverview = () => {
       label: trans('start', {}, 'actions'),
       target: `${sequencePath}/play`,
       primary: true,
-      disabled: isEmpty(sequence.steps)
+      disabled: isEmpty(sequence.steps),
+      displayed: !userEvaluation || [constants.EVALUATION_STATUS_UNKNOWN, constants.EVALUATION_STATUS_NOT_ATTEMPTED].includes(userEvaluation.status)
+    }, {
+      name: 'continue',
+      type: LINK_BUTTON,
+      label: trans('continue', {}, 'actions'),
+      target: `${sequencePath}/play`,
+      primary: true,
+      disabled: isEmpty(sequence.steps),
+      displayed: !!userEvaluation && constants.EVALUATION_STATUS_INCOMPLETE === userEvaluation.status
+    }, {
+      name: 'restart',
+      type: LINK_BUTTON,
+      label: trans('restart', {}, 'actions'),
+      target: `${sequencePath}/play`,
+      primary: true,
+      disabled: isEmpty(sequence.steps),
+      displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_FAILED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
     }, {
       name: 'download-certificate',
       type: CALLBACK_BUTTON,
       label: trans('download_certificate', {}, 'actions'),
       callback: () => true,
-      disabled: isEmpty(sequence.steps)
+      displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
     }
   ]
 

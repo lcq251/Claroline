@@ -8,6 +8,9 @@ import {LiquidGauge} from '#/main/core/layout/gauge/components/liquid-gauge'
 
 import {constants} from '#/main/evaluation/constants'
 
+/**
+ * @deprecated
+ */
 const EvaluationDetails = (props) => {
   let successScore
   if (props.showScore && props.successScore) {

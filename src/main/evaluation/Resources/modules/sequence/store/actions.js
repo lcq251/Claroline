@@ -1,6 +1,5 @@
 import {makeActionCreator} from '#/main/app/store/actions'
 import {API_REQUEST} from '#/main/app/api'
-import {actions as workspaceActions} from '#/main/app/contexts/workspace/store'
 
 import {constants} from '#/main/evaluation/sequence/constants'
 
@@ -12,6 +11,7 @@ export const STEP_UPDATE_PROGRESSION = 'STEP_UPDATE_PROGRESSION'
 
 export const actions = {}
 
+actions.updateUserEvaluation = makeActionCreator(SEQUENCE_EVALUATION_UPDATE, 'userEvaluation', 'resourceEvaluations')
 actions.enableNavigation = makeActionCreator(STEP_ENABLE_NAVIGATION)
 actions.disableNavigation = makeActionCreator(STEP_DISABLE_NAVIGATION)
 actions.updateStepProgression = makeActionCreator(STEP_UPDATE_PROGRESSION, 'stepId', 'status')
@@ -33,13 +33,3 @@ actions.updateProgression = (stepId, status = constants.STATUS_SEEN, silent = tr
     }
   }
 })
-
-actions.updateUserEvaluation = (sequenceEvaluation, resourceEvaluations) => (dispatch) => {
-  dispatch(workspaceActions.fetchCurrentEvaluation())
-
-  return dispatch({
-    type: SEQUENCE_EVALUATION_UPDATE,
-    userEvaluation: sequenceEvaluation,
-    resourceEvaluations: resourceEvaluations
-  })
-}

@@ -68,7 +68,8 @@ const SequencePage = (props) => {
 }
 
 SequencePage.propTypes = {
-  path: T.string,
+  title: T.string,
+  description: T.string,
   children: T.any
 }
 

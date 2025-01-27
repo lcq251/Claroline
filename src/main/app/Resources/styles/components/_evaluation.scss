@@ -1,9 +1,9 @@
 @mixin evaluation-gauge-color-variant($color, $light-color) {
   .meter {
-    stroke: $color;
+    fill: $color;
   }
   .bg {
-    stroke: fade-out($color, .75);
+    fill: fade-out($color, .75);
   }
 }
 
@@ -15,7 +15,7 @@
   .meter {
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 1rem;
+    // stroke-width: 1rem;
     fill: none;
   }
 
@@ -38,28 +38,28 @@
   @include evaluation-gauge-color-variant($learning, $learning-bg-subtle);
 
   .evaluation-status {
-    //margin-top: -40px;
-    margin-bottom: 0;
+    transform: translateY(-50%);
+    //margin-bottom: 0;
     font-size: $lead-font-size;
     text-transform: uppercase;
-    font-weight: 700;
+    //font-weight: 700;
     white-space: normal;
   }
 }
 
 .evaluation-gauge-md {
-  width: map-get($icon-sizes, md);
-  height: map-get($icon-sizes, md);
+  @include rfs(map-get($icon-sizes, md), 'width');
+  @include rfs(map-get($icon-sizes, md), 'height');
 }
 
 .evaluation-gauge-lg {
-  width: map-get($icon-sizes, lg);
-  height: map-get($icon-sizes, lg);
+  @include rfs(map-get($icon-sizes, lg), 'width');
+  @include rfs(map-get($icon-sizes, lg), 'height');
 }
 
 .evaluation-gauge-xl {
-  width: map-get($icon-sizes, xl);
-  height: map-get($icon-sizes, xl);
+  @include rfs(map-get($icon-sizes, xl), 'width');
+  @include rfs(map-get($icon-sizes, xl), 'height');
 }
 
 .evaluation-jumbotron {

@@ -1,9 +1,10 @@
 import {createSelector} from 'reselect'
-import get from 'lodash/get'
 
 import {selectors as toolSelectors} from '#/main/core/tool'
 
+import {constants} from '#/main/evaluation/constants'
 import {route} from '#/main/evaluation/sequence'
+import get from 'lodash/get'
 
 const STORE_NAME = 'evaluationSequence'
 
@@ -17,6 +18,11 @@ const data = createSelector(
 const sequence = createSelector(
   [data],
   (data) => data.sequence
+)
+
+const workspace = createSelector(
+  [sequence],
+  (sequence) => sequence ? sequence.workspace : null
 )
 
 const path = createSelector(
@@ -41,16 +47,6 @@ const empty = createSelector(
   (steps) => 0 === steps.length
 )
 
-const showOverview = createSelector(
-  [sequence],
-  (sequence) => get(sequence, 'overview.display') || false
-)
-
-const showEndPage = createSelector(
-  [sequence],
-  (sequence) => get(sequence, 'end.display') || false
-)
-
 // is step navigation enabled ?
 const navigationEnabled = createSelector(
   [store],
@@ -73,18 +69,34 @@ const resourceEvaluations = createSelector(
   (data) => data.resourceEvaluations
 )
 
+const userFeedback = createSelector(
+  [sequence, evaluation],
+  (sequence, evaluation) => {
+    switch (evaluation.status) {
+      case constants.EVALUATION_STATUS_COMPLETED:
+        return get(sequence, 'evaluation.endMessage', null)
+      case constants.EVALUATION_STATUS_PASSED:
+        return get(sequence, 'evaluation.successMessage', null) || get(sequence, 'evaluation.endMessage', null)
+      case constants.EVALUATION_STATUS_FAILED:
+        return get(sequence, 'evaluation.failedMessage', null) || get(sequence, 'evaluation.endMessage', null)
+      default:
+        return null
+    }
+  }
+)
+
 export const selectors = {
   STORE_NAME,
 
   sequence,
+  workspace,
   path,
   id,
   steps,
   empty,
   navigationEnabled,
-  showOverview,
-  showEndPage,
   evaluation,
   resourceEvaluations,
-  stepsProgression
+  stepsProgression,
+  userFeedback
 }

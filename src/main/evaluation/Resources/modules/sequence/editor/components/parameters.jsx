@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
@@ -43,14 +43,6 @@ const EditorParameters = props =>
               label: trans('enable_overview'),
               linked: [
                 {
-                  name: 'overview.message',
-                  type: 'html',
-                  label: trans('overview_message'),
-                  displayed: get(props.path, 'overview.display'),
-                  options: {
-                    workspace: props.workspace
-                  }
-                }, {
                   name: 'overview.resource',
                   type: 'resource',
                   label: trans('resource'),
@@ -61,44 +53,6 @@ const EditorParameters = props =>
                   }
                 }
               ]
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-desktop',
-          title: trans('display_parameters'),
-          fields: [
-            {
-              name: 'display.manualProgressionAllowed',
-              type: 'boolean',
-              label: trans('path_manual_progression_allowed', {}, 'path')
-            }, {
-              name: 'display.numbering',
-              type: 'choice',
-              label: trans('path_numbering', {}, 'path'),
-              required: true,
-              options: {
-                noEmpty: true,
-                condensed: true,
-                choices: constants.PATH_NUMBERINGS
-              }
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-sign-in',
-          title: trans('opening_parameters'),
-          fields: [
-            {
-              name: 'opening.secondaryResources',
-              label: trans('secondary_resources_open_target', {}, 'path'),
-              type: 'choice',
-              options: {
-                noEmpty: true,
-                condensed: true,
-                choices: {
-                  _self: trans('same_window'),
-                  _blank: trans('new_window')
-                }
-              }
             }
           ]
         }, {

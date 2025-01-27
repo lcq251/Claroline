@@ -1,5 +1,7 @@
 import {PropTypes as T} from 'prop-types'
 
+import {User} from '#/main/community/user/prop-types'
+
 const Step = {
   propTypes: {
     id: T.string.isRequired,
@@ -20,13 +22,6 @@ const Step = {
     secondaryResources: T.arrayOf(T.shape({
       // minimal resource
     }))
-  },
-  defaultProps: {
-    description: null,
-    display: {},
-    showResourceHeader: false,
-    secondaryResources: [],
-    children: []
   }
 }
 
@@ -34,9 +29,7 @@ const Sequence = {
   propTypes: {
     id: T.string.isRequired,
     display: T.shape({
-      // showOverview: T.bool,
       numbering: T.oneOf(['none', 'numeric', 'literal', 'custom']),
-      manualProgressionAllowed: T.bool,
       showScore: T.bool
     }).isRequired,
     score: T.shape({
@@ -50,7 +43,6 @@ const Sequence = {
       Step.propTypes
     )),
     overview: T.shape({
-      display: T.bool,
       // message: T.string,
       resource: T.shape({
         id: T.string.isRequired,
@@ -67,10 +59,7 @@ const Sequence = {
   },
   defaultProps: {
     display: {
-      showOverview: false,
-      showEndPage: false,
-      numbering: 'none',
-      manualProgressionAllowed: false
+      numbering: 'none'
     },
     opening: {
       secondaryResources: '_self'
@@ -79,7 +68,29 @@ const Sequence = {
   }
 }
 
+const SequenceEvaluation = {
+  propTypes: {
+    id: T.number.isRequired,
+    date: T.string.isRequired,
+    status: T.string.isRequired,
+    duration: T.number,
+    score: T.number,
+    scoreMin: T.number,
+    scoreMax: T.number,
+    progression: T.number,
+    sequence: T.shape(
+      Sequence.propTypes
+    ),
+    user: T.shape(
+      User.propTypes
+    ),
+    required: T.bool,
+    estimatedDuration: T.string
+  }
+}
+
 export {
   Sequence,
-  Step
+  Step,
+  SequenceEvaluation
 }

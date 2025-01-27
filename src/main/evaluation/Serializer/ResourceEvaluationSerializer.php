@@ -8,10 +8,12 @@ use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ResourceEvaluationSerializer
 {
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly ResourceNodeSerializer $resourceNodeSerializer,
         private readonly UserSerializer $userSerializer
     ) {
@@ -27,36 +29,68 @@ class ResourceEvaluationSerializer
         return ResourceUserEvaluation::class;
     }
 
-    public function serialize(ResourceUserEvaluation $resourceUserEvaluation, ?array $options = []): array
+    public function serialize(ResourceUserEvaluation $evaluation, ?array $options = []): array
     {
-        $score = $resourceUserEvaluation->getScore();
+        $score = $evaluation->getScore();
         if ($score) {
             $score = round($score, EvaluationOptions::SCORE_PRECISION);
         }
 
-        $progression = $resourceUserEvaluation->getProgression();
+        $progression = $evaluation->getProgression();
         if ($progression) {
             $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
-            'id' => $resourceUserEvaluation->getId(),
-            'date' => DateNormalizer::normalize($resourceUserEvaluation->getDate()),
-            'status' => $resourceUserEvaluation->getStatus(),
-            'duration' => $resourceUserEvaluation->getDuration(),
+            'id' => $evaluation->getId(),
+            'date' => DateNormalizer::normalize($evaluation->getDate()),
+            'status' => $evaluation->getStatus(),
+            'duration' => $evaluation->getDuration(),
             'score' => $score,
-            'scoreMin' => $resourceUserEvaluation->getScoreMin(),
-            'scoreMax' => $resourceUserEvaluation->getScoreMax(),
+            'scoreMin' => $evaluation->getScoreMin(),
+            'scoreMax' => $evaluation->getScoreMax(),
             'progression' => $progression,
-            'nbAttempts' => $resourceUserEvaluation->getNbAttempts(),
-            'nbOpenings' => $resourceUserEvaluation->getNbOpenings(),
-            'required' => $resourceUserEvaluation->isRequired(),
-            'estimatedDuration' => $resourceUserEvaluation->getEstimatedDuration(),
+            'nbAttempts' => $evaluation->getNbAttempts(),
+            'nbOpenings' => $evaluation->getNbOpenings(),
+            'required' => $evaluation->isRequired(),
+            'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 
+        // evaluation has a score, expose it
+        if ($evaluation->getScoreMax()) {
+            $serialized['rawScore'] = [
+                'current' => $evaluation->getScore(),
+                'total' => $evaluation->getScoreMax(),
+            ];
+
+            $score = $evaluation->getScore();
+            $total = $evaluation->getScoreMax();
+            /*if ($evaluation->getResourceNode() && $evaluation->getResourceNode()->getScoreTotal()) {
+                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getResourceNode()->getScoreTotal();
+                $total = $evaluation->getResourceNode()->getScoreTotal();
+            }*/
+
+            if ($score) {
+                $score = round($score, EvaluationOptions::SCORE_PRECISION);
+            }
+
+            $serialized['displayScore'] = [
+                'current' => $score,
+                'total' => $total,
+            ];
+        }
+
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
-            $serialized['resourceNode'] = $this->resourceNodeSerializer->serialize($resourceUserEvaluation->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]);
-            $serialized['user'] = $this->userSerializer->serialize($resourceUserEvaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
+                $isAdmin = $this->authorization->isGranted('ADMINISTRATE', $evaluation);
+                $serialized['permissions'] = [
+                    'open' => $isAdmin || $this->authorization->isGranted('OPEN', $evaluation),
+                    'administrate' => $isAdmin,
+                ];
+            }
+
+            $serialized['resourceNode'] = $this->resourceNodeSerializer->serialize($evaluation->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            $serialized['user'] = $this->userSerializer->serialize($evaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
         }
 
         return $serialized;

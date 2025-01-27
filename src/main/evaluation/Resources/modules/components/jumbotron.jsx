@@ -7,8 +7,6 @@ import {constants as baseConstants} from '#/main/evaluation/constants'
 
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
 import {displayDate, displayDuration, trans} from '#/main/app/intl'
-import {Button} from '#/main/app/action'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {PageSection} from '#/main/app/page'
 
@@ -19,7 +17,7 @@ const EvaluationJumbotron = (props) =>
   >
     <div className="d-flex flex-row gap-4" role="presentation">
       <EvaluationGauge
-        size="xl"
+        size="lg"
         {...props.evaluation}
       />
 

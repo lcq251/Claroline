@@ -64,14 +64,7 @@ actions.triggerLifecycleAction = (action) => (dispatch, getState) => {
   }
 }
 
-actions.updateUserEvaluation = (userEvaluation) => (dispatch) => {
-  dispatch(workspaceActions.fetchCurrentEvaluation())
-
-  return dispatch({
-    type: RESOURCE_EVALUATION_UPDATE,
-    userEvaluation: userEvaluation
-  })
-}
+actions.updateUserEvaluation = makeActionCreator(RESOURCE_EVALUATION_UPDATE, 'userEvaluation')
 
 actions.dismissRestrictions = makeActionCreator(RESOURCE_RESTRICTIONS_DISMISS)
 

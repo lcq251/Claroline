@@ -3,8 +3,7 @@ import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {Button} from '#/main/app/action/components/button'
-import {MENU_BUTTON, CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
+import {URL_BUTTON} from '#/main/app/buttons'
 import {Html} from '#/main/app/components/html'
 import {PageHeading, PageSection} from '#/main/app/page'
 import {ResourceCard} from '#/main/core/resource/components/card'
@@ -12,35 +11,6 @@ import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 
 import {Step as StepTypes} from '#/main/evaluation/sequence/prop-types'
-import {constants} from '#/main/evaluation/sequence/constants'
-
-const ManualProgression = props =>
-  <div className="text-body-tertiary d-flex align-items-baseline mb-1" role="presentation">
-    {trans('user_progression', {}, 'path')}
-
-    <Button
-      id="step-progression"
-      className="btn btn-link fw-bold"
-      type={MENU_BUTTON}
-      label={constants.STEP_STATUS[props.status]}
-      menu={{
-        align: 'right',
-        items: Object.keys(constants.STEP_MANUAL_STATUS).map((status) => ({
-          type: CALLBACK_BUTTON,
-          label: constants.STEP_MANUAL_STATUS[status],
-          callback: () => props.updateProgression(props.stepId, status, false)
-        }))
-      }}
-    >
-      <span className="ms-2 fa fa-caret-down" aria-hidden={true} />
-    </Button>
-  </div>
-
-ManualProgression.propTypes = {
-  status: T.string.isRequired,
-  stepId: T.string.isRequired,
-  updateProgression: T.func.isRequired
-}
 
 const SecondaryResources = props =>
   <PageSection
@@ -87,18 +57,8 @@ const Step = props =>
       subtitle={props.subtitle}
     />
 
-    {props.children}
-
-    {((props.manualProgressionAllowed && props.currentUser) || props.description) &&
+    {props.description &&
       <PageSection size="md">
-        {props.manualProgressionAllowed && props.currentUser &&
-          <ManualProgression
-            status={props.progression}
-            stepId={props.id}
-            updateProgression={props.updateProgression}
-          />
-        }
-
         {props.description &&
           <Html className="content-text mb-5">{props.description}</Html>
         }
@@ -138,10 +98,8 @@ const Step = props =>
 implementPropTypes(Step, StepTypes, {
   subtitle: T.string,
   currentUser: T.object,
-  progression: T.string,
   numbering: T.string,
   showResourceHeader: T.bool.isRequired,
-  manualProgressionAllowed: T.bool.isRequired,
   secondaryResourcesTarget: T.oneOf(['_self', '_blank']),
   updateProgression: T.func.isRequired,
   enableNavigation: T.func.isRequired,

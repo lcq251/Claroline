@@ -78,6 +78,7 @@ class WorkspaceEvaluation extends Component {
                 style={{
                   marginBottom: '10px'
                 }}
+                orientation="row"
                 data={evaluation}
                 actions={[
                   {

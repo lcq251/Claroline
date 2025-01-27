@@ -9,6 +9,8 @@ trait HasEndPage
 {
     /**
      * Show an end page when the user has finished the quiz.
+     *
+     * @deprecated
      */
     #[ORM\Column(name: 'show_end_page', type: Types::BOOLEAN)]
     private bool $showEndPage = false;
@@ -101,11 +103,17 @@ trait HasEndPage
         $this->endBackTarget = $endBackTarget;
     }
 
+    /**
+     * @deprecated
+     */
     public function getShowWorkspaceCertificates(): bool
     {
         return $this->showWorkspaceCertificates;
     }
 
+    /**
+     * @deprecated
+     */
     public function setShowWorkspaceCertificates(bool $showWorkspaceCertificates): void
     {
         $this->showWorkspaceCertificates = $showWorkspaceCertificates;

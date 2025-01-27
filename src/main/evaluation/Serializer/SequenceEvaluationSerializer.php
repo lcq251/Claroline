@@ -8,10 +8,12 @@ use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SequenceEvaluationSerializer
 {
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly SequenceSerializer $sequenceSerializer,
         private readonly UserSerializer $userSerializer
     ) {
@@ -27,34 +29,66 @@ class SequenceEvaluationSerializer
         return SequenceEvaluation::class;
     }
 
-    public function serialize(SequenceEvaluation $sequenceEvaluation, ?array $options = []): array
+    public function serialize(SequenceEvaluation $evaluation, ?array $options = []): array
     {
-        $score = $sequenceEvaluation->getScore();
-        if ($score) {
-            $score = round($score, EvaluationOptions::SCORE_PRECISION);
-        }
 
-        $progression = $sequenceEvaluation->getProgression();
+        $progression = $evaluation->getProgression();
         if ($progression) {
             $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
-            'id' => $sequenceEvaluation->getId(),
-            'date' => DateNormalizer::normalize($sequenceEvaluation->getDate()),
-            'status' => $sequenceEvaluation->getStatus(),
-            'duration' => $sequenceEvaluation->getDuration(),
-            'score' => $score,
-            'scoreMin' => $sequenceEvaluation->getScoreMin(),
-            'scoreMax' => $sequenceEvaluation->getScoreMax(),
+            'id' => $evaluation->getId(),
+            'date' => DateNormalizer::normalize($evaluation->getDate()),
+            'status' => $evaluation->getStatus(),
+            'duration' => $evaluation->getDuration(),
             'progression' => $progression,
-            'required' => $sequenceEvaluation->isRequired(),
-            'estimatedDuration' => $sequenceEvaluation->getEstimatedDuration(),
+            'required' => $evaluation->isRequired(),
+            'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 
+        // evaluation has a score, expose it
+        if ($evaluation->getScoreMax()) {
+            $serialized['rawScore'] = [
+                'current' => $evaluation->getScore(),
+                'total' => $evaluation->getScoreMax(),
+            ];
+
+            $score = $evaluation->getScore();
+            $total = $evaluation->getScoreMax();
+            if ($evaluation->getSequence() && $evaluation->getSequence()->getScoreTotal()) {
+                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getSequence()->getScoreTotal();
+                $total = $evaluation->getSequence()->getScoreTotal();
+            }
+
+            if ($score) {
+                $score = round($score, EvaluationOptions::SCORE_PRECISION);
+            }
+
+            $serialized['displayScore'] = [
+                'current' => $score,
+                'total' => $total,
+            ];
+        }
+
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
-            $serialized['resourceNode'] = $this->sequenceSerializer->serialize($sequenceEvaluation->getSequence(), [SerializerInterface::SERIALIZE_MINIMAL]);
-            $serialized['user'] = $this->userSerializer->serialize($sequenceEvaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
+                $isAdmin = $this->authorization->isGranted('ADMINISTRATE', $evaluation);
+                $serialized['permissions'] = [
+                    'open' => $isAdmin || $this->authorization->isGranted('OPEN', $evaluation),
+                    'administrate' => $isAdmin,
+                ];
+            }
+
+            $serialized['sequence'] = null;
+            if ($evaluation->getSequence()) {
+                $serialized['sequence'] = $this->sequenceSerializer->serialize($evaluation->getSequence(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
+
+            $serialized['user'] = null;
+            if ($evaluation->getUser()) {
+                $serialized['user'] = $this->userSerializer->serialize($evaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
         }
 
         return $serialized;

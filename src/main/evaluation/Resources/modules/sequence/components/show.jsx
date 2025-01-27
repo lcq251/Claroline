@@ -12,6 +12,7 @@ import {SequenceEditor} from '#/main/evaluation/sequence/editor'
 import {SequencePlayer} from '#/main/evaluation/sequence/player'
 import {SequenceDashboard} from '#/main/evaluation/sequence/dashboard'
 import {SequenceProgression} from '#/main/evaluation/sequence/components/progression'
+import {scrollTo} from '#/main/app/dom/scroll'
 
 const SequenceShow = props => {
   const [sequence, status, error, errorCode] = useFetch(selectors.STORE_NAME, ['apiv2_evaluation_sequence_open', {id: props.id}])
@@ -27,7 +28,10 @@ const SequenceShow = props => {
             component: SequenceOverview
           }, {
             path: '/play',
-            component: SequencePlayer
+            component: SequencePlayer,
+            onEnter: () => {
+              scrollTo('.app-page-heading')
+            }
           }, {
             path: '/edit',
             component: SequenceEditor,

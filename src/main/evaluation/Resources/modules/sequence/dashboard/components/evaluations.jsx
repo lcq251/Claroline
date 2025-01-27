@@ -5,7 +5,7 @@ import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
-import {PageListSection, PageSection} from '#/main/app/page'
+import {PageSection} from '#/main/app/page'
 import {DashboardPage} from '#/main/app/dashboard'
 
 import {ResourceCard} from '#/main/evaluation/resource/components/card'
@@ -15,6 +15,7 @@ import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
 import {constants} from '#/main/evaluation/constants'
 import {EvaluationStatus} from '#/main/evaluation/components/status'
+import {EvaluationSequenceCard} from '#/main/evaluation/sequence/components/card'
 
 const SequenceDashboardEvaluations = () => {
   const sequenceId = useSelector(sequenceSelectors.id)
@@ -29,6 +30,16 @@ const SequenceDashboardEvaluations = () => {
             url: ['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}],
             autoload: true
           }}
+          primaryAction={(row) => ({
+            name: 'about',
+            type: MODAL_BUTTON,
+            icon: 'fa fa-fw fa-circle-info',
+            label: trans('show-info', {}, 'actions'),
+            modal: [MODAL_RESOURCE_EVALUATIONS, {
+              userEvaluation: row
+            }],
+            scope: ['object']
+          })}
           definition={[
             {
               name: 'status',
@@ -43,19 +54,19 @@ const SequenceDashboardEvaluations = () => {
               name: 'user',
               type: 'user',
               label: trans('user'),
-              displayed: true
+              displayed: true,
+              primary: true
             }, {
               name: 'date',
               label: trans('last_activity'),
               type: 'date',
               options: {time: true},
-              displayed: true,
-              primary: true
+              displayed: true
             }, {
               name: 'duration',
               type: 'time',
               label: trans('duration'),
-              displayed: true,
+              displayed: false,
               filterable: false
             }, {
               name: 'progression',
@@ -67,20 +78,9 @@ const SequenceDashboardEvaluations = () => {
                 type: 'learning'
               }
             }, {
-              name: 'score',
+              name: 'displayScore',
               type: 'score',
               label: trans('score'),
-              calculated: (row) => {
-                if (row.scoreMax) {
-                  return {
-                    current: row.score,
-                    total: row.scoreMax,
-                    display: 100
-                  }
-                }
-
-                return null
-              },
               displayed: true,
               filterable: false
             }, {
@@ -93,16 +93,7 @@ const SequenceDashboardEvaluations = () => {
             }
           ]}
           actions={(rows) => [
-            {
-              name: 'about',
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-circle-info',
-              label: trans('show-info', {}, 'actions'),
-              modal: [MODAL_RESOURCE_EVALUATIONS, {
-                userEvaluation: rows[0]
-              }],
-              scope: ['object']
-            }, {
+            /*{
               type: MODAL_BUTTON,
               icon: 'fa fa-fw fa-envelope',
               label: trans('send-message', {}, 'actions'),
@@ -110,9 +101,9 @@ const SequenceDashboardEvaluations = () => {
               modal: [MODAL_MESSAGE, {
                 receivers: {users: rows.map((row => row.user))}
               }]
-            }
+            }*/
           ]}
-          card={ResourceCard}
+          card={EvaluationSequenceCard}
         />
       </PageSection>
     </DashboardPage>

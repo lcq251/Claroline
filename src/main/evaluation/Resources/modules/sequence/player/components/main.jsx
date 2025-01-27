@@ -1,10 +1,8 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
-import {scrollTo} from '#/main/app/dom/scroll'
 import {LinkButton} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
@@ -33,135 +31,121 @@ const SequencePlayer = props => {
   const basePath = route(props.sequence, null, props.path)
 
   return (
-    <Routes
-      path={basePath}
-      redirect={[
-        {from: '/play', to: `/play/${props.steps[0].slug}`}
-      ]}
-      routes={[
-        {
-          path: '/play/end',
-          disabled: !get(props.sequence, 'end.display'),
-          render: () => (
-            <PlayerEnd
-              basePath={basePath}
-              path={props.sequence}
-              currentUser={props.currentUser}
-              evaluation={props.evaluation}
-              resourceEvaluations={props.resourceEvaluations}
-              stepsProgression={props.stepsProgression}
-            />
-          )
-        }, {
-          path: '/play/:slug',
-          onEnter: (params) => {
-            const step = props.steps.find(step => params.slug === step.slug)
+    <SequencePage>
+      <PageAside closable={true}>
+        <PlayerSummary
+          path={route(props.sequence, null, props.path)}
+          sequence={props.sequence}
+          userEvaluation={props.evaluation}
+          resourceEvaluations={props.resourceEvaluations}
+          stepsProgression={props.stepsProgression}
+        />
+      </PageAside>
 
-            if (step && props.currentUser) {
-              props.updateProgression(step.id)
-            }
+      <Routes
+        path={basePath+'/play'}
+        redirect={[
+          {from: '/', to: `/${props.steps[0].slug}`}
+        ]}
+        routes={[
+          {
+            path: '/end',
+            component: PlayerEnd
+          }, {
+            path: '/:slug',
+            onEnter: (params) => {
+              const step = props.steps.find(step => params.slug === step.slug)
 
-            scrollTo('.app-page-heading')
-          },
-          // force navigation in case the user as navigated with the summary without finishing an opened resource
-          onLeave: () => props.enableNavigation(),
-          render: (routeProps) => {
-            const stepIndex = props.steps.findIndex(step => routeProps.match.params.slug === step.slug)
-            const step = props.steps.find(step => routeProps.match.params.slug === step.slug)
+              if (step && props.currentUser) {
+                props.updateProgression(step.id)
+              }
+            },
+            // force navigation in case the user as navigated with the summary without finishing an opened resource
+            onLeave: () => props.enableNavigation(),
+            render: (routeProps) => {
+              const stepIndex = props.steps.findIndex(step => routeProps.match.params.slug === step.slug)
+              const step = props.steps.find(step => routeProps.match.params.slug === step.slug)
 
-            if (step) {
-              const previous = getPrevious(props.steps, step)
-              const next = getNext(props.steps, step)
+              if (step) {
+                const previous = getPrevious(props.steps, step)
+                const next = getNext(props.steps, step)
 
-              return (
-                <SequencePage
-                  sequence={props.sequence}
-                  title={step.title}
-                  description={step.description}
-                >
-                  <PageAside closable={true}>
-                    <PlayerSummary
-                      path={route(props.sequence, null, props.path)}
-                      sequence={props.sequence}
-                      userEvaluation={props.evaluation}
-                      resourceEvaluations={props.resourceEvaluations}
-                      stepsProgression={props.stepsProgression}
-                    />
-                  </PageAside>
+                return (
 
-                  <PageContent className="d-flex flex-column">
-                    <LinkButton
-                      className="btn text-secondary-emphasis bg-secondary-subtle w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none"
-                      size="lg"
-                      target={classes({
-                        [`${basePath}`]: !previous,
-                        [`${basePath}/play/${previous && previous.slug}`]: !!previous
-                      })}
-                      exact={true}
-                    >
-                      <div className="content-md px-4" role="presentation">
-                        <span className="fa fa-fw fa-arrow-up icon-with-text-right" aria-hidden={true} />
-                        {!previous ?
-                          trans('home') :
-                          (getNumbering(props.sequence.display.numbering, props.sequence.steps, previous) ?
-                            getNumbering(props.sequence.display.numbering, props.sequence.steps, previous) + ' ' + previous.title :
-                            previous.title
-                          )
+
+                    <PageContent className="d-flex flex-column">
+                      <LinkButton
+                        className="btn text-secondary-emphasis bg-secondary-subtle w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none"
+                        size="lg"
+                        target={classes({
+                          [`${basePath}`]: !previous,
+                          [`${basePath}/play/${previous && previous.slug}`]: !!previous
+                        })}
+                        exact={true}
+                      >
+                        <div className="content-md px-4" role="presentation">
+                          <span className="fa fa-fw fa-arrow-up icon-with-text-right" aria-hidden={true} />
+                          {!previous ?
+                            trans('home') :
+                            (getNumbering(props.sequence.display.numbering, props.sequence.steps, previous) ?
+                              getNumbering(props.sequence.display.numbering, props.sequence.steps, previous) + ' ' + previous.title :
+                              previous.title
+                            )
+                          }
+                        </div>
+                      </LinkButton>
+
+                      <div role="presentation" className="h-100 flex-shrink-0 d-flex flex-column">
+                        <Step
+                          {...step}
+                          subtitle={trans('sequence_step_count', {current: stepIndex+1, total: props.steps.length}, 'evaluation')}
+                          currentUser={props.currentUser}
+                          numbering={getNumbering(props.sequence.display.numbering, props.sequence.steps, step)}
+                          progression={props.stepsProgression[step.id]}
+                          updateProgression={props.updateProgression}
+                          enableNavigation={props.enableNavigation}
+                          disableNavigation={props.disableNavigation}
+                          secondaryResourcesTarget={props.sequence.opening.secondaryResources}
+                        />
+
+                        {props.navigationEnabled &&
+                          <LinkButton
+                            className="btn btn-primary w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none mt-auto"
+                            size="lg"
+                            target={classes({
+                              [`${basePath}/play/end`]: !next,
+                              [`${basePath}/play/${next && next.slug}`]: !!next
+                            })}
+                            exact={true}
+                          >
+                            <div className="content-md px-4" role="presentation">
+                              {next &&
+                                <span className="fa fa-fw fa-arrow-down icon-with-text-right" aria-hidden={true} />
+                              }
+
+                              {!next ?
+                                trans('finish_sequence', {}, 'actions') :
+                                (getNumbering(props.sequence.display.numbering, props.sequence.steps, next) ?
+                                    getNumbering(props.sequence.display.numbering, props.sequence.steps, next) + ' ' + next.title :
+                                    next.title
+                                )
+                              }
+                            </div>
+                          </LinkButton>
                         }
                       </div>
-                    </LinkButton>
+                    </PageContent>
+                )
+              }
 
-                    <div role="presentation" className="h-100 flex-shrink-0 d-flex flex-column">
-                      <Step
-                        {...step}
-                        subtitle={trans('sequence_step_count', {current: stepIndex+1, total: props.steps.length}, 'evaluation')}
-                        currentUser={props.currentUser}
-                        numbering={getNumbering(props.sequence.display.numbering, props.sequence.steps, step)}
-                        progression={props.stepsProgression[step.id]}
-                        manualProgressionAllowed={props.sequence.display.manualProgressionAllowed}
-                        updateProgression={props.updateProgression}
-                        enableNavigation={props.enableNavigation}
-                        disableNavigation={props.disableNavigation}
-                        secondaryResourcesTarget={props.sequence.opening.secondaryResources}
-                      />
+              routeProps.history.push(basePath)
 
-                      {props.navigationEnabled &&
-                        <LinkButton
-                          // className="btn btn-primary w-100"
-                          className="btn btn-primary w-100 py-3 rounded-0 px-0 focus-ring focus-ring-secondary shadow-none mt-auto"
-                          size="lg"
-                          target={classes({
-                            [`${basePath}/play/end`]: !next && get(props.sequence, 'end.display'),
-                            [`${basePath}`]: !next && !get(props.sequence, 'end.display'),
-                            [`${basePath}/play/${next && next.slug}`]: !!next
-                          })}
-                          exact={true}
-                        >
-                          <div className="content-md px-4" role="presentation">
-                            <span className="fa fa-fw fa-arrow-down icon-with-text-right" aria-hidden={true} />
-                            {!next ?
-                              trans('home') :
-                              (getNumbering(props.sequence.display.numbering, props.sequence.steps, next) ?
-                                  getNumbering(props.sequence.display.numbering, props.sequence.steps, next) + ' ' + next.title :
-                                  next.title
-                              )
-                            }
-                          </div>
-                        </LinkButton>
-                      }
-                    </div>
-                  </PageContent>
-                </SequencePage>
-              )
+              return null
             }
-
-            routeProps.history.push(basePath)
-
-            return null
           }
-        }
-      ]}
-    />
+        ]}
+      />
+    </SequencePage>
   )
 }
 

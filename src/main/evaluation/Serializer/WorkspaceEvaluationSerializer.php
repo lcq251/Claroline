@@ -52,17 +52,21 @@ class WorkspaceEvaluationSerializer
                 'total' => $evaluation->getScoreMax(),
             ];
 
+            $score = $evaluation->getScore();
+            $total = $evaluation->getScoreMax();
             if ($evaluation->getWorkspace() && $evaluation->getWorkspace()->getScoreTotal()) {
-                $serialized['displayScore'] = [
-                    'current' => ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getWorkspace()->getScoreTotal(),
-                    'total' => $evaluation->getWorkspace()->getScoreTotal(),
-                ];
-            } else {
-                $serialized['displayScore'] = [
-                    'current' => $evaluation->getScore(),
-                    'total' => $evaluation->getScoreMax(),
-                ];
+                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getWorkspace()->getScoreTotal();
+                $total = $evaluation->getWorkspace()->getScoreTotal();
             }
+
+            if ($score) {
+                $score = round($score, EvaluationOptions::SCORE_PRECISION);
+            }
+
+            $serialized['displayScore'] = [
+                'current' => $score,
+                'total' => $total,
+            ];
         }
 
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
@@ -71,7 +75,6 @@ class WorkspaceEvaluationSerializer
                 $serialized['permissions'] = [
                     'open' => $isAdmin || $this->authorization->isGranted('OPEN', $evaluation),
                     'administrate' => $isAdmin,
-                    'delete' => $isAdmin,
                 ];
             }
 

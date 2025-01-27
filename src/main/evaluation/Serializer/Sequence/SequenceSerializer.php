@@ -91,7 +91,6 @@ class SequenceSerializer
             'workspace' => $serializedWorkspace,
             'display' => [
                 'numbering' => $sequence->getNumbering() ?: 'none',
-                'manualProgressionAllowed' => $sequence->isManualProgressionAllowed(),
                 'showScore' => $sequence->getShowScore(),
             ],
             'opening' => [
@@ -108,6 +107,7 @@ class SequenceSerializer
                 'evaluated' => $sequence->isEvaluated(),
                 'required' => $sequence->isRequired(),
                 'estimatedDuration' => $sequence->getEstimatedDuration(),
+                'endMessage' => $sequence->getEndMessage(),
                 'successMessage' => $sequence->getSuccessMessage(),
                 'failureMessage' => $sequence->getFailureMessage(),
             ],
@@ -115,15 +115,13 @@ class SequenceSerializer
                 'resource' => $sequence->getOverviewResource() ? $this->resourceNodeSerializer->serialize($sequence->getOverviewResource(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             ],
             'end' => [
-                'display' => $sequence->getShowEndPage(),
-                'message' => $sequence->getEndMessage(),
-                'navigation' => $sequence->hasEndNavigation(),
+                // 'message' => $sequence->getEndMessage(),
+                // 'navigation' => $sequence->hasEndNavigation(),
                 'back' => [
                     'type' => $sequence->getEndBackType(),
                     'label' => $sequence->getEndBackLabel(),
                     'target' => $sequence->getEndBackTarget() ? $this->resourceNodeSerializer->serialize($sequence->getEndBackTarget(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
                 ],
-                'workspaceCertificates' => $sequence->getShowWorkspaceCertificates(),
             ],
             'restrictions' => [
                 'dates' => DateRangeNormalizer::normalize($sequence->getAccessibleFrom(), $sequence->getAccessibleUntil()),
@@ -162,7 +160,6 @@ class SequenceSerializer
         $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $sequence);
 
         $this->sipe('display.numbering', 'setNumbering', $data, $sequence);
-        $this->sipe('display.manualProgressionAllowed', 'setManualProgressionAllowed', $data, $sequence);
         $this->sipe('display.showScore', 'setShowScore', $data, $sequence);
 
         $this->sipe('opening.secondaryResources', 'setSecondaryResourcesTarget', $data, $sequence);
@@ -171,6 +168,7 @@ class SequenceSerializer
         $this->sipe('score.total', 'setScoreTotal', $data, $sequence);
 
         if (isset($data['evaluation'])) {
+            $this->sipe('evaluation.endMessage', 'setEndMessage', $data, $sequence);
             $this->sipe('evaluation.successMessage', 'setSuccessMessage', $data, $sequence);
             $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
 
@@ -198,10 +196,8 @@ class SequenceSerializer
         }
 
         if (!empty($data['end'])) {
-            $this->sipe('end.display', 'setShowEndPage', $data, $sequence);
-            $this->sipe('end.message', 'setEndMessage', $data, $sequence);
-            $this->sipe('end.navigation', 'setEndNavigation', $data, $sequence);
-            $this->sipe('end.workspaceCertificates', 'setShowWorkspaceCertificates', $data, $sequence);
+            // $this->sipe('end.message', 'setEndMessage', $data, $sequence);
+            // $this->sipe('end.navigation', 'setEndNavigation', $data, $sequence);
 
             if (!empty($data['end']['back'])) {
                 $this->sipe('end.back.type', 'setEndBackType', $data, $sequence);

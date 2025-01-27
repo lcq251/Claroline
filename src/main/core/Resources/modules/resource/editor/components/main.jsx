@@ -19,6 +19,7 @@ import {ResourceEditorActions} from '#/main/core/resource/editor/components/acti
 
 import {actions, selectors} from '#/main/core/resource/editor/store'
 import {ResourceEditorSequences} from '#/main/core/resource/editor/components/sequences'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const ResourceEditor = (props) => {
   const resourcePath = useSelector(resourceSelectors.path)
@@ -47,6 +48,14 @@ const ResourceEditor = (props) => {
         action: 'configure',
         id: get(resourceNode, 'id')
       }]}
+      thumbnail={
+        <Thumbnail
+          className="rounded-1"
+          thumbnail={resourceNode.thumbnail}
+          name={resourceNode.name}
+          size="sm"
+        />
+      }
       close={resourcePath}
       onSave={refresh}
       canAdministrate={hasPermission('administrate', resourceNode || {})}

@@ -18,6 +18,7 @@ import {SequenceEditorPermissions} from '#/main/evaluation/sequence/editor/compo
 import {SequenceEditorRequirements} from '#/main/evaluation/sequence/editor/components/requirements'
 import {SequenceEditorEvaluation} from '#/main/evaluation/sequence/editor/components/evaluation'
 import {actions, selectors} from '#/main/evaluation/sequence/editor/store'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const SequenceEditor = () => {
   const dispatch = useDispatch()
@@ -35,6 +36,14 @@ const SequenceEditor = () => {
       path={route(sequence, null, toolPath)+'/edit'}
       name={selectors.STORE_NAME}
       title={get(editedSequence, 'name') || trans('sequence', {}, 'evaluation')}
+      thumbnail={
+        <Thumbnail
+          className="rounded-1"
+          thumbnail={editedSequence.thumbnail}
+          name={editedSequence.name}
+          size="sm"
+        />
+      }
       target={['apiv2_evaluation_sequence_update', {
         id: get(sequence, 'id')
       }]}

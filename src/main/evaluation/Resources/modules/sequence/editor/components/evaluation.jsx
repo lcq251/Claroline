@@ -20,8 +20,6 @@ const enableSuccessMessage = (formData) => get(formData, 'evaluation._enableSucc
   || get(formData, 'evaluation.successMessage')
 const enableFailureMessage = (formData) => get(formData, 'evaluation._enableFailureMessage')
   || get(formData, 'evaluation.failureMessage')
-const enableAttemptsReachedMessage = (formData) => get(formData, 'evaluation._enableAttemptsReachedMessage')
-  || get(formData, 'evaluation.attemptsReachedMessage')
 
 const SequenceEditorEvaluation = (props) => {
   const dispatch = useDispatch()
@@ -43,7 +41,7 @@ const SequenceEditorEvaluation = (props) => {
               options: {
                 unit: trans('minutes')
               },
-              help: trans('Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de l\'activité.')
+              help: trans('Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de la séquence.')
             }, {
               name: 'evaluation._enable',
               type: 'boolean',
@@ -53,7 +51,7 @@ const SequenceEditorEvaluation = (props) => {
           ]
         }, {
           title: trans('Score'),
-          subtitle: trans('Donnez un score à vos utilisateurs une fois qu\'ils ont terminé l\'activité.'),
+          subtitle: trans('Donnez un score à vos utilisateurs une fois qu\'ils ont terminé la séquence.'),
           primary: true,
           fields: [
             {
@@ -71,10 +69,10 @@ const SequenceEditorEvaluation = (props) => {
               label: trans('score_total'),
               type: 'number',
               displayed: enableScore
-            },
+            }
           ]
         }, {
-          title: trans('Conditions de réussite'),
+          title: trans('Conditions de réussite', {}, 'evaluation'),
           subtitle: trans('Donnez un statut de Réussite ou d\'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n\'est définie les utilisateurs obtiennent un statut Terminé une fois qu\'ils ont terminé l\'activité.'),
           primary: true,
           fields: [
@@ -119,15 +117,40 @@ const SequenceEditorEvaluation = (props) => {
             }
           ]
         }, {
-          title: trans('Messages'),
-          subtitle: trans('Personnalisez les messages affichés automatiquement à vos utilisateurs lors de leur progression.'),
+          title: trans('Certification', {}, 'evaluation'),
+          subtitle: trans('Délivrez un certificat téléchargeable (au format PDF) aux utilisateurs ayant terminé ou réussi la séquence. Les certificats générés sont stockés sur votre plateforme.'),
+          primary: true,
+          fields: [
+            {
+              name: 'evaluation.certified',
+              type: 'boolean',
+              label: trans('Activer la certification'),
+              onChange: (enabled) => {
+                if (!enabled) {
+                  updateProp('evaluation.certificateTemplate', null)
+                }
+              }
+            }, {
+              name: 'evaluation.certificateTemplate',
+              label: trans('Template de certificat'),
+              help: trans('Choisissez le template utilisé par la génération des certificats.'),
+              displayed: (formData) => get(formData, 'evaluation.certified', false),
+              type: 'template',
+              options: {
+                templateType: 'sequence_success_certificate'
+              }
+            }
+          ]
+        }, {
+          title: trans('Messages personnalisés'),
+          subtitle: trans('Ajoutez des messages personnalisés qui seront affichés automatiquement à vos utilisateurs lors de leur progression.'),
           primary: true,
           fields: [
             {
               name: 'evaluation._enableEndMessage',
               type: 'boolean',
-              label: trans('Personnaliser le message de fin'),
-              help: trans('Le message de fin est affiché à partir du moment où les utilisateurs ont atteint le statut "Terminé" à leur activité.'),
+              label: trans('Ajouter un message de fin'),
+              help: trans('Le message de fin est affiché à partir du moment où les utilisateurs ont atteint le statut "Terminé" à leur séquence.'),
               calculated: enableEndMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -146,8 +169,11 @@ const SequenceEditorEvaluation = (props) => {
             }, {
               name: 'evaluation._enableSuccessMessage',
               type: 'boolean',
-              label: trans('Personnaliser le message de réussite'),
-              help: trans('Le message de réussite est affiché à partir du moment où les utilisateurs ont atteint le statut "Succès" à leur activité.'),
+              label: trans('Ajouter un message de réussite'),
+              help: [
+                trans('Le message de réussite est affiché à partir du moment où les utilisateurs ont atteint le statut "Réussi" à leur séquence.'),
+                trans('Le message de réussite remplace le message de fin.')
+              ],
               calculated: enableSuccessMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -166,8 +192,11 @@ const SequenceEditorEvaluation = (props) => {
             }, {
               name: 'evaluation._enableFailureMessage',
               type: 'boolean',
-              label: trans('Personnaliser le message d\'échec'),
-              help: trans('Le message d\'échec est affiché à partir du moment où les utilisateurs ont atteint le statut "Echec" à leur activité.'),
+              label: trans('Ajouter un message d\'échec'),
+              help: [
+                trans('Le message d\'échec est affiché à partir du moment où les utilisateurs ont atteint le statut "Echoué" à leur séquence.'),
+                trans('Le message d\'échec remplace le message de fin.')
+              ],
               calculated: enableFailureMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -181,26 +210,6 @@ const SequenceEditorEvaluation = (props) => {
                   type: 'html',
                   required: true,
                   displayed: enableFailureMessage
-                }
-              ]
-            }, {
-              name: 'evaluation._enableAttemptsReachedMessage',
-              type: 'boolean',
-              label: trans('Personnaliser le message de tentatives épuisées'),
-              help: trans('Le message de tentatives épuisées est affiché à partir du moment où les utilisateurs ont consommé toutes leurs tentatives disponibles.'),
-              calculated: enableAttemptsReachedMessage,
-              onChange: (enabled) => {
-                if (!enabled) {
-                  updateProp('evaluation.attemptsReachedMessage', null)
-                }
-              },
-              linked: [
-                {
-                  name: 'evaluation.attemptsReachedMessage',
-                  label: trans('Message de tentatives épuisées'),
-                  type: 'html',
-                  required: true,
-                  displayed: enableAttemptsReachedMessage
                 }
               ]
             }
