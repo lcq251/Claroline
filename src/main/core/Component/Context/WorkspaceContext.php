@@ -20,13 +20,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class WorkspaceContext extends AbstractContext
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
         private readonly SecurityManager $securityManager,
-        private readonly SerializerProvider $serializer,
         private readonly WorkspaceManager $manager,
-        private readonly WorkspaceRestrictionsManager $restrictionsManager,
-        private readonly WorkspaceEvaluationManager $evaluationManager
+        private readonly WorkspaceRestrictionsManager $restrictionsManager
     ) {
     }
 
@@ -104,21 +101,7 @@ class WorkspaceContext extends AbstractContext
 
     public function getAdditionalData(?ContextSubjectInterface $contextSubject): array
     {
-        /** @var Workspace $workspace */
-        $workspace = $contextSubject;
-        $user = $this->tokenStorage->getToken()?->getUser();
-
-        $userEvaluation = null;
-        if ($user instanceof User) {
-            $userEvaluation = $this->serializer->serialize(
-                $this->evaluationManager->getUserEvaluation($workspace, $user),
-                [SerializerInterface::SERIALIZE_MINIMAL]
-            );
-        }
-
-        return [
-            'userEvaluation' => $userEvaluation,
-        ];
+        return [];
     }
 
     public function create(array $data): void

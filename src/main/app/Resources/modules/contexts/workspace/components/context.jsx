@@ -15,7 +15,6 @@ import {route} from '#/main/core/workspace/routing'
 import {WorkspaceForbidden} from '#/main/app/contexts/workspace/containers/forbidden'
 import {WorkspaceLoading} from '#/main/app/contexts/workspace/components/loading'
 import {WorkspaceNotFound} from '#/main/app/contexts/workspace/components/not-found'
-import {WorkspaceMenu} from '#/main/app/contexts/workspace/containers/menu'
 import {WorkspaceEditor} from '#/main/app/contexts/workspace/editor/containers/main'
 
 const WorkspaceWarning = () => {
@@ -93,7 +92,6 @@ const WorkspaceWarning = () => {
 const WorkspaceContext = (props) =>
   <ContextMain
     {...props}
-    menu={WorkspaceMenu}
     editor={WorkspaceEditor}
     loadingPage={WorkspaceLoading}
     notFoundPage={WorkspaceNotFound}

@@ -9,13 +9,9 @@ import {selectors, actions} from '#/main/app/context/store'
 const ContextUser = connect(
   (state) => ({
     path: selectors.path(state),
-    authenticated: securitySelectors.isAuthenticated(state),
     currentUser: securitySelectors.currentUser(state),
     impersonated: selectors.impersonated(state),
-    roles: selectors.roles(state),
-
-    help: configSelectors.param(state, 'help'),
-    registration: configSelectors.param(state, 'selfRegistration'),
+    help: configSelectors.param(state, 'help')
   }),
   (dispatch) => ({
     changeStatus(currentUser, status) {

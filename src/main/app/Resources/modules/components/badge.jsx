@@ -4,7 +4,7 @@ import classes from 'classnames'
 
 const Badge = (props) =>
   <span className={classes('badge', props.className, {
-    [`bg-${props.variant}`]: !props.subtle,
+    [`text-bg-${props.variant}`]: !props.subtle,
     [`bg-${props.variant}-subtle text-${props.variant}-emphasis`]: props.subtle
   })}>
     {props.children}

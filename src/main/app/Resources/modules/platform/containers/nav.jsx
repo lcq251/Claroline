@@ -1,11 +1,11 @@
 import {connect} from 'react-redux'
 
-import {ContextNav as ContextNavComponent} from '#/main/app/context/components/nav'
+import {PlatformNav as PlatformNavComponent} from '#/main/app/platform/components/nav'
 import {selectors} from '#/main/app/context/store'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {selectors as platformSelectors} from '#/main/app/platform/store'
 
-const ContextNav = connect(
+const PlatformNav = connect(
   (state) => ({
     currentContext: selectors.data(state),
     currentContextType: selectors.type(state),
@@ -14,8 +14,8 @@ const ContextNav = connect(
     availableContexts: platformSelectors.availableContexts(state),
     favoriteContexts: platformSelectors.favoriteContexts(state)
   })
-)(ContextNavComponent)
+)(PlatformNavComponent)
 
 export {
-  ContextNav
+  PlatformNav
 }

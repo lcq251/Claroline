@@ -4,94 +4,22 @@ import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {url} from '#/main/app/api'
-import {Button, Toolbar} from '#/main/app/action'
-import {CALLBACK_BUTTON, LINK_BUTTON, MenuButton, URL_BUTTON} from '#/main/app/buttons'
+import {Button} from '#/main/app/action'
+import {CALLBACK_BUTTON, LINK_BUTTON, MENU_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {User as UserTypes} from '#/main/community/user/prop-types'
 import {constants as userConst} from '#/main/app/user/constants'
-
-const ContextAuthentication = (props) =>
-  <Toolbar
-    className="d-grid gap-1 m-3"
-    variant="btn"
-    onClick={props.closeMenu}
-    actions={[
-      {
-        name: 'login',
-        type: LINK_BUTTON,
-        label: trans('login', {}, 'actions'),
-        target: '/login',
-        size: 'lg',
-        primary: true
-      }, {
-        name: 'create-account',
-        type: LINK_BUTTON,
-        label: trans('create-account', {}, 'actions'),
-        target: '/registration',
-        displayed: props.registration
-      }
-    ]}
-  />
-
-ContextAuthentication.propTypes = {
-  registration: T.bool.isRequired,
-  closeMenu: T.func
-}
-
-const ContextImpersonation = (props) =>
-  <div>
-    {trans('impersonation_mode_alert')}
-
-    <div className="btn-toolbar gap-1 mt-3 justify-content-end" role="presentation">
-      <Button
-        className="btn btn-warning"
-        type={URL_BUTTON}
-        label={trans('exit', {}, 'actions')}
-        target={url(['claro_index', {_switch: '_exit'}])+'#'+location.pathname}
-        onClick={props.closeMenu}
-      />
-    </div>
-  </div>
-
-ContextImpersonation.propTypes = {
-
-}
+import {displayUsername} from '#/main/community/utils'
 
 const ContextUser = (props) => {
-  if (!props.authenticated) {
-    return (
-      <div className="app-menu-user p-1 mt-auto d-flex flex-column align-items-stretch" role="presentation">
-        <Toolbar
-          className="d-grid gap-1 my-1 mx-3"
-          buttonName="btn"
-          primaryName="btn-primary"
-          defaultName="btn-link"
-          onClick={props.closeMenu}
-          actions={[
-            {
-              name: 'login',
-              type: LINK_BUTTON,
-              label: trans('login', {}, 'actions'),
-              target: '/login',
-              primary: true
-            }, {
-              name: 'create-account',
-              type: LINK_BUTTON,
-              label: trans('create-account', {}, 'actions'),
-              target: '/registration',
-              displayed: props.registration
-            }
-          ]}
-        />
-      </div>
-    )
-  }
-
   return (
     <div className={classes('app-menu-user d-flex flex-column align-items-stretch', props.className)} role="presentation">
-      <MenuButton
+      <Button
         id="current-user-menu"
+        type={MENU_BUTTON}
+        label={displayUsername(props.currentUser)}
+        tooltip="right"
         className="app-current-user text-start d-flex flex-row p-0 focus-ring rounded-circle"
         menu={{
           items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
@@ -122,7 +50,7 @@ const ContextUser = (props) => {
               name: 'parameters',
               type: LINK_BUTTON,
               icon: 'fa fa-fw fa-sliders',
-              label: trans('account', {}, 'context'),
+              label: trans('my_account'),
               target: '/account'
             }, {
               name: 'help',
@@ -131,6 +59,13 @@ const ContextUser = (props) => {
               label: trans('help'),
               target: props.help,
               displayed: !!props.help
+            }, {
+              name: 'exit-impersonation',
+              type: URL_BUTTON,
+              icon: 'fa fa-fw fa-mask',
+              label: trans('exit', {}, 'actions'),
+              displayed: props.impersonated,
+              target: url(['claro_index', {_switch: '_exit'}])+'#'+location.pathname
             }, {
               name: 'logout',
               type: URL_BUTTON,
@@ -142,25 +77,19 @@ const ContextUser = (props) => {
         }}
       >
         <UserAvatar user={props.currentUser} noStatusTooltip={true} size={props.size || 'xs'} />
-      </MenuButton>
+      </Button>
     </div>
   )
 }
 
 ContextUser.propTypes = {
   path: T.string.isRequired,
-  authenticated: T.bool.isRequired,
   currentUser: T.shape(
     UserTypes.propTypes
   ),
-  roles: T.arrayOf(T.shape({
-    translationKey: T.string.isRequired
-  })),
   help: T.string,
   impersonated: T.bool.isRequired,
-  registration: T.bool.isRequired,
-  changeStatus: T.func.isRequired,
-  closeMenu: T.func
+  changeStatus: T.func.isRequired
 }
 
 export {

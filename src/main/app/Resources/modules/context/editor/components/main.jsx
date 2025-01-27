@@ -18,6 +18,7 @@ const ContextEditor = (props) => {
   return (
     <Editor
       path={props.path+'/edit'}
+      thumbnail={props.thumbnail}
       title={get(props.formData, 'name') || trans(props.contextName, {}, 'context')}
       name={selectors.FORM_NAME}
       onSave={props.refresh}

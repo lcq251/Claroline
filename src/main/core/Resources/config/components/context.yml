@@ -3,13 +3,10 @@ services:
         parent: Claroline\AppBundle\Component\Context\AbstractContext
         tags: [ 'claroline.component.context' ]
         arguments:
-            - '@security.token_storage'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\Manager\SecurityManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager'
-            - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
 
     Claroline\CoreBundle\Component\Context\PublicContext:
         parent: Claroline\AppBundle\Component\Context\AbstractContext

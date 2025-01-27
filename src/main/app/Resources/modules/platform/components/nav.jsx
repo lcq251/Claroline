@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -10,16 +11,11 @@ import {Thumbnail} from '#/main/app/components/thumbnail'
 
 import {MODAL_CONTEXT_SEARCH} from '#/main/app/context/modals/search'
 import {NotificationButton} from '#/main/notification/components/button'
-//import {PlatformOrganization} from '#/main/app/platform/components/organization'
-import {useSelector} from 'react-redux'
+
 import {selectors} from '#/main/app/platform/store'
 import {ContextUser} from '#/main/app/context/containers/user'
 
-const ContextNav = (props) => {
-  if (!props.currentUser) {
-    return null
-  }
-
+const PlatformNav = (props) => {
   let pinnedContexts = [].concat(props.favoriteContexts)
   if (!isEmpty(props.currentContext) && 'workspace' === props.currentContextType) {
     let currentPos = pinnedContexts.findIndex((context) => context.id === props.currentContext.id)
@@ -114,8 +110,10 @@ const ContextNav = (props) => {
   )
 }
 
-ContextNav.propTypes = {
-  currentUser: T.shape({}),
+PlatformNav.propTypes = {
+  currentUser: T.shape({
+
+  }).isRequired,
   currentContext: T.shape({
     id: T.string
   }),
@@ -125,10 +123,13 @@ ContextNav.propTypes = {
 
   })),
   favoriteContexts: T.arrayOf(T.shape({
-
+    id: T.string.isRequired,
+    slug: T.string.isRequired,
+    name: T.string.isRequired,
+    thumbnail: T.string
   }))
 }
 
 export {
-  ContextNav
+  PlatformNav
 }

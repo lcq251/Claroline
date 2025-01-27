@@ -61,6 +61,12 @@ const EditorMenu = (props) => {
 
   return (
     <nav className="app-menu app-editor-menu" aria-label={props.title}>
+      {props.thumbnail &&
+        <div className="app-editor-menu-thumbnail mb-3 text-center" role="presentation">
+          {props.thumbnail}
+        </div>
+      }
+
       {props.title &&
         <h1 className="app-editor-menu-header mb-2">{props.title}</h1>
       }

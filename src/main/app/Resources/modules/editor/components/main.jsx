@@ -96,6 +96,7 @@ const Editor = (props) => {
           path={props.path}
           title={props.title}
           pages={pages}
+          thumbnail={props.thumbnail}
         />
 
         <div className="app-editor-body" role="presentation" tabIndex={-1   }>

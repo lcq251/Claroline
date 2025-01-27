@@ -6,15 +6,16 @@ import isEmpty from 'lodash/isEmpty'
 import {makeCancelable} from '#/main/app/api'
 import {Routes, Redirect} from '#/main/app/router'
 import {getContexts} from '#/main/app/context/registry'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {selectors as configSelectors} from '#/main/app/config/store'
 
 import {PlatformForbidden} from '#/main/app/platform/components/forbidden'
 import {PlatformRegistration} from '#/main/app/platform/components/registration'
 import {PlatformSendPassword} from '#/main/app/platform/components/send-password'
 import {PlatformNewPassword} from '#/main/app/platform/components/new-password'
 import {PlatformLogin} from '#/main/app/platform/components/login'
+import {PlatformNav} from '#/main/app/platform/containers/nav'
 import {selectors} from '#/main/app/platform/store'
-import {selectors as securitySelectors} from '#/main/app/security/store'
-import {selectors as configSelectors} from '#/main/app/config/store'
 
 const Platform = () => {
   const history = useHistory()
@@ -57,6 +58,9 @@ const Platform = () => {
 
   return (
     <>
+      {authenticated &&
+        <PlatformNav />
+      }
       <Routes
         redirect={[
           {from: '/', exact: true, to: '/unavailable', disabled: !unavailable},

@@ -76,7 +76,6 @@ const EmptyState = (props) => {
           />
         }
       </div>
-
     </div>
   )
 }

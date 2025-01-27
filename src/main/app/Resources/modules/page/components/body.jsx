@@ -41,7 +41,7 @@ PageAside.propTypes = {
 }
 
 const PageBody = (props) =>
-  <div className="app-page-body" role="presentation">
+  <div className="app-page-body z-1" role="presentation">
     {props.children}
   </div>
 

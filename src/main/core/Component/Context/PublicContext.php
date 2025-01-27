@@ -77,8 +77,10 @@ class PublicContext extends AbstractContext
 
         return [
             'data' => [
+                'name' => $this->config->getParameter('name'),
                 'permissions' => [
                     'open' => true,
+                    'edit' => $this->securityManager->isAdmin(),
                     'administrate' => $this->securityManager->isAdmin(),
                 ],
                 'opening' => [

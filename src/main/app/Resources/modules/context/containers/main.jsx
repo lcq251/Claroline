@@ -14,7 +14,6 @@ const ContextMain = withRouter(
         contextData: selectors.data(state),
         loaded: selectors.loaded(state),
         notFound: selectors.notFound(state),
-        managed: selectors.managed(state),
         accessErrors: selectors.accessErrors(state),
         defaultOpening: selectors.defaultOpening(state),
         tools: selectors.tools(state)

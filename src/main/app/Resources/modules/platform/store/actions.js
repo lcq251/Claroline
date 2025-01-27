@@ -1,5 +1,7 @@
 import {API_REQUEST, url} from '#/main/app/api'
 import {makeActionCreator} from '#/main/app/store/actions'
+import {actions as securityActions} from '#/main/app/security/store'
+import merge from 'lodash/merge'
 
 // action names
 export const PLATFORM_SET_CURRENT_ORGANIZATION = 'PLATFORM_SET_CURRENT_ORGANIZATION'
@@ -30,5 +32,13 @@ actions.changeOrganization = (organization) => (dispatch) => dispatch({
       method: 'PUT'
     },
     success: () => dispatch(actions.setCurrentOrganizations(organization))
+  }
+})
+
+actions.changeStatus = (currentUser, status) => (dispatch) => dispatch({
+  [API_REQUEST]: {
+    url: ['apiv2_user_change_status', {status: status}],
+    success: (response) => dispatch(securityActions.updateUser(merge({}, currentUser, {status: response}))),
+    request: {method: 'PUT'}
   }
 })

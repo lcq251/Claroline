@@ -16,7 +16,6 @@ import {hasPermission} from '#/main/app/security'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
-import {ContextNav} from '#/main/app/context/containers/nav'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
@@ -113,7 +112,7 @@ const ContextMain = (props) => {
         title={trans('not_found')}
         description={trans('not_found_desc')}
       />
-  } else if (!isEmpty(props.accessErrors) && !props.managed) {
+  } else if (!isEmpty(props.accessErrors)) {
     CurrentPage = props.forbiddenPage ?
       createElement(props.forbiddenPage) :
       <ContentForbidden
@@ -161,7 +160,6 @@ const ContextMain = (props) => {
 
   return (
     <>
-      <ContextNav/>
       {CurrentPage}
 
       {props.children}
@@ -179,7 +177,6 @@ ContextMain.propTypes = {
   loaded: T.bool.isRequired,
   notFound: T.bool.isRequired,
   accessErrors: T.object,
-  managed: T.bool,
   // context params
   defaultOpening: T.string,
   tools: T.arrayOf(T.shape({
@@ -189,8 +186,6 @@ ContextMain.propTypes = {
     })
   })),
   // custom context components
-  menu: T.elementType,
-  footer: T.elementType,
   loadingPage: T.elementType,
   notFoundPage: T.elementType,
   forbiddenPage: T.elementType,
