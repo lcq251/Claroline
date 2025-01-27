@@ -13,7 +13,7 @@ const FullscreenModal = props =>
     className="h-100 w-100 d-flex"
   >
     <CallbackButton
-      className="focus-ring"
+      className="focus-ring flex-fill"
       callback={props.fadeModal}
     >
       <img
