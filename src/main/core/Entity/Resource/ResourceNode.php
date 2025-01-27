@@ -84,12 +84,6 @@ class ResourceNode implements CrudEntityInterface
     #[ORM\ManyToOne(targetEntity: ResourceType::class)]
     private ?ResourceType $resourceType = null;
 
-    /**
-     * Display resource icon/evaluation when the resource is rendered.
-     */
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
-    private ?bool $showIcon = true;
-
     #[ORM\Column]
     #[Gedmo\TreePathSource]
     private ?string $name = null;
@@ -124,9 +118,6 @@ class ResourceNode implements CrudEntityInterface
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
     private bool $active = true;
-
-    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    private bool $fullscreen = false;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $accesses = [];
@@ -217,16 +208,6 @@ class ResourceNode implements CrudEntityInterface
     public function getChildren(): Collection
     {
         return $this->children;
-    }
-
-    public function getShowIcon(): bool
-    {
-        return $this->showIcon;
-    }
-
-    public function setShowIcon(bool $showIcon): void
-    {
-        $this->showIcon = $showIcon;
     }
 
     public function setParent(self $parent = null): void
@@ -320,16 +301,6 @@ class ResourceNode implements CrudEntityInterface
     public function setActive(bool $active): void
     {
         $this->active = $active;
-    }
-
-    public function setFullscreen(bool $fullscreen): void
-    {
-        $this->fullscreen = $fullscreen;
-    }
-
-    public function isFullscreen(): bool
-    {
-        return $this->fullscreen;
     }
 
     public function getAccessCode(): ?string
