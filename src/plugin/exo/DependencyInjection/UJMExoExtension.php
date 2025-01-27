@@ -23,6 +23,7 @@ class UJMExoExtension extends Extension
         $locator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new YamlFileLoader($container, $locator);
         $loader->load('services.yml');
+        $loader->load('components.yml');
 
         if ('test' === $container->getParameter('kernel.environment')) {
             $loader->load('services_test.yml');

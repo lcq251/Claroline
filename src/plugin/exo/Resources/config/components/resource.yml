@@ -1,0 +1,12 @@
+services:
+    UJM\ExoBundle\Component\Resource\ExerciseResource:
+        tags: [ 'claroline.component.resource', 'kernel.event_subscriber' ]
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@UJM\ExoBundle\Manager\ExerciseManager'
+            - '@UJM\ExoBundle\Manager\Attempt\PaperManager'
+            - '@UJM\ExoBundle\Manager\AttemptManager'
+            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

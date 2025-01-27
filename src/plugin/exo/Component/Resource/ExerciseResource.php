@@ -1,6 +1,6 @@
 <?php
 
-namespace UJM\ExoBundle\Listener\Resource;
+namespace UJM\ExoBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
@@ -23,7 +23,7 @@ use UJM\ExoBundle\Repository\ExerciseRepository;
 /**
  * Listens to resource events dispatched by the core.
  */
-class ExerciseListener extends ResourceComponent implements EvaluatedResourceInterface
+class ExerciseResource extends ResourceComponent implements EvaluatedResourceInterface
 {
     private ExerciseRepository $repository;
 
@@ -45,7 +45,7 @@ class ExerciseListener extends ResourceComponent implements EvaluatedResourceInt
         return 'ujm_exercise';
     }
 
-    /** @var Exercise $resource */
+    /** @param Exercise $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $currentUser = $this->tokenStorage->getToken()?->getUser();
@@ -77,7 +77,7 @@ class ExerciseListener extends ResourceComponent implements EvaluatedResourceInt
         ];
     }
 
-    /** @var Exercise $resource */
+    /** @param Exercise $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         // Invalidate unfinished papers
@@ -88,7 +88,7 @@ class ExerciseListener extends ResourceComponent implements EvaluatedResourceInt
         ];
     }
 
-    /** @var Exercise $resource */
+    /** @param Exercise $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         // we cannot delete an evaluative quiz with results
