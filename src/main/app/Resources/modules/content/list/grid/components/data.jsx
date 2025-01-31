@@ -1,4 +1,5 @@
 import React from 'react'
+import fill from 'lodash/fill'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
@@ -25,6 +26,11 @@ const GridData = props => {
     ) || []
   }
 
+  let data = props.data
+  if (!props.loaded) {
+    data = fill(new Array(10), {id: ''})
+  }
+
   return (
     <div className={`data-grid data-grid-${props.size} data-grid-${props.orientation}`}>
       {(props.selection || props.sorting) &&
@@ -43,6 +49,7 @@ const GridData = props => {
                   props.selection.toggleAll([])
                 }
               }}
+              disabled={!props.loaded || props.invalidated}
             />
           }
 
@@ -65,22 +72,24 @@ const GridData = props => {
         />
       }
 
-      <ul className="data-grid-content list-unstyled mb-auto">
-        {props.data.map((row) =>
+      <ul className="data-grid-content list-unstyled mb-auto" aria-busy={!props.loaded || props.invalidated}>
+        {data.map((row, index) =>
           <GridItem
-            key={row.id}
+            key={index}
             size={props.size}
             orientation={props.orientation}
             row={row}
             card={props.card}
-            primaryAction={getPrimaryAction(row, props.primaryAction)}
-            actions={getActions([row], props.actions)}
+            primaryAction={props.loaded ? getPrimaryAction(row, props.primaryAction) : undefined}
+            actions={props.loaded ? getActions([row], props.actions) : undefined}
             selected={isRowSelected(row, props.selection ? props.selection.current : [])}
             onSelect={
               props.selection ? () => {
                 props.selection.toggle(row, !isRowSelected(row, props.selection ? props.selection.current : []))
               } : null
             }
+            loaded={props.loaded}
+            invalidated={props.invalidated}
           />
         )}
       </ul>

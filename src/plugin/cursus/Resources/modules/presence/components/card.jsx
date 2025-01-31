@@ -3,35 +3,26 @@ import get from 'lodash/get'
 import classes from 'classnames'
 import {PropTypes as T} from 'prop-types'
 
-import {asset} from '#/main/app/config/asset'
-import {trans} from '#/main/app/intl/translation'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {constants} from '#/plugin/cursus/constants'
 import {displayUsername} from '#/main/community/utils'
 import {User as UserTypes} from '#/main/community/prop-types'
-import {UserAvatar} from '#/main/app/user/components/avatar'
 
 const PresenceCard = props =>
   <DataCard
     {...props}
-    className={classes(props.className, {
-      'data-card-muted': get(props.data.user, 'restrictions.disabled', false)
-    })}
-    id={props.data.user.id}
-    poster={props.data.user.thumbnail ? asset(props.data.user.thumbnail) : null}
-    icon={
-      <UserAvatar user={props.data.user} />
-    }
+    poster={get(props.data, 'user.picture')}
+    name={displayUsername(props.data.user)}
     title={displayUsername(props.data.user)}
     subtitle={
       <div
         className={classes('badge', `text-bg-${constants.PRESENCE_STATUS_COLORS[props.data.status]}`)}>
         {constants.PRESENCE_STATUSES[props.data.status]}
-      </div>}
-    flags={[get(props.data.user, 'restrictions.disabled', false) && ['fa fa-circle-xmark', trans('user_disabled', {}, 'community')]
-    ].filter(flag => !!flag)}
+      </div>
+    }
     contentText={get(props.data.user, 'meta.description')}
+    asIcon={true}
   />
 
 PresenceCard.propTypes = {

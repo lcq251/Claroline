@@ -39,7 +39,7 @@ const TableSortingCell = props =>
     })}
     onClick={e => {
       e.stopPropagation()
-      if (!!props.disabled) {
+      if (!props.disabled) {
         props.onSort()
       }
     }}

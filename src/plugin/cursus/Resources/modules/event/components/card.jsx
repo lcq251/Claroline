@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {asset} from '#/main/app/config/asset'
 import {displayDateRange} from '#/main/app/intl'
 import {DataCard} from '#/main/app/data/components/card'
 
@@ -11,11 +10,11 @@ import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 const EventCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    poster={props.data.thumbnail}
+    name={props.data.name}
+    icon="fa fa-calendar-day"
     title={
-      <div className="d-flex flex-row gap-2 align-items-baseline">
+      <div className="d-flex flex-row gap-2 align-items-baseline" role="presentation">
         {props.data.name}
         {'row' === props.orientation &&
           <EventStatus className="ms-auto" startDate={props.data.start} endDate={props.data.end} subtle={true} />

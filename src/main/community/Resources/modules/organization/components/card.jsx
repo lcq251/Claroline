@@ -12,7 +12,8 @@ const OrganizationCard = (props) =>
     {...props}
     id={props.data.id}
     poster={props.data.thumbnail}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    icon="fa fa-building"
+    name={props.data.name}
     title={props.data.name}
     contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
     asIcon={true}

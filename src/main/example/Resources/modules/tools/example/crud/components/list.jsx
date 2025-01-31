@@ -9,6 +9,7 @@ import {ListData} from '#/main/app/content/list/containers/data'
 import {CrudCard} from '#/main/example/tools/example/crud/components/card'
 import {selectors} from '#/main/example/tools/example/crud/store/selectors'
 import {PageListSection} from '#/main/app/page/components/list-section'
+import {DataMicro} from '#/main/app/data/components/micro'
 
 const CrudList = (props) =>
   <ToolPage
@@ -88,7 +89,8 @@ const CrudList = (props) =>
             type: 'string',
             label: trans('name'),
             primary: true,
-            displayed: true
+            displayed: true,
+            render: (row) => <DataMicro object={row} />
           }, {
             name: 'meta.description',
             type: 'string',

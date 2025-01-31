@@ -1,7 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {DataCard} from '#/main/app/data/components/card'
@@ -9,12 +7,9 @@ import {DataCard} from '#/main/app/data/components/card'
 const ToolCard = props =>
   <DataCard
     {...props}
-    className={classes(props.className, {
-      'data-card-muted': get(props.data, 'restrictions.hidden', false)
-    })}
-    id={props.data.id}
-    icon={!props.data.thumbnail ? `fa fa-${props.data.icon}` : null}
+    icon={`fa fa-${props.data.icon}`}
     poster={props.data.thumbnail}
+    name={trans(props.data.name, {}, 'tools')}
     title={trans(props.data.name, {}, 'tools')}
     asIcon={true}
   />

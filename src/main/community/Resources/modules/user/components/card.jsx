@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
-import classes from 'classnames'
 
 import {DataCard} from '#/main/app/data/components/card'
 
@@ -10,12 +9,9 @@ import {UserStatus} from '#/main/app/user/components/status'
 
 const UserCard = props =>
   <DataCard
-    className={classes(props.className, {
-      'data-card-muted': get(props.data, 'restrictions.disabled', false)
-    })}
-    id={props.data.id}
     poster={get(props.data, 'picture')}
-    icon={!get(props.data, 'picture') ? <>{props.data.name.charAt(0)}</> : null}
+    icon="fa fa-user"
+    name={props.data.name}
     title={props.data.name}
     meta={
       <UserStatus user={props.data} variant="badge" />

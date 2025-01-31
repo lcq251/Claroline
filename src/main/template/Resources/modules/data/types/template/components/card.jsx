@@ -10,10 +10,10 @@ import {Badge} from '#/main/app/components/badge'
 const TemplateCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
+    name={props.data.name}
     title={props.data.name}
     contentText={props.data.description || <em className="text-body-tertiary">{trans('no_description')}</em>}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    icon="fa fa-stamp"
     meta={
       <>
         {props.data.system &&

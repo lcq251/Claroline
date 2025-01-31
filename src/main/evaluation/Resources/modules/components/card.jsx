@@ -35,13 +35,12 @@ const EvaluationContentCard = (props) => {
   return (
     <DataCard
       {...props}
-      id={props.data.id}
       status={{
         variant: constants.EVALUATION_STATUS_COLOR[status],
         text: statusText
       }}
       poster={get(props.content, 'thumbnail')}
-      icon={!get(props.content, 'thumbnail') ? <>{get(props.content, 'name', '').charAt(0)}</> : null}
+      name={props.content.name}
       title={props.content.name}
     >
       <div className={classes('d-flex gap-2', {

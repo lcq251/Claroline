@@ -11,20 +11,20 @@ import {selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationList = (props) =>
   <ToolPage>
-    <PageListSection>
+    <PageListSection
+      addAction={{
+        name: 'add',
+        type: LINK_BUTTON,
+        label: trans('add_organization', {}, 'actions'),
+        target: `${props.path}/new`,
+        displayed: props.canCreate
+      }}
+    >
       <BaseOrganizationList
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}
         url={['apiv2_organization_list']}
-        addAction={{
-          name: 'add',
-          type: LINK_BUTTON,
-          // icon: 'fa fa-plus',
-          label: trans('add_organization', {}, 'actions'),
-          target: `${props.path}/new`,
-          displayed: props.canCreate
-        }}
       />
     </PageListSection>
   </ToolPage>

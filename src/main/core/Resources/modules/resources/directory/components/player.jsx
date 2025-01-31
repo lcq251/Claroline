@@ -14,7 +14,6 @@ import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types
 import {getActions, getDefaultAction} from '#/main/core/resource/utils'
 import {FileDrop} from '#/main/app/overlays/dnd/components/file-drop'
 import {ResourcePage} from '#/main/core/resource'
-import {PageListSection} from '#/main/app/page/components/list-section'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_RESOURCE_CREATION} from '#/main/core/resource/modals/creation'
 import {PageContent} from '#/main/app/page'

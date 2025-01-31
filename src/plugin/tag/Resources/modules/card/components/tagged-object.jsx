@@ -8,6 +8,7 @@ const TaggedObjectCard = props =>
     {...props}
     id={props.data.id}
     icon="fa fa-fw fa-tag"
+    name={props.name}
     title={props.data.name}
     subtitle={props.data.type}
   />

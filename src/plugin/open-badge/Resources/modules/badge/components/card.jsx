@@ -12,7 +12,8 @@ const BadgeCard = props =>
     id={props.data.id}
     poster={get(props.data, 'image')}
     color={get(props.data, 'color')}
-    icon={!get(props.data, 'image') ? <>{props.data.name.charAt(0)}</> : null}
+    icon="fa fa-trophy"
+    name={props.data.name}
     title={props.data.name}
     contentText={props.data.description}
     meta={get(props.data, 'meta.archived', false) &&

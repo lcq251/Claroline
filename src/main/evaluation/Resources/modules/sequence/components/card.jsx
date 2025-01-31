@@ -15,6 +15,7 @@ import {route} from '#/main/evaluation/sequence/routing'
 const EvaluationSequenceCard = (props) =>
   <EvaluationContentCard
     {...props}
+    icon="fa fa-route"
     primaryAction={!isEmpty(props.primaryAction) ? props.primaryAction : {
       type: URL_BUTTON,
       target: '#'+route(props.data.sequence)
@@ -36,7 +37,8 @@ const SequenceCard = props =>
     {...props}
     id={props.data.id}
     poster={props.data.thumbnail}
-    icon={!props.data.thumbnail ? <>{props.data.name.charAt(0)}</> : null}
+    icon="fa fa-route"
+    name={props.data.name}
     title={props.data.name}
     meta={
       <>

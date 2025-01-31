@@ -15,10 +15,6 @@ import {PageListSection} from '#/main/app/page'
 const PluginCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
-    className={classes(props.className, {
-      'data-card-muted': !get(props.data, 'enabled', false)
-    })}
     icon="fa fa-puzzle-piece"
     title={trans(props.data.name, {}, 'plugin')}
     subtitle={get(props.data, 'meta.version')}

@@ -24,7 +24,8 @@ const TagCard = props =>
       </div>
     }
     color={props.data.color}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    icon="fa fa-tag"
+    name={props.data.name}
     contentText={props.data.meta.description  || <em className="text-body-tertiary">{trans('no_description')}</em>}
     asIcon={true}
     meta={

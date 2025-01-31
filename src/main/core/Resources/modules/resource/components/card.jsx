@@ -1,6 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
@@ -13,28 +12,24 @@ import {Badge} from '#/main/app/components/badge'
 const ResourceCard = props =>
   <DataCard
     {...props}
-    className={classes(props.className, {
-      'data-card-muted': !get(props.data, 'meta.published', false) || get(props.data, 'restrictions.hidden', false)
-    })}
-    id={props.data.id}
     poster={props.data.thumbnail}
-    icon={!props.data.thumbnail ?
+    icon={
       <ResourceIcon
-        mimeType={props.data.meta.mimeType}
+        mimeType={get(props.data, 'meta.mimeType')}
         size={props.size}
-      /> :
-      null
+      />
     }
+    name={props.data.name}
     title={props.data.name}
     meta={
       <>
-        <Badge variant="secondary" subtle={true}>{trans(props.data.meta.type, {}, 'resource')}</Badge>
+        <Badge variant="secondary" subtle={true}>{trans(get(props.data, 'meta.type'), {}, 'resource')}</Badge>
         {get(props.data, 'meta.published') &&
           <Badge variant="secondary" subtle={true}>{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</Badge>
         }
         {get(props.data, 'evaluation.estimatedDuration') &&
           <Badge variant="secondary" subtle={true}>
-            <span className="fa far fa-clock me-1" />
+            <span className="fa far fa-clock me-1" aria-hidden={true} />
             {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
           </Badge>
         }

@@ -121,7 +121,7 @@ const TableItem = props => {
             type="checkbox"
             checked={props.selected || false}
             onChange={props.onSelect}
-            disabled={props.loading}
+            disabled={!props.loaded || props.invalidated}
           />
         </TableCell>
       }
@@ -195,7 +195,6 @@ TableItem.propTypes = {
   actions: T.func,
   selected: T.bool,
   onSelect: T.func,
-  loading: T.bool.isRequired,
   loaded: T.bool.isRequired,
   invalidated: T.bool.isRequired
 }

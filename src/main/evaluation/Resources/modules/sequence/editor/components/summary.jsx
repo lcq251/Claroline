@@ -26,6 +26,7 @@ const SequenceEditorSummary = () => {
 
   const baseNumbering = useSelector(selectors.numbering)
   const steps = useSelector(selectors.steps)
+  const workspace = useSelector(selectors.workspace)
 
   const update = useCallback((steps) => dispatch(actions.update(steps, 'steps')), [editorPath])
 
@@ -80,6 +81,24 @@ const SequenceEditorSummary = () => {
     <EditorPage
       title={trans('Scenario')}
       help={trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?')}
+      definition={[
+        {
+          title: trans('general'),
+          primary: true,
+          fields: [
+            {
+              name: 'overview.resource',
+              type: 'resource',
+              label: trans('resource'),
+              options: {
+                picker: {
+                  contextId: get(workspace, 'id')
+                }
+              }
+            }
+          ]
+        }
+      ]}
     >
       <ContentSummary
         links={steps.map(getStepSummary)}

@@ -7,6 +7,7 @@ import {DataCard} from '#/main/app/data/components/card'
 const NotificationCard = (props) =>
   <DataCard
     {...props}
+    name={props.data.name}
     title={props.data.name}
     poster={props.data.thumbnail}
     contentText={displayDate(props.data.date)}

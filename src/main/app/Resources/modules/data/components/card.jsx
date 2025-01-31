@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
@@ -20,7 +20,7 @@ import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Badge} from '#/main/app/components/badge'
 
 const StaticCardAction = props => {
-  if (isEmpty(props.action) || props.action.disabled || (props.action.displayed !== undefined && !props.action.displayed)) {
+  if (props.disabled || isEmpty(props.action) || props.action.disabled || (props.action.displayed !== undefined && !props.action.displayed)) {
     return (
       <span className={props.className} role="presentation">
         {props.children}
@@ -42,6 +42,7 @@ StaticCardAction.propTypes = {
   action: T.shape(merge({}, ActionTypes.propTypes, {
     label: T.node // make label optional
   })),
+  disabled: T.bool,
   children: T.node.isRequired
 }
 
@@ -54,6 +55,7 @@ const CardAction = props => {
           <StaticCardAction
             className={props.className}
             action={action}
+            disabled={props.disabled}
           >
             {props.children}
           </StaticCardAction>
@@ -71,6 +73,7 @@ const CardAction = props => {
     <StaticCardAction
       className={props.className}
       action={props.action}
+      disabled={props.disabled}
     >
       {props.children}
     </StaticCardAction>
@@ -89,6 +92,7 @@ CardAction.propTypes = {
       PromisedActionTypes.propTypes
     )
   ]),
+  disabled: T.bool,
   children: T.any.isRequired
 }
 
@@ -99,12 +103,17 @@ CardAction.propTypes = {
  * @constructor
  */
 const DataCard = props => {
+  const id = useId()
   const asIcon = props.asIcon || 'row' === props.orientation
+  const disabled = !props.loaded || props.invalidated
 
   return (
     <article style={props.style} className={classes(`data-card data-card-${props.orientation} data-card-${props.size}`, props.className, {
-      'data-card-clickable': props.primaryAction && !props.primaryAction.disabled,
-      'data-card-poster': !props.asIcon && (!!props.poster || !!props.color || !!props.icon),
+      'data-card-clickable': !disabled && props.primaryAction && !props.primaryAction.disabled,
+      'data-card-poster': !asIcon && (!!props.poster || !!props.color || !!props.name || !!props.icon),
+      'placeholder-glow': !props.loaded,
+      'data-card-loading': !props.loaded || props.invalidated,
+      'data-card-invalidated placeholder-glow': props.loaded && props.invalidated
     })}>
       {'col' === props.orientation && props.status &&
         <Badge className="data-card-status" variant={props.status.variant}>
@@ -114,11 +123,13 @@ const DataCard = props => {
 
       {(props.poster || props.icon) &&
         <Thumbnail
+          loaded={props.loaded}
+          name={props.name}
           thumbnail={props.poster}
           color={props.color}
           size={props.size}
           square={asIcon}
-          className={classes({
+          className={classes('data-card-thumbnail', {
             'rounded-circle': asIcon,
             'my-2': 'xs' === props.size
           })}
@@ -136,6 +147,7 @@ const DataCard = props => {
           'text-center': 'row' !== props.orientation && asIcon,
           'py-2': 'xs' === props.size
         })}
+        disabled={disabled}
       >
         <Heading
           level={props.level}
@@ -143,10 +155,23 @@ const DataCard = props => {
             'mb-0': 'xs' === props.size
           })}
         >
-          {props.title}
+          {props.loaded ?
+            props.title :
+            <div className="placeholder rounded-1 w-75" role="presentation" />
+          }
         </Heading>
 
-        {!props.children && -1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
+        {!props.loaded && -1 !== props.display.indexOf('description') &&
+          <p className={classes('data-card-description text-body-secondary', {
+            'mb-0': -1 !== ['xs', 'sm'].indexOf(props.size) || !props.meta || (-1 === props.display.indexOf('meta') && -1 === props.display.indexOf('flags'))
+          })}>
+            <span className="placeholder rounded-1 w-100" role="presentation" />
+            <span className="placeholder rounded-1 w-100" role="presentation" />
+            <span className="placeholder rounded-1 w-50" role="presentation" />
+          </p>
+        }
+
+        {props.loaded && !props.children && -1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
           <p className={classes('data-card-description text-body-secondary', {
             'mb-0': -1 !== ['xs', 'sm'].indexOf(props.size) || !props.meta || (-1 === props.display.indexOf('meta') && -1 === props.display.indexOf('flags'))
           })}>
@@ -157,25 +182,29 @@ const DataCard = props => {
           </p>
         }
 
-        {props.children}
+        {props.loaded && props.children}
 
         {-1 === ['xs', 'sm'].indexOf(props.size) && props.meta && (-1 !== props.display.indexOf('meta') || -1 !== props.display.indexOf('flags')) &&
           <div className={classes('d-flex flex-row flex-wrap align-items-center gap-1 mt-auto', {
             'justify-content-center': 'row' !== props.orientation && asIcon
           })} role="presentation">
-            {props.meta}
+            {props.loaded ?
+              props.meta :
+              <div className="badge text-body-tertiary placeholder w-25" role="presentation">&nbsp;</div>
+            }
           </div>
         }
       </CardAction>
 
       {0 !== props.actions.length &&
         <Toolbar
-          id={`actions-${props.id}`}
+          id={id}
           name="data-card-toolbar"
           buttonName="btn btn-text-body focus-ring focus-ring-secondary"
           tooltip={'row' === props.orientation ? 'left' : 'bottom'}
           toolbar={props.toolbar}
           actions={props.actions}
+          disabled={disabled}
           scope="object"
         />
       }

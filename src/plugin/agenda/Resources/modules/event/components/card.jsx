@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import get from 'lodash/get'
 
 import {displayDateRange} from '#/main/app/intl/date'
 import {asset} from '#/main/app/config/asset'
@@ -12,8 +13,8 @@ import {EventIcon} from '#/plugin/agenda/event/components/icon'
 const EventCard = (props) =>
   <DataCard
     {...props}
-    id={props.data.id}
-    icon={<EventIcon type={props.data.meta.type} />}
+    icon={<EventIcon type={get(props.data, 'meta.type')} />}
+    name={props.data.name}
     title={props.data.name}
     subtitle={displayDateRange(props.data.start, props.data.end)}
     poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}

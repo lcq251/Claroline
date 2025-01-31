@@ -9,8 +9,8 @@ import {DataCard} from '#/main/app/data/components/card'
 const ScheduledTaskCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
     icon="fa fa-clock"
+    name={props.data.name}
     title={props.data.name}
     subtitle={trans(props.data.type)}
     footer={props.data.executionDate &&

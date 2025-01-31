@@ -20,7 +20,7 @@ const MessageCard = (props) =>
       'bg-body-tertiary': !get(props.data, 'meta.read', false)
     })}
     poster={get(props.data, 'from.picture')}
-    icon={!get(props.data, 'from.picture') ? <>{props.data.from.name.charAt(0)}</> : null}
+    icon={get(props.data, 'from.name') ? <>{props.data.from.name.charAt(0)}</> : null}
     asIcon={true}
     title={
       <span className={classes('d-flex flex-row align-items-center gap-2', {

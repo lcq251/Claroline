@@ -54,6 +54,7 @@ const ContextHistory = (props) => {
               size={props.size}
               direction="row"
               title={result.name}
+              name={result.name}
               contentText={result.description}
               poster={result.thumbnail}
               icon={!result.thumbnail ? <>{result.name.charAt(0)}</> : null}

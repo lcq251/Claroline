@@ -240,10 +240,8 @@ $data-card-border-width:        0 !default;
 $data-card-border-color:        $card-border-color !default;
 $data-card-border-radius:       $card-border-radius !default;
 $data-card-inner-border-radius: subtract($data-card-border-radius, $data-card-border-width) !default;
-$data-card-box-shadow:          0 0 0 1px rgba($black, .075), $box-shadow-sm; //$card-box-shadow;
-
-// states
-$data-card-color-muted:               var(--#{$prefix}secondary-color) !default;
+$data-card-box-shadow:          0 0 0 1px rgba($black, .075), $box-shadow-sm !default;
+$data-card-loading-box-shadow:  0 0 0 1px rgba($black, .075) !default;
 
 
 // -

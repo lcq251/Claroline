@@ -2,7 +2,6 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
-import {asset} from '#/main/app/config/asset'
 import {trans, displayDateRange} from '#/main/app/intl'
 import {DataCard} from '#/main/app/data/components/card'
 
@@ -17,11 +16,11 @@ import {getAddressString} from '#/main/app/data/types/address/utils'
 const SessionCourseCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    poster={props.data.thumbnail}
+    icon="fa fa-graduation-cap"
+    name={props.data.name}
     title={props.data.name}
-    contentText={displayDateRange(props.data.restrictions.dates[0], props.data.restrictions.dates[1])}
+    contentText={displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
   />
 
 /**
@@ -30,12 +29,12 @@ const SessionCourseCard = props =>
 const SessionDateCard = (props) =>
   <DataCard
     {...props}
-    id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    poster={props.data.thumbnail}
+    icon="fa fa-calendar-week"
+    name={props.data.name}
     title={
-      <div className="d-flex flex-row gap-2 align-items-baseline">
-        {displayDateRange(props.data.restrictions.dates[0], props.data.restrictions.dates[1])}
+      <div className="d-flex flex-row gap-2 align-items-baseline" role="presentation">
+        {displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
 
         {'row' === props.orientation &&
           <AvailableSeats session={props.data} className="ms-auto" />
@@ -62,9 +61,9 @@ const SessionDateCard = (props) =>
 const SessionCard = props =>
   <DataCard
     {...props}
-    id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    poster={props.data.thumbnail}
+    icon="fa fa-calendar-week"
+    name={props.data.name}
     title={
       <div className="d-flex flex-row gap-2 align-items-baseline" role="presentation">
         {(get(props.data, 'registration.selfRegistration') || get(props.data, 'registration.autoRegistration')) &&
@@ -84,11 +83,9 @@ const SessionCard = props =>
         }
       </div>
     }
-    contentText={displayDateRange(props.data.restrictions.dates[0], props.data.restrictions.dates[1])}
+    contentText={displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
     meta={
-      <>
-        <AvailableSeats session={props.data} />
-      </>
+      <AvailableSeats session={props.data} />
     }
   />
 

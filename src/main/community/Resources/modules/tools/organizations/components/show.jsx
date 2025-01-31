@@ -4,6 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {DetailsData} from '#/main/app/content/details/containers/data'
+import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
 
@@ -53,27 +54,31 @@ const OrganizationShow = props =>
     </PageSection>
 
     <PageSection size="md" title={trans('managers', {}, 'community')}>
+      {hasPermission('edit', props.organization) &&
+        <Button
+          className="btn btn-primary mt-4 me-auto"
+          {...{
+            name: 'add-managers',
+            type: MODAL_BUTTON,
+            // icon: 'fa fa-fw fa-plus',
+            label: trans('add_managers'),
+            modal: [MODAL_USERS, {
+              selectAction: (users) => ({
+                type: CALLBACK_BUTTON,
+                label: trans('add', {}, 'actions'),
+                callback: () => props.addManagers(props.organization.id, users.map(user => user.id))
+              })
+            }]
+          }}
+        />
+      }
+
       <UserList
-        className="mb-5"
+        className="mt-4 mb-5"
         path={props.path}
         name={`${selectors.FORM_NAME}.managers`}
         url={['apiv2_organization_list_managers', {id: props.organization.id}]}
         autoload={!!props.organization.id}
-        addAction={{
-          name: 'add-managers',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-plus',
-          tooltip: 'bottom',
-          label: trans('add_managers'),
-          displayed: hasPermission('edit', props.organization),
-          modal: [MODAL_USERS, {
-            selectAction: (users) => ({
-              type: CALLBACK_BUTTON,
-              label: trans('add', {}, 'actions'),
-              callback: () => props.addManagers(props.organization.id, users.map(user => user.id))
-            })
-          }]
-        }}
         delete={{
           url: ['apiv2_organization_remove_managers', {id: props.organization.id}],
           displayed: () => hasPermission('edit', props.organization)

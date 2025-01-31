@@ -16,7 +16,9 @@ const GridItem = props =>
       orientation: props.orientation,
       data: props.row,
       primaryAction: props.primaryAction,
-      actions: props.actions
+      actions: props.actions,
+      loaded: props.loaded,
+      invalidated: props.invalidated
     })}
 
     {props.onSelect &&
@@ -25,6 +27,7 @@ const GridItem = props =>
         className="data-grid-item-select form-check-input"
         checked={props.selected}
         onChange={props.onSelect}
+        disabled={!props.loaded || props.invalidated}
       />
     }
   </li>
@@ -58,7 +61,9 @@ GridItem.propTypes = {
 
   card: T.func.isRequired, // It must be a React component.
   selected: T.bool,
-  onSelect: T.func
+  onSelect: T.func,
+  loaded: T.bool.isRequired,
+  invalidated: T.bool.isRequired
 }
 
 GridItem.defaultProps = {

@@ -1,5 +1,4 @@
 import React from 'react'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {asset} from '#/main/app/config/asset'
@@ -12,10 +11,6 @@ import {ResourceIcon} from '#/main/core/resource/components/icon'
 const AnnouncementCard = (props) =>
   <DataCard
     {...props}
-    id={props.data.id}
-    className={classes(props.className, {
-      'data-card-muted': !props.data.meta.publishedAt
-    })}
     icon={<ResourceIcon mimeType="custom/claroline_announcement_aggregate" />}
     title={props.data.title}
     poster={props.data.poster ? asset(props.data.poster) : null}

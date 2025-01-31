@@ -58,7 +58,7 @@ const ContextUser = (props) => {
               icon: 'fa fa-fw fa-info-circle',
               label: trans('help'),
               target: props.help,
-              displayed: !!props.help
+              displayed: false && !!props.help
             }, {
               name: 'exit-impersonation',
               type: URL_BUTTON,

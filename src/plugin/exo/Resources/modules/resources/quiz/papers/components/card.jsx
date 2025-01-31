@@ -10,6 +10,7 @@ import {UserAvatar} from '#/main/app/user/components/avatar'
 import {ScoreGauge} from '#/main/core/layout/gauge/components/score'
 
 import {Paper as PaperTypes} from '#/plugin/exo/resources/quiz/papers/prop-types'
+import {displayUsername} from '#/main/community/utils'
 
 const PaperCard = props => {
   let size = 80
@@ -23,7 +24,6 @@ const PaperCard = props => {
     <DataCard
       {...props}
       className={props.className}
-      id={props.data.id}
       icon={props.data.total ?
         <ScoreGauge
           type="user"
@@ -35,7 +35,8 @@ const PaperCard = props => {
         /> :
         <UserAvatar user={get(props.data, 'user')} size="md" />
       }
-      title={props.data.user ? props.data.user.firstName + ' ' + props.data.user.lastName : trans('unknown')}
+      name={displayUsername(props.data.user)}
+      title={displayUsername(props.data.user)}
       subtitle={trans('attempt', {number: props.data.number}, 'quiz')}
       flags={[
         props.data.finished && ['fa fa-fw fa-check', trans('finished', {}, 'quiz')],

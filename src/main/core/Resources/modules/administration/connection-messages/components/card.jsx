@@ -11,6 +11,7 @@ const ConnectionMessageCard = props =>
     {...props}
     id={props.data.id}
     icon="fa fa-comment-dots"
+    name={props.data.title}
     title={props.data.title}
     subtitle={constants.MESSAGE_TYPES[props.data.type]}
   />

@@ -86,6 +86,37 @@
 
     @include border-radius($data-card-border-radius);
     @include box-shadow($data-card-box-shadow);
+
+    &.data-card-loading {
+        @include box-shadow($data-card-loading-box-shadow);
+    }
+}
+
+.data-card-invalidated {
+    &:not(.data-card-poster),
+    // avoid blurring the line between the poster and the card, it's visually weird
+    &.data-card-poster .data-card-thumbnail,
+    &.data-card-poster .data-card-content {
+        position: relative;
+        overflow: hidden;
+
+        &:after {
+            position: absolute;
+            display: block;
+            content: " ";
+            backdrop-filter: blur(2px);
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
+        }
+    }
+
+    .data-card-thumbnail,
+    .data-card-content > * {
+        opacity: .75;
+    }
 }
 
 .data-card-toolbar {
@@ -171,13 +202,6 @@
     font-size: $data-card-content-font;
     line-height: $line-height-base;
     overflow: hidden;
-}
-
-.data-card-footer {
-    margin-top: auto; // ensure footer is always at the bottom
-    font-size: $data-card-content-font;
-    text-align: right;
-    color: $data-card-color-muted;
 }
 
 .data-card-status {

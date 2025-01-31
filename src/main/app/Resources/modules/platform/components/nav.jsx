@@ -14,6 +14,7 @@ import {NotificationButton} from '#/main/notification/components/button'
 
 import {selectors} from '#/main/app/platform/store'
 import {ContextUser} from '#/main/app/context/containers/user'
+import {MODAL_PLATFORM_HELP} from '#/main/app/platform/modals/help'
 
 const PlatformNav = (props) => {
   let pinnedContexts = [].concat(props.favoriteContexts)
@@ -95,10 +96,21 @@ const PlatformNav = (props) => {
 
       <hr className="app-context-separator mt-auto mx-auto" aria-hidden={true} />
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-        <li>
+        {/*<li>
           <NotificationButton
             className="app-context-btn focus-ring"
             tooltip="right"
+          />
+        </li>*/}
+
+        <li>
+          <Button
+            type={MODAL_BUTTON}
+            className="app-context-btn focus-ring"
+            icon="fa fa-question"
+            label={trans('Centre d\'aide')}
+            tooltip="right"
+            modal={[MODAL_PLATFORM_HELP]}
           />
         </li>
 

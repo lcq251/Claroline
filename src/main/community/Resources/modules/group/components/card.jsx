@@ -12,7 +12,8 @@ const GroupCard = props =>
     id={props.data.id}
     poster={props.data.thumbnail}
     title={props.data.name}
-    icon={props.data.name && <>{props.data.name.charAt(0)}</>}
+    name={props.data.name}
+    icon="fa fa-users"
     contentText={get(props.data, 'meta.description')}
     asIcon={true}
   />

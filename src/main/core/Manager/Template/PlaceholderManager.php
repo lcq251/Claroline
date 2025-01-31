@@ -10,21 +10,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PlaceholderManager
 {
-    private TokenStorageInterface $tokenStorage;
-    private PlatformConfigurationHandler $config;
-    private PlatformManager $platformManager;
-    private LocaleManager $localeManager;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        PlatformConfigurationHandler $config,
-        PlatformManager $platformManager,
-        LocaleManager $localeManager
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly PlatformConfigurationHandler $config,
+        private readonly PlatformManager $platformManager,
+        private readonly LocaleManager $localeManager
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->config = $config;
-        $this->platformManager = $platformManager;
-        $this->localeManager = $localeManager;
     }
 
     public function getAvailablePlaceholders(): array
@@ -48,6 +39,10 @@ class PlaceholderManager
 
     public function replacePlaceholders(string $text, array $customPlaceholders = []): string
     {
+        if (empty($text)) {
+            return $text;
+        }
+
         $now = new \DateTime();
 
         /** @var User|null $currentUser */
@@ -64,12 +59,12 @@ class PlaceholderManager
 
             '%date%' => $now->format('Y-m-d'), // should be in locale format
             '%datetime%' => $now->format('Y-m-d H:i:s'), // should be in locale format
-            '%current_user_id%' => $currentUser ? $currentUser->getUuid() : null,
-            '%current_user_username%' => $currentUser ? $currentUser->getUsername() : null,
-            '%current_user_first_name%' => $currentUser ? $currentUser->getFirstName() : null,
-            '%current_user_last_name%' => $currentUser ? $currentUser->getLastName() : null,
-            '%current_user_email%' => $currentUser ? $currentUser->getEmail() : null,
-            '%current_user_avatar%' => $currentUser ? $currentUser->getPicture() : null,
+            '%current_user_id%' => $currentUser?->getUuid(),
+            '%current_user_username%' => $currentUser?->getUsername(),
+            '%current_user_first_name%' => $currentUser?->getFirstName(),
+            '%current_user_last_name%' => $currentUser?->getLastName(),
+            '%current_user_email%' => $currentUser?->getEmail(),
+            '%current_user_avatar%' => $currentUser?->getPicture(),
         ];
 
         foreach ($customPlaceholders as $key => $value) {

@@ -188,7 +188,7 @@ const SequenceOverview = () => {
             }}
           >
             {!isEmpty(get(sequence, 'overview.resource')) &&
-              <PageSection size="md">
+              <PageSection size="md" className="mb-5">
                 <ResourceEmbedded
                   resourceNode={get(sequence, 'overview.resource')}
                   showHeader={false}

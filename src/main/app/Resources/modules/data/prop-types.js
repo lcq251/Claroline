@@ -21,16 +21,13 @@ const DataCard = {
     color: T.string,
     icon: T.oneOfType([T.string, T.element]),
     asIcon: T.bool,
+    name: T.string,
     title: T.node.isRequired,
-    subtitle: T.node,
-    contentText: T.string,
+    contentText: T.node,
     display: T.arrayOf(T.oneOf([
       'meta',
       'description'
     ])),
-    flags: T.arrayOf(
-      T.arrayOf(T.oneOfType([T.string, T.number]))
-    ),
     primaryAction: T.oneOfType([
       // a regular action
       T.shape(merge({}, Action.propTypes, {
@@ -54,8 +51,9 @@ const DataCard = {
     toolbar: T.string,
 
     footer: T.node,
-    // ATTENTION : use it will caution because it can break grid displays
-    children: T.node
+    children: T.node,
+    invalidated: T.bool.isRequired,
+    loaded: T.bool.isRequired
   },
   defaultProps: {
     asIcon: false,
@@ -64,6 +62,8 @@ const DataCard = {
     level: 3,
     actions: [],
     toolbar: 'more',
+    loaded: true,
+    invalidated: false,
     display: [
       'meta',
       'description'

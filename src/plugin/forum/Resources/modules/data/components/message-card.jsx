@@ -9,7 +9,8 @@ const MessageCard = (props) =>
     {...props}
     id={props.data.id}
     poster={get(props.data, 'meta.creator.picture')}
-    icon={!get(props.data, 'meta.creator.picture') && get(props.data, 'meta.creator') ? <>{props.data.meta.creator.name.charAt(0)}</> : <span className="fa fa-user" aria-hidden={true}/>}
+    icon={get(props.data, 'meta.creator.name') ? props.data.meta.creator.name.charAt(0) : 'fa fa-user'}
+    name={props.data.subject.title}
     title={props.data.subject.title}
     contentText={getPlainText(props.data.content)}
   />

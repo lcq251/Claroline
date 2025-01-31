@@ -12,6 +12,7 @@ import {EvaluationContentCard} from '#/main/evaluation/components/card'
 const EvaluationWorkspaceCard = (props) =>
   <EvaluationContentCard
     {...props}
+    icon="fa fa-book"
     primaryAction={!isEmpty(props.primaryAction) ? props.primaryAction : {
       type: URL_BUTTON,
       target: '#'+route(props.data.workspace)

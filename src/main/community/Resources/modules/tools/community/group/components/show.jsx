@@ -74,7 +74,6 @@ const GroupShow = (props) =>
                     // icon: 'fa fa-fw fa-plus',
                     label: trans('add_users', {}, 'actions'),
                     disabled: get(props.group, 'meta.readOnly'),
-                    displayed: hasPermission('administrate', props.group),
                     modal: [MODAL_USERS, {
                       selectAction: (selected) => ({
                         type: CALLBACK_BUTTON,

@@ -17,11 +17,11 @@ const TableData = props => {
 
   let data = props.data
   if (!props.loaded) {
-    data = fill(new Array(30), {id: ''})
+    data = fill(new Array(15), {id: ''})
   }
 
   return (
-    <div className="scroller-x scroller-thin flex-fill" role="presentation">
+    <div className="scroller-x scroller-thin flex-fill" role="presentation" aria-busy={!props.loaded || props.invalidated}>
       <Table className={classes('data-table table-striped mb-auto', {
         'table-hover': props.loaded && !props.invalidated
       })} condensed={'sm' === props.size}>
@@ -52,7 +52,6 @@ const TableData = props => {
                   props.selection.toggle(row, !isRowSelected(row, props.selection ? props.selection.current : []))
                 }: null
               }
-              loading={props.loading}
               loaded={props.loaded}
               invalidated={props.invalidated}
             />

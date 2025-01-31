@@ -19,6 +19,7 @@ const RoleCard = props =>
       'fa-user': constants.ROLE_USER === props.data.type
     })}
     asIcon={true}
+    name={trans(props.data.translationKey)}
     title={trans(props.data.translationKey)}
     contentText={get(props.data, 'meta.description')}
   />
