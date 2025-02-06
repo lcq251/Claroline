@@ -29,7 +29,7 @@ const Nav = (props) => {
                 })}
               >
                 {(item.badge || 0 === item.badge) &&
-                  <Badge className="icon-with-text-left" subtle={true} variant={item.active ? 'primary': 'secondary'}>{item.badge}</Badge>
+                  <Badge className="ms-2" subtle={true} variant={item.active ? 'primary': 'secondary'}>{item.badge}</Badge>
                 }
               </Button>
             </li>

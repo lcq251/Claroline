@@ -52,7 +52,7 @@ class HtmlInput extends Component {
             id={`${this.props.id}-toolbar`}
             name="editor-toolbar"
             className="btn-toolbar gap-1"
-            buttonName="btn btn-body"
+            buttonName="btn btn-body focus-ring"
             tooltip="bottom"
             size="sm"
             disabled={this.props.disabled}

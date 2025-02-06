@@ -1,28 +1,31 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
-import omit from 'lodash/omit'
 import isEmpty from 'lodash/isEmpty'
 
-import {nl2br} from '#/main/app/utils/text'
+import {nl2br as nl2brFn} from '#/main/app/utils/text'
 
 /**
  * Displays a multiline text content.
  */
-const Text = props => {
-  if (isEmpty(props.children)) {
+const Text = ({
+  children,
+  className,
+  align = 'start',
+  nl2br = false
+}) => {
+  if (isEmpty(children)) {
     return null
   }
 
-  let content = props.children
-  if (props.nl2br) {
-    content = nl2br(props.children)
+  let content = children
+  if (nl2br) {
+    content = nl2brFn(children)
   }
 
   return (
     <p
-      {...omit(props, 'children', 'align', 'nl2br')}
-      className={classes('content-html', `text-${props.align}`, props.className)}
+      className={classes('content-html', `text-${align}`, className)}
       dangerouslySetInnerHTML={{ __html: content }}
     />
   )
@@ -40,11 +43,6 @@ Text.propTypes = {
   className: T.string,
   align: T.oneOf(['start', 'center', 'end', 'justify']).isRequired,
   nl2br: T.bool
-}
-
-Text.defaultProps = {
-  align: 'start',
-  nl2br: false
 }
 
 export {

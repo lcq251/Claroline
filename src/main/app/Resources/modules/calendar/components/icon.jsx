@@ -2,11 +2,14 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import moment from 'moment/moment'
 
-const CalendarIcon = (props) => {
-  const calendarDate = moment(props.date)
+const CalendarIcon = ({
+  date,
+  size
+}) => {
+  const calendarDate = moment(date)
 
   return (
-    <div className="event-icon event-icon-xl">
+    <div className={`event-icon event-icon-${size}`}>
       <div className="event-icon-month p-2">
         {calendarDate.format('MMMM')}
       </div>
@@ -21,13 +24,8 @@ const CalendarIcon = (props) => {
 }
 
 CalendarIcon.propTypes = {
-  square: T.bool,
-  size: T.string,
-  date: T.string.isRequired
-}
-
-CalendarIcon.defaultProps = {
-  square: true
+  date: T.string.isRequired,
+  size: T.string.isRequired
 }
 
 export {

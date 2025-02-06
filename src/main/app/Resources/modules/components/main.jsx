@@ -10,17 +10,22 @@ import {AlertOverlay} from '#/main/app/overlays/alert/containers/overlay'
 import {Appearance} from '#/main/theme/components/appearance'
 import {AppLoader} from '#/main/app/platform/components/loader'
 
-const Main = props =>
-  <Provider store={props.store}>
-    <Appearance embedded={!!props.embedded}>
-      <Router basename={props.defaultPath} embedded={!!props.embedded}>
-        {!props.embedded &&
+const Main = ({
+  store,
+  children,
+  defaultPath = '',
+  embedded = false
+}) =>
+  <Provider store={store}>
+    <Appearance embedded={embedded}>
+      <Router basename={defaultPath} embedded={embedded}>
+        {!embedded &&
           <AppLoader />
         }
 
         <AlertOverlay key="alert" />
 
-        {props.children}
+        {children}
 
         <ModalOverlay key="modal" />
       </Router>
