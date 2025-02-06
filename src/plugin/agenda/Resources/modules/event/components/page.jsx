@@ -30,7 +30,7 @@ const EventPage = (props) => {
           <PageHeading
             size="md"
             icon={
-              <CalendarIcon square={true} size="lg" date={props.event.date} />
+              <CalendarIcon size="lg" date={props.event.start} />
             }
             poster={get(props.event, 'thumbnail')}
             title={get(props.event, 'name', trans('loading'))}

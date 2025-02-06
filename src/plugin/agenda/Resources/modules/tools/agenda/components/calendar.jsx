@@ -16,6 +16,7 @@ import {route} from '#/plugin/agenda/tools/agenda/routing'
 import {AGENDA_VIEWS} from '#/plugin/agenda/tools/agenda/views'
 import {Toolbar} from '#/main/app/action'
 import {Heading} from '#/main/app/components/heading'
+import {PageContent} from '#/main/app/page'
 
 const AgendaCalendar = (props) => {
   const currentView = AGENDA_VIEWS[props.view]
@@ -25,116 +26,118 @@ const AgendaCalendar = (props) => {
     <ToolPage
       title={currentView.display(props.referenceDate)}
     >
-      <header className="d-flex align-items-center gap-3 px-4 py-2 border-bottom bg-body-tertiary pe-2">
-        <Heading level={1} displayLevel={5} className="m-0">
-          {currentView.display(props.referenceDate)}
-        </Heading>
+      <PageContent className="d-flex flex-column">
+        <header className="d-flex align-items-center gap-3 px-4 py-2 border-bottom bg-body-tertiary pe-2">
+          <Heading level={1} displayLevel={5} className="m-0">
+            {currentView.display(props.referenceDate)}
+          </Heading>
 
-        <Toolbar
-          className="ms-auto gap-2 d-flex"
-          toolbar="previous today next | range | add"
-          buttonName="btn"
-          defaultName="btn-text-body p-2"
-          primaryName="btn-primary"
-          tooltip="bottom"
-          actions={[
-            {
-              name: 'previous',
-              type: LINK_BUTTON,
-              icon: 'fa fa-chevron-left',
-              label: trans('previous'),
-              target: route(props.path, props.view, currentView.previous(props.referenceDate))
-            }, {
-              name: 'next',
-              type: LINK_BUTTON,
-              icon: 'fa fa-chevron-right',
-              label: trans('next'),
-              target: route(props.path, props.view, currentView.next(props.referenceDate))
-            }, {
-              name: 'range',
-              type: MENU_BUTTON,
-              icon: <>{trans('display_mode', {name: currentView.label}, 'agenda')}</>,
-              label: trans('change-calendar-view', {}, 'actions'),
-              menu: {
-                align: 'right',
-                label: trans('display_modes', {}, 'agenda'),
-                items: Object.keys(AGENDA_VIEWS).map(viewName => ({
-                  type: LINK_BUTTON,
-                  label: AGENDA_VIEWS[viewName].label,
-                  target: route(props.path, viewName, props.referenceDate)
-                }))
+          <Toolbar
+            className="ms-auto gap-2 d-flex"
+            toolbar="previous today next | range | add"
+            buttonName="btn"
+            defaultName="btn-text-body p-2"
+            primaryName="btn-primary"
+            tooltip="bottom"
+            actions={[
+              {
+                name: 'previous',
+                type: LINK_BUTTON,
+                icon: 'fa fa-chevron-left',
+                label: trans('previous'),
+                target: route(props.path, props.view, currentView.previous(props.referenceDate))
+              }, {
+                name: 'next',
+                type: LINK_BUTTON,
+                icon: 'fa fa-chevron-right',
+                label: trans('next'),
+                target: route(props.path, props.view, currentView.next(props.referenceDate))
+              }, {
+                name: 'range',
+                type: MENU_BUTTON,
+                icon: <>{trans('display_mode', {name: currentView.label}, 'agenda')}</>,
+                label: trans('change-calendar-view', {}, 'actions'),
+                menu: {
+                  align: 'right',
+                  label: trans('display_modes', {}, 'agenda'),
+                  items: Object.keys(AGENDA_VIEWS).map(viewName => ({
+                    type: LINK_BUTTON,
+                    label: AGENDA_VIEWS[viewName].label,
+                    target: route(props.path, viewName, props.referenceDate)
+                  }))
+                }
+              }, {
+                name: 'today',
+                type: LINK_BUTTON,
+                label: trans('today'),
+                target: route(props.path, props.view, now()),
+                tooltip: null,
+                activeClassName: null
+              }, {
+                name: 'add',
+                type: MODAL_BUTTON,
+                //icon: 'fa fa-fw fa-plus',
+                label: trans('add-event', {}, 'actions'),
+                modal: [MODAL_EVENT_CREATION, {
+                  event: {
+                    start: now(false),
+                    workspace: !isEmpty(props.contextData) ? props.contextData : null
+                  },
+                  onSave: (event) => props.reload(event, true)
+                }],
+                displayed: !isEmpty(props.currentUser),
+                primary: true,
+                tooltip: null
               }
-            }, {
-              name: 'today',
-              type: LINK_BUTTON,
-              label: trans('today'),
-              target: route(props.path, props.view, now()),
-              tooltip: null,
-              activeClassName: null
-            }, {
-              name: 'add',
-              type: MODAL_BUTTON,
-              //icon: 'fa fa-fw fa-plus',
-              label: trans('add-event', {}, 'actions'),
-              modal: [MODAL_EVENT_CREATION, {
-                event: {
-                  start: now(false),
-                  workspace: !isEmpty(props.contextData) ? props.contextData : null
-                },
-                onSave: (event) => props.reload(event, true)
-              }],
-              displayed: !isEmpty(props.currentUser),
-              primary: true,
-              tooltip: null
+            ]}
+          />
+        </header>
+
+        <Routes
+          path={props.path+'/calendar'}
+          routes={[
+            {
+              path: '/:view?/:year?/:month?/:day?',
+              onEnter: (params = {}) => {
+                // grab view from params
+                let newView = props.view
+                if (params.view) {
+                  newView = params.view
+                }
+
+                // grab reference date from params
+                const newReference = moment(props.referenceDate)
+                if (params.year) {
+                  newReference.year(params.year)
+
+                  if (params.month) {
+                    newReference.month(params.month - 1)
+                  }
+
+                  if (params.day) {
+                    newReference.date(params.day)
+                  }
+                }
+
+                props.changeView(newView, newReference)
+              },
+              render: () => createElement(currentView.component, {
+                path: props.path,
+                loaded: props.loaded,
+                loadEvents: props.load,
+                view: props.view,
+                referenceDate: props.referenceDate,
+                range: currentRange,
+                previous: currentView.previous,
+                next: currentView.next,
+                create: (event) => props.create(event, props.contextData, props.currentUser),
+                events: props.events,
+                reload: props.reload
+              })
             }
           ]}
         />
-      </header>
-
-      <Routes
-        path={props.path+'/calendar'}
-        routes={[
-          {
-            path: '/:view?/:year?/:month?/:day?',
-            onEnter: (params = {}) => {
-              // grab view from params
-              let newView = props.view
-              if (params.view) {
-                newView = params.view
-              }
-
-              // grab reference date from params
-              const newReference = moment(props.referenceDate)
-              if (params.year) {
-                newReference.year(params.year)
-
-                if (params.month) {
-                  newReference.month(params.month - 1)
-                }
-
-                if (params.day) {
-                  newReference.date(params.day)
-                }
-              }
-
-              props.changeView(newView, newReference)
-            },
-            render: () => createElement(currentView.component, {
-              path: props.path,
-              loaded: props.loaded,
-              loadEvents: props.load,
-              view: props.view,
-              referenceDate: props.referenceDate,
-              range: currentRange,
-              previous: currentView.previous,
-              next: currentView.next,
-              create: (event) => props.create(event, props.contextData, props.currentUser),
-              events: props.events,
-              reload: props.reload
-            })
-          }
-        ]}
-      />
+      </PageContent>
     </ToolPage>
   )
 }

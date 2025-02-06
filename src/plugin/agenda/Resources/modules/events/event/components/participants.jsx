@@ -9,12 +9,32 @@ import {MODAL_USERS} from '#/main/community/modals/users'
 import {constants} from '#/plugin/agenda/events/event/constants'
 import {selectors} from '#/plugin/agenda/events/event/store'
 import {PageSection} from '#/main/app/page'
+import {Button} from '#/main/app/action'
 
 const EventParticipants = (props) =>
   <PageSection
     title={trans('participants')}
+    size="md"
   >
+    {props.canEdit &&
+      <Button
+        className="btn btn-primary mt-4 me-auto"
+        {...{
+          name: 'add',
+          type: MODAL_BUTTON,
+          label: trans('add_participants', {}, 'actions'),
+          modal: [MODAL_USERS, {
+            selectAction: (users) => ({
+              type: CALLBACK_BUTTON,
+              label: trans('add', {}, 'actions'),
+              callback: () => props.addParticipants(props.eventId, users)
+            })
+          }]
+        }}
+      />
+    }
     <ListData
+      className="mt-4 mb-5"
       name={selectors.LIST_NAME}
       fetch={{
         url: ['apiv2_event_list_participants', {id: props.eventId}],
@@ -23,21 +43,6 @@ const EventParticipants = (props) =>
       delete={{
         url: ['apiv2_event_remove_participants', {id: props.eventId}],
         displayed: () => props.canEdit
-      }}
-      addAction={{
-        name: 'add',
-        type: MODAL_BUTTON,
-        icon: 'fa fa-fw fa-plus',
-        label: trans('add_participants', {}, 'actions'),
-        displayed: props.canEdit,
-        tooltip: 'bottom',
-        modal: [MODAL_USERS, {
-          selectAction: (users) => ({
-            type: CALLBACK_BUTTON,
-            label: trans('add', {}, 'actions'),
-            callback: () => props.addParticipants(props.eventId, users)
-          })
-        }]
       }}
       definition={[
         {
