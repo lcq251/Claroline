@@ -44,8 +44,9 @@ const MessageModal = props =>
               }
             }, {
               name: 'receivers.workspaces',
-              type: 'workspaces',
-              label: trans('message_form_to', {}, 'message')
+              type: 'workspace',
+              label: trans('message_form_to', {}, 'message'),
+              options: {multiple: true}
             }, {
               name: 'object',
               type: 'string',
