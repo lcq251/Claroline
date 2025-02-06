@@ -1,0 +1,9 @@
+services:
+    Claroline\ForumBundle\Component\Resource\ForumResource:
+        tags: [ 'claroline.component.resource', 'kernel.event_subscriber' ]
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\ForumBundle\Manager\ForumManager'

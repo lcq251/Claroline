@@ -5,12 +5,3 @@ services:
             - '@Claroline\AppBundle\API\FinderProvider'
         tags:
             - { name: kernel.event_listener, event: data_source.forum_messages.load, method: getData }
-
-    Claroline\ForumBundle\Listener\Resource\ForumListener:
-        tags: ['claroline.component.resource', 'kernel.event_subscriber']
-        arguments:
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\ForumBundle\Manager\ForumManager'

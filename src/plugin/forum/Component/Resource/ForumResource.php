@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\ForumBundle\Listener\Resource;
+namespace Claroline\ForumBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
@@ -24,7 +24,7 @@ use Claroline\ForumBundle\Entity\Subject;
 use Claroline\ForumBundle\Manager\ForumManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ForumListener extends ResourceComponent
+class ForumResource extends ResourceComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -53,7 +53,7 @@ class ForumListener extends ResourceComponent
 
         return [
             'resource' => $this->serializer->serialize($resource),
-            'notified' => $validationUser && $validationUser->isNotified(),
+            'notified' => $validationUser?->isNotified() ?? false,
         ];
     }
 
