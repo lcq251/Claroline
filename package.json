@@ -52,7 +52,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.1.8",
-    "sass": "^1.62.1",
+    "sass": "1.77.6",
     "swagger-ui-react": "^5.1.0",
     "tinycolor2": "^1.6.0",
     "tinymce": "^6.7",
