@@ -1,0 +1,98 @@
+import React, {useState} from 'react'
+import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
+import omit from 'lodash/omit'
+
+import {trans} from '#/main/app/intl'
+import {Button, Toolbar} from '#/main/app/action'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+
+const TreeItem = ({
+  item
+}) => {
+  const [expanded, setExpanded] = useState(true)
+
+  return (
+    <li>
+      <div className="d-flex flex-row flex-nowrap align-items-center gap-1" role="presentation">
+        {!isEmpty(item.children) ?
+          <Button
+            className="btn btn-text-body flex-shrink-0 px-1 py-1 focus-ring"
+            type={CALLBACK_BUTTON}
+            icon={classes({
+              'fa fa-fw fa-chevron-right': !expanded,
+              'fa fa-fw fa-chevron-down': expanded
+            })}
+            tooltip="bottom"
+            label={trans(expanded ? 'collapse':'expand', {}, 'actions')}
+            callback={() => setExpanded(!expanded)}
+            size="sm"
+          /> :
+          <span className="fs-sm px-1 py-1" aria-hidden={true}>
+            <span className="fa fa-fw" />
+          </span>
+        }
+
+        <Button
+          className="btn btn-text-body text-truncate px-1 py-2 focus-ring flex-fill text-start"
+          {...omit(item, 'children', 'actions')}
+        />
+
+        {!isEmpty(item.actions) &&
+          <Toolbar
+            className="ms-auto flex-shrink-0"
+            buttonName="btn btn-text-body px-1 py-2 focus-ring"
+            toolbar="more"
+            tooltip="bottom"
+            actions={item.actions}
+            size="sm"
+          />
+        }
+      </div>
+
+      {expanded && !isEmpty(item.children) &&
+        <ul className="list-unstyled ps-4">
+          {item.children.map(child =>
+            <TreeItem
+              item={child}
+            />
+          )}
+        </ul>
+      }
+    </li>
+  )
+}
+
+const Tree = ({
+  items = [],
+  className = null
+}) => {
+  if (isEmpty(items)) {
+    return null
+  }
+
+  return (
+    <ul className={classes('list-unstyled', className)}>
+      {items.map(item =>
+        <TreeItem
+          key={item.id}
+          item={item}
+        />
+      )}
+    </ul>
+  )
+}
+
+Tree.propTypes = {
+  className: T.string,
+  items: T.arrayOf(T.shape({
+    id: T.string.isRequired,
+    label: T.string.isRequired,
+    children: T.array
+  }))
+}
+
+export {
+  Tree
+}
