@@ -83,14 +83,6 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
         $translationKey = static::getName().'.'.$action.'_message';
 
         switch (get_class($event)) {
-            /*case CreateEvent::class:
-                return $this->getTranslator()->trans($translationKey, [
-                    '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
-                ], 'log');
-            case UpdateEvent::class:
-                return $this->getTranslator()->trans($translationKey, [
-                    '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject()))
-                ], 'log');*/
             case CopyEvent::class:
                 return $this->getTranslator()->trans($translationKey, [
                     '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
@@ -109,6 +101,11 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
     }
 
     protected function getContextId(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getParentId(object $object): ?string
     {
         return null;
     }
@@ -144,6 +141,7 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
             $object->getUuid(),
             $this->getContext($object),
             $this->getContextId($object),
+            $this->getParentId($object),
             $changeset
         );
     }

@@ -20,6 +20,7 @@ class OperationalLogSerializer extends AbstractLogSerializer
         }
 
         return array_merge($serialized, [
+            'parentId' => $operationalLog->getParentId(),
             'objectClass' => $operationalLog->getObjectClass(),
             'objectId' => $operationalLog->getObjectId(),
             'changeset' => $operationalLog->getChangeset(),

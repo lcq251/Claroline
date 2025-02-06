@@ -29,12 +29,13 @@ const LogOperationalList = (props) => {
 
       definition={[
         {
-          name: 'doer',
+          name: 'action',
           type: 'user',
           label: trans('action'),
           displayed: true,
           sortable: false,
           primary: true,
+          filterable: false,
           render: (row) => (
             <div className="d-flex flex-direction-row gap-3 align-items-center fw-normal">
               <UserAvatar user={row.doer} size="xs" />
@@ -51,14 +52,12 @@ const LogOperationalList = (props) => {
           options: {time: true},
           displayed: true
         }, {
-          name: 'event',
-          type: 'translation',
-          label: trans('event'),
+          name: 'doer',
+          type: 'user',
+          label: trans('user'),
           displayed: false,
-          sortable: false,
-          options: {
-            domain: 'log'
-          }
+          displayable: false,
+          sortable: false
         }
       ].concat(props.customDefinition)}
       selectable={false}
@@ -67,7 +66,6 @@ const LogOperationalList = (props) => {
 }
 
 LogOperationalList.propTypes = {
-  //name: T.string.isRequired,
   autoload: T.bool,
   url: T.oneOfType([T.string, T.array]).isRequired,
   customDefinition: T.arrayOf(T.shape({

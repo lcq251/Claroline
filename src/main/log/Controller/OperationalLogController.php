@@ -83,7 +83,7 @@ class OperationalLogController
 
         $finderQuery
             ->addFilter('objectId', $objectId)
-            ->addFilter('objectClass', $objectName);
+            /*->addFilter('objectClass', $objectName)*/;
 
         $logs = $this->crud->search(OperationalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 

@@ -86,6 +86,7 @@ class SubmitLogsHandler
         $logEntry->setContextId($createLog->getContextId());
         $logEntry->setObjectClass($createLog->getObjectClass());
         $logEntry->setObjectId($createLog->getObjectId());
+        $logEntry->setParentId($createLog->getParentId());
         $logEntry->setChangeset($createLog->getChangeset());
 
         return $logEntry;

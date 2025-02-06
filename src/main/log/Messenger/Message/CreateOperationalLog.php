@@ -18,6 +18,7 @@ class CreateOperationalLog extends AbstractCreateLog
         private readonly string $objectId,
         private readonly string $contextName,
         private readonly ?string $contextId = null,
+        private readonly ?string $parentId = null,
         private readonly ?array $changeset = []
     ) {
         parent::__construct($date, $action, $details, $doerId);
@@ -36,6 +37,11 @@ class CreateOperationalLog extends AbstractCreateLog
     public function getContextId(): ?string
     {
         return $this->contextId;
+    }
+
+    public function getParentId(): string
+    {
+        return $this->parentId;
     }
 
     public function getObjectId(): string

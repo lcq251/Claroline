@@ -8,13 +8,15 @@ use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\HasContext;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_log_operational')]
 #[ORM\Entity]
 #[CrudEntity(finderClass: OperationalLogType::class)]
 class OperationalLog extends AbstractLog
 {
     use HasContext;
+
+    #[ORM\Column(type: Types::STRING, nullable: false)]
+    private ?string $parentId = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false)]
     private ?string $objectClass = null;
@@ -24,6 +26,16 @@ class OperationalLog extends AbstractLog
 
     #[ORM\Column(type: Types::JSON)]
     private ?array $changeset = [];
+
+    public function getParentId(): ?string
+    {
+        return $this->parentId;
+    }
+
+    public function setParentId(?string $parentId): void
+    {
+        $this->parentId = $parentId;
+    }
 
     public function getObjectClass(): ?string
     {

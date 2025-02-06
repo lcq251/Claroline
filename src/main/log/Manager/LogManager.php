@@ -72,6 +72,7 @@ class LogManager
         string $objectId,
         string $contextName,
         ?string $contextId = null,
+        ?string $parentId = null,
         ?array $changeset = []
     ): void {
         $this->operationalLogs[] = new CreateOperationalLog(
@@ -83,6 +84,7 @@ class LogManager
             $objectId,
             $contextName,
             $contextId,
+            $parentId,
             $changeset
         );
     }
