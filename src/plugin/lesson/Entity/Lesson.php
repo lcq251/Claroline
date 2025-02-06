@@ -12,19 +12,17 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Lesson extends AbstractResource
 {
-    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
     /**
      * Show overview to users or directly start the lesson.
      */
     #[ORM\Column(name: 'show_overview', type: Types::BOOLEAN, options: ['default' => 1])]
     private bool $showOverview = true;
 
-    
-    #[ORM\JoinColumn(name: 'root_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\OneToOne(targetEntity: Chapter::class, cascade: ['all'])]
-    private ?Chapter $root = null;
+    /**
+     * Displays Next and Previous button to navigate between pages.
+     */
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $navigation = false;
 
     /**
      * Numbering of the chapters.
@@ -32,18 +30,9 @@ class Lesson extends AbstractResource
     #[ORM\Column]
     private string $numbering = 'none';
 
-    /**
-     * @return string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description = null): void
-    {
-        $this->description = $description;
-    }
+    #[ORM\OneToOne(targetEntity: Chapter::class, cascade: ['all'])]
+    #[ORM\JoinColumn(name: 'root_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Chapter $root = null;
 
     public function setShowOverview(bool $showOverview): void
     {
@@ -55,14 +44,14 @@ class Lesson extends AbstractResource
         return $this->showOverview;
     }
 
-    public function setRoot(?Chapter $root): void
+    public function hasNavigation(): bool
     {
-        $this->root = $root;
+        return $this->navigation;
     }
 
-    public function getRoot(): ?Chapter
+    public function setNavigation(bool $navigation): void
     {
-        return $this->root;
+        $this->navigation = $navigation;
     }
 
     public function getNumbering(): string
@@ -73,6 +62,16 @@ class Lesson extends AbstractResource
     public function setNumbering($numbering): void
     {
         $this->numbering = $numbering;
+    }
+
+    public function setRoot(?Chapter $root): void
+    {
+        $this->root = $root;
+    }
+
+    public function getRoot(): ?Chapter
+    {
+        return $this->root;
     }
 
     #[ORM\PostPersist]

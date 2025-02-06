@@ -6,10 +6,6 @@
       "type": "string",
       "description": "The uuid of the lesson"
     },
-    "title": {
-      "type": "string",
-      "description": "The title of the lesson"
-    },
     "display": {
       "type": "object",
       "properties": {

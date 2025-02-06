@@ -1,8 +1,5 @@
 services:
     _defaults:
-        autowire: false
-        autoconfigure: false
-        public: false
         tags: [claroline.serializer]
 
     Icap\LessonBundle\Serializer\LessonSerializer: ~
@@ -10,3 +7,4 @@ services:
     Icap\LessonBundle\Serializer\ChapterSerializer:
         arguments:
            - '@Claroline\AppBundle\Persistence\ObjectManager'
+           - '@Claroline\CommunityBundle\Serializer\UserSerializer'

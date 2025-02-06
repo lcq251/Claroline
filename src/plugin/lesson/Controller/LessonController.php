@@ -39,20 +39,6 @@ class LessonController
         $this->chapterRepo = $this->om->getRepository(Chapter::class);
     }
 
-    #[Route(path: '/lesson/{id}', name: 'icap_lesson_update', methods: ['PUT'])]
-    public function updateAction(#[MapEntity(class: 'Icap\LessonBundle\Entity\Lesson', mapping: ['id' => 'uuid'])]
-    Lesson $lesson, Request $request): JsonResponse
-    {
-        $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
-
-        $data = $this->decodeRequest($request);
-        $object = $this->crud->update(Lesson::class, $data);
-
-        return new JsonResponse(
-            $this->serializer->serialize($object)
-        );
-    }
-
     #[Route(path: '/lesson/{id}/pdf', name: 'icap_lesson_export_pdf', methods: ['GET'])]
     public function downloadPdfAction(#[MapEntity(mapping: ['id' => 'uuid'])] Lesson $lesson): StreamedResponse
     {

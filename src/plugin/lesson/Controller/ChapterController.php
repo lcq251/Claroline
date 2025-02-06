@@ -2,7 +2,7 @@
 
 namespace Icap\LessonBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -13,6 +13,7 @@ use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
 use Icap\LessonBundle\Repository\ChapterRepository;
 use Icap\LessonBundle\Serializer\ChapterSerializer;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -22,7 +23,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 
 /**
- *
  * @todo refactor using AbstractCrudController
  */
 #[Route(path: '/lesson/{lessonId}/chapters')]
@@ -37,6 +37,7 @@ class ChapterController
         private readonly ObjectManager $om,
         private readonly Environment $templating,
         private readonly FinderProvider $finder,
+        private readonly Crud $crud,
         private readonly ChapterSerializer $chapterSerializer,
         private readonly ChapterManager $chapterManager,
         private readonly PdfManager $pdfManager
@@ -89,12 +90,15 @@ class ChapterController
 
     /**
      * Create new chapter.
-     *
      */
     #[Route(path: '/{slug}', name: 'apiv2_lesson_chapter_create', methods: ['POST'])]
-    public function createAction(Request $request, #[MapEntity(mapping: ['lessonId' => 'uuid'])] Lesson $lesson, #[MapEntity(mapping: ['slug' => 'slug'])]
-    Chapter $parent): JsonResponse
-    {
+    public function createAction(
+        Request $request,
+        #[MapEntity(mapping: ['lessonId' => 'uuid'])]
+        Lesson $lesson,
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Chapter $parent
+    ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 
         $newChapter = $this->chapterManager->createChapter($lesson, json_decode($request->getContent(), true), $parent);
@@ -105,12 +109,15 @@ class ChapterController
 
     /**
      * Update existing chapter.
-     *
      */
     #[Route(path: '/{slug}', name: 'apiv2_lesson_chapter_update', methods: ['PUT'])]
-    public function editAction(Request $request, #[MapEntity(mapping: ['lessonId' => 'uuid'])] Lesson $lesson, #[MapEntity(mapping: ['slug' => 'slug'])]
-    Chapter $chapter): JsonResponse
-    {
+    public function editAction(
+        Request $request,
+        #[MapEntity(mapping: ['lessonId' => 'uuid'])]
+        Lesson $lesson,
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Chapter $chapter
+    ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 
         $this->chapterManager->updateChapter($lesson, $chapter, json_decode($request->getContent(), true));
@@ -121,25 +128,20 @@ class ChapterController
 
     /**
      * Delete existing chapter.
-     *
      */
     #[Route(path: '/{slug}', name: 'apiv2_lesson_chapter_delete', methods: ['DELETE'])]
-    public function deleteAction(Request $request, #[MapEntity(mapping: ['lessonId' => 'uuid'])] Lesson $lesson, #[MapEntity(mapping: ['slug' => 'slug'])]
-    Chapter $chapter): JsonResponse
-    {
-        $previousChapter = $this->chapterRepository->getPreviousChapter($chapter);
-        $previousSlug = $previousChapter ? $previousChapter->getSlug() : null;
-
+    public function deleteAction(
+        #[MapEntity(mapping: ['lessonId' => 'uuid'])]
+        Lesson $lesson,
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Chapter $chapter
+    ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 
-        $payload = json_decode($request->getContent(), true);
-        $deleteChildren = $payload['deleteChildren'];
-
-        $this->chapterManager->deleteChapter($lesson, $chapter, $deleteChildren);
+        $this->crud->delete($chapter, [Crud::NO_PERMISSIONS]);
 
         return new JsonResponse([
             'tree' => $this->chapterManager->serializeChapterTree($lesson),
-            'slug' => $previousSlug,
         ]);
     }
 

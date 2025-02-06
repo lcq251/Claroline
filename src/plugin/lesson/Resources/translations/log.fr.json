@@ -1,0 +1,13 @@
+{
+  "lesson_chapter.create": "Création d'une page de Connaissance",
+  "lesson_chapter.create_desc": "Lorsqu'un utilisateur crée une nouvelle page dans une Connaissance.",
+  "lesson_chapter.create_message": "a <b>créé</b> la page %object%.",
+
+  "lesson_chapter.update": "Mise à jour d'une page de Connaissance",
+  "lesson_chapter.update_desc": "Lorsqu'un utilisateur met à jour une page dans une Connaissance.",
+  "lesson_chapter.update_message": "a <b>modifié</b> la page %object%.",
+
+  "lesson_chapter.delete": "Suppression d'une page de Connaissance",
+  "lesson_chapter.delete_desc": "Lorsqu'un utilisateur supprime une page dans une Connaissance.",
+  "lesson_chapter.delete_message": "a <b>supprimé</b> la page %object%."
+}

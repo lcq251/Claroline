@@ -31,14 +31,8 @@ const LessonEditorSummary = () => {
           name: 'add',
           type: LINK_BUTTON,
           icon: 'fa fa-fw fa-plus',
-          label: trans('new_subchapter', {}, 'lesson'),
+          label: trans('add_subpage', {}, 'actions'),
           target: `${resourceEditorPath}/${chapter.slug}/subchapter`
-        }, {
-          name: 'copy',
-          type: LINK_BUTTON,
-          icon: 'fa fa-fw fa-clone',
-          label: trans('copy', {}, 'actions'),
-          target: `${resourceEditorPath}/${chapter.slug}/copy`
         }, {
           name: 'delete',
           type: CALLBACK_BUTTON,
@@ -54,11 +48,12 @@ const LessonEditorSummary = () => {
 
   return (
     <EditorPage
-      title={trans('content')}
-      help={trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')}
+      title={trans('pages')}
+      help={trans('Gérez les différentes pages de votre Connaissance.')}
     >
       <ContentSummary
         links={editedChapters.map(getChapterSummary)}
+        noCollapse={true}
       />
 
       <Button
@@ -66,7 +61,7 @@ const LessonEditorSummary = () => {
         className={classes('btn btn-primary w-100 mt-3', {
           'btn-wave': isEmpty(editedChapters)
         })}
-        label={trans('Ajouter une section')}
+        label={trans('add_page', {}, 'actions')}
         size="lg"
         callback={() => true}
       />

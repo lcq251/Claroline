@@ -18,13 +18,12 @@ const LessonEditor = () => {
         resource: lesson,
         chapters: chapters.children || []
       })}
-      /*defaultPage="content"*/
       appearancePage={LessonEditorAppearance}
       pages={[
         {
           name: 'content',
-          title: trans('content'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
+          title: trans('pages'),
+          help: trans('Gérez les différentes pages de votre Connaissance.'),
           component: LessonEditorContent
         }
       ]}

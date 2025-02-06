@@ -12,15 +12,13 @@ use Icap\LessonBundle\Serializer\ChapterSerializer;
 
 class ChapterManager
 {
-    private Crud $crud;
     private ChapterRepository $chapterRepository;
 
     public function __construct(
         private readonly ObjectManager $om,
-        Crud $crud,
+        private readonly Crud $crud,
         private readonly ChapterSerializer $chapterSerializer
     ) {
-        $this->crud = $crud;
         $this->chapterRepository = $om->getRepository(Chapter::class);
     }
 
@@ -75,7 +73,7 @@ class ChapterManager
 
     public function serializeChapterTree(Lesson $lesson): array
     {
-        $tree = $this->om->getRepository(Chapter::class)->buildChapterTree($lesson->getRoot(), 'chapter.uuid, chapter.level, chapter.title, chapter.slug, chapter.text, chapter.poster, chapter.customNumbering');
+        $tree = $this->om->getRepository(Chapter::class)->buildChapterTree($lesson->getRoot());
 
         return $this->chapterSerializer->serializeChapterTree($tree[0]);
     }
@@ -85,8 +83,10 @@ class ChapterManager
      */
     public function createChapter(Lesson $lesson, array $data = [], Chapter $parent = null): Chapter
     {
-        $newChapter = $this->crud->create(Chapter::class, $data, [Crud::NO_PERMISSIONS]);
+        $newChapter = new Chapter();
         $newChapter->setLesson($lesson);
+
+        $this->crud->create($newChapter, $data, [Crud::NO_PERMISSIONS]);
 
         $this->insertChapterInPlace($newChapter, $parent, $data);
 

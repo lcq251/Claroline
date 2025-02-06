@@ -1,14 +1,11 @@
 {
-    "chapter": "Chapitre %number%",
-    "chapter_creation": "Créer un nouveau chapitre",
+    "page": "Page %number%",
     "chapter_numbering": "Numérotation",
     "chapter_loading": "Nous chargeons votre chapitre...",
-    "delete_also_children": "Voulez-vous également supprimer ses sous-chapitres ? Dans le cas contraire, ceux-ci seront remontés dans le parent immédiat.",
-    "delete_warning": "Voulez-vous supprimer ce chapitre définitivement ?",
-    "empty_lesson_message": "Ce cours est vide. Commencez par créer un nouveau chapitre.",
+    "page_delete_message": "Êtes-vous sûr(e) de vouloir supprimer cette page ainsi que toutes ses sous-pages ?",
     "internal_note_visibility_help": "Les notes internes sont uniquement visibles par les utilisateurs ayant la permission 'Voir les notes internes'.",
     "lesson_search": "Rechercher dans le cours",
-    "lesson_numbering": "Numérotation des chapitres",
+    "lesson_numbering": "Numérotation des pages",
     "lesson_numbering_none": "Aucune",
     "lesson_numbering_numeric": "Numérique",
     "lesson_numbering_literal": "Littérale",
@@ -16,9 +13,7 @@
     "move_destination": "Où placer le chapitre :",
     "move_chapter": "Déplacer le chapitre",
     "move_relation" : "Relation avec le chapitre parent",
-    "new_chapter": "Nouveau chapitre",
-    "new_subchapter": "Nouveau sous-chapitre",
     "subchapter": "En tant que sous-chapitre",
     "sibling": "Au même niveau",
-    "start_disabled_empty": "Le cours est vide."
+    "add_internal_note": "Ajouter une note interne"
 }

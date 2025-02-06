@@ -1,9 +1,7 @@
 {
   "styles": {
     "entry": {
-      "lesson-resource": "resources/lesson.scss",
       "pdf": "resources/pdf.scss"
     }
   }
 }
-

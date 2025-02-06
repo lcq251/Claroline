@@ -4,19 +4,23 @@
   "properties": {
     "id": {
       "type": "string",
-      "description": "The uuid of the chapter"
+      "description": "The uuid of the page"
     },
     "slug": {
       "type": "string",
-      "description": "The slug of the chapter"
+      "description": "The slug of the page"
     },
     "title": {
       "type": "string",
-      "description": "The title of the chapter"
+      "description": "The title of the page"
+    },
+    "poster": {
+      "type": ["string", "null"],
+      "description": "An image Url for the page's poster"
     },
     "text": {
-      "type": "string",
-      "description": "The text of the chapter"
+      "type": ["string", "null"],
+      "description": "The text of the page"
     },
     "internalNote": {
       "type": ["string", "null"],
@@ -24,18 +28,18 @@
     },
     "parentSlug": {
       "type": "string",
-      "description": "The slug of the chapter's parent chapter"
+      "description": "The slug of the page's parent"
     },
     "previousSlug": {
       "type": ["string", "null"],
-      "description": "The slug of the chapter's previous sibling"
+      "description": "The slug of the page's previous sibling"
     },
     "nextSlug": {
       "type": ["string", "null"],
-      "description": "The slug of the chapter's next sibling"
+      "description": "The slug of the page's next sibling"
     }
   },
-  "required": ["title", "text"],
+  "required": ["title"],
   "claroline": {
     "ids":  ["id"]
   }

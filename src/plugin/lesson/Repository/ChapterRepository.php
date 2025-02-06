@@ -13,13 +13,10 @@ class ChapterRepository extends NestedTreeRepository
         return $this->childrenHierarchy($chapter, false, [], $includeChapter);
     }
 
-    /**
-     * @return array
-     */
-    public function buildChapterTree(Chapter $chapter, $fields = 'chapter')
+    public function buildChapterTree(Chapter $chapter): array
     {
         $queryBuilder = $this->createQueryBuilder('chapter')
-            ->select($fields)
+            ->select('chapter.uuid, chapter.level, chapter.title, chapter.slug, chapter.text, chapter.poster, chapter.customNumbering')
             ->andWhere('chapter.root = :rootId')
             ->orderBy('chapter.root, chapter.left', 'ASC')
             ->setParameter('rootId', $chapter->getId());
@@ -27,17 +24,17 @@ class ChapterRepository extends NestedTreeRepository
         return $this->buildTree($queryBuilder->getQuery()->getArrayResult(), ['decorate' => false]);
     }
 
-    public function getChapterAndChapterChildren(Chapter $chapter)
+    public function getChapterAndChapterChildren(Chapter $chapter): array
     {
         return $this->children($chapter, false, null, 'ASC', true);
     }
 
-    public function getChapterChildren(Chapter $chapter)
+    public function getChapterChildren(Chapter $chapter): array
     {
         return $this->children($chapter, false, null, 'ASC', false);
     }
 
-    public function getChapterFirstChild(Chapter $chapter)
+    public function getChapterFirstChild(Chapter $chapter): ?Chapter
     {
         try {
             return $this->childrenQueryBuilder($chapter)
@@ -46,7 +43,7 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
@@ -55,12 +52,12 @@ class ChapterRepository extends NestedTreeRepository
         return $this->children($chapter, true, null, 'ASC', true);
     }
 
-    public function getDirectChapterChildren(Chapter $chapter)
+    public function getDirectChapterChildren(Chapter $chapter): array
     {
         return $this->children($chapter, true, null, 'ASC', false);
     }
 
-    public function getNextSibling(Chapter $chapter)
+    public function getNextSibling(Chapter $chapter): ?Chapter
     {
         try {
             return $this->getNextSiblingsQueryBuilder($chapter)
@@ -69,11 +66,11 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
-    public function getPreviousSibling(Chapter $chapter)
+    public function getPreviousSibling(Chapter $chapter): ?Chapter
     {
         try {
             return $this->getPrevSiblingsQueryBuilder($chapter)
@@ -82,11 +79,11 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
-    public function getNextChapter(Chapter $chapter)
+    public function getNextChapter(Chapter $chapter): ?Chapter
     {
         try {
             $qb = $this->getEntityManager()->createQueryBuilder();
@@ -106,11 +103,11 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
-    public function getPreviousChapter($chapter)
+    public function getPreviousChapter(Chapter $chapter): ?Chapter
     {
         try {
             $qb = $this->getEntityManager()->createQueryBuilder();
@@ -132,11 +129,11 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
-    public function getChapterBySlug($chapterSlug, $lessonId)
+    public function getChapterBySlug(string $chapterSlug, int $lessonId): ?Chapter
     {
         try {
             $qb = $this->getEntityManager()->createQueryBuilder();
@@ -153,7 +150,7 @@ class ChapterRepository extends NestedTreeRepository
                 ->getQuery()
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 }

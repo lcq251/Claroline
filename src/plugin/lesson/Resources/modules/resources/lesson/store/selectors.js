@@ -3,6 +3,7 @@ import get from 'lodash/get'
 
 import {selectors as resourceSelect} from '#/main/core/resource/store'
 import {hasPermission} from '#/main/app/security'
+import {flattenPages} from '#/plugin/lesson/resources/lesson/utils'
 
 const STORE_NAME = 'icap_lesson'
 const LIST_NAME = STORE_NAME + '.chapters'
@@ -21,11 +22,6 @@ const chapter = createSelector(
   (store) => store.chapter
 )
 
-const root = createSelector(
-  [store],
-  (store) => store.root
-)
-
 const tree = createSelector(
   [store],
   (store) => store.tree
@@ -34,6 +30,16 @@ const tree = createSelector(
 const treeData = createSelector(
   [tree],
   (tree) => tree.data
+)
+
+const root = createSelector(
+  [treeData],
+  (treeData) => treeData
+)
+
+const pages = createSelector(
+  [treeData],
+  (treeData) => flattenPages(get(treeData, 'children', []))
 )
 
 const treeInvalidated = createSelector(
@@ -47,7 +53,39 @@ const canEdit = (state) => hasPermission('edit', resourceSelect.resourceNode(sta
 
 const showOverview = createSelector(
   [lesson],
-  (lesson) => get(lesson, 'display.showOverview') || false
+  (lesson) => get(lesson, 'display.showOverview', false)
+)
+
+const showNavigation = createSelector(
+  [lesson],
+  (lesson) => get(lesson, 'display.navigation', false)
+)
+
+const numbering = createSelector(
+  [lesson],
+  (lesson) => get(lesson, 'display.numbering', null)
+)
+
+const nextPage = createSelector(
+  [chapter, pages],
+  (current, pages) => {
+    if (current.nextSlug) {
+      return pages.find(page => page.slug === current.nextSlug)
+    }
+
+    return null
+  }
+)
+
+const previousPage = createSelector(
+  [chapter, pages],
+  (current, pages) => {
+    if (current.previousSlug) {
+      return pages.find(page => page.slug === current.previousSlug)
+    }
+
+    return null
+  }
 )
 
 export const selectors = {
@@ -62,5 +100,9 @@ export const selectors = {
   treeInvalidated,
   canExport,
   canEdit,
-  showOverview
+  showOverview,
+  showNavigation,
+  numbering,
+  nextPage,
+  previousPage
 }

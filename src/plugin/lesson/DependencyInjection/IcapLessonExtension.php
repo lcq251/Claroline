@@ -14,9 +14,10 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
  */
 class IcapLessonExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $serviceLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $serviceLoader->load('services.yml');
+        $serviceLoader->load('components.yml');
     }
 }

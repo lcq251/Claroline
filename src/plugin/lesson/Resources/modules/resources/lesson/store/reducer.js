@@ -13,8 +13,7 @@ import {
   CHAPTER_LOAD,
   CHAPTER_RESET,
   TREE_LOADED,
-  CHAPTER_DELETED,
-  POSITION_SELECTED
+  CHAPTER_DELETED
 } from '#/plugin/lesson/resources/lesson/store/actions'
 
 const reducer = combineReducers({
@@ -31,31 +30,11 @@ const reducer = combineReducers({
   chapter_form: makeFormReducer(selectors.CHAPTER_EDIT_FORM_NAME, {}, {
     data: makeReducer({}, {
       [CHAPTER_LOAD]: (state, action) => Object.assign(cloneDeep(state), action.chapter),
-      [CHAPTER_RESET]: () => ({
-        id: null,
-        slug: null,
-        title: null,
-        text: null,
-        parentSug: null,
-        previousSlug: null,
-        nextSlug: null,
-        move: false,
-        position: null,
-        order: {
-          sibling: null,
-          subchapter: null
-        }
-      }),
-      [POSITION_SELECTED]: (state, action) => {
-        const data = cloneDeep(state)
-        data.position = action.isRoot ? 'subchapter' : data.position
-        return data
-      },
       [FORM_RESET + '/' + selectors.STORE_NAME + '.chapter_form']: (state, action) => Object.assign({
         position: 'subchapter',
         order: {
           sibling: 'before',
-          subchapter: 'first'
+          subchapter: 'last'
         },
         parentSlug: state.parentSlug
       }, action.data || {})
@@ -71,9 +50,6 @@ const reducer = combineReducers({
       [TREE_LOADED]: (state, action) => action.tree,
       [CHAPTER_DELETED]: (state, action) => action.tree
     })
-  }),
-  root: makeReducer(null, {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.root
   })
 })
 

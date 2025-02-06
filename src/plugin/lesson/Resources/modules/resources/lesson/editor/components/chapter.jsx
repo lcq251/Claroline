@@ -14,34 +14,33 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 const LessonEditorChapter = (props) => {
   const resourceEditorPath = useSelector(editorSelectors.path)
   const hasInternalNotes = useSelector(selectors.hasInternalNotes)
-  const hasCustomNumbering = useSelector(selectors.hasCustomNumbering)
   const numbering = useSelector(selectors.numbering)
 
   const allChapters = useSelector(selectors.chapters)
-  let chapterIndex
+  let chapterIndex = 0
   let chapter
   if (get(props.match, 'params.slug')) {
     chapterIndex = allChapters.findIndex(c => c.slug === get(props.match, 'params.slug'))
     if (-1 !== chapterIndex) {
       chapter = allChapters[chapterIndex]
-    } else {
-      chapterIndex = 0
     }
   }
 
-  const chapterNumbering = getNumbering(numbering, allChapters, chapter)
+  const chapterNumbering = chapter ? getNumbering(numbering, allChapters, chapter) : ''
+  let chapterTitle = ''
+  if (chapterNumbering) {
+    chapterTitle = chapterNumbering + ' '
+  }
+
+  if (get(chapter, 'title')) {
+    chapterTitle += get(chapter, 'title')
+  } else {
+    chapterTitle += trans('page', {number: chapterIndex + 1}, 'lesson')
+  }
 
   return (
     <EditorPage
-      title={
-        <>
-          {chapterNumbering &&
-            <span className="h-numbering">{chapterNumbering}</span>
-          }
-
-          {get(chapter, 'title') || trans('section', {number: chapterIndex + 1}, 'lesson')}
-        </>
-      }
+      title={chapterTitle}
       dataPart={`chapters[${chapterIndex}]`}
       actions={[
         {
@@ -79,31 +78,10 @@ const LessonEditorChapter = (props) => {
                 //workspace: props.workspace,
                 minRows: 10
               }
-            }
-          ]
-        }, {
-          title: trans('further_information'),
-          subtitle: trans('further_information_help'),
-          primary: true,
-          fields: [
-            {
-              name: 'customNumbering',
-              type: 'string',
-              label: trans('chapter_numbering', {}, 'lesson'),
-              displayed: hasCustomNumbering
-            }, {
-              name: 'meta.description',
-              label: trans('Description courte'),
-              help: trans('Décrivez succintement votre section (La description courte est affichée dans le sommaire).'),
-              type: 'string',
-              options: {
-                long: true,
-                minRows: 2
-              }
             }, {
               name: '_enableInternalNote',
               type: 'boolean',
-              label: trans('Ajouter une note interne'),
+              label: trans('add_internal_note', {}, 'lesson'),
               displayed: hasInternalNotes,
               help: trans('internal_note_visibility_help', {}, 'lesson'),
               calculated: (chapter) => chapter._enableInternalNote || chapter.internalNote,

@@ -1,0 +1,5 @@
+services:
+    # Operational
+    Icap\LessonBundle\Component\Log\Operational\LogChapter:
+        parent: Claroline\LogBundle\Component\Log\AbstractOperationalLog
+        tags: [ 'claroline.component.log' ]

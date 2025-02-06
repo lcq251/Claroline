@@ -1,0 +1,8 @@
+services:
+    Icap\LessonBundle\Subscriber\ChapterSubscriber:
+        tags: [ kernel.event_subscriber ]
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\CoreBundle\Manager\FileManager'

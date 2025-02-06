@@ -2,6 +2,7 @@
 
 namespace Icap\LessonBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Icap\LessonBundle\Entity\Lesson;
 
@@ -29,22 +30,25 @@ class LessonSerializer
         return [
             'id' => $lesson->getUuid(),
             'display' => [
-                'description' => $lesson->getDescription(),
                 'showOverview' => $lesson->getShowOverview(),
                 'numbering' => $lesson->getNumbering(),
+                'navigation' => $lesson->hasNavigation(),
             ],
         ];
     }
 
-    public function deserialize(array $data, Lesson $lesson = null): Lesson
+    public function deserialize(array $data, Lesson $lesson, ?array $options = []): Lesson
     {
-        if (empty($lesson)) {
-            $lesson = new lesson();
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $lesson);
+        } else {
+            $lesson->refreshUuid();
         }
 
         $this->sipe('display.description', 'setDescription', $data, $lesson);
         $this->sipe('display.showOverview', 'setShowOverview', $data, $lesson);
         $this->sipe('display.numbering', 'setNumbering', $data, $lesson);
+        $this->sipe('display.navigation', 'setNavigation', $data, $lesson);
 
         return $lesson;
     }

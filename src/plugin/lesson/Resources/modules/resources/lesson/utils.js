@@ -36,27 +36,24 @@ const buildFlattenedChapterChoices = (items, chapterSlug) => {
  * @param {Array}  chapters
  * @param {Boolean}  keepChapters
  */
-function flattenChapters(chapters, keepChapters = false) {
+function flattenPages(chapters, keepChapters = false) {
   function flatten(chapter, parent = null) {
     const children = chapter.children
-    const flatchapter = Object.assign({}, chapter)
+    const flatChapter = Object.assign({}, chapter)
 
-    if( !keepChapters ) {
-      delete flatchapter.children
-    }
-
+    delete flatChapter.children
     if (parent) {
-      flatchapter.parent = {
+      flatChapter.parent = {
         id: parent.id,
         title: parent.title
       }
     }
 
-    let flattened = [flatchapter]
+    let flattened = [flatChapter]
 
     if (children) {
       children.map((child) => {
-        flattened = flattened.concat(flatten(child, flatchapter))
+        flattened = flattened.concat(flatten(child, flatChapter))
       })
     }
 
@@ -97,13 +94,16 @@ function getNumbering(type, chapters, chapter) {
     case LESSON_NUMBERINGS.NUMBERING_NUMERIC:
       return '' + buildPath(chapters, chapter)
         .map(i => i + 1)
-        .join('.')
+        .join('.') + '.'
+
     case LESSON_NUMBERINGS.NUMBERING_LITERAL:
       return buildPath(chapters, chapter)
         .map(i => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])
-        .join('.')
+        .join('.') + '.'
+
     case LESSON_NUMBERINGS.NUMBERING_CUSTOM:
       return chapter.customNumbering || ''
+
     case LESSON_NUMBERINGS.NUMBERING_NONE:
     default:
       return ''
@@ -111,7 +111,7 @@ function getNumbering(type, chapters, chapter) {
 }
 
 export {
-  flattenChapters,
+  flattenPages,
   getNumbering,
   buildParentChapterChoices
 }

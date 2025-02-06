@@ -9,8 +9,6 @@ import {selectors} from '#/plugin/lesson/resources/lesson/store/selectors'
 
 export const CHAPTER_LOAD      = 'CHAPTER_LOAD'
 export const CHAPTER_RESET     = 'CHAPTER_RESET'
-export const CHAPTER_CREATE    = 'CHAPTER_CREATE'
-export const CHAPTER_EDIT      = 'CHAPTER_EDIT'
 export const CHAPTER_DELETED   = 'CHAPTER_DELETED'
 export const TREE_LOADED       = 'TREE_LOADED'
 export const POSITION_SELECTED = 'POSITION_SELECTED'
@@ -19,8 +17,6 @@ export const actions = {}
 
 actions.chapterLoad      = makeActionCreator(CHAPTER_LOAD, 'chapter')
 actions.chapterReset     = makeActionCreator(CHAPTER_RESET)
-actions.chapterCreate    = makeActionCreator(CHAPTER_CREATE)
-actions.chapterEdit      = makeActionCreator(CHAPTER_EDIT)
 actions.chapterDeleted   = makeActionCreator(CHAPTER_DELETED, 'tree')
 actions.treeLoaded       = makeActionCreator(TREE_LOADED, 'tree')
 actions.positionSelected = makeActionCreator(POSITION_SELECTED, 'isRoot')
@@ -59,53 +55,31 @@ actions.loadChapter = (lessonId, chapterSlug) => dispatch => {
   })
 }
 
-actions.editChapter = (formName, lessonId, chapterSlug) => dispatch => {
-  dispatch(formActions.resetForm(formName, {}, false))
-  dispatch(actions.chapterEdit())
-  dispatch({[API_REQUEST]: {
-    url: ['apiv2_lesson_chapter_get', {lessonId: lessonId, slug: chapterSlug}],
-    success: (response, dispatch) => {
-      dispatch(formActions.resetForm(formName, response, false))
-      dispatch(actions.chapterLoad(response))
+actions.editChapter = (lessonId, chapterSlug) => dispatch => {
+  dispatch(formActions.resetForm(selectors.CHAPTER_EDIT_FORM_NAME, {}, false))
+
+  return dispatch({
+    [API_REQUEST]: {
+      url: ['apiv2_lesson_chapter_get', {lessonId: lessonId, slug: chapterSlug}],
+      success: (response, dispatch) => {
+        dispatch(formActions.resetForm(selectors.CHAPTER_EDIT_FORM_NAME, response, false))
+        dispatch(actions.chapterLoad(response))
+      }
     }
-  }})
+  })
 }
 
-actions.copyChapter = (formName, lessonId, chapterSlug) => dispatch => {
-  dispatch(formActions.resetForm(formName, {}, true))
-  dispatch(actions.chapterEdit())
-  dispatch({[API_REQUEST]: {
-    url: ['apiv2_lesson_chapter_get', {lessonId: lessonId, slug: chapterSlug}],
-    success: (response, dispatch) => {
-      const data = cloneDeep(response)
-      data.parentSlug = ''
-      data.id = undefined
-      dispatch(formActions.resetForm(formName, data, true))
-      dispatch(actions.chapterLoad(data))
-    }
-  }})
+actions.createChapter = (lessonId, parentChapterSlug) => dispatch => {
+  dispatch(formActions.resetForm(selectors.CHAPTER_EDIT_FORM_NAME, {parentSlug: parentChapterSlug}, true))
 }
 
-actions.createChapter = (formName, lessonId, rootChapterSlug) => dispatch => {
-  dispatch(actions.chapterReset())
-  dispatch(formActions.resetForm(formName, {parentSlug: rootChapterSlug}, true))
-  dispatch(actions.chapterCreate())
-}
-
-actions.deleteChapter = (lessonId, chapterSlug, deleteChildren = false) => dispatch =>
+actions.deleteChapter = (lessonId, chapterSlug) => (dispatch) =>
   dispatch({[API_REQUEST]: {
     url: ['apiv2_lesson_chapter_delete', {lessonId: lessonId, slug: chapterSlug}],
     request: {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        deleteChildren: deleteChildren
-      })
+      method: 'DELETE'
     },
-    success: (response, dispatch) => {
+    success: (response) => {
       dispatch(actions.chapterDeleted(response.tree))
     }
   }})

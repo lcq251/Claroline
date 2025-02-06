@@ -2,40 +2,46 @@
 
 namespace Icap\LessonBundle\Entity;
 
-use Icap\LessonBundle\Repository\ChapterRepository;
-use Doctrine\DBAL\Types\Types;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\CreatedAt;
+use Claroline\AppBundle\Entity\Meta\Creator;
+use Claroline\AppBundle\Entity\Meta\UpdatedAt;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Icap\LessonBundle\Repository\ChapterRepository;
 
 #[ORM\Table(name: 'icap__lesson_chapter')]
 #[ORM\Entity(repositoryClass: ChapterRepository::class)]
 #[Gedmo\Tree(type: 'nested')]
-class Chapter
+class Chapter implements CrudEntityInterface
 {
     use Id;
     use Uuid;
     use Poster;
+    use Creator;
+    use CreatedAt;
+    use UpdatedAt;
 
     #[ORM\Column(type: Types::STRING, nullable: false)]
-    private ?string $title;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $text;
+    private ?string $text = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $internalNote;
+    private ?string $internalNote = null;
 
-    
     #[ORM\JoinColumn(name: 'lesson_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Lesson::class)]
-    private ?Lesson $lesson;
+    private ?Lesson $lesson = null;
 
     #[ORM\Column(length: 128, unique: true, nullable: false)]
-    #[Gedmo\Slug(fields: ['title'], unique: true, updatable: false)]
-    private ?string $slug;
+    #[Gedmo\Slug(fields: ['title'], updatable: false, unique: true)]
+    private ?string $slug = null;
 
     #[ORM\Column(name: 'lft', type: Types::INTEGER)]
     #[Gedmo\TreeLeft]
@@ -53,7 +59,6 @@ class Chapter
     #[Gedmo\TreeRoot]
     private ?int $root;
 
-    
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Chapter::class)]
     #[Gedmo\TreeParent]
@@ -68,6 +73,11 @@ class Chapter
     public function __construct()
     {
         $this->refreshUuid();
+    }
+
+    public static function getIdentifiers(): array
+    {
+        return ['slug'];
     }
 
     public function setSlug(string $slug): void

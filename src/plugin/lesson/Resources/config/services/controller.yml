@@ -8,6 +8,7 @@ services:
           - '@Claroline\AppBundle\Persistence\ObjectManager'
           - '@twig'
           - '@Claroline\AppBundle\API\FinderProvider'
+          - '@Claroline\AppBundle\API\Crud'
           - '@Icap\LessonBundle\Serializer\ChapterSerializer'
           - '@Icap\LessonBundle\Manager\ChapterManager'
           - '@Claroline\AppBundle\Manager\PdfManager'
