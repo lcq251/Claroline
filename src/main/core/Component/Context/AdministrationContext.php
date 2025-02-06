@@ -74,7 +74,6 @@ class AdministrationContext extends AbstractContext
                 'opening' => [
                     'type' => $defaultTool ? 'tool' : null,
                     'target' => $defaultTool,
-                    'menu' => $this->config->getParameter('admin.menu'),
                 ],
             ],
         ];

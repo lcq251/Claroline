@@ -24,11 +24,6 @@ class PlatformDefaults implements ParameterProviderInterface
     {
         return [
             'meta' => [],
-            'home' => [
-                'type' => 'none',
-                'data' => null,
-                'menu' => null,
-            ],
             'profile' => [
                 'roles_confidential' => [],
                 'roles_locked' => [],
@@ -106,14 +101,15 @@ class PlatformDefaults implements ParameterProviderInterface
                     'resource' => true,
                 ],
             ],
+            'home' => [
+                'type' => 'none',
+                'data' => null,
+            ],
             'admin' => [ // to remove
                 'default_tool' => 'home',
-                'menu' => null,
             ],
             'desktop' => [ // to remove
                 'default_tool' => 'home',
-                'show_progression' => false,
-                'menu' => null,
             ],
             'restrictions' => [
                 'users' => null,

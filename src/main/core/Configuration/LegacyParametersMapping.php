@@ -26,7 +26,6 @@ class LegacyParametersMapping implements LegacyParametersMappingInterface
             'default_role' => 'registration.default_role',
             'account_duration' => 'security.account_duration',
             'username_regex' => 'registration.username_regex',
-            'country' => 'country',
             'registration_mail_validation' => 'registration.validation',
             'show_help_button' => 'help.show',
             'help_url' => 'help.url',

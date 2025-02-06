@@ -88,41 +88,6 @@ const Meta = (props) =>
                     tool: trans('platform_home_tool')
                   }
                 }
-              }, {
-                name: 'home.menu',
-                type: 'choice',
-                label: trans('tools_menu'),
-                mode: 'expert',
-                placeholder: trans('do_nothing'),
-                options: {
-                  condensed: false,
-                  noEmpty: false,
-                  choices: {
-                    open: trans('open_tools_menu'),
-                    close: trans('close_tools_menu')
-                  }
-                }
-              }
-            ]
-          }, {
-            icon: 'fa fa-fw fa-atlas',
-            displayed: false,
-            title: trans('desktop'),
-            fields: [
-              {
-                name: 'desktop.menu',
-                type: 'choice',
-                label: trans('tools_menu'),
-                mode: 'expert',
-                placeholder: trans('do_nothing'),
-                options: {
-                  condensed: false,
-                  noEmpty: false,
-                  choices: {
-                    open: trans('open_tools_menu'),
-                    close: trans('close_tools_menu')
-                  }
-                }
               }
             ]
           }, {

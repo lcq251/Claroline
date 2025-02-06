@@ -2,8 +2,6 @@
 
 namespace Claroline\CoreBundle\Component\Context;
 
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
-use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\AbstractContext;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
@@ -12,9 +10,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager;
-use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class WorkspaceContext extends AbstractContext

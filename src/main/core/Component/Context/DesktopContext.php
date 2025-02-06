@@ -95,7 +95,6 @@ class DesktopContext extends AbstractContext
                 'opening' => [
                     'type' => $defaultTool ? 'tool' : null,
                     'target' => $defaultTool,
-                    'menu' => $this->config->getParameter('desktop.menu'),
                 ],
             ]),
         ];

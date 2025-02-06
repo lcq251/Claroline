@@ -80,19 +80,6 @@ const WorkspaceEditorAppearance = () => {
                   onChange: (selected) => updateProp('opening.target', selected)
                 }
               ]
-            }, {
-              name: 'data.opening.menu',
-              type: 'choice',
-              label: trans('tools_menu'),
-              placeholder: trans('do_nothing'),
-              options: {
-                condensed: false,
-                noEmpty: false,
-                choices: {
-                  open: trans('open_tools_menu'),
-                  close: trans('close_tools_menu')
-                }
-              }
             }
           ]
         }

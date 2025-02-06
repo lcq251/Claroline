@@ -86,7 +86,6 @@ class PublicContext extends AbstractContext
                 'opening' => [
                     'type' => 'tool' === $type ? 'tool' : null,
                     'target' => 'home',
-                    'menu' => $this->config->getParameter('home.menu'),
                 ],
             ],
         ];

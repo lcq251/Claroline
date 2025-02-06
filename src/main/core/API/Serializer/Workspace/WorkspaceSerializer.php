@@ -138,17 +138,7 @@ class WorkspaceSerializer
         $openingData = [
             'type' => 'tool',
             'target' => 'home',
-            'menu' => null,
         ];
-
-        if ($details && isset($details['hide_tools_menu'])) {
-            // test for bool values is for retro-compatibility to avoid having to migrate a json col in a huge table
-            if (is_string($details['hide_tools_menu'])) {
-                $openingData['menu'] = $details['hide_tools_menu'];
-            } else {
-                $openingData['menu'] = !$details['hide_tools_menu'] ? 'open' : 'close';
-            }
-        }
 
         if ($details && isset($details['opening_type'])) {
             $openingData['type'] = $details['opening_type'];
@@ -284,7 +274,6 @@ class WorkspaceSerializer
             }
 
             if (isset($data['opening'])) {
-                $details['hide_tools_menu'] = isset($data['opening']['menu']) ? $data['opening']['menu'] : null;
                 $details['opening_type'] = isset($data['opening']['type']) && !empty($data['opening']['target']) ?
                     $data['opening']['type'] :
                     'tool';

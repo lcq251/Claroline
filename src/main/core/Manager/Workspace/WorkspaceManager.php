@@ -100,9 +100,6 @@ class WorkspaceManager implements LoggerAwareInterface
             $workspaceOptions = new WorkspaceOptions();
             $workspaceOptions->setWorkspace($workspace);
             $details = [
-                'hide_tools_menu' => null,
-                'background_color' => null,
-                'hide_breadcrumb' => false,
                 'use_workspace_opening_resource' => false,
                 'workspace_opening_resource' => null,
             ];
