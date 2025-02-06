@@ -90,6 +90,7 @@ class SummaryLink extends Component {
                 <SummaryLink
                   {...child}
                   key={toKey(child.id || child.label) + index}
+                  noCollapse={this.props.noCollapse}
                 />
               )
             }

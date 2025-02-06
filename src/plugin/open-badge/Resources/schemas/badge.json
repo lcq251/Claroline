@@ -32,7 +32,6 @@
   },
   "required": ["image"],
   "claroline": {
-    "requiredAtCreation": [],
     "ids": ["id"]
   }
 }

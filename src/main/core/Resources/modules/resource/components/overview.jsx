@@ -15,10 +15,8 @@ import {PageContent, PageSection} from '#/main/app/page'
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors} from '#/main/core/resource/store'
 
-import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 import {EvaluationProgression} from '#/main/evaluation/components/progression'
-
 
 const ResourceOverview = props => {
   const path = useSelector(selectors.path)
@@ -27,7 +25,7 @@ const ResourceOverview = props => {
   const embedded = useSelector(selectors.embedded)
 
   const userEvaluation = useSelector(selectors.userEvaluation)
-  const description = get(resourceNode, 'meta.descriptionHtml', null) /*|| get(resourceNode, 'meta.description', null)*/
+  const description = get(resourceNode, 'meta.descriptionHtml', null)
   const estimatedDuration = get(resourceNode, 'evaluation.estimatedDuration')
 
   return (

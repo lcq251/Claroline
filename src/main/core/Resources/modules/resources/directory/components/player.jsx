@@ -46,8 +46,9 @@ const DirectoryPlayer = (props) => {
       name={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
       title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
     >
-      <PageContent>
+      <PageContent className="d-flex flex-column">
         <FileDrop
+          className="flex-fill"
           size="lg"
           disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
           onDrop={(files) => props.createFiles(props.currentNode, files).then(props.updateNodes)}
@@ -56,6 +57,7 @@ const DirectoryPlayer = (props) => {
           {props.storageLock &&
             <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
           }
+
           <ListSource
             flush={true}
             name={props.listName}

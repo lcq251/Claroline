@@ -95,7 +95,8 @@ const CourseDetails = (props) => {
       <PageHeading
         size="md"
         title={get(props.course, 'name', trans('loading'))}
-        description={get(props.course, 'plainDescription') }
+        description={get(props.course, 'plainDescription')}
+        primaryAction="edit"
         actions={!isEmpty(props.course) ? getActions([props.course], {
           add: () => props.reload(props.course.slug),
           update: () => props.reload(props.course.slug),

@@ -8,6 +8,7 @@ import {selectors} from '#/main/app/platform/store'
 import {Html} from '#/main/app/components/html'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Contact} from '#/main/app/components/contact'
+import {trans} from '#/main/app/intl'
 
 const HelpModal = (props) => {
   const currentOrganization = useSelector(selectors.currentOrganization)
@@ -51,18 +52,20 @@ const HelpModal = (props) => {
           <ul className="list-group mb-4">
             <li className="list-group-item">
               Aide
+              <span className="ms-2 fa fa-arrow-up-right-from-square fs-sm" aria-hidden={true} />
+              <span className="visually-hidden" role="presentation">{trans('external_link')}</span>
             </li>
             <li className="list-group-item">
               Plan du site
+            </li>
+            <li className="list-group-item">
+              Accessibilité : Non conforme
             </li>
             <li className="list-group-item">
               Conditions d'utilisation
             </li>
             <li className="list-group-item">
               Politique de confidentialité
-            </li>
-            <li className="list-group-item">
-              Accessibilité du site
             </li>
           </ul>
         </nav>

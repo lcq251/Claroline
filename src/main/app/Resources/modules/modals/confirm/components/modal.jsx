@@ -42,14 +42,12 @@ const ConfirmModal = (props) =>
     </div>
 
     <div className="modal-footer bg-transparent" role="toolbar">
-      {props.cancel &&
-        <Button
-          className="btn btn-body flex-fill"
-          label={props.cancel}
-          type={CALLBACK_BUTTON}
-          callback={props.fadeModal}
-        />
-      }
+      <Button
+        className="btn btn-body flex-fill"
+        label={props.cancel || trans('cancel', {}, 'actions')}
+        type={CALLBACK_BUTTON}
+        callback={props.fadeModal}
+      />
 
       <Button
         label={trans('confirm', {}, 'actions')}
@@ -80,12 +78,6 @@ ConfirmModal.propTypes = {
 
   // from modal,
   fadeModal: T.func.isRequired
-}
-
-ConfirmModal.defaultProps = {
-  dangerous: false,
-  items: [],
-  cancel: trans('cancel', {}, 'actions')
 }
 
 export {

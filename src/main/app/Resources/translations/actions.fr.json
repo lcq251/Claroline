@@ -103,5 +103,6 @@
   "back_home": "Retour à l'accueil",
   "show_description": "Afficher la description",
   "hide_description": "Cacher la description",
-  "resume": "Reprendre"
+  "resume": "Reprendre",
+  "show_history": "Voir l'historique"
 }

@@ -16,11 +16,10 @@ const ColumnsMenu = forwardRef((props, ref) =>
     <MenuHeader>{trans('list_columns')}</MenuHeader>
 
     {props.available.map(availableColumn =>
-      <li key={availableColumn.name} className="dropdown-item" role="presentation">
+      <li key={availableColumn.name} className="dropdown-item">
         <Checkbox
           id={toKey(availableColumn.name)}
           className="mb-0"
-          switch={true}
           label={availableColumn.label}
           checked={-1 !== props.current.indexOf(availableColumn.name)}
           disabled={1 === props.current.length && -1 !== props.current.indexOf(availableColumn.name)}

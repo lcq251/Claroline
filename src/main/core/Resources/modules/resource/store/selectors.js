@@ -27,6 +27,11 @@ const id = createSelector(
   (resourceNode) => resourceNode.id
 )
 
+const name = createSelector(
+  [resourceNode],
+  (resourceNode) => resourceNode.name
+)
+
 const basePath = toolSelectors.path
 
 const path = createSelector(
@@ -168,6 +173,7 @@ export const selectors = {
   resourceNode,
   slug,
   id,
+  name,
   workspace,
   workspaceId,
   parent,

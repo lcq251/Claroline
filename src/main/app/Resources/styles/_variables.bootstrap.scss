@@ -812,7 +812,7 @@ $input-btn-padding-x-sm:      .5rem !default;
 $input-btn-font-size-sm:      $font-size-sm !default;
 
 $input-btn-padding-y-lg:      .75rem; // .5rem !default;
-$input-btn-padding-x-lg:      1.25rem; // 1rem !default;
+$input-btn-padding-x-lg:      1rem !default;
 $input-btn-font-size-lg:      $font-size-lg !default;
 
 $input-btn-border-width:      var(--#{$prefix}border-width) !default;
@@ -1187,7 +1187,7 @@ $nav-pills-border-radius:           var(--#{$prefix}border-radius) !default;
 $nav-pills-link-active-color:       $component-active-color !default;
 $nav-pills-link-active-bg:          $component-active-bg !default;
 
-$nav-underline-gap:                     2rem !default; // 1rem !default;
+$nav-underline-gap:                     1.5rem !default; // 1rem !default;
 $nav-underline-border-width:            .125rem !default;
 $nav-underline-link-active-font-weight: $nav-link-font-weight !default; // custom claroline
 $nav-underline-link-active-color:       var(--#{$prefix}emphasis-color) !default;

@@ -21,6 +21,7 @@ class SearchMinimal extends Component {
         className={classes('input-group', this.props.className, {
           [`input-group-${this.props.size}`]: !!this.props.size
         })}
+        role="search"
       >
         <input
           type="search"

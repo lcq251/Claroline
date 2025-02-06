@@ -131,7 +131,11 @@ class ListData extends Component {
     const hasFilters = this.props.filters && this.props.filters.current && 0 < this.props.filters.current.length
 
     return (
-      <div className={classes('data-list', this.props.className, {'data-list-flush': this.props.flush})} role="presentation">
+      <div
+        className={classes('data-list', this.props.className, {'data-list-flush': this.props.flush})}
+        role="presentation"
+        aria-busy={!this.props.loaded || this.props.invalidated}
+      >
         {(displayTool || filtersTool || this.props.addAction) &&
           <ListHeader
             id={this.props.id}

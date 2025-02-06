@@ -51,8 +51,8 @@ const ResourceEditor = (props) => {
       thumbnail={
         <Thumbnail
           className="rounded-1"
-          thumbnail={resourceNode.thumbnail}
-          name={resourceNode.name}
+          thumbnail={editedNode.thumbnail}
+          name={editedNode.name}
           size="sm"
         />
       }

@@ -1,7 +1,6 @@
 import React, {useState, useEffect, createElement} from 'react'
 import {useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
 
 import {makeCancelable} from '#/main/app/api'
 import {Routes, Redirect} from '#/main/app/router'
@@ -51,10 +50,6 @@ const Platform = () => {
       }
     }
   }, [loaded])
-
-  if (isEmpty(appContexts)) {
-    return null
-  }
 
   return (
     <>

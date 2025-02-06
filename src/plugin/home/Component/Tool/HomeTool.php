@@ -17,7 +17,6 @@ use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Manager\HomeManager;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeTool extends ToolComponent
 {

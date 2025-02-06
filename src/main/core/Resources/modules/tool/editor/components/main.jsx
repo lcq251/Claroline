@@ -34,7 +34,6 @@ const ToolEditor = (props) => {
       }]}
       close={props.path}
       onSave={(savedData) => props.refresh(props.name, savedData, props.contextType)}
-      defaultPage={props.defaultPage}
       canAdministrate={hasPermission('administrate', props.tool)}
       overviewPage={props.children ? (() => props.children) : props.overviewPage}
       appearancePage={props.appearancePage}
@@ -82,7 +81,6 @@ ToolEditor.defaultProps = {
   historyPage: ToolEditorHistory,
   permissionsPage: ToolEditorPermissions,
   actionsPage: ToolEditorActions,
-  defaultPage: 'overview',
   additionalData: () => ({})
 }
 

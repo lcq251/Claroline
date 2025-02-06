@@ -128,9 +128,8 @@ const UserShow = (props) => {
                     {...{
                       name: 'add',
                       type: MODAL_BUTTON,
-                      icon: 'fa fa-fw fa-plus',
+                      // icon: 'fa fa-fw fa-plus',
                       label: trans('add_group', {}, 'actions'),
-                      tooltip: 'bottom',
                       displayed: hasPermission('administrate', props.user),
                       modal: [MODAL_GROUPS, {
                         selectAction: (groups) => ({

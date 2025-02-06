@@ -1,20 +1,8 @@
 /**
- * Announcement resource
+ * Announcement tool
  */
 
 @import "../variables";
-
-.announcements-grid {
-    display: grid;
-    column-gap: map-get($spacers, 4);
-    row-gap: map-get($spacers, 5);
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-
-    .announce-post {
-        flex-direction: column;
-        max-width: $content-sm;
-    }
-}
 
 .announcements-list {
     display: flex;

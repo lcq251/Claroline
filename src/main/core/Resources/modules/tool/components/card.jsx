@@ -9,7 +9,6 @@ const ToolCard = props =>
     {...props}
     icon={`fa fa-${props.data.icon}`}
     poster={props.data.thumbnail}
-    name={trans(props.data.name, {}, 'tools')}
     title={trans(props.data.name, {}, 'tools')}
     asIcon={true}
   />

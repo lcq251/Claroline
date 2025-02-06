@@ -3,6 +3,10 @@
     "resource.open_desc": "Lorsqu'un utilisateur consulte une ressource de la plateforme.",
     "resource.open_message": "a <b>ouvert</b> la ressource %resource%.",
 
+    "resource.create": "Création d'une ressource",
+    "resource.create_desc": "Lorsqu'un utilisateur crée une nouvelle ressource.",
+    "resource.create_message": "a <b>créé</b> la ressource %object%.",
+
     "resource.publish": "Publication d'une ressource",
     "resource.publish_desc": "Lorsqu'un utilisateur publie une ressource.",
     "resource.publish_message": "a <b>publié</b> la ressource %resource%.",

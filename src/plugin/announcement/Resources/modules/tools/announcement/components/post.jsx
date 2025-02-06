@@ -46,6 +46,7 @@ const AnnouncementPost = (props) => {
           }}
           poster={props.announcement.poster}
           title={props.announcement.title}
+          primaryAction="edit"
           actions={[
             {
               name: 'download',
@@ -97,7 +98,6 @@ const AnnouncementPost = (props) => {
               <>
                 <UserMicro
                   {...get(props.announcement, 'meta.creator', {})}
-                  // noStatus={true}
                   link={true}
                 />
 

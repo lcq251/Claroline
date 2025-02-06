@@ -42,33 +42,34 @@ const PageActions = (props) => {
       {primaryAction && (undefined === primaryAction.displayed || primaryAction.displayed) &&
         <Button
           {...primaryAction}
-          className="btn btn-primary page-action-btn"
+          className="btn btn-body px-3 py-2"
           icon={undefined}
           tooltip={undefined}
-          disabled={props.disabled || primaryAction.disabled}
+          size="sm"
         />
       }
 
       {secondaryAction && (undefined === secondaryAction.displayed || secondaryAction.displayed) &&
         <Button
           {...secondaryAction}
-          className="btn btn-body"
+          className="btn btn-body px-3 py-2"
           icon={undefined}
           tooltip={undefined}
-          disabled={props.disabled || secondaryAction.disabled}
+          size="sm"
         />
       }
 
       {!isEmpty(actions) &&
         <Toolbar
           className="btn-toolbar gap-1 flex-nowrap"
-          buttonName="btn btn-body"
+          buttonName="btn btn-text-body px-2 py-2 focus-ring focus-ring-secondary"
           tooltip="bottom"
           toolbar={props.toolbar}
           actions={actions}
           disabled={props.disabled}
           scope="object"
           role="presentation"
+          size="sm"
         />
       }
     </div>
