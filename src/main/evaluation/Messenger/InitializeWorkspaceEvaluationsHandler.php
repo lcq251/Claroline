@@ -5,7 +5,6 @@ namespace Claroline\EvaluationBundle\Messenger;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\InitializeWorkspaceEvaluations;
 use Claroline\EvaluationBundle\Messenger\Message\UpdateResourceEvaluations;

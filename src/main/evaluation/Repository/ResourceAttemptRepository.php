@@ -28,7 +28,6 @@ class ResourceAttemptRepository extends EntityRepository
             ->andWhere('rue.resourceNode = :resourceNode')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::OPENED,
                 EvaluationStatus::INCOMPLETE,
             ])
             ->setParameter('user', $user)

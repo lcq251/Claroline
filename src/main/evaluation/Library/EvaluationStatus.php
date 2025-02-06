@@ -5,8 +5,6 @@ namespace Claroline\EvaluationBundle\Library;
 final class EvaluationStatus
 {
     public const NOT_ATTEMPTED = 'not_attempted';
-    /** @deprecated no replacement, either check for NOT_ATTEMPTED or INCOMPLETE */
-    public const OPENED = 'opened';
     public const INCOMPLETE = 'incomplete';
     public const COMPLETED = 'completed';
     public const FAILED = 'failed';

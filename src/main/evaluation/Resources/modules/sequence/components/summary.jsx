@@ -91,7 +91,6 @@ const PathSummary = (props) => {
 }
 
 PathSummary.propTypes = {
-  className: T.string,
   path: T.string.isRequired,
   sequence: T.shape(
     SequenceTypes.propTypes

@@ -11,11 +11,6 @@
 
 namespace Claroline\EvaluationBundle\Repository;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Doctrine\ORM\EntityRepository;
@@ -29,7 +24,6 @@ class SequenceEvaluationRepository extends EntityRepository
             ->andWhere('e.sequence = :sequence')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::OPENED,
                 EvaluationStatus::INCOMPLETE,
             ])
             ->setParameter('sequence', $sequence)

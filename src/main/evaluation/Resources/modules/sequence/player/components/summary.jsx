@@ -19,7 +19,7 @@ const PlayerSummary = (props) => {
 
   return (
     <>
-      <LinkButton target={props.path} exact={true} className="btn btn-text-body focus-ring mb-3 ms-n2" size="sm">
+      <LinkButton target={props.path} exact={true} className="btn btn-text-body focus-ring mb-3 ms-n2 me-auto" size="sm">
         <span className="fa fa-arrow-left icon-with-text-right" aria-hidden={true} />
         {trans('back_home', {}, 'actions')}
       </LinkButton>

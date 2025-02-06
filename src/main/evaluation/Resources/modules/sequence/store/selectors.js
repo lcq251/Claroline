@@ -1,10 +1,10 @@
 import {createSelector} from 'reselect'
+import get from 'lodash/get'
 
 import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {constants} from '#/main/evaluation/constants'
 import {route} from '#/main/evaluation/sequence'
-import get from 'lodash/get'
 
 const STORE_NAME = 'evaluationSequence'
 
