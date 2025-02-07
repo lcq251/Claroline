@@ -1,10 +1,9 @@
 import React from 'react'
+import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
-import {PropTypes as T} from 'prop-types'
 import {DataFormSection as DataFormSectionTypes} from '#/main/app/content/form/prop-types'
-import {ResourceEditorAppearance} from '#/main/core/resource/editor'
 
 const ToolEditorAppearance = (props) =>
   <EditorPage

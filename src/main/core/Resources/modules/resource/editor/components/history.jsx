@@ -5,7 +5,7 @@ import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
 import {LogOperationalList} from '#/main/log/components/operational-list'
 
-import {selectors as resourceSelectors} from '#/main/core/resource'
+import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 const ResourceEditorHistory = () => {
   const resourceId = useSelector(resourceSelectors.id)

@@ -98,7 +98,7 @@ const GridData = props => {
 }
 
 implementPropTypes(GridData, DataListView, {
-  size: T.oneOf(['sm', 'lg']).isRequired,
+  size: T.oneOf(['sm', 'md']).isRequired,
   orientation: T.oneOf(['col', 'row']).isRequired,
   card: T.func.isRequired // It must be a React component.
 })
