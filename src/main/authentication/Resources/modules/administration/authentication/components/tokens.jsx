@@ -10,14 +10,14 @@ import {ToolPage} from '#/main/core/tool'
 import {MODAL_TOKEN_PARAMETERS} from '#/main/authentication/token/modals/parameters'
 import {TokenList} from '#/main/authentication/token/components/list'
 import {selectors} from '#/main/authentication/administration/authentication/store'
-import {PageContent} from '#/main/app/page'
+import {PageListSection} from '#/main/app/page'
 
 const AuthenticationTokens = props =>
   <ToolPage
     title={trans('tokens', {}, 'security')}
-    primaryAction="add-token"
-    actions={[
-      {
+  >
+    <PageListSection
+      addAction={{
         name: 'add-token',
         type: MODAL_BUTTON,
         icon: 'fa fa-plus',
@@ -26,10 +26,8 @@ const AuthenticationTokens = props =>
         modal: [MODAL_TOKEN_PARAMETERS, {
           onSave: () => props.invalidateList()
         }]
-      }
-    ]}
-  >
-    <PageContent>
+      }}
+    >
       <TokenList
         name={selectors.STORE_NAME+'.tokens'}
         definition={[
@@ -57,7 +55,7 @@ const AuthenticationTokens = props =>
           }
         ]}
       />
-    </PageContent>
+    </PageListSection>
   </ToolPage>
 
 AuthenticationTokens.propTypes = {
