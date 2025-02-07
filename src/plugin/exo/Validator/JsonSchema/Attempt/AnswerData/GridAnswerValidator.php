@@ -2,26 +2,19 @@
 
 namespace UJM\ExoBundle\Validator\JsonSchema\Attempt\AnswerData;
 
+use UJM\ExoBundle\Entity\ItemType\GridQuestion;
 use UJM\ExoBundle\Entity\Misc\Cell;
-use UJM\ExoBundle\Entity\QuestionType\GridQuestion;
 use UJM\ExoBundle\Library\Options\Validation;
 use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class GridAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/grid/schema.json';
+        return 'answer-data/grid.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         /** @var GridQuestion $question */
         $question = !empty($options[Validation::QUESTION]) ? $options[Validation::QUESTION] : null;

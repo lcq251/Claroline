@@ -7,24 +7,17 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class OrderingQuestionValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/ordering/schema.json';
+        return 'question/ordering.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $question
-     *
-     * @return array
-     */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -36,10 +29,8 @@ class OrderingQuestionValidator extends JsonSchemaValidator
      * Checks :
      *  - The solutions IDs are consistent with item IDs
      *  - There is at least one solution with a positive score.
-     *
-     * @return array
      */
-    protected function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         $errors = [];
 

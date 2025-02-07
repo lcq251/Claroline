@@ -1,0 +1,35 @@
+{
+  "id": "1",
+  "type": "application/x.sort+json",
+  "content": "Question ?",
+  "items": [
+    {
+      "id": "2",
+      "type": "text/plain",
+      "data": "Item A"
+    },
+    {
+      "id": "3",
+      "type": "text/plain",
+      "data": "Item B"
+    },
+    {
+      "id": "4",
+      "type": "text/plain",
+      "data": "Item B"
+    }
+  ],
+  "solution": [
+    {
+      "score": 1.5
+    },
+    {
+      "itemId": "4",
+      "score": 1
+    },
+    {
+      "itemId": "2",
+      "score": 0.5
+    }
+  ]
+}

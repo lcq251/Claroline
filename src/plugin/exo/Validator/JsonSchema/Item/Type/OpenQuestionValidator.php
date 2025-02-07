@@ -6,12 +6,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class OpenQuestionValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/open/schema.json';
+        return 'question/open.json';
     }
 
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         return [];
     }

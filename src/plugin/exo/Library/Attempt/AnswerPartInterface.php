@@ -10,8 +10,6 @@ interface AnswerPartInterface
 {
     /**
      * Get the points to add.
-     *
-     * @return float
      */
-    public function getScore();
+    public function getScore(): ?float;
 }

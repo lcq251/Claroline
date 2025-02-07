@@ -12,30 +12,20 @@ class BooleanQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var ContentSerializer
-     */
-    private $contentSerializer;
-
-    /**
-     * BooleanQuestionSerializer constructor.
-     */
-    public function __construct(ContentSerializer $contentSerializer)
-    {
-        $this->contentSerializer = $contentSerializer;
+    public function __construct(
+        private readonly ContentSerializer $contentSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_boolean';
     }
 
     /**
      * Converts a Boolean question into a JSON-encodable structure.
-     *
-     * @return array
      */
-    public function serialize(BooleanQuestion $question, array $options = [])
+    public function serialize(BooleanQuestion $question, array $options = []): array
     {
         // Serializes choices
         $choices = $this->serializeChoices($question, $options);
@@ -53,15 +43,7 @@ class BooleanQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * Converts raw data into a Boolean question entity.
-     *
-     * @param array           $data
-     * @param BooleanQuestion $question
-     *
-     * @return BooleanQuestion
-     */
-    public function deserialize($data, BooleanQuestion $question = null, array $options = [])
+    public function deserialize(array $data, BooleanQuestion $question = null, array $options = []): BooleanQuestion
     {
         if (empty($question)) {
             $question = new BooleanQuestion();
@@ -72,12 +54,7 @@ class BooleanQuestionSerializer
         return $question;
     }
 
-    /**
-     * Serializes the Question choices.
-     *
-     * @return array
-     */
-    private function serializeChoices(BooleanQuestion $question, array $options = [])
+    private function serializeChoices(BooleanQuestion $question, array $options = []): array
     {
         return array_map(function (BooleanChoice $choice) use ($options) {
             $choiceData = $this->contentSerializer->serialize($choice, $options);
@@ -87,10 +64,7 @@ class BooleanQuestionSerializer
         }, $question->getChoices()->toArray());
     }
 
-    /**
-     * Deserializes Question choices.
-     */
-    private function deserializeChoices(BooleanQuestion $question, array $choices, array $solutions, array $options = [])
+    private function deserializeChoices(BooleanQuestion $question, array $choices, array $solutions, array $options = []): void
     {
         $choiceEntities = $question->getChoices()->toArray();
 
@@ -137,12 +111,7 @@ class BooleanQuestionSerializer
         }
     }
 
-    /**
-     * Serializes Question solutions.
-     *
-     * @return array
-     */
-    private function serializeSolutions(BooleanQuestion $question)
+    private function serializeSolutions(BooleanQuestion $question): array
     {
         return array_map(function (BooleanChoice $choice) {
             $solutionData = [

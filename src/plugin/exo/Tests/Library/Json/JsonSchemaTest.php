@@ -45,7 +45,7 @@ class JsonSchemaTest extends TransactionalTestCase
         $json = file_get_contents("{$this->formatDir}/quiz/examples/valid/content-and-question-steps.json");
         $data = json_decode($json);
 
-        $this->assertEquals(0, count($this->jsonSchema->validate($data, 'quiz/schema.json')));
+        $this->assertEquals(0, count($this->jsonSchema->validate($data, 'quiz.json')));
     }
 
     /**
@@ -56,6 +56,6 @@ class JsonSchemaTest extends TransactionalTestCase
         $json = file_get_contents("{$this->formatDir}/quiz/examples/invalid/not-an-object.json");
         $data = json_decode($json);
 
-        $this->assertGreaterThan(0, count($this->jsonSchema->validate($data, 'quiz/schema.json')));
+        $this->assertGreaterThan(0, count($this->jsonSchema->validate($data, 'quiz.json')));
     }
 }

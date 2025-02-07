@@ -1,0 +1,234 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "score": {
+      "oneOf": [
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/fixed.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/manual.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/none.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/rules.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/sum.json"
+        }
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": ["conceptualization", "formative", "evaluative", "summative", "survey", "custom"],
+          "description": "The type of the quiz",
+          "default": "summative"
+        },
+        "anonymizeAttempts": {
+          "type": "boolean",
+          "description": "Hide the name of the users who have passed the quiz in the results",
+          "default": false
+        },
+        "interruptible": {
+          "type": "boolean",
+          "description": "Is it possible to stop the quiz and continue it later ?",
+          "default": false
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The allowed duration to pass the quiz",
+          "default": 0
+        },
+        "maxAttempts": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The number of times a user can pass the quiz. If 0, there is no limit",
+          "default": 0
+        },
+        "maxAttemptsPerDay": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The number of times a user can pass the quiz per day. If 0, there is no limit. It is limited by max Attemps",
+          "default": 0
+        },
+        "maxPapers": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The maximum amount of paper a quizz can have. If 0, there is no limit.",
+          "default": 0
+        },
+        "showOverview": {
+          "type": "boolean",
+          "description": "Show overview to users or directly start the quiz if false",
+          "default": true
+        },
+        "showEndPage": {
+          "type": "boolean",
+          "description": "Display an end page when the user has finished the quiz",
+          "default": false
+        },
+        "showEndConfirm": {
+          "type": "boolean",
+          "description": "Display a confirm dialog before submitting the user attempt",
+          "default": true
+        },
+        "endMessage": {
+          "type": "string",
+          "description": "A message to display at the end of the quiz",
+          "default": null
+        },
+        "endNavigation": {
+          "type": "boolean",
+          "description": "Display navigation shortcuts on end page",
+          "default": true
+        },
+        "showMetadata": {
+          "type": "boolean",
+          "description": "Display detail information about the exercise",
+          "default": true
+        },
+        "showStatistics": {
+          "type": "boolean",
+          "description": "Display statistics about what users have answered",
+          "default": false
+        },
+        "showFullCorrection": {
+          "type": "boolean",
+          "description": "Display the full correction with expected answers",
+          "default": true
+        },
+        "showCorrectionAt": {
+          "enum": ["validation", "lastAttempt", "date", "never"],
+          "description": "The point at which users can view the correction of their attempt to the quiz",
+          "default": "validation"
+        },
+        "showScoreAt": {
+          "enum": ["validation", "correction", "never"],
+          "description": "The point at which users can view the score of their attempt to the quiz",
+          "default": "correction"
+        },
+        "showFeedback": {
+          "type": "boolean",
+          "description": "Display immediate feedback about his answer to the user",
+          "default": false
+        },
+        "numbering": {
+          "enum": ["none", "litteral", "numeric"],
+          "description": "The question numbering",
+          "default": "none"
+        },
+        "mandatoryQuestions": {
+          "type": "boolean",
+          "default": false,
+          "description": "It is mandatory to answer the questions to continue the quiz"
+        },
+        "answersEditable": {
+          "type": "boolean",
+          "default": true,
+          "description": "The answers of a step can be edited after the step has been validated"
+        },
+        "hasExpectedAnswers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Defines if the quiz has correct and incorrect answers for evaluation purpose"
+        }
+      }
+    },
+    "picking": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": ["standard", "tags"],
+              "description": "The method used to generate the structure of the attempts",
+              "default": "steps"
+            },
+            "randomOrder": {
+              "enum": ["once", "never", "always"],
+              "description": "Randomize order of steps in the quiz",
+              "default": "never"
+            },
+            "randomPick": {
+              "enum": ["once", "never", "always"],
+              "description": "Pick a random sub set of steps in the quiz",
+              "default": "never"
+            }
+          },
+          "required": ["type"]
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["standard"]
+                },
+                "pick": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Number of steps to use when a user pass the quiz. If 0, all the steps are used",
+                  "default": 0
+                }
+              }
+            }, {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["tags"]
+                },
+                "randomPick": {
+                  "enum": ["once", "always"],
+                  "default": "always"
+                },
+                "pick": {
+                  "type": "array",
+                  "description": "The number of questions to pick for each chosen tag",
+                  "items": {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "string",
+                        "description": "The ID of the tag."
+                      },
+                      {
+                        "type": "integer",
+                        "description": "The number of questions with this tag to pick"
+                      }
+                    ]
+                  }
+                },
+                "pageSize": {
+                  "type": "number",
+                  "description": "The number of question per pages"
+                }
+              },
+              "required": ["pick", "pageSize"]
+            }
+          ]
+        }
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "http://json-quiz.github.io/json-quiz/schemas/step.json" }
+    }
+  }
+}

@@ -9,28 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait PenaltyTrait
 {
-    /**
-     * @var float
-     */
     #[ORM\Column(name: 'penalty', type: 'float')]
-    private $penalty = 0;
+    private ?float $penalty = 0;
 
-    /**
-     * Sets penalty.
-     *
-     * @param float $penalty
-     */
-    public function setPenalty($penalty)
+    public function setPenalty(?float $penalty): void
     {
         $this->penalty = $penalty;
     }
 
-    /**
-     * Gets penalty.
-     *
-     * @return float
-     */
-    public function getPenalty()
+    public function getPenalty(): ?float
     {
         return $this->penalty;
     }

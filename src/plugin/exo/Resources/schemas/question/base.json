@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^application/x\\.[^/]+\\+json$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "The content of the question"
+    },
+    "description": {
+      "type": "string",
+      "description": "Supplementary information about the question"
+    },
+    "hasExpectedAnswers": {
+      "type": "boolean",
+      "default": true,
+      "description": "Defines if the question has correct and incorrect answers for evaluation purpose"
+    },
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/metadata.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protectQuestion": {
+              "type": "boolean",
+              "default": false,
+              "description": "Protects the question from collaborative update"
+            },
+            "mandatory": {
+              "type": "boolean",
+              "default": false,
+              "description": "It is mandatory to answer the question to continue the quizz"
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "http://json-quiz.github.io/json-quiz/schemas/content.json"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "resources": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "http://json-quiz.github.io/json-quiz/schemas/content.json"
+      }
+    },
+    "hints": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "http://json-quiz.github.io/json-quiz/schemas/hint.json"
+      }
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "score": {
+      "oneOf": [
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/fixed.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/manual.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/none.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/rules.json"
+        },
+        {
+          "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/sum.json"
+        }
+      ]
+    }
+  },
+  "required": ["id", "type", "content"]
+}

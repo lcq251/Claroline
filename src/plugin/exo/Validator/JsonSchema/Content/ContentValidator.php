@@ -12,15 +12,15 @@ class ContentValidator extends JsonSchemaValidator
     /**
      * {@inheritdoc}
      */
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'content/schema.json';
+        return 'content.json';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validateAfterSchema($content, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         return [];
     }

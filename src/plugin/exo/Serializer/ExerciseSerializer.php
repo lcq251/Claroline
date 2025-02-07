@@ -50,7 +50,6 @@ class ExerciseSerializer
     {
         $serialized = [
             'id' => $exercise->getUuid(),
-            'title' => $exercise->getResourceNode()->getName(), // TODO : remove me. it's required by the json schema
         ];
 
         if (!in_array(Transfer::MINIMAL, $options)) {
@@ -159,7 +158,7 @@ class ExerciseSerializer
     /**
      * Deserializes Exercise parameters.
      */
-    private function deserializeParameters(Exercise $exercise, array $parameters)
+    private function deserializeParameters(Exercise $exercise, array $parameters): void
     {
         $this->sipe('type', 'setType', $parameters, $exercise);
         $this->sipe('maxAttempts', 'setMaxAttempts', $parameters, $exercise);
@@ -231,7 +230,7 @@ class ExerciseSerializer
         }
     }
 
-    private function serializePicking(Exercise $exercise)
+    private function serializePicking(Exercise $exercise): array
     {
         $picking = [
             'type' => $exercise->getPicking(),
@@ -254,7 +253,7 @@ class ExerciseSerializer
         return $picking;
     }
 
-    private function deserializePicking(Exercise $exercise, array $picking)
+    private function deserializePicking(Exercise $exercise, array $picking): void
     {
         $this->sipe('type', 'setPicking', $picking, $exercise);
         $this->sipe('randomOrder', 'setRandomOrder', $picking, $exercise);
@@ -301,7 +300,7 @@ class ExerciseSerializer
      * Deserializes Exercise steps.
      * Forwards the step deserialization to StepSerializer.
      */
-    private function deserializeSteps(Exercise $exercise, array $steps = [], array $options = [])
+    private function deserializeSteps(Exercise $exercise, array $steps = [], array $options = []): void
     {
         $stepEntities = $exercise->getSteps()->toArray();
 
@@ -342,7 +341,7 @@ class ExerciseSerializer
         }
     }
 
-    public function getCopyOptions()
+    public function getCopyOptions(): array
     {
         return [Transfer::INCLUDE_SOLUTIONS, Transfer::NO_FETCH, Transfer::PERSIST_TAG];
     }
@@ -350,10 +349,8 @@ class ExerciseSerializer
     /**
      * The client may send dirty data, we need to clean them before storing it in DB.
      * (duplicated from ItemSerializer).
-     *
-     * @return array
      */
-    private function sanitizeScore($score)
+    private function sanitizeScore($score): array
     {
         $sanitized = ['type' => $score['type']];
 

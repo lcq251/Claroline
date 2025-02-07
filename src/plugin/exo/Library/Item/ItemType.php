@@ -67,10 +67,6 @@ final class ItemType
     /**
      * The user has to write his answer.
      */
-    public const SELECTION = 'application/x.selection+json';
-    /**
-     * The user has to write his answer.
-     */
     public const WAVEFORM = 'application/x.waveform+json';
 
     /**
@@ -87,7 +83,6 @@ final class ItemType
             ItemType::SET,
             ItemType::WORDS,
             ItemType::OPEN,
-            ItemType::SELECTION,
             ItemType::GRID,
             ItemType::CONTENT,
             ItemType::ORDERING,

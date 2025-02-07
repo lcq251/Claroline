@@ -10,31 +10,18 @@ use JVal\Validator as SchemaValidator;
  */
 class JsonSchema
 {
-    private $baseUri = 'http://json-quiz.github.io/json-quiz/schemas';
+    private string $baseUri = 'http://json-quiz.github.io/json-quiz/schemas';
 
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
     /**
      * List of loaded schemas.
-     *
-     * @var array
      */
-    private $schemas = [];
+    private array $schemas = [];
 
-    /**
-     * @var SchemaValidator
-     */
-    private $validator = null;
+    private ?SchemaValidator $validator = null;
 
-    /**
-     * JsonSchema constructor.
-     *
-     * @param string $projectDir
-     */
-    public function __construct($projectDir)
+    public function __construct(string $projectDir)
     {
         $this->projectDir = $projectDir;
     }
@@ -47,7 +34,7 @@ class JsonSchema
      *
      * @return array
      */
-    public function validate($data, $uri)
+    public function validate(mixed $data, string $uri): array
     {
         return $this->getValidator()->validate($data, $this->getSchema($uri));
     }
@@ -57,7 +44,7 @@ class JsonSchema
      *
      * @return SchemaValidator
      */
-    private function getValidator()
+    private function getValidator(): SchemaValidator
     {
         if (null === $this->validator) {
             $hook = function ($uri) {
@@ -72,14 +59,8 @@ class JsonSchema
 
     /**
      * Loads schema from URI.
-     *
-     * @param $uri
-     *
-     * @return mixed
-     *
-     * @throws \JVal\Exception\JsonDecodeException
      */
-    private function getSchema($uri)
+    private function getSchema(string $uri): object
     {
         if (empty($this->schemas[$uri])) {
             $this->schemas[$uri] = Utils::loadJsonFromFile($this->uriToFile($uri));
@@ -90,15 +71,11 @@ class JsonSchema
 
     /**
      * Converts distant schema URI to a local one to load schemas from source code.
-     *
-     * @param string $uri
-     *
-     * @return string mixed
      */
-    private function uriToFile($uri)
+    private function uriToFile(string $uri): string
     {
         $uri = str_replace($this->baseUri, '', $uri);
-        $schemaDir = realpath("{$this->projectDir}/vendor/claroline/json-quiz/format");
+        $schemaDir = realpath("{$this->projectDir}/src/plugin/exo/Resources/schemas");
 
         return $schemaDir.'/'.$uri;
     }

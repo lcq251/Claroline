@@ -1,0 +1,16 @@
+{
+  "id": "1",
+  "type": "application/x.graphic+json",
+  "content": "Where is Charlie ?",
+  "width":800,
+  "height":400,
+  "pointerMode": "pointer",
+  "image": {
+    "id": "12",
+    "label": "Charlie",
+    "url": "images/charlie_01.jpg"
+  },
+  "solutions":[
+    "solution not an object"
+  ]
+}

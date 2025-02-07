@@ -1,0 +1,4 @@
+{
+  "type": "application/x.open+json",
+  "data": ["not a string"]
+}

@@ -7,19 +7,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class WaveformAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/waveform/schema.json';
+        return 'answer-data/waveform.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         $question = !empty($options[Validation::QUESTION]) ? $options[Validation::QUESTION] : null;
 

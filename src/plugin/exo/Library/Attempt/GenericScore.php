@@ -7,17 +7,9 @@ namespace UJM\ExoBundle\Library\Attempt;
  */
 class GenericScore implements AnswerPartInterface
 {
-    /**
-     * @var float
-     */
-    private $score;
+    private float $score;
 
-    /**
-     * GenericPenalty constructor.
-     *
-     * @param float $score
-     */
-    public function __construct($score)
+    public function __construct(float|string $score)
     {
         if (!is_numeric($score)) {
             throw new \InvalidArgumentException('score should be a number.');
@@ -28,10 +20,8 @@ class GenericScore implements AnswerPartInterface
 
     /**
      * Get the score to apply.
-     *
-     * @return float
      */
-    public function getScore()
+    public function getScore(): float
     {
         return $this->score;
     }

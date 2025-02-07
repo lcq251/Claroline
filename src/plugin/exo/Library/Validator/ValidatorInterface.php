@@ -4,5 +4,5 @@ namespace UJM\ExoBundle\Library\Validator;
 
 interface ValidatorInterface
 {
-    public function validate($data, array $options = []);
+    public function validate(mixed $data, array $options = []): array;
 }

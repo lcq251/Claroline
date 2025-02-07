@@ -8,30 +8,22 @@ use UJM\ExoBundle\Validator\JsonSchema\Misc\KeywordValidator;
 
 class ClozeQuestionValidator extends JsonSchemaValidator
 {
-    /**
-     * @var KeywordValidator
-     */
-    private $keywordValidator;
-
-    /**
-     * WordsQuestionValidator constructor.
-     */
-    public function __construct(KeywordValidator $keywordValidator)
-    {
-        $this->keywordValidator = $keywordValidator;
+    public function __construct(
+        private readonly KeywordValidator $keywordValidator
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/cloze/schema.json';
+        return 'question/cloze.json';
     }
 
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -41,10 +33,8 @@ class ClozeQuestionValidator extends JsonSchemaValidator
      * Checks :
      *  - The solutions IDs are consistent with holes IDs
      *  - There is at least one solution with a positive score for each Hole.
-     *
-     * @return array
      */
-    public function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         $errors = [];
 

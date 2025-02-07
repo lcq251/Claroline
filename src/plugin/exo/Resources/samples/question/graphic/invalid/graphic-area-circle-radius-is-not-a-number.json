@@ -1,0 +1,32 @@
+{
+  "id": "1",
+  "type": "application/x.graphic+json",
+  "content": "Where is Charlie ?",
+  "pointerMode": "pointer",
+  "image": {
+    "id": "12",
+    "meta": {
+      "label": "Charlie"
+    },
+    "type": "image/jpeg",
+    "url": "images/charlie_01.jpg",
+    "width":800,
+    "height":400
+  },
+  "pointers": 1,
+  "solutions":[
+    {
+      "area": {
+        "id":"7",
+        "center": [
+          144,727
+        ],
+        "shape":"circle",
+        "color":"red",
+        "radius": "not a number"
+      },
+      "score": 2,
+      "feedback": "you should have known..."
+    }
+  ]
+}

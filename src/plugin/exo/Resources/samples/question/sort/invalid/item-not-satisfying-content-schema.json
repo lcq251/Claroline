@@ -1,0 +1,16 @@
+{
+  "id": "1",
+  "type": "application/x.sort+json",
+  "content": "Question",
+  "items": [
+    {
+      "id": "2",
+      "type": "text/plain",
+      "data": 123
+    },
+    {
+      "type": "text/plain",
+      "data": "Item B"
+    }
+  ]
+}

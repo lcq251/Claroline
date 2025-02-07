@@ -12,30 +12,17 @@ class WordsQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var KeywordSerializer
-     */
-    private $keywordSerializer;
-
-    /**
-     * WordsQuestionSerializer constructor.
-     */
-    public function __construct(KeywordSerializer $keywordSerializer)
-    {
-        $this->keywordSerializer = $keywordSerializer;
+    public function __construct(
+        private readonly KeywordSerializer $keywordSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_words';
     }
 
-    /**
-     * Converts a Words question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(OpenQuestion $wordsQuestion, array $options = [])
+    public function serialize(OpenQuestion $wordsQuestion, array $options = []): array
     {
         $serialized = [
             'contentType' => $wordsQuestion->getContentType(),
@@ -48,15 +35,7 @@ class WordsQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * Converts raw data into an Words question entity.
-     *
-     * @param array        $data
-     * @param OpenQuestion $wordsQuestion
-     *
-     * @return OpenQuestion
-     */
-    public function deserialize($data, OpenQuestion $wordsQuestion = null, array $options = [])
+    public function deserialize(array $data, OpenQuestion $wordsQuestion = null, array $options = []): OpenQuestion
     {
         if (empty($wordsQuestion)) {
             $wordsQuestion = new OpenQuestion();
@@ -69,7 +48,7 @@ class WordsQuestionSerializer
         return $wordsQuestion;
     }
 
-    private function serializeSolutions(OpenQuestion $wordsQuestion, array $options = [])
+    private function serializeSolutions(OpenQuestion $wordsQuestion, array $options = []): array
     {
         return array_values(array_map(function (Keyword $keyword) use ($options) {
             return $this->keywordSerializer->serialize($keyword, $options);
@@ -79,7 +58,7 @@ class WordsQuestionSerializer
     /**
      * Deserializes Question solutions (= a collection of keywords).
      */
-    private function deserializeSolutions(OpenQuestion $wordsQuestion, array $solutions, array $options = [])
+    private function deserializeSolutions(OpenQuestion $wordsQuestion, array $solutions, array $options = []): void
     {
         $updatedKeywords = $this->keywordSerializer->deserializeCollection($solutions, $wordsQuestion->getKeywords()->toArray(), $options);
 

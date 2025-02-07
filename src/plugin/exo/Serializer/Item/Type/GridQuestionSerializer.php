@@ -13,30 +13,17 @@ class GridQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var CellChoiceSerializer
-     */
-    private $cellChoiceSerializer;
-
-    /**
-     * GridQuestionSerializer constructor.
-     */
-    public function __construct(CellChoiceSerializer $cellChoiceSerializer)
-    {
-        $this->cellChoiceSerializer = $cellChoiceSerializer;
+    public function __construct(
+        private readonly CellChoiceSerializer $cellChoiceSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_grid';
     }
 
-    /**
-     * Converts a Grid question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(GridQuestion $gridQuestion, array $options = [])
+    public function serialize(GridQuestion $gridQuestion, array $options = []): array
     {
         $serialized = [
             'penalty' => $gridQuestion->getPenalty(),
@@ -54,10 +41,7 @@ class GridQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * @return array
-     */
-    private function serializeCells(GridQuestion $gridQuestion, array $options = [])
+    private function serializeCells(GridQuestion $gridQuestion, array $options = []): array
     {
         return array_map(function (Cell $cell) use ($options) {
             $cellData = [
@@ -91,10 +75,7 @@ class GridQuestionSerializer
         }, $gridQuestion->getCells()->toArray());
     }
 
-    /**
-     * @return array
-     */
-    private function serializeSolutions(GridQuestion $gridQuestion, array $options = [])
+    private function serializeSolutions(GridQuestion $gridQuestion, array $options = []): array
     {
         $solutions = [];
 
@@ -117,15 +98,7 @@ class GridQuestionSerializer
         return $solutions;
     }
 
-    /**
-     * Converts raw data into a Grid question entity.
-     *
-     * @param array        $data
-     * @param GridQuestion $gridQuestion
-     *
-     * @return GridQuestion
-     */
-    public function deserialize($data, GridQuestion $gridQuestion = null, array $options = [])
+    public function deserialize(array $data, GridQuestion $gridQuestion = null, array $options = []): GridQuestion
     {
         if (empty($gridQuestion)) {
             $gridQuestion = new GridQuestion();
@@ -146,10 +119,7 @@ class GridQuestionSerializer
         return $gridQuestion;
     }
 
-    /**
-     * Deserializes Question cells.
-     */
-    private function deserializeCells(GridQuestion $gridQuestion, array $cells, array $solutions, array $options = [])
+    private function deserializeCells(GridQuestion $gridQuestion, array $cells, array $solutions, array $options = []): void
     {
         $cellEntities = $gridQuestion->getCells()->toArray();
 
@@ -206,7 +176,7 @@ class GridQuestionSerializer
         }
     }
 
-    private function deserializeCellChoices(Cell $cell, array $answers, array $options)
+    private function deserializeCellChoices(Cell $cell, array $answers, array $options): void
     {
         $updatedChoices = $this->cellChoiceSerializer->deserializeCollection($answers, $cell->getChoices()->toArray(), $options);
         $cell->setChoices($updatedChoices);

@@ -11,26 +11,16 @@ trait ShuffleTrait
 {
     /**
      * Is shuffle enabled ?
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'shuffle', type: 'boolean')]
-    private $shuffle = false;
+    private bool $shuffle = false;
 
-    /**
-     * Sets shuffle.
-     *
-     * @param bool $shuffle
-     */
-    public function setShuffle($shuffle)
+    public function setShuffle(bool $shuffle): void
     {
         $this->shuffle = $shuffle;
     }
 
-    /**
-     * Gets shuffle.
-     */
-    public function getShuffle()
+    public function getShuffle(): bool
     {
         return $this->shuffle;
     }

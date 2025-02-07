@@ -1,0 +1,18 @@
+{
+  "id": "1",
+  "type": "application/x.choice+json",
+  "content": "Question ?",
+  "choices": [
+    {
+      "id": "1",
+      "type": "text/plain",
+      "data": "True"
+    },
+    {
+      "id": "2",
+      "type": "text/plain",
+      "data": "False"
+    }
+  ],
+  "random": false
+}

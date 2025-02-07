@@ -8,30 +8,22 @@ use UJM\ExoBundle\Validator\JsonSchema\Misc\KeywordValidator;
 
 class WordsQuestionValidator extends JsonSchemaValidator
 {
-    /**
-     * @var KeywordValidator
-     */
-    private $keywordValidator;
-
-    /**
-     * WordsQuestionValidator constructor.
-     */
-    public function __construct(KeywordValidator $keywordValidator)
-    {
-        $this->keywordValidator = $keywordValidator;
+    public function __construct(
+        private readonly KeywordValidator $keywordValidator
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/words/schema.json';
+        return 'question/words.json';
     }
 
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -40,10 +32,8 @@ class WordsQuestionValidator extends JsonSchemaValidator
     /**
      * Validates the solution of the question.
      * Sends the keywords collection to the keyword validator.
-     *
-     * @return array
      */
-    protected function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         return $this->keywordValidator->validateCollection($question['solutions'], [Validation::NO_SCHEMA, Validation::VALIDATE_SCORE]);
     }

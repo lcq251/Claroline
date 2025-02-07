@@ -1,0 +1,20 @@
+{
+  "width":800,
+  "height":400,
+  "document": {
+    "id": "12",
+    "label": "Charlie",
+    "url": "images/charlie_01.jpg"
+  },
+  "coords": [
+    {
+      "id":"1"
+    },
+    {
+      "id":"7"
+    }
+  ],
+  "pointerMode": "pointer",
+  "meta": "not an object",
+  "objects": "not an array"
+}

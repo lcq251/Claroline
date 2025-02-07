@@ -1,0 +1,25 @@
+{
+  "id": "1",
+  "type": "application/x.choice+json",
+  "content": "Question ?",
+  "choices": [
+    {
+      "id": "1",
+      "type": "text/plain",
+      "data": "A"
+    },
+    {
+      "id": "2",
+      "type": "text/plain",
+      "data": "B"
+    },
+    {
+      "id": "3",
+      "type": "text/plain",
+      "data": "C"
+    }
+  ],
+  "random": false,
+  "multiple": false,
+  "solutions": "not-an-array"
+}

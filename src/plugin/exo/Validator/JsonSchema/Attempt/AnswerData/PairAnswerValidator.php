@@ -8,19 +8,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class PairAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/pair/schema.json';
+        return 'answer-data/pair.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         $errors = [];
 

@@ -1,0 +1,16 @@
+{
+  "id": "1",
+  "type": "application/x.type+json",
+  "content": "this is the content of the question",
+  "objects": [
+    {
+      "id": "1",
+      "type": "text/html",
+      "data": "<p>Lorem ipsum dolor sit amet</p>",
+      "meta": {
+        "title": "Lorem sample"
+      }
+    }
+  ],
+  "title": "Is the previous text written in english ?"
+}

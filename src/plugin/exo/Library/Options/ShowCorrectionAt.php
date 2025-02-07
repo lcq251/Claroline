@@ -12,7 +12,7 @@ final class ShowCorrectionAt
      *
      * @var string
      */
-    const AFTER_END = 'validation';
+    public const AFTER_END = 'validation';
 
     /**
      * The solutions are available once the User has validated his Paper for his last attempt
@@ -20,7 +20,7 @@ final class ShowCorrectionAt
      *
      * @var string
      */
-    const AFTER_LAST_ATTEMPT = 'lastAttempt';
+    public const AFTER_LAST_ATTEMPT = 'lastAttempt';
 
     /**
      * The solutions are available after a fixed date
@@ -28,12 +28,12 @@ final class ShowCorrectionAt
      *
      * @var string
      */
-    const AFTER_DATE = 'date';
+    public const AFTER_DATE = 'date';
 
     /**
      * The solutions will never be available to Users.
      *
      * @var string
      */
-    const NEVER = 'never';
+    public const NEVER = 'never';
 }

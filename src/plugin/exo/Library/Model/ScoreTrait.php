@@ -9,28 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait ScoreTrait
 {
-    /**
-     * @var float
-     */
     #[ORM\Column(name: 'score', type: 'float', nullable: true)]
-    private $score = 0;
+    private ?float $score = 0;
 
-    /**
-     * Sets score.
-     *
-     * @param float $score
-     */
-    public function setScore($score)
+    public function setScore(?float $score): void
     {
         $this->score = $score;
     }
 
-    /**
-     * Gets score.
-     *
-     * @return float
-     */
-    public function getScore()
+    public function getScore(): ?float
     {
         return $this->score;
     }

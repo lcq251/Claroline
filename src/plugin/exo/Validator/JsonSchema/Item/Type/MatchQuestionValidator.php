@@ -7,17 +7,17 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class MatchQuestionValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/match/schema.json';
+        return 'question/match.json';
     }
 
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -26,10 +26,8 @@ class MatchQuestionValidator extends JsonSchemaValidator
     /**
      * Checks :
      *  - The solutions IDs are consistent with proposals and labels IDs.
-     *
-     * @return array
      */
-    public function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         $errors = [];
 

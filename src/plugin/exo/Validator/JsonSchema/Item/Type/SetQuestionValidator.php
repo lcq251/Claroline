@@ -7,24 +7,17 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class SetQuestionValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/set/schema.json';
+        return 'question/set.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $question
-     *
-     * @return array
-     */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -38,10 +31,8 @@ class SetQuestionValidator extends JsonSchemaValidator
      *  - The solution `setId` must match the `sets` IDs.
      *  - An odd `itemId` must match the `items` IDS.
      *  - There is at least one solution with a positive score.
-     *
-     * @return array
      */
-    protected function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         $errors = [];
 

@@ -10,10 +10,10 @@ final class Picking
     /**
      * @var string
      */
-    const STANDARD = 'standard';
+    public const STANDARD = 'standard';
 
     /**
      * @var string
      */
-    const TAGS = 'tags';
+    public const TAGS = 'tags';
 }

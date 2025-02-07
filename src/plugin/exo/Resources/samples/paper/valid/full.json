@@ -1,0 +1,30 @@
+{
+  "id": "123",
+  "user": {
+    "name": "John Doe"
+  },
+  "startDate": "2016-12-13T12:00:00",
+  "endDate": "2016-12-13T14:00:00",
+  "finished": true,
+  "score": 14,
+  "structure": [
+    {
+      "id": "1",
+      "items": ["1", "2"]
+    }
+  ],
+  "answers": [
+    {
+      "id": "123",
+      "questionId": "1",
+      "type": "application/x.open+json",
+      "data": "Lorem ipsum"
+    },
+    {
+      "id": "1234",
+      "questionId": "2",
+      "type": "application/x.choice+json",
+      "data": ["1", "2"]
+    }
+  ]
+}

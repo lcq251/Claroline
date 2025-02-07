@@ -1,0 +1,37 @@
+{
+  "id": "1",
+  "type": "application/x.grid+json",
+  "content": "Question ?",
+  "penalty": 0,
+  "cells": [
+    {
+      "id": "1",
+      "input": true,
+      "data": "Item A",
+      "coordinates": [0, 0],
+      "background":  "#fff",
+      "color": "#000"
+    },
+    {
+      "id": "2",
+      "input": true,
+      "coordinates": [1, 0],
+      "background":  "#fff",
+      "color": "#000",
+      "choices": ["lorem", "ipsum", "et", "doloris"]
+    },
+    {
+      "id": "3",
+      "input": false,
+      "coordinates": [2, 0],
+      "background":  "#fff",
+      "color": "#000"
+    }
+  ],
+  "rows": 1,
+  "cols": 3,
+  "border": {
+    "width": 1,
+    "color": "#00ff00"
+  }
+}

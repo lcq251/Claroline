@@ -9,47 +9,22 @@ use UJM\ExoBundle\Validator\JsonSchema\Content\ContentValidator;
 
 class ItemValidator extends JsonSchemaValidator
 {
-    /**
-     * @var ItemDefinitionsCollection
-     */
-    private $itemDefinitions;
-
-    /**
-     * @var HintValidator
-     */
-    private $hintValidator;
-
-    /**
-     * @var ContentValidator
-     */
-    private $contentValidator;
-
-    /**
-     * ItemValidator constructor.
-     */
     public function __construct(
-        ItemDefinitionsCollection $itemDefinitions,
-        HintValidator $hintValidator,
-        ContentValidator $contentValidator)
-    {
-        $this->itemDefinitions = $itemDefinitions;
-        $this->hintValidator = $hintValidator;
-        $this->contentValidator = $contentValidator;
+        private readonly ItemDefinitionsCollection $itemDefinitions,
+        private readonly HintValidator $hintValidator,
+        private readonly ContentValidator $contentValidator
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/base/schema.json';
+        return 'question/base.json';
     }
 
     /**
      * Delegates the validation to the correct question type handler.
-     *
-     * @param array $question
-     *
-     * @return array
      */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $question, array $options = []): array
     {
         $errors = [];
 

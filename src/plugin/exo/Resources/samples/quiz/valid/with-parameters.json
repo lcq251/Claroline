@@ -1,0 +1,64 @@
+{
+  "id": "1",
+  "title": "quiz title",
+  "meta": {
+    "authors": [
+      {
+        "name": "John Doe",
+        "email": "john@mail.com"
+      }
+    ],
+    "created": "2015-06-04",
+    "license": "CC"
+  },
+  "score": {
+    "type": "sum"
+  },
+  "parameters": {
+    "type": "summative",
+    "anonymizeAttempts": false,
+    "interruptible": true,
+    "duration": 0,
+    "maxAttempts": 5,
+    "showOverview": true,
+    "showEndPage": true,
+    "showMetadata": true,
+    "showStatistics": false,
+    "showFullCorrection": true,
+    "showCorrectionAt": "validation",
+    "showScoreAt": "correction",
+    "showFeedback": true,
+    "endNavigation": true
+  },
+  "steps": [
+    {
+      "id": "1",
+      "items": [
+        {
+          "id": "1",
+          "content": "Question ?",
+          "type": "application/x.choice+json",
+          "choices": [
+            {
+              "id": "1",
+              "type": "image/png",
+              "url": "http://domain.com/image-1.png"
+            },
+            {
+              "id": "2",
+              "type": "image/png",
+              "data": "http://domain.com/image-2.png"
+            },
+            {
+              "id": "3",
+              "type": "image/png",
+              "data": "http://domain.com/image-3.png"
+            }
+          ],
+          "random": true,
+          "multiple": true
+        }
+      ]
+    }
+  ]
+}

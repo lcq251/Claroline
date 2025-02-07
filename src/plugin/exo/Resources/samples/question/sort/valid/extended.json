@@ -1,0 +1,51 @@
+{
+  "id": "1",
+  "type": "application/x.sort+json",
+  "meta": {
+    "authors": [
+      {
+        "name": "John Doe"
+      }
+    ]
+  },
+  "content": "Question ?",
+  "objects": [
+    {
+      "id": "42",
+      "type": "text/plain",
+      "url": "http://domain.com/text.txt"
+    }
+  ],
+  "items": [
+    {
+      "id": "2",
+      "type": "image/jpg",
+      "url": "http://domain.com/image-1.jpg"
+    },
+    {
+      "id": "3",
+      "type": "image/jpg",
+      "url": "http://domain.com/image-2.jpg"
+    },
+    {
+      "id": "4",
+      "type": "image/jpg",
+      "url": "http://domain.com/image-3.jpg"
+    }
+  ],
+  "solution": [
+    {
+      "itemId": "3",
+      "score": 1.5
+    },
+    {
+      "itemId": "4",
+      "score": 1
+    },
+    {
+      "itemId": "2",
+      "score": 0.5
+    }
+  ],
+  "feedback": "Lorem ipsum dolor sit amet"
+}

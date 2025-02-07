@@ -12,19 +12,19 @@ final class Recurrence
      *
      * @var string
      */
-    const NEVER = 'never';
+    public const NEVER = 'never';
 
     /**
      * The action is executed one time.
      *
      * @var string
      */
-    const ONCE = 'once';
+    public const ONCE = 'once';
 
     /**
      * The action is executed each time.
      *
      * @var string
      */
-    const ALWAYS = 'always';
+    public const ALWAYS = 'always';
 }

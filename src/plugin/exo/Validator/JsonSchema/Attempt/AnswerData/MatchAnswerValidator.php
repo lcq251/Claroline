@@ -10,19 +10,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class MatchAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/match/schema.json';
+        return 'answer-data/match.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         /** @var MatchQuestion $question */
         $question = !empty($options[Validation::QUESTION]) ? $options[Validation::QUESTION] : null;

@@ -14,30 +14,17 @@ class PairQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var ContentSerializer
-     */
-    private $contentSerializer;
-
-    /**
-     * PairQuestionSerializer constructor.
-     */
-    public function __construct(ContentSerializer $contentSerializer)
-    {
-        $this->contentSerializer = $contentSerializer;
+    public function __construct(
+        private readonly ContentSerializer $contentSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_pair';
     }
 
-    /**
-     * Converts a Match question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(PairQuestion $pairQuestion, array $options = [])
+    public function serialize(PairQuestion $pairQuestion, array $options = []): array
     {
         $serialized = [
             'random' => $pairQuestion->getShuffle(),
@@ -62,7 +49,7 @@ class PairQuestionSerializer
         return $serialized;
     }
 
-    private function serializeItems(PairQuestion $pairQuestion, array $options = [])
+    private function serializeItems(PairQuestion $pairQuestion, array $options = []): array
     {
         $usedCoordinates = [];
 
@@ -84,7 +71,7 @@ class PairQuestionSerializer
         }, $pairQuestion->getItems()->toArray()));
     }
 
-    private function generateNewCoords($coords, $rows, array &$usedCoords)
+    private function generateNewCoords(array $coords, int $rows, array &$usedCoords): array
     {
         do {
             // Generate new position
@@ -97,15 +84,7 @@ class PairQuestionSerializer
         return $newCoords;
     }
 
-    /**
-     * Converts raw data into a Pair question entity.
-     *
-     * @param array        $data
-     * @param PairQuestion $pairQuestion
-     *
-     * @return PairQuestion
-     */
-    public function deserialize($data, PairQuestion $pairQuestion = null, array $options = [])
+    public function deserialize(mixed $data, PairQuestion $pairQuestion = null, array $options = []): PairQuestion
     {
         if (empty($pairQuestion)) {
             $pairQuestion = new PairQuestion();
@@ -122,7 +101,7 @@ class PairQuestionSerializer
         return $pairQuestion;
     }
 
-    private function deserializeItems(PairQuestion $pairQuestion, array $items, array $options = [])
+    private function deserializeItems(PairQuestion $pairQuestion, array $items, array $options = []): void
     {
         $itemEntities = $pairQuestion->getItems()->toArray();
 
@@ -163,7 +142,7 @@ class PairQuestionSerializer
         }
     }
 
-    private function deserializeSolutions(PairQuestion $pairQuestion, array $solutions)
+    private function deserializeSolutions(PairQuestion $pairQuestion, array $solutions): void
     {
         $rowEntities = $pairQuestion->getRows()->toArray();
         $oddEntities = $pairQuestion->getOddItems()->toArray();
@@ -195,7 +174,7 @@ class PairQuestionSerializer
         }
     }
 
-    private function deserializeRow(PairQuestion $pairQuestion, array $rowData, array &$existingRows)
+    private function deserializeRow(PairQuestion $pairQuestion, array $rowData, array &$existingRows): GridRow
     {
         $row = null;
         // Retrieve existing row to update
@@ -232,7 +211,7 @@ class PairQuestionSerializer
         return $row;
     }
 
-    private function deserializeOddItem(PairQuestion $pairQuestion, array $oddItemData, array &$existingOddItems)
+    private function deserializeOddItem(PairQuestion $pairQuestion, array $oddItemData, array &$existingOddItems): GridOdd
     {
         $oddItem = null;
         // Retrieve an existing odd to update
@@ -256,10 +235,7 @@ class PairQuestionSerializer
         return $oddItem;
     }
 
-    /**
-     * @return array
-     */
-    private function serializeSolutions(PairQuestion $pairQuestion)
+    private function serializeSolutions(PairQuestion $pairQuestion): array
     {
         // Merge rows and odd items in one array
         return array_merge(

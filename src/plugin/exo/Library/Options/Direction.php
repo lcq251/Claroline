@@ -10,10 +10,10 @@ final class Direction
     /**
      * @var string
      */
-    const HORIZONTAL = 'horizontal';
+    public const HORIZONTAL = 'horizontal';
 
     /**
      * @var string
      */
-    const VERTICAL = 'vertical';
+    public const VERTICAL = 'vertical';
 }

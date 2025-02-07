@@ -13,30 +13,17 @@ class ClozeQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var KeywordSerializer
-     */
-    private $keywordSerializer;
-
-    /**
-     * ClozeQuestionSerializer constructor.
-     */
-    public function __construct(KeywordSerializer $keywordSerializer)
-    {
-        $this->keywordSerializer = $keywordSerializer;
+    public function __construct(
+        private readonly KeywordSerializer $keywordSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_cloze';
     }
 
-    /**
-     * Converts a Cloze question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(ClozeQuestion $clozeQuestion, array $options = [])
+    public function serialize(ClozeQuestion $clozeQuestion, array $options = []): array
     {
         $serialized = [
             'text' => $clozeQuestion->getText(),
@@ -50,15 +37,7 @@ class ClozeQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * Converts raw data into a Cloze question entity.
-     *
-     * @param array         $data
-     * @param ClozeQuestion $clozeQuestion
-     *
-     * @return ClozeQuestion
-     */
-    public function deserialize($data, ClozeQuestion $clozeQuestion = null, array $options = [])
+    public function deserialize(array $data, ClozeQuestion $clozeQuestion = null, array $options = []): ClozeQuestion
     {
         if (empty($clozeQuestion)) {
             $clozeQuestion = new ClozeQuestion();
@@ -105,10 +84,7 @@ class ClozeQuestionSerializer
         }, $clozeQuestion->getHoles()->toArray()));
     }
 
-    /**
-     * Deserializes Question holes.
-     */
-    private function deserializeHoles(ClozeQuestion $clozeQuestion, array $holes, array $solutions, array $options = [])
+    private function deserializeHoles(ClozeQuestion $clozeQuestion, array $holes, array $solutions, array $options = []): void
     {
         $holeEntities = $clozeQuestion->getHoles()->toArray();
 
@@ -160,13 +136,13 @@ class ClozeQuestionSerializer
     /**
      * Deserializes the keywords of a Hole.
      */
-    private function deserializeHoleKeywords(Hole $hole, array $keywords, array $options = [])
+    private function deserializeHoleKeywords(Hole $hole, array $keywords, array $options = []): void
     {
         $updatedKeywords = $this->keywordSerializer->deserializeCollection($keywords, $hole->getKeywords()->toArray(), $options);
         $hole->setKeywords($updatedKeywords);
     }
 
-    private function serializeSolutions(ClozeQuestion $clozeQuestion, array $options = [])
+    private function serializeSolutions(ClozeQuestion $clozeQuestion, array $options = []): array
     {
         return array_values(array_map(function (Hole $hole) use ($options) {
             return [

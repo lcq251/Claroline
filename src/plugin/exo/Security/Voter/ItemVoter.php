@@ -20,13 +20,9 @@ use UJM\ExoBundle\Manager\Item\ShareManager;
 
 class ItemVoter extends AbstractVoter
 {
-    /** @var ShareManager */
-    private $shareManager;
-
     public function __construct(
-        ShareManager $shareManager
+        private readonly ShareManager $shareManager
     ) {
-        $this->shareManager = $shareManager;
     }
 
     public function getClass(): string

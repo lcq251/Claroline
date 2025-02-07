@@ -13,15 +13,15 @@ class KeywordValidator extends JsonSchemaValidator
     /**
      * {@inheritdoc}
      */
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'misc/keyword/schema.json';
+        return 'misc/keyword.json';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validateAfterSchema($keyword, array $options = [])
+    public function validateAfterSchema(mixed $keyword, array $options = []): array
     {
         return [];
     }
@@ -31,10 +31,8 @@ class KeywordValidator extends JsonSchemaValidator
      * Checks :
      *  - There is no more than one keyword with the same text and case sensitiveness
      *  - There is at least one keyword with a positive score.
-     *
-     * @return array
      */
-    public function validateCollection(array $keywords, array $options = [])
+    public function validateCollection(array $keywords, array $options = []): array
     {
         $errors = [];
 

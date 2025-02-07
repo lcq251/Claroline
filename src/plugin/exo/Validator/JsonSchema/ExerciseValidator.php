@@ -16,7 +16,7 @@ class ExerciseValidator extends JsonSchemaValidator
 
     public function getJsonSchemaUri(): string
     {
-        return 'quiz/schema.json';
+        return 'quiz.json';
     }
 
     public function validateAfterSchema(mixed $exercise, array $options = []): array

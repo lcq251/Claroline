@@ -10,40 +10,18 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class AnswerValidator extends JsonSchemaValidator
 {
-    /**
-     * @var ObjectManager
-     */
-    private $om;
-
-    /**
-     * @var AnswerValidator
-     */
-    private $itemDefinitions;
-
-    /**
-     * AnswerValidator constructor.
-     */
     public function __construct(
-        ObjectManager $om,
-        ItemDefinitionsCollection $itemDefinitions)
-    {
-        $this->om = $om;
-        $this->itemDefinitions = $itemDefinitions;
+        private readonly ObjectManager $om,
+        private readonly ItemDefinitionsCollection $itemDefinitions
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer/schema.json';
+        return 'answer.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param \stdClass $answer
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answer, array $options = [])
+    public function validateAfterSchema(mixed $answer, array $options = []): array
     {
         $errors = [];
 

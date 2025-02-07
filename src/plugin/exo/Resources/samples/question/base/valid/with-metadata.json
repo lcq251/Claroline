@@ -1,0 +1,16 @@
+{
+  "id": "1",
+  "type": "application/x.type+json",
+  "content": "this is the content of the question",
+  "meta": {
+    "authors": [
+      {
+        "name": "John Doe",
+        "status": "Tutor"
+      }
+    ],
+    "license": "CC",
+    "created": "2014-06-23"
+  },
+  "title": "Question ?"
+}

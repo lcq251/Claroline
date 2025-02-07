@@ -1,0 +1,9 @@
+{
+  "type": "application/x.set+json",
+  "data": [
+    {
+      "itemId": ["not a string"],
+      "setId": "2"
+    }
+  ]
+}

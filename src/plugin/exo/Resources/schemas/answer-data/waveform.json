@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A waveform question answer is a list of selection of segment of the audio file.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": ["application/x.waveform+json"]
+    },
+    "data": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "description": "The start of the selection.",
+            "type": "number",
+            "minimum": 0
+          },
+          "end": {
+            "description": "The end of the selection.",
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["start", "end"]
+      }
+    }
+  }
+}
+

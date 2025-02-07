@@ -10,30 +10,32 @@ final class ExerciseType
     /**
      * @var string
      */
-    const CONCEPTUALIZATION = 'conceptualization';
+    public const CONCEPTUALIZATION = 'conceptualization';
 
     /**
      * @var string
      */
-    const FORMATIVE = 'formative';
+    public const FORMATIVE = 'formative';
 
     /**
      * @var string
      */
-    const SUMMATIVE = 'summative';
+    public const SUMMATIVE = 'summative';
 
     /**
      * @var string
      */
-    const CERTIFICATION = 'evaluative';
+    public const CERTIFICATION = 'evaluative';
+
+    /**
+     * @var string
+     *
+     * @deprecated no replacement
+     */
+    public const SURVEY = 'survey';
 
     /**
      * @var string
      */
-    const SURVEY = 'survey';
-
-    /**
-     * @var string
-     */
-    const CUSTOM = 'custom';
+    public const CUSTOM = 'custom';
 }

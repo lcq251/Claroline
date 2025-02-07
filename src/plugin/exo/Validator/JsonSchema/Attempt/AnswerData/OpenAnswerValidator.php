@@ -6,19 +6,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class OpenAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/open/schema.json';
+        return 'answer-data/open.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param \stdClass $question
-     *
-     * @return array
-     */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         // Checks the content type of the answer match the content type of the question
 

@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "type": "application/x.words+json",
+  "content": "Question ?",
+  "solutions": [
+    {
+      "text" : "val",
+      "caseSensitive": false,
+      "score" : 8
+    },
+    {
+      "text" : "val",
+      "caseSensitive": false,
+      "score" : 8
+    }
+  ]
+}

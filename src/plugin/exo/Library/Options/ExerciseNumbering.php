@@ -10,15 +10,15 @@ final class ExerciseNumbering
     /**
      * @var string
      */
-    const NONE = 'none';
+    public const NONE = 'none';
 
     /**
      * @var string
      */
-    const NUMERIC = 'numeric';
+    public const NUMERIC = 'numeric';
 
     /**
      * @var string
      */
-    const LITTERAL = 'litteral';
+    public const LITTERAL = 'litteral';
 }

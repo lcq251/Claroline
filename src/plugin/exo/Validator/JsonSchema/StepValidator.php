@@ -10,33 +10,18 @@ use UJM\ExoBundle\Validator\JsonSchema\Item\ItemValidator;
 
 class StepValidator extends JsonSchemaValidator
 {
-    /**
-     * @var ItemValidator
-     */
-    private $itemValidator;
-
-    /**
-     * @var ContentValidator
-     */
-    private $contentValidator;
-
-    /**
-     * StepValidator constructor.
-     */
     public function __construct(
-        ItemValidator $itemValidator,
-        ContentValidator $contentValidator)
-    {
-        $this->itemValidator = $itemValidator;
-        $this->contentValidator = $contentValidator;
+        private readonly ItemValidator $itemValidator,
+        private readonly ContentValidator $contentValidator
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'step/schema.json';
+        return 'step.json';
     }
 
-    public function validateAfterSchema($step, array $options = [])
+    public function validateAfterSchema(mixed $step, array $options = []): array
     {
         $errors = [];
 
@@ -84,12 +69,12 @@ class StepValidator extends JsonSchemaValidator
         return $errors;
     }
 
-    private function validateParameters(array $parameters)
+    private function validateParameters(array $parameters): array
     {
         return [];
     }
 
-    private function validatePicking(array $picking)
+    private function validatePicking(array $picking): array
     {
         $errors = [];
 

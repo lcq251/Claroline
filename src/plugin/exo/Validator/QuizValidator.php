@@ -39,7 +39,7 @@ class QuizValidator implements ValidatorInterface
         return Exercise::class;
     }
 
-    private function removeUnexpectedSolutions($data)
+    private function removeUnexpectedSolutions(array $data): array
     {
         $newData = $data;
 

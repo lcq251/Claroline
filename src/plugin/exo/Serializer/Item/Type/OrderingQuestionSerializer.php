@@ -12,30 +12,17 @@ class OrderingQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var ContentSerializer
-     */
-    private $contentSerializer;
-
-    /**
-     * OrderingQuestionSerializer constructor.
-     */
-    public function __construct(ContentSerializer $contentSerializer)
-    {
-        $this->contentSerializer = $contentSerializer;
+    public function __construct(
+        private readonly ContentSerializer $contentSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_ordering';
     }
 
-    /**
-     * Converts an Ordering question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(OrderingQuestion $question, array $options = [])
+    public function serialize(OrderingQuestion $question, array $options = []): array
     {
         $serialized = [
             'mode' => $question->getMode(),
@@ -59,12 +46,7 @@ class OrderingQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * Serializes the question items.
-     *
-     * @return array
-     */
-    private function serializeItems(OrderingQuestion $question, array $options = [])
+    private function serializeItems(OrderingQuestion $question, array $options = []): array
     {
         return array_map(function (OrderingItem $item) use ($options) {
             $itemData = $this->contentSerializer->serialize($item, $options);
@@ -74,12 +56,7 @@ class OrderingQuestionSerializer
         }, $question->getItems()->toArray());
     }
 
-    /**
-     * Serializes Question solutions.
-     *
-     * @return array
-     */
-    private function serializeSolutions(OrderingQuestion $question)
+    private function serializeSolutions(OrderingQuestion $question): array
     {
         return array_map(function (OrderingItem $item) {
             $solutionData = [
@@ -99,15 +76,7 @@ class OrderingQuestionSerializer
         }, $question->getItems()->toArray());
     }
 
-    /**
-     * Converts raw data into an Ordering question entity.
-     *
-     * @param array            $data
-     * @param OrderingQuestion $question
-     *
-     * @return OrderingQuestion
-     */
-    public function deserialize($data, OrderingQuestion $question = null, array $options = [])
+    public function deserialize(array $data, OrderingQuestion $question = null, array $options = []): OrderingQuestion
     {
         if (empty($question)) {
             $question = new OrderingQuestion();
@@ -125,10 +94,7 @@ class OrderingQuestionSerializer
         return $question;
     }
 
-    /**
-     * Deserializes Question items.
-     */
-    private function deserializeItems(OrderingQuestion $question, array $items, array $solutions, array $options = [])
+    private function deserializeItems(OrderingQuestion $question, array $items, array $solutions, array $options = []): void
     {
         $itemEntities = $question->getItems()->toArray();
 

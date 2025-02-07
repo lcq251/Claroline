@@ -14,28 +14,28 @@ final class Transfer
      *
      * @var string
      */
-    const MINIMAL = 'minimal';
+    public const MINIMAL = 'minimal';
 
     /**
      * Adds solutions info in the serialized data.
      *
      * @var string
      */
-    const INCLUDE_SOLUTIONS = 'includeSolutions';
+    public const INCLUDE_SOLUTIONS = 'includeSolutions';
 
     /**
      * Adds user scores in the serialized data.
      *
      * @var string
      */
-    const INCLUDE_USER_SCORE = 'includeUserScore';
+    public const INCLUDE_USER_SCORE = 'includeUserScore';
 
     /**
      * Applies shuffle to the answers of a question.
      *
      * @var string
      */
-    const SHUFFLE_ANSWERS = 'shuffleAnswers';
+    public const SHUFFLE_ANSWERS = 'shuffleAnswers';
 
     /**
      * Avoids data fetch from DB.
@@ -45,19 +45,21 @@ final class Transfer
      *
      * @var string
      */
-    const NO_FETCH = 'no_fetch';
+    public const NO_FETCH = 'no_fetch';
 
     /**
      * Persist the tags of the question.
      *
      * @var string
      */
-    const PERSIST_TAG = 'persistTag';
+    public const PERSIST_TAG = 'persistTag';
 
     /**
-     * Refrest UUID for steps and questions before persisting.
+     * Refresh UUID for steps and questions before persisting.
      *
      * @var string
+     *
+     * @deprecated
      */
-    const REFRESH_UUID = ApiOptions::REFRESH_UUID;
+    public const REFRESH_UUID = ApiOptions::REFRESH_UUID;
 }

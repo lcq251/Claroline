@@ -1,0 +1,28 @@
+{
+  "id": "1",
+  "type": "application/x.pair+json",
+  "content": "Question ?",
+  "random": false,
+  "penalty": 0.5,
+  "rows": 1,
+  "items": [
+    {
+      "id": "3",
+      "type": "text/plain",
+      "data": "Item A",
+      "coordinates": [0, 1]
+    },
+    {
+      "id": "6",
+      "type": "text/plain",
+      "data": "Item B"
+    }
+  ],
+  "solutions": [
+    {
+      "itemIds": ["3","6"],
+      "score": 1.5,
+      "feedback": ["not a string"]
+    }
+  ]
+}

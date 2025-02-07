@@ -12,30 +12,17 @@ class ChoiceQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var ContentSerializer
-     */
-    private $contentSerializer;
-
-    /**
-     * ChoiceQuestionSerializer constructor.
-     */
-    public function __construct(ContentSerializer $contentSerializer)
-    {
-        $this->contentSerializer = $contentSerializer;
+    public function __construct(
+        private readonly ContentSerializer $contentSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_choice';
     }
 
-    /**
-     * Converts a Choice question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(ChoiceQuestion $choiceQuestion, array $options = [])
+    public function serialize(ChoiceQuestion $choiceQuestion, array $options = []): array
     {
         $serialized = [
             'random' => $choiceQuestion->getShuffle(),
@@ -60,15 +47,7 @@ class ChoiceQuestionSerializer
         return $serialized;
     }
 
-    /**
-     * Converts raw data into a Choice question entity.
-     *
-     * @param array          $data
-     * @param ChoiceQuestion $choiceQuestion
-     *
-     * @return ChoiceQuestion
-     */
-    public function deserialize($data, ChoiceQuestion $choiceQuestion = null, array $options = [])
+    public function deserialize(array $data, ChoiceQuestion $choiceQuestion = null, array $options = []): ChoiceQuestion
     {
         if (empty($choiceQuestion)) {
             $choiceQuestion = new ChoiceQuestion();
@@ -86,11 +65,9 @@ class ChoiceQuestionSerializer
 
     /**
      * Shuffles and serializes the Question choices.
-     * To avoid shuffling, set `$options['randomize']` to false (eg. we don't want shuffle for papers).
-     *
-     * @return array
+     * To avoid shuffling, set `$options['randomize']` to false (e.g. we don't want shuffle for papers).
      */
-    private function serializeChoices(ChoiceQuestion $choiceQuestion, array $options = [])
+    private function serializeChoices(ChoiceQuestion $choiceQuestion, array $options = []): array
     {
         return array_map(function (Choice $choice) use ($options) {
             $choiceData = $this->contentSerializer->serialize($choice, $options);
@@ -101,10 +78,7 @@ class ChoiceQuestionSerializer
         }, $choiceQuestion->getChoices()->toArray());
     }
 
-    /**
-     * Deserializes Question choices.
-     */
-    private function deserializeChoices(ChoiceQuestion $choiceQuestion, array $choices, array $solutions, array $options = [])
+    private function deserializeChoices(ChoiceQuestion $choiceQuestion, array $choices, array $solutions, array $options = []): void
     {
         $choiceEntities = $choiceQuestion->getChoices()->toArray();
 
@@ -155,12 +129,7 @@ class ChoiceQuestionSerializer
         }
     }
 
-    /**
-     * Serializes Question solutions.
-     *
-     * @return array
-     */
-    private function serializeSolutions(ChoiceQuestion $choiceQuestion)
+    private function serializeSolutions(ChoiceQuestion $choiceQuestion): array
     {
         return array_map(function (Choice $choice) {
             $solutionData = [

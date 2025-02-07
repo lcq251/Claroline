@@ -1,0 +1,13 @@
+{
+  "id": "1",
+  "type": "application/x.words+json",
+  "content": "Question ?",
+  "solutions": [
+    {
+      "text": "ipsum",
+      "caseSensitive": false,
+      "score": 2,
+      "feedback": "this is a feedback"
+    }
+  ]
+}

@@ -13,147 +13,79 @@ trait AttemptParametersTrait
 {
     /**
      * The picking method used to generate new attempts to the quiz.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(type: 'string')]
-    private $picking = Picking::STANDARD;
+    private ?string $picking = Picking::STANDARD;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'random_order', type: 'string')]
-    private $randomOrder = Recurrence::NEVER;
+    private ?string $randomOrder = Recurrence::NEVER;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'random_pick', type: 'string')]
-    private $randomPick = Recurrence::NEVER;
+    private ?string $randomPick = Recurrence::NEVER;
 
-    /**
-     * @var int|array
-     */
     #[ORM\Column(type: 'text')]
-    private $pick = 0;
+    private int|string|array $pick = 0;
 
     /**
      * Maximum time (in minutes) allowed.
      * If 0, there is no duration limit.
-     *
-     *
-     * @var int
      */
     #[ORM\Column(type: 'integer')]
-    private $duration = 0;
+    private ?int $duration = 0;
 
     /**
      * Number of attempts allowed.
-     * If 0, the user can retry as many times a he wishes.
-     *
-     *
-     * @var int
+     * If 0, the user can retry as many times he wishes.
      */
     #[ORM\Column(name: 'max_attempts', type: 'integer')]
-    private $maxAttempts = 0;
+    private ?int $maxAttempts = 0;
 
-    /**
-     * Sets random order.
-     *
-     * @param string $randomOrder
-     */
-    public function setRandomOrder($randomOrder)
+    public function setRandomOrder(string $randomOrder): void
     {
         $this->randomOrder = $randomOrder;
     }
 
-    /**
-     * Gets random order.
-     *
-     * @return string
-     */
-    public function getRandomOrder()
+    public function getRandomOrder(): ?string
     {
         return $this->randomOrder;
     }
 
-    /**
-     * Sets random pick.
-     *
-     * @param string $randomPick
-     */
-    public function setRandomPick($randomPick)
+    public function setRandomPick(string $randomPick): void
     {
         $this->randomPick = $randomPick;
     }
 
-    /**
-     * Gets random pick.
-     *
-     * @return string
-     */
-    public function getRandomPick()
+    public function getRandomPick(): ?string
     {
         return $this->randomPick;
     }
 
-    /**
-     * Sets pick number.
-     *
-     * @param int|array $pick
-     */
-    public function setPick($pick)
+    public function setPick(int|array $pick): void
     {
         $this->pick = json_encode($pick);
     }
 
-    /**
-     * Gets pick number.
-     *
-     * @return int|array
-     */
-    public function getPick()
+    public function getPick(): int|array
     {
         return json_decode($this->pick, true);
     }
 
-    /**
-     * Sets duration.
-     *
-     * @param int $duration
-     */
-    public function setDuration($duration)
+    public function setDuration(?int $duration): void
     {
         $this->duration = $duration;
     }
 
-    /**
-     * Gets duration.
-     *
-     * @return int
-     */
-    public function getDuration()
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    /**
-     * Sets max attempts.
-     *
-     * @param int $maxAttempts
-     */
-    public function setMaxAttempts($maxAttempts)
+    public function setMaxAttempts(?int $maxAttempts): void
     {
         $this->maxAttempts = $maxAttempts;
     }
 
-    /**
-     * Gets max attempts.
-     *
-     * @return int
-     */
-    public function getMaxAttempts()
+    public function getMaxAttempts(): ?int
     {
         return $this->maxAttempts;
     }

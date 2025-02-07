@@ -9,12 +9,12 @@ class ContentItemSerializer
 {
     use SerializerTrait;
 
-    /**
-     * Converts a content item into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(ContentItem $contentItem, array $options = [])
+    public function getName(): string
+    {
+        return 'exo_question_content_item';
+    }
+
+    public function serialize(ContentItem $contentItem, array $options = []): array
     {
         $serialized = [];
 
@@ -29,20 +29,7 @@ class ContentItemSerializer
         return $serialized;
     }
 
-    public function getName()
-    {
-        return 'exo_question_content_item';
-    }
-
-    /**
-     * Converts raw data into a content item entity.
-     *
-     * @param array       $data
-     * @param ContentItem $contentItem
-     *
-     * @return ContentItem
-     */
-    public function deserialize($data, ContentItem $contentItem = null, array $options = [])
+    public function deserialize(array $data, ContentItem $contentItem = null, ?array $options = []): ContentItem
     {
         if (empty($contentItem)) {
             $contentItem = new ContentItem();

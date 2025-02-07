@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "allOf": [
+    {
+      "$ref": "http://json-quiz.github.io/json-quiz/schemas/score/base.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": ["sum"]
+        },
+        "total": {
+          "type": "number"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "type": "application/x.cloze+json",
+  "content": "Question ?",
+  "text": "Lorem [[1]] dolor sit [[2]].",
+  "holes": [
+    {
+      "id": "1",
+      "size": 2.345
+    },
+    {
+      "id": "2",
+      "size": 14,
+      "placeholder": "(verb)"
+    }
+  ]
+}

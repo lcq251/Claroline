@@ -2,25 +2,19 @@
 
 namespace UJM\ExoBundle\Validator\JsonSchema\Attempt\AnswerData;
 
+use UJM\ExoBundle\Entity\ItemType\ChoiceQuestion;
 use UJM\ExoBundle\Entity\Misc\BooleanChoice;
 use UJM\ExoBundle\Library\Options\Validation;
 use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class BooleanAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/boolean/schema.json';
+        return 'answer-data/boolean.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         $errors = [];
 

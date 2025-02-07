@@ -10,12 +10,12 @@ class OpenQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * Converts a Open question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(OpenQuestion $openQuestion, array $options = [])
+    public function getName(): string
+    {
+        return 'exo_question_open';
+    }
+
+    public function serialize(OpenQuestion $openQuestion, array $options = []): array
     {
         $serialized = [
             'contentType' => $openQuestion->getContentType(),
@@ -29,20 +29,7 @@ class OpenQuestionSerializer
         return $serialized;
     }
 
-    public function getName()
-    {
-        return 'exo_question_open';
-    }
-
-    /**
-     * Converts raw data into an Open question entity.
-     *
-     * @param array        $data
-     * @param OpenQuestion $openQuestion
-     *
-     * @return OpenQuestion
-     */
-    public function deserialize($data, OpenQuestion $openQuestion = null, array $options = [])
+    public function deserialize(array $data, OpenQuestion $openQuestion = null, array $options = []): OpenQuestion
     {
         if (empty($openQuestion)) {
             $openQuestion = new OpenQuestion();

@@ -4,8 +4,8 @@ namespace UJM\ExoBundle\Validator\JsonSchema\Item\Type;
 
 class BooleanQuestionValidator extends ChoiceQuestionValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/boolean/schema.json';
+        return 'question/boolean.json';
     }
 }

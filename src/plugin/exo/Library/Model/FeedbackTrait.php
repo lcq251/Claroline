@@ -11,28 +11,16 @@ trait FeedbackTrait
 {
     /**
      * Feedback content.
-     *
-     * @var string
      */
     #[ORM\Column(name: 'feedback', type: 'text', nullable: true)]
-    private $feedback = '';
+    private ?string $feedback = '';
 
-    /**
-     * Sets feedback.
-     *
-     * @param string $feedback
-     */
-    public function setFeedback($feedback)
+    public function setFeedback(?string $feedback): void
     {
         $this->feedback = $feedback;
     }
 
-    /**
-     * Gets feedback.
-     *
-     * @return string
-     */
-    public function getFeedback()
+    public function getFeedback(): string
     {
         if (!$this->feedback) {
             return '';

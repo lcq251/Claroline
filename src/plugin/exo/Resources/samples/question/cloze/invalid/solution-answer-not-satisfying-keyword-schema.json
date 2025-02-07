@@ -1,0 +1,14 @@
+{
+  "id": "1",
+  "type": "application/x.cloze+json",
+  "content": "Question ?",
+  "text": "Lorem ipsum [[1]] sit amet.",
+  "solutions": [
+    {
+      "holeId": "1",
+      "answers": [
+        "not-a-keyword"
+      ]
+    }
+  ]
+}

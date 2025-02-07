@@ -10,18 +10,15 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
  */
 class HintValidator extends JsonSchemaValidator
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'hint/schema.json';
+        return 'hint.json';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validateAfterSchema($hint, array $options = [])
+    public function validateAfterSchema(mixed $hint, array $options = []): array
     {
         $errors = [];
 

@@ -1,0 +1,6 @@
+{
+  "type": "application/x.match+json",
+  "data": [
+    "not an object"
+  ]
+}

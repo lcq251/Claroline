@@ -10,25 +10,17 @@ use UJM\ExoBundle\Library\Options\Validation;
  */
 abstract class JsonSchemaValidator implements ValidatorInterface
 {
-    /**
-     * @var JsonSchema
-     */
-    private $jsonSchema;
+    private JsonSchema $jsonSchema;
 
-    /**
-     * @param JsonSchema $jsonSchema
-     */
-    public function setJsonSchema($jsonSchema)
+    public function setJsonSchema(JsonSchema $jsonSchema): void
     {
         $this->jsonSchema = $jsonSchema;
     }
 
     /**
      * URI to the JSON Schema to use for validation.
-     *
-     * @return string
      */
-    abstract public function getJsonSchemaUri();
+    abstract public function getJsonSchemaUri(): string;
 
     /**
      * Performs any validation task that cannot be achieved using solely the
@@ -39,7 +31,7 @@ abstract class JsonSchemaValidator implements ValidatorInterface
      *
      * @return array
      */
-    abstract public function validateAfterSchema($data, array $options = []);
+    abstract public function validateAfterSchema(mixed $data, array $options = []): array;
 
     /**
      * Validates the data against the validator schema
@@ -50,7 +42,7 @@ abstract class JsonSchemaValidator implements ValidatorInterface
      *
      * @return array - the list of validation errors
      */
-    public function validate($data, array $options = [])
+    public function validate(mixed $data, array $options = []): array
     {
         // convert data arrays to stdClass for JsonSchema validator
         $dataObject = json_decode(json_encode($data));
@@ -78,7 +70,7 @@ abstract class JsonSchemaValidator implements ValidatorInterface
      *
      * @return array - the list of validation errors
      */
-    private function validateSchema($data)
+    private function validateSchema(mixed $data): array
     {
         return $this->jsonSchema->validate($data, $this->getJsonSchemaUri());
     }

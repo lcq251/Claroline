@@ -17,6 +17,7 @@ use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Event\Resource\UpdateResourceEvent;
 use Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager;
 use Claroline\CoreBundle\Manager\ResourceManager;
+use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -98,11 +99,37 @@ class ResourceListener
             $this->om->startFlushSuite();
 
             if (!empty($data['resourceNode'])) {
-                $this->crud->update($resourceNode, $data['resourceNode'], [Options::PERSIST_TAG]);
+                try {
+                    $this->crud->update($resourceNode, $data['resourceNode'], [Options::PERSIST_TAG]);
+                } catch (InvalidDataException $e) {
+                    // for resource edit we submit the resourceNode and resource data at once
+                    // we need to update the errors path for correct rendering in form
+                    $errors = array_map(function (array $error) {
+                        return [
+                            'path' => 'resourceNode/'.ltrim($error['path'], '/'),
+                            'message' => $error['message'],
+                        ];
+                    }, $e->getErrors());
+
+                    throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
+                }
             }
 
             if (!empty($data['resource'])) {
-                $this->crud->update($resource, $data['resource']);
+                try {
+                    $this->crud->update($resource, $data['resource']);
+                } catch (InvalidDataException $e) {
+                    // for resource edit we submit the resourceNode and resource data at once
+                    // we need to update the errors path for correct rendering in form
+                    $errors = array_map(function (array $error) {
+                        return [
+                            'path' => 'resource/'.ltrim($error['path'], '/'),
+                            'message' => $error['message'],
+                        ];
+                    }, $e->getErrors());
+
+                    throw new InvalidDataException(sprintf('%s is not valid', get_class($resource)), $errors);
+                }
             }
 
             if (!empty($data['rights']) && $isManager) {

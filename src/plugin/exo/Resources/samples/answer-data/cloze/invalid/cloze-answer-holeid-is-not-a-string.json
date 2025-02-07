@@ -1,0 +1,9 @@
+{
+  "type": "application/x.cloze+json",
+  "data": [
+    {
+      "holeId": ["not a string"],
+      "answerText": "ipsum"
+    }
+  ]
+}

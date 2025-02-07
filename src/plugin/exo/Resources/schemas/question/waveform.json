@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions" : {
+    "section":{
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "start": {
+              "type": "number"
+            },
+            "end": {
+              "type": "number"
+            },
+            "startTolerance": {
+              "type": "number"
+            },
+            "endTolerance": {
+              "type": "number"
+            },
+            "color": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "start", "end", "startTolerance", "endTolerance"]
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "http://json-quiz.github.io/json-quiz/schemas/question/base.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "application/x.waveform+json"
+          ]
+        },
+        "file": {
+          "type": "string"
+        },
+        "tolerance": {
+          "type": "number"
+        },
+        "penalty": {
+          "type": "number"
+        },
+        "answersLimit": {
+          "type": "number"
+        },
+        "solutions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "$ref": "#/definitions/section"
+              },
+              "score": {
+                "type": "number"
+              },
+              "feedback": {
+                "type": "string"
+              }
+            },
+            "required": ["section", "score"]
+          }
+        }
+      },
+      "required": ["file"]
+    }
+  ]
+}

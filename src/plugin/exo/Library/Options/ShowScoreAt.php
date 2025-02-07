@@ -8,25 +8,25 @@ namespace UJM\ExoBundle\Library\Options;
 final class ShowScoreAt
 {
     /**
-     * The marks are available at the same time than the Correction.
+     * The marks are available at the same time as the Correction.
      *
-     * @see \UJM\ExoBundle\Library\Options\ShowCorrectionAt
+     * @see ShowCorrectionAt
      *
      * @var string
      */
-    const WITH_CORRECTION = 'correction';
+    public const WITH_CORRECTION = 'correction';
 
     /**
      * The marks are available once the User has validated his Paper.
      *
      * @var string
      */
-    const AFTER_END = 'validation';
+    public const AFTER_END = 'validation';
 
     /**
      * The marks will never be displayed.
      *
      * @var string
      */
-    const NEVER = 'never';
+    public const NEVER = 'never';
 }

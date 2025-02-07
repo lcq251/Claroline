@@ -14,30 +14,17 @@ class SetQuestionSerializer
 {
     use SerializerTrait;
 
-    /**
-     * @var ContentSerializer
-     */
-    private $contentSerializer;
-
-    /**
-     * SetQuestionSerializer constructor.
-     */
-    public function __construct(ContentSerializer $contentSerializer)
-    {
-        $this->contentSerializer = $contentSerializer;
+    public function __construct(
+        private readonly ContentSerializer $contentSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'exo_question_set';
     }
 
-    /**
-     * Converts a Set question into a JSON-encodable structure.
-     *
-     * @return array
-     */
-    public function serialize(MatchQuestion $setQuestion, array $options = [])
+    public function serialize(MatchQuestion $setQuestion, array $options = []): array
     {
         $serialized = [
             'random' => $setQuestion->getShuffle(),
@@ -73,7 +60,7 @@ class SetQuestionSerializer
         return $serialized;
     }
 
-    private function serializeSolutions(MatchQuestion $setQuestion)
+    private function serializeSolutions(MatchQuestion $setQuestion): array
     {
         $solutions = [
             'associations' => [],
@@ -102,15 +89,7 @@ class SetQuestionSerializer
         return $solutions;
     }
 
-    /**
-     * Converts raw data into a Set question entity.
-     *
-     * @param array         $data
-     * @param MatchQuestion $setQuestion
-     *
-     * @return MatchQuestion
-     */
-    public function deserialize($data, MatchQuestion $setQuestion = null, array $options = [])
+    public function deserialize(array $data, MatchQuestion $setQuestion = null, array $options = []): MatchQuestion
     {
         if (empty($setQuestion)) {
             $setQuestion = new MatchQuestion();
@@ -130,12 +109,7 @@ class SetQuestionSerializer
         return $setQuestion;
     }
 
-    /**
-     * Deserializes Question labels.
-     *
-     * @param array $sets ie labels
-     */
-    private function deserializeLabels(MatchQuestion $setQuestion, array $sets)
+    private function deserializeLabels(MatchQuestion $setQuestion, array $sets): void
     {
         $labelsEntities = $setQuestion->getLabels()->toArray();
 
@@ -167,12 +141,7 @@ class SetQuestionSerializer
         }
     }
 
-    /**
-     * Deserializes Question proposals.
-     *
-     * @param array $items ie proposals
-     */
-    private function deserializeProposals(MatchQuestion $setQuestion, array $items)
+    private function deserializeProposals(MatchQuestion $setQuestion, array $items): void
     {
         $proposalsEntities = $setQuestion->getProposals()->toArray();
 
@@ -205,10 +174,7 @@ class SetQuestionSerializer
         }
     }
 
-    /**
-     * Deserializes Question solutions.
-     */
-    private function deserializeSolutions(MatchQuestion $setQuestion, array $solutionsAndOdd)
+    private function deserializeSolutions(MatchQuestion $setQuestion, array $solutionsAndOdd): void
     {
         $associationsEntities = $setQuestion->getAssociations()->toArray();
 
@@ -219,10 +185,10 @@ class SetQuestionSerializer
             foreach ($associationsEntities as $entityIndex => $entityAssociation) {
                 /* @var Association $entityAssociation */
                 // retieves oddAssociations and fullAssociation
-                if ($entityAssociation->getProposal()->getUuid() === $solution['itemId'] &&
-                      (
-                        ($entityAssociation->getLabel() && $entityAssociation->getLabel()->getUuid() === $solution['setId']) ||
-                        (!$entityAssociation->getLabel() && !isset($solution['setId']))
+                if ($entityAssociation->getProposal()->getUuid() === $solution['itemId']
+                      && (
+                          ($entityAssociation->getLabel() && $entityAssociation->getLabel()->getUuid() === $solution['setId'])
+                          || (!$entityAssociation->getLabel() && !isset($solution['setId']))
                       )
                 ) {
                     $association = $entityAssociation;

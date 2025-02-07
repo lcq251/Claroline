@@ -1,0 +1,20 @@
+{
+  "id": "1",
+  "type": "application/x.match+json",
+  "content": "Question ?",
+  "random": false,
+  "penalty": 0,
+  "firstSet": [
+    {
+      "id": "2",
+      "type": "text/plain",
+      "data": "Item A"
+    },
+    {
+      "id": "3",
+      "type": "text/plain",
+      "data": "Item B"
+    }
+  ],
+  "secondSet": "not-an-array"
+}

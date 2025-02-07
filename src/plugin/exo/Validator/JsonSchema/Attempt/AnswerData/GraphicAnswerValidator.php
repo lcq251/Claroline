@@ -7,19 +7,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class GraphicAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/graphic/schema.json';
+        return 'answer-data/graphic.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param \stdClass $answerData
-     *
-     * @return array
-     */
-    public function validateAfterSchema($answerData, array $options = [])
+    public function validateAfterSchema(mixed $answerData, array $options = []): array
     {
         $question = !empty($options[Validation::QUESTION]) ? $options[Validation::QUESTION] : null;
 

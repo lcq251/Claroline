@@ -6,19 +6,12 @@ use UJM\ExoBundle\Library\Validator\JsonSchemaValidator;
 
 class WordsAnswerValidator extends JsonSchemaValidator
 {
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'answer-data/words/schema.json';
+        return 'answer-data/words.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param \stdClass $question
-     *
-     * @return array
-     */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         return [];
     }

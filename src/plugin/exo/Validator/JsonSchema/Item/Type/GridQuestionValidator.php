@@ -8,37 +8,22 @@ use UJM\ExoBundle\Validator\JsonSchema\Misc\KeywordValidator;
 
 class GridQuestionValidator extends JsonSchemaValidator
 {
-    /**
-     * @var KeywordValidator
-     */
-    private $keywordValidator;
-
-    /**
-     * WordsQuestionValidator constructor.
-     */
-    public function __construct(KeywordValidator $keywordValidator)
-    {
-        $this->keywordValidator = $keywordValidator;
+    public function __construct(
+        private readonly KeywordValidator $keywordValidator
+    ) {
     }
 
-    public function getJsonSchemaUri()
+    public function getJsonSchemaUri(): string
     {
-        return 'question/grid/schema.json';
+        return 'question/grid.json';
     }
 
-    /**
-     * Performs additional validations.
-     *
-     * @param array $question
-     *
-     * @return array
-     */
-    public function validateAfterSchema($question, array $options = [])
+    public function validateAfterSchema(mixed $data, array $options = []): array
     {
         $errors = [];
 
         if (in_array(Validation::REQUIRE_SOLUTIONS, $options)) {
-            $errors = $this->validateSolutions($question);
+            $errors = $this->validateSolutions($data);
         }
 
         return $errors;
@@ -46,10 +31,8 @@ class GridQuestionValidator extends JsonSchemaValidator
 
     /**
      * Validates the solution of the question.
-     *
-     * @return array
      */
-    protected function validateSolutions(array $question)
+    private function validateSolutions(array $question): array
     {
         $errors = [];
 
@@ -67,8 +50,8 @@ class GridQuestionValidator extends JsonSchemaValidator
             }
             // Validates cell choices
             $errors = array_merge(
-              $errors,
-              $this->keywordValidator->validateCollection($solution['answers'], [Validation::NO_SCHEMA, Validation::VALIDATE_SCORE])
+                $errors,
+                $this->keywordValidator->validateCollection($solution['answers'], [Validation::NO_SCHEMA, Validation::VALIDATE_SCORE])
             );
         }
 

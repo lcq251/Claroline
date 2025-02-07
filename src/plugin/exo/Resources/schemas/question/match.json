@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "allOf": [
+    {
+      "$ref": "http://json-quiz.github.io/json-quiz/schemas/question/base.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": ["application/x.match+json"]
+        },
+        "random": {
+          "type": "boolean",
+          "description": "Randomize firstSet and secondSet items",
+          "default": false
+        },
+        "penalty": {
+          "type": "number",
+          "description": "Penalty to apply for each incorrect association",
+          "minimum": 0,
+          "default": 0
+        },
+        "firstSet": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "http://json-quiz.github.io/json-quiz/schemas/content.json"
+          }
+        },
+        "secondSet": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "http://json-quiz.github.io/json-quiz/schemas/content.json"
+          }
+        },
+        "solutions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "firstId": {
+                "type": "string"
+              },
+              "secondId": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              },
+              "feedback": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "firstId",
+              "secondId",
+              "score"
+            ]
+          }
+        }
+      },
+      "required": ["random", "penalty", "firstSet", "secondSet"]
+    }
+  ]
+}

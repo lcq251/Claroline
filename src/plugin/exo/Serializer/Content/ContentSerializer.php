@@ -21,12 +21,7 @@ class ContentSerializer
         return 'exo_content';
     }
 
-    /**
-     * @param mixed $content
-     *
-     * @return array
-     */
-    public function serialize($content, array $options = [])
+    public function serialize(mixed $content, array $options = []): array
     {
         $node = $content->getResourceNode();
 
@@ -42,13 +37,7 @@ class ContentSerializer
         return $serialized;
     }
 
-    /**
-     * @param array $data
-     * @param mixed $content
-     *
-     * @return mixed
-     */
-    public function deserialize($data, $content = null, array $options = [])
+    public function deserialize(array $data, mixed $content = null, array $options = []): mixed
     {
         if ('text/html' === $data['type'] || 'text/plain' === $data['type']) {
             // HTML is directly stored in the choice entity

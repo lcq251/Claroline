@@ -6,9 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\ItemType\BooleanQuestion;
 use UJM\ExoBundle\Library\Attempt\AnswerPartInterface;
 
-/**
- * Choice.
- */
 #[ORM\Table(name: 'ujm_boolean_choice')]
 #[ORM\Entity]
 class BooleanChoice extends AbstractChoice implements AnswerPartInterface
@@ -17,15 +14,12 @@ class BooleanChoice extends AbstractChoice implements AnswerPartInterface
     #[ORM\ManyToOne(targetEntity: BooleanQuestion::class, inversedBy: 'choices')]
     private ?BooleanQuestion $question = null;
 
-    /**
-     * @return BooleanQuestion
-     */
-    public function getQuestion()
+    public function getQuestion(): ?BooleanQuestion
     {
         return $this->question;
     }
 
-    public function setQuestion(BooleanQuestion $question)
+    public function setQuestion(BooleanQuestion $question): void
     {
         $this->question = $question;
     }

@@ -1,0 +1,19 @@
+{
+  "id": "1",
+  "type": "application/x.set+json",
+  "content": "Question ?",
+  "penalty": 1,
+  "random": false,
+  "sets": [
+    {
+      "id": "2",
+      "type": "text/html",
+      "data": "Set A"
+    },
+    {
+      "id": "3",
+      "type": "text/html",
+      "data": "Set B"
+    }
+  ]
+}
