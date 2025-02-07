@@ -13,5 +13,6 @@ export default (organizations) => ({
   label: trans('browse', {}, 'actions'),
   target: '',
   displayed: hasPermission('open', organizations[0]),
-  scope: ['object']
+  scope: ['object'],
+  exact: true
 })
