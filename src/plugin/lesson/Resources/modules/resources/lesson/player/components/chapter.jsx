@@ -24,10 +24,10 @@ const ChapterNavigation = (props) => {
   const numbering = useSelector(selectors.numbering)
 
   const next = useSelector(selectors.nextPage)
-  const nextNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
+  const nextNumbering = next ? getNumbering(numbering, props.treeData.children, next) : null
 
   const previous = useSelector(selectors.previousPage)
-  const previousNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
+  const previousNumbering = previous ? getNumbering(numbering, props.treeData.children, previous) : null
 
   if (showOverview || previous || next) {
     return (
@@ -44,14 +44,14 @@ const ChapterNavigation = (props) => {
               <b>{trans('previous')}</b>
               {previous ?
                 <span className="text-truncate fs-sm" role="presentation">
-                    {previousNumbering ?
-                      previousNumbering + ' ' + previous.title :
-                      previous.title
-                    }
-                  </span> :
+                  {previousNumbering ?
+                    previousNumbering + ' ' + previous.title :
+                    previous.title
+                  }
+                </span> :
                 <span className="text-truncate fs-sm" role="presentation">
-                    {trans('resource_overview', {}, 'resource')}
-                  </span>
+                  {trans('resource_overview', {}, 'resource')}
+                </span>
               }
             </div>
           </LinkButton>
@@ -65,11 +65,11 @@ const ChapterNavigation = (props) => {
             <div className="d-flex flex-column overflow-hidden" role="presentation">
               <b>{trans('next')}</b>
               <span className="text-truncate fs-sm" role="presentation">
-                  {nextNumbering ?
-                    nextNumbering + ' ' + next.title :
-                    next.title
-                  }
-                </span>
+                {nextNumbering ?
+                  nextNumbering + ' ' + next.title :
+                  next.title
+                }
+              </span>
             </div>
 
             <span className="fa fa-chevron-right fs-lg" aria-hidden={true} />
