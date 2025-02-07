@@ -19,7 +19,7 @@ class Widget extends Component {
   render() {
     const ListWidgetInstance = withReducer(selectors.STORE_NAME, makeListWidgetReducer(selectors.STORE_NAME, {
       pagination: {pageSize: this.props.pageSize},
-      filters: this.props.filters,
+      filters: {filters: this.props.filters},
       sortBy: this.props.sorting
     }))(ListWidgetComponent)
 
