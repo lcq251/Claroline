@@ -39,7 +39,7 @@ class CreateOperationalLog extends AbstractCreateLog
         return $this->contextId;
     }
 
-    public function getParentId(): string
+    public function getParentId(): ?string
     {
         return $this->parentId;
     }

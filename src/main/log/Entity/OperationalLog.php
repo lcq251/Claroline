@@ -15,7 +15,7 @@ class OperationalLog extends AbstractLog
 {
     use HasContext;
 
-    #[ORM\Column(type: Types::STRING, nullable: false)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $parentId = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false)]
