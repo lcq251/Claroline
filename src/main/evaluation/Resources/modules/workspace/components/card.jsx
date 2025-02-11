@@ -15,7 +15,7 @@ const EvaluationWorkspaceCard = (props) =>
     icon="fa fa-book"
     primaryAction={!isEmpty(props.primaryAction) ? props.primaryAction : {
       type: URL_BUTTON,
-      target: '#'+route(props.data.workspace)
+      target: get(props.data, 'workspace') ? '#'+route(props.data.workspace) : '#'
     }}
     content={get(props.data, 'workspace')}
   />

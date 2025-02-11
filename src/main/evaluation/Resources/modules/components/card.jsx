@@ -40,8 +40,8 @@ const EvaluationContentCard = (props) => {
         text: statusText
       }}
       poster={get(props.content, 'thumbnail')}
-      name={props.content.name}
-      title={props.content.name}
+      name={get(props.content, 'name')}
+      title={get(props.content, 'name')}
     >
       <div className={classes('d-flex gap-2', {
         'flex-column mt-3': 'col' === props.orientation,
