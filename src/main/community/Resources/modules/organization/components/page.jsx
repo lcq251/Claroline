@@ -17,7 +17,6 @@ import {PageContent} from '#/main/app/page'
 
 const Organization = (props) =>
   <ToolPage
-    breadcrumb={props.breadcrumb}
     title={trans('organization_name', {name: get(props.organization, 'name', trans('loading'))}, 'community')}
     description={get(props.organization, 'meta.description')}
   >
@@ -60,7 +59,6 @@ const Organization = (props) =>
 
 Organization.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   organization: T.shape(
     OrganizationTypes.propTypes
   ),

@@ -24,7 +24,7 @@ const User = (props) =>
         label: trans('users', {}, 'community'),
         target: `${props.path}/users`
       }
-    ].concat(props.user ? props.breadcrumb : [])}
+    ]}
     title={get(props.user, 'name', trans('loading'))}
     description={get(props.group, 'meta.description')}
   >
@@ -59,17 +59,12 @@ const User = (props) =>
 
 User.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   user: T.shape(
     UserTypes.propTypes
   ),
   currentUser: T.object,
   children: T.any,
   reload: T.func
-}
-
-User.defaultProps = {
-  breadcrumb: []
 }
 
 const UserPage = connect(

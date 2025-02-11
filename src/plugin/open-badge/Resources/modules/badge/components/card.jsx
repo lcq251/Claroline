@@ -9,13 +9,13 @@ import {Badge as BadgeTypes} from '#/plugin/open-badge/prop-types'
 
 const BadgeCard = props =>
   <DataCard
-    id={props.data.id}
+    id={get(props.data, 'id')}
     poster={get(props.data, 'image')}
     color={get(props.data, 'color')}
     icon="fa fa-trophy"
-    name={props.data.name}
-    title={props.data.name}
-    contentText={props.data.description}
+    name={get(props.data, 'name')}
+    title={get(props.data, 'name')}
+    contentText={get(props.data, 'description')}
     meta={get(props.data, 'meta.archived', false) &&
       <span className="badge bg-secondary-subtle text-secondary-emphasis text-capitalize">{trans('disabled')}</span>
     }

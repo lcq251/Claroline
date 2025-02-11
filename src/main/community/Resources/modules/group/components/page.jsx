@@ -24,7 +24,7 @@ const Group = (props) =>
         label: trans('groups', {}, 'community'),
         target: `${props.path}/groups`
       }
-    ].concat(props.group ? props.breadcrumb : [])}
+    ]}
     title={trans('group_name', {name: get(props.group, 'name', trans('loading'))}, 'community')}
     description={get(props.group, 'meta.description')}
   >
@@ -67,17 +67,12 @@ const Group = (props) =>
 
 Group.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   group: T.shape(
     GroupTypes.propTypes
   ),
   currentUser: T.object,
   children: T.any,
   reload: T.func
-}
-
-Group.defaultProps = {
-  breadcrumb: []
 }
 
 const GroupPage = connect(

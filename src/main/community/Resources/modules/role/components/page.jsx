@@ -23,7 +23,7 @@ const Role = (props) =>
         label: trans('roles', {}, 'community'),
         target: `${props.path}/roles`
       }
-    ].concat(!isEmpty(props.role) ? props.breadcrumb : [])}
+    ]}
     title={trans('role_name', {name: trans(get(props.role, 'translationKey', 'loading'))}, 'community')}
     description={get(props.role, 'meta.description')}
   >
@@ -54,17 +54,12 @@ const Role = (props) =>
 
 Role.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   role: T.shape(
     RoleTypes.propTypes
   ),
   currentUser: T.object,
   children: T.any,
   reload: T.func
-}
-
-Role.defaultProps = {
-  breadcrumb: []
 }
 
 const RolePage = connect(

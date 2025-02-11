@@ -23,7 +23,7 @@ const Team = (props) =>
         label: trans('teams', {}, 'community'),
         target: `${props.path}/teams`
       }
-    ].concat(props.team ? props.breadcrumb : [])}
+    ]}
     title={trans('team_name', {name: get(props.team, 'name', trans('loading'))}, 'community')}
     description={get(props.team, 'meta.description')}
   >
@@ -56,17 +56,12 @@ const Team = (props) =>
 
 Team.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   team: T.shape(
     TeamTypes.propTypes
   ),
   currentUser: T.object,
   children: T.any,
   reload: T.func
-}
-
-Team.defaultProps = {
-  breadcrumb: []
 }
 
 const TeamPage = connect(

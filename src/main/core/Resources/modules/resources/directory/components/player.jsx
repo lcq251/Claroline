@@ -44,7 +44,7 @@ const DirectoryPlayer = (props) => {
   return (
     <ResourcePage
       name={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
-      title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
+      /*title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}*/
     >
       <PageContent className="d-flex flex-column">
         <FileDrop

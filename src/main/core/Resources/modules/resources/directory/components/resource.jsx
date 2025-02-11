@@ -1,6 +1,4 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
-import omit from 'lodash/omit'
 
 import {Resource} from '#/main/core/resource'
 
@@ -9,15 +7,10 @@ import {DirectoryPlayer} from '#/main/core/resources/directory/containers/player
 
 const DirectoryResource = (props) =>
   <Resource
-    {...omit(props, 'storageLock')}
-    disabledActions={props.storageLock ? ['add', 'add_files', 'copy'] : []}
+    {...props}
     editor={DirectoryEditor}
     overviewPage={DirectoryPlayer}
   />
-
-DirectoryResource.propTypes = {
-  storageLock: T.bool.isRequired
-}
 
 export {
   DirectoryResource

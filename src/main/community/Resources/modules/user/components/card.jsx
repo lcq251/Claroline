@@ -11,8 +11,8 @@ const UserCard = props =>
   <DataCard
     poster={get(props.data, 'picture')}
     icon="fa fa-user"
-    name={props.data.name}
-    title={props.data.name}
+    name={get(props.data, 'name')}
+    title={get(props.data, 'name')}
     meta={
       <UserStatus user={props.data} variant="badge" />
     }
@@ -22,9 +22,6 @@ const UserCard = props =>
   />
 
 UserCard.propTypes = {
-  size: T.string,
-  orientation: T.string,
-  className: T.string,
   data: T.shape(
     UserTypes.propTypes
   ).isRequired

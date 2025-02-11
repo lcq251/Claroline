@@ -35,6 +35,7 @@ const Badge = (props) =>
           poster={get(props.badge, 'poster')}
           icon={<BadgeImage badge={props.badge} size="lg" />}
           title={get(props.badge, 'name', trans('loading'))}
+          description={get(props.badge, 'meta.description')}
           primaryAction="edit"
           actions={!isEmpty(props.badge) ? getActions([props.badge], {
             add: () => props.reload(props.badge.id),
@@ -42,10 +43,10 @@ const Badge = (props) =>
             delete: () => props.reload(props.badge.id)
           }, props.path, props.currentUser) : []}
         />
+
+        {props.children}
       </PageContent>
     }
-
-    {!isEmpty(props.badge) && props.children}
   </ToolPage>
 
 Badge.propTypes = {
