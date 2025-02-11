@@ -13,10 +13,6 @@
           "enum": ["none", "numeric", "literal", "custom"],
           "description": "Numbering of the steps"
         },
-        "manualProgressionAllowed": {
-          "type": "boolean",
-          "description": "Wether setting progression manually is allowed or not"
-        },
         "showScore": {
           "type": "boolean",
           "description": "Wether the score is displayed or not"
