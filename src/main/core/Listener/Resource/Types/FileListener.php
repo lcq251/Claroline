@@ -15,26 +15,30 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
+use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
-use Claroline\CoreBundle\Entity\Resource\File;
+use Claroline\CoreBundle\Entity\Resource\File as FileResource;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Event\Resource\File\LoadFileEvent;
 use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
+use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Integrates the File resource into Claroline.
  */
-class FileListener extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface
+class FileListener extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PlatformConfigurationHandler $config,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly FileManager $fileManager
@@ -46,7 +50,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return 'file';
     }
 
-    /** @param File $resource */
+    /** @param FileResource $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
@@ -65,7 +69,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         ]);
     }
 
-    /** @param File $resource */
+    /** @param FileResource $resource */
     public function download(AbstractResource $resource): ?string
     {
         if ($this->fileManager->exists($resource->getHashName())) {
@@ -75,7 +79,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return null;
     }
 
-    /** @param File $resource */
+    /** @param FileResource $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         if (!$softDelete && $this->fileManager->exists($resource->getHashName())) {
@@ -86,7 +90,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return true;
     }
 
-    /** @param File $resource */
+    /** @param FileResource $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         if ($this->fileManager->exists($resource->getHashName())) {
@@ -97,7 +101,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         return [];
     }
 
-    /** @param File $resource */
+    /** @param FileResource $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         $workspace = $resource->getResourceNode()->getWorkspace();
@@ -125,8 +129,8 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     }
 
     /**
-     * @param File $original
-     * @param File $copy
+     * @param FileResource $original
+     * @param FileResource $copy
      */
     public function copy(AbstractResource $original, AbstractResource $copy): void
     {
@@ -159,7 +163,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
      */
     public function onFileChange(ResourceActionEvent $event): void
     {
-        /** @var File $file */
+        /** @var FileResource $file */
         $file = $event->getResource();
         $node = $event->getResourceNode();
         $data = $event->getData();
@@ -180,6 +184,21 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         $event->setResponse(
             new JsonResponse($this->serializer->serialize($node))
         );
+    }
+
+    public function supportsFile(File $file): int
+    {
+        $blacklist = $this->config->getParameter('file_blacklist');
+        if (empty($blacklist) || !in_array($file->getMimeType(), $blacklist)) {
+            return FileAdapterInterface::SUPPORTED_PARTIAL;
+        }
+
+        return FileAdapterInterface::UNSUPPORTED;
+    }
+
+    public function fromFile(File $file): ?array
+    {
+        return [];
     }
 
     private function generateEventName(ResourceNode $node, string $event, bool $useBaseType = false): string

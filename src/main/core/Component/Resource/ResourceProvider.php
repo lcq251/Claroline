@@ -37,12 +37,10 @@ class ResourceProvider extends AbstractComponentProvider
 
     public function open()
     {
-
     }
 
     public function create()
     {
-
     }
 
     public function fromFile(UploadedFile $file): ?array
@@ -83,6 +81,7 @@ class ResourceProvider extends AbstractComponentProvider
                 'type' => $fileHandler::getName(),
                 'mimeType' => $file->getMimeType(),
             ],
+            'size' => filesize($file),
             'url' => $tempName,
         ], $fileHandler->fromFile($file) ?? []);
     }

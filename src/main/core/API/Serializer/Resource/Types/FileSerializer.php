@@ -18,25 +18,14 @@ class FileSerializer
 {
     use SerializerTrait;
 
-    /** @var RouterInterface */
-    private $router;
-
-    private $filesDir;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     public function __construct(
-        RouterInterface $router,
-        string $filesDir,
-        EventDispatcherInterface $eventDispatcher
+        private readonly RouterInterface $router,
+        private readonly string $filesDir,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
-        $this->router = $router;
-        $this->filesDir = $filesDir;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'file';
     }
@@ -101,6 +90,7 @@ class FileSerializer
 
         $this->sipe('size', 'setSize', $data, $file);
         $this->sipe('hashName', 'setHashName', $data, $file);
+        $this->sipe('url', 'setHashName', $data, $file);
         $this->sipe('opening', 'setOpening', $data, $file);
 
         if ($file->getResourceNode()) {
