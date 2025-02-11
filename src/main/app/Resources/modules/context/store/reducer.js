@@ -1,4 +1,3 @@
-import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
@@ -8,7 +7,7 @@ import {
   CONTEXT_OPEN,
   CONTEXT_LOAD,
   CONTEXT_NOT_FOUND,
-  CONTEXT_SET_LOADED
+  CONTEXT_SET_LOADED, CONTEXT_MENU_TOGGLE_OPEN, CONTEXT_MENU_TOGGLE_PIN
 } from '#/main/app/context/store/actions'
 
 import {TOOL_LOAD} from '#/main/core/tool/store'
@@ -16,7 +15,7 @@ import {PLATFORM_SET_CURRENT_ORGANIZATION} from '#/main/app/platform/store/actio
 
 const reducer = combineReducers({
   /**
-   * The type of the current context.
+   * The type of the current context (e.g. public, desktop, workspace, administration).
    *
    * @var string
    */
@@ -31,6 +30,15 @@ const reducer = combineReducers({
    */
   id: makeReducer(null, {
     [CONTEXT_OPEN]: (state, action) => action.contextId
+  }),
+
+  menuOpened: makeReducer(false, {
+    [CONTEXT_MENU_TOGGLE_OPEN]: (state) => !state,
+    [CONTEXT_MENU_TOGGLE_PIN]: () => false
+  }),
+
+  menuPined: makeReducer(false, {
+    [CONTEXT_MENU_TOGGLE_PIN]: (state) => !state
   }),
 
   /**
@@ -63,18 +71,24 @@ const reducer = combineReducers({
     [CONTEXT_LOAD]: (state, action) => action.contextData.impersonated || false
   }),
 
+  /**
+   * The list of current context roles owned by the authenticated user.
+   */
   roles: makeReducer([], {
     [CONTEXT_OPEN]: () => [],
     [CONTEXT_LOAD]: (state, action) => action.contextData.roles || []
   }),
 
+  /**
+   * The list of current context organizations owned by the authenticated user.
+   */
   organizations: makeReducer([], {
     [CONTEXT_OPEN]: () => [],
     [CONTEXT_LOAD]: (state, action) => action.contextData.organizations || []
   }),
 
   /**
-   * The list of available tools on the desktop.
+   * The list of available tools in the context.
    */
   tools: makeReducer([], {
     [CONTEXT_OPEN]: () => [],

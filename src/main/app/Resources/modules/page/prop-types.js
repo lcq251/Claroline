@@ -54,13 +54,6 @@ const PageFull = {
      * @type {string}
      */
     description: T.string,
-
-    /**
-     * An optional url to a poster image for the page.
-     *
-     * @type {string}
-     */
-    poster: T.string,
     showHeader: T.bool
   }),
   defaultProps: merge({}, PageSimple.defaultProps, {

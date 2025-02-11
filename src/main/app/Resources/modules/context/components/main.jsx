@@ -16,6 +16,7 @@ import {hasPermission} from '#/main/app/security'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
+import {ContextMenu} from '#/main/app/context/components/nav'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
@@ -160,6 +161,10 @@ const ContextMain = (props) => {
 
   return (
     <>
+      {props.menuPined &&
+        <ContextMenu />
+      }
+
       {CurrentPage}
 
       {props.children}
@@ -185,6 +190,8 @@ ContextMain.propTypes = {
       open: T.bool
     })
   })),
+  menuPined: T.bool,
+
   // custom context components
   loadingPage: T.elementType,
   notFoundPage: T.elementType,

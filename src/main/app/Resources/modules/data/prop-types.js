@@ -10,10 +10,6 @@ import {Action, PromisedAction} from '#/main/app/action/prop-types'
  */
 const DataCard = {
   propTypes: {
-    id: T.oneOfType([
-      T.string, // uuid
-      T.number  // autoincrement
-    ]).isRequired,
     size: T.oneOf(['xs', 'sm', 'md', 'lg']),
     orientation: T.oneOf(['col', 'row']),
     className: T.string,

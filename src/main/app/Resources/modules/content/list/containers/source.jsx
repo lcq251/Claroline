@@ -110,10 +110,6 @@ ListSource.propTypes = {
   absolute: T.bool
 }
 
-ListSource.defaultProps = {
-  absolute: false
-}
-
 export {
   ListSource
 }

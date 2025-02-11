@@ -84,11 +84,10 @@ function loadActions(resourceNodes, actions, nodesRefresher, path, currentUser) 
  * @param {string}  path            - the UI path where the resource is opened
  * @param {object}  currentUser     - the authenticated user
  * @param {boolean} withDefault     - include the default action (most of the time, it's not useful to get it)
- * @param {Array}   disabledActions
  *
  * @return {Promise.<Array>}
  */
-function getActions(resourceNodes, nodesRefresher, path, currentUser = null, withDefault = false, disabledActions = []) {
+function getActions(resourceNodes, nodesRefresher, path, currentUser = null, withDefault = false) {
   /** @var {Array} */
   const resourceTypes = uniq(resourceNodes.map(resourceNode => resourceNode.meta.type))
 
@@ -103,7 +102,7 @@ function getActions(resourceNodes, nodesRefresher, path, currentUser = null, wit
             (withDefault || undefined === action.default || !action.default)
             // filter by permissions (the user must have perms on AT LEAST ONE node in the collection)
             && !!resourceNodes.find(resourceNode => hasPermission(action.permission, resourceNode))
-          ).map(action => -1 < disabledActions.findIndex(da => da === action.name) ? Object.assign({}, action, {disabled: true}) : action)
+          )
 
         return uniqBy(accumulator.concat(typeActions), 'name')
       }

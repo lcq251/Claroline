@@ -24,7 +24,7 @@
 
     background-color: var(--#{$prefix}menu-bg);
     color: var(--#{$prefix}menu-color);
-    border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+    border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
 
 .app-menu-items {

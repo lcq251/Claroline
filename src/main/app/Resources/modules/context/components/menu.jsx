@@ -1,27 +1,40 @@
-import React, {forwardRef} from 'react'
+import React, {forwardRef, useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
-import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {Button, Toolbar} from '#/main/app/action'
+import {hasPermission} from '#/main/app/security'
+import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MENU_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {DataMicro} from '#/main/app/data/components/micro'
 import {Menu} from '#/main/app/overlays/menu'
 
-import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
+import {actions as platformActions} from '#/main/app/platform/store'
 import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
-import {getActions} from '#/main/app/context/utils'
-import {route} from '#/main/app/context/routing'
-import {selectors as contextSelectors} from '#/main/app/context/store'
+
+import {ContextFavourite} from '#/main/app/context/components/favorite'
+import {actions, selectors} from '#/main/app/context/store'
 
 const ContextFlyout = forwardRef((props, ref) => {
+  const dispatch = useDispatch()
+
+  const notFound = useSelector(selectors.notFound)
+  const hasErrors = useSelector(selectors.hasErrors)
+
+  const tools = useSelector(selectors.visibleTools)
+  // get context organizations
+  const organizations = useSelector(selectors.organizations)
+
+  const togglePin = useCallback(() => {
+    dispatch(actions.toggleMenuPin())
+  }, [props.path])
+
   // get context tools
   let toolLinks = []
-  if (!props.notFound && !props.hasErrors) {
-    toolLinks = props.tools
+  if (!notFound && !hasErrors) {
+    toolLinks = tools
       .map(tool => ({
         name: tool.name,
         type: LINK_BUTTON,
@@ -35,39 +48,36 @@ const ContextFlyout = forwardRef((props, ref) => {
           status: 'primary'
         } : undefined
       }))
+
+    if (hasPermission('administrate', props.contextData)) {
+      // append editor
+      toolLinks.push({
+        name: 'parameters',
+        type: LINK_BUTTON,
+        icon: `fa fa-fw fa-sliders`,
+        label: trans('parameters'),
+        target: props.path + '/edit'
+      })
+    }
   }
-
-  // get context actions
-  let actions
-  if (!isEmpty(props.contextData)) {
-    actions = getActions(props.contextType, [props.contextData], {
-      update: props.reload,
-      delete() {
-        props.history.push(route(props.contextType))
-      }
-    }, props.path, props.currentUser)
-  }
-
-  // get context organizations
-  const organizations = useSelector(contextSelectors.organizations)
-
-  const dispatch = useDispatch()
 
   return (
     <div {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref}>
       <div className="flyout-menu-content rounded-bottom-4" role="presentation">
         <div className="d-flex gap-3 px-4 pt-4 my-n1 align-items-center" role="presentation">
-          <FavouriteButton />
+          <Button
+            id="toggle-menu"
+            type={CALLBACK_BUTTON}
+            className="btn btn-text-body p-1 focus-ring"
+            label={trans('pin-menu', {}, 'actions')}
+            tooltip="bottom"
+            callback={togglePin}
+            size="sm"
+          >
+            <span className="fa fa-thumb-tack fs-base" aria-hidden={true} />
+          </Button>
 
-          {actions &&
-            <Toolbar
-              id="app-menu-actions"
-              className="ms-auto me-n1"
-              buttonName="btn btn-text-body focus-ring p-1"
-              actions={actions.then(actions => actions.filter((action) => 'configure' === action.name))}
-              tooltip="bottom"
-            />
-          }
+          <ContextFavourite />
         </div>
 
         {1 < toolLinks.length &&
@@ -129,7 +139,6 @@ const ContextFlyout = forwardRef((props, ref) => {
 
 ContextFlyout.propTypes = {
   path: T.string,
-  title: T.node.isRequired,
   tools: T.arrayOf(T.shape({
     icon: T.string.isRequired,
     name: T.string.isRequired,
@@ -140,66 +149,46 @@ ContextFlyout.propTypes = {
   contextData: T.object,
   contextType: T.string,
   notFound: T.bool.isRequired,
-  hasErrors: T.bool.isRequired,
-  reload: T.func.isRequired
-}
-
-ContextFlyout.defaultProps = {
-  path: '',
-  actions: []
-}
-
-const FavouriteButton = () => {
-  const dispatch = useDispatch()
-
-  const contextType = useSelector(contextSelectors.type)
-  if ('workspace' !== contextType) {
-    return null;
-  }
-
-  const contextData = useSelector(contextSelectors.data)
-  const favourite = useSelector((state) => platformSelectors.isContextFavorite(state, contextData))
-
-  return (
-    <Button
-      id="toggle-favorite"
-      className="btn btn-text-body p-1 focus-ring ms-n1"
-      type={CALLBACK_BUTTON}
-      label={trans(favourite ? 'remove-favourite' : 'add-favourite', {}, 'actions')}
-      icon={classes('fa fs-base', {
-        'fa-star text-warning': favourite,
-        'far fa-star': !favourite
-      })}
-      callback={() => dispatch(platformActions.saveFavorite(contextData))}
-      size="sm"
-    />
-  )
+  hasErrors: T.bool.isRequired
 }
 
 const ContextMenu = (props) => {
-  const contextPath = useSelector(contextSelectors.path)
-  const contextData = useSelector(contextSelectors.data)
-  const contextType = useSelector(contextSelectors.type)
-  const tools = useSelector(contextSelectors.visibleTools)
+  const dispatch = useDispatch()
+
+  const contextPath = useSelector(selectors.path)
+  const contextData = useSelector(selectors.data)
+  const contextType = useSelector(selectors.type)
+
+  const menuOpened = useSelector(selectors.menuOpened)
+  const menuPined = useSelector(selectors.menuPined)
+  const toggleMenu = useCallback(() => {
+    dispatch(actions.toggleMenuOpen())
+  }, [contextPath])
 
   return (
-    <Button
-      id="toggle-menu"
-      type={MENU_BUTTON}
-      className="context-menu-btn d-flex flex-row align-items-center gap-3 py-2 px-3 mx-n3"
-      menu={
-        <Menu
-          as={ContextFlyout}
-          className="flyout-menu"
-          {...props}
-          tools={tools}
-          path={contextPath}
-          contextData={contextData}
-          contextType={contextType}
+    <div className="d-flex flex-row align-items-center gap-3" role="presentation">
+      {!menuPined &&
+        <Button
+          id="toggle-menu"
+          type={MENU_BUTTON}
+          className="btn btn-text-body focus-ring py-1 px-2 ms-n2"
+          icon="fa fa-bars"
+          label={trans(menuOpened ? 'hide-menu': 'show-menu', {}, 'actions')}
+          tooltip="bottom"
+          onToggle={toggleMenu}
+          menu={
+            <Menu
+              show={menuOpened}
+              as={ContextFlyout}
+              className="flyout-menu"
+              {...props}
+              path={contextPath}
+              contextData={contextData}
+              contextType={contextType}
+            />
+          }
         />
       }
-    >
-      <span className="fa fa-bars" aria-hidden={true} />
 
       <div className="text-start text-truncate mb-0 fs-sm" role="presentation">
         {contextData.name || trans(contextType, {}, 'context')}
@@ -213,7 +202,7 @@ const ContextMenu = (props) => {
           </>
         }
       </div>
-    </Button>
+    </div>
   )
 }
 

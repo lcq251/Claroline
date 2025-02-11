@@ -1,20 +1,19 @@
 import React, {useCallback, useContext} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import classes from 'classnames'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {ContextPage} from '#/main/app/context/components/page'
 
-import {ToolContext} from '#/main/core/tool/context'
 import {selectors, actions} from '#/main/core/tool/store'
 import {getActions} from '#/main/core/tool/utils'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
+import {PageContext} from '#/main/app/page/context'
 
 const ToolPage = props => {
-  const toolDef = useContext(ToolContext)
+  const toolDef = useContext(PageContext)
 
   const currentUser = useSelector(securitySelectors.currentUser)
   const toolName = useSelector(selectors.name)
@@ -27,7 +26,7 @@ const ToolPage = props => {
 
   return (
     <ContextPage
-      className={classes('tool-page', `${toolName}-page`, props.className)}
+      className={props.className}
       breadcrumb={[
         {
           label: trans(toolName, {}, 'tools'),
@@ -57,7 +56,7 @@ const ToolPage = props => {
       }}
 
       styles={[].concat(toolDef.styles || [], props.styles || [])}
-      {...omit(props, 'className', 'breadcrumb', 'title', 'styles', 'root')}
+      {...omit(props, 'className', 'breadcrumb', 'title', 'styles')}
     >
       {props.children}
     </ContextPage>

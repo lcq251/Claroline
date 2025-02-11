@@ -14,11 +14,11 @@ import {ContentSizing} from '#/main/app/content/components/sizing'
 import {ContextPage} from '#/main/app/context/components/page'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent} from '#/main/app/page'
 
 const ContextProfile = (props) => {
   return (
     <ContextPage
-      size="xl"
       title={trans('my_profile')}
       // poster={props.currentUser.poster}
       breadcrumb={[
@@ -29,54 +29,56 @@ const ContextProfile = (props) => {
         }
       ]}
     >
-      <PageHeading
-        size="md"
-        poster={props.currentUser.poster}
-        title={props.currentUser.name}
-        icon={<UserAvatar user={props.currentUser} size="lg" />}
-        primaryAction="edit"
-        actions={[
-          {
-            name: 'edit',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-pencil',
-            label: trans('edit', {}, 'actions'),
-            target: `${props.path}/profile/edit`,
-            primary: true
-          }
-        ]}
-      />
-
-      <ContentSizing size="lg">
-        <Routes
-          path={`${props.path}/profile`}
-          routes={[
+      <PageContent>
+        <PageHeading
+          size="md"
+          poster={props.currentUser.poster}
+          title={props.currentUser.name}
+          icon={<UserAvatar user={props.currentUser} size="lg" />}
+          primaryAction="edit"
+          actions={[
             {
-              path: '/edit',
-              disabled: !hasPermission('edit', props.currentUser),
-              onEnter: () => props.reset(props.currentUser),
-              render: () => (
-                <ProfileEdit
-                  name={selectors.STORE_NAME}
-                  path={`${props.path}/profile/edit`}
-                  user={props.currentUser}
-                  back={props.path+'/profile'}
-                />
-              )
-            }, {
-              path: '/',
-              onEnter: () => props.reset(props.currentUser),
-              render: () => (
-                <ProfileShow
-                  path={`${props.path}/profile`}
-                  name={selectors.STORE_NAME}
-                  user={props.currentUser}
-                />
-              )
+              name: 'edit',
+              type: LINK_BUTTON,
+              icon: 'fa fa-fw fa-pencil',
+              label: trans('edit', {}, 'actions'),
+              target: `${props.path}/profile/edit`,
+              primary: true
             }
           ]}
         />
-      </ContentSizing>
+
+        <ContentSizing size="lg">
+          <Routes
+            path={`${props.path}/profile`}
+            routes={[
+              {
+                path: '/edit',
+                disabled: !hasPermission('edit', props.currentUser),
+                onEnter: () => props.reset(props.currentUser),
+                render: () => (
+                  <ProfileEdit
+                    name={selectors.STORE_NAME}
+                    path={`${props.path}/profile/edit`}
+                    user={props.currentUser}
+                    back={props.path+'/profile'}
+                  />
+                )
+              }, {
+                path: '/',
+                onEnter: () => props.reset(props.currentUser),
+                render: () => (
+                  <ProfileShow
+                    path={`${props.path}/profile`}
+                    name={selectors.STORE_NAME}
+                    user={props.currentUser}
+                  />
+                )
+              }
+            ]}
+          />
+        </ContentSizing>
+      </PageContent>
     </ContextPage>
   )
 }

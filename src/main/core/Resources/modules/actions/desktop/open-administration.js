@@ -4,12 +4,12 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {route} from '#/main/app/context/routing'
 
 /**
- * Open the Public context.
+ * Open the Administration context.
  */
 export default () => ({
   name: 'administration',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-sliders',
+  icon: 'fa fa-fw fa-cogs',
   label: trans('open-administration', {}, 'actions'),
   target: route('administration'),
   scope: ['object'],

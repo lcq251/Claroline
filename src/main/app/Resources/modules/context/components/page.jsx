@@ -8,7 +8,7 @@ import {trans} from '#/main/app/intl'
 import {PageFull} from '#/main/app/page'
 
 import {selectors} from '#/main/app/context/store'
-import {ContextMenu} from '#/main/app/context/containers/menu'
+import {ContextMenu} from '#/main/app/context/components/menu'
 
 const ContextPage = (props) => {
   const contextType = useSelector(selectors.type)
@@ -32,7 +32,7 @@ const ContextPage = (props) => {
       }
       description={props.description || get(contextData, 'meta.description')}
 
-      {...omit(props, 'className', 'breadcrumb', 'root', 'title', 'description')}
+      {...omit(props, 'className', 'breadcrumb', 'title', 'description')}
     >
       {props.children}
     </PageFull>

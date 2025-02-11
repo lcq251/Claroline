@@ -4,7 +4,6 @@ import omit from 'lodash/omit'
 import {PageFull as PageFullTypes} from '#/main/app/page/prop-types'
 import {PageSimple} from '#/main/app/page/components/simple'
 import {PageMenu} from '#/main/app/page/components/menu'
-import {Poster} from '#/main/app/components/poster'
 import {PageBody} from '#/main/app/page/components/body'
 
 const PageFull = (props) =>
@@ -22,10 +21,6 @@ const PageFull = (props) =>
     }
 
     <PageBody>
-      {props.showHeader && props.poster &&
-        <Poster url={props.poster} className="app-page-poster z-n1" />
-      }
-
       {props.children}
     </PageBody>
   </PageSimple>

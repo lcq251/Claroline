@@ -1,0 +1,140 @@
+import React, {useCallback} from 'react'
+import {PropTypes as T} from 'prop-types'
+import {useDispatch, useSelector} from 'react-redux'
+import classes from 'classnames'
+import omit from 'lodash/omit'
+
+import {trans} from '#/main/app/intl'
+import {Button} from '#/main/app/action'
+import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {DataMicro} from '#/main/app/data/components/micro'
+
+import {actions as platformActions} from '#/main/app/platform/store'
+import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
+import {actions, selectors} from '#/main/app/context/store'
+import {hasPermission} from '#/main/app/security'
+import {ContextFavourite} from '#/main/app/context/components/favorite'
+
+const ContextMenu = (props) => {
+  const dispatch = useDispatch()
+
+  const notFound = useSelector(selectors.notFound)
+  const hasErrors = useSelector(selectors.hasErrors)
+
+  const contextPath = useSelector(selectors.path)
+  const contextData = useSelector(selectors.data)
+  const tools = useSelector(selectors.visibleTools)
+  // get context organizations
+  const organizations = useSelector(selectors.organizations)
+
+  if (notFound || hasErrors) {
+    return null
+  }
+
+  const toggleMenu = useCallback(() => {
+    dispatch(actions.toggleMenuPin())
+  }, [contextPath])
+
+  // get context tools
+  const toolLinks = tools
+    .map(tool => ({
+      name: tool.name,
+      type: LINK_BUTTON,
+      icon: `fa fa-fw fa-${tool.icon}`,
+      label: trans(tool.name, {}, 'tools'),
+      target: contextPath + '/' + tool.name,
+      status: tool.status,
+      subscript: tool.status ? {
+        type: 'label',
+        value: tool.status,
+        status: 'primary'
+      } : undefined
+    }))
+
+  if (hasPermission('administrate', contextData)) {
+    // append editor
+    toolLinks.push({
+      name: 'parameters',
+      type: LINK_BUTTON,
+      icon: `fa fa-fw fa-sliders`,
+      label: trans('parameters'),
+      target: contextPath + '/edit'
+    })
+  }
+
+  return (
+    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0', props.className)} style={{width: '16rem'}}>
+      <div className="d-flex flex-row align-items-center">
+        <Button
+          id="toggle-menu"
+          type={CALLBACK_BUTTON}
+          className="btn btn-text-body my-1 ms-2"
+          icon="fa fa-angles-left"
+          label={trans('unpin-menu', {}, 'actions')}
+          tooltip="bottom"
+          callback={toggleMenu}
+        />
+        <ContextFavourite className="text-start" />
+      </div>
+
+      {1 < toolLinks.length &&
+        <ul className={classes('app-menu-items list-unstyled flex-fill px-0 mb-3', {
+        })}>
+          {toolLinks.map(toolLink =>
+            <li key={toolLink.name} className={classes('parameters' === toolLink.name && 'mt-auto')}>
+              <Button
+                {...omit(toolLink, 'label')}
+                className="app-menu-item focus-ring"
+              >
+                <span className="text-truncate w-100" role="presentation">{toolLink.label}</span>
+              </Button>
+            </li>
+          )}
+        </ul>
+      }
+
+      {1 < organizations.length &&
+        <div className="bg-body-tertiary p-4 mt-auto d-flex flex-column" role="presentation">
+          <h4 className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
+            {trans('organizations', {}, 'community')}
+          </h4>
+
+          <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
+            {organizations.slice(0, 3).map(organization => (
+              <li key={organization.id}>
+                <CallbackButton
+                  className="fw-bolder btn btn-link text-reset p-1 w-100 fs-sm"
+                  callback={() => dispatch(platformActions.changeOrganization(organization))}
+                >
+                  <DataMicro object={organization} />
+                </CallbackButton>
+              </li>
+            ))}
+          </ul>
+
+          {3 < organizations.length &&
+            <Button
+              className="btn btn-link ms-auto mt-3 mb-n1 me-n2"
+              type={MODAL_BUTTON}
+              label={trans('see_all', {}, 'actions')}
+              modal={[MODAL_PLATFORM_ORGANIZATIONS, {
+                organizations: organizations
+              }]}
+              size="sm"
+            >
+              <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
+            </Button>
+          }
+        </div>
+      }
+    </div>
+  )
+}
+
+ContextMenu.propTypes = {
+  className: T.string
+}
+
+export {
+  ContextMenu
+}

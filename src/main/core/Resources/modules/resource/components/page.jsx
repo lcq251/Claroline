@@ -7,16 +7,16 @@ import omit from 'lodash/omit'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {ToolPage} from '#/main/core/tool'
 
-import {ResourceContext} from '#/main/core/resource/context'
 import {getActions} from '#/main/core/resource/utils'
 import {selectors, actions} from '#/main/core/resource/store'
 import {route} from '#/main/core/resource/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 import {trans} from '#/main/app/intl'
 import {EvaluationShortcut} from '#/main/evaluation/components/shortcut'
+import {PageContext} from '#/main/app/page/context'
 
 const ResourcePage = (props) => {
-  const resourceDef = useContext(ResourceContext)
+  const resourceDef = useContext(PageContext)
 
   const currentUser = useSelector(securitySelectors.currentUser)
   const basePath = useSelector(selectors.basePath)
@@ -41,7 +41,7 @@ const ResourcePage = (props) => {
 
   return (
     <ToolPage
-      className={classes('resource-page', `${resourceNode.meta.type}-page`, props.className)}
+      className={props.className}
       breadcrumb={breadcrumb.concat(!props.root && !!get(resourceNode, 'parent') ? [
         {
           label: resourceNode.name,
@@ -92,7 +92,7 @@ const ResourcePage = (props) => {
         }, basePath, currentUser, false).then(loadedActions => [].concat(loadedActions, resourceDef.actions || []))
       }}
 
-      {...omit(props, 'className', 'breadcrumb', 'styles', 'embedded', 'showHeader', 'root', 'title', 'description')}
+      {...omit(props, 'className', 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}
       styles={[].concat(resourceDef.styles, props.styles || [])}
     >
       {props.children}

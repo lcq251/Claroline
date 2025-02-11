@@ -9,7 +9,7 @@ import {selectors} from '#/main/core/resource/store'
 import {ResourceDashboardActivity} from '#/main/core/resource/dashboard/components/activity'
 import {ResourceEvaluations} from '#/main/evaluation/resource/evaluation'
 
-const ResourceDashboard = (props) => {
+const ResourceDashboard = () => {
   const resourcePath = useSelector(selectors.path)
   const hasEvaluation = useSelector(selectors.hasEvaluation)
 

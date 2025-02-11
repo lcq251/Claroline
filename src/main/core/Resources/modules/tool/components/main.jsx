@@ -8,11 +8,11 @@ import {hasPermission} from '#/main/app/security'
 import {useReducer} from '#/main/app/store/reducer'
 import {Routes, RouteTypes, RedirectTypes} from '#/main/app/router'
 
-import {ToolContext} from '#/main/core/tool/context'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
 import {actions, reducer, selectors} from '#/main/core/tool/store'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
+import {PageContext} from '#/main/app/page/context'
 
 const ToolMain = (props) => {
   useReducer(selectors.STORE_NAME, reducer)
@@ -42,7 +42,7 @@ const ToolMain = (props) => {
   }, [props.name, contextType, contextId])
 
   return (
-    <ToolContext.Provider
+    <PageContext.Provider
       value={{
         menu: (props.menu || []).concat([
           {
@@ -82,7 +82,7 @@ const ToolMain = (props) => {
         }
         redirect={props.redirect}
       />
-    </ToolContext.Provider>
+    </PageContext.Provider>
   )
 }
 

@@ -8,7 +8,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router'
 import {hasPermission} from '#/main/app/security'
 
-import {ResourceContext} from '#/main/core/resource/context'
+import {PageContext} from '#/main/app/page/context'
 import {selectors} from '#/main/core/resource/store'
 import {ResourceRestrictions} from '#/main/core/resource/containers/restrictions'
 import {ResourceEditor} from '#/main/core/resource/editor/containers/main'
@@ -31,19 +31,10 @@ const ResourceMain = props => {
   }, [props.slug])
 
   return (
-    <ResourceContext.Provider
+    <PageContext.Provider
       value={{
         menu: [
-          /*{
-            name: 'progression',
-            type: LINK_BUTTON,
-            // label: trans('my_progression'),
-            label: (
-              <EvaluationMicro {...userEvaluation} className="my-n1 mx-n2" />
-            ),
-            target: resourcePath+'/progression',
-            displayed: hasEvaluation
-          }, */{
+          {
             name: 'overview',
             type: LINK_BUTTON,
             label: trans('resource_overview', {}, 'resource'),
@@ -63,7 +54,6 @@ const ResourceMain = props => {
           }
         ]),
         actions: props.actions,
-        disabledActions: props.disabledActions,
         styles: props.styles
       }}
     >
@@ -103,7 +93,7 @@ const ResourceMain = props => {
       }
 
       {loaded && isEmpty(accessErrors) && props.children}
-    </ResourceContext.Provider>
+    </PageContext.Provider>
   )
 }
 

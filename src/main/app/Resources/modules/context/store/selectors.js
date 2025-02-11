@@ -39,6 +39,16 @@ const path = createSelector(
   (type, id) => id ? `/${type}/${id}` : `/${type}`
 )
 
+const menuOpened = createSelector(
+  [store],
+  (store) => store.menuOpened
+)
+
+const menuPined = createSelector(
+  [store],
+  (store) => store.menuPined
+)
+
 const data = createSelector(
   [store],
   (store) => store.data
@@ -72,6 +82,11 @@ const notFound = createSelector(
 const accessErrors = createSelector(
   [store],
   (store) => store.accessErrors
+)
+
+const hasErrors = createSelector(
+  [accessErrors],
+  (accessErrors) => !isEmpty(accessErrors)
 )
 
 /**
@@ -174,10 +189,15 @@ export const selectors = {
   id,
   path,
 
+  // selectors for menu
+  menuOpened,
+  menuPined,
+
   // selectors for context statuses
   loaded,
   notFound,
   accessErrors,
+  hasErrors,
 
   // selectors for context security
   impersonated,

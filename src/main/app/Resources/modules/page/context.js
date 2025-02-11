@@ -1,11 +1,13 @@
 import {createContext} from 'react'
 
-const ResourceContext = createContext({
+const PageContext = createContext({
+  embedded: false,
+  name: null,
   menu: [],
   actions: [],
   styles: []
 })
 
 export {
-  ResourceContext
+  PageContext
 }

@@ -88,6 +88,8 @@
   "replace_image": "Remplacer l'image",
   "show-menu": "Ouvrir le menu",
   "hide-menu": "Fermer le menu",
+  "pin-menu": "Épingler le menu",
+  "unpin-menu": "Désépingler le menu",
   "initialize": "Initialiser",
   "purge": "Purger",
   "hide": "Cacher",

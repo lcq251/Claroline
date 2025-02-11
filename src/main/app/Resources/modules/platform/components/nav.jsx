@@ -10,7 +10,6 @@ import {route} from '#/main/core/workspace/routing'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
 import {MODAL_CONTEXT_SEARCH} from '#/main/app/context/modals/search'
-import {NotificationButton} from '#/main/notification/components/button'
 
 import {selectors} from '#/main/app/platform/store'
 import {ContextUser} from '#/main/app/context/containers/user'
@@ -96,13 +95,6 @@ const PlatformNav = (props) => {
 
       <hr className="app-context-separator mt-auto mx-auto" aria-hidden={true} />
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-        {/*<li>
-          <NotificationButton
-            className="app-context-btn focus-ring"
-            tooltip="right"
-          />
-        </li>*/}
-
         <li>
           <Button
             type={MODAL_BUTTON}
@@ -115,7 +107,7 @@ const PlatformNav = (props) => {
         </li>
 
         <li>
-          <ContextUser size="sm" className="app-context-btn" />
+          <ContextUser className="app-context-btn" />
         </li>
       </ul>
     </nav>

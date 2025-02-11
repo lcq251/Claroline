@@ -14,13 +14,13 @@ import {displayUsername} from '#/main/community/utils'
 
 const ContextUser = (props) => {
   return (
-    <div className={classes('app-menu-user d-flex flex-column align-items-stretch', props.className)} role="presentation">
+    <div className={classes('d-flex flex-column align-items-stretch', props.className)} role="presentation">
       <Button
         id="current-user-menu"
         type={MENU_BUTTON}
         label={displayUsername(props.currentUser)}
         tooltip="right"
-        className="app-current-user text-start d-flex flex-row p-0 focus-ring rounded-circle"
+        className="text-start d-flex flex-row p-0 focus-ring rounded-circle"
         menu={{
           items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
             name: status,
@@ -64,7 +64,7 @@ const ContextUser = (props) => {
               type: URL_BUTTON,
               icon: 'fa fa-fw fa-mask',
               label: trans('exit', {}, 'actions'),
-              displayed: props.impersonated,
+              displayed: !!props.impersonated,
               target: url(['claro_index', {_switch: '_exit'}])+'#'+location.pathname
             }, {
               name: 'logout',
@@ -76,7 +76,7 @@ const ContextUser = (props) => {
           ])
         }}
       >
-        <UserAvatar user={props.currentUser} noStatusTooltip={true} size={props.size || 'xs'} />
+        <UserAvatar user={props.currentUser} noStatusTooltip={true} size="sm" />
       </Button>
     </div>
   )
@@ -88,7 +88,7 @@ ContextUser.propTypes = {
     UserTypes.propTypes
   ),
   help: T.string,
-  impersonated: T.bool.isRequired,
+  impersonated: T.bool,
   changeStatus: T.func.isRequired
 }
 
