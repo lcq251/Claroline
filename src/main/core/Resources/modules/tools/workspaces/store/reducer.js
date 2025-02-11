@@ -22,7 +22,7 @@ export const reducer = combineReducers({
    * The list of workspaces in which the current user is registered.
    */
   registered: makeListReducer('workspaces.registered', {
-    sortBy: {property: 'name', direction: -1}
+    sortBy: {property: 'name', direction: 1}
   }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
@@ -36,7 +36,7 @@ export const reducer = combineReducers({
    * The list of the platform public workspaces.
    */
   public: makeListReducer('workspaces.public', {
-    sortBy: {property: 'name', direction: -1}
+    sortBy: {property: 'name', direction: 1}
   }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
