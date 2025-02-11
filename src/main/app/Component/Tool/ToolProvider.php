@@ -189,7 +189,7 @@ final class ToolProvider extends AbstractComponentProvider
 
         $this->om->flush();
 
-        return array_merge([], $entities, $toolEntities, $importEvent->getCreatedEntities());
+        return array_merge([], $entities, $toolEntities ?? [], $importEvent->getCreatedEntities());
     }
 
     public function export(string $toolName, string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): array

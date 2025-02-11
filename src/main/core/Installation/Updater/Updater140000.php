@@ -56,19 +56,15 @@ class Updater140000 extends Updater
 
                 if (!class_exists($className)) {
                     // migration version has been removed, we can remove it from the table
-                    $deleteQuery = $this->connection->prepare("
+                    $this->connection->executeStatement("
                         DELETE FROM {$table} 
                         WHERE `version` = :version
-                    ");
-
-                    $deleteQuery->executeQuery(['version' => $version['version']]);
+                    ", ['version' => $version['version']]);
                 } elseif ($version['version'] !== $className) {
                     // migration version has been renamed
-                    $updateVersionQuery = $this->connection->prepare("
+                    $this->connection->executeStatement("
                         UPDATE {$table} SET `version` = :updatedVersion WHERE version = :version
-                    ");
-
-                    $updateVersionQuery->executeQuery([
+                    ", [
                         'version' => $version['version'],
                         'updatedVersion' => $className,
                     ]);
@@ -104,17 +100,13 @@ class Updater140000 extends Updater
             ");
             $createQuery->executeQuery();
 
-            $alterQuery = $this->connection->prepare("
+            $this->connection->executeStatement("
                 ALTER TABLE {$migrationsTableName} CHANGE `version` `version` VARCHAR(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
             ");
 
-            $alterQuery->executeQuery();
-
-            $updateVersionQuery = $this->connection->prepare("
+            $this->connection->executeStatement("
                 UPDATE {$migrationsTableName} SET `version` = CONCAT(:migrationNamespace, `version`) WHERE `version` NOT LIKE '%Migrations%'
-            ");
-
-            $updateVersionQuery->executeQuery([
+            ", [
                 'migrationNamespace' => $bundleToMigrate->getNamespace().'\\Installation\\Migrations\\pdo_mysql\\Version',
             ]);
         }

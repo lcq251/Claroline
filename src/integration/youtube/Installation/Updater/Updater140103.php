@@ -8,12 +8,9 @@ use Doctrine\DBAL\Exception;
 
 class Updater140103 extends Updater
 {
-    private Connection $connection;
-
     public function __construct(
-        Connection $connection
+        private readonly Connection $connection
     ) {
-        $this->connection = $connection;
     }
 
     /**
@@ -21,12 +18,10 @@ class Updater140103 extends Updater
      */
     public function postUpdate(): void
     {
-        $updateControls = $this->connection->prepare('
+        $this->connection->executeStatement('
             UPDATE claro_youtube_video 
             AS ytv 
             SET ytv.controls = true
         ');
-
-        $updateControls->executeQuery();
     }
 }

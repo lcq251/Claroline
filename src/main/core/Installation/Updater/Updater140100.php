@@ -58,14 +58,12 @@ class Updater140100 extends Updater
             $this->om->persist($orderedTool);
 
             // migrate rights
-            $stmt = $this->connection->prepare('
+            $configuredRoles = $this->connection->executeQuery('
                 SELECT r.role_id 
                 FROM claro_admin_tool_role AS r
                 LEFT JOIN claro_admin_tools AS at ON (r.admintool_id = at.id)
                 WHERE at.name = :toolName
-            ');
-
-            $configuredRoles = $stmt->executeQuery([
+            ', [
                 'toolName' => $oldName,
             ])->fetchAllAssociative();
 

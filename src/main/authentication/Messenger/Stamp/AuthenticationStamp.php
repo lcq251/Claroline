@@ -6,8 +6,7 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class AuthenticationStamp implements StampInterface
 {
-    /** @var int */
-    private $userId;
+    private ?int $userId;
 
     public function __construct(?int $userId = null)
     {
