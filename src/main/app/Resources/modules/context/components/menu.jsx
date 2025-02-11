@@ -30,6 +30,9 @@ const ContextFlyout = forwardRef((props, ref) => {
   const togglePin = useCallback(() => {
     dispatch(actions.toggleMenuPin())
   }, [props.path])
+  const toggleMenu = useCallback(() => {
+    dispatch(actions.toggleMenuOpen())
+  }, [props.path])
 
   // get context tools
   let toolLinks = []
@@ -90,6 +93,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                 <Button
                   {...omit(toolLink, 'label')}
                   className="flyout-menu-item focus-ring"
+                  onClick={toggleMenu}
                 >
                   <span className="text-truncate w-100 text-center" role="presentation">{toolLink.label}</span>
                 </Button>
@@ -112,6 +116,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                     organizations: organizations
                   }]}
                   size="sm"
+                  onClick={toggleMenu}
                 >
                   <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
                 </Button>
@@ -124,6 +129,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                   <CallbackButton
                     className="fw-bolder btn btn-link text-reset p-1 w-100 fs-sm"
                     callback={() => dispatch(platformActions.changeOrganization(organization))}
+                    onClick={toggleMenu}
                   >
                     <DataMicro object={organization} />
                   </CallbackButton>
