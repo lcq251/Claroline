@@ -36,6 +36,7 @@ const Plugins = (props) =>
   <ToolPage title={trans('plugins')}>
     <PageListSection>
       <ListData
+        className="mb-5"
         flush={true}
         name={selectors.STORE_NAME+'.plugins'}
         fetch={{

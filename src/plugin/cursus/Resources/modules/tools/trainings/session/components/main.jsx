@@ -55,6 +55,7 @@ const SessionMain = (props) => {
                 }}
               >
                 <SessionList
+                  className="mb-5"
                   flush={true}
                   path={props.path}
                   name={selectors.STORE_NAME}

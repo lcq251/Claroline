@@ -32,6 +32,7 @@ const MessageInboxComponent = (props) =>
       }}
     >
       <ListData
+        className="mb-5"
         flush={true}
         name={`${selectors.STORE_NAME}.receivedMessages`}
         fetch={{

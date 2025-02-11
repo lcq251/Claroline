@@ -11,6 +11,7 @@ const LogsFunctional = () =>
   <ToolPage title={trans('functional', {}, 'log')}>
     <PageListSection>
       <LogFunctionalList
+        className="mb-5"
         flush={true}
         name={selectors.FUNCTIONAL_NAME}
         url={['apiv2_logs_functional']}

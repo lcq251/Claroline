@@ -29,6 +29,7 @@ const CatalogList = (props) =>
       }}
     >
       <CourseList
+        className="mb-5"
         flush={true}
         autoFocus={true}
         path={props.path}

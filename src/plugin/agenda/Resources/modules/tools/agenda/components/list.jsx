@@ -26,6 +26,7 @@ const AgendaList = () => {
     <ToolPage title={trans('all_events', {}, 'agenda')}>
       <PageListSection>
         <EventList
+          className="mb-5"
           flush={true}
           name={selectors.STORE_NAME+'.list'}
           url={['apiv2_planned_object_planning_list', {planningId: (contextData && contextData.id) || currentUser.id}]}

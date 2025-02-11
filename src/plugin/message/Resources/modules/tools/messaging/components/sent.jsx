@@ -19,6 +19,7 @@ const MessageSentComponent = (props) =>
   >
     <PageListSection>
       <ListData
+        className="mb-5"
         flush={true}
         name={`${selectors.STORE_NAME}.sentMessages`}
         fetch={{

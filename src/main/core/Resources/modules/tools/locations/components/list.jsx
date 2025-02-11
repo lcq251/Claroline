@@ -22,6 +22,7 @@ const LocationList = props =>
       }}
     >
       <ListData
+        className="mb-5"
         name={`${selectors.STORE_NAME}.list`}
         flush={true}
         fetch={{

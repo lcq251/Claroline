@@ -18,6 +18,7 @@ const MessageTrashComponent = (props) =>
   >
     <PageListSection>
       <ListData
+        className="mb-5"
         flush={true}
         name={`${selectors.STORE_NAME}.deletedMessages`}
         fetch={{

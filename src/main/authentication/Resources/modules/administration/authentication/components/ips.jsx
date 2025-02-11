@@ -16,38 +16,38 @@ const AuthenticationIps = props =>
   <ToolPage
     title={trans('ips', {}, 'security')}
   >
-    <PageContent>
-      <PageListSection>
-        <Alert type="info" className="mb-0">
-          {trans('ips_help', {}, 'security')}
-        </Alert>
+    <PageListSection
+      addAction={{
+        name: 'add-ip',
+        type: MODAL_BUTTON,
+        icon: 'fa fa-fw fa-plus',
+        tooltip: 'bottom',
+        label: trans('add_ip', {}, 'security'),
+        primary: true,
+        modal: [MODAL_IP_PARAMETERS, {
+          onSave: () => props.invalidateList()
+        }]
+      }}
+    >
+      <Alert type="info" className="mb-0">
+        {trans('ips_help', {}, 'security')}
+      </Alert>
 
-        <IpList
-          flush={true}
-          name={selectors.STORE_NAME+'.ips'}
-          url={['apiv2_ip_user_list']}
-          addAction={{
-            name: 'add-ip',
-            type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-plus',
-            tooltip: 'bottom',
-            label: trans('add_ip', {}, 'security'),
-            primary: true,
-            modal: [MODAL_IP_PARAMETERS, {
-              onSave: () => props.invalidateList()
-            }]
-          }}
-          definition={[
-            {
-              name: 'user',
-              label: trans('user'),
-              type: 'user',
-              displayed: true
-            },
-          ]}
-        />
-      </PageListSection>
-    </PageContent>
+      <IpList
+        className="mb-5"
+        flush={true}
+        name={selectors.STORE_NAME+'.ips'}
+        url={['apiv2_ip_user_list']}
+        definition={[
+          {
+            name: 'user',
+            label: trans('user'),
+            type: 'user',
+            displayed: true
+          },
+        ]}
+      />
+    </PageListSection>
   </ToolPage>
 
 AuthenticationIps.propTypes = {

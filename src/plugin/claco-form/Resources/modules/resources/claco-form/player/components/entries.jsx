@@ -29,6 +29,7 @@ const EntriesComponent = props =>
   >
     <PageListSection>
       <ListSource
+        className="mb-5"
         flush={true}
         name={selectors.STORE_NAME+'.entries.list'}
         fetch={{

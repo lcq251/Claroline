@@ -14,7 +14,7 @@ const ResourcesTrash = (props) =>
   >
     <PageListSection>
       <ResourceList
-        className="my-3"
+        className="mb-5"
         path={props.path}
         name={selectors.STORE_NAME+ '.trash'}
         url={['apiv2_resource_workspace_removed_list', {

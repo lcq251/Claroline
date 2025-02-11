@@ -26,6 +26,7 @@ const RoleList = props =>
       }}
     >
       <BaseRoleList
+        className="mb-5"
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}

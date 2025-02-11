@@ -36,6 +36,7 @@ const EvaluationActivities = (props) =>
       </Alert>
 
       <ResourceList
+        className="mb-5"
         flush={true}
         name={selectors.STORE_NAME+'.requiredResources'}
         url={['apiv2_workspace_required_resource_list', {workspace: props.contextId}]}

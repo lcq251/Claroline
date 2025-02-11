@@ -63,6 +63,7 @@ const WorkspacesTool = (props) => {
             <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
               <PageListSection>
                 <WorkspaceList
+                  className="mb-5"
                   flush={true}
                   url={['apiv2_workspace_list_registered']}
                   name="workspaces.registered"
@@ -89,6 +90,7 @@ const WorkspacesTool = (props) => {
                 }}
               >
                 <WorkspaceList
+                  className="mb-5"
                   flush={true}
                   url={props.contextType === toolConstants.TOOL_PUBLIC ? ['apiv2_workspace_list_public'] : ['apiv2_workspace_list']}
                   name="workspaces.public"

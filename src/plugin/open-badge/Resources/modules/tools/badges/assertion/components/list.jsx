@@ -17,6 +17,7 @@ const AssertionsList = (props) =>
   <ToolPage title={trans('my_badges', {}, 'badge')}>
     <PageListSection>
       <ListData
+        className="mb-5"
         flush={true}
         name={selectors.STORE_NAME + '.mine'}
         fetch={{

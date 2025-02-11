@@ -29,6 +29,7 @@ const AuthenticationTokens = props =>
       }}
     >
       <TokenList
+        className="mb-5"
         name={selectors.STORE_NAME+'.tokens'}
         definition={[
           {

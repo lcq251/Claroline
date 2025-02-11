@@ -59,6 +59,7 @@ const DirectoryPlayer = (props) => {
           }
 
           <ListSource
+            className="mb-5"
             flush={true}
             name={props.listName}
             fetch={{

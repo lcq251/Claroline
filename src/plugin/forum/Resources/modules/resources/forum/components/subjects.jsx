@@ -31,6 +31,7 @@ function canEdit(subject, moderator = false, currentUser = null) {
 
 const SubjectsList = (props) =>
   <ListData
+    className={props.className}
     name={`${selectors.STORE_NAME}.subjects.list`}
     fetch={{
       url: ['apiv2_forum_list_subjects', {id: get(props.forum, 'id')}],
@@ -174,6 +175,7 @@ const SubjectsList = (props) =>
   />
 
 SubjectsList.propTypes = {
+  className: T.string,
   path: T.string.isRequired,
   currentUser: T.object,
   forum: T.shape(ForumType.propTypes),

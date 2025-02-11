@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 import {PageListSection} from '#/main/app/page'
 import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
 
@@ -22,13 +22,11 @@ const EvaluationSequences = () => {
           icon: 'fa fa-fw fa-plus',
           label: trans('add_sequence', {}, 'actions'),
           type: MODAL_BUTTON,
-          modal: [MODAL_SEQUENCE_CREATION, {
-
-          }],
-          callback: () => true
+          modal: [MODAL_SEQUENCE_CREATION]
         }}
       >
         <SequenceList
+          className="mb-5"
           path={toolPath}
           name={selectors.STORE_NAME+'.sequences'}
           flush={true}

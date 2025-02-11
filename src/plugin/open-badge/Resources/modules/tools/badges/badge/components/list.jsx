@@ -25,6 +25,7 @@ const BadgeList = props =>
       }}
     >
       <BaseBadgeList
+        className="mb-5"
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}

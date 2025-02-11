@@ -31,6 +31,7 @@ const ImportList = props =>
       }}
     >
       <ListData
+        className="mb-5"
         flush={true}
         name={selectors.LIST_NAME}
         primaryAction={(row) => ({

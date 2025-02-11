@@ -11,6 +11,7 @@ const LogsSecurity = () =>
   <ToolPage title={trans('security', {}, 'log')}>
     <PageListSection>
       <LogSecurityList
+        className="mb-5"
         name={selectors.LIST_NAME}
         url={['apiv2_logs_security']}
         customDefinition={[

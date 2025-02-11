@@ -26,9 +26,10 @@ const ForumOverview = () => {
       <PageSection
         size="md"
         flush={false}
-        className="mb-5"
       >
-        <Subjects />
+        <Subjects
+          className="mb-5"
+        />
 
         {hasPermission('post', resourceNode) &&
           <ButtonSticky

@@ -32,6 +32,7 @@ const ScheduledTaskList = (props) =>
         </Alert>
       }
       <ListData
+        className="mb-5"
         flush={true}
         name={selectors.STORE_NAME + '.tasks'}
         fetch={{

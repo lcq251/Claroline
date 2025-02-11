@@ -40,6 +40,7 @@ const TagList = () => {
         }}
       >
         <ListData
+          className="mb-5"
           flush={true}
           name={listName}
           fetch={{
