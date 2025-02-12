@@ -51,6 +51,14 @@ const ResourceMain = props => {
             tooltip: 'bottom',
             target: resourcePath+'/dashboard',
             displayed: canFollow
+          }, {
+            name: 'parameters',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-sliders',
+            label: trans('parameters'),
+            tooltip: 'bottom',
+            target: resourcePath+'/edit',
+            displayed: canEdit
           }
         ]),
         actions: props.actions,

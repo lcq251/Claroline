@@ -46,6 +46,7 @@ const PageMenu = (props) => {
               toolbar={props.toolbar || 'more'}
               tooltip="bottom"
               actions={props.actions}
+              role="toolbar"
             />
           }
         </div>

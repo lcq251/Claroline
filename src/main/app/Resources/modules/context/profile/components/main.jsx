@@ -20,7 +20,6 @@ const ContextProfile = (props) => {
   return (
     <ContextPage
       title={trans('my_profile')}
-      // poster={props.currentUser.poster}
       breadcrumb={[
         {
           type: LINK_BUTTON,

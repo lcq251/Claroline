@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback} from 'react'
+import React, {forwardRef, useCallback, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
@@ -64,6 +64,9 @@ const ContextFlyout = forwardRef((props, ref) => {
     }
   }
 
+  const toolsTitleId = useId()
+  const organizationsTitleId = useId()
+
   return (
     <div {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref}>
       <div className="flyout-menu-content rounded-bottom-4" role="presentation">
@@ -84,27 +87,30 @@ const ContextFlyout = forwardRef((props, ref) => {
         </div>
 
         {1 < toolLinks.length &&
-          <ul className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
-            'flyout-menu-items-2': 6 >= toolLinks.length,
-            'flyout-menu-items-4': 6 < toolLinks.length
-          })}>
-            {toolLinks.map(toolLink =>
-              <li key={toolLink.name}>
-                <Button
-                  {...omit(toolLink, 'label')}
-                  className="flyout-menu-item focus-ring"
-                  onClick={toggleMenu}
-                >
-                  <span className="text-truncate w-100 text-center" role="presentation">{toolLink.label}</span>
-                </Button>
-              </li>
-            )}
-          </ul>
+          <nav aria-labelledby={toolsTitleId}>
+            <h4 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h4>
+            <ul className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
+              'flyout-menu-items-2': 6 >= toolLinks.length,
+              'flyout-menu-items-4': 6 < toolLinks.length
+            })}>
+              {toolLinks.map(toolLink =>
+                <li key={toolLink.name}>
+                  <Button
+                    {...omit(toolLink, 'label')}
+                    className="flyout-menu-item focus-ring"
+                    onClick={toggleMenu}
+                  >
+                    <span className="text-truncate w-100 text-center" role="presentation">{toolLink.label}</span>
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </nav>
         }
 
         {1 < organizations.length &&
-          <div className="bg-body-tertiary p-4 rounded-bottom-4" role="presentation">
-            <h4 className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
+          <nav className="bg-body-tertiary p-4 rounded-bottom-4" aria-labelledby={organizationsTitleId}>
+            <h4 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
               {trans('organizations', {}, 'community')}
 
               {3 < organizations.length &&
@@ -136,7 +142,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         }
       </div>
     </div>

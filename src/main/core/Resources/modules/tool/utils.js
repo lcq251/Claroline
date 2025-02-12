@@ -1,8 +1,9 @@
 import identity from 'lodash/identity'
 
-import {getApp, getApps} from '#/main/app/plugins'
+import {getActions as getPluginsActions, getApp, getApps} from '#/main/app/plugins'
 
 import {constants} from '#/main/core/tool/constants'
+import merge from 'lodash/merge'
 
 function getTools(contextType) {
   if (constants.TOOL_ADMINISTRATION === contextType) {
@@ -20,28 +21,19 @@ async function getTool(name, contextType) {
   return getApp('tools', name)()
 }
 
-function getActions(tool, context, toolRefresher, path, currentUser) {
-  // adds default refresher actions
-  const refresher = Object.assign({
-    add: identity,
-    update: identity,
-    delete: identity
-  }, toolRefresher)
+function getActions(tools, toolRefresher, path, currentUser = null, withDefault = false) {
+  return getPluginsActions('tool', tools, toolRefresher, path, currentUser, withDefault)
+}
 
-  // get all actions declared for the tool
-  const actions = getApps('actions.tool')
-
-  return Promise.all(
-    // boot actions applications
-    Object.keys(actions).map(action => actions[action]())
-  ).then((loadedActions) => loadedActions
-    // generate action
-    .map(actionModule => actionModule.default(tool, context, refresher, path, currentUser))
-  )
+function getDefaultAction(tool, toolRefresher, path, currentUser = null) {
+  return getActions([tool], toolRefresher, path, currentUser, true)
+    // only get the default one
+    .then(actions => actions.find(action => action.default))
 }
 
 export {
   getTools,
   getTool,
+  getDefaultAction,
   getActions
 }

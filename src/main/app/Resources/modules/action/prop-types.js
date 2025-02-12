@@ -30,7 +30,7 @@ const Action = {
      *
      * @type {string}
      */
-    label: T.node.isRequired,
+    label: T.node,
     group: T.string,
 
     /**

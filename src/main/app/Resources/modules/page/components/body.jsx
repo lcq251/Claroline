@@ -44,22 +44,28 @@ PageAside.propTypes = {
   closable: T.bool
 }
 
-const PageBody = (props) =>
-  <div className="app-page-body" role="presentation">
-    {props.children}
+const PageBody = ({
+  children
+}) =>
+  <div className="app-page-body" role="presentation" tabIndex={-1}>
+    {children}
   </div>
 
 PageBody.propTypes = {
   children: T.any
 }
 
-const PageContent = (props) =>
-  <div className={classes('app-page-content', props.className)} role="presentation">
-    {props.poster &&
-      <Poster url={props.poster} className="app-page-poster z-n1" />
+const PageContent = ({
+  className,
+  poster,
+  children
+}) =>
+  <div className={classes('app-page-content', className)} role="presentation">
+    {poster &&
+      <Poster url={poster} className="app-page-poster z-n1" />
     }
 
-    {props.children}
+    {children}
   </div>
 
 PageContent.propTypes = {

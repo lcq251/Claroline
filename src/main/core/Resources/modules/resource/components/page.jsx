@@ -65,7 +65,7 @@ const ResourcePage = (props) => {
           />
         ),
         nav: resourceDef.menu,
-        toolbar: 'configure more',
+        toolbar: 'more',
         // get actions injected through plugins and the ones defined by the current tool
         actions: getActions([resourceNode], {
           add: reload,
@@ -89,7 +89,7 @@ const ResourcePage = (props) => {
               props.history.push(redirect)
             }
           }
-        }, basePath, currentUser, false).then(loadedActions => [].concat(loadedActions, resourceDef.actions || []))
+        }, basePath, currentUser, false).then(loadedActions => [].concat(loadedActions.filter(action => 'configure' !== action.name), resourceDef.actions || []))
       }}
 
       {...omit(props, 'className', 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}

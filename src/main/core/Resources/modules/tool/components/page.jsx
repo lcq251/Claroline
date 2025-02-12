@@ -18,8 +18,8 @@ const ToolPage = props => {
   const currentUser = useSelector(securitySelectors.currentUser)
   const toolName = useSelector(selectors.name)
   const toolPath = useSelector(selectors.path)
+  const basePath = useSelector(selectors.basePath)
   const toolData = useSelector(selectors.toolData)
-  const currentContext = useSelector(selectors.context)
 
   const dispatch = useDispatch()
   const reload = useCallback(() => dispatch(actions.reload()), [toolName])
@@ -41,18 +41,18 @@ const ToolPage = props => {
       description={trans(toolName+'_desc', {}, 'tools')}
       menu={{
         nav: toolDef.menu,
-        toolbar: 'search configure more',
+        toolbar: 'search more',
         // get actions injected through plugins and the ones defined by the current tool
-        actions: getActions(toolData, currentContext, {
+        actions: getActions([toolData], {
           update: reload
-        }, toolPath, currentUser).then(loadedActions => [{
+        }, basePath, currentUser).then(loadedActions => [{
           name: 'search',
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-wand-magic-sparkles',
           label: trans('search', {}, 'actions') + ' (Ctrl + K)',
           modal: [MODAL_COMMAND_PALETTE],
           displayed: false
-        }].concat(loadedActions, toolDef.actions || []))
+        }].concat(loadedActions.filter(action => 'configure' !== action.name), toolDef.actions || []))
       }}
 
       styles={[].concat(toolDef.styles || [], props.styles || [])}

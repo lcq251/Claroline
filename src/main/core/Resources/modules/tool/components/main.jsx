@@ -51,8 +51,16 @@ const ToolMain = (props) => {
             icon: 'fa fa-fw fa-gauge',
             label: trans('dashboard'),
             tooltip: 'bottom',
-            target: toolPath + '/dashboard',
+            target: toolPath+'/dashboard',
             displayed: !!props.dashboard && canFollow
+          }, {
+            name: 'parameters',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-sliders',
+            label: trans('parameters'),
+            tooltip: 'bottom',
+            target: toolPath+'/edit',
+            displayed: canEdit
           }
         ]),
         actions: props.actions,

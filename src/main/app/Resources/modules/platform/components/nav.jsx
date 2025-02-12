@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -26,16 +27,62 @@ const PlatformNav = (props) => {
 
   const currentOrganization = useSelector(selectors.currentOrganization)
 
+  const quickAccessTitleId = useId()
+  const quickAccessDescId = useId()
+  const [quickAccess, setQuickAccess] = useState(false)
+
   return (
-    <nav className="app-contexts app-toolbar">
-      <Button
-        type={CALLBACK_BUTTON}
-        className="app-context-jump app-context-btn focus-ring"
-        icon="fa fa-fw fa-angles-right"
-        label={trans('go_to_content', {}, 'actions')}
-        tooltip="right"
-        callback={() => document.querySelector('#toggle-menu').focus()}
-      />
+    <div className="app-contexts app-toolbar" role="presentation">
+      <h3 className="visually-hidden">{trans('main_menu')}</h3>
+      <nav
+        className={classes({
+          'visually-hidden': !quickAccess
+        })}
+        aria-labelledby={quickAccessTitleId}
+        aria-describedby={quickAccessDescId}
+      >
+        <h4 id={quickAccessTitleId} className="visually-hidden">{trans('quick_access_links')}</h4>
+        <p id={quickAccessDescId} className="visually-hidden">{trans('quick_access_links_help')}</p>
+
+        <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
+          <li>
+            <Button
+              type={CALLBACK_BUTTON}
+              className="app-context-btn focus-ring"
+              icon="fa fa-fw fa-font"
+              label={trans('go_to_content', {}, 'actions')}
+              tooltip="right"
+              callback={() => document.querySelector('.app-page-body').focus()}
+              onFocus={() => {
+                setQuickAccess(true)
+              }}
+            />
+            <Button
+              type={CALLBACK_BUTTON}
+              className="app-context-btn focus-ring"
+              icon="fa fa-fw fa-book"
+              label={trans('go_to_context_menu', {}, 'actions')}
+              tooltip="right"
+              callback={() => document.getElementById('toggle-menu').focus()}
+              onFocus={() => {
+                setQuickAccess(true)
+              }}
+            />
+            <Button
+              type={CALLBACK_BUTTON}
+              className="app-context-btn focus-ring"
+              icon="fa fa-fw fa-tools"
+              label={trans('go_to_tool_menu', {}, 'actions')}
+              tooltip="right"
+              callback={() => document.querySelector('.app-page-body').focus()}
+              onFocus={() => {
+                setQuickAccess(true)
+              }}
+            />
+          </li>
+        </ul>
+        <hr className="app-context-separator mx-auto" aria-hidden={true} />
+      </nav>
 
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
@@ -54,8 +101,6 @@ const PlatformNav = (props) => {
             />
           </Button>
         </li>
-
-
         <li>
           <Button
             type={MODAL_BUTTON}
@@ -110,7 +155,7 @@ const PlatformNav = (props) => {
           <ContextUser className="app-context-btn" />
         </li>
       </ul>
-    </nav>
+    </div>
   )
 }
 
