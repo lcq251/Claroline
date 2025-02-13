@@ -6,14 +6,14 @@ import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, CallbackButton, MODAL_BUTTON} from '#/main/app/buttons'
 import {DataMicro} from '#/main/app/data/components/micro'
 
 import {actions as platformActions} from '#/main/app/platform/store'
 import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizations'
-import {actions, selectors} from '#/main/app/context/store'
-import {hasPermission} from '#/main/app/security'
+import {selectors} from '#/main/app/context/store'
 import {ContextFavourite} from '#/main/app/context/components/favorite'
+import {useLocaleStorage} from '#/main/app/storage'
 
 const ContextMenu = (props) => {
   const dispatch = useDispatch()
@@ -22,8 +22,7 @@ const ContextMenu = (props) => {
   const hasErrors = useSelector(selectors.hasErrors)
 
   const contextPath = useSelector(selectors.path)
-  const contextData = useSelector(selectors.data)
-  const tools = useSelector(selectors.visibleTools)
+  const toolLinks = useSelector(selectors.toolLinks)
   // get context organizations
   const organizations = useSelector(selectors.organizations)
 
@@ -31,36 +30,11 @@ const ContextMenu = (props) => {
     return null
   }
 
+  const [pinedMenu, setPinedMenu] = useLocaleStorage('contextMenuPined', false)
   const toggleMenu = useCallback(() => {
-    dispatch(actions.toggleMenuPin())
+    setPinedMenu(!pinedMenu)
+    document.querySelector('.app-context-menu-toggle').focus()
   }, [contextPath])
-
-  // get context tools
-  const toolLinks = tools
-    .map(tool => ({
-      name: tool.name,
-      type: LINK_BUTTON,
-      icon: `fa fa-fw fa-${tool.icon}`,
-      label: trans(tool.name, {}, 'tools'),
-      target: contextPath + '/' + tool.name,
-      status: tool.status,
-      subscript: tool.status ? {
-        type: 'label',
-        value: tool.status,
-        status: 'primary'
-      } : undefined
-    }))
-
-  if (hasPermission('administrate', contextData)) {
-    // append editor
-    toolLinks.push({
-      name: 'parameters',
-      type: LINK_BUTTON,
-      icon: `fa fa-fw fa-sliders`,
-      label: trans('parameters'),
-      target: contextPath + '/edit'
-    })
-  }
 
   const toolsTitleId = useId()
   const organizationsTitleId = useId()

@@ -5,9 +5,9 @@ import classes from 'classnames'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {hasPermission} from '#/main/app/security'
+import {useLocaleStorage} from '#/main/app/storage'
 import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON, CallbackButton, LINK_BUTTON, MENU_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, CallbackButton, MENU_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {DataMicro} from '#/main/app/data/components/micro'
 import {Menu} from '#/main/app/overlays/menu'
 
@@ -20,56 +20,21 @@ import {actions, selectors} from '#/main/app/context/store'
 const ContextFlyout = forwardRef((props, ref) => {
   const dispatch = useDispatch()
 
-  const notFound = useSelector(selectors.notFound)
-  const hasErrors = useSelector(selectors.hasErrors)
-
-  const tools = useSelector(selectors.visibleTools)
   // get context organizations
   const organizations = useSelector(selectors.organizations)
-
-  const togglePin = useCallback(() => {
-    dispatch(actions.toggleMenuPin())
-  }, [props.path])
-  const toggleMenu = useCallback(() => {
-    dispatch(actions.toggleMenuOpen())
-  }, [props.path])
-
   // get context tools
-  let toolLinks = []
-  if (!notFound && !hasErrors) {
-    toolLinks = tools
-      .map(tool => ({
-        name: tool.name,
-        type: LINK_BUTTON,
-        icon: `fa fa-fw fa-${tool.icon}`,
-        label: trans(tool.name, {}, 'tools'),
-        target: props.path + '/' + tool.name,
-        status: tool.status,
-        subscript: tool.status ? {
-          type: 'label',
-          value: tool.status,
-          status: 'primary'
-        } : undefined
-      }))
-
-    if (hasPermission('administrate', props.contextData)) {
-      // append editor
-      toolLinks.push({
-        name: 'parameters',
-        type: LINK_BUTTON,
-        icon: `fa fa-fw fa-sliders`,
-        label: trans('parameters'),
-        target: props.path + '/edit'
-      })
-    }
-  }
+  const toolLinks = useSelector(selectors.toolLinks)
 
   const toolsTitleId = useId()
   const organizationsTitleId = useId()
 
   return (
-    <div {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref}>
-      <h2 className="visually-hidden">{trans('Menu de l\'espace de travail')}</h2>
+    <div
+      {...omit(props, 'togglePin', 'show', 'close')}
+      className={classes('app-context-menu p-0 rounded-4', props.className)}
+      ref={ref}
+    >
+      <h2 className="visually-hidden">{trans('context_menu')}</h2>
       <div className="flyout-menu-content rounded-bottom-4" role="presentation">
         <div className="d-flex gap-3 px-4 pt-4 my-n1 align-items-center" role="presentation">
           <Button
@@ -78,7 +43,7 @@ const ContextFlyout = forwardRef((props, ref) => {
             className="btn btn-text-body p-1 focus-ring"
             label={trans('pin-menu', {}, 'actions')}
             tooltip="bottom"
-            callback={togglePin}
+            callback={props.togglePin}
             size="sm"
           >
             <span className="fa fa-thumb-tack fs-base" aria-hidden={true} />
@@ -99,7 +64,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                   <Button
                     {...omit(toolLink, 'label')}
                     className="flyout-menu-item focus-ring"
-                    onClick={toggleMenu}
+                    onClick={props.closeMenu}
                   >
                     <span className="text-truncate w-100 text-center" role="presentation">{toolLink.label}</span>
                   </Button>
@@ -121,7 +86,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                   <CallbackButton
                     className="fw-bolder btn btn-link text-reset p-1 w-100 fs-sm"
                     callback={() => dispatch(platformActions.changeOrganization(organization))}
-                    onClick={toggleMenu}
+                    onClick={props.closeMenu}
                   >
                     <DataMicro object={organization} />
                   </CallbackButton>
@@ -138,7 +103,7 @@ const ContextFlyout = forwardRef((props, ref) => {
                   organizations: organizations
                 }]}
                 size="sm"
-                onClick={toggleMenu}
+                onClick={props.closeMenu}
               >
                 <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
               </Button>
@@ -152,17 +117,10 @@ const ContextFlyout = forwardRef((props, ref) => {
 
 ContextFlyout.propTypes = {
   path: T.string,
-  tools: T.arrayOf(T.shape({
-    icon: T.string.isRequired,
-    name: T.string.isRequired,
-    permissions: T.object
-  })),
-
-  // from store
   contextData: T.object,
   contextType: T.string,
-  notFound: T.bool.isRequired,
-  hasErrors: T.bool.isRequired
+  togglePin: T.func.isRequired,
+  closeMenu: T.func.isRequired
 }
 
 const ContextMenu = (props) => {
@@ -171,16 +129,19 @@ const ContextMenu = (props) => {
   const contextPath = useSelector(selectors.path)
   const contextData = useSelector(selectors.data)
   const contextType = useSelector(selectors.type)
+  const notFound = useSelector(selectors.notFound)
+  const hasErrors = useSelector(selectors.hasErrors)
 
   const menuOpened = useSelector(selectors.menuOpened)
-  const menuPined = useSelector(selectors.menuPined)
   const toggleMenu = useCallback(() => {
     dispatch(actions.toggleMenuOpen())
   }, [contextPath])
 
+  const [pinedMenu, setPinedMenu] = useLocaleStorage('contextMenuPined', false)
+
   return (
     <div className="d-flex flex-row align-items-center gap-3" role="presentation">
-      {!menuPined &&
+      {!pinedMenu &&
         <Button
           id="toggle-menu"
           type={MENU_BUTTON}
@@ -189,15 +150,18 @@ const ContextMenu = (props) => {
           label={trans(menuOpened ? 'hide-menu': 'show-menu', {}, 'actions')}
           tooltip="bottom"
           onToggle={toggleMenu}
+          disabled={notFound || hasErrors}
           menu={
             <Menu
               show={menuOpened}
               as={ContextFlyout}
               className="flyout-menu"
-              {...props}
-              path={contextPath}
-              contextData={contextData}
-              contextType={contextType}
+              togglePin={() => {
+                setPinedMenu(!pinedMenu)
+                toggleMenu()
+                document.querySelector('.app-context-menu-toggle').focus()
+              }}
+              closeMenu={toggleMenu}
             />
           }
         />

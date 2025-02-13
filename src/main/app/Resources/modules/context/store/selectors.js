@@ -5,6 +5,7 @@ import isNumber from 'lodash/isNumber'
 
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl'
+import {LINK_BUTTON} from '#/main/app/buttons'
 
 const STORE_NAME = 'context'
 const EDITOR_NAME = 'contextEditor'
@@ -42,11 +43,6 @@ const path = createSelector(
 const menuOpened = createSelector(
   [store],
   (store) => store.menuOpened
-)
-
-const menuPined = createSelector(
-  [store],
-  (store) => store.menuPined
 )
 
 const data = createSelector(
@@ -156,6 +152,39 @@ const visibleTools = createSelector(
   (accessibleTools) => accessibleTools.filter(tool => !get(tool, 'restrictions.hidden', false))
 )
 
+const toolLinks = createSelector(
+  [path, data, visibleTools],
+  (path, data, visibleTools) => {
+    const toolLinks = visibleTools
+      .map(tool => ({
+        name: tool.name,
+        type: LINK_BUTTON,
+        icon: `fa fa-fw fa-${tool.icon}`,
+        label: trans(tool.name, {}, 'tools'),
+        target: path + '/' + tool.name,
+        status: tool.status,
+        subscript: tool.status ? {
+          type: 'label',
+          value: tool.status,
+          status: 'primary'
+        } : undefined
+      }))
+
+    if (hasPermission('administrate', data)) {
+      // append editor
+      toolLinks.push({
+        name: 'parameters',
+        type: LINK_BUTTON,
+        icon: `fa fa-fw fa-sliders`,
+        label: trans('parameters'),
+        target: path + '/edit'
+      })
+    }
+
+    return toolLinks
+  }
+)
+
 const defaultOpening = createSelector(
   [data, tools],
   (data, tools) => {
@@ -191,7 +220,6 @@ export const selectors = {
 
   // selectors for menu
   menuOpened,
-  menuPined,
 
   // selectors for context statuses
   loaded,
@@ -210,5 +238,6 @@ export const selectors = {
   tools,
   accessibleTools,
   visibleTools,
+  toolLinks,
   defaultOpening
 }

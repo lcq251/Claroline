@@ -30,15 +30,10 @@ export const CONTEXT_NOT_FOUND = 'CONTEXT_NOT_FOUND'
  */
 export const CONTEXT_MENU_TOGGLE_OPEN = 'CONTEXT_MENU_TOGGLE_OPEN'
 
-/**
- * Action dispatched when the user choose to pin/unpin the context menu as a sidebar.
- */
-export const CONTEXT_MENU_TOGGLE_PIN = 'CONTEXT_MENU_TOGGLE_PIN'
 
 export const actions = {}
 
 actions.toggleMenuOpen = makeActionCreator(CONTEXT_MENU_TOGGLE_OPEN)
-actions.toggleMenuPin = makeActionCreator(CONTEXT_MENU_TOGGLE_PIN)
 
 actions.load = makeActionCreator(CONTEXT_LOAD, 'contextData')
 actions.setLoaded = makeActionCreator(CONTEXT_SET_LOADED, 'loaded')

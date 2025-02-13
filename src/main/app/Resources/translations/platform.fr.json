@@ -40,6 +40,7 @@
   "form_validating_desc": "Des erreurs ou des informations manquantes empêchent la sauvegarde des données.",
   "recent_activity": "Activité récente",
   "main_menu": "Menu principal de l'application",
+  "context_menu": "Menu de l'espace de travail",
   "quick_access_links": "Liens d'accès rapide",
   "quick_access_links_help": "Accédez directement à la section de la page qui vous intéresse."
 }

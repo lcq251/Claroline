@@ -18,9 +18,11 @@ import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
 import {ContextMenu} from '#/main/app/context/components/nav'
 import get from 'lodash/get'
+import {useLocaleStorage} from '#/main/app/storage'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
+  const [pinedMenu] = useLocaleStorage('contextMenuPined', false)
 
   useCtrlKeyPress('k', (event) => {
     dispatch(modalActions.showModal(MODAL_COMMAND_PALETTE))
@@ -164,7 +166,7 @@ const ContextMain = (props) => {
     <>
       <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
 
-      {props.menuPined &&
+      {pinedMenu &&
         <ContextMenu />
       }
 
@@ -193,7 +195,6 @@ ContextMain.propTypes = {
       open: T.bool
     })
   })),
-  menuPined: T.bool,
 
   // custom context components
   loadingPage: T.elementType,

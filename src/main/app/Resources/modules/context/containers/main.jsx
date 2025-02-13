@@ -16,8 +16,7 @@ const ContextMain = withRouter(
         notFound: selectors.notFound(state),
         accessErrors: selectors.accessErrors(state),
         defaultOpening: selectors.defaultOpening(state),
-        tools: selectors.tools(state),
-        menuPined: selectors.menuPined(state)
+        tools: selectors.tools(state)
       }),
       (dispatch) => ({
         open(contextType, contextId) {

@@ -7,7 +7,8 @@ import {
   CONTEXT_OPEN,
   CONTEXT_LOAD,
   CONTEXT_NOT_FOUND,
-  CONTEXT_SET_LOADED, CONTEXT_MENU_TOGGLE_OPEN, CONTEXT_MENU_TOGGLE_PIN
+  CONTEXT_SET_LOADED,
+  CONTEXT_MENU_TOGGLE_OPEN
 } from '#/main/app/context/store/actions'
 
 import {TOOL_LOAD} from '#/main/core/tool/store'
@@ -32,13 +33,12 @@ const reducer = combineReducers({
     [CONTEXT_OPEN]: (state, action) => action.contextId
   }),
 
+  /**
+   * Is the context menu opened ?
+   * NB. we store the value inside the store to avoid the menu auto close when react render.
+   */
   menuOpened: makeReducer(false, {
-    [CONTEXT_MENU_TOGGLE_OPEN]: (state) => !state,
-    [CONTEXT_MENU_TOGGLE_PIN]: () => false
-  }),
-
-  menuPined: makeReducer(false, {
-    [CONTEXT_MENU_TOGGLE_PIN]: (state) => !state
+    [CONTEXT_MENU_TOGGLE_OPEN]: (state) => !state
   }),
 
   /**
