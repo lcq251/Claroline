@@ -2,6 +2,9 @@ services:
     _defaults:
         tags: [security.voter]
 
+    Claroline\EvaluationBundle\Security\Voter\SequenceVoter:
+        parent: Claroline\AppBundle\Security\Voter\AbstractVoter
+
     Claroline\EvaluationBundle\Security\Voter\WorkspaceEvaluationVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter
 
