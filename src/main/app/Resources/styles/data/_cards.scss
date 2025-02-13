@@ -93,24 +93,19 @@
 }
 
 .data-card-invalidated {
-    &:not(.data-card-poster),
-    // avoid blurring the line between the poster and the card, it's visually weird
-    &.data-card-poster .data-card-thumbnail,
-    &.data-card-poster .data-card-content {
-        position: relative;
-        overflow: hidden;
+    position: relative;
+    overflow: hidden;
 
-        &:after {
-            position: absolute;
-            display: block;
-            content: " ";
-            backdrop-filter: blur(2px);
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 1;
-        }
+    &:after {
+        position: absolute;
+        display: block;
+        content: " ";
+        backdrop-filter: blur(2px);
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
     }
 
     .data-card-thumbnail,
