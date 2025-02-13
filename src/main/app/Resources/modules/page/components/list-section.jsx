@@ -8,6 +8,7 @@ import {PageContent} from '#/main/app/page/components/body'
 const PageListSection = ({
   className,
   poster,
+  title,
   children,
   addAction
 }) =>
@@ -15,7 +16,7 @@ const PageListSection = ({
     className={classes('flex-fill d-flex flex-column', className)}
     poster={poster}
   >
-    <h1 className="app-page-heading visually-hidden">Ma liste</h1>
+    <h2 className="app-page-title visually-hidden">{title}</h2>
 
     {children}
 
@@ -30,6 +31,7 @@ const PageListSection = ({
 PageListSection.propTypes = {
   className: T.string,
   poster: T.string,
+  title: T.string.isRequired,
   children: T.any,
   addAction: T.shape({
     // Action types
@@ -37,5 +39,7 @@ PageListSection.propTypes = {
 }
 
 export {
+  PageListSection as PageContentList,
+  // deprecated
   PageListSection
 }

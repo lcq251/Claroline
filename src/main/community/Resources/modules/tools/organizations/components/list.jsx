@@ -4,14 +4,17 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
-import {PageListSection} from '#/main/app/page/components/list-section'
+import {PageListSection} from '#/main/app/page'
 
 import {OrganizationList as BaseOrganizationList} from '#/main/community/organization/components/list'
 import {selectors} from '#/main/community/tools/organizations/store'
 
 const OrganizationList = (props) =>
-  <ToolPage>
+  <ToolPage
+    title={trans('organizations', {}, 'community')}
+  >
     <PageListSection
+      title={trans('organizations', {}, 'community')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

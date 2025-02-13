@@ -12,7 +12,9 @@ const ResourcesTrash = (props) =>
   <ToolPage
     title={trans('trash')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('trash')}
+    >
       <ResourceList
         className="mb-5"
         path={props.path}

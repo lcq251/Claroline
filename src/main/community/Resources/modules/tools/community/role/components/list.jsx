@@ -5,16 +5,17 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {selectors} from '#/main/community/tools/community/role/store/selectors'
 import {RoleList as BaseRoleList} from '#/main/community/role/components/list'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const RoleList = props =>
   <ToolPage
     title={trans('roles', {}, 'community')}
   >
     <PageListSection
+      title={trans('roles', {}, 'community')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

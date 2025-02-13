@@ -4,6 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
 import {ListData} from '#/main/app/content/list/containers/data'
+import {PageListSection} from '#/main/app/page'
 
 import {constants} from '#/main/evaluation/constants'
 import {selectors} from '#/main/evaluation/tools/evaluation/store'
@@ -12,7 +13,6 @@ import {getActions, getDefaultAction} from '#/main/evaluation/workspace/utils'
 import {EvaluationStatus} from '#/main/evaluation/components/status'
 import {EvaluationScore} from '#/main/evaluation/components/score'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const EvaluationUsers = (props) => {
   const evaluationsRefresher = {
@@ -25,7 +25,9 @@ const EvaluationUsers = (props) => {
     <ToolPage
       title={trans('users')}
     >
-      <PageListSection>
+      <PageListSection
+        title={trans('users')}
+      >
         <ListData
           className="mb-5"
           flush={true}

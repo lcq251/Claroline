@@ -6,20 +6,19 @@ import {trans, transChoice} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {Alert} from '#/main/app/components/alert'
+import {PageListSection} from '#/main/app/page'
 
 import {getPlatformRoles, getWorkspaceRoles} from '#/main/community/utils'
 import {UserList as BaseUserList} from '#/main/community/user/components/list'
-
 import {selectors} from '#/main/community/tools/community/user/store'
-
 import {MODAL_REGISTER} from '#/main/community/modals/register'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const UserList = props =>
   <ToolPage
     title={trans('users')}
   >
     <PageListSection
+      title={trans('users', {}, 'community')}
       addAction={'workspace' === props.contextType ?
         {
           name: 'add',

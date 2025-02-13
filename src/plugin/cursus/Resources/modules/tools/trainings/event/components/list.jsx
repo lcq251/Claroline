@@ -3,16 +3,18 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {EventList} from '#/plugin/cursus/event/components/list'
 import {selectors} from '#/plugin/cursus/tools/trainings/event/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const EventsList = (props) =>
   <ToolPage
     title={props.title}
   >
-    <PageListSection>
+    <PageListSection
+      title={props.title}
+    >
       <EventList
         className="mb-5"
         flush={true}

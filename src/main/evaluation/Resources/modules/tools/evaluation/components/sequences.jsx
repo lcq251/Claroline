@@ -18,6 +18,7 @@ const EvaluationSequences = () => {
   return (
     <ToolPage title={trans('sequences', {}, 'evaluation')}>
       <PageListSection
+        title={trans('sequences', {}, 'evaluation')}
         addAction={{
           icon: 'fa fa-fw fa-plus',
           label: trans('add_sequence', {}, 'actions'),

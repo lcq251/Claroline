@@ -17,6 +17,7 @@ import {PageListSection} from '#/main/app/page'
 const ScheduledTaskList = (props) =>
   <ToolPage>
     <PageListSection
+      title={trans('scheduled_tasks', {}, 'scheduler')}
       addAction={{
         name: 'execute-all',
         type: CALLBACK_BUTTON,

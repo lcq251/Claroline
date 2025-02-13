@@ -14,6 +14,7 @@ import {PageListSection} from '#/main/app/page'
 const EvaluationActivities = (props) =>
   <ToolPage title={trans('activities')}>
     <PageListSection
+      title={trans('activities')}
       addAction={{
         name: 'add-resource',
         type: MODAL_BUTTON,

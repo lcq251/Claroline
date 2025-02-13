@@ -29,6 +29,7 @@ const TagList = () => {
   return (
     <ToolPage>
       <PageListSection
+        title={trans('tags', {}, 'tag')}
         addAction={{
           name: 'add',
           type: MODAL_BUTTON,

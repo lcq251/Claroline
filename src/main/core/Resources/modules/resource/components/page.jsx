@@ -1,6 +1,5 @@
 import React, {useCallback, useContext} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import classes from 'classnames'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 

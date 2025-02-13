@@ -4,18 +4,19 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {CourseList} from '#/plugin/cursus/course/components/list'
 import {CreationType} from '#/plugin/cursus/course/components/type'
 import {selectors} from '#/plugin/cursus/tools/trainings/catalog/store'
 import {MODAL_COURSE_TYPE_CREATION} from '#/plugin/cursus/course/modals/creation'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const CatalogList = (props) =>
   <ToolPage
     title={trans('catalog', {}, 'cursus')}
   >
     <PageListSection
+      title={trans('catalog', {}, 'cursus')}
       addAction={{
         name: 'add',
         type: MODAL_BUTTON,

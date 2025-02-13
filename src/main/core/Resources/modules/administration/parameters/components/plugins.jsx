@@ -34,7 +34,9 @@ PluginCard.propTypes = {
 
 const Plugins = (props) =>
   <ToolPage title={trans('plugins')}>
-    <PageListSection>
+    <PageListSection
+      title={trans('plugins')}
+    >
       <ListData
         className="mb-5"
         flush={true}

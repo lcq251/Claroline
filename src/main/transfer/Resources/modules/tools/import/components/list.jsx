@@ -9,10 +9,10 @@ import {ToolPage} from '#/main/core/tool'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {ListData} from '#/main/app/content/list/containers/data'
+import {PageListSection} from '#/main/app/page'
 
 import {transAction} from '#/main/transfer/utils'
 import {selectors} from '#/main/transfer/tools/import/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 import {Badge} from '#/main/app/components/badge'
 
 const ImportList = props =>
@@ -20,6 +20,7 @@ const ImportList = props =>
     title={trans('all_imports', {}, 'transfer')}
   >
     <PageListSection
+      title={trans('all_imports', {}, 'transfer')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

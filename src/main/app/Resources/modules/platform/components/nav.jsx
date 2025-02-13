@@ -27,62 +27,74 @@ const PlatformNav = (props) => {
 
   const currentOrganization = useSelector(selectors.currentOrganization)
 
+  const navTitleId = useId()
+
   const quickAccessTitleId = useId()
   const quickAccessDescId = useId()
   const [quickAccess, setQuickAccess] = useState(false)
 
   return (
-    <div className="app-contexts app-toolbar" role="presentation">
-      <h3 className="visually-hidden">{trans('main_menu')}</h3>
-      <nav
-        className={classes({
+    <nav
+      className="app-contexts app-toolbar"
+      aria-labelledby={navTitleId}
+    >
+      <h1 id={navTitleId} className="visually-hidden">{trans('main_menu')}</h1>
+
+      <h2 id={quickAccessTitleId} className="visually-hidden">{trans('quick_access_links')}</h2>
+      <p id={quickAccessDescId} className="visually-hidden">{trans('quick_access_links_help')}</p>
+      <ul
+        className={classes('list-unstyled d-flex flex-column gap-2 mb-0', {
           'visually-hidden': !quickAccess
         })}
         aria-labelledby={quickAccessTitleId}
         aria-describedby={quickAccessDescId}
       >
-        <h4 id={quickAccessTitleId} className="visually-hidden">{trans('quick_access_links')}</h4>
-        <p id={quickAccessDescId} className="visually-hidden">{trans('quick_access_links_help')}</p>
-
-        <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-          <li>
-            <Button
-              type={CALLBACK_BUTTON}
-              className="app-context-btn focus-ring"
-              icon="fa fa-fw fa-font"
-              label={trans('go_to_content', {}, 'actions')}
-              tooltip="right"
-              callback={() => document.querySelector('.app-page-body').focus()}
-              onFocus={() => {
-                setQuickAccess(true)
-              }}
-            />
-            <Button
-              type={CALLBACK_BUTTON}
-              className="app-context-btn focus-ring"
-              icon="fa fa-fw fa-book"
-              label={trans('go_to_context_menu', {}, 'actions')}
-              tooltip="right"
-              callback={() => document.getElementById('toggle-menu').focus()}
-              onFocus={() => {
-                setQuickAccess(true)
-              }}
-            />
-            <Button
-              type={CALLBACK_BUTTON}
-              className="app-context-btn focus-ring"
-              icon="fa fa-fw fa-tools"
-              label={trans('go_to_tool_menu', {}, 'actions')}
-              tooltip="right"
-              callback={() => document.querySelector('.app-page-body').focus()}
-              onFocus={() => {
-                setQuickAccess(true)
-              }}
-            />
-          </li>
-        </ul>
-        <hr className="app-context-separator mx-auto" aria-hidden={true} />
-      </nav>
+        <li>
+          <Button
+            type={CALLBACK_BUTTON}
+            className="app-context-btn focus-ring"
+            icon="fa fa-fw fa-font"
+            label={trans('go_to_content', {}, 'actions')}
+            tooltip="right"
+            callback={() => document.querySelector('.app-page-body').focus()}
+            onFocus={() => {
+              setQuickAccess(true)
+            }}
+          />
+        </li>
+        <li>
+          <Button
+            type={CALLBACK_BUTTON}
+            className="app-context-btn focus-ring"
+            icon="fa fa-fw fa-book"
+            label={trans('go_to_context_menu', {}, 'actions')}
+            tooltip="right"
+            callback={() => document.querySelector('.app-context-menu-toggle').focus()}
+            onFocus={() => {
+              setQuickAccess(true)
+            }}
+          />
+        </li>
+        <li>
+          <Button
+            type={CALLBACK_BUTTON}
+            className="app-context-btn focus-ring"
+            icon="fa fa-fw fa-tools"
+            label={trans('go_to_tool_menu', {}, 'actions')}
+            tooltip="right"
+            callback={() => document.querySelector('.app-page-body').focus()}
+            onFocus={() => {
+              setQuickAccess(true)
+            }}
+          />
+        </li>
+      </ul>
+      <hr
+        className={classes('app-context-separator mx-auto', {
+          'visually-hidden': !quickAccess
+        })}
+        aria-hidden={true}
+      />
 
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
@@ -102,60 +114,68 @@ const PlatformNav = (props) => {
           </Button>
         </li>
         <li>
-          <Button
-            type={MODAL_BUTTON}
-            className="app-context-btn focus-ring"
-            icon="far fa-fw fa-compass"
-            label={trans('search_and_history')}
-            tooltip="right"
-            modal={[MODAL_CONTEXT_SEARCH]}
-          />
+          <div role="search">
+            <Button
+              type={MODAL_BUTTON}
+              className="app-context-btn focus-ring"
+              icon="far fa-fw fa-compass"
+              label={trans('search_and_history')}
+              tooltip="right"
+              modal={[MODAL_CONTEXT_SEARCH]}
+            />
+          </div>
         </li>
       </ul>
 
       <hr className="app-context-separator mx-auto" aria-hidden={true} />
 
       {0 !== pinnedContexts.length &&
-        <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-          {pinnedContexts.map(pinnedContext => (
-            <li key={pinnedContext.id || trans('loading')}>
-              <Button
-                type={LINK_BUTTON}
-                className="app-context-btn position-relative focus-ring"
-                label={pinnedContext.name || trans('loading')}
-                tooltip="right"
-                target={route(pinnedContext)}
-              >
-                <Thumbnail
-                  size="sm"
-                  thumbnail={pinnedContext.thumbnail}
-                  name={pinnedContext.name}
-                  square={true}
-                />
-              </Button>
-            </li>
-          ))}
-        </ul>
+        <>
+          <h2 className="visually-hidden">{trans('my_favourite_workspaces')}</h2>
+          <p className="visually-hidden">{trans('my_favourite_workspaces_help')}</p>
+          <ul className="list-unstyled d-flex flex-column gap-2 mb-0 flex-fill">
+            {pinnedContexts.map(pinnedContext => (
+              <li key={pinnedContext.id || trans('loading')}>
+                <Button
+                  type={LINK_BUTTON}
+                  className="app-context-btn position-relative focus-ring"
+                  label={pinnedContext.name || trans('loading')}
+                  tooltip="right"
+                  target={route(pinnedContext)}
+                >
+                  <Thumbnail
+                    size="sm"
+                    thumbnail={pinnedContext.thumbnail}
+                    name={pinnedContext.name}
+                    square={true}
+                  />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </>
       }
 
       <hr className="app-context-separator mt-auto mx-auto" aria-hidden={true} />
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
-          <Button
-            type={MODAL_BUTTON}
-            className="app-context-btn focus-ring"
-            icon="fa fa-question"
-            label={trans('Centre d\'aide')}
-            tooltip="right"
-            modal={[MODAL_PLATFORM_HELP]}
-          />
+          <ContextUser className="app-context-btn" />
         </li>
 
         <li>
-          <ContextUser className="app-context-btn" />
+          <div role="contentinfo">
+            <Button
+              type={MODAL_BUTTON}
+              className="app-context-btn focus-ring"
+              icon="fa fa-question"
+              label={trans('Centre d\'aide')}
+              tooltip="right"
+              modal={[MODAL_PLATFORM_HELP]}
+            />
+          </div>
         </li>
       </ul>
-    </div>
+    </nav>
   )
 }
 

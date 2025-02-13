@@ -17,6 +17,7 @@ const AuthenticationIps = props =>
     title={trans('ips', {}, 'security')}
   >
     <PageListSection
+      title={trans('ips', {}, 'security')}
       addAction={{
         name: 'add-ip',
         type: MODAL_BUTTON,

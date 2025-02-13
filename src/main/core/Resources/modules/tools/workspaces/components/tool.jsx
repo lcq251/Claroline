@@ -6,9 +6,9 @@ import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {Tool, constants as toolConstants, ToolOverview} from '#/main/core/tool'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {WorkspaceList} from '#/main/core/workspace/components/list'
-import {PageListSection} from '#/main/app/page/components/list-section'
 import {WorkspacesEditor} from '#/main/core/tools/workspaces/editor/containers/main'
 import {MODAL_WORKSPACE_CREATION} from '#/main/core/workspace/modals/creation'
 import {constants as listConst} from '#/main/app/content/list/constants'
@@ -61,7 +61,17 @@ const WorkspacesTool = (props) => {
           disabled: props.contextType !== toolConstants.TOOL_DESKTOP,
           render: () => (
             <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
-              <PageListSection>
+              <PageListSection
+                title={trans('my_workspaces', {}, 'workspace')}
+                addAction={{
+                  name: 'add',
+                  type: MODAL_BUTTON,
+                  // icon: 'fa fa-fw fa-plus',
+                  label: trans('add_workspace', {}, 'actions'),
+                  displayed: props.canCreate,
+                  modal: [MODAL_WORKSPACE_CREATION]
+                }}
+              >
                 <WorkspaceList
                   className="mb-5"
                   flush={true}
@@ -80,6 +90,7 @@ const WorkspacesTool = (props) => {
           render: () => (
             <ToolPage title={trans('all_workspaces', {}, 'workspace')}>
               <PageListSection
+                title={trans('all_workspaces', {}, 'workspace')}
                 addAction={{
                   name: 'add',
                   type: MODAL_BUTTON,

@@ -27,7 +27,9 @@ const EntriesComponent = props =>
   <ResourcePage
     title={trans('entries_list', {}, 'clacoform')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('entries_list', {}, 'clacoform')}
+    >
       <ListSource
         className="mb-5"
         flush={true}

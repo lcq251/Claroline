@@ -15,7 +15,9 @@ import {PageListSection} from '#/main/app/page'
 
 const AssertionsList = (props) =>
   <ToolPage title={trans('my_badges', {}, 'badge')}>
-    <PageListSection>
+    <PageListSection
+      title={trans('my_badges', {}, 'badge')}
+    >
       <ListData
         className="mb-5"
         flush={true}

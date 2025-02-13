@@ -6,18 +6,20 @@ import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {route} from '#/main/community/user/routing'
 import {UserCard} from '#/main/community/user/components/card'
 import {constants} from '#/main/community/constants'
 import {selectors} from '#/main/community/tools/community/pending/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const PendingMain = props =>
   <ToolPage
     title={trans('pending_registrations')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('pending_registrations')}
+    >
       <ListData
         className="mb-5"
         flush={true}

@@ -1,4 +1,4 @@
-import React, {useId, useState} from 'react'
+import React, {createElement, useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
@@ -45,9 +45,10 @@ PageAside.propTypes = {
 }
 
 const PageBody = ({
-  children
+  children,
+  embedded = false
 }) =>
-  <div className="app-page-body" role="presentation" tabIndex={-1}>
+  <div className="app-page-body" role={!embedded ? 'main' : 'article'} tabIndex={-1}>
     {children}
   </div>
 

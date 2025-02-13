@@ -17,6 +17,7 @@ const AuthenticationTokens = props =>
     title={trans('tokens', {}, 'security')}
   >
     <PageListSection
+      title={trans('tokens', {}, 'security')}
       addAction={{
         name: 'add-token',
         type: MODAL_BUTTON,

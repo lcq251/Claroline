@@ -16,7 +16,9 @@ const MessageTrashComponent = (props) =>
   <ToolPage
     title={trans('messages_removed', {}, 'message')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('messages_removed', {}, 'message')}
+    >
       <ListData
         className="mb-5"
         flush={true}

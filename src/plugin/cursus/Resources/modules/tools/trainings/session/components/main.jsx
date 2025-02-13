@@ -5,10 +5,10 @@ import {useSelector} from 'react-redux'
 import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router/components/routes'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {PageListSection} from '#/main/app/page'
 
 import {ToolPage} from '#/main/core/tool'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
-import {PageListSection} from '#/main/app/page/components/list-section'
 import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {SessionList} from '#/plugin/cursus/session/components/list'
@@ -37,6 +37,7 @@ const SessionMain = (props) => {
               title={trans('sessions', {}, 'cursus')}
             >
               <PageListSection
+                title={trans('sessions', {}, 'cursus')}
                 addAction={{
                   type: MODAL_BUTTON,
                   label: trans('plan_training_session', {}, 'actions'),

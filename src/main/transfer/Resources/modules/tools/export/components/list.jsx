@@ -9,16 +9,17 @@ import {ToolPage} from '#/main/core/tool'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {ListData} from '#/main/app/content/list/containers/data'
+import {PageListSection} from '#/main/app/page'
 
 import {transAction} from '#/main/transfer/utils'
 import {selectors} from '#/main/transfer/tools/export/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const ExportList = (props) =>
   <ToolPage
     title={trans('all_exports', {}, 'transfer')}
   >
     <PageListSection
+      title={trans('all_exports', {}, 'transfer')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

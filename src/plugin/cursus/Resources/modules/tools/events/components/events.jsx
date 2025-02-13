@@ -2,16 +2,18 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {EventList} from '#/plugin/cursus/event/components/list'
 import {selectors} from '#/plugin/cursus/tools/events/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const Events = (props) =>
   <ToolPage
     title={props.title}
   >
-    <PageListSection>
+    <PageListSection
+      title={props.title}
+    >
       <EventList
         className="mb-5"
         flush={true}

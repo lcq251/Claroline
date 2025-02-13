@@ -11,8 +11,11 @@ import {LocationCard} from '#/main/core/data/types/location/components/card'
 import {PageListSection} from '#/main/app/page'
 
 const LocationList = props =>
-  <ToolPage>
+  <ToolPage
+    title={trans('locations')}
+  >
     <PageListSection
+      title={trans('locations')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

@@ -166,7 +166,7 @@ const SearchUnified = (props) => {
   const [updated, setUpdated] = useState(false)
 
   return (
-    <form className="list-search search-unified flex-fill" role="search" action="#">
+    <form className="list-search search-unified flex-fill" action="#">
       <div className="d-flex align-items-center" role="presentation">
         <span className="search-icon fa fa-search text-secondary" aria-hidden={true} />
 

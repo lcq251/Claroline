@@ -15,7 +15,9 @@ const CatalogListComponent = (props) =>
   <ToolPage
     title={trans('catalog', {}, 'cursus')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('catalog', {}, 'cursus')}
+    >
       <CourseList
         className="mb-5"
         flush={true}

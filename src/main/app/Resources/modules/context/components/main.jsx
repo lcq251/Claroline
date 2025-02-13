@@ -17,6 +17,7 @@ import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
 import {ContextMenu} from '#/main/app/context/components/nav'
+import get from 'lodash/get'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
@@ -161,6 +162,8 @@ const ContextMain = (props) => {
 
   return (
     <>
+      <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
+
       {props.menuPined &&
         <ContextMenu />
       }

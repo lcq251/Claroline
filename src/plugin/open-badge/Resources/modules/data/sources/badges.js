@@ -7,12 +7,14 @@ import {route as workspaceRoute} from '#/main/core/workspace/routing'
 import {BadgeCard} from '#/plugin/open-badge/badge/components/card'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
 
+import {getActions, getDefaultAction} from '#/plugin/open-badge/badge/utils'
+
 export default (contextType, contextData, refresher, currentUser) => {
   let basePath
   if ('workspace' === contextType) {
-    basePath = workspaceRoute(contextData, 'community')
+    basePath = workspaceRoute(contextData, 'badges')
   } else {
-    basePath = toolRoute('community')
+    basePath = toolRoute('badges')
   }
 
   return {

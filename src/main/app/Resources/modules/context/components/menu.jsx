@@ -69,6 +69,7 @@ const ContextFlyout = forwardRef((props, ref) => {
 
   return (
     <div {...props} className={classes('app-context-menu p-0 rounded-4', props.className)} ref={ref}>
+      <h2 className="visually-hidden">{trans('Menu de l\'espace de travail')}</h2>
       <div className="flyout-menu-content rounded-bottom-4" role="presentation">
         <div className="d-flex gap-3 px-4 pt-4 my-n1 align-items-center" role="presentation">
           <Button
@@ -88,7 +89,7 @@ const ContextFlyout = forwardRef((props, ref) => {
 
         {1 < toolLinks.length &&
           <nav aria-labelledby={toolsTitleId}>
-            <h4 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h4>
+            <h3 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h3>
             <ul className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
               'flyout-menu-items-2': 6 >= toolLinks.length,
               'flyout-menu-items-4': 6 < toolLinks.length
@@ -109,25 +110,10 @@ const ContextFlyout = forwardRef((props, ref) => {
         }
 
         {1 < organizations.length &&
-          <nav className="bg-body-tertiary p-4 rounded-bottom-4" aria-labelledby={organizationsTitleId}>
-            <h4 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
+          <nav className="bg-body-tertiary p-4 d-flex flex-column rounded-bottom-4" aria-labelledby={organizationsTitleId}>
+            <h3 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
               {trans('organizations', {}, 'community')}
-
-              {3 < organizations.length &&
-                <Button
-                  className="btn btn-link ms-auto"
-                  type={MODAL_BUTTON}
-                  label={trans('see_all', {}, 'actions')}
-                  modal={[MODAL_PLATFORM_ORGANIZATIONS, {
-                    organizations: organizations
-                  }]}
-                  size="sm"
-                  onClick={toggleMenu}
-                >
-                  <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
-                </Button>
-              }
-            </h4>
+            </h3>
 
             <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
               {organizations.slice(0, 3).map(organization => (
@@ -142,6 +128,21 @@ const ContextFlyout = forwardRef((props, ref) => {
                 </li>
               ))}
             </ul>
+
+            {3 < organizations.length &&
+              <Button
+                className="btn btn-link ms-auto mt-3 mb-n1 me-n2"
+                type={MODAL_BUTTON}
+                label={trans('see_all', {}, 'actions')}
+                modal={[MODAL_PLATFORM_ORGANIZATIONS, {
+                  organizations: organizations
+                }]}
+                size="sm"
+                onClick={toggleMenu}
+              >
+                <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
+              </Button>
+            }
           </nav>
         }
       </div>
@@ -183,7 +184,7 @@ const ContextMenu = (props) => {
         <Button
           id="toggle-menu"
           type={MENU_BUTTON}
-          className="btn btn-text-body focus-ring py-1 px-2 ms-n2"
+          className="app-context-menu-toggle btn btn-text-body focus-ring py-1 px-2 ms-n2"
           icon="fa fa-bars"
           label={trans(menuOpened ? 'hide-menu': 'show-menu', {}, 'actions')}
           tooltip="bottom"

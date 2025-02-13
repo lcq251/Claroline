@@ -5,19 +5,20 @@ import isEmpty from 'lodash/isEmpty'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {getPlatformRoles, getWorkspaceRoles} from '#/main/community/utils'
 
 import {GroupList as BaseGroupList} from '#/main/community/group/components/list'
 import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {MODAL_REGISTER} from '#/main/community/modals/register'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const GroupList = props =>
   <ToolPage
     title={trans('groups', {}, 'community')}
   >
     <PageListSection
+      title={trans('groups', {}, 'community')}
       addAction={'desktop' === props.contextType ?
         {
           name: 'add',

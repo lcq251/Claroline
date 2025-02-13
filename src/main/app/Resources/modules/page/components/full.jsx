@@ -20,7 +20,7 @@ const PageFull = (props) =>
       />
     }
 
-    <PageBody>
+    <PageBody embedded={props.embedded}>
       {props.children}
     </PageBody>
   </PageSimple>

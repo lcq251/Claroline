@@ -13,6 +13,7 @@ import {PagePoster} from '#/main/app/page/components/poster'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageListSection} from '#/main/app/page/components/list-section'
+import {PageContentList} from '#/main/app/page/components/list-section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
 
 export {
@@ -21,6 +22,7 @@ export {
   PageAside,
   PageBody,
   PageContent,
+  PageContentList,
   PagePoster,
   PageHeading,
   PageSection,

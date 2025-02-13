@@ -22,6 +22,7 @@ const MessageInboxComponent = (props) =>
     title={trans('messages_received', {}, 'message')}
   >
     <PageListSection
+      title={trans('messages_received', {}, 'message')}
       addAction={{
         name: 'send',
         type: MODAL_BUTTON,

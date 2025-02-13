@@ -4,10 +4,10 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {PresencesList} from '#/plugin/cursus/presence/components/list'
 import {selectors} from '#/plugin/cursus/tools/events/store'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const EventsPresences = (props) =>
   <ToolPage
@@ -18,7 +18,9 @@ const EventsPresences = (props) =>
     }]}
     title={(props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus')}
   >
-    <PageListSection>
+    <PageListSection
+      title={(props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus')}
+    >
       <PresencesList
         className="mb-5"
         flush={true}

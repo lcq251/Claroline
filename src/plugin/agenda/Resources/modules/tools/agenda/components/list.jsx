@@ -24,7 +24,9 @@ const AgendaList = () => {
 
   return (
     <ToolPage title={trans('all_events', {}, 'agenda')}>
-      <PageListSection>
+      <PageListSection
+        title={trans('all_events', {}, 'agenda')}
+      >
         <EventList
           className="mb-5"
           flush={true}

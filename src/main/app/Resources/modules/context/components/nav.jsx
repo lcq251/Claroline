@@ -67,11 +67,12 @@ const ContextMenu = (props) => {
 
   return (
     <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0', props.className)} style={{width: '16rem'}}>
+      <h2 className="visually-hidden">{trans('Menu de l\'espace de travail')}</h2>
       <div className="d-flex flex-row align-items-center">
         <Button
           id="toggle-menu"
           type={CALLBACK_BUTTON}
-          className="btn btn-text-body my-1 ms-2 focus-ring"
+          className="app-context-menu-toggle btn btn-text-body my-1 ms-2 focus-ring"
           icon="fa fa-angles-left"
           label={trans('unpin-menu', {}, 'actions')}
           tooltip="bottom"
@@ -82,7 +83,7 @@ const ContextMenu = (props) => {
 
       {1 < toolLinks.length &&
         <nav aria-labelledby={toolsTitleId} className="d-flex flex-column flex-fill">
-          <h4 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h4>
+          <h3 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h3>
           <ul className={classes('app-menu-items list-unstyled flex-fill px-0 mb-3', {
           })}>
             {toolLinks.map(toolLink =>
@@ -100,10 +101,10 @@ const ContextMenu = (props) => {
       }
 
       {1 < organizations.length &&
-        <nav className="bg-body-tertiary p-4 mt-auto d-flex flex-column" aria-labelledby={organizationsTitleId}>
-          <h4 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase d-flex align-items-center gap-3">
+        <nav className="bg-body-tertiary p-4 d-flex flex-column mt-auto" aria-labelledby={organizationsTitleId}>
+          <h3 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
             {trans('organizations', {}, 'community')}
-          </h4>
+          </h3>
 
           <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
             {organizations.slice(0, 3).map(organization => (

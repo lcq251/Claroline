@@ -2,14 +2,16 @@ import React from 'react'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {selectors} from '#/main/log/administration/logs/store/selectors'
 import {LogMessageList} from '#/main/log/components/message-list'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const LogsMessage = () =>
   <ToolPage title={trans('message', {}, 'log')}>
-    <PageListSection>
+    <PageListSection
+      title={trans('message', {}, 'log')}
+    >
       <LogMessageList
         className="mb-5"
         flush={true}

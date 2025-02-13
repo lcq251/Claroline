@@ -2,14 +2,16 @@ import React from 'react'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
+import {PageListSection} from '#/main/app/page'
 
 import {selectors} from '#/main/log/administration/logs/store/selectors'
 import {LogSecurityList} from '#/main/log/components/security-list'
-import {PageListSection} from '#/main/app/page/components/list-section'
 
 const LogsSecurity = () =>
-  <ToolPage title={trans('security', {}, 'log')}>
-    <PageListSection>
+  <ToolPage>
+    <PageListSection
+      title={trans('security', {}, 'log')}
+    >
       <LogSecurityList
         className="mb-5"
         name={selectors.LIST_NAME}

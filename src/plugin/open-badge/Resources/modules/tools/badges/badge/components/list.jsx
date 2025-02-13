@@ -14,6 +14,7 @@ const BadgeList = props =>
     title={trans('all_badges', {}, 'badge')}
   >
     <PageListSection
+      title={trans('all_badges', {}, 'badge')}
       addAction={{
         name: 'add',
         type: LINK_BUTTON,

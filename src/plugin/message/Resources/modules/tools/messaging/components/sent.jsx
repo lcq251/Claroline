@@ -17,7 +17,17 @@ const MessageSentComponent = (props) =>
   <ToolPage
     title={trans('messages_sent', {}, 'message')}
   >
-    <PageListSection>
+    <PageListSection
+      title={trans('messages_sent', {}, 'message')}
+      addAction={{
+        name: 'send',
+        type: MODAL_BUTTON,
+        icon: 'fa fa-fw fa-comment',
+        label: trans('send-message', {}, 'actions'),
+        modal: [MODAL_MESSAGE],
+        primary: true
+      }}
+    >
       <ListData
         className="mb-5"
         flush={true}
@@ -25,13 +35,6 @@ const MessageSentComponent = (props) =>
         fetch={{
           url: ['apiv2_message_sent'],
           autoload: true
-        }}
-        addAction={{
-          name: 'send',
-          type: MODAL_BUTTON,
-          label: trans('send-message', {}, 'actions'),
-          modal: [MODAL_MESSAGE],
-          primary: true
         }}
         primaryAction={(message) => ({
           type: LINK_BUTTON,

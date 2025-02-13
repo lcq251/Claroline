@@ -35,7 +35,8 @@ const ToolPage = props => {
       ].concat(props.breadcrumb || [])}
       name={trans(toolName, {}, 'tools')}
       title={props.title ?
-        props.title + ' | ' + trans(toolName, {}, 'tools') :
+        // props.title + ' | ' + trans(toolName, {}, 'tools') :
+        props.title :
         trans(toolName, {}, 'tools')
       }
       description={trans(toolName+'_desc', {}, 'tools')}
