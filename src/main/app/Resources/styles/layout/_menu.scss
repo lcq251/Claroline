@@ -1,18 +1,4 @@
 
-.app-toolbar {
-    display: flex;
-    width: map-get($icon-sizes, sm) + 1.5rem;
-    transition: width .4s ease;
-    top: 0;
-    bottom: 0;
-
-    border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
-}
-
-/*.app-body {
-    transition: padding .4s ease;
-}*/
-
 .app-menu {
     --#{$prefix}menu-color: #{$toolbar-color};
     --#{$prefix}menu-bg: #{$toolbar-bg};
@@ -24,7 +10,7 @@
 
     background-color: var(--#{$prefix}menu-bg);
     color: var(--#{$prefix}menu-color);
-    border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+    // border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
 
 .app-menu-items {
@@ -103,18 +89,6 @@
             color: var(--#{$prefix}menu-item-disabled-color);
             background: var(--#{$prefix}menu-item-disabled-bg);
         }
-    }
-}
-
-// MD/LG screens :
-@media (max-width: map-get($grid-breakpoints, 'xl')) {
-
-}
-
-// XS/SM screens :
-@media (max-width: map-get($grid-breakpoints, 'md')) {
-    .app-toolbar {
-        display: none;
     }
 }
 

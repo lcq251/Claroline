@@ -51,7 +51,7 @@ const UserStatus = ({
           tip={constants.USER_STATUSES[status]}
           position="bottom"
         >
-          <span className={classes('user-status', className)} role="presentation">
+          <span className={className} role="presentation">
             <UserStatusBullet status={status} />
             <UserStatusLabel status={status} className="visually-hidden" />
           </span>
@@ -60,7 +60,7 @@ const UserStatus = ({
 
     case 'bullet':
       return (
-        <span className={classes('user-status', className)} role="presentation">
+        <span className={className} role="presentation">
           <UserStatusBullet status={status} />
           <UserStatusLabel status={status} className="visually-hidden" />
         </span>

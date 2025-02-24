@@ -21,7 +21,6 @@
     color: var(--#{$prefix}secondary);
     font-weight: $font-weight-bold !important;
 
-
     &:not(.placeholder) {
         color: var(--#{$prefix}primary);
         background-color: color-mix(in srgb, currentColor 15%, transparent);

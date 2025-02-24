@@ -87,7 +87,7 @@ const GroupList = props =>
             options: {
               multiple: true,
               picker: !isEmpty(props.contextData) ? {
-                url: ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}],
+                url: ['apiv2_workspace_list_roles', {id: props.contextData.id}],
                 filters: []
               } : undefined
             }

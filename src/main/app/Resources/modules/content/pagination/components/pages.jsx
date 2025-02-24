@@ -17,7 +17,6 @@ const PaginationPages = props =>
     </CallbackButton>
 
     <MenuButton
-      id="pagination-pages-dropdown"
       className="w-100 btn btn-body"
       disabled={props.disabled || 1 === props.pages}
       menu={{

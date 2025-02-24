@@ -6,7 +6,6 @@ import omit from 'lodash/omit'
 import {Routes} from '#/main/app/router'
 import {Toolbar} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {PageContent} from '#/main/app/page'
 
 const Dashboard = (props) => {
   return (
@@ -23,7 +22,7 @@ const Dashboard = (props) => {
           displayed: !page.disabled
         }))}
       />
-      <PageContent className="d-flex">
+      {/*<div className="d-flex flex-column mt-4 flex-fill" role="presentation">*/}
         <Routes
           path={props.path}
           redirect={!isEmpty(props.pages) ? [
@@ -34,7 +33,7 @@ const Dashboard = (props) => {
             ...omit(page, 'name', 'icon', 'title')
           }))}
         />
-      </PageContent>
+      {/*</div>*/}
     </>
   )
 }

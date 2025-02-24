@@ -16,26 +16,29 @@ const CallbackButton = forwardRef((props, ref) => {
         // execute the default click callback if any (mostly to make dropdown works)
         props.onClick(e)
       }
+
       props.callback(e)
     }
 
-    e.preventDefault()
-    e.stopPropagation()
+    // e.preventDefault()
+    // e.stopPropagation()
 
     //e.target.blur()
   }, [props.disabled, props.callback, props.onClick])
 
-  return (<button
-    {...omit(props, 'variant', 'active', 'displayed', 'primary', 'dangerous', 'size', 'callback', 'htmlType')}
-    ref={ref}
-    type={props.htmlType}
-    tabIndex={props.tabIndex}
-    disabled={props.disabled}
-    className={buttonClasses(props.className, props.variant, props.size, props.disabled, props.active, props.primary, props.dangerous)}
-    onClick={onClick}
-  >
-    {props.children}
-  </button>)
+  return (
+    <button
+      {...omit(props, 'variant', 'active', 'displayed', 'primary', 'dangerous', 'size', 'callback', 'htmlType')}
+      ref={ref}
+      type={props.htmlType}
+      tabIndex={props.tabIndex}
+      disabled={props.disabled}
+      className={buttonClasses(props.className, props.variant, props.size, props.disabled, props.active, props.primary, props.dangerous)}
+      onClick={onClick}
+    >
+      {props.children}
+    </button>
+  )
 })
 
 // for debug purpose, otherwise component is named after the HOC

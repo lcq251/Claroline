@@ -32,7 +32,7 @@ const RoleList = props =>
         path={props.path}
         name={selectors.LIST_NAME}
         url={!isEmpty(props.contextData) ?
-          ['apiv2_workspace_list_roles_configurable', {workspace: props.contextData.id}] :
+          ['apiv2_workspace_list_roles', {id: props.contextData.id}] :
           ['apiv2_role_list']
         }
       />

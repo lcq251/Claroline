@@ -4,7 +4,6 @@ namespace Claroline\CoreBundle\Transfer\Importer\Directory;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
-use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
@@ -20,7 +19,6 @@ class Create extends AbstractImporter
     public function __construct(
         private readonly Crud $crud,
         private readonly ObjectManager $om,
-        private readonly SerializerProvider $serializer,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -240,8 +238,6 @@ class Create extends AbstractImporter
 
     public function getExtraDefinition(?array $options = [], ?array $extra = []): array
     {
-        $root = $this->serializer->serialize($this->om->getRepository(ResourceNode::class)->findOneBy(['parent' => null, 'workspace' => $extra['workspace']['id']]));
-
         return ['fields' => [
             [
                 'name' => 'directory',
@@ -254,8 +250,7 @@ class Create extends AbstractImporter
                             ['property' => 'workspace', 'value' => $extra['workspace']['id'], 'locked' => true],
                             ['property' => 'resourceType', 'value' => 'directory', 'locked' => true],
                         ],
-                        'current' => $root,
-                        'root' => $root,
+                        'contextId' => $extra['workspace']['id'],
                     ],
                 ],
             ],

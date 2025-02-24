@@ -1,10 +1,145 @@
-import React from 'react'
+import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {Collapse} from 'react-bootstrap'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {Section, Sections} from '#/main/app/content/components/sections'
+import {Heading} from '#/main/app/components/heading'
+import {Toolbar} from '#/main/app/action'
+
 import {getValidationClassName} from '#/main/app/content/form/validator'
+
+const FormPrimarySection = (props) => {
+  const titleId = useId()
+  const descriptionId = useId()
+
+  return (
+    <section
+      className={classes('form-primary-section', props.className)}
+      aria-labelledby={titleId}
+      aria-describedby={props.description ? descriptionId : undefined}
+    >
+      <header className={classes({
+        'mb-5': !props.hideTitle,
+        'visually-hidden': props.hideTitle
+      })}>
+        <Heading
+          id={titleId}
+          className="mb-0"
+          level={props.level}
+          displayLevel={props.displayLevel}
+        >
+          {props.title}
+        </Heading>
+
+        {props.description &&
+          <p id={descriptionId} className="text-body-secondary mt-2 mb-0">{props.description}</p>
+        }
+      </header>
+
+      {!isEmpty(props.actions) &&
+        <Toolbar
+          buttonName="btn"
+          className="text-right form-group"
+          size="sm"
+          actions={props.actions}
+        />
+      }
+
+      {props.children}
+    </section>
+  )
+}
+
+FormPrimarySection.propTypes = {
+  className: T.string,
+  level: T.number, // level for section heading
+  displayLevel: T.number, // modifier for headings level (used when some headings levels are hidden in the page)
+  first: T.bool,
+  title: T.string,
+  hideTitle: T.bool,
+  description: T.string,
+  actions: T.array,
+  children: T.node.isRequired
+}
+
+const FormToggleSection = (props) => {
+  const titleId = useId()
+  const descriptionId = useId()
+  const toggleId = useId()
+
+  return (
+    <section
+      className={classes('form-primary-section', props.className)}
+      aria-labelledby={titleId}
+      aria-describedby={props.description ? descriptionId : undefined}
+    >
+      <header className="mb-5">
+        <Heading
+          id={titleId}
+          className="mb-0 form-check form-switch form-check-reverse d-flex flex-row flex-nowrap align-items-center"
+          level={props.level}
+          displayLevel={props.displayLevel - 2}
+        >
+          <label
+            className={classes('form-check-label flex-fill text-start', {
+              'text-secondary': !props.displayed
+            }, `fs-${props.displayLevel}`)}
+            htmlFor={toggleId}
+          >
+            {props.title}
+          </label>
+
+          <input
+            id={toggleId}
+            className="form-check-input"
+            type="checkbox"
+            checked={props.displayed}
+            disabled={props.disabled}
+            onChange={(e) => props.onToggle(e.target.checked)}
+            role="switch"
+          />
+        </Heading>
+
+        {props.description &&
+          <p id={descriptionId} className="text-body-secondary mt-2 mb-0">{props.description}</p>
+        }
+      </header>
+
+      <Collapse in={props.displayed} appear={false}>
+        <div role="presentation">
+          {!isEmpty(props.actions) &&
+            <Toolbar
+              buttonName="btn"
+              className="text-right form-group"
+              size="sm"
+              actions={props.actions}
+            />
+          }
+
+          {props.children}
+        </div>
+      </Collapse>
+    </section>
+  )
+}
+
+FormToggleSection.propTypes = {
+  className: T.string,
+  level: T.number, // level for section heading
+  displayLevel: T.number, // modifier for headings level (used when some headings levels are hidden in the page)
+  first: T.bool,
+  title: T.string,
+  hideTitle: T.bool,
+  description: T.string,
+  actions: T.array,
+  children: T.node.isRequired,
+  displayed: T.bool,
+  onToggle: T.func.isRequired,
+  disabled: T.bool
+}
 
 /**
  * Renders a form section.
@@ -48,6 +183,8 @@ FormSections.propTypes = {
 }
 
 export {
+  FormPrimarySection,
+  FormToggleSection,
   FormSection,
   FormSections
 }

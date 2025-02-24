@@ -65,12 +65,3 @@ actions.fetch = (contextType, contextId = null) => (dispatch) => dispatch({
     }
   }
 })
-
-// todo : to move in platform actions instead ?
-actions.changeStatus = (currentUser, status) => (dispatch) => dispatch({
-  [API_REQUEST]: {
-    url: ['apiv2_user_change_status', {status: status}],
-    success: (response) => dispatch(securityActions.updateUser(merge({}, currentUser, {status: response}))),
-    request: {method: 'PUT'}
-  }
-})

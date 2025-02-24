@@ -6,7 +6,6 @@ import {User} from '#/main/community/user/prop-types'
 const Workspace = {
   propTypes: {
     id: T.string,
-    autoId: T.number,
     name: T.string,
     slug: T.string,
     poster: T.string,
@@ -38,7 +37,6 @@ const Workspace = {
       dates: T.arrayOf(T.string)
     }),
     evaluation: T.shape({
-      estimatedDuration: T.number,
       scoreTotal: T.number
     })
   },
@@ -52,10 +50,6 @@ const Workspace = {
       showProgression: true,
       showMenu: true
     },
-    /*breadcrumb: {
-      displayed: true,
-      items: ['desktop', 'workspaces', 'current', 'tool']
-    },*/
     registration: {
       validation: false,
       selfRegistration: false,
@@ -65,9 +59,6 @@ const Workspace = {
       hidden: false,
       dates: []
     },
-    /*notifications: {
-      enabled: false
-    },*/
     evaluation: {
       scoreTotal: 100
     }

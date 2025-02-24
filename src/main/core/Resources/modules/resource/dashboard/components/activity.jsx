@@ -1,8 +1,7 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 
-import {PageSection} from '#/main/app/page'
-import {DashboardPage} from '#/main/app/dashboard'
+import {PageContent, PageSection} from '#/main/app/page'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {Activity} from '#/main/log/activity/components/main'
@@ -12,14 +11,14 @@ const ResourceDashboardActivity = () => {
   const resourceId = useSelector(resourceSelectors.id)
 
   return (
-    <DashboardPage>
+    <PageContent>
       <PageSection size="md" className="mx-auto">
         <Activity
           name={selectors.STORE_NAME + '.logs'}
           url={['apiv2_resource_functional_logs', {id: resourceId}]}
         />
       </PageSection>
-    </DashboardPage>
+    </PageContent>
   )
 }
 

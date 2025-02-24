@@ -68,9 +68,13 @@ const ResourceCreationModal = (props) => {
     case 'info':
       StepComponent = (
         <CreationInfo
-          create={() => props.create(props.parent).then(response => props.add([response]))}
+          create={() => props.create(props.parent).then(response => {
+            props.add([response])
+            props.fadeModal()
+
+            return response
+          })}
           changeStep={setCurrentStep}
-          fadeModal={props.fadeModal}
         />
       )
       break
@@ -78,7 +82,7 @@ const ResourceCreationModal = (props) => {
 
   return (
     <Modal
-      {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add')}
+      {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add', 'fromFile')}
       title={trans('new_resource', {}, 'resource')}
       subtitle={trans('new_resource_desc', {}, 'resource')}
       centered={true}

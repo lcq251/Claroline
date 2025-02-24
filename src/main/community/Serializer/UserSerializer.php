@@ -63,9 +63,9 @@ class UserSerializer
                 'id' => $user->getUuid(),
                 'name' => $user->getFullName(),
                 'status' => $user->getStatus(),
-                'lastActivity' => DateNormalizer::normalize($user->getLastActivity()),
                 'picture' => $user->getPicture(),
                 'username' => $user->getUsername(), // required because used to user profile URL
+                'poster' => $user->getPoster(),
             ];
         }
 

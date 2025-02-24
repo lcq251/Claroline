@@ -26,10 +26,6 @@ const ContextMenu = (props) => {
   // get context organizations
   const organizations = useSelector(selectors.organizations)
 
-  if (notFound || hasErrors) {
-    return null
-  }
-
   const [pinedMenu, setPinedMenu] = useLocaleStorage('contextMenuPined', false)
   const toggleMenu = useCallback(() => {
     setPinedMenu(!pinedMenu)
@@ -39,9 +35,13 @@ const ContextMenu = (props) => {
   const toolsTitleId = useId()
   const organizationsTitleId = useId()
 
+  if (notFound || hasErrors) {
+    return null
+  }
+
   return (
-    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0', props.className)} style={{width: '16rem'}}>
-      <h2 className="visually-hidden">{trans('Menu de l\'espace de travail')}</h2>
+    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0 border-end', props.className)} style={{width: '16rem'}}>
+      <h2 className="visually-hidden">{trans('context_menu')}</h2>
       <div className="d-flex flex-row align-items-center">
         <Button
           id="toggle-menu"

@@ -44,9 +44,9 @@ const ResourceEditorOverview = (props) =>
             required: true
           }, {
             name: 'resourceNode.meta.published',
-            label: trans('publish', {}, 'actions'),
+            label: trans('publish_resource', {}, 'resource'),
             type: 'boolean',
-            help: trans('Temps que la ressource n\'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission "Modifier".', {}, 'resource')
+            help: trans('publish_resource_help', {}, 'resource')
           }
         ]
       }, {

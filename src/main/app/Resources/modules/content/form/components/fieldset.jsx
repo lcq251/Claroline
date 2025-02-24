@@ -6,10 +6,10 @@ import isEmpty from 'lodash/isEmpty'
 import set from 'lodash/set'
 
 import {Alert} from '#/main/app/components/alert'
+import {toKey} from '#/main/app/utils/text'
+import {Html} from '#/main/app/components/html'
 import {DataInput} from '#/main/app/data/components/input'
 import {DataDisplay} from '#/main/app/data/components/display'
-import {toKey} from '#/main/app/utils/text'
-import {ContentHtml} from '#/main/app/content/components/html'
 
 /**
  * ATTENTION : as it's only to be used in the FormData component, the `fields` are not defaulted by the component.
@@ -130,7 +130,7 @@ class FormFieldset extends Component {
 
       return helps.map(help =>
         <Alert key={toKey(help)} type="info">
-          <ContentHtml>{help}</ContentHtml>
+          <Html>{help}</Html>
         </Alert>
       )
     }
@@ -160,7 +160,7 @@ FormFieldset.propTypes = {
   data: T.object,
   help: T.oneOfType([T.string, T.arrayOf(T.string)]),
   fields: T.arrayOf(T.shape({
-    // TODO : fields propTypes
+    // fields propTypes
   })).isRequired,
   setErrors: T.func.isRequired,
   updateProp: T.func.isRequired,

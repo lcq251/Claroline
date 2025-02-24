@@ -79,6 +79,10 @@
     @include border-radius($input-border-radius);
 }
 
+.form-check-input {
+    cursor: $form-check-label-cursor;
+}
+
 // restrictive selector to override bootstrap
 // bottom margin is to add space for vertical display, but is not removed in inline mode,
 // and it can create inconsistent margin.

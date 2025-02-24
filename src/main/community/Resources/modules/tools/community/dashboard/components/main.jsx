@@ -3,10 +3,9 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {ToolDashboard} from '#/main/core/tool'
 
-import {DashboardPage} from '#/main/app/dashboard'
 import {DashboardActivity} from '#/main/community/tools/community/dashboard/components/activity'
 
 class CommunityDashboard extends Component {
@@ -31,7 +30,7 @@ class CommunityDashboard extends Component {
             icon: 'fa fa-temperature-half',
             title: trans('overview'),
             render: () => (
-              <DashboardPage>
+              <PageContent>
                 <PageSection size="full">
                   <ContentInfoBlocks
                     size="lg"
@@ -48,7 +47,7 @@ class CommunityDashboard extends Component {
                     ]}
                   />
                 </PageSection>
-              </DashboardPage>
+              </PageContent>
             )
           }, {
             name: 'stats',

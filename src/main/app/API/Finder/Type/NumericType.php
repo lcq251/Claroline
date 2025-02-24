@@ -12,7 +12,7 @@ class NumericType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'default' => null
+            'default' => null,
         ]);
 
         $resolver->setAllowedTypes('default', ['null', 'numeric']);
@@ -20,6 +20,10 @@ class NumericType extends AbstractType
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
     {
+        if ($finder->getSortValue()) {
+            $queryBuilder->addOrderBy($finder->getQueryPath(), $finder->getSortValue());
+        }
+
         $value = $options['default'];
         if (is_numeric($finder->getFilterValue())) {
             // convert numbers

@@ -12,9 +12,9 @@ import {UserCard} from '#/main/community/user/components/card'
 
 const UsersModal = (props) =>
   <PickerModal
-    url={['apiv2_user_list']}
-    title={trans('users', {}, 'community')}
     {...props}
+    url={props.url || ['apiv2_user_list']}
+    title={props.title || trans('users', {}, 'community')}
     icon="fa fa-fw fa-user"
     name="usersPicker"
     definition={[

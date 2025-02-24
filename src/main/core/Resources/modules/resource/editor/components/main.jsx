@@ -42,7 +42,6 @@ const ResourceEditor = (props) => {
     <Editor
       path={resourcePath+'/edit'}
       title={get(editedNode, 'name') || (resourceType && trans(resourceType, {}, 'resource')) || trans('resource')}
-      styles={props.styles}
       name={resourceSelectors.EDITOR_NAME}
       target={['claro_resource_action', {
         action: 'configure',

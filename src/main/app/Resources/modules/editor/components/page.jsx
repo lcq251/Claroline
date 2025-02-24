@@ -26,19 +26,21 @@ const EditorPage = (props) => {
         onSave={editorDef.onSave}
         buttons={true}
       >
-        <header className="d-flex flex-row align-items-center gap-2 mb-2">
-          <Heading level={1} displayLevel={4} className="app-editor-title m-0">
-            {props.title}
-          </Heading>
+        <header className="mb-5">
+          <div className="d-flex flex-row align-items-center gap-2" role="presentation">
+            <Heading level={1} displayLevel={4} className="app-editor-title m-0">
+              {props.title}
+            </Heading>
 
-          {props.managerOnly &&
-            <Badge variant="primary" subtle={true}>{trans('confidentiality_manager')}</Badge>
+            {props.managerOnly &&
+              <Badge variant="primary" subtle={true}>{trans('confidentiality_manager')}</Badge>
+            }
+          </div>
+
+          {props.help &&
+            <p className="lead text-body-secondary mt-2 mb-0">{props.help}</p>
           }
         </header>
-
-        {props.help &&
-          <p className="text-body-secondary">{props.help}</p>
-        }
 
         {!isEmpty(props.definition) &&
           <FormContent
@@ -58,7 +60,7 @@ const EditorPage = (props) => {
 
       <Toolbar
         className="app-editor-toolbar sticky-top"
-        buttonName="btn btn-text-body focus-ring"
+        buttonName="btn btn-text-body focus-ring focus-ring-secondary"
         separatorName="my-2 border-top border-1"
         tooltip="left"
         toolbar={"close summary | " + (props.actions ? props.actions.map(a => !['close', 'summary'].includes(a.name)) : '')}

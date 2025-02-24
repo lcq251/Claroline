@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
-import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
@@ -17,11 +16,11 @@ import {UserCard} from '#/main/community/user/components/card'
 import {UserStatus} from '#/main/app/user/components/status'
 
 const Users = (props) => {
-  const usersRefresher = merge({
+  const usersRefresher = {
     add:    () => props.invalidate(props.name),
     update: () => props.invalidate(props.name),
     delete: () => props.invalidate(props.name)
-  }, props.refresher || {})
+  }
 
   return (
     <ListData
@@ -104,7 +103,7 @@ const Users = (props) => {
         }
       ].concat(props.customDefinition)}
 
-      {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'refresher', 'invalidate')}
+      {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'invalidate')}
 
       name={props.name}
       fetch={{
@@ -126,12 +125,7 @@ Users.propTypes = {
     // data list prop types
   })),
   customActions: T.func,
-  invalidate: T.func.isRequired,
-  refresher: T.shape({
-    add: T.func,
-    update: T.func,
-    delete: T.func
-  })
+  invalidate: T.func.isRequired
 }
 
 Users.defaultProps = {

@@ -6,7 +6,6 @@ import Dropdown from 'react-bootstrap/Dropdown'
 // forwardRef is required for tooltip
 const MenuOverlay = forwardRef((props, ref) =>
   <Dropdown
-    id={props.id}
     show={props.show}
     drop={'top' === props.position ? 'up' : 'down'}
     autoClose={true}
@@ -20,18 +19,12 @@ const MenuOverlay = forwardRef((props, ref) =>
 )
 
 MenuOverlay.propTypes = {
-  id: T.string.isRequired,
   show: T.bool,
   className: T.string,
   disabled: T.bool,
   position: T.oneOf(['top', 'bottom']),
   children: T.node.isRequired,
   onToggle: T.func
-}
-
-MenuOverlay.defaultProps = {
-  disabled: false,
-  position: 'bottom'
 }
 
 export {

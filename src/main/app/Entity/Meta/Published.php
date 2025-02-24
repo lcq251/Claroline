@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait Published
 {
-    #[ORM\Column(name: 'published', type: Types::BOOLEAN, options: ['default' => 1])]
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
     protected bool $published = true;
 
     /**

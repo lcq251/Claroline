@@ -24,7 +24,7 @@ const GridSort = props =>
       primary={true}
       menu={{
         label: trans('list_columns'),
-        align: 'right',
+        align: 'end',
         items: props.available.map(column => ({
           type: CALLBACK_BUTTON,
           label: column.label,

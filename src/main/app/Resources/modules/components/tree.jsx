@@ -9,7 +9,8 @@ import {Button, Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const TreeItem = ({
-  item
+  item,
+  size = 'md'
 }) => {
   const [expanded, setExpanded] = useState(true)
 
@@ -35,14 +36,21 @@ const TreeItem = ({
         }
 
         <Button
-          className="btn btn-text-body text-truncate px-1 py-2 focus-ring flex-fill text-start"
-          {...omit(item, 'children', 'actions')}
+          className={classes('btn btn-text-body text-truncate px-1 focus-ring flex-fill text-start', {
+            'py-1': 'sm' === size,
+            'py-2': 'sm' !== size
+          })}
+          {...omit(item, 'className', 'children', 'actions')}
+          size={size}
         />
 
         {!isEmpty(item.actions) &&
           <Toolbar
             className="ms-auto flex-shrink-0"
-            buttonName="btn btn-text-body px-1 py-2 focus-ring"
+            buttonName={classes('btn btn-text-body px-1 py-2 focus-ring', {
+              'py-1': 'sm' === size,
+              'py-2': 'sm' !== size
+            })}
             toolbar="more"
             tooltip="bottom"
             actions={item.actions}
@@ -55,7 +63,9 @@ const TreeItem = ({
         <ul className="list-unstyled ps-4">
           {item.children.map(child =>
             <TreeItem
+              key={child.id}
               item={child}
+              size="sm"
             />
           )}
         </ul>
@@ -65,6 +75,7 @@ const TreeItem = ({
 }
 
 const Tree = ({
+  size,
   items = [],
   className = null
 }) => {
@@ -78,6 +89,7 @@ const Tree = ({
         <TreeItem
           key={item.id}
           item={item}
+          size={size}
         />
       )}
     </ul>

@@ -1,4 +1,4 @@
-.app-contexts {
+.app-main-menu {
   --#{$prefix}menu-bg: #{$toolbar-bg};
   --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle};
 
@@ -7,19 +7,7 @@
   padding: $spacer 0;
   display: flex;
   flex-direction: column;
-}
-
-.app-context-jump {
-  &:not(:focus) {
-    overflow: hidden;
-    height: 0;
-    width: 0;
-    margin-bottom: 0;
-  }
-
-  &:focus {
-    margin-bottom: map-get($spacers, 2);
-  }
+  width: map-get($icon-sizes, sm) + 1.5rem;
 }
 
 .app-context-btn {
@@ -90,12 +78,11 @@
 
 .app-context-separator {
   width: 48px;
-  //margin: 0;
 }
 
 @if $enable-dark-mode {
   @include color-mode(dark) {
-    .app-contexts {
+    .app-main-menu {
       --#{$prefix}menu-bg: #{$toolbar-bg-dark};
       --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle-dark};
     }

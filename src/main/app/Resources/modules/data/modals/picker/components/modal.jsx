@@ -19,7 +19,7 @@ import {constants as listConst} from '#/main/app/content/list'
 const PickerModal = (props) => {
   // append list reducer to the store if not already mounted
   const reducer = useMemo(() => makeListReducer(props.name, {
-    filters: props.filters || []
+    filters: {filters: props.filters || []}
   }, {
     selected: makeReducer([], {
       [makeInstanceAction(LIST_TOGGLE_SELECT, props.name)]: (state, action) => {
@@ -90,7 +90,6 @@ const PickerModal = (props) => {
           /> :
           props.children
         }
-        {}
       </div>
 
       {props.children}

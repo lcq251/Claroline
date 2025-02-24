@@ -1,11 +1,12 @@
 .dropdown-header {
   text-transform: var(--#{$prefix}label-text-transform);
   font-size: $label-font-size;
+  font-weight: var(--#{$prefix}body-font-weight);
 }
 
-.dropdown-menu-full {
+/*.dropdown-menu-full {
   width: 100% !important; // to be sure to override other dropdown sizing
-}
+}*/
 
 .dropdown-item {
   .action-subscript {

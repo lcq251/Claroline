@@ -13,7 +13,7 @@ import {Thumbnail} from '#/main/app/components/thumbnail'
 import {MODAL_CONTEXT_SEARCH} from '#/main/app/context/modals/search'
 
 import {selectors} from '#/main/app/platform/store'
-import {ContextUser} from '#/main/app/context/containers/user'
+import {PlatformUser} from '#/main/app/platform/components/user'
 import {MODAL_PLATFORM_HELP} from '#/main/app/platform/modals/help'
 
 const PlatformNav = (props) => {
@@ -35,7 +35,7 @@ const PlatformNav = (props) => {
 
   return (
     <nav
-      className="app-contexts app-toolbar"
+      className="app-main-menu border-end"
       aria-labelledby={navTitleId}
     >
       <h1 id={navTitleId} className="visually-hidden">{trans('main_menu')}</h1>
@@ -159,7 +159,7 @@ const PlatformNav = (props) => {
       <hr className="app-context-separator mt-auto mx-auto" aria-hidden={true} />
       <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
         <li>
-          <ContextUser className="app-context-btn" />
+          <PlatformUser className="app-context-btn" />
         </li>
 
         <li>
@@ -180,9 +180,6 @@ const PlatformNav = (props) => {
 }
 
 PlatformNav.propTypes = {
-  currentUser: T.shape({
-
-  }).isRequired,
   currentContext: T.shape({
     id: T.string
   }),

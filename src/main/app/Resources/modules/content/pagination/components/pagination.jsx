@@ -7,22 +7,30 @@ import {countPages} from '#/main/app/content/pagination/utils'
 import {PaginationPages} from '#/main/app/content/pagination/components/pages'
 import {PaginationSize} from '#/main/app/content/pagination/components/size'
 
-const Pagination = props => {
-  if (props.availableSizes[0] < props.totalResults) {
+const Pagination = ({
+  totalResults,
+  changePage,
+  updatePageSize,
+  current = 0,
+  pageSize = constants.DEFAULT_PAGE_SIZE,
+  availableSizes = constants.AVAILABLE_PAGE_SIZES,
+  disabled = false
+}) => {
+  if (availableSizes[0] < totalResults) {
     return (
-      <div className="pagination-container gap-2" role="presentation">
+      <div className="d-flex gap-2" role="presentation">
         <PaginationPages
-          disabled={props.disabled}
-          current={props.current}
-          pages={countPages(props.totalResults, props.pageSize)}
-          changePage={props.changePage}
+          disabled={disabled}
+          current={current}
+          pages={countPages(totalResults, pageSize)}
+          changePage={changePage}
         />
 
         <PaginationSize
-          disabled={props.disabled}
-          pageSize={props.pageSize}
-          availableSizes={props.availableSizes}
-          updatePageSize={props.updatePageSize}
+          disabled={disabled}
+          pageSize={pageSize}
+          availableSizes={availableSizes}
+          updatePageSize={updatePageSize}
         />
       </div>
     )
@@ -39,13 +47,6 @@ Pagination.propTypes = {
   availableSizes: T.arrayOf(T.number),
   changePage: T.func.isRequired,
   updatePageSize: T.func.isRequired
-}
-
-Pagination.defaultProps = {
-  disabled: false,
-  current: 0,
-  pageSize: constants.DEFAULT_PAGE_SIZE,
-  availableSizes: constants.AVAILABLE_PAGE_SIZES
 }
 
 export {

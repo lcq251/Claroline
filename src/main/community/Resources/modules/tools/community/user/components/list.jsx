@@ -108,7 +108,7 @@ const UserList = props =>
             options: {
               multiple: true,
               picker: 'workspace' === props.contextType ? {
-                url: ['apiv2_workspace_list_roles_configurable', {workspace: get(props.contextData, 'id')}],
+                url: ['apiv2_workspace_list_roles', {id: get(props.contextData, 'id')}],
                 filters: []
               } : undefined
             }

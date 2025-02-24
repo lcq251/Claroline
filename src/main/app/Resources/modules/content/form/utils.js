@@ -5,6 +5,8 @@ import mergeWith from 'lodash/mergeWith'
 import omitBy from 'lodash/omitBy'
 
 import {DataFormSection, DataFormProperty} from '#/main/app/content/form/prop-types'
+import {toKey} from '#/main/app/utils/text'
+import get from 'lodash/get'
 
 function isFieldDisplayed(element, data) {
   return typeof element.displayed === 'function' ? element.displayed(data) : element.displayed
@@ -29,7 +31,7 @@ function createFieldsetDefinition(fields, locked = [], data) {
     // adds default to fields
     .map(field => createFieldDefinition(field, locked, data))
     // filters hidden fields
-    .filter(field =>isFieldDisplayed(field, data))
+    .filter(field => isFieldDisplayed(field, data))
 }
 
 /**
@@ -96,9 +98,35 @@ function cleanErrors(errors, newErrors) {
   }), isEmpty)
 }
 
+function getSectionId(section, formId = null) {
+  let id = formId ? `${formId}-` : ''
+
+  id += section.id || toKey(section.title)
+
+  return id
+}
+
+function getSectionErrors(sectionFields = [], errors = {}) {
+  let sectionErrors = []
+
+  sectionFields.map(field => {
+    if (get(errors, field.name)) {
+      sectionErrors.push(get(errors, field.name))
+    }
+
+    if (field.linked) {
+      sectionErrors = sectionErrors.concat(getSectionErrors(field.linked, errors))
+    }
+  })
+
+  return sectionErrors
+}
+
 export {
   createFieldDefinition,
   createFieldsetDefinition,
   createFormDefinition,
-  cleanErrors
+  cleanErrors,
+  getSectionId,
+  getSectionErrors
 }

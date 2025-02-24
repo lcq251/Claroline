@@ -92,7 +92,7 @@ class ListExporter extends AbstractListExporter
         foreach ($userProfile->getSections() as $section) {
             foreach ($section->getFields() as $field) {
                 $availableFields['properties'][] = [
-                    'name' => $field->getAlias() ? "profile.{$field->getUuid()}" : "profile.$field->getUuid()",
+                    'name' => $field->getAlias() ? "profile.{$field->getAlias()}" : "profile.{$field->getUuid()}",
                     'type' => $field->getType(),
                     'label' => $field->getLabel(),
                     'description' => $field->getLabel(),

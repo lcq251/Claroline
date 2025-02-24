@@ -301,6 +301,7 @@
     "path": "Parcours",
     "pending": "En attente",
     "percentage": "Pourcentage",
+    "percent": "%value% %",
     "permissions": "Permissions",
     "personal_workspace": "Espace personnel",
     "phone": "Téléphone",
@@ -364,7 +365,7 @@
     "roles": "Rôles",
     "save": "Sauvegarder",
     "score": "Score",
-    "score_to_pass": "Score à obtenir pour réussir",
+    "score_to_pass": "Score à obtenir",
     "score_total": "Score total",
     "second": "seconde",
     "seconds": "secondes",
@@ -819,7 +820,8 @@
     "per_day": "par jour",
     "per_day_short": "/jour",
     "internal_note": "Note interne",
-    "my_account": "Mon compte",
+    "impersonated_account": "Compte usurpé : %name%",
+    "my_account": "Mon compte : %name%",
     "my_profile": "Mon profil",
     "file_drop_help": "Déposez vos fichiers pour les importer dans la plateforme",
     "file_opening_download": "Proposer le téléchargement du fichier",
@@ -874,5 +876,7 @@
     "warning": "Avertissement",
     "legal_information": "Mentions légales",
     "logs": "Logs",
-    "dashboard": "Tableau de bord"
+    "dashboard": "Tableau de bord",
+    "zoom_in": "Zoom avant",
+    "zoom_out": "Zoom arrière"
 }

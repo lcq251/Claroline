@@ -10,29 +10,24 @@
     font-size: 0; // avoid extra margin
 
     .user-status-bullet {
-        border: .125em solid var(--#{$prefix}body-bg); // should be overridden in some places
+        box-shadow: 0 0 0 .125em var(--#{$prefix}body-bg); // should be overridden in some places
+        //border: .125em solid var(--#{$prefix}body-bg); // should be overridden in some places
     }
 }
 
 // sizing variants
-.user-avatar-xs {
-    @include user-avatar-size(map-get($icon-sizes, xs), .75rem, -.2rem);
-}
+@each $size, $value in $icon-sizes {
+    .user-avatar-#{$size} {
+        .user-status {
+            font-size: $value * .5;
+            margin: -.25em;
+        }
 
-.user-avatar-sm {
-    @include user-avatar-size(map-get($icon-sizes, sm), 1rem, -.3rem);
-}
-
-.user-avatar-md {
-    @include user-avatar-size(map-get($icon-sizes, md), 1.25rem, -.375rem);
-}
-
-.user-avatar-lg {
-    @include user-avatar-size(map-get($icon-sizes, lg), 1.75rem, -.5rem);
-}
-
-.user-avatar-xl {
-    @include user-avatar-size(map-get($icon-sizes, xl), 2.5rem, -.75rem);
+        .user-status-bullet {
+            width: .5em;
+            height: .5em;
+        }
+    }
 }
 
 .user-status {

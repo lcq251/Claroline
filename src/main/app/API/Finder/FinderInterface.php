@@ -2,8 +2,6 @@
 
 namespace Claroline\AppBundle\API\Finder;
 
-use Symfony\Component\HttpFoundation\Request;
-
 interface FinderInterface
 {
     /**

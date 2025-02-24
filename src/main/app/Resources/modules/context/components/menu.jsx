@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback, useId} from 'react'
+import React, {useCallback, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
@@ -17,7 +17,7 @@ import {MODAL_PLATFORM_ORGANIZATIONS} from '#/main/app/platform/modals/organizat
 import {ContextFavourite} from '#/main/app/context/components/favorite'
 import {actions, selectors} from '#/main/app/context/store'
 
-const ContextFlyout = forwardRef((props, ref) => {
+const ContextFlyout = (props) => {
   const dispatch = useDispatch()
 
   // get context organizations
@@ -29,10 +29,8 @@ const ContextFlyout = forwardRef((props, ref) => {
   const organizationsTitleId = useId()
 
   return (
-    <div
-      {...omit(props, 'togglePin', 'show', 'close')}
-      className={classes('app-context-menu p-0 rounded-4', props.className)}
-      ref={ref}
+    <Menu
+      className="flyout-menu app-context-menu p-0 rounded-4"
     >
       <h2 className="visually-hidden">{trans('context_menu')}</h2>
       <div className="flyout-menu-content rounded-bottom-4" role="presentation">
@@ -111,9 +109,9 @@ const ContextFlyout = forwardRef((props, ref) => {
           </nav>
         }
       </div>
-    </div>
+    </Menu>
   )
-})
+}
 
 ContextFlyout.propTypes = {
   path: T.string,
@@ -151,11 +149,9 @@ const ContextMenu = (props) => {
           tooltip="bottom"
           onToggle={toggleMenu}
           disabled={notFound || hasErrors}
+          opened={menuOpened}
           menu={
-            <Menu
-              show={menuOpened}
-              as={ContextFlyout}
-              className="flyout-menu"
+            <ContextFlyout
               togglePin={() => {
                 setPinedMenu(!pinedMenu)
                 toggleMenu()

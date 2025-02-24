@@ -1,4 +1,4 @@
-import {WorkspaceContext} from '#/main/app/contexts/workspace/containers/context'
+import {WorkspaceContext} from '#/main/app/contexts/workspace/components/context'
 
 export default {
   name: 'workspace',

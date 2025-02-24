@@ -108,7 +108,7 @@ class WorkspaceSerializer
             'registration' => $this->getRegistration($workspace, $options),
             'evaluation' => [
                 'successCondition' => $workspace->getSuccessCondition(),
-                'estimatedDuration' => $workspace->getEstimatedDuration(),
+                // 'estimatedDuration' => $workspace->getEstimatedDuration(),
                 'scoreTotal' => $workspace->getScoreTotal(),
             ],
         ];
@@ -273,28 +273,27 @@ class WorkspaceSerializer
                 $details = [];
             }
 
-            if (isset($data['opening'])) {
-                $details['opening_type'] = isset($data['opening']['type']) && !empty($data['opening']['target']) ?
-                    $data['opening']['type'] :
-                    'tool';
-                $details['opening_target'] = !empty($data['opening']['target']) ?
-                    $data['opening']['target'] :
-                    'home';
+            $details['opening_type'] = isset($data['opening']['type']) && !empty($data['opening']['target']) ?
+                $data['opening']['type'] :
+                'tool';
+            $details['opening_target'] = !empty($data['opening']['target']) ?
+                $data['opening']['target'] :
+                'home';
 
-                if ('resource' === $details['opening_type'] && isset($details['opening_target']['id'])) {
-                    $details['workspace_opening_resource'] = $details['opening_target']['id'];
-                    $details['use_workspace_opening_resource'] = true;
-                } else {
-                    $details['workspace_opening_resource'] = null;
-                    $details['use_workspace_opening_resource'] = false;
-                }
+            if ('resource' === $details['opening_type'] && isset($details['opening_target']['id'])) {
+                $details['workspace_opening_resource'] = $details['opening_target']['id'];
+                $details['use_workspace_opening_resource'] = true;
+            } else {
+                $details['workspace_opening_resource'] = null;
+                $details['use_workspace_opening_resource'] = false;
             }
+
             $workspaceOptions->setDetails($details);
         }
 
         if (isset($data['evaluation'])) {
             $this->sipe('evaluation.successCondition', 'setSuccessCondition', $data, $workspace);
-            $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $workspace);
+            // $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $workspace);
             $this->sipe('evaluation.scoreTotal', 'setScoreTotal', $data, $workspace);
         }
 

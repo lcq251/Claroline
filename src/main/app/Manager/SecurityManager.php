@@ -7,9 +7,6 @@ use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
-/**
- * to move elsewhere.
- */
 class SecurityManager
 {
     public function __construct(

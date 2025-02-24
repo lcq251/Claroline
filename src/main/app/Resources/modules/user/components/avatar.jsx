@@ -15,7 +15,8 @@ const UserAvatar = ({
   user,
   size = 'md',
   noStatus = false,
-  noStatusTooltip = false
+  noStatusTooltip = false,
+  border = false
 }) =>
   <span className={classes('position-relative user-avatar', size && `user-avatar-${size}`, className)} role="presentation">
     <Thumbnail
@@ -23,6 +24,7 @@ const UserAvatar = ({
       thumbnail={get(user, 'picture')}
       name={get(user, 'name') || trans('unknown')}
       square={true}
+      className={classes(border && 'thumbnail-icon-bordered')}
     />
 
     {get(user, 'status') && !noStatus &&

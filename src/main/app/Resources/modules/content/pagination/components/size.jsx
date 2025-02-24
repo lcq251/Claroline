@@ -6,12 +6,11 @@ import {MenuButton, CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const PaginationSize = props =>
   <MenuButton
-    id="page-sizes-dropdown"
     containerClassName="results-per-page"
     className="btn btn-body"
     menu={{
       position: 'top',
-      align: 'right',
+      align: 'end',
       label: trans('results_per_page'),
       items: props.availableSizes.map((size) => ({
         type: CALLBACK_BUTTON,
@@ -23,7 +22,7 @@ const PaginationSize = props =>
     disabled={props.disabled}
   >
     {-1 !== props.pageSize ? props.pageSize : trans('all')}
-    <span className="fa fa-fw fa-list ms-2" />
+    <span className="fa fa-fw fa-list ms-2" aria-hidden={true} />
   </MenuButton>
 
 PaginationSize.propTypes = {

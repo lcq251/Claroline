@@ -10,6 +10,8 @@ import {TeamCard} from '#/main/community/team/components/card'
 const TeamsModal = (props) =>
   <PickerModal
     {...props}
+    url={props.url || ['apiv2_team_list']}
+    title={props.title || trans('teams', {}, 'community')}
     icon="fa fa-fw fa-user-group"
     name="teamsPicker"
     definition={[
@@ -36,11 +38,6 @@ TeamsModal.propTypes = {
   title: T.string,
   selectAction: T.func.isRequired,
   multiple: T.bool
-}
-
-TeamsModal.defaultProps = {
-  url:['apiv2_team_list'],
-  title: trans('teams', {}, 'community')
 }
 
 export {

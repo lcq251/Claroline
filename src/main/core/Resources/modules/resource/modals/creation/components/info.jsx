@@ -58,9 +58,9 @@ const CreationInfo = (props) => {
               }
             }, {
               name: 'meta.published',
-              label: trans('publish', {}, 'actions'),
+              label: trans('publish_resource', {}, 'resource'),
               type: 'boolean',
-              help: trans('Temps que la ressource n\'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission "Modifier".', {}, 'resource')
+              help: trans('publish_resource_help', {}, 'resource')
             }
           ]
         }
@@ -79,8 +79,6 @@ const CreationInfo = (props) => {
           label={trans('create_and_configure', {}, 'actions')}
           className="btn btn-link"
           callback={() => props.create().then((resource) => {
-            props.fadeModal()
-
             history.push(route(resource.resourceNode)+'/edit')
           })}
         />
@@ -89,7 +87,10 @@ const CreationInfo = (props) => {
           label={trans('create', {}, 'actions')}
           className="btn btn-primary"
           htmlType="submit"
-          callback={() => props.create().then(props.fadeModal)}
+          callback={(e) => {
+            props.create()
+            e.preventDefault() // otherwise it will redirect to the form action (which is not used and send us to desktop)
+          }}
         />
       </div>
     </FormData>
@@ -98,7 +99,6 @@ const CreationInfo = (props) => {
 
 CreationInfo.propTypes = {
   create: T.func.isRequired,
-  fadeModal: T.func.isRequired,
   changeStep: T.func.isRequired
 }
 

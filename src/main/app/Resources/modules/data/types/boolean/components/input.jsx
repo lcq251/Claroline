@@ -1,4 +1,5 @@
-import React, {Fragment, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
+import classes from 'classnames'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
@@ -16,7 +17,16 @@ class BooleanInput extends PureComponent {
 
   render() {
     return (
-      <Fragment>
+      <div className="form-check form-switch form-check-reverse fw-medium fs-4 d-flex flex-row flex-nowrap align-items-center" role="presentation">
+        <label
+          className={classes('form-check-label flex-fill fs-base text-start', {
+            'text-secondary': !this.props.value
+          })}
+          htmlFor={this.props.id}
+        >
+          {this.props.label}
+        </label>
+
         <input
           id={this.props.id}
           className="form-check-input"
@@ -26,23 +36,13 @@ class BooleanInput extends PureComponent {
           onChange={this.onChange}
           role="switch"
         />
-        <label
-          className="form-check-label"
-          htmlFor={this.props.id}
-        >
-          {(this.props.value && this.props.labelChecked) ? this.props.labelChecked : this.props.label}
-        </label>
-      </Fragment>
+      </div>
     )
   }
 }
 
 implementPropTypes(BooleanInput, DataInputTypes, {
-  value: T.bool,
-  /**
-   * @deprecated
-   */
-  labelChecked: T.string
+  value: T.bool
 }, {
   value: false
 })

@@ -33,12 +33,6 @@ const WorkspaceCard = props =>
     meta={
       <>
         <span className="badge bg-secondary-subtle text-secondary-emphasis">{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</span>
-        {get(props.data, 'evaluation.estimatedDuration') &&
-          <span className="badge bg-secondary-subtle text-secondary-emphasis">
-            <span className="fa far fa-clock me-1" />
-            {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
-          </span>
-        }
         {get(props.data, 'meta.archived') &&
           <span className="badge bg-secondary-subtle text-secondary-emphasis text-capitalize">{trans('archived')}</span>
         }

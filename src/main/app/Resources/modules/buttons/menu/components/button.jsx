@@ -13,13 +13,7 @@ import {Button as ButtonTypes} from '#/main/app/buttons/prop-types'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {CallbackButton} from '#/main/app/buttons/callback/components/button'
 
-const StandardMenu = forwardRef((props, ref) => {
-  const isStandard = typeof props.menu === 'object' && props.menu.items
-
-  if (!isStandard) {
-    return props.menu
-  }
-
+const StandardMenu = (props) => {
   const actions = useMemo(() => {
     const displayedActions = props.menu.items.filter(
       action => undefined === action.displayed || action.displayed
@@ -53,9 +47,8 @@ const StandardMenu = forwardRef((props, ref) => {
 
   return (
     <Menu
-      {...omit(props, 'id', 'menu')}
-      ref={ref}
-      align={'right' === props.menu.align ? 'end' : undefined}
+      {...omit(props, 'menu')}
+      align={props.menu.align}
       className={props.className}
     >
       {(props.menu.label && 0 !== actions.unclassified.length) &&
@@ -65,8 +58,7 @@ const StandardMenu = forwardRef((props, ref) => {
       {actions.primary.map((action) =>
         <MenuAction
           {...action}
-          key={action.id || action.name || toKey(action.label)}
-          id={action.id || action.name || `${props.id || props.name}-${toKey(action.label)}`}
+          key={action.name || toKey(action.label)}
         />
       )}
 
@@ -77,8 +69,7 @@ const StandardMenu = forwardRef((props, ref) => {
       {actions.unclassified.map((action) =>
         <MenuAction
           {...action}
-          key={action.id || action.name || toKey(action.label)}
-          id={action.id || action.name || `${props.id || props.name}-${toKey(action.label)}`}
+          key={action.name || toKey(action.label)}
         />
       )}
 
@@ -87,8 +78,7 @@ const StandardMenu = forwardRef((props, ref) => {
         ...actions.groups[group].map((action) =>
           <MenuAction
             {...action}
-            key={action.id || action.name || toKey(action.label)}
-            id={action.id || action.name || `${props.id || props.name}-${toKey(action.label)}`}
+            key={action.name || toKey(action.label)}
           />
         )
       ])}
@@ -100,31 +90,23 @@ const StandardMenu = forwardRef((props, ref) => {
       {actions.dangerous.map((action) =>
         <MenuAction
           {...action}
-          key={action.id || action.name || toKey(action.label)}
-          id={action.id || action.name || `${props.id || props.name}-${toKey(action.label)}`}
+          key={action.name || toKey(action.label)}
         />
       )}
     </Menu>
   )
-})
+}
 
 StandardMenu.propTypes = {
-  id: T.string.isRequired,
   className: T.string,
-  name: T.string,
-  menu: T.oneOfType([
-    // a custom menu component
-    T.element,
-    // an action menu
-    T.shape({
-      label: T.string,
-      position: T.oneOf(['top', 'bottom']),
-      align: T.oneOf(['left', 'right']),
-      items: T.arrayOf(T.shape(
-        ActionTypes.propTypes
-      )).isRequired
-    })
-  ]).isRequired,
+  menu: T.shape({
+    label: T.string,
+    position: T.oneOf(['top', 'bottom']),
+    align: T.oneOf(['start', 'end']),
+    items: T.arrayOf(T.shape(
+      ActionTypes.propTypes
+    )).isRequired
+  }).isRequired,
 
   // appended from react-bootstrap dropdown
   open: T.bool,
@@ -149,7 +131,6 @@ const MenuButton = forwardRef((props, ref) => {
 
   return (
     <MenuOverlay
-      id={props.id}
       show={props.opened}
       position={props.menu.position}
       className={classes(props.containerClassName, 'btn-group')}
@@ -157,20 +138,25 @@ const MenuButton = forwardRef((props, ref) => {
       onToggle={props.onToggle}
       ref={ref}
     >
-      <MenuToggle as={CallbackButton} {...omit(props, 'id', 'menu', 'containerClassName', 'onToggle', 'opened', 'onClick')} callback={props.onClick ? props.onClick : identity}>
+      <MenuToggle
+        {...omit(props, 'menu', 'containerClassName', 'onToggle', 'opened', 'onClick')}
+        as={CallbackButton}
+        callback={props.onClick ? props.onClick : identity}
+      >
         {props.children}
       </MenuToggle>
-      <StandardMenu
-        id={props.id}
-        menu={props.menu}
-      />
+
+      {isStandard ?
+        <StandardMenu
+          menu={props.menu}
+        /> :
+        props.menu
+      }
     </MenuOverlay>
   )
 })
 
 implementPropTypes(MenuButton, ButtonTypes, {
-  id: T.string.isRequired,
-  name: T.string,
   opened: T.bool,
   onToggle: T.func,
   containerClassName: T.string, // permits to add a custom class to the wrapping .dropdown element
@@ -180,7 +166,7 @@ implementPropTypes(MenuButton, ButtonTypes, {
     // an action menu
     T.shape({
       label: T.string,
-      align: T.oneOf(['left', 'right']),
+      align: T.oneOf(['start', 'end']),
       position: T.oneOf(['top', 'bottom']),
       items: T.arrayOf(T.shape(
         ActionTypes.propTypes

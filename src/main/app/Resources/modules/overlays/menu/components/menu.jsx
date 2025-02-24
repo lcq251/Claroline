@@ -6,9 +6,6 @@
 import Dropdown from 'react-bootstrap/Dropdown'
 
 const Menu = Dropdown.Menu
-Menu.defaultProps = {
-  renderOnMount: false
-}
 
 const MenuToggle = Dropdown.Toggle
 const MenuItem = Dropdown.Item

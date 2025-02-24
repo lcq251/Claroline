@@ -123,7 +123,7 @@ function buildToolbar(toolbarConfig, actions = [], scope) {
               icon: 'fa fa-fw fa-ellipsis-v',
               label: trans('show-more-actions', {}, 'actions'),
               menu: {
-                align: 'right' // I hope it will not cause problems to not be able to configure it
+                align: 'end'
               }
             }
           } else {

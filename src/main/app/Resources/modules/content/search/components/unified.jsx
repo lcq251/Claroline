@@ -1,14 +1,13 @@
-import React, {Component, forwardRef, useState} from 'react'
+import React, {Component, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {toKey} from '#/main/app/utils/text'
 import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Menu, MenuOverlay} from '#/main/app/overlays/menu'
+import {CALLBACK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
+import {Menu} from '#/main/app/overlays/menu'
 
 import {DataFilter} from '#/main/app/data/components/filter'
 
@@ -92,7 +91,11 @@ class SearchForm extends Component {
 
   render() {
     return (
-      <>
+      <Menu
+        align="end"
+        className="search-form"
+        style={{minWidth: '34rem'}}
+      >
         {this.props.available.map(filter =>
           <div key={filter.name} className="form-group row" role="presentation">
             <label className="col-sm-3 col-form-label col-form-label-sm text-end" htmlFor={this.props.id+'-'+toKey(filter.name)}>
@@ -113,13 +116,11 @@ class SearchForm extends Component {
           </div>
         )}
 
-        <div className="row" role="presentation">
+        <div className="row px-3 py-2 bg-body-tertiary d-flex rounded-bottom-1" role="presentation">
           <Button
-            className="search-submit w-100"
+            className="btn btn-primary ms-auto"
             type={CALLBACK_BUTTON}
-            variant="btn"
             htmlType="submit"
-            size="lg"
             label={trans('search', {}, 'actions')}
             disabled={!this.props.updated}
             callback={() => {
@@ -129,13 +130,14 @@ class SearchForm extends Component {
             primary={true}
           />
         </div>
-      </>
+      </Menu>
     )
   }
 }
 
 SearchForm.propTypes = {
   id: T.string.isRequired,
+  className: T.string,
   updated: T.bool,
   available: T.arrayOf(T.shape({
     name: T.string.isRequired,
@@ -149,16 +151,6 @@ SearchForm.propTypes = {
   updateSearch: T.func.isRequired,
   updateFilters: T.func.isRequired
 }
-
-const SearchMenu = forwardRef((props, ref) =>
-  <div
-    {...omit(props, 'updated', 'available', 'current', 'updateSearch', 'updateFilters', 'show', 'close')}
-    className={classes('search-form dropdown-menu-full', props.className)}
-    ref={ref}
-  >
-    <SearchForm {...props} />
-  </div>
-)
 
 const SearchUnified = (props) => {
   const [currentText, updateText] = useState(props.currentText)
@@ -209,11 +201,30 @@ const SearchUnified = (props) => {
 
         <Button
           className="btn btn-text-body dropdown-toggle search-btn position-relative px-2 focus-ring focus-ring-secondary"
-          type={CALLBACK_BUTTON}
+          type={MENU_BUTTON}
           icon="fa fa-fw fa-filter"
           label={trans('filters')}
           tooltip="bottom"
-          callback={() => setOpened(!opened)}
+          opened={opened}
+          onToggle={() => setOpened(!opened)}
+          menu={
+            <SearchForm
+              id={props.id}
+              updated={updated}
+              current={props.current}
+              available={props.available}
+              updateFilters={() => {
+                setOpened(true)
+                setUpdated(true)
+              }}
+              updateSearch={(filters) => {
+                props.resetFilters(filters)
+                setOpened(false)
+                setUpdated(false)
+                //this.setState({currentSearch: '', updated: false, opened: false})
+              }}
+            />
+          }
         >
           {!isEmpty(props.current) &&
             <span className="position-absolute end-0 bottom-0 translate-middle p-1 bg-danger rounded-circle" role="presentation">
@@ -222,32 +233,6 @@ const SearchUnified = (props) => {
           }
         </Button>
       </div>
-
-      <MenuOverlay
-        id={`${props.id}-search-menu`}
-        show={opened}
-        onToggle={() => setOpened(false)}
-      >
-        <Menu
-          align="end"
-          as={SearchMenu}
-
-          id={props.id}
-          updated={updated}
-          current={props.current}
-          available={props.available}
-          updateFilters={() => {
-            setOpened(true)
-            setUpdated(true)
-          }}
-          updateSearch={(filters) => {
-            props.resetFilters(filters)
-            setOpened(false)
-            setUpdated(false)
-            //this.setState({currentSearch: '', updated: false, opened: false})
-          }}
-        />
-      </MenuOverlay>
     </form>
   )
 }

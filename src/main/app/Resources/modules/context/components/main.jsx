@@ -1,6 +1,7 @@
 import React, {createElement, useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch} from 'react-redux'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {makeCancelable} from '#/main/app/api'
@@ -17,7 +18,6 @@ import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
 import {ContextMenu} from '#/main/app/context/components/nav'
-import get from 'lodash/get'
 import {useLocaleStorage} from '#/main/app/storage'
 
 const ContextMain = (props) => {
@@ -100,16 +100,15 @@ const ContextMain = (props) => {
     }
   }, [props.loaded, props.name, props.tools.map(t => t.name).join('-')])
 
-  let CurrentPage
   if (!props.loaded || !toolApps) {
-    CurrentPage = props.loadingPage ?
+    return props.loadingPage ?
       createElement(props.loadingPage) :
       <ContentLoader
         size="lg"
         description={trans('loading')}
       />
   } else if (props.notFound) {
-    CurrentPage = props.notFoundPage ?
+    return props.notFoundPage ?
       createElement(props.notFoundPage) :
       <ContentNotFound
         size="lg"
@@ -117,15 +116,23 @@ const ContextMain = (props) => {
         description={trans('not_found_desc')}
       />
   } else if (!isEmpty(props.accessErrors)) {
-    CurrentPage = props.forbiddenPage ?
+    return props.forbiddenPage ?
       createElement(props.forbiddenPage) :
       <ContentForbidden
         size="lg"
         title={trans('access_forbidden')}
         description={trans('access_forbidden_help')}
       />
-  } else {
-    CurrentPage = (
+  }
+
+  return (
+    <>
+      <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
+
+      {pinedMenu &&
+        <ContextMenu />
+      }
+
       <Routes
         path={props.path}
         routes={[
@@ -159,18 +166,6 @@ const ContextMain = (props) => {
           {from: '/', exact: true, to: `/${props.defaultOpening}`, disabled: !props.defaultOpening}
         ]}
       />
-    )
-  }
-
-  return (
-    <>
-      <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
-
-      {pinedMenu &&
-        <ContextMenu />
-      }
-
-      {CurrentPage}
 
       {props.children}
     </>

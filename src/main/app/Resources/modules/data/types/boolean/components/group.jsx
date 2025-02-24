@@ -12,7 +12,7 @@ import {FormHelp} from '#/main/app/content/form/components/help'
 const BooleanGroup = props =>
   <FormGroup
     id={props.id}
-    className={classes('form-check form-switch', props.className)}
+    className={classes('', props.className)}
     error={props.error}
   >
     {props.children}

@@ -19,7 +19,7 @@ const ListDisplay = props =>
     tooltip="bottom"
     disabled={props.disabled}
     menu={{
-      align: 'right',
+      align: 'end',
       label: trans('list_display_modes'),
       items: props.available.filter(display => undefined !== DISPLAY_MODES[display]).map(display => ({
         name: display,

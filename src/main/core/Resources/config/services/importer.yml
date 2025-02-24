@@ -7,14 +7,12 @@ services:
         arguments:
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
             - '@translator'
 
     Claroline\CoreBundle\Transfer\Importer\Directory\CreateOrUpdate:
         arguments:
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
             - '@translator'
 
     # Workspaces

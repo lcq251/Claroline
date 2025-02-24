@@ -39,7 +39,7 @@ class LocaleInput extends PureComponent {
     const available = param('locale.available')
 
     return (
-      <div className={classes('locales d-flex flex-column gap-1', this.props.className)} role="presentation">
+      <div className={classes('locales d-flex flex-column gap-1', this.props.className)} role="radiogroup">
         {available.map(locale =>
           <div key={locale} className={classes('px-3 py-2 rounded-2', {
             'bg-body-secondary': locale === this.props.value,

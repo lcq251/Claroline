@@ -108,5 +108,6 @@
   "show_description": "Afficher la description",
   "hide_description": "Cacher la description",
   "resume": "Reprendre",
-  "show_history": "Voir l'historique"
+  "show_history": "Voir l'historique",
+  "exit_impersonation": "Quitter l'usurpation"
 }

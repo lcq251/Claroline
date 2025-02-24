@@ -263,7 +263,10 @@ const ContentRights = props => {
       <ModalButton
         className="btn btn-primary w-100 mb-3"
         modal={[MODAL_ROLES, {
-          filters: [
+          url: !isEmpty(props.workspace) ?
+            ['apiv2_workspace_list_roles', {id: props.workspace.id}] :
+            ['apiv2_role_list'],
+          filters: !isEmpty(props.workspace) ? [] : [
             {property: 'type', value: constants.ROLE_PLATFORM}
           ],
           selectAction: (selectedRoles) => ({
@@ -285,7 +288,7 @@ const ContentRights = props => {
 ContentRights.propTypes = {
   creatable: T.object,
   workspace: T.shape({
-
+    id: T.string.isRequired
   }),
   rights: T.arrayOf(T.shape({
     name: T.string.isRequired,

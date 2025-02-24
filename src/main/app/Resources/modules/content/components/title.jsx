@@ -5,41 +5,13 @@ import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {toKey} from '#/main/app/utils/text'
-import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
 import {Toolbar} from '#/main/app/action/components/toolbar'
+import {Heading} from '#/main/app/components/heading'
 
-const HeadingWrapper = props  =>
-  React.createElement(`h${props.level}`, Object.assign({},
-    omit(props, 'level', 'displayLevel', 'displayed', 'align'),
-    {
-      className: classes(
-        'h-title',
-        props.className,
-        props.displayLevel && `h${props.displayLevel}`,
-        !props.displayed && 'visually-hidden',
-        props.align && `text-${props.align}`
-      )
-    }
-  ), props.children)
-
-HeadingWrapper.propTypes = {
-  className: T.string,
-  level: T.number.isRequired,
-  displayLevel: T.number,
-  displayed: T.bool,
-  align: T.oneOf(['left', 'center', 'right']),
-  children: T.any.isRequired
-}
-
-HeadingWrapper.defaultProps = {
-  displayed: true,
-  align: 'left'
-}
-
-const ContentTitle = props =>
-  <HeadingWrapper
+const ContentTitle = (props) =>
+  <Heading
     {...omit(props, 'numbering', 'title', 'subtitle', 'backAction', 'actions')}
+    className={classes('h-title', props.className)}
   >
     {props.numbering &&
       <span className="h-numbering">{props.numbering}</span>
@@ -67,7 +39,7 @@ const ContentTitle = props =>
         actions={props.actions}
       />
     }
-  </HeadingWrapper>
+  </Heading>
 
 ContentTitle.propTypes = {
   id: T.string,
@@ -78,16 +50,16 @@ ContentTitle.propTypes = {
   title: T.node.isRequired,
   subtitle: T.string,
   displayed: T.bool,
-  align: T.oneOf(['left', 'center', 'right']),
+  align: T.oneOf(['start', 'center', 'end']),
   actions: T.arrayOf(T.shape({
-    // TODO : action types
+    // action types
   })),
   children: T.node
 }
 
 ContentTitle.defaultProps = {
   level: 2,
-  align: 'left',
+  align: 'start',
   displayed: true
 }
 

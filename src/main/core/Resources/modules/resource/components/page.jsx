@@ -91,8 +91,7 @@ const ResourcePage = (props) => {
         }, basePath, currentUser, false).then(loadedActions => [].concat(loadedActions.filter(action => 'configure' !== action.name), resourceDef.actions || []))
       }}
 
-      {...omit(props, 'className', 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}
-      styles={[].concat(resourceDef.styles, props.styles || [])}
+      {...omit(props, 'className', 'breadcrumb', 'embedded', 'showHeader', 'title', 'description')}
     >
       {props.children}
     </ToolPage>
