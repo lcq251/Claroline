@@ -15,8 +15,8 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
@@ -46,15 +46,15 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
     /**
      * Retrieve or create evaluation for a workspace and a user.
      */
-    public function getUserEvaluation(Workspace $workspace, User $user, ?bool $withCreation = true): ?Evaluation
+    public function getUserEvaluation(Workspace $workspace, User $user, ?bool $withCreation = true): ?WorkspaceEvaluation
     {
-        $evaluation = $this->om->getRepository(Evaluation::class)->findOneBy([
+        $evaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
             'workspace' => $workspace,
             'user' => $user,
         ]);
 
         if ($withCreation && empty($evaluation)) {
-            $evaluation = new Evaluation();
+            $evaluation = new WorkspaceEvaluation();
             $evaluation->setWorkspace($workspace);
             $evaluation->setUser($user);
 
@@ -65,7 +65,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         return $evaluation;
     }
 
-    public function updateUserEvaluation(Workspace $workspace, User $user, ?array $data = [], \DateTimeInterface $date = null): Evaluation
+    public function updateUserEvaluation(Workspace $workspace, User $user, ?array $data = [], \DateTimeInterface $date = null): WorkspaceEvaluation
     {
         $this->om->startFlushSuite();
 
@@ -106,7 +106,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
     /**
      * Compute evaluation status and progression of a user in a workspace.
      */
-    public function computeEvaluation(Workspace $workspace, User $user): Evaluation
+    public function computeEvaluation(Workspace $workspace, User $user): WorkspaceEvaluation
     {
         $evaluation = $this->getUserEvaluation($workspace, $user);
 
@@ -115,7 +115,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         return $evaluation;
     }
 
-    public function refreshEvaluation(Evaluation $evaluation): void
+    public function refreshEvaluation(WorkspaceEvaluation $evaluation): void
     {
         $workspace = $evaluation->getWorkspace();
         $user = $evaluation->getUser();

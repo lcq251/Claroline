@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Messenger;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeWorkspaceEvaluations;
@@ -28,7 +28,7 @@ class RecomputeWorkspaceEvaluationsHandler
             return;
         }
 
-        $evaluations = $this->om->getRepository(Evaluation::class)->findInProgress($workspace);
+        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findInProgress($workspace);
 
         $this->om->startFlushSuite();
 

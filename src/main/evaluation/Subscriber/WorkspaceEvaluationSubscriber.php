@@ -90,10 +90,10 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
      */
     public function onSequenceEvaluate(SequenceEvaluationEvent $event): void
     {
-        $resourceUserEvaluation = $event->getEvaluation();
-        $sequence = $resourceUserEvaluation->getSequence();
+        $sequenceEvaluation = $event->getEvaluation();
+        $sequence = $sequenceEvaluation->getSequence();
         $workspace = $sequence->getWorkspace();
-        $user = $resourceUserEvaluation->getUser();
+        $user = $sequenceEvaluation->getUser();
 
         $this->manager->computeEvaluation($workspace, $user);
     }

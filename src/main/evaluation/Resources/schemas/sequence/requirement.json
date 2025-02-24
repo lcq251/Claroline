@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The uuid of the requirement"
+    },
+    "status": {
+      "type": ["null", "string"],
+      "description": "An optional status to obtain in the requiredSequence to unlock the sequence."
+    },
+    "progression": {
+      "type": ["null", "number"],
+      "description": "An optional progression to obtain in the requiredSequence to unlock the sequence."
+    },
+    "minScore": {
+      "type": ["null", "number"],
+      "description": "An optional minimum score to obtain in the requiredSequence to unlock the sequence."
+    },
+    "maxScore": {
+      "type": ["null", "number"],
+      "description": "An optional maximum score to obtain in the requiredSequence to unlock the sequence."
+    }
+  }
+}

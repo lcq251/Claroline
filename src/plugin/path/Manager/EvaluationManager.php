@@ -3,8 +3,8 @@
 namespace Innova\PathBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\Checker\ProgressionChecker;
 use Claroline\EvaluationBundle\Library\Checker\ScoreChecker;
@@ -30,18 +30,18 @@ class EvaluationManager
     ) {
         $this->progressionRepo = $this->om->getRepository(UserProgression::class);
         $this->pathRepo = $this->om->getRepository(Path::class);
-        $this->resourceEvalRepo = $this->om->getRepository(ResourceEvaluation::class);
+        $this->resourceEvalRepo = $this->om->getRepository(ResourceAttempt::class);
     }
 
     /**
      * Fetch or create resource user evaluation.
      */
-    public function getResourceUserEvaluation(Path $path, User $user): ResourceUserEvaluation
+    public function getResourceUserEvaluation(Path $path, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->getUserEvaluation($path->getResourceNode(), $user);
     }
 
-    public function getCurrentAttempt(Path $path, User $user, ?bool $createMissing = true): ?ResourceEvaluation
+    public function getCurrentAttempt(Path $path, User $user, ?bool $createMissing = true): ?ResourceAttempt
     {
         $pathAttempt = $this->resourceEvalRepo->findLast($path->getResourceNode(), $user);
         if (empty($pathAttempt) && $createMissing) {
@@ -102,7 +102,7 @@ class EvaluationManager
         return $progression;
     }
 
-    public function compute(Path $path, User $user): ResourceEvaluation
+    public function compute(Path $path, User $user): ResourceAttempt
     {
         // get the current attempt of the path
         // for now path can only have one attempt, that's why we retrieve the last attempt without checking if it's already ended.

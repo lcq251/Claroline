@@ -15,8 +15,8 @@ const EvaluationEditorActions = () => {
     <ToolEditorActions
       actions={[
         {
-          title: trans('initialize_evaluations', {}, 'evaluation'),
-          help: trans('Générez les évaluations pour tous les utilisateurs n\'ayant pas encore commencé l\'espace d\'activités.'),
+          title: trans('initialize_evaluations', {}, 'actions'),
+          help: trans('initialize_evaluations_help', {}, 'actions'),
           action: {
             name: 'initialize',
             type: ASYNC_BUTTON,
@@ -30,8 +30,8 @@ const EvaluationEditorActions = () => {
             }
           }
         }, {
-          title: trans('recompute_evaluations', {}, 'evaluation'),
-          help: trans('Recalculez les évaluations de tous les utilisateurs ayant commencé l\'espace d\'activités.'),
+          title: trans('recompute_evaluations', {}, 'actions'),
+          help: trans('recompute_evaluations_help', {}, 'actions'),
           action: {
             name: 'recompute',
             type: ASYNC_BUTTON,
@@ -46,7 +46,7 @@ const EvaluationEditorActions = () => {
           }
         }, {
           title: trans('download_all_certificates', {}, 'actions'),
-          help: trans('Téléchargez les certificats de tous les utilisateurs ayant terminé l\'espace d\'activités.'),
+          help: trans('download_all_certificates_help', {}, 'actions'),
           action: {
             name: 'download_all_certificates',
             type: ASYNC_BUTTON,

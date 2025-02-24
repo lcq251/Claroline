@@ -29,9 +29,9 @@ const SequenceEditorOverview = () =>
             required: true
           }, {
             name: 'meta.published',
-            label: trans('publish', {}, 'actions'),
             type: 'boolean',
-            help: trans('Temps que la séquence n\'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission "Modifier".', {}, 'evaluation')
+            label: trans('publish_sequence', {}, 'evaluation'),
+            help: trans('publish_sequence_help', {}, 'evaluation')
           }
         ]
       }, {

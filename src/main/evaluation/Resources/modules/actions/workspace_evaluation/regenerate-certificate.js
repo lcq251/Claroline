@@ -16,5 +16,5 @@ export default (evaluations) => ({
     }
   },
   scope: ['object', 'collection'],
-  group: trans('transfer')
+  group: trans('management')
 })

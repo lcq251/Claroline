@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
@@ -8,24 +9,34 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, LINK_BUTTON, MENU_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {UserAvatar} from '#/main/app/user/components/avatar'
-import {User as UserTypes} from '#/main/community/user/prop-types'
 import {constants as userConst} from '#/main/app/user/constants'
 import {displayUsername} from '#/main/community/utils'
+import {selectors} from '#/main/app/context'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {actions} from '#/main/app/platform/store'
 
 const ContextUser = (props) => {
+  const dispatch = useDispatch()
+
+  const currentUser = useSelector(securitySelectors.currentUser)
+  const impersonated = useSelector(securitySelectors.isImpersonated)
+  const path = useSelector(selectors.path)
+
+  const changeStatus = useCallback((status) => {
+    dispatch(actions.changeStatus(currentUser, status))
+  }, [currentUser.id])
+
   return (
-    <div className={classes('d-flex flex-column align-items-stretch', props.className)} role="presentation">
       <Button
-        id="current-user-menu"
         type={MENU_BUTTON}
-        label={displayUsername(props.currentUser)}
+        label={trans(impersonated ? 'impersonated_account' : 'my_account', {name: displayUsername(currentUser)})}
         tooltip="right"
-        className="text-start d-flex flex-row p-0 focus-ring rounded-circle"
+        className={classes('d-flex flex-row p-0 focus-ring rounded-circle', props.className)}
         menu={{
           items: [].concat(Object.keys(userConst.USER_STATUSES).map((status) => ({
             name: status,
             type: CALLBACK_BUTTON,
-            callback: () => props.changeStatus(props.currentUser, status),
+            callback: () => changeStatus(status),
             primary: true,
             label: (
               <div className="d-flex align-items-start" role="presentation">
@@ -45,26 +56,19 @@ const ContextUser = (props) => {
               type: LINK_BUTTON,
               icon: 'fa fa-fw fa-user',
               label: trans('my_profile'),
-              target: props.path+'/profile'
+              target: path+'/profile'
             }, {
               name: 'parameters',
               type: LINK_BUTTON,
               icon: 'fa fa-fw fa-sliders',
-              label: trans('my_account'),
+              label: trans('parameters'),
               target: '/account'
-            }, {
-              name: 'help',
-              type: URL_BUTTON,
-              icon: 'fa fa-fw fa-info-circle',
-              label: trans('help'),
-              target: props.help,
-              displayed: false && !!props.help
             }, {
               name: 'exit-impersonation',
               type: URL_BUTTON,
               icon: 'fa fa-fw fa-mask',
               label: trans('exit', {}, 'actions'),
-              displayed: !!props.impersonated,
+              displayed: !!impersonated,
               target: url(['claro_index', {_switch: '_exit'}])+'#'+location.pathname
             }, {
               name: 'logout',
@@ -76,20 +80,13 @@ const ContextUser = (props) => {
           ])
         }}
       >
-        <UserAvatar user={props.currentUser} noStatusTooltip={true} size="sm" />
+        <UserAvatar user={currentUser} noStatusTooltip={true} size="sm" />
       </Button>
-    </div>
   )
 }
 
 ContextUser.propTypes = {
-  path: T.string.isRequired,
-  currentUser: T.shape(
-    UserTypes.propTypes
-  ),
-  help: T.string,
-  impersonated: T.bool,
-  changeStatus: T.func.isRequired
+  className: T.string
 }
 
 export {

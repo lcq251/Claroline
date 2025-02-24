@@ -2,7 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Manager;
 
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 abstract class AbstractEvaluationManager
@@ -52,11 +52,23 @@ abstract class AbstractEvaluationManager
             $changes['progression'] = true;
         }
 
-        if (empty($evaluation->getDate()) || $changes['score'] || $changes['progression'] || $changes['status']) {
+        if (empty($evaluation->getLastActivityAt()) || $changes['score'] || $changes['progression'] || $changes['status']) {
             $evaluationDate = $date ?? new \DateTime();
             // only updates evaluation date if something interesting changes
-            if (empty($evaluation->getDate()) || $evaluationDate > $evaluation->getDate()) {
-                $evaluation->setDate($evaluationDate);
+            if (empty($evaluation->getLastActivityAt()) || $evaluationDate > $evaluation->getLastActivityAt()) {
+                $evaluation->setLastActivityAt($evaluationDate);
+            }
+
+            if ($changes['status']) {
+                if (empty($evaluation->getStartedAt())
+                    && EvaluationStatus::PRIORITY[EvaluationStatus::INCOMPLETE] <= EvaluationStatus::PRIORITY[$evaluation->getStatus()]
+                ) {
+                    $evaluation->setStartedAt($evaluationDate);
+                }
+
+                if ($evaluation->isTerminated()) {
+                    $evaluation->setEndedAt($evaluationDate);
+                }
             }
         }
 

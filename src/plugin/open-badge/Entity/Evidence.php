@@ -14,9 +14,9 @@ namespace Claroline\OpenBadgeBundle\Entity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,11 +37,11 @@ class Evidence
     #[ORM\ManyToOne(targetEntity: Assertion::class, inversedBy: 'evidences')]
     private ?Assertion $assertion = null;
 
-    #[ORM\ManyToOne(targetEntity: ResourceUserEvaluation::class)]
-    private ?ResourceUserEvaluation $resourceEvidence = null;
+    #[ORM\ManyToOne(targetEntity: ResourceEvaluation::class)]
+    private ?ResourceEvaluation $resourceEvidence = null;
 
-    #[ORM\ManyToOne(targetEntity: Evaluation::class)]
-    private ?Evaluation $workspaceEvidence = null;
+    #[ORM\ManyToOne(targetEntity: WorkspaceEvaluation::class)]
+    private ?WorkspaceEvaluation $workspaceEvidence = null;
 
     
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
@@ -78,22 +78,22 @@ class Evidence
         $this->assertion = $assertion;
     }
 
-    public function setResourceEvidence(?ResourceUserEvaluation $resourceEvidence): void
+    public function setResourceEvidence(?ResourceEvaluation $resourceEvidence): void
     {
         $this->resourceEvidence = $resourceEvidence;
     }
 
-    public function getResourceEvidence(): ResourceUserEvaluation
+    public function getResourceEvidence(): ResourceEvaluation
     {
         return $this->resourceEvidence;
     }
 
-    public function setWorkspaceEvidence(?Evaluation $workspaceEvidence): void
+    public function setWorkspaceEvidence(?WorkspaceEvaluation $workspaceEvidence): void
     {
         $this->workspaceEvidence = $workspaceEvidence;
     }
 
-    public function getWorkspaceEvidence(): Evaluation
+    public function getWorkspaceEvidence(): WorkspaceEvaluation
     {
         return $this->workspaceEvidence;
     }

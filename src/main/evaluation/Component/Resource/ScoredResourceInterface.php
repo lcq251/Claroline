@@ -1,8 +1,0 @@
-<?php
-
-namespace Claroline\EvaluationBundle\Component\Resource;
-
-interface ScoredResourceInterface extends EvaluatedResourceInterface
-{
-
-}

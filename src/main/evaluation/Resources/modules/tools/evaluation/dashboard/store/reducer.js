@@ -1,17 +1,21 @@
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 import {makeListReducer} from '#/main/app/content/list/store/reducer'
+
 import {TOOL_OPEN} from '#/main/core/tool/store'
+import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 
 import {USER_PROGRESSION_LOAD, USER_PROGRESSION_RESET} from '#/main/evaluation/tools/evaluation/dashboard/store/actions'
 import {selectors} from '#/main/evaluation/tools/evaluation/dashboard/store/selectors'
-import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
+
 
 const reducer = combineReducers({
   /**
    * The list of all workspace evaluations for all users.
    * It is filtered by workspace for the ws tool.
    */
-  workspaceEvaluations: makeListReducer(selectors.STORE_NAME+'.workspaceEvaluations', {}, {
+  workspaceEvaluations: makeListReducer(selectors.STORE_NAME+'.workspaceEvaluations', {
+    sortBy: { property: 'date', direction: -1 }
+  }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
     }),

@@ -12,7 +12,7 @@
 namespace Claroline\EvaluationBundle\Command;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,8 +34,8 @@ class ComputeWorkspaceEvaluationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var Evaluation[] $evaluations */
-        $evaluations = $this->om->getRepository(Evaluation::class)->findAll();
+        /** @var WorkspaceEvaluation[] $evaluations */
+        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findAll();
 
         $output->writeln('Computing workspace evaluations...');
 

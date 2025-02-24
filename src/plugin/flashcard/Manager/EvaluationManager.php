@@ -3,9 +3,9 @@
 namespace Claroline\FlashcardBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
@@ -28,15 +28,15 @@ class EvaluationManager
         $this->om = $om;
         $this->resourceEvalManager = $resourceEvalManager;
         $this->flashcardManager = $flashcardManager;
-        $this->resourceEvalRepo = $this->om->getRepository(ResourceEvaluation::class);
+        $this->resourceEvalRepo = $this->om->getRepository(ResourceAttempt::class);
     }
 
-    public function getResourceUserEvaluation(ResourceNode $node, User $user): ResourceUserEvaluation
+    public function getResourceUserEvaluation(ResourceNode $node, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->getUserEvaluation($node, $user);
     }
 
-    public function update(ResourceEvaluation $attempt, $attemptCards): ResourceEvaluation
+    public function update(ResourceAttempt $attempt, $attemptCards): ResourceAttempt
     {
         $drawnCardCount = count($attemptCards);
 

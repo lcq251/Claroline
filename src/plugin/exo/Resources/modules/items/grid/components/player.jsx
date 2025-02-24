@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 import cloneDeep from 'lodash/cloneDeep'
 import shuffle from 'lodash/shuffle'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {MenuButton, CALLBACK_BUTTON} from '#/main/app/buttons'
@@ -21,8 +20,8 @@ class CellChoices extends Component {
   render() {
     return (
       <MenuButton
-        className={classes('btn', {disabled: this.props.disabled})}
-        id={`choice-drop-down-${this.props.cellId}`}
+        className="btn"
+        disabled={this.props.disabled}
         menu={{
           items: this.state.choices.map((choice) => ({
             type: CALLBACK_BUTTON,

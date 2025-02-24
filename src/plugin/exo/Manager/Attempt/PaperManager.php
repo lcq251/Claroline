@@ -4,7 +4,7 @@ namespace UJM\ExoBundle\Manager\Attempt;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
@@ -270,7 +270,7 @@ class PaperManager
     /**
      * Creates a ResourceEvaluation for the attempt.
      */
-    public function generateResourceEvaluation(Paper $paper, bool $finished): ResourceEvaluation
+    public function generateResourceEvaluation(Paper $paper, bool $finished): ResourceAttempt
     {
         $score = $this->calculateScore($paper);
         $successScore = $paper->getExercise()->getSuccessScore();

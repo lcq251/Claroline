@@ -3,7 +3,7 @@
 namespace Innova\PathBundle\Repository;
 
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Innova\PathBundle\Entity\Path\Path;
@@ -34,14 +34,14 @@ class PathRepository extends EntityRepository
      * Find user evaluations for the required resources embedded in a Path as an overview resource or a primary resource of a Step.
      * NB. This is used by the evaluation system of the Path, other embedded resources are not needed in this case.
      *
-     * @return ResourceUserEvaluation[]
+     * @return ResourceEvaluation[]
      */
     public function findRequiredEvaluations(Path $path, User $user): array
     {
         return $this->getEntityManager()
             ->createQuery('
                 SELECT e
-                FROM Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation AS e
+                FROM Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation AS e
                 LEFT JOIN e.resourceNode AS n
                 LEFT JOIN Innova\PathBundle\Entity\Step AS s WITH (s.resource = n)
                 LEFT JOIN Innova\PathBundle\Entity\Path\Path AS p WITH (p.overviewResource = n)

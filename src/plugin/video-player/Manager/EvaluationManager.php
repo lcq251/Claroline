@@ -3,9 +3,9 @@
 namespace Claroline\VideoPlayerBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
@@ -21,18 +21,18 @@ class EvaluationManager
         ResourceEvaluationManager $resourceEvalManager
     ) {
         $this->resourceEvalManager = $resourceEvalManager;
-        $this->resourceEvalRepo = $om->getRepository(ResourceEvaluation::class);
+        $this->resourceEvalRepo = $om->getRepository(ResourceAttempt::class);
     }
 
     /**
      * Fetch or create resource user evaluation.
      */
-    public function getResourceUserEvaluation(ResourceNode $node, User $user): ResourceUserEvaluation
+    public function getResourceUserEvaluation(ResourceNode $node, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->getUserEvaluation($node, $user);
     }
 
-    public function update(ResourceNode $node, User $user, float $currentTime = 0, float $totalTime = 0): ResourceEvaluation
+    public function update(ResourceNode $node, User $user, float $currentTime = 0, float $totalTime = 0): ResourceAttempt
     {
         $evaluation = $this->resourceEvalRepo->findOneInProgress($node, $user);
 

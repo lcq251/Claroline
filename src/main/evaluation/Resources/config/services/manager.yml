@@ -1,10 +1,4 @@
 services:
-    Claroline\EvaluationBundle\Manager\ResourceEvaluationManager:
-        arguments:
-            - '@event_dispatcher'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
-
     Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager:
         arguments:
             - '@security.token_storage'
@@ -12,6 +6,24 @@ services:
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+
+    Claroline\EvaluationBundle\Manager\SequenceEvaluationManager:
+        arguments:
+            - '@security.token_storage'
+            - '@messenger.default_bus'
+            - '@event_dispatcher'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+
+    Claroline\EvaluationBundle\Manager\ResourceEvaluationManager:
+        arguments:
+            - '@event_dispatcher'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
+
+    Claroline\EvaluationBundle\Manager\SequenceManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     Claroline\EvaluationBundle\Manager\CertificateManager:
         arguments:
@@ -24,11 +36,3 @@ services:
             - '@Claroline\AppBundle\Manager\File\TempFileManager'
             - '@Claroline\AppBundle\Manager\File\ArchiveManager'
             - '@translator'
-
-    Claroline\EvaluationBundle\Manager\SequenceEvaluationManager:
-        arguments:
-            - '@security.token_storage'
-            - '@messenger.default_bus'
-            - '@event_dispatcher'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'

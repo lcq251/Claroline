@@ -3,6 +3,7 @@
 namespace Claroline\EvaluationBundle\Entity\Sequence;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Code;
@@ -32,7 +33,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'innova_path')]
 #[ORM\Entity(repositoryClass: SequenceRepository::class)]
 #[CrudEntity(finderClass: SequenceType::class)]
-class Sequence
+class Sequence implements CrudEntityInterface
 {
     // identifiers
     use Id;
@@ -57,13 +58,6 @@ class Sequence
     use EvaluationFeedbacks;
 
     use HasEndPage;
-
-    /**
-     * @var Collection<int, Step>
-     */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'path', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\OrderBy(['order' => 'ASC'])]
-    private Collection $steps;
 
     /**
      * Numbering of the steps.
@@ -96,11 +90,31 @@ class Sequence
     #[ORM\Column(name: 'show_score', type: Types::BOOLEAN)]
     private bool $showScore = false;
 
+    /**
+     * @var Collection<int, Step>
+     */
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'path', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['order' => 'ASC'])]
+    private Collection $steps;
+
+    #[ORM\OneToMany(targetEntity: Assignment::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $assignments;
+
+    #[ORM\OneToMany(targetEntity: Requirement::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $requirements;
+
     public function __construct()
     {
         $this->refreshUuid();
 
         $this->steps = new ArrayCollection();
+        $this->requirements = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
+    }
+
+    public static function getIdentifiers(): array
+    {
+        return ['code'];
     }
 
     public function addStep(Step $step): void
@@ -235,5 +249,47 @@ class Sequence
     public function setShowScore($showScore): void
     {
         $this->showScore = $showScore;
+    }
+
+    public function getRequirements(): Collection
+    {
+        return $this->requirements;
+    }
+
+    public function addRequirement(Requirement $requirement): void
+    {
+        if (!$this->requirements->contains($requirement)) {
+            $this->requirements->add($requirement);
+            $requirement->setSequence($this);
+        }
+    }
+
+    public function removeRequirement(Requirement $requirement): void
+    {
+        if ($this->requirements->contains($requirement)) {
+            $this->requirements->removeElement($requirement);
+            $requirement->setSequence(null);
+        }
+    }
+
+    public function getAssignments(): Collection
+    {
+        return $this->assignments;
+    }
+
+    public function addAssignment(Assignment $assignment): void
+    {
+        if (!$this->assignments->contains($assignment)) {
+            $this->assignments->add($assignment);
+            $assignment->setSequence($this);
+        }
+    }
+
+    public function removeAssignment(Assignment $assignment): void
+    {
+        if ($this->assignments->contains($assignment)) {
+            $this->assignments->removeElement($assignment);
+            $assignment->setSequence(null);
+        }
     }
 }

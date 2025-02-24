@@ -14,7 +14,7 @@ namespace Innova\PathBundle\Controller;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Innova\PathBundle\Entity\Path\Path;
@@ -110,7 +110,7 @@ class PathController
                 $this->evaluationManager->getCurrentAttempt($path, $user, false)
             ),
             'progression' => $this->evaluationManager->getStepsProgressionForUser($path, $user),
-            'resourceEvaluations' => array_map(function (ResourceUserEvaluation $resourceEvaluation) {
+            'resourceEvaluations' => array_map(function (ResourceEvaluation $resourceEvaluation) {
                 return $this->serializer->serialize($resourceEvaluation);
             }, $this->evaluationManager->getRequiredEvaluations($path, $user)),
         ]);
@@ -125,7 +125,7 @@ class PathController
         return [
             'attempt' => $this->serializer->serialize($attempt),
             'userEvaluation' => $this->serializer->serialize($attempt->getResourceUserEvaluation(), [SerializerInterface::SERIALIZE_MINIMAL]),
-            'resourceEvaluations' => array_map(function (ResourceUserEvaluation $resourceEvaluation) {
+            'resourceEvaluations' => array_map(function (ResourceEvaluation $resourceEvaluation) {
                 return $this->serializer->serialize($resourceEvaluation);
             }, $resourceEvaluations),
         ];

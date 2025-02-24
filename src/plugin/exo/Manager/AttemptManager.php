@@ -3,9 +3,9 @@
 namespace UJM\ExoBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use UJM\ExoBundle\Entity\Attempt\Answer;
 use UJM\ExoBundle\Entity\Attempt\Paper;
@@ -201,7 +201,7 @@ class AttemptManager
      * Ends a user paper.
      * Sets the end date of the paper and calculates its score.
      */
-    public function end(Paper $paper, ?bool $finished = true, ?bool $generateEvaluation = true): ?ResourceEvaluation
+    public function end(Paper $paper, ?bool $finished = true, ?bool $generateEvaluation = true): ?ResourceAttempt
     {
         $this->om->startFlushSuite();
 
@@ -275,7 +275,7 @@ class AttemptManager
         return $hint;
     }
 
-    public function getAttempt(Paper $paper): ?ResourceEvaluation
+    public function getAttempt(Paper $paper): ?ResourceAttempt
     {
         return $this->paperRepository->getPaperAttempt($paper);
     }

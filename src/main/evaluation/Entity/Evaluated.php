@@ -9,10 +9,15 @@ trait Evaluated
 {
     /**
      * The evaluation will produce a score.
+     *
+     * @deprecated
      */
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
     protected bool $evaluated = false;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
     protected bool $required = false;
 
@@ -24,6 +29,8 @@ trait Evaluated
 
     /**
      * Is the entity evaluated ?
+     *
+     * @deprecated
      */
     public function isEvaluated(): bool
     {
@@ -32,17 +39,25 @@ trait Evaluated
 
     /**
      * Sets the evaluated flag.
+     *
+     * @deprecated
      */
     public function setEvaluated(bool $evaluated): void
     {
         $this->evaluated = $evaluated;
     }
 
+    /**
+     * @@deprecated
+     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
+    /**
+     * @@deprecated
+     */
     public function setRequired(bool $required): void
     {
         $this->required = $required;

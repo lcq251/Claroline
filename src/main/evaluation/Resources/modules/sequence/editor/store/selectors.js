@@ -32,12 +32,22 @@ const workspaceId = createSelector(
 
 const steps = createSelector(
   [data],
-  (path) => path.steps || []
+  (data) => data.steps || []
+)
+
+const assignments = createSelector(
+  [data],
+  (data) => data.assignments || []
+)
+
+const requirements = createSelector(
+  [data],
+  (data) => data.requirements || []
 )
 
 const numbering = createSelector(
   [data],
-  (path) => get(path, 'display.numbering')
+  (data) => get(data, 'display.numbering')
 )
 
 const hasCustomNumbering = createSelector(
@@ -53,6 +63,8 @@ export const selectors = {
   workspace,
   workspaceId,
   steps,
+  assignments,
+  requirements,
   numbering,
   hasCustomNumbering
 }

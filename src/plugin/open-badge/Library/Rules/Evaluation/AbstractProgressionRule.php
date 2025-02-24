@@ -2,8 +2,7 @@
 
 namespace Claroline\OpenBadgeBundle\Library\Rules\Evaluation;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
-use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractUserEvaluation;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Library\Rules\AbstractRule;
 
@@ -21,7 +20,7 @@ abstract class AbstractProgressionRule extends AbstractRule
             $expectedProgression = 100;
         }
 
-        return array_map(function (ResourceUserEvaluation $evaluation) {
+        return array_map(function (AbstractUserEvaluation $evaluation) {
             return $evaluation->getUser();
         }, array_filter($evaluations, function (AbstractUserEvaluation $evaluation) use ($expectedProgression) {
             return $evaluation->getProgression() >= $expectedProgression;

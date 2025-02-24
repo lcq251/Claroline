@@ -4,8 +4,7 @@ namespace Claroline\EvaluationBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
-use Claroline\CommunityBundle\Finder\UserType;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\CoreBundle\Finder\WorkspaceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +13,7 @@ class WorkspaceEvaluationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Evaluation::class,
+            'data_class' => WorkspaceEvaluation::class,
         ]);
     }
 
@@ -22,7 +21,6 @@ class WorkspaceEvaluationType extends AbstractType
     {
         $builder
             ->add('workspace', WorkspaceType::class)
-            ->add('user', UserType::class)
         ;
     }
 

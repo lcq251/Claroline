@@ -44,7 +44,7 @@
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "$ref": "https://github.com/claroline/Claroline/tree/master/src/main/evaluation/Resources/schemas/sequence-step.json"
+        "$ref": "https://github.com/claroline/Claroline/tree/master/src/main/evaluation/Resources/schemas/sequence/step.json"
       }
     }
   }

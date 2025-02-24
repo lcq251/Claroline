@@ -30,8 +30,7 @@ class SequenceVoter extends AbstractVoter
     {
         switch ($attributes[0]) {
             case self::OPEN:
-            case self::VIEW:
-                if ($this->isToolGranted(self::OPEN, 'evaluation', $object->getWorkspace())) {
+                if ($this->isToolGranted(self::OPEN, 'progression', $object->getWorkspace())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
@@ -41,7 +40,7 @@ class SequenceVoter extends AbstractVoter
             case self::ADMINISTRATE:
             case self::EDIT:
             case self::DELETE:
-                if ($this->isToolGranted(self::EDIT, 'evaluation', $object->getWorkspace())) {
+                if ($this->isToolGranted(self::EDIT, 'progression', $object->getWorkspace())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

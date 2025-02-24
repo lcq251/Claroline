@@ -11,15 +11,15 @@
 
 namespace Claroline\EvaluationBundle\Repository;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Doctrine\ORM\EntityRepository;
 
 class ResourceAttemptRepository extends EntityRepository
 {
-    public function findOneInProgress(ResourceNode $node, User $user): ?ResourceEvaluation
+    public function findOneInProgress(ResourceNode $node, User $user): ?ResourceAttempt
     {
         return $this->createQueryBuilder('re')
             ->join('re.resourceUserEvaluation', 'rue')
@@ -36,7 +36,7 @@ class ResourceAttemptRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findLast(ResourceNode $node, User $user): ?ResourceEvaluation
+    public function findLast(ResourceNode $node, User $user): ?ResourceAttempt
     {
         return $this->createQueryBuilder('re')
             ->join('re.resourceUserEvaluation', 'rue')

@@ -55,14 +55,14 @@ class SequenceEvaluationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Recomputes WorkspaceEvaluations when a resource is deleted.
+     * Recomputes SequenceEvaluations when a resource is deleted.
      */
     public function onResourceDelete(DeleteEvent $event): void
     {
         /** @var ResourceNode $resourceNode */
         $resourceNode = $event->getObject();
 
-        if ($resourceNode->isRequired() && $resourceNode->isPublished()) {
+        if ($resourceNode->isPublished()) {
             // find sequences which use the resource and recompute the user evaluations for them
             $sequences = $this->manager->getByResource($resourceNode);
             foreach ($sequences as $sequence) {
@@ -77,7 +77,7 @@ class SequenceEvaluationSubscriber implements EventSubscriberInterface
         $resourceNode = $event->getObject();
         $oldData = $event->getOldData();
 
-        if ($resourceNode->isRequired() && !empty($oldData['meta']) && ($oldData['meta']['published'] !== $resourceNode->isPublished())) {
+        if (!empty($oldData['meta']) && ($oldData['meta']['published'] !== $resourceNode->isPublished())) {
             // find sequences which use the resource and recompute the user evaluations for them
             $sequences = $this->manager->getByResource($resourceNode);
             foreach ($sequences as $sequence) {

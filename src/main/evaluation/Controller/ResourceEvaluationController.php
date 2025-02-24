@@ -16,11 +16,11 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +36,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Manages user evaluations for resources {@see ResourceUserEvaluation}}.
  */
 #[Route(path: '/resource_evaluation')]
-class ResourceUserEvaluationController
+class ResourceEvaluationController
 {
     use PermissionCheckerTrait;
 
@@ -73,7 +73,7 @@ class ResourceUserEvaluationController
             $finderQuery->addFilter('user', $user->getUuid());
         }
 
-        $evaluations = $this->crud->search(ResourceUserEvaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+        $evaluations = $this->crud->search(ResourceEvaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
         return $evaluations->toResponse();
     }
@@ -81,13 +81,13 @@ class ResourceUserEvaluationController
     #[Route(path: '/attempts/{userEvaluationId}', name: 'apiv2_resource_evaluation_list_attempts', methods: ['GET'])]
     public function listAttemptsAction(
         #[MapEntity(mapping: ['userEvaluationId' => 'id'])]
-        ResourceUserEvaluation $userEvaluation,
+        ResourceEvaluation $userEvaluation,
         Request $request
     ): JsonResponse {
         $this->checkPermission('OPEN', $userEvaluation, [], true);
 
         return new JsonResponse(
-            $this->finder->search(ResourceEvaluation::class, array_merge($request->query->all(), ['hiddenFilters' => [
+            $this->finder->search(ResourceAttempt::class, array_merge($request->query->all(), ['hiddenFilters' => [
                 'resourceUserEvaluation' => $userEvaluation,
             ]]))
         );
@@ -96,7 +96,7 @@ class ResourceUserEvaluationController
     #[Route(path: '/attempts/{userEvaluationId}', name: 'apiv2_resource_evaluation_give_attempt', methods: ['PUT'])]
     public function giveAnotherAttemptAction(
         #[MapEntity(mapping: ['userEvaluationId' => 'id'])]
-        ResourceUserEvaluation $userEvaluation
+        ResourceEvaluation $userEvaluation
     ): JsonResponse {
         $this->checkPermission('ADMINISTRATE', $userEvaluation, [], true);
 

@@ -5,7 +5,7 @@ namespace Claroline\EvaluationBundle\Subscriber\DataSource;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\CoreBundle\Entity\DataSource;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\CoreBundle\Event\DataSource\GetDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -13,15 +13,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class MyWorkspaceEvaluationSource implements EventSubscriberInterface
 {
-    private TokenStorageInterface $tokenStorage;
-    private FinderProvider $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array
@@ -47,7 +42,7 @@ class MyWorkspaceEvaluationSource implements EventSubscriberInterface
         }
 
         $event->setData(
-            $this->finder->search(Evaluation::class, $options)
+            $this->finder->search(WorkspaceEvaluation::class, $options)
         );
 
         $event->stopPropagation();

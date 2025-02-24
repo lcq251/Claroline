@@ -156,7 +156,7 @@ class BadgeLayoutComponent extends Component {
                   label={trans('show-more-actions', {}, 'actions')}
                   tooltip="bottom"
                   menu={{
-                    align: 'right',
+                    align: 'end',
                     items: this.props.actions
                   }}
                 />

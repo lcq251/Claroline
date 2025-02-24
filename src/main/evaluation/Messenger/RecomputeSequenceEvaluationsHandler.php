@@ -3,14 +3,10 @@
 namespace Claroline\EvaluationBundle\Messenger;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
-use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
-use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeSequenceEvaluations;
-use Claroline\EvaluationBundle\Messenger\Message\RecomputeWorkspaceEvaluations;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**

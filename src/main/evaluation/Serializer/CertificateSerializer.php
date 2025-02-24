@@ -6,18 +6,14 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Entity\Certificate;
+use Claroline\EvaluationBundle\Serializer\UserEvaluation\WorkspaceEvaluationSerializer;
 
 class CertificateSerializer
 {
-    private UserSerializer $userSerializer;
-    private WorkspaceEvaluationSerializer $workspaceEvaluationSerializer;
-
     public function __construct(
-        UserSerializer $userSerializer,
-        WorkspaceEvaluationSerializer $workspaceEvaluationSerializer
+        private readonly UserSerializer $userSerializer,
+        private readonly WorkspaceEvaluationSerializer $workspaceEvaluationSerializer
     ) {
-        $this->userSerializer = $userSerializer;
-        $this->workspaceEvaluationSerializer = $workspaceEvaluationSerializer;
     }
 
     public function getName(): string

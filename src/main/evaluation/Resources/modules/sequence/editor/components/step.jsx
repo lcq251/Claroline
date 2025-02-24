@@ -81,8 +81,7 @@ const SequenceEditorStep = props => {
             }
           ]
         }, {
-          title: trans('Activité'),
-          subtitle: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
+          title: trans('activity'),
           primary: true,
           fields: [
             {
@@ -96,7 +95,7 @@ const SequenceEditorStep = props => {
                 picker: {
                   contextId: workspace.id
                 }
-              },
+              }/*,
               linked: [
                 {
                   name: 'showResourceHeader',
@@ -104,7 +103,17 @@ const SequenceEditorStep = props => {
                   label: trans('show_resource_header', {}, 'resource'),
                   displayed: (step) => !isEmpty(step.primaryResource)
                 }
-              ]
+              ]*/
+            }, {
+              name: 'evaluation.required',
+              type: 'boolean',
+              label: trans('Rendre l\'étape obligatoire', {}, 'evaluation'),
+              help: trans('Les utilisateurs devront terminer l\'activité pour progresser dans la séquence.', {}, 'evaluation')
+            }, {
+              name: 'evaluation.scored',
+              type: 'boolean',
+              label: trans('Utiliser le score de l\'activité', {}, 'evaluation'),
+              help: trans('Le score obtenu par les utilisateurs à la fin de l\'activité sera utilisé dans le calcul du score de la séquence.', {}, 'evaluation')
             }
           ]
         }, {
@@ -127,6 +136,13 @@ const SequenceEditorStep = props => {
                 workspace: workspace
               }
             }, {
+              name: 'evaluation.estimatedDuration',
+              label: trans('estimated_duration'),
+              type: 'number',
+              options: {
+                unit: trans('minutes')
+              }
+            }, {
               name: '_enableSecondaryResources',
               type: 'boolean',
               label: trans('Ajouter des ressources complémentaires', {}, 'path'),
@@ -138,6 +154,7 @@ const SequenceEditorStep = props => {
                   type: 'resources',
                   label: trans('secondary_resources', {}, 'path'),
                   displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
+                  required: true,
                   options: {
                     picker: {
                       contextId: workspace.id

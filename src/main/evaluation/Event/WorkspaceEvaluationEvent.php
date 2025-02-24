@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Event;
 
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -13,7 +13,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class WorkspaceEvaluationEvent extends Event
 {
     public function __construct(
-        private readonly Evaluation $evaluation,
+        private readonly WorkspaceEvaluation $evaluation,
         private readonly array $changes
     ) {
     }
@@ -21,7 +21,7 @@ class WorkspaceEvaluationEvent extends Event
     /**
      * Get the current evaluation.
      */
-    public function getEvaluation(): Evaluation
+    public function getEvaluation(): WorkspaceEvaluation
     {
         return $this->evaluation;
     }

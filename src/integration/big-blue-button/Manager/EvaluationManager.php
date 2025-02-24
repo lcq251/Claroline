@@ -3,9 +3,9 @@
 namespace Claroline\BigBlueButtonBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
@@ -18,14 +18,14 @@ class EvaluationManager
         ObjectManager $om,
         private readonly ResourceEvaluationManager $resourceEvalManager
     ) {
-        $this->attemptRepository = $om->getRepository(ResourceEvaluation::class);
+        $this->attemptRepository = $om->getRepository(ResourceAttempt::class);
     }
 
     /**
      * Marks the BBB evaluation as participated.
      * Called when a user opens a BBB.
      */
-    public function update(ResourceNode $resourceNode, User $user): ResourceEvaluation
+    public function update(ResourceNode $resourceNode, User $user): ResourceAttempt
     {
         $evaluation = $this->attemptRepository->findOneInProgress($resourceNode, $user);
 

@@ -4,8 +4,8 @@ namespace Claroline\ScormBundle\Manager;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 use Claroline\ScormBundle\Entity\Sco;
@@ -25,7 +25,7 @@ class EvaluationManager
         $this->scoTrackingRepo = $om->getRepository(ScoTracking::class);
     }
 
-    public function getResourceUserEvaluation(Scorm $scorm, User $user): ResourceUserEvaluation
+    public function getResourceUserEvaluation(Scorm $scorm, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->getUserEvaluation($scorm->getResourceNode(), $user);
     }
@@ -203,7 +203,7 @@ class EvaluationManager
         return $tracking;
     }
 
-    private function generateScormEvaluation(ScoTracking $tracking, $sessionTime = null): ResourceEvaluation
+    private function generateScormEvaluation(ScoTracking $tracking, $sessionTime = null): ResourceAttempt
     {
         $scorm = $tracking->getSco()->getScorm();
 
@@ -251,7 +251,7 @@ class EvaluationManager
         $attempt = null;
         $details = $tracking->getDetails();
         if (!empty($details) && !empty($details['attempt'])) {
-            $attempt = $this->om->getRepository(ResourceEvaluation::class)->find($details['attempt']);
+            $attempt = $this->om->getRepository(ResourceAttempt::class)->find($details['attempt']);
         }
 
         if (!empty($attempt)) {

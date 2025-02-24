@@ -28,7 +28,7 @@ const ManualProgression = props =>
       type={MENU_BUTTON}
       label={constants.STEP_STATUS[props.status]}
       menu={{
-        align: 'right',
+        align: 'end',
         items: Object.keys(constants.STEP_MANUAL_STATUS).map((status) => ({
           type: CALLBACK_BUTTON,
           label: constants.STEP_MANUAL_STATUS[status],

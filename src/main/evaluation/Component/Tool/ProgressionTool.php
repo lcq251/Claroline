@@ -10,10 +10,10 @@ use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ProgressionTool extends ToolComponent
@@ -57,18 +57,18 @@ class ProgressionTool extends ToolComponent
             return [];
         }
 
-        $workspaceEvaluation = $this->om->getRepository(Evaluation::class)->findOneBy([
+        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
             'workspace' => $contextSubject,
             'user' => $this->tokenStorage->getToken()?->getUser(),
         ]);
 
         if (empty($workspaceEvaluation)) {
-            $workspaceEvaluation = new Evaluation();
+            $workspaceEvaluation = new WorkspaceEvaluation();
         }
 
         return [
             'workspaceEvaluation' => $this->serializer->serialize($workspaceEvaluation),
-            'resourceEvaluations' => $this->finder->search(ResourceUserEvaluation::class, [
+            'resourceEvaluations' => $this->finder->search(ResourceEvaluation::class, [
                 'filters' => ['workspace' => $contextSubject->getContextIdentifier(), 'user' => $user->getUuid()],
             ])['data'],
         ];

@@ -13,6 +13,7 @@ use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
+use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -29,7 +30,8 @@ class SequenceSerializer
         private readonly UserSerializer $userSerializer,
         private readonly WorkspaceSerializer $workspaceSerializer,
         private readonly ResourceNodeSerializer $resourceNodeSerializer,
-        private readonly StepSerializer $stepSerializer
+        private readonly StepSerializer $stepSerializer,
+        private readonly AssignmentSerializer $assignmentSerializer
     ) {
         $this->resourceNodeRepo = $om->getRepository(ResourceNode::class);
     }
@@ -41,7 +43,7 @@ class SequenceSerializer
 
     public function getSchema(): string
     {
-        return '#/main/evaluation/sequence.json';
+        return '#/main/evaluation/sequence/sequence.json';
     }
 
     public function getName(): string
@@ -110,6 +112,10 @@ class SequenceSerializer
                 'endMessage' => $sequence->getEndMessage(),
                 'successMessage' => $sequence->getSuccessMessage(),
                 'failureMessage' => $sequence->getFailureMessage(),
+                'scoreTotal' => $sequence->getScoreTotal(),
+                'successCondition' => [
+                    'score' => $sequence->getSuccessScore(),
+                ],
             ],
             'overview' => [
                 'resource' => $sequence->getOverviewResource() ? $this->resourceNodeSerializer->serialize($sequence->getOverviewResource(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
@@ -126,6 +132,9 @@ class SequenceSerializer
             'restrictions' => [
                 'dates' => DateRangeNormalizer::normalize($sequence->getAccessibleFrom(), $sequence->getAccessibleUntil()),
             ],
+            'assignments' => array_map(function (Assignment $assignment) {
+                return $this->assignmentSerializer->serialize($assignment, [SerializerInterface::SERIALIZE_MINIMAL]);
+            }, $sequence->getAssignments()->toArray()),
         ];
 
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
@@ -164,8 +173,8 @@ class SequenceSerializer
 
         $this->sipe('opening.secondaryResources', 'setSecondaryResourcesTarget', $data, $sequence);
 
-        $this->sipe('score.success', 'setSuccessScore', $data, $sequence);
-        $this->sipe('score.total', 'setScoreTotal', $data, $sequence);
+        /*$this->sipe('score.success', 'setSuccessScore', $data, $sequence);
+        $this->sipe('score.total', 'setScoreTotal', $data, $sequence);*/
 
         if (isset($data['evaluation'])) {
             $this->sipe('evaluation.endMessage', 'setEndMessage', $data, $sequence);
@@ -175,6 +184,10 @@ class SequenceSerializer
             $this->sipe('evaluation.evaluated', 'setEvaluated', $data, $sequence);
             $this->sipe('evaluation.required', 'setRequired', $data, $sequence);
             $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
+
+            if (isset($data['evaluation.successCondition'])) {
+                $this->sipe('evaluation.successCondition.score', 'setSuccessScore', $data, $sequence);
+            }
         }
 
         if (!empty($data['workspace'])) {
@@ -221,8 +234,12 @@ class SequenceSerializer
             $sequence->setAccessibleUntil($dateRange[1]);
         }
 
-        if (isset($data['steps'])) {
+        if (array_key_exists('steps', $data)) {
             $this->deserializeSteps($data['steps'] ?? [], $sequence, $options);
+        }
+
+        if (array_key_exists('assignments', $data)) {
+            $this->deserializeAssignments($data['assignments'] ?? [], $sequence, $options);
         }
 
         return $sequence;
@@ -242,7 +259,7 @@ class SequenceSerializer
                 $step = new Step();
             }
 
-            $step->setPath($sequence);
+            $step->setSequence($sequence);
             $step->setOrder($stepIndex);
 
             $this->stepSerializer->deserialize($step, $stepData, $options);
@@ -255,6 +272,18 @@ class SequenceSerializer
             if (!in_array($currentStep->getUuid(), $ids)) {
                 $currentStep->setPath(null);
             }
+        }
+    }
+
+    private function deserializeAssignments(array $assignmentsData, Sequence $sequence, array $options = []): void
+    {
+        // empty and recreate all assignments (not optimal)
+        $sequence->getAssignments()->clear();
+        foreach ($assignmentsData as $assignmentData) {
+            $assignment = new Assignment();
+            $sequence->addAssignment($assignment);
+
+            $this->assignmentSerializer->deserialize($assignmentData, $assignment, $options);
         }
     }
 }

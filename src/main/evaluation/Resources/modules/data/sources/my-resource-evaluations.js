@@ -31,12 +31,21 @@ export default {
         label: trans('resource'),
         displayed: true
       }, {
-        name: 'date',
+        name: 'startedAt',
+        label: trans('start_date'),
+        type: 'date',
+        options: {time: true}
+      }, {
+        name: 'endedAt',
+        label: trans('end_date'),
+        type: 'date',
+        options: {time: true}
+      }, {
+        name: 'lastActivityAt',
         label: trans('last_activity'),
         type: 'date',
         options: {time: true},
-        displayed: true,
-        primary: true
+        displayed: true
       }, {
         name: 'duration',
         type: 'time',

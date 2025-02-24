@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Entity\Resource;
+namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Doctrine\DBAL\Types\Types;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
-use Claroline\EvaluationBundle\Entity\AbstractEvaluation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,12 +21,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Table(name: 'claro_resource_evaluation')]
 #[ORM\Entity(repositoryClass: ResourceAttemptRepository::class)]
-class ResourceEvaluation extends AbstractEvaluation
+class ResourceAttempt extends AbstractEvaluation
 {
-    
     #[ORM\JoinColumn(name: 'resource_user_evaluation', onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: ResourceUserEvaluation::class)]
-    private ?ResourceUserEvaluation $resourceUserEvaluation;
+    #[ORM\ManyToOne(targetEntity: ResourceEvaluation::class)]
+    private ?ResourceEvaluation $resourceUserEvaluation;
 
     #[ORM\Column(name: 'evaluation_comment', type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
@@ -35,12 +33,12 @@ class ResourceEvaluation extends AbstractEvaluation
     #[ORM\Column(name: 'more_data', type: Types::JSON, nullable: true)]
     private ?array $data = [];
 
-    public function getResourceUserEvaluation(): ?ResourceUserEvaluation
+    public function getResourceUserEvaluation(): ?ResourceEvaluation
     {
         return $this->resourceUserEvaluation;
     }
 
-    public function setResourceUserEvaluation(ResourceUserEvaluation $resourceUserEvaluation): void
+    public function setResourceUserEvaluation(ResourceEvaluation $resourceUserEvaluation): void
     {
         $this->resourceUserEvaluation = $resourceUserEvaluation;
     }

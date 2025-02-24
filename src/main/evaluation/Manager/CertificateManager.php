@@ -8,11 +8,11 @@ use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\AppBundle\Manager\PlatformManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Manager\LocaleManager;
 use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\EvaluationBundle\Entity\Certificate;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -31,7 +31,7 @@ class CertificateManager
     ) {
     }
 
-    public function getCertificate(Evaluation $evaluation, bool $regenerate = false): ?string
+    public function getCertificate(WorkspaceEvaluation $evaluation, bool $regenerate = false): ?string
     {
         $certificate = $this->om->getRepository(Certificate::class)->findOneBy([
             'evaluation' => $evaluation,
@@ -61,7 +61,7 @@ class CertificateManager
         $certificate->setUser($evaluation->getUser());
         $certificate->setIssueDate(new \DateTime());
         $certificate->setEvaluation($evaluation);
-        $certificate->setObtentionDate($evaluation->getDate());
+        $certificate->setObtentionDate($evaluation->getEndedAt() ?? $evaluation->getLastActivityAt());
         $certificate->setScore($evaluation->getScore() ?: 0);
         $certificate->setLanguage($locale);
         $certificate->setStatus($evaluation->getStatus());
@@ -102,7 +102,7 @@ class CertificateManager
         return $path;
     }
 
-    private function getCommonPlaceholders(Evaluation $evaluation): array
+    private function getCommonPlaceholders(WorkspaceEvaluation $evaluation): array
     {
         $workspace = $evaluation->getWorkspace();
         $user = $evaluation->getUser();

@@ -30,19 +30,6 @@ const reducer = combineReducers({
     })
   }),
 
-  /**
-   * The list of all workspace evaluations for all users.
-   * It is filtered by workspace for the ws tool.
-   */
-  workspaceEvaluations: makeListReducer(selectors.STORE_NAME+'.workspaceEvaluations', {}, {
-    loaded: makeReducer(false, {
-      [CONTEXT_OPEN]: () => false
-    }),
-    invalidated: makeReducer(false, {
-      [TOOL_OPEN]: () => true
-    })
-  }),
-
   requiredResources: makeListReducer(selectors.STORE_NAME+'.requiredResources', {}, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false

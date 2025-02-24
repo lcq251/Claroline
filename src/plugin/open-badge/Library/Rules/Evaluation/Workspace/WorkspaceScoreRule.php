@@ -3,7 +3,7 @@
 namespace Claroline\OpenBadgeBundle\Library\Rules\Evaluation\Workspace;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Library\Rules\Evaluation\AbstractScoreRule;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,7 +23,7 @@ class WorkspaceScoreRule extends AbstractScoreRule
 
     public function getQualifiedUsers(Rule $rule): iterable
     {
-        $evaluations = $this->om->getRepository(Evaluation::class)->findBy([
+        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy([
             'workspace' => $rule->getWorkspace(),
         ]);
 

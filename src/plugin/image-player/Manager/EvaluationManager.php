@@ -3,7 +3,7 @@
 namespace Claroline\ImagePlayerBundle\Manager;
 
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
@@ -21,7 +21,7 @@ class EvaluationManager
     /**
      * Marks the image resource as completed for the user.
      */
-    public function update(ResourceNode $node, User $user): ResourceUserEvaluation
+    public function update(ResourceNode $node, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->updateUserEvaluation($node, $user, [
             'status' => EvaluationStatus::COMPLETED,

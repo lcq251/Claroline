@@ -1,31 +1,22 @@
 <?php
 
-/*
- * This file is part of the Claroline Connect package.
- *
- * (c) Claroline Consortium <consortium@claroline.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Claroline\CoreBundle\Entity\Resource;
+namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\EvaluationBundle\Finder\ResourceEvaluationType;
 use Doctrine\DBAL\Types\Types;
-use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Represents the global evaluation of a User for a ResourceNode.
  * There is only one for a user and a resource.
  */
+#[ORM\Entity]
 #[ORM\Table(name: 'claro_resource_user_evaluation')]
 #[ORM\UniqueConstraint(name: 'resource_user_evaluation', columns: ['resource_node', 'user_id'])]
-#[ORM\Entity]
 #[CrudEntity(finderClass: ResourceEvaluationType::class)]
-class ResourceUserEvaluation extends AbstractUserEvaluation
+class ResourceEvaluation extends AbstractUserEvaluation
 {
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     #[ORM\JoinColumn(name: 'resource_node', onDelete: 'CASCADE')]

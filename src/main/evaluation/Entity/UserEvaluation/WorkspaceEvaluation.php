@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Entity\Workspace;
+namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Finder\WorkspaceEvaluationType;
 use Claroline\EvaluationBundle\Repository\WorkspaceEvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(name: 'workspace_user_evaluation', columns: ['workspace_id', 'user_id'])]
 #[ORM\Entity(repositoryClass: WorkspaceEvaluationRepository::class)]
 #[CrudEntity(finderClass: WorkspaceEvaluationType::class)]
-class Evaluation extends AbstractUserEvaluation
+class WorkspaceEvaluation extends AbstractUserEvaluation
 {
     use Uuid;
 

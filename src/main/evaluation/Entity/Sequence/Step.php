@@ -14,9 +14,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * Step.
- */
 #[ORM\Table('innova_step')]
 #[ORM\Entity]
 class Step
@@ -61,6 +58,12 @@ class Step
     #[ORM\Column(name: 'showResourceHeader', type: Types::BOOLEAN)]
     private bool $showResourceHeader = false;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $required = false;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $scored = false;
+
     /**
      * Secondary resources.
      *
@@ -85,7 +88,7 @@ class Step
     /**
      * @internal use Sequence::addStep() or Sequence::removeStep()
      */
-    public function setPath(Sequence $path = null): void
+    public function setSequence(Sequence $path = null): void
     {
         if (!empty($this->path)) {
             $this->path->removeStep($this);
@@ -103,22 +106,11 @@ class Step
         return $this->path;
     }
 
-    /**
-     * @deprecated
-     */
-    public function getPath(): ?Sequence
-    {
-        return $this->getSequence();
-    }
-
-    public function setParent(Step $parent = null): void
+    public function setParent(?Step $parent = null): void
     {
         if ($parent !== $this->parent) {
             $this->parent = $parent;
-
-            if (null !== $parent) {
-                $parent->addChild($this);
-            }
+            $parent?->addChild($this);
         }
     }
 
@@ -147,7 +139,7 @@ class Step
     {
         if (!$this->children->contains($step)) {
             $this->children->add($step);
-            $step->setPath($this->path);
+            $step->setSequence($this->path);
             $step->setParent($this);
         }
     }
@@ -238,6 +230,26 @@ class Step
     public function setShowResourceHeader(bool $showResourceHeader): void
     {
         $this->showResourceHeader = $showResourceHeader;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    public function setRequired(bool $required): void
+    {
+        $this->required = $required;
+    }
+
+    public function isScored(): bool
+    {
+        return $this->scored;
+    }
+
+    public function setScored(bool $scored): void
+    {
+        $this->scored = $scored;
     }
 
     public function getSlug(): ?string

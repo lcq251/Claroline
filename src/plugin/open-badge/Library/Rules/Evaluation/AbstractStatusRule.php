@@ -2,7 +2,7 @@
 
 namespace Claroline\OpenBadgeBundle\Library\Rules\Evaluation;
 
-use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractUserEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Library\Rules\AbstractRule;

@@ -15,7 +15,7 @@ use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\ScormBundle\Entity\ScoTracking;
 
@@ -46,7 +46,7 @@ class ScoTrackingSerializer
         $user = $scoTracking->getUser();
 
         // grab info from ResourceUserEvaluation
-        $resourceUserEvaluation = $this->om->getRepository(ResourceUserEvaluation::class)->findOneBy([
+        $resourceUserEvaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
             'user' => $user,
             'resourceNode' => $sco->getScorm()->getResourceNode(),
         ]);

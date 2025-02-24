@@ -2,19 +2,19 @@
 
 namespace Claroline\FlashcardBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
 use Claroline\FlashcardBundle\Entity\Flashcard;
 use Claroline\FlashcardBundle\Entity\FlashcardDeck;
 use Claroline\FlashcardBundle\Manager\EvaluationManager;
 use Claroline\FlashcardBundle\Manager\FlashcardManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -37,7 +37,7 @@ class FlashcardDeckController
         private readonly EvaluationManager $evaluationManager,
     ) {
         $this->authorization = $authorization;
-        $this->resourceEvalRepo = $om->getRepository(ResourceEvaluation::class);
+        $this->resourceEvalRepo = $om->getRepository(ResourceAttempt::class);
     }
 
     /**
@@ -58,12 +58,15 @@ class FlashcardDeckController
 
     /**
      * Update card progression for a user.
-     *
      */
     #[Route(path: '/flashcard/{id}/progression', name: 'apiv2_flashcard_progression_update', methods: ['PUT'])]
-    public function updateProgressionAction(#[MapEntity(class: 'Claroline\FlashcardBundle\Entity\Flashcard', mapping: ['id' => 'uuid'])]
-    Flashcard $card, #[CurrentUser] ?User $user, Request $request): JsonResponse
-    {
+    public function updateProgressionAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Flashcard $card,
+        #[CurrentUser]
+        ?User $user,
+        Request $request
+    ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
         }
@@ -85,11 +88,13 @@ class FlashcardDeckController
         ]);
     }
 
-    
     #[Route(path: '/{id}/attempt', name: 'apiv2_flashcard_deck_current_attempt', methods: ['GET'])]
-    public function getAttemptAction(#[MapEntity(class: 'Claroline\FlashcardBundle\Entity\FlashcardDeck', mapping: ['id' => 'uuid'])]
-    FlashcardDeck $deck, #[CurrentUser] ?User $user): JsonResponse
-    {
+    public function getAttemptAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        FlashcardDeck $deck,
+        #[CurrentUser]
+        ?User $user
+    ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
         }

@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Event;
 
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -13,7 +13,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class ResourceEvaluationEvent extends Event
 {
     public function __construct(
-        private readonly ResourceUserEvaluation $evaluation,
+        private readonly ResourceEvaluation $evaluation,
         private readonly array $changes
     ) {
     }
@@ -21,7 +21,7 @@ class ResourceEvaluationEvent extends Event
     /**
      * Get the current evaluation.
      */
-    public function getEvaluation(): ResourceUserEvaluation
+    public function getEvaluation(): ResourceEvaluation
     {
         return $this->evaluation;
     }

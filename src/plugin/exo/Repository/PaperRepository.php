@@ -2,7 +2,7 @@
 
 namespace UJM\ExoBundle\Repository;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use UJM\ExoBundle\Entity\Attempt\Paper;
@@ -70,7 +70,7 @@ class PaperRepository extends EntityRepository
     /**
      * Retrieve a Claroline attempt (ResourceEvaluation) from a paper.
      */
-    public function getPaperAttempt(Paper $paper): ?ResourceEvaluation
+    public function getPaperAttempt(Paper $paper): ?ResourceAttempt
     {
         return $this->getEntityManager()
             ->createQuery('

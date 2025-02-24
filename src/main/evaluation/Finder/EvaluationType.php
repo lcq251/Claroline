@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\Type\ChoiceType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\NumericType;
+use Claroline\CommunityBundle\Finder\UserType;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 class EvaluationType extends AbstractType
@@ -21,6 +22,7 @@ class EvaluationType extends AbstractType
             ->add('score', NumericType::class)
             ->add('progression', NumericType::class)
             ->add('date', DateType::class)
+            ->add('user', UserType::class)
         ;
     }
 

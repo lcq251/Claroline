@@ -1,18 +1,9 @@
 <?php
 
-/*
- * This file is part of the Claroline Connect package.
- *
- * (c) Claroline Consortium <consortium@claroline.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Claroline\EvaluationBundle\Security\Voter;
 
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -20,31 +11,24 @@ class WorkspaceEvaluationVoter extends AbstractEvaluationVoter
 {
     public function getClass(): string
     {
-        return Evaluation::class;
+        return WorkspaceEvaluation::class;
     }
 
     /**
-     * @param Evaluation $object
+     * @param WorkspaceEvaluation $object
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $isAdmin = $this->isToolGranted(self::EDIT, 'evaluation')
-            || $this->isToolGranted(self::EDIT, 'evaluation', $object->getWorkspace());
+        $isAdmin = $this->isToolGranted(self::EDIT, 'progression')
+            || $this->isToolGranted(self::EDIT, 'progression', $object->getWorkspace());
 
         switch ($attributes[0]) {
             case self::OPEN:
-            case self::VIEW:
                 if ($isAdmin) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 if ($token->getUser() instanceof User && $token->getUser()->getId() === $object->getUser()->getId()) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                $canShowEval = $this->isToolGranted(self::OPEN, 'evaluation')
-                    || $this->isToolGranted(self::OPEN, 'evaluation', $object->getWorkspace());
-                if ($canShowEval) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

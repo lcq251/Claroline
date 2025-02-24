@@ -2,20 +2,19 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
-import {ToolDashboard, selectors as toolSelectors} from '#/main/core/tool'
+import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {StatusChart} from '#/main/evaluation/charts/status/components/chart'
 import {ProgressionChart} from '#/main/evaluation/charts/progression/components/chart'
 import {ScoreChart} from '#/main/evaluation/charts/score/components/chart'
-import {DashboardPage} from '#/main/app/dashboard'
 
 const EvaluationDashboardOverview = () => {
   const contextId = useSelector(toolSelectors.contextId)
 
   return (
-    <DashboardPage>
+    <PageContent>
       {false && contextId &&
         <PageSection className="my-4" size="lg">
           <ContentInfoBlocks
@@ -53,7 +52,7 @@ const EvaluationDashboardOverview = () => {
       >
         <ScoreChart />
       </PageSection>
-    </DashboardPage>
+    </PageContent>
   )
 }
 

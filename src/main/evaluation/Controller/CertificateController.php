@@ -11,15 +11,15 @@
 
 namespace Claroline\EvaluationBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Manager\CertificateManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,7 +46,7 @@ class CertificateController
         $workspaceEvaluationIds = $this->decodeRequest($request);
 
         if (!empty($workspaceEvaluationIds)) {
-            $workspaceEvaluations = $this->om->getRepository(Evaluation::class)->findBy(['uuid' => $workspaceEvaluationIds]);
+            $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy(['uuid' => $workspaceEvaluationIds]);
             if (!empty($workspaceEvaluations)) {
                 $workspace = $workspaceEvaluations[0]->getWorkspace();
 
@@ -58,23 +58,25 @@ class CertificateController
     }
 
     #[Route(path: '/{workspace}/all', name: 'apiv2_workspace_download_all_certificates', methods: ['GET'])]
-    public function downloadAllCertificatesAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-    Workspace $workspace): BinaryFileResponse
-    {
-        $workspaceEvaluations = $this->om->getRepository(Evaluation::class)->findBy([
+    public function downloadAllCertificatesAction(
+        #[MapEntity(mapping: ['workspace' => 'uuid'])]
+        Workspace $workspace
+    ): BinaryFileResponse {
+        $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy([
             'workspace' => $workspace,
         ]);
 
         return $this->downloadCertificates($workspace, $workspaceEvaluations);
     }
 
-    
     #[Route(path: '/{workspace}/user/{user}', name: 'apiv2_workspace_download_user_certificate', methods: ['GET'])]
-    public function downloadUserCertificateAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-    Workspace $workspace, #[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-    User $user): BinaryFileResponse
-    {
-        $workspaceEvaluations = $this->om->getRepository(Evaluation::class)->findBy([
+    public function downloadUserCertificateAction(
+        #[MapEntity(mapping: ['workspace' => 'uuid'])]
+        Workspace $workspace,
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user
+    ): BinaryFileResponse {
+        $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy([
             'workspace' => $workspace,
             'user' => $user,
         ]);
@@ -83,9 +85,10 @@ class CertificateController
     }
 
     #[Route(path: '/{evaluation}/generate', name: 'apiv2_workspace_generate_user_certificate', methods: ['GET'])]
-    public function regenerateUserCertificateAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Evaluation', mapping: ['evaluation' => 'uuid'])]
-    Evaluation $evaluation): BinaryFileResponse
-    {
+    public function regenerateUserCertificateAction(
+        #[MapEntity(mapping: ['evaluation' => 'uuid'])]
+        WorkspaceEvaluation $evaluation
+    ): BinaryFileResponse {
         $this->checkPermission('OPEN', $evaluation, [], true);
 
         return $this->downloadCertificates($evaluation->getWorkspace(), [$evaluation], true);
@@ -97,7 +100,7 @@ class CertificateController
         $workspaceEvaluationIds = $this->decodeRequest($request);
 
         if (!empty($workspaceEvaluationIds)) {
-            $workspaceEvaluations = $this->om->getRepository(Evaluation::class)->findBy(['uuid' => $workspaceEvaluationIds]);
+            $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy(['uuid' => $workspaceEvaluationIds]);
             if (!empty($workspaceEvaluations)) {
                 return $this->downloadCertificates($workspaceEvaluations[0]->getWorkspace(), $workspaceEvaluations, true);
             }

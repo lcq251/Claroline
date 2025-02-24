@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Entity;
+namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\EvaluationBundle\Library\EvaluationInterface;
@@ -21,6 +21,12 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractEvaluation implements EvaluationInterface
 {
     use Id;
+
+    #[ORM\Column(name: 'started_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $startedAt = null;
+
+    #[ORM\Column(name: 'ended_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $endedAt = null;
 
     #[ORM\Column(name: 'evaluation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $date = null;
@@ -43,14 +49,34 @@ abstract class AbstractEvaluation implements EvaluationInterface
     #[ORM\Column(type: Types::FLOAT)]
     protected ?float $progression = 0;
 
-    public function getDate(): ?\DateTimeInterface
+    public function getStartedAt(): ?\DateTimeInterface
+    {
+        return $this->startedAt;
+    }
+
+    public function setStartedAt(\DateTimeInterface $startedAt = null): void
+    {
+        $this->startedAt = $startedAt;
+    }
+
+    public function getEndedAt(): ?\DateTimeInterface
+    {
+        return $this->endedAt;
+    }
+
+    public function setEndedAt(\DateTimeInterface $endedAt = null): void
+    {
+        $this->endedAt = $endedAt;
+    }
+
+    public function getLastActivityAt(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date = null): void
+    public function setLastActivityAt(?\DateTimeInterface $lastActivityAt = null): void
     {
-        $this->date = $date;
+        $this->date = $lastActivityAt;
     }
 
     public function getStatus(): ?string
@@ -125,5 +151,21 @@ abstract class AbstractEvaluation implements EvaluationInterface
     public function isTerminated(): bool
     {
         return EvaluationStatus::isTerminated($this->status);
+    }
+
+    /**
+     * @deprecated use getLastActivity()
+     */
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->getLastActivityAt();
+    }
+
+    /**
+     * @deprecated use setLastActivity()
+     */
+    public function setDate(\DateTimeInterface $date = null): void
+    {
+        $this->setLastActivityAt($date);
     }
 }

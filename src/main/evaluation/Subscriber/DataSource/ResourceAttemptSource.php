@@ -4,7 +4,7 @@ namespace Claroline\EvaluationBundle\Subscriber\DataSource;
 
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\CoreBundle\Entity\DataSource;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Event\DataSource\GetDataEvent;
 use Claroline\CoreBundle\Security\PlatformRoles;
@@ -14,21 +14,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ResourceAttemptSource implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var FinderProvider */
-    private $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorization,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorization = $authorization;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array
@@ -57,7 +47,7 @@ class ResourceAttemptSource implements EventSubscriberInterface
         }
 
         $event->setData(
-            $this->finder->search(ResourceEvaluation::class, $options)
+            $this->finder->search(ResourceAttempt::class, $options)
         );
 
         $event->stopPropagation();

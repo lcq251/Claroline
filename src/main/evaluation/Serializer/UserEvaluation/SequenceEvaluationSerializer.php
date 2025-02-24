@@ -1,47 +1,52 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Serializer;
+namespace Claroline\EvaluationBundle\Serializer\UserEvaluation;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
-use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
+use Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class WorkspaceEvaluationSerializer
+class SequenceEvaluationSerializer
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
-        private readonly UserSerializer $userSerializer,
-        private readonly WorkspaceSerializer $workspaceSerializer
+        private readonly SequenceSerializer $sequenceSerializer,
+        private readonly UserSerializer $userSerializer
     ) {
     }
 
     public function getName(): string
     {
-        return 'workspace_evaluation';
+        return 'resource_user_evaluation';
     }
 
     public function getClass(): string
     {
-        return Evaluation::class;
+        return SequenceEvaluation::class;
     }
 
-    public function serialize(Evaluation $evaluation, ?array $options = []): array
+    public function serialize(SequenceEvaluation $evaluation, ?array $options = []): array
     {
+
         $progression = $evaluation->getProgression();
         if ($progression) {
             $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
-            'id' => $evaluation->getUuid(),
-            'date' => DateNormalizer::normalize($evaluation->getDate()),
+            'id' => $evaluation->getId(),
+            'date' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
+            'lastActivityAt' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
+            'startedAt' => DateNormalizer::normalize($evaluation->getStartedAt()),
+            'endedAt' => DateNormalizer::normalize($evaluation->getEndedAt()),
             'status' => $evaluation->getStatus(),
             'duration' => $evaluation->getDuration(),
             'progression' => $progression,
+            'required' => $evaluation->isRequired(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 
@@ -54,9 +59,9 @@ class WorkspaceEvaluationSerializer
 
             $score = $evaluation->getScore();
             $total = $evaluation->getScoreMax();
-            if ($evaluation->getWorkspace() && $evaluation->getWorkspace()->getScoreTotal()) {
-                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getWorkspace()->getScoreTotal();
-                $total = $evaluation->getWorkspace()->getScoreTotal();
+            if ($evaluation->getSequence() && $evaluation->getSequence()->getScoreTotal()) {
+                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getSequence()->getScoreTotal();
+                $total = $evaluation->getSequence()->getScoreTotal();
             }
 
             if ($score) {
@@ -78,14 +83,14 @@ class WorkspaceEvaluationSerializer
                 ];
             }
 
+            $serialized['sequence'] = null;
+            if ($evaluation->getSequence()) {
+                $serialized['sequence'] = $this->sequenceSerializer->serialize($evaluation->getSequence(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
+
             $serialized['user'] = null;
             if ($evaluation->getUser()) {
                 $serialized['user'] = $this->userSerializer->serialize($evaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
-            }
-
-            $serialized['workspace'] = null;
-            if ($evaluation->getWorkspace()) {
-                $serialized['workspace'] = $this->workspaceSerializer->serialize($evaluation->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]);
             }
         }
 

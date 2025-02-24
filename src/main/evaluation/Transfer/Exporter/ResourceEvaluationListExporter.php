@@ -2,7 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Transfer\Exporter;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 
 class ResourceEvaluationListExporter extends AbstractEvaluationListExporter
 {
@@ -13,7 +13,7 @@ class ResourceEvaluationListExporter extends AbstractEvaluationListExporter
 
     protected static function getClass(): string
     {
-        return ResourceUserEvaluation::class;
+        return ResourceEvaluation::class;
     }
 
     public function getSchema(?array $options = [], ?array $extra = []): array

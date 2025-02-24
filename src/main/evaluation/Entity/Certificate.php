@@ -5,7 +5,7 @@ namespace Claroline\EvaluationBundle\Entity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,8 +35,8 @@ class Certificate
     private string $language;
 
     #[ORM\JoinColumn(name: 'evaluation_id', nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Evaluation::class)]
-    private ?Evaluation $evaluation;
+    #[ORM\ManyToOne(targetEntity: WorkspaceEvaluation::class)]
+    private ?WorkspaceEvaluation $evaluation;
 
     #[ORM\JoinColumn(name: 'user_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -113,12 +113,12 @@ class Certificate
         $this->language = $language;
     }
 
-    public function getEvaluation(): ?Evaluation
+    public function getEvaluation(): ?WorkspaceEvaluation
     {
         return $this->evaluation;
     }
 
-    public function setEvaluation(?Evaluation $evaluation): void
+    public function setEvaluation(?WorkspaceEvaluation $evaluation): void
     {
         $this->evaluation = $evaluation;
     }

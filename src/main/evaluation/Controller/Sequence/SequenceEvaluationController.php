@@ -16,12 +16,12 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
-use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -118,11 +118,11 @@ class SequenceEvaluationController
 
         $userEvaluation = $this->evaluationManager->getUserEvaluation($sequence, $user, false);
         // get embedded resources evaluations
-        $resourceEvaluations = $this->evaluationManager->getRequiredEvaluations($sequence, $user);
+        $resourceEvaluations = $this->evaluationManager->getResourceEvaluations($sequence, $user);
 
         return new JsonResponse([
             'userEvaluation' => $this->serializer->serialize($userEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]),
-            'resourceEvaluations' => array_map(function (ResourceUserEvaluation $resourceEvaluation) {
+            'resourceEvaluations' => array_map(function (ResourceEvaluation $resourceEvaluation) {
                 return $this->serializer->serialize($resourceEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $resourceEvaluations),
             'userProgression' => [

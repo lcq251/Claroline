@@ -2,9 +2,9 @@
 
 namespace Claroline\EvaluationBundle\Event;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -14,17 +14,17 @@ use Symfony\Contracts\EventDispatcher\Event;
 class ResourceAttemptEvent extends Event
 {
     public function __construct(
-        private readonly ResourceEvaluation $attempt,
+        private readonly ResourceAttempt $attempt,
         private readonly array $changes
     ) {
     }
 
-    public function getAttempt(): ResourceEvaluation
+    public function getAttempt(): ResourceAttempt
     {
         return $this->attempt;
     }
 
-    public function getEvaluation(): ResourceUserEvaluation
+    public function getEvaluation(): ResourceEvaluation
     {
         return $this->attempt->getResourceUserEvaluation();
     }

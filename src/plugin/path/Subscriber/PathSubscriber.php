@@ -11,7 +11,7 @@ use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Manager\ResourceManager;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
@@ -69,7 +69,7 @@ class PathSubscriber extends ResourceComponent implements EvaluatedResourceInter
 
             $currentAttempt = $this->serializer->serialize($this->evaluationManager->getCurrentAttempt($resource, $user));
 
-            $resourceEvaluations = array_map(function (ResourceUserEvaluation $resourceEvaluation) {
+            $resourceEvaluations = array_map(function (ResourceEvaluation $resourceEvaluation) {
                 return $this->serializer->serialize($resourceEvaluation);
             }, $this->evaluationManager->getRequiredEvaluations($resource, $user));
 

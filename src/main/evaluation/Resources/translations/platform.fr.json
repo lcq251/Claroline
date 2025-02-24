@@ -1,4 +1,5 @@
 {
   "evaluation": "Suivi pédagogique",
-  "estimated_duration": "Durée estimée"
+  "estimated_duration": "Durée estimée",
+  "estimated_duration_help": "Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de l'activité."
 }

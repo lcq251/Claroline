@@ -5,6 +5,7 @@ import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {constants} from '#/main/evaluation/constants'
 import {route} from '#/main/evaluation/sequence'
+import {selectors as contextSelectors} from '#/main/app/context'
 
 const STORE_NAME = 'evaluationSequence'
 
@@ -85,6 +86,16 @@ const userFeedback = createSelector(
   }
 )
 
+const totalScore = createSelector(
+  [sequence],
+  (sequence) => get(sequence, 'evaluation.scoreTotal', null)
+)
+
+const hasScore = createSelector(
+  [totalScore],
+  (contextScore) => !!contextScore
+)
+
 export const selectors = {
   STORE_NAME,
 
@@ -98,5 +109,7 @@ export const selectors = {
   evaluation,
   resourceEvaluations,
   stepsProgression,
-  userFeedback
+  userFeedback,
+  hasScore,
+  totalScore
 }

@@ -6,9 +6,10 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\EvaluationBundle\Entity\Sequence\Requirement;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
-use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Entity\SequenceProgression;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\SequenceEvaluationEvent;
@@ -39,6 +40,43 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         $this->sequenceRepo = $this->om->getRepository(Sequence::class);
     }
 
+    public function fulfillRequirements(Sequence $sequence, User $user): bool
+    {
+        /** @var Requirement[] $requirements */
+        $requirements = $sequence->getRequirements()->toArray();
+        if (empty($requirements)) {
+            return true;
+        }
+
+        foreach ($requirements as $requirement) {
+            /** @var SequenceEvaluation $userEvaluation */
+            $userEvaluation = $this->om->getRepository(SequenceEvaluation::class)->findOneBy([
+                'sequence' => $requirement->getRequiredSequence(),
+                'user' => $user,
+            ]);
+
+            if (empty($userEvaluation)) {
+                return false;
+            }
+
+            if (
+                ($requirement->getStatus() && $userEvaluation->getStatus() !== $requirement->getStatus())
+                || ($requirement->getProgression() && $userEvaluation->getProgression() < $requirement->getProgression())
+                || ($requirement->getMinScore() && $userEvaluation->getRelativeScore() < $requirement->getMinScore())
+                || ($requirement->getMaxScore() && $userEvaluation->getRelativeScore() >= $requirement->getMaxScore())
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getByUser(User $user): array
+    {
+        return [];
+    }
+
     public function getByResource(ResourceNode $resourceNode): array
     {
         return $this->om->getRepository(Sequence::class)->findByRequiredResource($resourceNode);
@@ -66,9 +104,9 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         return $evaluation;
     }
 
-    public function getRequiredEvaluations(Sequence $sequence, User $user): array
+    public function getResourceEvaluations(Sequence $sequence, User $user): array
     {
-        return $this->sequenceRepo->findRequiredEvaluations($sequence, $user);
+        return $this->sequenceRepo->findResourceEvaluations($sequence, $user);
     }
 
     /**
@@ -140,20 +178,8 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             new ScoreChecker($sequence->getSuccessScore()),
         ]);
 
-        if (!empty($sequence->getOverviewResource()) && $sequence->getOverviewResource()->isRequired()) {
-            // the sequence contains a required resource on its overview, we need to get the evaluation for this resource
-            // in order to compute the step progression
-            $resourceEvaluation = $this->resourceEvalManager->getUserEvaluation($sequence->getOverviewResource(), $user, false);
-            if (!$resourceEvaluation) {
-                // no evaluation, adds an empty evaluation for correct progression check
-                $resourceEvaluation = new GenericEvaluation(0);
-            }
-
-            $aggregator->addEvaluation($resourceEvaluation, $sequence->getOverviewResource()->isEvaluated());
-        }
-
         foreach ($sequence->getSteps() as $step) {
-            if (!empty($step->getResource()) && $step->getResource()->isRequired()) {
+            if (!empty($step->getResource()) && $step->isRequired()) {
                 // the step contains a required resource, we need to get the evaluation for this resource
                 // in order to compute the step progression
                 $resourceEvaluation = $this->resourceEvalManager->getUserEvaluation($step->getResource(), $user, false);
@@ -162,7 +188,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                     $resourceEvaluation = new GenericEvaluation(0);
                 }
 
-                $aggregator->addEvaluation($resourceEvaluation, $step->getResource()->isEvaluated());
+                $aggregator->addEvaluation($resourceEvaluation, $step->isScored());
             } else {
                 // no required resource in the step, we only check if the step is seen/done
                 $stepDone = !empty($stepsProgression[$step->getUuid()]) && in_array($stepsProgression[$step->getUuid()], ['seen', 'done']);

@@ -2,8 +2,8 @@
 
 namespace Claroline\OpenBadgeBundle\Library\Rules\Evaluation;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
-use Claroline\EvaluationBundle\Entity\AbstractUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractUserEvaluation;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Library\Rules\AbstractRule;
 
@@ -17,7 +17,7 @@ abstract class AbstractScoreRule extends AbstractRule
         $ruleData = $rule->getData();
         $expectedScore = $ruleData['value'];
 
-        return array_map(function (ResourceUserEvaluation $evaluation) {
+        return array_map(function (ResourceEvaluation $evaluation) {
             return $evaluation->getUser();
         }, array_filter($evaluations, function (AbstractUserEvaluation $evaluation) use ($expectedScore) {
             $scoreProgress = 0;

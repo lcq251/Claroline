@@ -5,30 +5,20 @@ namespace Claroline\EvaluationBundle\Subscriber\DataSource;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\CoreBundle\Entity\DataSource;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Event\DataSource\GetDataEvent;
 use Claroline\CoreBundle\Security\PlatformRoles;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class WorkspaceEvaluationSource implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var FinderProvider */
-    private $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorization,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorization = $authorization;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array
@@ -38,7 +28,7 @@ class WorkspaceEvaluationSource implements EventSubscriberInterface
         ];
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         /** @var User $currentUser */
         $currentUser = $this->tokenStorage->getToken()?->getUser();
@@ -57,7 +47,7 @@ class WorkspaceEvaluationSource implements EventSubscriberInterface
         }
 
         $event->setData(
-            $this->finder->search(Evaluation::class, $options)
+            $this->finder->search(WorkspaceEvaluation::class, $options)
         );
 
         $event->stopPropagation();

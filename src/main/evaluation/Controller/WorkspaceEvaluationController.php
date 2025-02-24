@@ -22,12 +22,12 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -73,7 +73,7 @@ class WorkspaceEvaluationController
             $finderQuery->addFilter('workspace', $workspace->getUuid());
         }
 
-        $evaluations = $this->crud->search(Evaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+        $evaluations = $this->crud->search(WorkspaceEvaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
         return $evaluations->toResponse();
     }
@@ -85,7 +85,7 @@ class WorkspaceEvaluationController
         #[MapEntity(mapping: ['user' => 'uuid'])]
         User $user
     ): JsonResponse {
-        $workspaceEvaluation = $this->om->getRepository(Evaluation::class)->findOneBy([
+        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
             'workspace' => $workspace,
             'user' => $user,
         ]);
@@ -134,7 +134,7 @@ class WorkspaceEvaluationController
         #[MapEntity(mapping: ['user' => 'uuid'])]
         User $user
     ): JsonResponse {
-        $workspaceEvaluation = $this->om->getRepository(Evaluation::class)->findOneBy([
+        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
             'workspace' => $workspace,
             'user' => $user,
         ]);
@@ -147,7 +147,7 @@ class WorkspaceEvaluationController
 
         return new JsonResponse([
             'workspaceEvaluation' => $this->serializer->serialize($workspaceEvaluation),
-            'resourceEvaluations' => $this->finder->search(ResourceUserEvaluation::class, [
+            'resourceEvaluations' => $this->finder->search(ResourceEvaluation::class, [
                 'filters' => ['workspace' => $workspace->getUuid(), 'user' => $user->getUuid()],
             ])['data'],
         ]);

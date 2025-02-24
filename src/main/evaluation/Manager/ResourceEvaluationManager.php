@@ -12,13 +12,12 @@
 namespace Claroline\EvaluationBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceProvider;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceAttemptEvent;
 use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;
@@ -40,15 +39,15 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         return $resourceHandler instanceof EvaluatedResourceInterface;
     }
 
-    public function getUserEvaluation(ResourceNode $node, User $user, ?bool $withCreation = true): ?ResourceUserEvaluation
+    public function getUserEvaluation(ResourceNode $node, User $user, ?bool $withCreation = true): ?ResourceEvaluation
     {
-        $evaluation = $this->om->getRepository(ResourceUserEvaluation::class)->findOneBy([
+        $evaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
             'resourceNode' => $node,
             'user' => $user,
         ]);
 
         if ($withCreation && empty($evaluation)) {
-            $evaluation = new ResourceUserEvaluation();
+            $evaluation = new ResourceEvaluation();
             $evaluation->setResourceNode($node);
             $evaluation->setUser($user);
 
@@ -59,13 +58,13 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         return $evaluation;
     }
 
-    public function createAttempt(ResourceNode $node, User $user, ?array $data = [], \DateTimeInterface $date = null): ResourceEvaluation
+    public function createAttempt(ResourceNode $node, User $user, ?array $data = [], \DateTimeInterface $date = null): ResourceAttempt
     {
         // retrieve the parent evaluation for the attempt
         $evaluation = $this->getUserEvaluation($node, $user);
 
         // initialize a new attempt
-        $attempt = new ResourceEvaluation();
+        $attempt = new ResourceAttempt();
         $attempt->setResourceUserEvaluation($evaluation);
         $this->om->persist($attempt);
 
@@ -76,7 +75,7 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         return $attempt;
     }
 
-    public function updateAttempt(ResourceEvaluation $attempt, ?array $data = [], \DateTimeInterface $date = null): ResourceEvaluation
+    public function updateAttempt(ResourceAttempt $attempt, ?array $data = [], \DateTimeInterface $date = null): ResourceAttempt
     {
         // update the current attempt data
         $attemptUpdated = $this->updateEvaluation($attempt, $data, $date);
@@ -106,7 +105,7 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         return $attempt;
     }
 
-    public function updateUserEvaluation(ResourceNode $node, User $user, ?array $data = [], \DateTimeInterface $date = null, ?bool $withCreation = true): ?ResourceUserEvaluation
+    public function updateUserEvaluation(ResourceNode $node, User $user, ?array $data = [], \DateTimeInterface $date = null, ?bool $withCreation = true): ?ResourceEvaluation
     {
         $this->om->startFlushSuite();
 
@@ -131,7 +130,7 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
      * This allows the user to redo an attempt event if a has reached the max attempts allowed by the resource.
      * NB. This is only implemented in the quiz plugin for now.
      */
-    public function giveAnotherAttempt(ResourceUserEvaluation $evaluation): void
+    public function giveAnotherAttempt(ResourceEvaluation $evaluation): void
     {
         if (0 !== $evaluation->getNbAttempts()) {
             $evaluation->setNbAttempts($evaluation->getNbAttempts() - 1);

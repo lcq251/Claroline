@@ -13,7 +13,7 @@ namespace Claroline\EvaluationBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CommunityBundle\Finder\Filter\UserFilter;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -23,7 +23,7 @@ class ResourceUserEvaluationFinder extends AbstractFinder
 {
     public static function getClass(): string
     {
-        return ResourceUserEvaluation::class;
+        return ResourceEvaluation::class;
     }
 
     public function configureQueryBuilder(QueryBuilder $qb, array $searches = [], array $sortBy = null, ?int $page = 0, ?int $limit = -1): QueryBuilder

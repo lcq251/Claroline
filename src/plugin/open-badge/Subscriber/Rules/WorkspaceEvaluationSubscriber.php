@@ -13,7 +13,7 @@ namespace Claroline\OpenBadgeBundle\Subscriber\Rules;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
@@ -60,7 +60,7 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardWorkspaceStatus(User $user, Evaluation $evaluation, Rule $rule): void
+    private function awardWorkspaceStatus(User $user, WorkspaceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (!empty($data) && !empty($data['value'])) {
@@ -70,7 +70,7 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardWorkspaceScoreAbove(User $user, Evaluation $evaluation, Rule $rule): void
+    private function awardWorkspaceScoreAbove(User $user, WorkspaceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (empty($data)) {
@@ -87,7 +87,7 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardWorkspaceCompletedAbove(User $user, Evaluation $evaluation, Rule $rule): void
+    private function awardWorkspaceCompletedAbove(User $user, WorkspaceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (empty($data)) {

@@ -29,14 +29,19 @@ class StepSerializer
         $this->secondaryResourceRepo = $om->getRepository(SecondaryResource::class);
     }
 
+    public function getClass(): string
+    {
+        return Step::class;
+    }
+
     public function getSchema(): string
     {
-        return '#/plugin/path/step.json';
+        return '#/main/evaluation/sequence/step.json';
     }
 
     public function getName(): string
     {
-        return 'path_step';
+        return 'sequence_step';
     }
 
     public function serialize(Step $step, array $options = []): array
@@ -64,6 +69,10 @@ class StepSerializer
             'display' => [
                 'numbering' => $step->getNumbering(),
             ],
+            'evaluation' => [
+                'required' => $step->isRequired(),
+                'scored' => $step->isScored(),
+            ],
             'children' => array_values(array_map(function (Step $child) use ($options) {
                 return $this->serialize($child, $options);
             }, $step->getChildren()->toArray())),
@@ -82,7 +91,12 @@ class StepSerializer
         $this->sipe('slug', 'setSlug', $data, $step);
         $this->sipe('description', 'setDescription', $data, $step);
         $this->sipe('poster', 'setPoster', $data, $step);
+        $this->sipe('required', 'setRequired', $data, $step);
+        $this->sipe('scored', 'setScored', $data, $step);
         $this->sipe('display.numbering', 'setNumbering', $data, $step);
+
+        $this->sipe('evaluation.required', 'setRequired', $data, $step);
+        $this->sipe('evaluation.scored', 'setScored', $data, $step);
 
         // Set primary resource
         /** @var ResourceNode $resource */
@@ -122,7 +136,7 @@ class StepSerializer
                 if ($childData['id']) {
                     // I need to get step from path to have access to all the steps in order
                     // to manage steps moving
-                    $child = $step->getPath()->getStep($childData['id']);
+                    $child = $step->getSequence()->getStep($childData['id']);
                 }
 
                 if (empty($child)) {

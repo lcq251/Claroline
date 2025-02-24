@@ -13,9 +13,9 @@ namespace Claroline\EvaluationBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CommunityBundle\Finder\Filter\UserFilter;
-use Claroline\CoreBundle\Entity\Workspace\Evaluation;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\SearchObjectsEvent;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -25,7 +25,7 @@ class WorkspaceEvaluationFinder extends AbstractFinder
 {
     public static function getClass(): string
     {
-        return Evaluation::class;
+        return WorkspaceEvaluation::class;
     }
 
     public function configureQueryBuilder(QueryBuilder $qb, array $searches = [], array $sortBy = null, ?int $page = 0, ?int $limit = -1): QueryBuilder

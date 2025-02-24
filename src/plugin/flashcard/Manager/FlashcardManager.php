@@ -3,7 +3,7 @@
 namespace Claroline\FlashcardBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
@@ -27,7 +27,7 @@ class FlashcardManager
         $this->resourceEvalManager = $resourceEvalManager;
     }
 
-    public static function shuffleCardByAttempt($cards, ?ResourceEvaluation $attempt, ?int $limit)
+    public static function shuffleCardByAttempt($cards, ?ResourceAttempt $attempt, ?int $limit)
     {
         mt_srand($attempt ? $attempt->getId() : 0);
         for ($i = count($cards) - 1; $i > 0; --$i) {
@@ -95,7 +95,7 @@ class FlashcardManager
         return $resetAttempts;
     }
 
-    public function calculateSession(?ResourceEvaluation $attempt, FlashcardDeck $deck, User $user): ?ResourceEvaluation
+    public function calculateSession(?ResourceAttempt $attempt, FlashcardDeck $deck, User $user): ?ResourceAttempt
     {
         $node = $deck->getResourceNode();
         $session = $attempt ? $attempt->getData()['session'] ?? 1 : 1;
@@ -256,7 +256,7 @@ class FlashcardManager
         return $attempt;
     }
 
-    public function answerSessionCard(ResourceEvaluation $attempt, CardDrawnProgression $cardProgression): ResourceEvaluation
+    public function answerSessionCard(ResourceAttempt $attempt, CardDrawnProgression $cardProgression): ResourceAttempt
     {
         $cards = $attempt->getData()['cards'] ?? [];
         $cardsSessionIds = $attempt->getData()['cardsSessionIds'] ?? [];

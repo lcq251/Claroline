@@ -7,6 +7,11 @@
   "regenerate_certificate": "Regénérer le certificat",
   "regenerate_certificates": "Regénérer les certificats",
   "download_all_certificates": "Télécharger tous les certificats",
+  "download_all_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé l'espace d'activités.",
   "add_sequence": "Ajouter une séquence",
-  "finish_sequence": "Terminer la séquence"
+  "finish_sequence": "Terminer la séquence",
+  "initialize_evaluations": "Initialiser les évaluations",
+  "initialize_evaluations_help": "Générez les évaluations pour tous les utilisateurs n'ayant pas encore commencé l'espace d'activités.",
+  "recompute_evaluations": "Recalculer les évaluations",
+  "recompute_evaluations_help": "Recalculez les évaluations de tous les utilisateurs ayant commencé l'espace d'activités."
 }

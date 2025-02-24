@@ -8,10 +8,10 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,9 +81,9 @@ class SequenceController extends AbstractCrudController
                 [SerializerInterface::SERIALIZE_MINIMAL]
             );
 
-            $resourceEvaluations = array_map(function (ResourceUserEvaluation $resourceEvaluation) {
+            $resourceEvaluations = array_map(function (ResourceEvaluation $resourceEvaluation) {
                 return $this->serializer->serialize($resourceEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $this->evaluationManager->getRequiredEvaluations($sequence, $user));
+            }, $this->evaluationManager->getResourceEvaluations($sequence, $user));
 
             $stepsProgression = $this->evaluationManager->getStepsProgressionForUser($sequence, $user);
         }
@@ -145,5 +145,4 @@ class SequenceController extends AbstractCrudController
             return $this->serializer->serialize($sequence);
         }, $processed));
     }
-
 }

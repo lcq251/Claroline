@@ -5,17 +5,14 @@ namespace Claroline\DropZoneBundle\Manager;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\Team;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\DropZoneBundle\Entity\Drop;
 use Claroline\DropZoneBundle\Entity\Dropzone;
 use Claroline\DropZoneBundle\Repository\DropRepository;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
 
-/**
- * TODO : we shouldn't store the whole serialized Drop inside the ResourceAttempt.
- */
 class EvaluationManager
 {
     private DropRepository $dropRepo;
@@ -29,7 +26,7 @@ class EvaluationManager
         $this->dropRepo = $om->getRepository(Drop::class);
     }
 
-    public function getResourceUserEvaluation(Dropzone $dropzone, User $user): ResourceUserEvaluation
+    public function getResourceUserEvaluation(Dropzone $dropzone, User $user): ResourceEvaluation
     {
         return $this->resourceEvalManager->getUserEvaluation($dropzone->getResourceNode(), $user);
     }

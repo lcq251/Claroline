@@ -1,34 +1,43 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
+import {useDispatch} from 'react-redux'
 import get from 'lodash/get'
+import isNil from 'lodash/isNil'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
-import {useDispatch} from 'react-redux'
 
 import {actions} from '#/main/evaluation/sequence/editor/store'
 
-const enableScore = (formData) => get(formData, 'evaluation._enableScore') || get(formData, 'evaluation.scoreTotal')
-const enableSuccessCondition = (formData) => get(formData, 'evaluation._enableSuccess')
-  || get(formData, 'evaluation.successCondition.score')
+const enableScore = (formData) => get(formData, 'evaluation._enableScore', false)
+  || !isNil(get(formData, 'evaluation.scoreTotal'))
 
-const enableSuccessScore = (formData) => get(formData, 'evaluation._enableSuccessScore') || get(formData, 'evaluation.successCondition.score')
+const enableSuccessCondition = (formData) => get(formData, 'evaluation._enableSuccess', false)
+  || enableSuccessScore(formData)
+const enableSuccessScore = (formData) => get(formData, 'evaluation._enableSuccessScore', false)
+  || !isNil(get(formData, 'evaluation.successCondition.score'))
 
-const enableEndMessage = (formData) => get(formData, 'evaluation._enableEndMessage')
-  || get(formData, 'evaluation.endMessage')
-const enableSuccessMessage = (formData) => get(formData, 'evaluation._enableSuccessMessage')
-  || get(formData, 'evaluation.successMessage')
-const enableFailureMessage = (formData) => get(formData, 'evaluation._enableFailureMessage')
-  || get(formData, 'evaluation.failureMessage')
+const enableCustomCertificate = (formData) => get(formData, 'evaluation._customCertificate', false)
+  || !isNil(get(formData, 'evaluation.certificateTemplate'))
 
-const SequenceEditorEvaluation = (props) => {
+const enableMessages = (formData) => get(formData, 'evaluation._enableMessages', false)
+  || enableEndMessage(formData)
+  || enableSuccessMessage(formData)
+  || enableFailureMessage(formData)
+const enableEndMessage = (formData) => get(formData, 'evaluation._enableEndMessage', false)
+  || !isNil(get(formData, 'evaluation.endMessage'))
+const enableSuccessMessage = (formData) => get(formData, 'evaluation._enableSuccessMessage', false)
+  || !isNil(get(formData, 'evaluation.successMessage'))
+const enableFailureMessage = (formData) => get(formData, 'evaluation._enableFailureMessage', false)
+  || !isNil(get(formData, 'evaluation.failureMessage'))
+
+const SequenceEditorEvaluation = () => {
   const dispatch = useDispatch()
   const updateProp = (propPath, propValue) => dispatch(actions.update(propValue, propPath))
 
   return (
     <EditorPage
-      title={trans('parameters')}
-      help={trans('Activez le suivi pédagogique pour enregistrer et suivre la progression des utilisateurs.')}
+      title={trans('evaluation', {}, 'evaluation')}
+      help={trans('evaluation_help', {}, 'evaluation')}
       definition={[
         {
           title: trans('general'),
@@ -41,59 +50,50 @@ const SequenceEditorEvaluation = (props) => {
               options: {
                 unit: trans('minutes')
               },
-              help: trans('Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de la séquence.')
+              help: trans('estimated_duration_help')
             }, {
               name: 'evaluation._enable',
               type: 'boolean',
-              label: trans('Activer le suivi pédagogique', {}, 'evaluation'),
-              help: trans('', {}, 'evaluation')
+              label: trans('enable_evaluation', {}, 'evaluation')
             }
           ]
         }, {
-          title: trans('Score'),
-          subtitle: trans('Donnez un score à vos utilisateurs une fois qu\'ils ont terminé la séquence.'),
+          title: trans('score', {}, 'evaluation'),
+          subtitle: trans('score_help', {}, 'evaluation'),
           primary: true,
+          enabled: enableScore,
+          onToggle: (enabled) => {
+            updateProp('evaluation._enableScore', enabled)
+            if (!enabled) {
+              updateProp('evaluation.scoreTotal', null)
+            }
+          },
           fields: [
             {
-              name: 'evaluation._enableScore',
-              type: 'boolean',
-              label: trans('Activer le score'),
-              calculated: enableScore,
-              onChange: (enabled) => {
-                if (!enabled) {
-                  updateProp('evaluation.scoreTotal', null)
-                }
-              }
-            }, {
               name: 'evaluation.scoreTotal',
               label: trans('score_total'),
               type: 'number',
-              displayed: enableScore
+              required: true
             }
           ]
         }, {
-          title: trans('Conditions de réussite', {}, 'evaluation'),
-          subtitle: trans('Donnez un statut de Réussite ou d\'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n\'est définie les utilisateurs obtiennent un statut Terminé une fois qu\'ils ont terminé l\'activité.'),
+          title: trans('success_conditions', {}, 'evaluation'),
+          subtitle: trans('success_conditions_help', {}, 'evaluation'),
           primary: true,
+          enabled: enableSuccessCondition,
+          onToggle: (enabled) => {
+            updateProp('evaluation._enableSuccess', enabled)
+            if (!enabled) {
+              updateProp('evaluation.successCondition', null)
+              updateProp('evaluation._enableSuccessScore', false)
+            }
+          },
           fields: [
             {
-              name: 'evaluation._enableSuccess',
-              type: 'boolean',
-              label: trans('enable_success_condition', {}, 'workspace'),
-              //help: trans('enable_success_condition_help', {}, 'workspace'),
-              calculated: enableSuccessCondition,
-              onChange: (enabled) => {
-                if (!enabled) {
-                  updateProp('evaluation.successCondition', null)
-                  updateProp('evaluation._enableSuccessScore', false)
-                }
-              }
-            }, {
               name: 'evaluation._enableSuccessScore',
-              label: trans('Obtenir un score minimal', {}, 'workspace'),
-              help: trans('Les utilisateurs doivent obtenir un score supérieur ou égale au pourcentage du score total défini pour réussir.'),
+              label: trans('enable_success_condition_score', {}, 'evaluation'),
+              help: trans('enable_success_condition_score_help', {}, 'evaluation'),
               type: 'boolean',
-              displayed: enableSuccessCondition,
               calculated: enableSuccessScore,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -103,7 +103,7 @@ const SequenceEditorEvaluation = (props) => {
               linked: [
                 {
                   name: 'evaluation.successCondition.score',
-                  label: trans('score_to_pass'),
+                  label: trans('success_score', {}, 'evaluation'),
                   type: 'number',
                   required: true,
                   displayed: enableSuccessScore,
@@ -117,40 +117,62 @@ const SequenceEditorEvaluation = (props) => {
             }
           ]
         }, {
-          title: trans('Certification', {}, 'evaluation'),
-          subtitle: trans('Délivrez un certificat téléchargeable (au format PDF) aux utilisateurs ayant terminé ou réussi la séquence. Les certificats générés sont stockés sur votre plateforme.'),
+          title: trans('certification', {}, 'evaluation'),
+          subtitle: trans('certification_help', {}, 'evaluation'),
           primary: true,
+          enabled: (formData) => get(formData, 'evaluation.certified', false),
+          onToggle: (enabled) => {
+            updateProp('evaluation.certified', enabled)
+            if (!enabled) {
+              updateProp('evaluation._customCertificate', false)
+              updateProp('evaluation.certificateTemplate', null)
+            }
+          },
           fields: [
             {
-              name: 'evaluation.certified',
+              name: 'evaluation._customCertificate',
+              label: trans('customize_certificate', {}, 'evaluation'),
+              help: trans('customize_certificate_help', {}, 'evaluation'),
               type: 'boolean',
-              label: trans('Activer la certification'),
-              onChange: (enabled) => {
-                if (!enabled) {
-                  updateProp('evaluation.certificateTemplate', null)
+              calculated: enableCustomCertificate,
+              linked: [
+                {
+                  name: 'evaluation.certificateTemplate',
+                  label: trans('certificate_template', {}, 'evaluation'),
+                  type: 'template',
+                  displayed: enableCustomCertificate,
+                  required: true,
+                  options: {
+                    templateType: 'sequence_success_certificate'
+                  }
                 }
-              }
-            }, {
-              name: 'evaluation.certificateTemplate',
-              label: trans('Template de certificat'),
-              help: trans('Choisissez le template utilisé par la génération des certificats.'),
-              displayed: (formData) => get(formData, 'evaluation.certified', false),
-              type: 'template',
-              options: {
-                templateType: 'sequence_success_certificate'
-              }
+              ]
             }
           ]
         }, {
-          title: trans('Messages personnalisés'),
-          subtitle: trans('Ajoutez des messages personnalisés qui seront affichés automatiquement à vos utilisateurs lors de leur progression.'),
+          title: trans('custom_feedbacks', {}, 'evaluation'),
+          subtitle: trans('custom_feedbacks_help', {}, 'evaluation'),
           primary: true,
+          enabled: enableMessages,
+          onToggle: (enabled) => {
+            updateProp('evaluation._enableMessages', enabled)
+            if (!enabled) {
+              updateProp('evaluation._enableEndMessage', false)
+              updateProp('evaluation.endMessage', null)
+
+              updateProp('evaluation._enableSuccessMessage', false)
+              updateProp('evaluation.successMessage', null)
+
+              updateProp('evaluation._enableFailureMessage', false)
+              updateProp('evaluation.failureMessage', null)
+            }
+          },
           fields: [
             {
               name: 'evaluation._enableEndMessage',
               type: 'boolean',
-              label: trans('Ajouter un message de fin'),
-              help: trans('Le message de fin est affiché à partir du moment où les utilisateurs ont atteint le statut "Terminé" à leur séquence.'),
+              label: trans('add_end_message', {}, 'evaluation'),
+              help: trans('add_end_message_help', {}, 'evaluation'),
               calculated: enableEndMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -160,7 +182,7 @@ const SequenceEditorEvaluation = (props) => {
               linked: [
                 {
                   name: 'evaluation.endMessage',
-                  label: trans('end_message'),
+                  label: trans('end_message', {}, 'evaluation'),
                   type: 'html',
                   required: true,
                   displayed: enableEndMessage
@@ -169,11 +191,8 @@ const SequenceEditorEvaluation = (props) => {
             }, {
               name: 'evaluation._enableSuccessMessage',
               type: 'boolean',
-              label: trans('Ajouter un message de réussite'),
-              help: [
-                trans('Le message de réussite est affiché à partir du moment où les utilisateurs ont atteint le statut "Réussi" à leur séquence.'),
-                trans('Le message de réussite remplace le message de fin.')
-              ],
+              label: trans('add_success_message', {}, 'evaluation'),
+              help: trans('add_success_message_help', {}, 'evaluation'),
               calculated: enableSuccessMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -183,7 +202,7 @@ const SequenceEditorEvaluation = (props) => {
               linked: [
                 {
                   name: 'evaluation.successMessage',
-                  label: trans('success_message'),
+                  label: trans('success_message', {}, 'evaluation'),
                   type: 'html',
                   required: true,
                   displayed: enableSuccessMessage
@@ -192,11 +211,8 @@ const SequenceEditorEvaluation = (props) => {
             }, {
               name: 'evaluation._enableFailureMessage',
               type: 'boolean',
-              label: trans('Ajouter un message d\'échec'),
-              help: [
-                trans('Le message d\'échec est affiché à partir du moment où les utilisateurs ont atteint le statut "Echoué" à leur séquence.'),
-                trans('Le message d\'échec remplace le message de fin.')
-              ],
+              label: trans('add_failure_message', {}, 'evaluation'),
+              help: trans('add_failure_message_help', {}, 'evaluation'),
               calculated: enableFailureMessage,
               onChange: (enabled) => {
                 if (!enabled) {
@@ -206,7 +222,7 @@ const SequenceEditorEvaluation = (props) => {
               linked: [
                 {
                   name: 'evaluation.failureMessage',
-                  label: trans('failure_message'),
+                  label: trans('failure_message', {}, 'evaluation'),
                   type: 'html',
                   required: true,
                   displayed: enableFailureMessage
@@ -216,14 +232,8 @@ const SequenceEditorEvaluation = (props) => {
           ]
         }
       ]}
-    >
-      {props.children}
-    </EditorPage>
+    />
   )
-}
-
-SequenceEditorEvaluation.propTypes = {
-  children: T.any
 }
 
 export {

@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SequenceProgression
  * Represents the progression of a User in a Step.
+ *
+ * @deprecated
  */
 #[ORM\Table(name: 'innova_path_progression')]
 #[ORM\Entity]

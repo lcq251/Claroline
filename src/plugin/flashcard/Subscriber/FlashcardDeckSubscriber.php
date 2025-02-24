@@ -7,9 +7,9 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
 use Claroline\FlashcardBundle\Entity\FlashcardDeck;
 use Claroline\FlashcardBundle\Manager\EvaluationManager;
@@ -27,7 +27,7 @@ class FlashcardDeckSubscriber extends ResourceComponent implements EvaluatedReso
         private readonly FlashcardManager $flashcardManager,
         private readonly EvaluationManager $evaluationManager
     ) {
-        $this->resourceEvalRepo = $this->om->getRepository(ResourceEvaluation::class);
+        $this->resourceEvalRepo = $this->om->getRepository(ResourceAttempt::class);
     }
 
     public static function getName(): string

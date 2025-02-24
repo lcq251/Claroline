@@ -8,5 +8,8 @@ services:
     Claroline\EvaluationBundle\Security\Voter\WorkspaceEvaluationVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter
 
-    Claroline\EvaluationBundle\Security\Voter\ResourceUserEvaluationVoter:
+    Claroline\EvaluationBundle\Security\Voter\SequenceEvaluationVoter:
+        parent: Claroline\AppBundle\Security\Voter\AbstractVoter
+
+    Claroline\EvaluationBundle\Security\Voter\ResourceEvaluationVoter:
         parent: Claroline\AppBundle\Security\Voter\AbstractVoter

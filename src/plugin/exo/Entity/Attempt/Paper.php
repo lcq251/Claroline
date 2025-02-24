@@ -2,18 +2,15 @@
 
 namespace UJM\ExoBundle\Entity\Attempt;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Datetime;
-use UJM\ExoBundle\Repository\PaperRepository;
-use DateTimeInterface;
-use stdClass;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Exercise;
+use UJM\ExoBundle\Repository\PaperRepository;
 
 /**
  * A paper represents a user attempt to a quiz.
@@ -26,65 +23,54 @@ class Paper
     use Uuid;
 
     #[ORM\Column(name: 'num_paper', type: Types::INTEGER)]
-    private $number = 1;
+    private int $number = 1;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private $start;
+    private ?\DateTimeInterface $start = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private $end = null;
+    private ?\DateTimeInterface $end = null;
 
     /**
      * The generated structure (steps and questions) for the attempt.
      */
     #[ORM\Column(name: 'ordre_question', type: Types::TEXT, nullable: true)]
-    private $structure;
+    private ?string $structure = null;
 
     /**
      * Used to store temp decoded structure to avoid decoding many times in the same life cycle.
-     *
-     * @var stdClass
      */
-    private $decodedStructure = null;
+    private ?array $decodedStructure;
 
     #[ORM\Column(name: 'interupt', type: Types::BOOLEAN, nullable: true)]
-    private $interrupted = true;
+    private bool $interrupted = true;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private $score = null;
+    private ?float $score;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private $total = null;
+    private ?float $total;
 
     /**
      * Anonymize the user information when showing the paper.
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'anonymous', type: Types::BOOLEAN, nullable: true)]
-    private $anonymized = false;
+    private bool $anonymized = false;
 
     /**
      * A paper is invalidated when the exercise definition has changed.
-     *
-     * @var bool
      */
     #[ORM\Column(name: 'invalidated', type: Types::BOOLEAN)]
-    private $invalidated = false;
+    private bool $invalidated = false;
 
     /**
      * The user who made the attempt.
      * If this is the attempt for an anonymous user, this property is `null`.
-     *
-     * @var User
      */
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
-    /**
-     * @var Exercise
-     */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Exercise::class)]
     private ?Exercise $exercise = null;
@@ -94,69 +80,48 @@ class Paper
      *
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(mappedBy: 'paper', targetEntity: Answer::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'paper', cascade: ['all'], orphanRemoval: true)]
     private Collection $answers;
 
-    /**
-     * Paper constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
 
-        $this->start = new DateTime();
+        $this->start = new \DateTime();
         $this->answers = new ArrayCollection();
     }
 
-    /**
-     * Sets number.
-     *
-     * @param int $number
-     */
-    public function setNumber($number)
+    public function setNumber(int $number): void
     {
         $this->number = $number;
     }
 
-    /**
-     * Gets number.
-     *
-     * @return int
-     */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
 
-    public function setStart(?DateTimeInterface $start = null): void
+    public function setStart(?\DateTimeInterface $start = null): void
     {
         $this->start = $start;
     }
 
-    public function getStart(): ?DateTimeInterface
+    public function getStart(): ?\DateTimeInterface
     {
         return $this->start;
     }
 
-    public function setEnd(?DateTimeInterface $end = null): void
+    public function setEnd(?\DateTimeInterface $end = null): void
     {
         $this->end = $end;
     }
 
-    /**
-     * @return Datetime
-     */
-    public function getEnd()
+    public function getEnd(): ?\DateTimeInterface
     {
         return $this->end;
     }
 
-    /**
-     * Sets structure.
-     *
-     * @param string $structure
-     */
-    public function setStructure($structure)
+    public function setStructure(string $structure): void
     {
         $this->structure = $structure;
 
@@ -164,14 +129,7 @@ class Paper
         $this->decodedStructure = null;
     }
 
-    /**
-     * Gets structure.
-     *
-     * @param bool $decoded
-     *
-     * @return string|array
-     */
-    public function getStructure($decoded = false)
+    public function getStructure(bool $decoded = false): string|array
     {
         if ($decoded) {
             return $this->getDecodedStructure();
@@ -180,116 +138,72 @@ class Paper
         return $this->structure;
     }
 
-    /**
-     * @param bool $interrupted
-     */
-    public function setInterrupted($interrupted)
+    public function setInterrupted(bool $interrupted): void
     {
         $this->interrupted = $interrupted;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInterrupted()
+    public function isInterrupted(): bool
     {
         return $this->interrupted;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user = null)
+    public function setUser(?User $user = null): void
     {
         $this->user = $user;
     }
 
-    /**
-     * @return Exercise
-     */
-    public function getExercise()
+    public function getExercise(): Exercise
     {
         return $this->exercise;
     }
 
-    public function setExercise(Exercise $exercise)
+    public function setExercise(Exercise $exercise): void
     {
         $this->exercise = $exercise;
     }
 
-    /**
-     * @param float $score
-     */
-    public function setScore($score)
+    public function setScore(?float $score): void
     {
         $this->score = $score;
     }
 
-    /**
-     * @return float
-     */
-    public function getScore()
+    public function getScore(): ?float
     {
         return $this->score;
     }
 
-    /**
-     * @param float $total
-     */
-    public function setTotal($total)
+    public function setTotal(?float $total): void
     {
         $this->total = $total;
     }
 
-    /**
-     * @return float
-     */
-    public function getTotal()
+    public function getTotal(): ?float
     {
         return $this->total;
     }
 
-    /**
-     * Set anonymized.
-     *
-     * @param bool $anonymized
-     */
-    public function setAnonymized($anonymized)
+    public function setAnonymized(bool $anonymized): void
     {
         $this->anonymized = $anonymized;
     }
 
-    /**
-     * Is anonymized ?
-     *
-     * @return bool
-     */
-    public function isAnonymized()
+    public function isAnonymized(): bool
     {
         return $this->anonymized;
     }
 
-    /**
-     * Set invalidated.
-     *
-     * @param $invalidated
-     */
-    public function setInvalidated($invalidated)
+    public function setInvalidated(bool $invalidated): void
     {
         $this->invalidated = $invalidated;
     }
 
-    /**
-     * Is invalidated ?
-     *
-     * @return bool
-     */
-    public function isInvalidated()
+    public function isInvalidated(): bool
     {
         return $this->invalidated;
     }
@@ -306,12 +220,8 @@ class Paper
 
     /**
      * Gets a question in the paper structure.
-     *
-     * @param $questionUuid
-     *
-     * @return array
      */
-    public function getQuestion($questionUuid)
+    public function getQuestion($questionUuid): ?array
     {
         $question = null;
 
@@ -333,7 +243,7 @@ class Paper
      *
      * @return array
      */
-    public function getHints()
+    public function getHints(): array
     {
         $hints = [];
 

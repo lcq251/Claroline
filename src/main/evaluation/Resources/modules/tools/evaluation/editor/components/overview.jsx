@@ -69,7 +69,7 @@ const EvaluationEditorOverview = () => {
               name: 'evaluation.scoreTotal',
               label: trans('score_total'),
               type: 'number',
-              disabled: (data) => !enableScore(data)
+              displayed: enableScore
             }
           ]
         }, {

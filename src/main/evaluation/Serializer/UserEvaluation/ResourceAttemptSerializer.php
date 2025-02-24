@@ -1,17 +1,16 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Serializer;
+namespace Claroline\EvaluationBundle\Serializer\UserEvaluation;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
-use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
 
 class ResourceAttemptSerializer
 {
-
     public function __construct(
         private readonly ResourceNodeSerializer $resourceNodeSerializer,
         private readonly UserSerializer $userSerializer
@@ -25,10 +24,10 @@ class ResourceAttemptSerializer
 
     public function getClass(): string
     {
-        return ResourceEvaluation::class;
+        return ResourceAttempt::class;
     }
 
-    public function serialize(ResourceEvaluation $resourceEvaluation, array $options = []): array
+    public function serialize(ResourceAttempt $resourceEvaluation, array $options = []): array
     {
         $score = $resourceEvaluation->getScore();
         if ($score) {
@@ -42,7 +41,10 @@ class ResourceAttemptSerializer
 
         $serialized = [
             'id' => $resourceEvaluation->getId(),
-            'date' => DateNormalizer::normalize($resourceEvaluation->getDate()),
+            'date' => DateNormalizer::normalize($resourceEvaluation->getLastActivityAt()),
+            'lastActivityAt' => DateNormalizer::normalize($resourceEvaluation->getLastActivityAt()),
+            'startedAt' => DateNormalizer::normalize($resourceEvaluation->getStartedAt()),
+            'endedAt' => DateNormalizer::normalize($resourceEvaluation->getEndedAt()),
             'status' => $resourceEvaluation->getStatus(),
             'duration' => $resourceEvaluation->getDuration(),
             'score' => $score,

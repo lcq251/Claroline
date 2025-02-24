@@ -12,7 +12,7 @@
 namespace Claroline\OpenBadgeBundle\Subscriber\Rules;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;
@@ -60,7 +60,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardResourceStatus(User $user, ResourceUserEvaluation $evaluation, Rule $rule): void
+    private function awardResourceStatus(User $user, ResourceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (!empty($data) && !empty($data['value'])) {
@@ -70,7 +70,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardResourceScoreAbove(User $user, ResourceUserEvaluation $evaluation, Rule $rule): void
+    private function awardResourceScoreAbove(User $user, ResourceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (empty($data)) {
@@ -87,7 +87,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function awardResourceCompletedAbove(User $user, ResourceUserEvaluation $evaluation, Rule $rule): void
+    private function awardResourceCompletedAbove(User $user, ResourceEvaluation $evaluation, Rule $rule): void
     {
         $data = $rule->getData();
         if (empty($data)) {

@@ -6,8 +6,6 @@ import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl'
 import {Tool, selectors as toolSelectors} from '#/main/core/tool'
 
-import {EvaluationUser} from '#/main/evaluation/tools/evaluation/containers/user'
-import {EvaluationUsers} from '#/main/evaluation/tools/evaluation/containers/users'
 import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/components/main'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {EvaluationOverview} from '#/main/evaluation/tools/evaluation/components/overview'
@@ -30,12 +28,6 @@ const EvaluationTool = (props) => {
           label: trans('my_progression'),
           target: props.path,
           exact: true
-        }, {
-          name: 'users',
-          type: LINK_BUTTON,
-          label: trans('users'),
-          target: props.path+'/users',
-          displayed: canFollow
         }, {
           name: 'sequences',
           type: LINK_BUTTON,
@@ -65,15 +57,11 @@ const EvaluationTool = (props) => {
         }, {
           path: '/activities',
           component: EvaluationActivities,
-        }, {
-          path: '/users',
-          component: EvaluationUsers,
-          exact: true
-        }, {
+        }/*, {
           path: '/users/:userId/:workspaceId?',
           onEnter: (params = {}) => props.openEvaluation(params.workspaceId || props.contextId, params.userId),
           component: EvaluationUser
-        }
+        }*/
       ]}
       editor={EvaluationEditor}
       dashboard={EvaluationDashboard}

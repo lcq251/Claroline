@@ -11,31 +11,27 @@ import resourceEvaluationSource from '#/main/evaluation/data/sources/resource-ev
 import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
 import {selectors} from '#/main/evaluation/resource/evaluation/store'
 
-import {PageSection} from '#/main/app/page'
-import {DashboardPage} from '#/main/app/dashboard'
+import {PageContent, PageSection} from '#/main/app/page'
+import {EvaluationList} from '#/main/evaluation/components/list'
 
 const ResourceEvaluations = (props) =>
-  <DashboardPage>
+  <PageContent className="d-flex">
     <PageSection size="full" className="d-flex flex-fill">
-      <ListData
+      <EvaluationList
         className="mb-5"
         name={selectors.STORE_NAME}
-        fetch={{
-          url: ['apiv2_resource_evaluation_list', {nodeId: props.nodeId}],
-          autoload: true
-        }}
-        definition={resourceEvaluationSource.parameters.definition.filter(prop => 'resourceNode' !== prop.name)}
+        url={['apiv2_resource_evaluation_list', {nodeId: props.nodeId}]}
+        primaryAction={(row) => ({
+          name: 'about',
+          type: MODAL_BUTTON,
+          icon: 'fa fa-fw fa-circle-info',
+          label: trans('show-info', {}, 'actions'),
+          modal: [MODAL_RESOURCE_EVALUATIONS, {
+            userEvaluation: row
+          }]
+        })}
         actions={(rows) => [
           {
-            name: 'about',
-            type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-circle-info',
-            label: trans('show-info', {}, 'actions'),
-            modal: [MODAL_RESOURCE_EVALUATIONS, {
-              userEvaluation: rows[0]
-            }],
-            scope: ['object']
-          }, {
             type: MODAL_BUTTON,
             icon: 'fa fa-fw fa-envelope',
             label: trans('send-message', {}, 'actions'),
@@ -48,7 +44,7 @@ const ResourceEvaluations = (props) =>
         card={ResourceCard}
       />
     </PageSection>
-  </DashboardPage>
+  </PageContent>
 
 ResourceEvaluations.propTypes = {
   nodeId: T.string.isRequired

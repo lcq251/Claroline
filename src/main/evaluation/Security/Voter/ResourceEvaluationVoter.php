@@ -11,41 +11,34 @@
 
 namespace Claroline\EvaluationBundle\Security\Voter;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ResourceUserEvaluationVoter extends AbstractEvaluationVoter
+class ResourceEvaluationVoter extends AbstractEvaluationVoter
 {
     public function getClass(): string
     {
-        return ResourceUserEvaluation::class;
+        return ResourceEvaluation::class;
     }
 
     /**
-     * @param ResourceUserEvaluation $object
+     * @param ResourceEvaluation $object
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $isAdmin = $this->isToolGranted(self::EDIT, 'evaluation')
-            || $this->isToolGranted(self::EDIT, 'evaluation', $object->getResourceNode()->getWorkspace())
+        $isAdmin = $this->isToolGranted(self::EDIT, 'progression')
+            || $this->isToolGranted(self::EDIT, 'progression', $object->getResourceNode()->getWorkspace())
             || $this->isGranted(self::ADMINISTRATE, $object->getResourceNode());
 
         switch ($attributes[0]) {
             case self::OPEN:
-            case self::VIEW:
                 if ($isAdmin) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 if ($token->getUser() instanceof User && $token->getUser()->getId() === $object->getUser()->getId()) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                $canShowEval = $this->isToolGranted(self::OPEN, 'evaluation')
-                    || $this->isToolGranted(self::OPEN, 'evaluation', $object->getResourceNode()->getWorkspace());
-                if ($canShowEval) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

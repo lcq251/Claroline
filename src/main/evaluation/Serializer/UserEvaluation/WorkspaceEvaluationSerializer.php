@@ -1,58 +1,50 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Serializer;
+namespace Claroline\EvaluationBundle\Serializer\UserEvaluation;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
-use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class ResourceEvaluationSerializer
+class WorkspaceEvaluationSerializer
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
-        private readonly ResourceNodeSerializer $resourceNodeSerializer,
-        private readonly UserSerializer $userSerializer
+        private readonly UserSerializer $userSerializer,
+        private readonly WorkspaceSerializer $workspaceSerializer
     ) {
     }
 
     public function getName(): string
     {
-        return 'resource_user_evaluation';
+        return 'workspace_evaluation';
     }
 
     public function getClass(): string
     {
-        return ResourceUserEvaluation::class;
+        return WorkspaceEvaluation::class;
     }
 
-    public function serialize(ResourceUserEvaluation $evaluation, ?array $options = []): array
+    public function serialize(WorkspaceEvaluation $evaluation, ?array $options = []): array
     {
-        $score = $evaluation->getScore();
-        if ($score) {
-            $score = round($score, EvaluationOptions::SCORE_PRECISION);
-        }
-
         $progression = $evaluation->getProgression();
         if ($progression) {
             $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
         }
 
         $serialized = [
-            'id' => $evaluation->getId(),
-            'date' => DateNormalizer::normalize($evaluation->getDate()),
+            'id' => $evaluation->getUuid(),
+            'date' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
+            'lastActivityAt' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
+            'startedAt' => DateNormalizer::normalize($evaluation->getStartedAt()),
+            'endedAt' => DateNormalizer::normalize($evaluation->getEndedAt()),
             'status' => $evaluation->getStatus(),
             'duration' => $evaluation->getDuration(),
-            'score' => $score,
-            'scoreMin' => $evaluation->getScoreMin(),
-            'scoreMax' => $evaluation->getScoreMax(),
             'progression' => $progression,
-            'nbAttempts' => $evaluation->getNbAttempts(),
-            'nbOpenings' => $evaluation->getNbOpenings(),
-            'required' => $evaluation->isRequired(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 
@@ -65,10 +57,10 @@ class ResourceEvaluationSerializer
 
             $score = $evaluation->getScore();
             $total = $evaluation->getScoreMax();
-            /*if ($evaluation->getResourceNode() && $evaluation->getResourceNode()->getScoreTotal()) {
-                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getResourceNode()->getScoreTotal();
-                $total = $evaluation->getResourceNode()->getScoreTotal();
-            }*/
+            if ($evaluation->getWorkspace() && $evaluation->getWorkspace()->getScoreTotal()) {
+                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getWorkspace()->getScoreTotal();
+                $total = $evaluation->getWorkspace()->getScoreTotal();
+            }
 
             if ($score) {
                 $score = round($score, EvaluationOptions::SCORE_PRECISION);
@@ -89,8 +81,15 @@ class ResourceEvaluationSerializer
                 ];
             }
 
-            $serialized['resourceNode'] = $this->resourceNodeSerializer->serialize($evaluation->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]);
-            $serialized['user'] = $this->userSerializer->serialize($evaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            $serialized['user'] = null;
+            if ($evaluation->getUser()) {
+                $serialized['user'] = $this->userSerializer->serialize($evaluation->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
+
+            $serialized['workspace'] = null;
+            if ($evaluation->getWorkspace()) {
+                $serialized['workspace'] = $this->workspaceSerializer->serialize($evaluation->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
         }
 
         return $serialized;

@@ -12,7 +12,7 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
 
-    Claroline\EvaluationBundle\Controller\ResourceUserEvaluationController:
+    Claroline\EvaluationBundle\Controller\ResourceEvaluationController:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'

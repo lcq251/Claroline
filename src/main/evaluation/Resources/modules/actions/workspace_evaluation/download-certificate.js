@@ -1,5 +1,6 @@
 import {trans} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {hasPermission} from '#/main/app/security'
 
 export default (evaluations) => ({
   name: 'download-certificate',
@@ -8,12 +9,15 @@ export default (evaluations) => ({
   label: evaluations.length > 1
     ? trans('download_certificates', {}, 'actions')
     : trans('download_certificate', {}, 'actions'),
-  displayed: evaluations.length > 0,
+  displayed: !!evaluations.find(evaluation => hasPermission('open', evaluation)),
   request: {
     url: ['apiv2_workspace_download_certificate'],
     request: {
       method: 'POST',
-      body: JSON.stringify(evaluations.map(evaluation => evaluation.id))
+      body: JSON.stringify(evaluations
+        .filter(evaluation => hasPermission('open', evaluation))
+        .map(evaluation => evaluation.id)
+      )
     }
   },
   scope: ['object', 'collection'],

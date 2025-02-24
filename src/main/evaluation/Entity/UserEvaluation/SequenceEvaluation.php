@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Entity;
+namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;

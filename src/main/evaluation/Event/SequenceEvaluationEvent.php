@@ -4,7 +4,7 @@ namespace Claroline\EvaluationBundle\Event;
 
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
-use Claroline\EvaluationBundle\Entity\SequenceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**

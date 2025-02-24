@@ -4,7 +4,7 @@ namespace Claroline\EvaluationBundle\Subscriber\DataSource;
 
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\CoreBundle\Entity\DataSource;
-use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Event\DataSource\GetDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,15 +13,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class MyResourceEvaluationSource implements EventSubscriberInterface
 {
-    private TokenStorageInterface $tokenStorage;
-    private FinderProvider $finder;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->finder = $finder;
     }
 
     public static function getSubscribedEvents(): array
@@ -47,7 +42,7 @@ class MyResourceEvaluationSource implements EventSubscriberInterface
         }
 
         $event->setData(
-            $this->finder->search(ResourceUserEvaluation::class, $options)
+            $this->finder->search(ResourceEvaluation::class, $options)
         );
 
         $event->stopPropagation();
