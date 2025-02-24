@@ -1,90 +1,337 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
+import isNumber from 'lodash/isNumber'
+import classes from 'classnames'
 
-import * as pdfjsLib from 'pdfjs-dist/build/pdf'
-import PDFJSWorker from 'pdfjs-dist/build/pdf.worker.entry'
-import {EventBus, PDFLinkService, PDFSinglePageViewer} from 'pdfjs-dist/web/pdf_viewer'
-pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker
+import * as pdfjs from 'pdfjs-dist/build/pdf'
+import {
+  EventBus,
+  PDFLinkService,
+  PDFViewer,
+  ScrollMode
+} from 'pdfjs-dist/web/pdf_viewer'
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString()
 
 import {url} from '#/main/app/api'
+import {toKey} from '#/main/app/utils/text'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {Button} from '#/main/app/action/components/button'
-import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
-
-import {ResourcePage} from '#/main/core/resource'
+import {ASYNC_BUTTON, CALLBACK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
+import {Select} from '#/main/app/input/components/select'
+import {Tree} from '#/main/app/components/tree'
+import {Menu} from '#/main/app/overlays/menu'
 import {PageContent} from '#/main/app/page'
+import {ResourcePage} from '#/main/core/resource'
+
+const MIN_SCALE = 10
+const BASE_SCALE = 100
+const MAX_SCALE = 1000
+const DEFAULT_SCALE = 'auto'
+const DEFAULT_SCROLL_MODE = ScrollMode.PAGE
+
+const SCALES = {
+  'auto': trans('pdf_zoom_auto', {}, 'resource'),
+  'page-actual': trans('pdf_zoom_actual', {}, 'resource'),
+  'page-fit': trans('pdf_zoom_fit', {}, 'resource'),
+  'page-width': trans('pdf_zoom_width', {}, 'resource'),
+  50: trans('percent', {value: 50}),
+  75: trans('percent', {value: 75}),
+  100: trans('percent', {value: 100}),
+  125: trans('percent', {value: 125}),
+  150: trans('percent', {value: 150}),
+  200: trans('percent', {value: 200}),
+  300: trans('percent', {value: 300}),
+  400: trans('percent', {value: 400})
+}
+
+const PdfSummary = ({
+  summary
+}) => {
+  function getPageSummary(page) {
+    return {
+      id: toKey(page.label),
+      type: CALLBACK_BUTTON,
+      label: page.label,
+      callback: page.callback,
+      children: page.children ? page.children.map(getPageSummary) : []
+    }
+  }
+
+  return (
+    <Menu className="p-3 scroller-y scroller-thin" style={{minWidth: '20rem', maxHeight: '80vh'}}>
+      <Tree
+        items={summary.map(getPageSummary)}
+        size="sm"
+      />
+    </Menu>
+  )
+}
+
+PdfSummary.propTypes = {
+  summary: T.arrayOf(T.shape({
+    id: T.string,
+    label: T.string,
+    children: T.arrayOf(T.object),
+    callback: T.func
+  }))
+}
+
+const PdfMenu = (props) => {
+  const baseScale = isNumber(props.scaleValue) ? props.scaleValue : BASE_SCALE
+
+  return (
+    <div
+      className={classes('pdf-menu px-3 py-1 bg-body-tertiary d-flex flex-row flex-wrap align-items-center gap-2', {
+        'sticky-xxl-top border-bottom': !props.embedded,
+        'rounded-3': props.embedded
+      })}
+      role="roolbar"
+    >
+      <div className="" role="presentation">
+        {!isEmpty(props.summary) &&
+          <Button
+            className="btn btn-text-body p-2 py-1 focus-ring"
+            type={MENU_BUTTON}
+            icon="fa fa-fw fa-list"
+            label={trans('summary')}
+            menu={
+              <PdfSummary summary={props.summary} />
+            }
+            tooltip="bottom"
+          />
+        }
+
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-chevron-left"
+          label={trans('previous')}
+          disabled={!props.currentPage || 1 >= props.currentPage}
+          callback={() => props.changePage(props.currentPage - 1)}
+          tooltip="bottom"
+        />
+
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-chevron-right"
+          label={trans('next')}
+          disabled={!props.currentPage || props.pages <= props.currentPage}
+          callback={() => props.changePage(props.currentPage + 1)}
+          tooltip="bottom"
+        />
+      </div>
+
+      <div className="input-group input-group-sm w-auto" role="presentation">
+        <input
+          type="number"
+          className="form-control"
+          value={props.currentPage}
+          min={1}
+          max={props.pages}
+          onChange={(e) => props.changePage(e.currentTarget.value)}
+        />
+
+        <span className="input-group-text" role="presentation">
+          {transChoice('count_pages', props.pages, {count: props.pages}, 'resource')}
+        </span>
+      </div>
+
+      <div className="ms-auto">
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-minus"
+          label={trans('zoom_out')}
+          callback={() => props.zoom(baseScale - 10)}
+          disabled={MIN_SCALE === baseScale}
+          tooltip="bottom"
+        />
+
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-plus"
+          label={trans('zoom_in')}
+          callback={() => props.zoom(baseScale + 10)}
+          disabled={MAX_SCALE === baseScale}
+          tooltip="bottom"
+        />
+      </div>
+
+      <Select
+        id={props.nodeId+'-zoom'}
+        className="w-auto"
+        choices={SCALES}
+        size="sm"
+        onChange={props.scale}
+        value={props.scaleValue}
+        noEmpty={true}
+      />
+
+      {!props.embedded &&
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={MENU_BUTTON}
+          icon={classes('fa fa-fw', {
+            'fa-file': ScrollMode.PAGE === props.scrollMode,
+            'fa-up-down': ScrollMode.VERTICAL === props.scrollMode,
+            'fa-left-right': ScrollMode.HORIZONTAL === props.scrollMode
+          })}
+          label={trans('pdf_scroll_mode', {}, 'resource')}
+          tooltip="bottom"
+          menu={{
+            items: [ScrollMode.PAGE, ScrollMode.VERTICAL, ScrollMode.HORIZONTAL].map((scrollMode) => ({
+              name: scrollMode,
+              type: CALLBACK_BUTTON,
+              icon: classes('fa fa-fw', {
+                'fa-file': ScrollMode.PAGE === scrollMode,
+                'fa-up-down': ScrollMode.VERTICAL === scrollMode,
+                'fa-left-right': ScrollMode.HORIZONTAL === scrollMode
+              }),
+              label: classes({
+                [trans('pdf_scroll_page', {}, 'resource')]: ScrollMode.PAGE === scrollMode,
+                [trans('pdf_scroll_vertical', {}, 'resource')]: ScrollMode.VERTICAL === scrollMode,
+                [trans('pdf_scroll_horizontal', {}, 'resource')]: ScrollMode.HORIZONTAL === scrollMode
+              }),
+              callback: () => props.changeScrollMode(scrollMode)
+            }))
+          }}
+        />
+      }
+
+      <Button
+        className="btn btn-text-body p-2 py-1 focus-ring"
+        type={ASYNC_BUTTON}
+        icon="fa fa-fw fa-file-download"
+        label={trans('download', {}, 'actions')}
+        tooltip="bottom"
+        request={{
+          url: url(['claro_resource_download'], {ids: [props.nodeId]})
+        }}
+      />
+    </div>
+  )
+}
+
+PdfMenu.propTypes = {
+  embedded: T.bool,
+  nodeId: T.string.isRequired,
+  summary: T.arrayOf(T.shape({
+    id: T.string,
+    label: T.string,
+    children: T.arrayOf(T.object)
+  })),
+
+  currentPage: T.number,
+  pages: T.number,
+  changePage: T.func.isRequired,
+
+  scaleValue: T.oneOfType([T.string, T.number]).isRequired,
+  scale: T.func.isRequired,
+  zoom: T.func.isRequired,
+
+  scrollMode: T.string.isRequired,
+  changeScrollMode: T.func.isRequired
+}
 
 class PdfPlayer extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loaded: false,
-      pdf: null,
       viewer: null,
       page: 1,
-      scale: 100,
-      height: null
+      pages: 1,
+      scale: DEFAULT_SCALE,
+      scrollMode: DEFAULT_SCROLL_MODE,
+      summary: []
     }
 
     this.resize = this.resize.bind(this)
+    this.zoom = this.zoom.bind(this)
+    this.scale = this.scale.bind(this)
     this.renderPage = this.renderPage.bind(this)
+    this.changeScrollMode = this.changeScrollMode.bind(this)
   }
 
   componentDidMount() {
-    const container = document.getElementById('pdf-' + this.props.nodeId)
-
     const eventBus = new EventBus()
 
     // enable hyperlinks within PDF files.
     const pdfLinkService = new PDFLinkService({eventBus})
 
     // PDFViewer
-    const pdfSinglePageViewer = new PDFSinglePageViewer({
-      container,
-      eventBus,
+    const pdfViewer = new PDFViewer({
+      container: document.getElementById('pdf-' + this.props.nodeId),
+      viewerContainer: document.getElementById('viewer-' + this.props.nodeId),
+      eventBus: eventBus,
       linkService: pdfLinkService
     })
-    pdfLinkService.setViewer(pdfSinglePageViewer)
+    pdfLinkService.setViewer(pdfViewer)
 
-    eventBus.on('pagechanging', (event) => this.renderPage(event.pageNumber))
+    eventBus.on('pagerendered', this.resize)
+
+    eventBus.on('pagechanging', (event) => {
+      this.renderPage(event.pageNumber)
+    })
+
+    eventBus.on('pagesinit', () => {
+      console.log('pagesinit')
+
+      this.resize()
+      this.renderPage(1)
+    })
 
     this.props.loadFile(url(['apiv2_pdf_file', {id: this.props.nodeId}])).then((fileData) => {
-      const url = URL.createObjectURL(fileData)
-      const loadingTask = pdfjsLib.getDocument({
-        url: url
+      const loadingTask = pdfjs.getDocument({
+        url: URL.createObjectURL(fileData)
       })
 
       loadingTask.promise.then((pdf) => {
-        pdfSinglePageViewer.setDocument(pdf)
+        pdfViewer.setDocument(pdf)
         pdfLinkService.setDocument(pdf, null)
 
+        pdf.getOutline().then((outline) => {
+          if (outline) {
+            const getItem = (item) => ({
+              // id: pdfViewer.pageLabelToPageNumber(item.title),
+              label: item.title,
+              children: item.items ? item.items.map(getItem) : [],
+              callback: () => pdfLinkService.goToDestination(item.dest)
+            })
+
+            this.setState({summary: outline.map(getItem)})
+          }
+        })
+
         this.setState({
-          loaded: true,
-          pdf: pdf,
-          viewer: pdfSinglePageViewer
-        }, () => {
-          this.resize(pdfSinglePageViewer)
-          this.renderPage(1)
+          pages: pdf.numPages,
+          viewer: pdfViewer
         })
       })
     })
   }
 
-  resize(pdfViewer) {
-    pdfViewer.currentScaleValue = this.state.scale / 100
+  resize() {
+    if (!this.state.viewer) {
+      return
+    }
 
-    this.setState({
-      height: pdfViewer.viewer.offsetHeight
-    })
+    console.log(this.state.viewer)
+
+    this.state.viewer.scrollMode = this.state.scrollMode
+    this.state.viewer.currentScaleValue = this.state.scale
   }
 
   renderPage(pageNumber) {
     this.setState({page: parseInt(pageNumber)})
-
     if (this.props.currentUser) {
-      this.props.updateProgression(this.props.nodeId, pageNumber, this.state.pdf.numPages)
+      this.props.updateProgression(this.props.nodeId, pageNumber, this.state.pages)
     }
   }
 
@@ -93,125 +340,69 @@ class PdfPlayer extends Component {
 
     if (!pageNum || 1 >= pageNum) {
       pageNum = 1
-    } else if (pageNum > this.state.pdf.numPages) {
-      pageNum = this.state.pdf.numPages
+    } else if (pageNum > this.state.pages) {
+      pageNum = this.state.pages
     }
 
     pdfViewer.currentPageNumber = parseInt(pageNum)
   }
 
   zoom(requestScale) {
-    let scale = requestScale
-    if (1 >= scale) {
-      scale = 1
+    let scale = parseInt(requestScale)
+    if (scale < MIN_SCALE) {
+      scale = MIN_SCALE
     }
 
-    this.setState({scale: parseInt(scale)}, () => this.resize(this.state.viewer))
+    if (scale > MAX_SCALE) {
+      scale = MAX_SCALE
+    }
+
+    this.scale(scale)
+  }
+
+  scale(scale) {
+    if (isNumber(scale)) {
+      scale = parseInt(scale) / 100
+    }
+    this.setState({scale: scale}, this.resize)
+  }
+
+  changeScrollMode(scrollMode) {
+    this.setState({scrollMode: scrollMode}, this.resize)
   }
 
   render() {
     return (
       <ResourcePage>
-        <PageContent>
-          {!this.state.loaded &&
-            <ContentLoader
-              size="lg"
-              description={trans('loading', {}, 'file')}
-            />
-          }
-
-          {this.state.loaded &&
-            <div className="pdf-menu mb-4" role="presentation">
-              <div className="pdf-pages">
-                <Button
-                  className="btn btn-link"
-                  type={CALLBACK_BUTTON}
-                  icon="fa fa-fw fa-backward"
-                  label={trans('previous')}
-                  disabled={!this.state.page || 1 >= this.state.page}
-                  callback={() => this.changePage(this.state.viewer, this.state.page - 1)}
-                  tooltip="bottom"
-                />
-
-                <Button
-                  className="btn btn-link"
-                  type={CALLBACK_BUTTON}
-                  icon="fa fa-fw fa-forward"
-                  label={trans('next')}
-                  disabled={!this.state.pdf || !this.state.page || this.state.pdf.numPages <= this.state.page}
-                  callback={() => this.changePage(this.state.viewer, this.state.page + 1)}
-                  tooltip="bottom"
-                />
-
-                <input
-                  type="number"
-                  className="form-control input-sm"
-                  value={this.state.page}
-                  onChange={(e) => this.changePage(this.state.viewer, e.currentTarget.value)}
-                />
-                {transChoice('count_pages', this.state.pdf ? this.state.pdf.numPages : 0, {count: this.state.pdf ? this.state.pdf.numPages : 0}, 'resource')}
-              </div>
-
-              <div className="pdf-zoom">
-                <Button
-                  className="btn btn-link"
-                  type={CALLBACK_BUTTON}
-                  icon="fa fa-fw fa-search-plus"
-                  label={trans('zoom_in')}
-                  callback={() => this.zoom(this.state.scale + 25)}
-                  disabled={!this.state.pdf || !this.state.scale}
-                  tooltip="bottom"
-                />
-
-                <Button
-                  className="btn btn-link"
-                  type={CALLBACK_BUTTON}
-                  icon="fa fa-fw fa-search-minus"
-                  label={trans('zoom_out')}
-                  callback={() => this.zoom(this.state.scale - 25)}
-                  disabled={!this.state.pdf || !this.state.scale || 1 >= this.state.scale}
-                  tooltip="bottom"
-                />
-
-                <input
-                  type="number"
-                  min="5"
-                  className="form-control input-sm"
-                  value={this.state.scale}
-                  onChange={(e) => this.zoom(e.currentTarget.value)}
-                />
-                <span className="pdf-zoom-unit">%</span>
-
-                <Button
-                  className="btn btn-link"
-                  type={ASYNC_BUTTON}
-                  icon="fa fa-fw fa-file-download"
-                  label={trans('download', {}, 'actions')}
-                  disabled={!this.state.pdf}
-                  tooltip="bottom"
-                  request={{
-                    url: url(['claro_resource_download'], {ids: [this.props.nodeId]})
-                  }}
-                />
-              </div>
-            </div>
-          }
+        <PageContent className="z-0 d-flex flex-column">
+          <PdfMenu
+            nodeId={this.props.nodeId}
+            embedded={this.props.embedded}
+            summary={this.state.summary}
+            currentPage={this.state.page}
+            pages={this.state.pages}
+            changePage={(newPage) => this.changePage(this.state.viewer, newPage)}
+            scaleValue={isNumber(this.state.scale) ? this.state.scale * 100 : this.state.scale}
+            zoom={this.zoom}
+            scale={this.scale}
+            scrollMode={this.state.scrollMode}
+            changeScrollMode={this.changeScrollMode}
+          />
 
           <div
-            className="pdf-container mb-4"
-            style={!this.state.loaded ? {display: 'none'} : {height: this.state.height}}
+            className="pdf-container position-relative w-100 flex-fill"
+            role="presentation"
           >
             <div
               id={'pdf-' + this.props.nodeId}
-              className="pdf"
-              style={{
-                position: 'absolute',
-                overflow: 'hidden',
-                width: '100%',
-                height: '100%'
-              }}
+              className={classes('pdf-content position-absolute w-100', {
+                'h-100': !this.props.embedded
+              })}
             >
-              <div id="viewer" className="pdfViewer" />
+              <div
+                id={'viewer-' + this.props.nodeId}
+                className="pdfViewer"
+              />
             </div>
           </div>
         </PageContent>
@@ -222,6 +413,7 @@ class PdfPlayer extends Component {
 
 PdfPlayer.propTypes = {
   nodeId: T.string.isRequired,
+  embedded: T.bool,
   updateProgression: T.func.isRequired,
   currentUser: T.object,
   loadFile: T.func.isRequired

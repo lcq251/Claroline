@@ -253,7 +253,6 @@ class TagInput extends Component {
           </div>
 
           <MenuOverlay
-            id={`${this.props.id}-search-menu`}
             show={this.state.listOpened}
             onToggle={this.close}
           >

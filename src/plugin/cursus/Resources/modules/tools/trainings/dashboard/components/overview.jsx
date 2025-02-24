@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {PageSection} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {ContentInfoBlocks} from '#/main/app/content/components/info-block'
 import {selectors as toolSelectors} from '#/main/core/tool'
 import {constants as listConst} from '#/main/app/content/list/constants'
@@ -10,13 +10,12 @@ import {constants as listConst} from '#/main/app/content/list/constants'
 import {CourseList} from '#/plugin/cursus/course/components/list'
 import {selectors} from '#/plugin/cursus/tools/trainings/dashboard/store'
 import {TrainingsDashboardCapacity} from '#/plugin/cursus/tools/trainings/dashboard/components/capacity'
-import {DashboardPage} from '#/main/app/dashboard'
 
 const TrainingsDashboardOverview = () => {
   const toolPath = useSelector(toolSelectors.path)
 
   return (
-    <DashboardPage>
+    <PageContent>
       <PageSection size="full">
         <ContentInfoBlocks
           size="lg"
@@ -108,7 +107,7 @@ const TrainingsDashboardOverview = () => {
           <li>En attente de l'ouverture d'une nouvelle session</li>
         </ul>
       </PageSection>
-    </DashboardPage>
+    </PageContent>
   )
 }
 

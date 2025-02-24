@@ -6,43 +6,24 @@
 
 @import "node_modules/pdfjs-dist/web/pdf_viewer";
 
-.pdf-menu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  .pdf-pages,
-  .pdf-zoom {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    padding: 5px;
-  }
-
-  .pdf-zoom {
-    .pdf-zoom-unit {
-      display: inline-block;
-      padding-right: $padding-base-horizontal;
-    }
-  }
-
-  .form-control {
-    width: 80px;
-    vertical-align: middle;
-    border-radius: 0;
-    margin: 0 5px;
-    display: inline-block;
-  }
+.pdf-container {
+  height: 20px;
 }
 
-.pdf-container {
-  position: relative;
-  width: 100%;
+.pdf-content {
+  overflow: auto;
+  font-weight: $font-weight-normal;
 
-  .page {
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
+  // bootstrap override "border-box" breaks text layer positioning
+  &, *, *:after, *:before {
+    box-sizing: content-box !important;
+  }
+
+  .textLayer {
+    &::-moz-selection, *::-moz-selection,
+    &::selection, *::selection {
+      color: transparent !important; // because we override the default ::selection color which override the value set by PDF.js
+      background: color-mix(in srgb, var(--#{$prefix}primary), transparent 75%);
+    }
   }
 }

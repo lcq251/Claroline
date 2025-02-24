@@ -1,6 +1,12 @@
 {
   "pdf": "PDF",
-  "count_pages": "{0, 1}/ %count% page|]1,Inf[/ %count% pages"
+  "count_pages": "{0, 1} %count% page|]1,Inf[ %count% pages",
+  "pdf_zoom_auto": "Zoom automatique",
+  "pdf_zoom_actual": "Taille réelle",
+  "pdf_zoom_fit": "Page entière",
+  "pdf_zoom_width": "Pleine largeur",
+  "pdf_scroll_mode": "Mode de défilement",
+  "pdf_scroll_page": "Page",
+  "pdf_scroll_vertical": "Vertical",
+  "pdf_scroll_horizontal": "Horizontal"
 }
-
-

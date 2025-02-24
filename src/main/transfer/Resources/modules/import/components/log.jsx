@@ -71,9 +71,9 @@ const ImportLog = (props) => {
         <Button
           type={MENU_BUTTON}
           className="btn btn-link fw-bold d-inline-flex align-items-center"
-          label={trans(logType)}
+          label={trans('logType')}
           menu={{
-            align: 'right',
+            align: 'end',
             items: [
               {
                 name: 'all',

@@ -15,6 +15,7 @@ import {actions} from '#/plugin/pdf-player/resources/pdf/store'
 const PdfPlayer = connect(
   (state) => ({
     nodeId: resourceSelectors.id(state),
+    embedded: resourceSelectors.embedded(state),
     currentUser: securitySelectors.currentUser(state)
   }),
   (dispatch) => ({

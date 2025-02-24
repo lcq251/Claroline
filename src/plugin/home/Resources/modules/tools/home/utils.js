@@ -72,7 +72,7 @@ function getTabSummary(path, tab, showHidden = false) {
     label: tab.title,
     target: `${path}/${tab.slug}`,
     menu: {
-      align: 'right',
+      align: 'end',
       items: children.map((child) => getTabSummary(path, child, showHidden))
     }
   }

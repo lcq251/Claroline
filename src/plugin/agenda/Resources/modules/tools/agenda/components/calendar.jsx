@@ -58,7 +58,7 @@ const AgendaCalendar = (props) => {
                 icon: <>{trans('display_mode', {name: currentView.label}, 'agenda')}</>,
                 label: trans('change-calendar-view', {}, 'actions'),
                 menu: {
-                  align: 'right',
+                  align: 'end',
                   label: trans('display_modes', {}, 'agenda'),
                   items: Object.keys(AGENDA_VIEWS).map(viewName => ({
                     type: LINK_BUTTON,

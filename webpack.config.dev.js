@@ -52,6 +52,12 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        }
+      },
       babel()
     ]
   },
@@ -111,7 +117,7 @@ module.exports = {
   },
   resolve: {
     modules: ['./node_modules'],
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.mjs'],
     fallback: {
       buffer: false
     }
