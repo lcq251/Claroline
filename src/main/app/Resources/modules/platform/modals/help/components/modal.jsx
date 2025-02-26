@@ -23,6 +23,7 @@ const HelpModal = (props) => {
           <Thumbnail
             className="mb-2"
             thumbnail={get(currentOrganization, 'thumbnail')}
+            name={get(currentOrganization, 'name')}
             square={true}
             size="md"
           />

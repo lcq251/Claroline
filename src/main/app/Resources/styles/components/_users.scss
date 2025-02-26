@@ -10,8 +10,7 @@
     font-size: 0; // avoid extra margin
 
     .user-status-bullet {
-        box-shadow: 0 0 0 .125em var(--#{$prefix}body-bg); // should be overridden in some places
-        //border: .125em solid var(--#{$prefix}body-bg); // should be overridden in some places
+        box-shadow: 0 0 0 .075em var(--#{$prefix}body-bg); // should be overridden in some places
     }
 }
 

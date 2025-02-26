@@ -5,6 +5,35 @@ import isEmpty from 'lodash/isEmpty'
 
 import {asset} from '#/main/app/config'
 
+function getInitials(name) {
+  if (isEmpty(name)) {
+    return null
+  }
+
+  let parts = name.split(' ')
+  if (1 === parts.length) {
+    parts = name.split('-')
+  }
+
+  let initials = parts[0].charAt(0)
+  if (1 < parts.length) {
+    initials += parts[parts.length - 1].charAt(0)
+  }
+
+  return initials
+}
+
+function getColor(str, s = 65, l = 40) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let h = hash % 360;
+
+  return 'hsl('+h+', '+s+'%, '+l+'%)';
+}
+
 /**
  * A square visual representation of an entity.
  *
@@ -40,8 +69,14 @@ const Thumbnail = ({
       styles = {
         color: color
       }
+    } else if (name) {
+      styles = {
+        color: getColor(name)
+      }
     }
   }
+
+  const initials = getInitials(name)
 
   return (
     <div
@@ -53,11 +88,9 @@ const Thumbnail = ({
       })}
       aria-hidden={true}
     >
-      {!thumbnail && name &&
-        name.charAt(0)
-      }
+      {!thumbnail && initials}
 
-      {!thumbnail && !name &&
+      {!thumbnail && !initials &&
         children
       }
     </div>

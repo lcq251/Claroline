@@ -15,12 +15,7 @@ const DataStack = (props) => {
       {objects.map((object, index) =>
         <Thumbnail
           key={index}
-          className={classes('thumbnail-icon-bordered', {
-            /*'ms-n2': 0 !== index && 'xs' === props.size,
-            'ms-n3': 0 !== index && 'sm' === props.size,
-            'ms-n4': 0 !== index && 'md' === props.size,
-            'ms-n5': 0 !== index && 'lg' === props.size*/
-          })}
+          className="thumbnail-icon-bordered"
           {...object}
           size={props.size}
           square={true}

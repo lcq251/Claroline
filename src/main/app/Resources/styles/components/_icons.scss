@@ -19,7 +19,7 @@
 
     text-transform: uppercase;
     color: var(--#{$prefix}secondary);
-    font-weight: $font-weight-bold !important;
+    font-weight: $font-weight-semibold !important;
 
     &:not(.placeholder) {
         color: var(--#{$prefix}primary);
@@ -41,8 +41,7 @@
 }
 
 .thumbnail-icon {
-    border-radius: 50% /*!important*/;
-    // overflow: hidden;
+    border-radius: 50%;
     flex-shrink: 0 !important;
 }
 
@@ -81,7 +80,7 @@
 
     .thumbnail-#{$size} {
         // for .fa when no picture
-        font-size: $value;
+        font-size: ($value / 3) * 2;
     }
 
     .thumbnail-icon-#{$size} {
@@ -89,7 +88,7 @@
         width: $value;
         height: $value;
         // for .fa when no picture
-        font-size: $value * .5;
+        font-size: $value / 3;
     }
 }
 
