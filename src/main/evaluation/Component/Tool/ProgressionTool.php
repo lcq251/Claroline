@@ -57,6 +57,10 @@ class ProgressionTool extends ToolComponent
             return null;
         }
 
+        if (empty($contextSubject)) {
+            return null;
+        }
+
         $workspaceEvaluation = $this->getUserEvaluation($contextSubject);
         $progression = $workspaceEvaluation->getProgression();
         if ($progression) {
@@ -69,6 +73,10 @@ class ProgressionTool extends ToolComponent
     public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
         $workspaceEvaluation = null;
+
+        if (empty($contextSubject)) {
+            return [];
+        }
 
         $user = $this->tokenStorage->getToken()?->getUser();
         if ($user instanceof User) {
