@@ -62,6 +62,14 @@ const OrganizationFormComponent = props => {
               name: 'email',
               type: 'email',
               label: trans('email')
+            }, {
+              name: 'phone',
+              type: 'string',
+              label: trans('phone')
+            }, {
+              name: 'address',
+              type: 'address',
+              label: trans('address')
             }
           ]
         }, {

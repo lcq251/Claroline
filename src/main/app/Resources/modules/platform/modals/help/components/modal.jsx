@@ -33,19 +33,14 @@ const HelpModal = (props) => {
         </h1>
 
         <Html className="fs-sm text-body-secondary mb-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec finibus erat a aliquet egestas. Sed sed auctor mi. Nunc bibendum nunc lacus, quis mattis velit euismod ut. Maecenas mattis, justo sed imperdiet pharetra, nibh augue eleifend nisi.
+          {get(currentOrganization, 'meta.description')}
         </Html>
 
         <Contact
           className="mb-4"
-          email="support@claroline.com"
-          phone="04.50.36.83.97"
-          address={{
-            street1: '2 rue Marcel Porte',
-            postalCode: '38100',
-            city: 'Grenoble',
-            country: 'fr'
-          }}
+          email={get(currentOrganization, 'email')}
+          phone={get(currentOrganization, 'phone')}
+          address={get(currentOrganization, 'address')}
         />
 
         <nav>

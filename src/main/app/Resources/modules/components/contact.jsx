@@ -5,6 +5,7 @@ import classes from 'classnames'
 import {Email} from '#/main/app/components/email'
 import {Phone} from '#/main/app/components/phone'
 import {Address} from '#/main/app/components/address'
+import isEmpty from 'lodash/isEmpty'
 
 const Contact = (props) =>
   <address className={classes(props.className, 'd-flex flex-column gap-2')}>
@@ -21,7 +22,7 @@ const Contact = (props) =>
       </div>
     }
 
-    {props.address &&
+    {(!isEmpty(props.address) && !!Object.keys(props.address).find(e => !isEmpty(props.address[e]))) &&
       <div className="d-flex flex-row align-items-baseline" role="presentation">
         <span className="fa fa-fw fa-map-marker-alt me-2" aria-hidden={true} />
         <div className="d-inline-block" role="presentation">

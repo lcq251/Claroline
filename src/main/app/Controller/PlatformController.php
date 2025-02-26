@@ -64,7 +64,7 @@ class PlatformController
                 'impersonated' => $this->securityManager->isImpersonated(),
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
-                'currentOrganization' => $currentUser ? $this->serializer->serialize($currentUser->getMainOrganization(), [Options::SERIALIZE_MINIMAL]) : null,
+                'currentOrganization' => $currentUser ? $this->serializer->serialize($currentUser->getMainOrganization()/* , [Options::SERIALIZE_MINIMAL] */) : null,
                 /*'footer' => [
                     'content' => $this->config->getParameter('footer.content'),
                     'display' => [

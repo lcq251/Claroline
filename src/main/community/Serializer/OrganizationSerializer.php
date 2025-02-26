@@ -65,6 +65,15 @@ class OrganizationSerializer
             'thumbnail' => $organization->getThumbnail(),
             'poster' => $organization->getPoster(),
             'email' => $organization->getEmail(),
+            'phone' => $organization->getPhone(),
+            'address' => [
+                'street1' => $organization->getAddressStreet1(),
+                'street2' => $organization->getAddressStreet2(),
+                'postalCode' => $organization->getAddressPostalCode(),
+                'city' => $organization->getAddressCity(),
+                'state' => $organization->getAddressState(),
+                'country' => $organization->getAddressCountry(),
+            ],
             'meta' => [
                 'description' => $organization->getDescription(),
                 'default' => $organization->isDefault(),
@@ -95,6 +104,16 @@ class OrganizationSerializer
         $this->sipe('thumbnail', 'setThumbnail', $data, $organization);
         $this->sipe('meta.description', 'setDescription', $data, $organization);
         $this->sipe('restrictions.public', 'setPublic', $data, $organization);
+        $this->sipe('phone', 'setPhone', $data, $organization);
+
+        if (isset($data['address'])) {
+            $this->sipe('address.street1', 'setAddressStreet1', $data, $organization);
+            $this->sipe('address.street2', 'setAddressStreet2', $data, $organization);
+            $this->sipe('address.postalCode', 'setAddressPostalCode', $data, $organization);
+            $this->sipe('address.city', 'setAddressCity', $data, $organization);
+            $this->sipe('address.state', 'setAddressState', $data, $organization);
+            $this->sipe('address.country', 'setAddressCountry', $data, $organization);
+        }
 
         return $organization;
     }
