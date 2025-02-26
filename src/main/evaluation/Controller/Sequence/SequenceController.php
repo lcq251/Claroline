@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
+use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
@@ -57,9 +58,21 @@ class SequenceController extends AbstractCrudController
             $finderQuery->addFilter('workspace', $contextId);
         }
 
-        $teams = $this->crud->search(Sequence::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+        $sequences = $this->crud->search(Sequence::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-        return $teams->toResponse();
+        return $sequences->toResponse();
+    }
+
+    #[Route(path: '/resource/{resourceId}', name: 'resource_list', methods: ['GET'])]
+    public function listByResourceAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        ResourceNode $resourceNode
+    ): JsonResponse {
+        $this->checkPermission('OPEN', $resourceNode, [], true);
+
+        return new JsonResponse(
+
+        );
     }
 
     #[Route(path: '/{id}', name: 'open', methods: ['GET'])]
@@ -144,5 +157,19 @@ class SequenceController extends AbstractCrudController
         return new JsonResponse(array_map(function (Sequence $sequence) {
             return $this->serializer->serialize($sequence);
         }, $processed));
+    }
+
+    #[Route(path: '/copy', name: 'copy', methods: ['PUT'])]
+    public function copyAction(Request $request): JsonResponse
+    {
+        $toCopy = $this->decodeIdsString($request, Sequence::class);
+
+        foreach ($toCopy as $sequence) {
+            if ($this->checkPermission('EDIT', $sequence)) {
+
+            }
+        }
+
+        return new JsonResponse(null, 204);
     }
 }

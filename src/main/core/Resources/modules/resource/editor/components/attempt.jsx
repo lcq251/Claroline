@@ -48,7 +48,7 @@ const ResourceEditorAttempt = (props) => {
           ]
         }, {
           title: trans('Score'),
-          subtitle: trans('Donnez un score à vos utilisateurs une fois qu\'ils ont terminé l\'activité.'),
+          description: trans('Donnez un score à vos utilisateurs une fois qu\'ils ont terminé l\'activité.'),
           primary: true,
           fields: [
             {
@@ -70,7 +70,7 @@ const ResourceEditorAttempt = (props) => {
           ]
         }, {
           title: trans('Conditions de réussite'),
-          subtitle: trans('Donnez un statut de Réussite ou d\'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n\'est définie les utilisateurs obtiennent un statut Terminé une fois qu\'ils ont terminé l\'activités.'),
+          description: trans('Donnez un statut de Réussite ou d\'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n\'est définie les utilisateurs obtiennent un statut Terminé une fois qu\'ils ont terminé l\'activités.'),
           primary: true,
           fields: [
             {

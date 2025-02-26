@@ -106,4 +106,34 @@ class ResourceEvaluationController
             $this->serializer->serialize($userEvaluation)
         );
     }
+
+    /**
+     * Recalculates (score, status, progression, ...) evaluations for all the users of a resource.
+     */
+    #[Route(path: '/{resourceId}/recompute', name: 'apiv2_resource_evaluation_recompute', methods: ['PUT'])]
+    public function recomputeAction(
+        #[MapEntity(mapping: ['resourceId' => 'uuid'])]
+        ResourceNode $resourceNode
+    ): JsonResponse {
+        $this->checkPermission('EDIT', $resourceNode, [], true);
+
+        $this->evaluationManager->recomputeEvaluations($resourceNode);
+
+        return new JsonResponse(null, 204);
+    }
+
+    /**
+     * Removes all user evaluations for the sequence.
+     */
+    #[Route(path: '/{resourceId}', name: 'apiv2_resource_evaluation_purge', methods: ['DELETE'])]
+    public function purgeAction(
+        #[MapEntity(mapping: ['resourceId' => 'uuid'])]
+        ResourceNode $resourceNode
+    ): JsonResponse {
+        $this->checkPermission('ADMINISTRATE', $resourceNode, [], true);
+
+        $this->evaluationManager->purgeEvaluations($resourceNode);
+
+        return new JsonResponse(null, 204);
+    }
 }

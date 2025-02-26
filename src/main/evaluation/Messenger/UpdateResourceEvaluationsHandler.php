@@ -10,11 +10,11 @@ use Claroline\EvaluationBundle\Messenger\Message\UpdateResourceEvaluations;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class UpdateResourceEvaluationsHandler
+readonly class UpdateResourceEvaluationsHandler
 {
     public function __construct(
-        private readonly ObjectManager $om,
-        private readonly ResourceEvaluationManager $resourceEvaluationManager
+        private ObjectManager $om,
+        private ResourceEvaluationManager $resourceEvaluationManager
     ) {
     }
 

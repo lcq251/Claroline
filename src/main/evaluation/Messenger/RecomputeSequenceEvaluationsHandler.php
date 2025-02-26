@@ -13,11 +13,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
  * Recompute WorkspaceEvaluations for a Workspace and a list of Users.
  */
 #[AsMessageHandler]
-class RecomputeSequenceEvaluationsHandler
+readonly class RecomputeSequenceEvaluationsHandler
 {
     public function __construct(
-        private readonly ObjectManager $om,
-        private readonly SequenceEvaluationManager $evaluationManager
+        private ObjectManager $om,
+        private SequenceEvaluationManager $evaluationManager
     ) {
     }
 

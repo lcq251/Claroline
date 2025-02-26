@@ -81,6 +81,7 @@ class SequenceSerializer
             'thumbnail' => $sequence->getThumbnail(),
             'poster' => $sequence->getPoster(),
             'meta' => [
+                'public' => $sequence->isPublic(),
                 'description' => $sequence->getDescription(),
                 'descriptionHtml' => $sequence->getDescriptionHtml(),
                 'creator' => $sequence->getCreator() ?
@@ -101,21 +102,13 @@ class SequenceSerializer
             'steps' => array_values(array_map(function (Step $step) use ($options) {
                 return $this->stepSerializer->serialize($step, $options);
             }, $sequence->getRootSteps())),
-            'score' => [
-                'success' => $sequence->getSuccessScore(),
-                'total' => $sequence->getScoreTotal(),
-            ],
             'evaluation' => [
-                'evaluated' => $sequence->isEvaluated(),
-                'required' => $sequence->isRequired(),
                 'estimatedDuration' => $sequence->getEstimatedDuration(),
+                'scoreTotal' => $sequence->getScoreTotal(),
+                'successCondition' => $sequence->getSuccessCondition(),
                 'endMessage' => $sequence->getEndMessage(),
                 'successMessage' => $sequence->getSuccessMessage(),
                 'failureMessage' => $sequence->getFailureMessage(),
-                'scoreTotal' => $sequence->getScoreTotal(),
-                'successCondition' => [
-                    'score' => $sequence->getSuccessScore(),
-                ],
             ],
             'overview' => [
                 'resource' => $sequence->getOverviewResource() ? $this->resourceNodeSerializer->serialize($sequence->getOverviewResource(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
@@ -131,6 +124,7 @@ class SequenceSerializer
             ],
             'restrictions' => [
                 'dates' => DateRangeNormalizer::normalize($sequence->getAccessibleFrom(), $sequence->getAccessibleUntil()),
+                'code' => $sequence->getAccessCode(),
             ],
             'assignments' => array_map(function (Assignment $assignment) {
                 return $this->assignmentSerializer->serialize($assignment, [SerializerInterface::SERIALIZE_MINIMAL]);
@@ -167,27 +161,20 @@ class SequenceSerializer
         $this->sipe('meta.published', 'setPublished', $data, $sequence);
         $this->sipe('meta.description', 'setDescription', $data, $sequence);
         $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $sequence);
+        $this->sipe('meta.public', 'setPublic', $data, $sequence);
 
         $this->sipe('display.numbering', 'setNumbering', $data, $sequence);
         $this->sipe('display.showScore', 'setShowScore', $data, $sequence);
 
         $this->sipe('opening.secondaryResources', 'setSecondaryResourcesTarget', $data, $sequence);
 
-        /*$this->sipe('score.success', 'setSuccessScore', $data, $sequence);
-        $this->sipe('score.total', 'setScoreTotal', $data, $sequence);*/
-
         if (isset($data['evaluation'])) {
+            $this->sipe('evaluation.scoreTotal', 'setScoreTotal', $data, $sequence);
             $this->sipe('evaluation.endMessage', 'setEndMessage', $data, $sequence);
             $this->sipe('evaluation.successMessage', 'setSuccessMessage', $data, $sequence);
             $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
-
-            $this->sipe('evaluation.evaluated', 'setEvaluated', $data, $sequence);
-            $this->sipe('evaluation.required', 'setRequired', $data, $sequence);
             $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
-
-            if (isset($data['evaluation.successCondition'])) {
-                $this->sipe('evaluation.successCondition.score', 'setSuccessScore', $data, $sequence);
-            }
+            $this->sipe('evaluation.successCondition', 'setSuccessCondition', $data, $sequence);
         }
 
         if (!empty($data['workspace'])) {
@@ -227,11 +214,14 @@ class SequenceSerializer
             }
         }
 
-        if (isset($data['restrictions']['dates'])) {
-            $dateRange = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
+        if (isset($data['restrictions'])) {
+            $this->sipe('restrictions.code', 'setAccessCode', $data, $sequence);
 
-            $sequence->setAccessibleFrom($dateRange[0]);
-            $sequence->setAccessibleUntil($dateRange[1]);
+            if (isset($data['restrictions']['dates'])) {
+                $dateRange = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
+                $sequence->setAccessibleFrom($dateRange[0]);
+                $sequence->setAccessibleUntil($dateRange[1]);
+            }
         }
 
         if (array_key_exists('steps', $data)) {

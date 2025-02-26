@@ -122,7 +122,7 @@ const ExampleForm = () =>
             ]
           }, {
             title: 'Choices',
-            subtitle: 'An additional description to better explain the role of the fields inside the section.',
+            description: 'An additional description to better explain the role of the fields inside the section.',
             fields: [
               {
                 name: 'choiceSimple',

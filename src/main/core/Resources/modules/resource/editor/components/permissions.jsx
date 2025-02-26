@@ -22,7 +22,7 @@ const ResourceEditorPermissions = (props) => {
   return (
     <EditorPage
       title={trans('permissions')}
-      help={trans('Gérez les différents droits d\'accès et de modifications de vos utilisateurs.')}
+      help={trans('permissions_help')}
       managerOnly={true}
       definition={[
         {
@@ -42,7 +42,7 @@ const ResourceEditorPermissions = (props) => {
           name: 'roles',
           icon: 'fa fa-fw fa-id-badges',
           title: trans('roles'),
-          subtitle: trans('Assignez des permissions aux rôles pour personnaliser les droits des utilisateurs possédant ce rôle.'),
+          description: trans('Assignez des permissions aux rôles pour personnaliser les droits des utilisateurs possédant ce rôle.'),
           primary: true,
           render: () => (
             <>
@@ -73,7 +73,7 @@ const ResourceEditorPermissions = (props) => {
           name: 'restrictions',
           icon: 'fa fa-fw fa-key',
           title: trans('access_restrictions'),
-          subtitle: trans('Ajoutez des conditions d\'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission "Administrer" ne sont pas affectés.'),
+          description: trans('Ajoutez des conditions d\'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission "Administrer" ne sont pas affectés.'),
           primary: true,
           fields: [
             {
@@ -102,6 +102,7 @@ const ResourceEditorPermissions = (props) => {
             }, {
               name: 'resourceNode.restrictions.enableCode',
               label: trans('restrict_by_code'),
+              help: trans('restrict_by_code_help'),
               type: 'boolean',
               calculated: restrictedByCode,
               onChange: activated => {

@@ -32,8 +32,8 @@ const UserProgressionModal = props => {
 
           {get(props.path, 'display.showScore') && resourceEvaluation && resourceEvaluation.scoreMax &&
             <EvaluationScore
-              score={get(props.path, 'score.total') ? (resourceEvaluation.score / resourceEvaluation.scoreMax) * get(props.path, 'score.total') : resourceEvaluation.score}
-              scoreMax={get(props.path, 'score.total') ? get(props.path, 'score.total') : resourceEvaluation.scoreMax}
+              score={get(props.path, 'evaluation.scoreTotal') ? (resourceEvaluation.score / resourceEvaluation.scoreMax) * get(props.path, 'evaluation.scoreTotal') : resourceEvaluation.score}
+              scoreMax={get(props.path, 'evaluation.scoreTotal') ? get(props.path, 'evaluation.scoreTotal') : resourceEvaluation.scoreMax}
               size="sm"
               style={{marginLeft: 'auto'}}
             />

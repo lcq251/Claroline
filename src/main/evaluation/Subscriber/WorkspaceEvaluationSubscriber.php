@@ -115,7 +115,7 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
         $sequence = $event->getObject();
         $oldData = $event->getOldData();
 
-        if ($sequence->isRequired() && !empty($oldData['meta']) && ($oldData['meta']['published'] !== $sequence->isPublished())) {
+        if (!empty($oldData['meta']) && ($oldData['meta']['published'] !== $sequence->isPublished())) {
             $this->manager->recomputeEvaluations($sequence->getWorkspace());
         }
     }

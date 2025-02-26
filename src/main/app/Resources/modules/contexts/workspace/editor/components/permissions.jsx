@@ -28,7 +28,7 @@ const WorkspaceEditorPermissions = () => {
   return (
     <EditorPage
       title={trans('permissions')}
-      help={trans('Gérez les différents droits d\'accès et de modifications de vos utilisateurs.')}
+      help={trans('permissions_help')}
       managerOnly={true}
       definition={[
         {
@@ -48,7 +48,7 @@ const WorkspaceEditorPermissions = () => {
         }, {
           name: 'organizations',
           title: trans('organizations', {}, 'community'),
-          subtitle: trans('Choisissez les organisations dans lesquels l\'espace d\'activités doit apparaître. Seuls les membres de ces organisations pourront voir et s\'inscrire à l\'espace.'),
+          description: trans('Choisissez les organisations dans lesquels l\'espace d\'activités doit apparaître. Seuls les membres de ces organisations pourront voir et s\'inscrire à l\'espace.'),
           primary: true,
           render: () => (
             <OrganizationList
@@ -80,7 +80,7 @@ const WorkspaceEditorPermissions = () => {
           name: 'restrictions',
           icon: 'fa fa-fw fa-key',
           title: trans('access_restrictions'),
-          subtitle: trans('Ajoutez des conditions d\'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission "Administrer" ne sont pas affectés.'),
+          description: trans('Ajoutez des conditions d\'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission "Administrer" ne sont pas affectés.'),
           primary: true,
           fields: [
             {
@@ -109,6 +109,7 @@ const WorkspaceEditorPermissions = () => {
             }, {
               name: 'data.restrictions.enableCode',
               label: trans('restrict_by_code'),
+              help: trans('restrict_by_code_help'),
               type: 'boolean',
               calculated: restrictByCode,
               onChange: activated => {

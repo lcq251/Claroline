@@ -4,6 +4,7 @@ namespace Claroline\EvaluationBundle\Component\Tool;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\ToolComponent;
@@ -12,8 +13,12 @@ use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
+use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ProgressionTool extends ToolComponent
@@ -47,27 +52,45 @@ class ProgressionTool extends ToolComponent
 
     public function getStatus(string $context, ?ContextSubjectInterface $contextSubject = null): ?string
     {
-        return '75%';
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        $workspaceEvaluation = $this->getUserEvaluation($contextSubject);
+        $progression = $workspaceEvaluation->getProgression();
+        if ($progression) {
+            $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
+        }
+
+        return $progression.'%';
     }
 
     public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array
     {
+        $workspaceEvaluation = null;
+
         $user = $this->tokenStorage->getToken()?->getUser();
-        if (!$user instanceof User) {
-            return [];
-        }
+        if ($user instanceof User) {
+            $workspaceEvaluation = $this->getUserEvaluation($contextSubject);
+            $assignments = $this->om->getRepository(Assignment::class)->findByWorkspaceAndUser($contextSubject, $user);
 
-        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
-            'workspace' => $contextSubject,
-            'user' => $this->tokenStorage->getToken()?->getUser(),
-        ]);
-
-        if (empty($workspaceEvaluation)) {
-            $workspaceEvaluation = new WorkspaceEvaluation();
+            $sequences = array_map(function (Assignment $assignment) {
+                return $assignment->getSequence();
+            }, $assignments);
+        } else {
+            $sequences = $this->om->getRepository(Sequence::class)->findBy([
+                'published' => true,
+                'public' => true,
+                'workspace' => $contextSubject,
+            ]);
         }
 
         return [
-            'workspaceEvaluation' => $this->serializer->serialize($workspaceEvaluation),
+            'sequences' => array_map(function (Sequence $sequence) {
+                return $this->serializer->serialize($sequence, [SerializerInterface::SERIALIZE_MINIMAL]);
+            }, $sequences),
+            'workspaceEvaluation' => $workspaceEvaluation ? $this->serializer->serialize($workspaceEvaluation) : null,
             'resourceEvaluations' => $this->finder->search(ResourceEvaluation::class, [
                 'filters' => ['workspace' => $contextSubject->getContextIdentifier(), 'user' => $user->getUuid()],
             ])['data'],
@@ -85,5 +108,19 @@ class ProgressionTool extends ToolComponent
         }
 
         return [];
+    }
+
+    private function getUserEvaluation(Workspace $workspace): ?WorkspaceEvaluation
+    {
+        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
+            'workspace' => $workspace,
+            'user' => $this->tokenStorage->getToken()?->getUser(),
+        ]);
+
+        if (empty($workspaceEvaluation)) {
+            $workspaceEvaluation = new WorkspaceEvaluation();
+        }
+
+        return $workspaceEvaluation;
     }
 }

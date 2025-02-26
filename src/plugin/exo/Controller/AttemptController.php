@@ -2,8 +2,6 @@
 
 namespace UJM\ExoBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Exception;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -12,6 +10,7 @@ use Claroline\CoreBundle\Security\Collection\ResourceCollection;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -42,7 +41,6 @@ class AttemptController
     /**
      * Opens an exercise, creating a new paper or re-using an unfinished one.
      * Also check that max attempts are not reached if needed.
-     *
      */
     #[Route(path: '', name: 'exercise_attempt_start', methods: ['POST'])]
     public function startAction(#[MapEntity(mapping: ['exerciseId' => 'uuid'])] Exercise $exercise, #[CurrentUser] ?User $user = null): JsonResponse
@@ -66,7 +64,6 @@ class AttemptController
 
     /**
      * Submits answers to an Exercise.
-     *
      */
     #[Route(path: '/{id}', name: 'exercise_attempt_submit', methods: ['PUT'])]
     public function submitAnswersAction(
@@ -104,7 +101,6 @@ class AttemptController
 
     /**
      * Flags a paper as finished.
-     *
      */
     #[Route(path: '/{id}/end', name: 'exercise_attempt_finish', methods: ['PUT'])]
     public function finishAction(
@@ -131,7 +127,6 @@ class AttemptController
     /**
      * Returns the content of a question hint, and records the fact that it has
      * been consulted within the context of a given paper.
-     *
      */
     #[Route(path: '/{id}/{questionId}/hints/{hintId}', name: 'exercise_attempt_hint_show', methods: ['GET'])]
     public function useHintAction(
@@ -147,7 +142,7 @@ class AttemptController
 
         try {
             $hint = $this->attemptManager->useHint($paper, $questionId, $hintId, $request->getClientIp());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse([[
                 'path' => '',
                 'message' => $e->getMessage(),

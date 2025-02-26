@@ -12,6 +12,7 @@
 namespace Claroline\EvaluationBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Component\Resource\ResourceProvider;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
@@ -21,11 +22,17 @@ use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceAttemptEvent;
 use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;
+use Claroline\EvaluationBundle\Messenger\Message\PurgeResourceEvaluations;
+use Claroline\EvaluationBundle\Messenger\Message\RecomputeResourceEvaluations;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ResourceEvaluationManager extends AbstractEvaluationManager
 {
     public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly MessageBusInterface $messageBus,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $om,
         private readonly ResourceProvider $resourceProvider
@@ -125,6 +132,10 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         return $evaluation;
     }
 
+    public function refreshEvaluation(ResourceEvaluation $evaluation): void
+    {
+    }
+
     /**
      * Gives another attempt to a user.
      * This allows the user to redo an attempt event if a has reached the max attempts allowed by the resource.
@@ -140,5 +151,24 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
 
             $this->eventDispatcher->dispatch(new ResourceEvaluationEvent($evaluation, ['nbAttempts' => true]), EvaluationEvents::RESOURCE_EVALUATION);
         }
+    }
+
+    /**
+     * Recomputes all the evaluations of a resource.
+     */
+    public function recomputeEvaluations(ResourceNode $resourceNode): void
+    {
+        $this->messageBus->dispatch(
+            new RecomputeResourceEvaluations($resourceNode->getId()),
+            [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+        );
+    }
+
+    public function purgeEvaluations(ResourceNode $resourceNode): void
+    {
+        $this->messageBus->dispatch(
+            new PurgeResourceEvaluations($resourceNode->getId()),
+            [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+        );
     }
 }

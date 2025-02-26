@@ -21,5 +21,6 @@ export default (sequences, refresher) => ({
       body: JSON.stringify(sequences.map(sequence => sequence.id))
     },
     success: (response) => refresher.update(response)
-  }
+  },
+  group: trans('management')
 })

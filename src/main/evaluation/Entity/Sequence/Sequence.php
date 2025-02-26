@@ -13,9 +13,11 @@ use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Creator;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\DescriptionHtml;
+use Claroline\AppBundle\Entity\Meta\IsPublic;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\AppBundle\Entity\Meta\Published;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
+use Claroline\AppBundle\Entity\Restriction\AccessCode;
 use Claroline\AppBundle\Entity\Restriction\AccessibleFrom;
 use Claroline\AppBundle\Entity\Restriction\AccessibleUntil;
 use Claroline\CoreBundle\Entity\Resource\HasEndPage;
@@ -49,10 +51,12 @@ class Sequence implements CrudEntityInterface
     use CreatedAt;
     use UpdatedAt;
     use Published;
+    use IsPublic;
     use HasWorkspace;
     // restrictions
     use AccessibleFrom;
     use AccessibleUntil;
+    use AccessCode;
     // evaluation parameters
     use Evaluated;
     use EvaluationFeedbacks;
@@ -79,16 +83,17 @@ class Sequence implements CrudEntityInterface
     private ?float $scoreTotal = 100;
 
     /**
-     * Score to obtain to pass.
-     */
-    #[ORM\Column(name: 'success_score', type: Types::FLOAT, nullable: true)]
-    private ?float $successScore = 50;
-
-    /**
      * @deprecated will be replaced by the score type on resource node
      */
     #[ORM\Column(name: 'show_score', type: Types::BOOLEAN)]
     private bool $showScore = false;
+
+    /**
+     * The conditions to get a success status for the sequence evaluation.
+     * Supported conditions : minimal score, min successful resources, max failed resources.
+     */
+    #[ORM\Column(name: 'success_condition', type: Types::JSON, nullable: true)]
+    private ?array $successCondition = [];
 
     /**
      * @var Collection<int, Step>
@@ -162,7 +167,7 @@ class Sequence implements CrudEntityInterface
     }
 
     /**
-     * Get root step of the path.
+     * Get root step of the sequence.
      */
     public function getRootSteps(): array
     {
@@ -231,16 +236,6 @@ class Sequence implements CrudEntityInterface
         $this->scoreTotal = $scoreTotal;
     }
 
-    public function getSuccessScore(): ?float
-    {
-        return $this->successScore;
-    }
-
-    public function setSuccessScore(?float $successScore = null): void
-    {
-        $this->successScore = $successScore;
-    }
-
     public function getShowScore(): bool
     {
         return $this->showScore;
@@ -249,6 +244,16 @@ class Sequence implements CrudEntityInterface
     public function setShowScore($showScore): void
     {
         $this->showScore = $showScore;
+    }
+
+    public function getSuccessCondition(): ?array
+    {
+        return $this->successCondition;
+    }
+
+    public function setSuccessCondition(?array $successCondition): void
+    {
+        $this->successCondition = $successCondition;
     }
 
     public function getRequirements(): Collection

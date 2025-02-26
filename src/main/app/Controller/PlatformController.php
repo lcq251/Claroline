@@ -65,7 +65,7 @@ class PlatformController
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
                 'currentOrganization' => $currentUser ? $this->serializer->serialize($currentUser->getMainOrganization(), [Options::SERIALIZE_MINIMAL]) : null,
-                'footer' => [
+                /*'footer' => [
                     'content' => $this->config->getParameter('footer.content'),
                     'display' => [
                         'show' => $this->config->getParameter('footer.show'),
@@ -73,7 +73,7 @@ class PlatformController
                         'help' => $this->config->getParameter('footer.show_help'),
                         // 'termsOfService' => $this->privacyManager->getTosEnabled($request->getLocale()),
                     ],
-                ],
+                ],*/
 
                 // assets injected from plugins
                 'javascripts' => $this->clientManager->getJavascripts(),

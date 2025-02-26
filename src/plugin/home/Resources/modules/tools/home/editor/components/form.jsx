@@ -109,6 +109,7 @@ const TabForm = (props) =>
           }, {
             name: 'restrictions.enableCode',
             label: trans('restrict_by_code'),
+            help: trans('restrict_by_code_help'),
             type: 'boolean',
             calculated: restrictedByCode,
             onChange: activated => {

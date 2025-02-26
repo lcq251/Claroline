@@ -13,8 +13,13 @@ const enableScore = (formData) => get(formData, 'evaluation._enableScore', false
 
 const enableSuccessCondition = (formData) => get(formData, 'evaluation._enableSuccess', false)
   || enableSuccessScore(formData)
+  || enableSuccessMinSuccess(formData)
+  || enableSuccessMaxFailed(formData)
+
 const enableSuccessScore = (formData) => get(formData, 'evaluation._enableSuccessScore', false)
   || !isNil(get(formData, 'evaluation.successCondition.score'))
+const enableSuccessMinSuccess = (formData) => get(formData, 'evaluation._enableSuccessCount') || null !== get(formData, 'evaluation.successCondition.minSuccess', null)
+const enableSuccessMaxFailed = (formData) => get(formData, 'evaluation._enableFailureCount') || null !== get(formData, 'evaluation.successCondition.maxFailed', null)
 
 const enableCustomCertificate = (formData) => get(formData, 'evaluation._customCertificate', false)
   || !isNil(get(formData, 'evaluation.certificateTemplate'))
@@ -43,7 +48,7 @@ const SequenceEditorEvaluation = () => {
           title: trans('general'),
           primary: true,
           fields: [
-            {
+            /*{
               name: 'evaluation.estimatedDuration',
               label: trans('estimated_duration'),
               type: 'number',
@@ -51,7 +56,7 @@ const SequenceEditorEvaluation = () => {
                 unit: trans('minutes')
               },
               help: trans('estimated_duration_help')
-            }, {
+            }, */{
               name: 'evaluation._enable',
               type: 'boolean',
               label: trans('enable_evaluation', {}, 'evaluation')
@@ -59,13 +64,14 @@ const SequenceEditorEvaluation = () => {
           ]
         }, {
           title: trans('score', {}, 'evaluation'),
-          subtitle: trans('score_help', {}, 'evaluation'),
+          description: trans('score_help', {}, 'evaluation'),
           primary: true,
           enabled: enableScore,
           onToggle: (enabled) => {
             updateProp('evaluation._enableScore', enabled)
             if (!enabled) {
               updateProp('evaluation.scoreTotal', null)
+              updateProp('evaluation.successCondition.score', null)
             }
           },
           fields: [
@@ -78,7 +84,7 @@ const SequenceEditorEvaluation = () => {
           ]
         }, {
           title: trans('success_conditions', {}, 'evaluation'),
-          subtitle: trans('success_conditions_help', {}, 'evaluation'),
+          description: trans('success_conditions_help', {}, 'evaluation'),
           primary: true,
           enabled: enableSuccessCondition,
           onToggle: (enabled) => {
@@ -86,15 +92,21 @@ const SequenceEditorEvaluation = () => {
             if (!enabled) {
               updateProp('evaluation.successCondition', null)
               updateProp('evaluation._enableSuccessScore', false)
+              updateProp('evaluation._enableSuccessCount', false)
+              updateProp('evaluation._enableFailureCount', false)
+
+              updateProp('evaluation.successMessage', null)
+              updateProp('evaluation.failureMessage', null)
             }
           },
           fields: [
             {
               name: 'evaluation._enableSuccessScore',
+              type: 'boolean',
               label: trans('enable_success_condition_score', {}, 'evaluation'),
               help: trans('enable_success_condition_score_help', {}, 'evaluation'),
-              type: 'boolean',
               calculated: enableSuccessScore,
+              displayed: enableScore,
               onChange: (enabled) => {
                 if (!enabled) {
                   updateProp('evaluation.successCondition.score', null)
@@ -114,11 +126,55 @@ const SequenceEditorEvaluation = () => {
                   }
                 }
               ]
+            }, {
+              name: 'evaluation._enableSuccessCount',
+              type: 'boolean',
+              label: trans('enable_success_condition_success', {}, 'workspace'),
+              calculated: enableSuccessMinSuccess,
+              onChange: (enabled) => {
+                if (!enabled) {
+                  updateProp('evaluation.successCondition.minSuccess', null)
+                }
+              },
+              linked: [
+                {
+                  name: 'evaluation.successCondition.minSuccess',
+                  label: trans('resources_count', {}, 'resource'),
+                  type: 'number',
+                  required: true,
+                  displayed: enableSuccessMinSuccess,
+                  options: {
+                    min: 0
+                  }
+                }
+              ]
+            }, {
+              name: 'evaluation._enableFailureCount',
+              type: 'boolean',
+              label: trans('enable_success_condition_failed', {}, 'workspace'),
+              calculated: enableSuccessMaxFailed,
+              onChange: (enabled) => {
+                if (!enabled) {
+                  updateProp('evaluation.successCondition.maxFailed', null)
+                }
+              },
+              linked: [
+                {
+                  name: 'evaluation.successCondition.maxFailed',
+                  label: trans('resources_count', {}, 'resource'),
+                  type: 'number',
+                  required: true,
+                  displayed: enableSuccessMaxFailed,
+                  options: {
+                    min: 0
+                  }
+                }
+              ]
             }
           ]
         }, {
           title: trans('certification', {}, 'evaluation'),
-          subtitle: trans('certification_help', {}, 'evaluation'),
+          description: trans('certification_help', {}, 'evaluation'),
           primary: true,
           enabled: (formData) => get(formData, 'evaluation.certified', false),
           onToggle: (enabled) => {
@@ -151,7 +207,7 @@ const SequenceEditorEvaluation = () => {
           ]
         }, {
           title: trans('custom_feedbacks', {}, 'evaluation'),
-          subtitle: trans('custom_feedbacks_help', {}, 'evaluation'),
+          description: trans('custom_feedbacks_help', {}, 'evaluation'),
           primary: true,
           enabled: enableMessages,
           onToggle: (enabled) => {
@@ -194,6 +250,7 @@ const SequenceEditorEvaluation = () => {
               label: trans('add_success_message', {}, 'evaluation'),
               help: trans('add_success_message_help', {}, 'evaluation'),
               calculated: enableSuccessMessage,
+              displayed: enableSuccessCondition,
               onChange: (enabled) => {
                 if (!enabled) {
                   updateProp('evaluation.successMessage', null)
@@ -214,6 +271,7 @@ const SequenceEditorEvaluation = () => {
               label: trans('add_failure_message', {}, 'evaluation'),
               help: trans('add_failure_message_help', {}, 'evaluation'),
               calculated: enableFailureMessage,
+              displayed: enableSuccessCondition,
               onChange: (enabled) => {
                 if (!enabled) {
                   updateProp('evaluation.failureMessage', null)

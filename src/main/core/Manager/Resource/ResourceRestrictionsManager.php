@@ -15,23 +15,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ResourceRestrictionsManager
 {
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var RightsManager */
-    private $rightsManager;
-
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-
     public function __construct(
-        RequestStack $requestStack,
-        RightsManager $rightsManager,
-        AuthorizationCheckerInterface $authorization
+        private readonly RequestStack $requestStack,
+        private readonly RightsManager $rightsManager,
+        private readonly AuthorizationCheckerInterface $authorization
     ) {
-        $this->requestStack = $requestStack;
-        $this->rightsManager = $rightsManager;
-        $this->authorization = $authorization;
     }
 
     /**

@@ -188,7 +188,7 @@ const SearchUnified = (props) => {
           <Button
             className="btn btn-text-secondary position-relative px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
-            icon="fa fa-fw fa-times"
+            icon="fa fa-fw fa-delete-left"
             label={trans('remove_all_filter')}
             tooltip="bottom"
             callback={() => {

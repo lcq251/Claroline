@@ -11,13 +11,20 @@
 
 namespace Claroline\EvaluationBundle\Security\Voter;
 
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AppBundle\Security\Voter\AbstractVoter;
+use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SequenceVoter extends AbstractVoter
 {
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
+    }
+
     public function getClass(): string
     {
         return Sequence::class;
@@ -31,7 +38,11 @@ class SequenceVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::OPEN:
                 if ($this->isToolGranted(self::OPEN, 'progression', $object->getWorkspace())) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    if ($object->isPublic()
+                        || ($token?->getUser() && $this->om->getRepository(Sequence::class)->isAssigned($object, $token->getUser()))
+                    ) {
+                        return VoterInterface::ACCESS_GRANTED;
+                    }
                 }
 
                 return VoterInterface::ACCESS_DENIED;

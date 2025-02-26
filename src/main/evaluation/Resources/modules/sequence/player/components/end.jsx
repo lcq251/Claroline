@@ -10,58 +10,12 @@ import {route as desktopRoute} from '#/main/core/tool/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 
-import {ResourceEnd} from '#/main/core/resource/components/end'
-
 import {constants} from '#/main/evaluation/constants'
 import {selectors} from '#/main/evaluation/sequence/store'
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
 import {Toolbar} from '#/main/app/action'
 import {Html} from '#/main/app/components/html'
 import {isHtmlEmpty} from '#/main/app/data/types/html/validators'
-
-const Old = (props) =>
-  <ResourceEnd
-    contentText={get(props.sequence, 'end.message') ||
-      <>
-        <h2 className="h3">{trans('attempt_end_title', {}, 'path')}</h2>
-        <p>{trans('attempt_end_info', {}, 'path')}</p>
-      </>
-    }
-    attempt={props.attempt}
-    display={{
-      score: get(props.sequence, 'display.showScore'),
-      scoreMax: get(props.sequence, 'score.total'),
-      successScore: get(props.sequence, 'score.success'),
-      feedback: !!get(props.sequence, 'evaluation.successMessage') || !!get(props.sequence, 'evaluation.failureMessage'),
-      toolbar: get(props.sequence, 'end.navigation')
-    }}
-    feedbacks={{
-      success: get(props.sequence, 'evaluation.successMessage'),
-      failure: get(props.sequence, 'evaluation.failureMessage')
-    }}
-    actions={[
-      {
-        name: 'restart',
-        type: LINK_BUTTON,
-        label: trans('restart', {}, 'actions'),
-        target: `${props.path}/play`,
-        exact: true,
-        primary: true,
-        size: 'lg'
-      }
-    ].concat(get(props.sequence, 'end.back.type') ? [
-      {
-        name: 'home',
-        type: URL_BUTTON, // we require a URL_BUTTON here to escape the embedded resource router
-        label: get(props.sequence, 'end.back.label') || trans('return-home', {}, 'actions'),
-        target: '#'+classes({
-          [desktopRoute()]: 'desktop' === get(props.sequence, 'end.back.type'),
-          [props.workspace ? workspaceRoute(props.workspace) : undefined]: 'workspace' === get(props.sequence, 'end.back.type'),
-          [get(props.sequence, 'end.back.target') ? resourceRoute(get(props.sequence, 'end.back.target')) : undefined]: 'resource' === get(props.sequence, 'end.back.type')
-        })
-      }
-    ] : [])}
-  />
 
 const PlayerEnd = () => {
   const path = useSelector(selectors.path)

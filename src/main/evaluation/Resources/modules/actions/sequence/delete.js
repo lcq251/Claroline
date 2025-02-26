@@ -34,6 +34,7 @@ export default (sequences, refresher) => {
         method: 'DELETE'
       },
       success: () => refresher.delete(processable)
-    }
+    },
+    group: trans('management')
   }
 }

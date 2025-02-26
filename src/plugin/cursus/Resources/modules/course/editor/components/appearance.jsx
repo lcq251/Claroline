@@ -51,7 +51,7 @@ const CourseEditorAppearance = (props) =>
       }, {
         name: 'opening',
         title: trans('opening_parameters'),
-        subtitle: trans('Configurez la façon dont votre formation va s\'ouvrir.'),
+        description: trans('Configurez la façon dont votre formation va s\'ouvrir.'),
         primary: true,
         fields: [
           {

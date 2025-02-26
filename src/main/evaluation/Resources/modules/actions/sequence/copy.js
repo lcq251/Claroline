@@ -1,42 +1,40 @@
 import {url} from '#/main/app/api'
-import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON} from '#/main/app/buttons'
 
-import {trans} from '#/main/app/intl/translation'
-import {MODAL_RESOURCES} from '#/main/core/modals/resources'
+import {trans, transChoice} from '#/main/app/intl/translation'
+import {hasPermission} from '#/main/app/security'
 
 /**
- * Creates a copy of resource nodes at the destination chosen by the user.
+ * Creates a copy of sequences chosen by the user.
  *
- * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
- * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
+ * @param {Array}  sequences  - the list of sequences on which we want to execute the action.
+ * @param {object} refresher - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (resourceNodes, nodesRefresher) => ({
-  name: 'copy',
-  type: MODAL_BUTTON,
-  icon: 'fa fa-fw fa-clone',
-  label: trans('copy', {}, 'actions'),
-  modal: [MODAL_RESOURCES, {
+export default (sequences, refresher) => {
+  const processable = sequences.filter(sequence => hasPermission('edit', sequence))
+
+  return ({
+    name: 'copy',
+    type: ASYNC_BUTTON,
     icon: 'fa fa-fw fa-clone',
-    title: trans('select_target_directory'),
-    current: 0 < resourceNodes.length && resourceNodes[0].parent ? resourceNodes[0].parent : null,
-    selectAction: (selected = []) => ({
-      type: ASYNC_BUTTON,
-      label: trans('select', {}, 'actions'),
+    label: trans('copy', {}, 'actions'),
+    displayed: 0 !== processable.length,
+    confirm: {
+      message: transChoice('copy_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'sequence'),
+      items:  processable.map(item => ({
+        thumbnail: item.thumbnail,
+        id: item.id,
+        name: item.name
+      }))
+    },
+    request: {
+      url: url(['apiv2_evaluation_sequence_copy'], {ids: processable.map(workspace => workspace.id)}),
       request: {
-        url: url(['claro_resource_collection_action', {action: 'copy'}], {
-          parent: selected[0] ? selected[0].id : null, // required for correct rights check in API
-          ids: resourceNodes.map(resourceNode => resourceNode.id)
-        }),
-        request: {
-          method: 'POST',
-          body: JSON.stringify({destination: selected[0]})
-        },
-        success: (response) => {
-          nodesRefresher.add(response)
-          nodesRefresher.update([selected[0]])
-        }
-      }
-    }),
-    filters: [{property: 'resourceType', value: 'directory', locked: true}]
-  }]
-})
+        method: 'PUT'
+      },
+      success: refresher.update
+    },
+    group: trans('management'),
+    scope: ['object', 'collection']
+  })
+}

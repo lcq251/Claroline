@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {EditorActions} from '#/main/app/editor'
 import {supportEvaluation} from '#/main/core/resource/utils'
@@ -24,21 +24,35 @@ const ResourceEditorActions = (props) => {
           },
           managerOnly: true
         }, {
-          title: trans('Recalculer les évaluations'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
+          title: trans('recompute_evaluations', {}, 'actions'),
+          help: trans('recompute_resource_evaluations_help', {}, 'actions'),
           displayed: supportEvaluation(editedNode),
           action: {
             label: trans('recalculate', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true
+            type: ASYNC_BUTTON,
+            request: {
+              url: ['apiv2_resource_evaluation_recompute', {resourceId: editedNode.id}],
+              request: {
+                method: 'PUT'
+              }
+            }
           }
         }, {
-          title: trans('Purger les évaluations'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
+          title: trans('purge_evaluations', {}, 'actions'),
+          help: trans('purge_resource_evaluations_help', {}, 'actions'),
           action: {
             label: trans('purge', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true
+            type: ASYNC_BUTTON,
+            confirm: {
+              message: trans('purge_resource_evaluations_confirm', {}, 'actions'),
+              additional: trans('irreversible_action_confirm')
+            },
+            request: {
+              url: ['apiv2_resource_evaluation_purge', {resourceId: editedNode.id}],
+              request: {
+                method: 'DELETE'
+              }
+            }
           },
           displayed: supportEvaluation(editedNode),
           dangerous: true,

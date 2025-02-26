@@ -18,9 +18,9 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -81,21 +81,6 @@ class SequenceEvaluationController
     }
 
     /**
-     * Recalculates (score, status, progression, ...) evaluations for all the users of a workspace.
-     */
-    #[Route(path: '/{id}/recompute', name: 'apiv2_sequence_evaluations_recompute', methods: ['PUT'])]
-    public function recomputeAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Sequence $sequence
-    ): JsonResponse {
-        $this->checkPermission('EDIT', $sequence, [], true);
-
-        $this->evaluationManager->recomputeEvaluations($sequence);
-
-        return new JsonResponse(null, 204);
-    }
-
-    /**
      * Update step progression for a user.
      */
     #[Route(path: '/{id}', name: 'apiv2_sequence_evaluation_update', methods: ['PUT'])]
@@ -130,5 +115,35 @@ class SequenceEvaluationController
                 'status' => $stepProgression->getStatus(),
             ],
         ]);
+    }
+
+    /**
+     * Recalculates (score, status, progression, ...) evaluations for all the users of a sequence.
+     */
+    #[Route(path: '/{sequenceId}/recompute', name: 'apiv2_sequence_evaluation_recompute', methods: ['PUT'])]
+    public function recomputeAction(
+        #[MapEntity(mapping: ['sequenceId' => 'uuid'])]
+        Sequence $sequence
+    ): JsonResponse {
+        $this->checkPermission('EDIT', $sequence, [], true);
+
+        $this->evaluationManager->recomputeEvaluations($sequence);
+
+        return new JsonResponse(null, 204);
+    }
+
+    /**
+     * Removes all user evaluations for the sequence.
+     */
+    #[Route(path: '/{sequenceId}', name: 'apiv2_sequence_evaluation_purge', methods: ['DELETE'])]
+    public function purgeAction(
+        #[MapEntity(mapping: ['sequenceId' => 'uuid'])]
+        Sequence $sequence
+    ): JsonResponse {
+        $this->checkPermission('ADMINISTRATE', $sequence, [], true);
+
+        $this->evaluationManager->purgeEvaluations($sequence);
+
+        return new JsonResponse(null, 204);
     }
 }

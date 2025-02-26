@@ -75,7 +75,7 @@ class SearchModal extends Component {
 
             {this.props.fetching &&
               <span className="app-search-loader">
-                <span className="fa fa-circle-notch fa-spin"/>
+                <span className="fa fa-circle-notch fa-spin" />
               </span>
             }
 
@@ -83,7 +83,7 @@ class SearchModal extends Component {
               <Button
                 className="app-search-clear btn btn-text-secondary"
                 type={CALLBACK_BUTTON}
-                icon="fa fa-times"
+                icon="fa fa-delete-left"
                 label={trans('close', {}, 'actions')}
                 tooltip="bottom"
                 callback={this.reset}

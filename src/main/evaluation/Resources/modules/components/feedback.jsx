@@ -18,23 +18,19 @@ const EvaluationFeedback = props => {
   ].indexOf(props.status) > -1 // Evaluation is finished
 
   if (displayed) {
-    let alertType
     let alertTitle
     let alertMessage
     switch (props.status) {
       case constants.EVALUATION_STATUS_PASSED:
-        alertType = 'success'
         alertTitle = trans('evaluation_passed_feedback', {}, 'evaluation')
         alertMessage = props.success || trans('evaluation_passed_feedback_msg', {}, 'evaluation')
         break
       case constants.EVALUATION_STATUS_FAILED:
-        alertType = 'danger'
         alertTitle = trans('evaluation_failed_feedback', {}, 'evaluation')
         alertMessage = props.failure || trans('evaluation_failed_feedback_msg', {}, 'evaluation')
         break
       case constants.EVALUATION_STATUS_COMPLETED:
       default:
-        alertType = 'info'
         alertTitle = trans('evaluation_completed_feedback', {}, 'evaluation')
         alertMessage = trans('evaluation_completed_feedback_msg', {}, 'evaluation')
         break
@@ -42,7 +38,7 @@ const EvaluationFeedback = props => {
 
     return (
       <Alert
-        type={alertType}
+        type={constants.EVALUATION_STATUS_COLOR[props.status]}
         title={alertTitle}
       >
         <Html>{alertMessage}</Html>

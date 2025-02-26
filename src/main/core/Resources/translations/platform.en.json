@@ -545,7 +545,6 @@
     "access_dates": "Access period",
     "restrict_by_dates": "Restrict by dates",
     "restrict_by_dates_help": "Content is only accessible during the defined period.",
-    "restrict_by_ips": "Restrict by IPs",
     "restrict_by_code": "Restrict by code",
     "restrict_by_roles": "Restrict by roles",
     "restrict_users_count": "Restrict number of users",

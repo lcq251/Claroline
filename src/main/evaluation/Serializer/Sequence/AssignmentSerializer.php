@@ -9,7 +9,6 @@ use Claroline\CommunityBundle\Repository\RoleRepository;
 use Claroline\CommunityBundle\Serializer\RoleSerializer;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
-use Claroline\EvaluationBundle\Entity\Sequence\Requirement;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Repository\SequenceRepository;
 
@@ -22,8 +21,7 @@ class AssignmentSerializer
 
     public function __construct(
         private readonly ObjectManager $om,
-        private readonly RoleSerializer $roleSerializer,
-        // private readonly SequenceSerializer $sequenceSerializer
+        private readonly RoleSerializer $roleSerializer
     ) {
         $this->roleRepo = $om->getRepository(Role::class);
         $this->sequenceRepo = $om->getRepository(Sequence::class);
@@ -42,13 +40,11 @@ class AssignmentSerializer
     public function serialize(Assignment $assignment, array $options = []): array
     {
         return [
-            // 'id' => $assignment->getUuid(),
+            'id' => $assignment->getUuid(),
             'required' => $assignment->isRequired(),
             'scored' => $assignment->isScored(),
             'role' => $assignment->getRole() ?
                 $this->roleSerializer->serialize($assignment->getRole(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
-            /*'sequence' => $assignment->getSequence() ?
-                $this->sequenceSerializer->serialize($assignment->getSequence(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,*/
         ];
     }
 
@@ -62,13 +58,6 @@ class AssignmentSerializer
 
         $this->sipe('required', 'setRequired', $data, $assignment);
         $this->sipe('scored', 'setScored', $data, $assignment);
-
-        if (array_key_exists('sequence', $data)) {
-            $sequence = isset($data['sequence']['id']) ?
-                $this->sequenceRepo->findOneBy(['uuid' => $data['sequence']['id']]) :
-                null;
-            $assignment->setSequence($sequence);
-        }
 
         if (array_key_exists('role', $data)) {
             $role = isset($data['role']['id']) ?

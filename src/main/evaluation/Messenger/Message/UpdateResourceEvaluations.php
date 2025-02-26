@@ -5,13 +5,13 @@ namespace Claroline\EvaluationBundle\Messenger\Message;
 use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
-final class UpdateResourceEvaluations implements AsyncHighMessageInterface
+final readonly class UpdateResourceEvaluations implements AsyncHighMessageInterface
 {
     public function __construct(
-        private readonly int $resourceNodeId,
-        private readonly array $userIds,
-        private readonly ?string $status = EvaluationStatus::NOT_ATTEMPTED,
-        private readonly ?bool $withCreation = true
+        private int $resourceNodeId,
+        private array $userIds,
+        private ?string $status = EvaluationStatus::NOT_ATTEMPTED,
+        private ?bool $withCreation = true
     ) {
     }
 

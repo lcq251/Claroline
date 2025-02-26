@@ -56,7 +56,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($resourceNode->isRequired()) {
+        /*if ($resourceNode->isRequired()) {
             $registeredUsers = $this->userRepo->findByWorkspaces([$resourceNode->getWorkspace()]);
             if (!empty($registeredUsers)) {
                 $registeredUserIds = array_map(function (User $user) {
@@ -68,7 +68,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
                     [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
                 );
             }
-        }
+        }*/
     }
 
     public function updateEvaluations(UpdateEvent $event): void
@@ -82,7 +82,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (empty($oldData['evaluation']) || $resourceNode->isRequired() !== $oldData['evaluation']['required']) {
+        /*if (empty($oldData['evaluation']) || $resourceNode->isRequired() !== $oldData['evaluation']['required']) {
             $registeredUsers = $this->userRepo->findByWorkspaces([$resourceNode->getWorkspace()]);
             if (!empty($registeredUsers)) {
                 $registeredUserIds = array_map(function (User $user) {
@@ -94,7 +94,7 @@ class ResourceEvaluationSubscriber implements EventSubscriberInterface
                     [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
                 );
             }
-        }
+        }*/
     }
 
     public function updateNbAttempts(DeleteEvent $event): void

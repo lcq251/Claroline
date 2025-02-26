@@ -7,10 +7,10 @@ use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 /**
  * Sent when we want to recompute all the user evaluations linked to the sequence.
  */
-final class RecomputeSequenceEvaluations implements AsyncHighMessageInterface
+final readonly class RecomputeSequenceEvaluations implements AsyncHighMessageInterface
 {
     public function __construct(
-        private readonly int $sequenceId
+        private int $sequenceId
     ) {
     }
 

@@ -5,10 +5,11 @@ namespace Claroline\EvaluationBundle\Entity\Sequence;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\EvaluationBundle\Repository\Sequence\AssignmentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AssignmentRepository::class)]
 #[ORM\Table(name: 'claro_evaluation_sequence_assignment')]
 class Assignment
 {

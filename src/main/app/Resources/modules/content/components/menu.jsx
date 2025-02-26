@@ -99,7 +99,7 @@ const ContentMenu = (props) => {
       )}
 
       {Object.keys(groupedTypes).map((group) => [
-        <div key={group} className="fs-sm text-body-secondary text-uppercase fw-semibold mt-5 mb-1">{group}</div>,
+        <div key={group} className="fs-sm text-body-secondary text-uppercase fw-semibold mt-5 mb-3">{group}</div>,
         ...groupedTypes[group].map((creationType, index) =>
           <ContentMenuItem
             key={creationType.id}

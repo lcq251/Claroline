@@ -84,7 +84,7 @@ const PathEditorStep = props => {
           ]
         }, {
           title: trans('Activité'),
-          subtitle: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
+          description: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
           primary: true,
           fields: [
             {
@@ -130,7 +130,7 @@ const PathEditorStep = props => {
           ]
         }, {
           title: trans('further_information'),
-          subtitle: trans('further_information_help'),
+          description: trans('further_information_help'),
           primary: true,
           fields: [
             {

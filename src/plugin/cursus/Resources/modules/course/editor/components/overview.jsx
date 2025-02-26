@@ -30,7 +30,7 @@ const CourseEditorOverview = () =>
         ]
       }, {
         title: trans('further_information'),
-        subtitle: trans('further_information_help'),
+        description: trans('further_information_help'),
         primary: true,
         fields: [
           {

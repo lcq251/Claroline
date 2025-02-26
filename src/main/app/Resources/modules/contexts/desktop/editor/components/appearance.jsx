@@ -21,7 +21,7 @@ const DesktopEditorAppearance = () => {
         {
           name: 'opening',
           title: trans('opening_parameters'),
-          subtitle: trans('Configurez la façon dont votre espace de travail va s\'ouvrir.'),
+          description: trans('Configurez la façon dont votre espace de travail va s\'ouvrir.'),
           primary: true,
           fields: [
             {

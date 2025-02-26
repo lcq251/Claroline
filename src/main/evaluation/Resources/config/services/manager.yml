@@ -5,7 +5,7 @@ services:
             - '@messenger.default_bus'
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+            - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
 
     Claroline\EvaluationBundle\Manager\SequenceEvaluationManager:
         arguments:
@@ -17,13 +17,13 @@ services:
 
     Claroline\EvaluationBundle\Manager\ResourceEvaluationManager:
         arguments:
+            - '@security.token_storage'
+            - '@messenger.default_bus'
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
 
-    Claroline\EvaluationBundle\Manager\SequenceManager:
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
+    Claroline\EvaluationBundle\Manager\SequenceManager: ~
 
     Claroline\EvaluationBundle\Manager\CertificateManager:
         arguments:

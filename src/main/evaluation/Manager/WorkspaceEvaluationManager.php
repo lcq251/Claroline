@@ -16,6 +16,7 @@ use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
@@ -27,6 +28,7 @@ use Claroline\EvaluationBundle\Library\Checker\ScoreChecker;
 use Claroline\EvaluationBundle\Library\EvaluationAggregator;
 use Claroline\EvaluationBundle\Library\GenericEvaluation;
 use Claroline\EvaluationBundle\Messenger\Message\InitializeWorkspaceEvaluations;
+use Claroline\EvaluationBundle\Messenger\Message\PurgeWorkspaceEvaluations;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeWorkspaceEvaluations;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -39,7 +41,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         private readonly MessageBusInterface $messageBus,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $om,
-        private readonly ResourceEvaluationManager $resourceEvalManager
+        private readonly SequenceEvaluationManager $sequenceEvaluationManager
     ) {
     }
 
@@ -120,10 +122,10 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
         $workspace = $evaluation->getWorkspace();
         $user = $evaluation->getUser();
 
-        // get the list of resources which are configured to participate in the workspace evaluation.
-        $resources = $this->getRequiredResources($workspace);
-        if (empty($resources)) {
-            // nothing to do if there is no required resources in the workspace
+        // get the list of sequence the user must do to progress in the workspace
+        $assignments = $this->om->getRepository(Assignment::class)->findByWorkspaceAndUser($workspace, $user, true);
+        if (empty($assignments)) {
+            // nothing to do if there is no required sequence in the workspace
             return;
         }
 
@@ -150,19 +152,17 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
             }
         }
 
-        // the workspace evaluation aggregates the progression/score of all its required/evaluated resources
+        // the workspace evaluation aggregates the progression/score of all its required/scored sequences
         $aggregator = new EvaluationAggregator($conditionCheckers);
 
-        foreach ($resources as $resource) {
-            $resourceEvaluation = $this->resourceEvalManager->getUserEvaluation($resource, $user, false);
-            if (!$resourceEvaluation) {
+        foreach ($assignments as $assignment) {
+            $sequenceEvaluation = $this->sequenceEvaluationManager->getUserEvaluation($assignment->getSequence(), $user, false);
+            if (!$sequenceEvaluation) {
                 // no evaluation, adds an empty evaluation for correct progression check
-                $resourceEvaluation = new GenericEvaluation(0);
+                $sequenceEvaluation = new GenericEvaluation(0);
             }
 
-            // we don't count Path score because it's calculated from the sum of all the scores of the embedded resources
-            // which are already taken into account in the workspace score.
-            $aggregator->addEvaluation($resourceEvaluation, $resource->isEvaluated() && 'custom/innova_path' !== $resource->getMimeType());
+            $aggregator->addEvaluation($sequenceEvaluation, $assignment->isScored());
         }
 
         // update evaluation data
@@ -183,17 +183,14 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
 
     /**
      * Recomputes all the evaluations of a workspace.
-     * This is called when required resources are added/removed in order to update the users progression and score.
+     * This is called when required sequence are added/removed in order to update the users progression and score.
      */
     public function recomputeEvaluations(Workspace $workspace): void
     {
-        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
-        if (!empty($users)) {
-            $this->messageBus->dispatch(
-                new RecomputeWorkspaceEvaluations($workspace->getId()),
-                [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
-            );
-        }
+        $this->messageBus->dispatch(
+            new RecomputeWorkspaceEvaluations($workspace->getId()),
+            [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+        );
     }
 
     /**
@@ -209,5 +206,13 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
                 }, $users)), [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
             );
         }
+    }
+
+    public function purgeEvaluations(Workspace $workspace): void
+    {
+        $this->messageBus->dispatch(
+            new PurgeWorkspaceEvaluations($workspace->getId()),
+            [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+        );
     }
 }

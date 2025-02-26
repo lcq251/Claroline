@@ -25,7 +25,8 @@ const EvaluationEditor = () => {
         {
           name: 'skills',
           title: trans('skills_frameworks', {}, 'evaluation'),
-          component: EvaluationEditorSkill
+          component: EvaluationEditorSkill,
+          displayed: false
         }
       ]}
     />

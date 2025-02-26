@@ -25,7 +25,7 @@ export default (workspaces, refresher) => {
       request: {
         method: 'PUT'
       },
-      success: (response) => refresher.update(response)
+      success: refresher.update
     },
     group: trans('management'),
     scope: ['object', 'collection']

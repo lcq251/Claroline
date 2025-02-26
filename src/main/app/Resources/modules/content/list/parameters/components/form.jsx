@@ -385,7 +385,7 @@ const ListForm = props => {
           id: 'list-columns',
           icon: 'fa fa-fw fa-columns',
           title: trans('columns'),
-          subtitle: trans('table_modes'),
+          description: trans('table_modes'),
           displayed: (parameters) => {
             const availableDisplays = get(parameters, 'availableDisplays') || []
 

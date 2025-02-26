@@ -93,7 +93,7 @@ const totalScore = createSelector(
 
 const hasScore = createSelector(
   [totalScore],
-  (contextScore) => !!contextScore
+  (totalScore) => !!totalScore
 )
 
 export const selectors = {

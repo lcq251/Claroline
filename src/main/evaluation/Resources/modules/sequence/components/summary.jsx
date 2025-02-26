@@ -62,8 +62,8 @@ const PathSummary = (props) => {
                   <>
                     {get(props.sequence, 'display.showScore') && resourceEvaluation.scoreMax &&
                       <EvaluationScore
-                        score={get(props.sequence, 'score.total') ? (resourceEvaluation.score / resourceEvaluation.scoreMax) * get(props.sequence, 'score.total') : resourceEvaluation.score}
-                        scoreMax={get(props.sequence, 'score.total') ? get(props.sequence, 'score.total') : resourceEvaluation.scoreMax}
+                        score={get(props.sequence, 'evaluation.scoreTotal') ? (resourceEvaluation.score / resourceEvaluation.scoreMax) * get(props.sequence, 'evaluation.scoreTotal') : resourceEvaluation.score}
+                        scoreMax={get(props.sequence, 'evaluation.scoreTotal') ? get(props.sequence, 'evaluation.scoreTotal') : resourceEvaluation.scoreMax}
                         size="sm"
                       />
                     }

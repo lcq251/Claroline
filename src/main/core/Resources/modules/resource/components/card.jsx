@@ -21,21 +21,19 @@ const ResourceCard = props =>
     }
     name={props.data.name}
     title={props.data.name}
+    status={false === get(props.data, 'meta.published') ? {
+      variant: 'secondary',
+      text: trans('not_published')
+    } : undefined}
     meta={
       <>
         <Badge variant="secondary" subtle={true}>{trans(get(props.data, 'meta.type'), {}, 'resource')}</Badge>
-        {get(props.data, 'meta.published') &&
-          <Badge variant="secondary" subtle={true}>{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</Badge>
-        }
+        <Badge variant="secondary" subtle={true}>{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</Badge>
         {get(props.data, 'evaluation.estimatedDuration') &&
           <Badge variant="secondary" subtle={true}>
             <span className="fa far fa-clock me-1" aria-hidden={true} />
             {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
           </Badge>
-        }
-
-        {!get(props.data, 'meta.published') &&
-          <Badge variant="secondary" subtle={true}>{trans('not_published')}</Badge>
         }
 
         {get(props.data, 'restrictions.hidden', false) &&

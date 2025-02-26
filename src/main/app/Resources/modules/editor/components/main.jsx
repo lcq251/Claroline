@@ -32,7 +32,7 @@ const Editor = (props) => {
     }, {
       name: 'permissions',
       title: trans('permissions'),
-      help: trans('Gérez les différents droits d\'accès et de modifications de vos utilisateurs.'),
+      help: trans('permissions_help'),
       disabled: !props.permissionsPage,
       component: props.permissionsPage,
       standard: true,
@@ -46,8 +46,8 @@ const Editor = (props) => {
       advanced: true
     }, {
       name: 'actions',
-      title: trans('Actions avancées'),
-      help: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
+      title: trans('advanced_actions', {}, 'actions'),
+      // help: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
       disabled: !props.actionsPage,
       component: props.actionsPage,
       advanced: true

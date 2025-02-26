@@ -5,9 +5,6 @@
   "evaluation_failed_feedback_msg": "You did not score high enough to pass the resource.",
   "evaluation_completed_feedback": "You have completed the resource.",
   "evaluation_completed_feedback_msg": "You have seen all of the content in the resource.",
-  "workspace_requirements_help_title": "You can specify here the resources that have to be done in the workspace.",
-  "workspace_requirements_help_description": "Only resources to do are used to calculate users progression in the workspace.",
-
 
   "evaluation_not_attempted_status": "You have not started the evaluation.",
   "evaluation_todo_status": "You have to do the evaluation.",

@@ -40,10 +40,6 @@ const DataFormSection = {
     icon: T.string,
     title: T.string.isRequired,
     description: T.string,
-    /**
-     * @deprecated use description
-     */
-    subtitle: T.string,
     help: T.string,
     primary: T.bool,
     displayed: T.oneOfType([T.bool, T.func]),

@@ -36,7 +36,7 @@ abstract class AbstractEvaluationParameters
      * The conditions to get a success status for the evaluation
      * (e.g. minimal score, min successful resources, max failed resources).
      */
-    #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[ORM\Column(name: 'success_condition', type: Types::JSON, nullable: true)]
     private ?array $successCondition = [];
 
     /**

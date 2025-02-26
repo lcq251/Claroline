@@ -13,5 +13,14 @@
   "initialize_evaluations": "Initialiser les évaluations",
   "initialize_evaluations_help": "Générez les évaluations pour tous les utilisateurs n'ayant pas encore commencé l'espace d'activités.",
   "recompute_evaluations": "Recalculer les évaluations",
-  "recompute_evaluations_help": "Recalculez les évaluations de tous les utilisateurs ayant commencé l'espace d'activités."
+  "recompute_workspace_evaluations_help": "Recalculez les évaluations de tous les utilisateurs ayant commencé l'espace d'activités.",
+  "recompute_sequence_evaluations_help": "Recalculez les évaluations de tous les utilisateurs ayant commencé la séquence.",
+  "recompute_resource_evaluations_help": "Recalculez les évaluations de tous les utilisateurs ayant commencé la ressource.",
+  "purge_evaluations": "Purger les évaluations",
+  "purge_workspace_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé l'espace d'activités. Les évaluations des séquences et des ressources sont conservées.",
+  "purge_workspace_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour l'espace d'activités ?",
+  "purge_sequence_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé la séquence. La progression de l'espace d'activités n'est pas recalculée.",
+  "purge_sequence_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la séquence ?",
+  "purge_resource_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé la ressource. La progression des séquences et de l'espace d'activités n'est pas recalculée.",
+  "purge_resource_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la ressource ?"
 }

@@ -9,7 +9,7 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {actions as formActions, FormData} from '#/main/app/content/form'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {selectors as contextSelectors} from '#/main/app/context/store'
+import {selectors as toolSelectors} from '#/main/core/tool/store'
 
 import {route} from '#/main/evaluation/sequence/routing'
 import {selectors} from '#/main/evaluation/sequence/modals/creation/store'
@@ -17,7 +17,8 @@ import {selectors} from '#/main/evaluation/sequence/modals/creation/store'
 const CreationForm = (props) => {
   const history = useHistory()
 
-  const contextData = useSelector(contextSelectors.data)
+  const contextData = useSelector(toolSelectors.contextData)
+  const toolPath = useSelector(toolSelectors.path)
 
   const dispatch = useDispatch()
   const create = () => dispatch(formActions.save(selectors.STORE_NAME, ['apiv2_evaluation_sequence_create']))
@@ -61,6 +62,11 @@ const CreationForm = (props) => {
                   long: true,
                   minRows: 2
                 }
+              }, {
+                name: 'meta.published',
+                label: trans('publish_sequence', {}, 'evaluation'),
+                type: 'boolean',
+                help: trans('publish_sequence_help', {}, 'evaluation')
               }
             ]
           }
@@ -81,8 +87,7 @@ const CreationForm = (props) => {
             callback={() => {
               create().then((sequence) => {
                 props.fadeModal()
-
-                history.push(route(sequence)+'/edit')
+                history.push(route(sequence, toolPath)+'/edit')
               })
             }}
           />
@@ -91,11 +96,11 @@ const CreationForm = (props) => {
             label={trans('create', {}, 'actions')}
             className="btn btn-primary"
             htmlType="submit"
-            callback={() => {
-              create().then((sequence) => {
+            callback={(e) => {
+              create().then(() => {
                 props.fadeModal()
 
-                //history.push(route(workspace))
+                e.preventDefault() // otherwise it will redirect to the form action (which is not used and send us to desktop)
               })
             }}
           />

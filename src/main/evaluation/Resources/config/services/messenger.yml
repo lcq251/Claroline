@@ -12,11 +12,35 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
 
+    Claroline\EvaluationBundle\Messenger\RecomputeResourceEvaluationsHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+
+    Claroline\EvaluationBundle\Messenger\PurgeResourceEvaluationsHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
+
+    Claroline\EvaluationBundle\Messenger\PurgeSequenceEvaluationsHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
+
     Claroline\EvaluationBundle\Messenger\RecomputeSequenceEvaluationsHandler:
         tags: [ messenger.message_handler ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
+
+    Claroline\EvaluationBundle\Messenger\PurgeWorkspaceEvaluationsHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
 
     Claroline\EvaluationBundle\Messenger\RecomputeWorkspaceEvaluationsHandler:
         tags: [messenger.message_handler]

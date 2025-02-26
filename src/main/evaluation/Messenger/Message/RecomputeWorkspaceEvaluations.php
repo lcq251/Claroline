@@ -7,10 +7,10 @@ use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 /**
  * Sent when we want to recompute all the user evaluations linked to the workspace.
  */
-final class RecomputeWorkspaceEvaluations implements AsyncHighMessageInterface
+final readonly class RecomputeWorkspaceEvaluations implements AsyncHighMessageInterface
 {
     public function __construct(
-        private readonly int $workspaceId
+        private int $workspaceId
     ) {
     }
 

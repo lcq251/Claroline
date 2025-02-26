@@ -11,7 +11,7 @@ import {selectors} from '#/main/community/user/editor/store'
 import {RoleList} from '#/main/community/role/components/list'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_ROLES} from '#/main/community/modals/roles'
-import {actions} from '#/main/community/tools/community/user/store'
+import {actions} from '#/main/community/user/editor/store'
 import {OrganizationList} from '#/main/community/organization/components/list'
 import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
 
@@ -35,7 +35,7 @@ const UserEditorPermissions = () => {
         {
           name: 'roles',
           title: trans('roles'),
-          subtitle: trans('Choisissez les organisations auxquels l\'utilisateur a accès.'),
+          description: trans('Choisissez les organisations auxquels l\'utilisateur a accès.'),
           primary: true,
           hideTitle: false,
           render: () => (
@@ -68,7 +68,7 @@ const UserEditorPermissions = () => {
         }, {
           name: 'organizations',
           title: trans('organizations', {}, 'community'),
-          subtitle: trans('Choisissez les organisations auxquels l\'utilisateur a accès.'),
+          description: trans('Choisissez les organisations auxquels l\'utilisateur a accès.'),
           primary: true,
           render: () => (
             <OrganizationList
@@ -101,7 +101,7 @@ const UserEditorPermissions = () => {
           name: 'restrictions',
           icon: 'fa fa-fw fa-key',
           title: trans('access_restrictions'),
-          subtitle: trans('Ajoutez des conditions d\'accès supplémentaires à l\'utilisateur'),
+          description: trans('Ajoutez des conditions d\'accès supplémentaires à l\'utilisateur'),
           primary: true,
           fields: [
             {

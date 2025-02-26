@@ -5,8 +5,6 @@
   "evaluation_failed_feedback_msg": "Vous n'avez pas obtenu un score suffisant pour réussir la ressource.",
   "evaluation_completed_feedback": "Vous avez terminé la ressource.",
   "evaluation_completed_feedback_msg": "Vous avez vu tout le contenu de la ressource.",
-  "workspace_requirements_help_title": "Vous pouvez définir ici les ressources devant être faites dans l'espace d'activités.",
-  "workspace_requirements_help_description": "Seules les ressources à faire sont utilisées pour calculer la progression des utilisateurs dans l'espace d'activités.",
 
   "evaluation_not_attempted_status": "Vous n'avez pas commencé l'évaluation.",
   "evaluation_unknown_status": "Nous ne connaissons pas votre progression dans cette évaluation.",
@@ -37,6 +35,9 @@
   "sequences_delete_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cette séquence ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% séquences ?",
   "publish_sequence": "Publier la séquence",
   "publish_sequence_help": "Temps que la séquence n'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission \"Modifier\".",
+  "public_sequence": "Séquence publique",
+  "make_sequence_public": "Rendre la séquence publique",
+  "make_sequence_public_help": "Les séquences publiques sont visibles par tous les utilisateurs de la plateforme.",
 
   "completion": "%current%% Terminé",
   "next_step": "Suivant : %title%",

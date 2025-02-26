@@ -5,6 +5,7 @@ namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\EvaluationBundle\Finder\ResourceEvaluationType;
+use Claroline\EvaluationBundle\Repository\ResourceEvaluationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Represents the global evaluation of a User for a ResourceNode.
  * There is only one for a user and a resource.
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ResourceEvaluationRepository::class)]
 #[ORM\Table(name: 'claro_resource_user_evaluation')]
 #[ORM\UniqueConstraint(name: 'resource_user_evaluation', columns: ['resource_node', 'user_id'])]
 #[CrudEntity(finderClass: ResourceEvaluationType::class)]

@@ -9,7 +9,7 @@ bootstrap(
   Platform,
   reducer,
   (initialData) => ({
-    footer: initialData.footer,
+    // footer: initialData.footer,
     config: initialData.config,
     contexts: initialData.contexts,
     contextFavorites: initialData.contextFavorites,

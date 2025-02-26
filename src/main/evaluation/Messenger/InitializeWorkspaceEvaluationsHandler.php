@@ -12,12 +12,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-class InitializeWorkspaceEvaluationsHandler
+readonly class InitializeWorkspaceEvaluationsHandler
 {
     public function __construct(
-        private readonly MessageBusInterface $messageBus,
-        private readonly ObjectManager $om,
-        private readonly WorkspaceEvaluationManager $evaluationManager
+        private MessageBusInterface $messageBus,
+        private ObjectManager $om,
+        private WorkspaceEvaluationManager $evaluationManager
     ) {
     }
 
@@ -45,7 +45,7 @@ class InitializeWorkspaceEvaluationsHandler
 
         $this->om->endFlushSuite();
 
-        // initialize evaluations for required resources
+        // initialize evaluations for required sequences
         // this is not required by the code, but is a feature for managers to see users in evaluation tool/exports
         // event if they have not opened the workspace yet.
         $requiredResources = $this->evaluationManager->getRequiredResources($workspace);

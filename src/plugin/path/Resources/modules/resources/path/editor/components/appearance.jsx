@@ -31,7 +31,7 @@ const PathEditorAppearance = () =>
         name: 'opening',
         icon: 'fa fa-fw fa-sign-in',
         title: trans('opening_parameters'),
-        subtitle: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
+        description: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
         primary: true,
         fields: [
           {

@@ -33,6 +33,76 @@ class SequenceRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findByRequiredResourceAndUser(ResourceNode $resourceNode, User $user): array
+    {
+        $roles = $user->getRoles();
+
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT p
+                FROM Claroline\EvaluationBundle\Entity\Sequence\Sequence AS p
+                LEFT JOIN Claroline\EvaluationBundle\Entity\Sequence\Step AS s WITH (s.path = p)
+                LEFT JOIN s.resource AS n
+                WHERE s.resource = :resourceNode 
+                  AND s.required = true
+                  AND EXISTS (
+                    SELECT a.id
+                    FROM Claroline\EvaluationBundle\Entity\Sequence\Assignment AS a
+                    LEFT JOIN Claroline\CoreBundle\Entity\Role AS r WITH (a.role = r)
+                    WHERE a.sequence = :sequence
+                      AND r.name IN (:roles)
+                  )
+           ')
+            ->setParameter('resourceNode', $resourceNode)
+            ->setParameter('roles', $roles)
+            ->getResult();
+    }
+
+    public function isAssigned(Sequence $sequence, User $user): bool
+    {
+        $roles = $user->getRoles();
+
+        return 0 < $this->getEntityManager()
+            ->createQuery('
+                SELECT COUNT(s)
+                FROM Claroline\EvaluationBundle\Entity\Sequence\Sequence AS s
+                WHERE s = :sequence 
+                  AND EXISTS (
+                    SELECT a.id
+                    FROM Claroline\EvaluationBundle\Entity\Sequence\Assignment AS a
+                    LEFT JOIN Claroline\CoreBundle\Entity\Role AS r WITH (a.role = r)
+                    WHERE a.sequence = :sequence
+                      AND r.name IN (:roles)
+                  )
+           ')
+            ->setParameter('sequence', $sequence)
+            ->setParameter('roles', $roles)
+            ->getSingleScalarResult();
+    }
+
+    public function isRequired(Sequence $sequence, User $user): bool
+    {
+        $roles = $user->getRoles();
+
+        return 0 < $this->getEntityManager()
+            ->createQuery('
+                SELECT COUNT(s)
+                FROM Claroline\EvaluationBundle\Entity\Sequence\Sequence AS s
+                WHERE s = :sequence 
+                  AND EXISTS (
+                    SELECT a.id
+                    FROM Claroline\EvaluationBundle\Entity\Sequence\Assignment AS a
+                    LEFT JOIN Claroline\CoreBundle\Entity\Role AS r WITH (a.role = r)
+                    WHERE a.sequence = :sequence
+                      AND r.name IN (:roles)
+                      AND a.required = 1
+                  )
+           ')
+            ->setParameter('sequence', $sequence)
+            ->setParameter('roles', $roles)
+            ->getSingleScalarResult();
+    }
+
     /**
      * Find user evaluations for the resources embedded in a Sequence as a primary resource of a Step.
      * NB. This is used by the evaluation system of the Sequence, other embedded resources are not needed in this case.

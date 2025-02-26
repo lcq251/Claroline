@@ -178,8 +178,7 @@ const SequenceOverview = () => {
             userEvaluation={userEvaluation}
             display={{
               score: get(sequence, 'display.showScore'),
-              scoreMax: get(sequence, 'score.total'),
-              successScore: get(sequence, 'score.success'),
+              scoreMax: get(sequence, 'evaluation.scoreTotal'),
               feedback: !!get(sequence, 'evaluation.successMessage') || !!get(sequence, 'evaluation.failureMessage')
             }}
             feedbacks={{
@@ -199,7 +198,7 @@ const SequenceOverview = () => {
             <PageSection
               size="md"
               className="mb-5"
-              title={trans('summary')}
+              title={trans('content')}
             >
               {!isEmpty(sequence.steps) ?
                 <PathSummary

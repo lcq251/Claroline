@@ -204,7 +204,7 @@ const SequenceEditorRequirements = () => {
   return (
     <EditorPage
       title={trans('Pré-requis')}
-      // help={trans('Les utilisateurs ne pourront faire cette séquence qu\'une fois les séquences requises terminées.')}
+      help={trans('Les utilisateurs ne pourront faire cette séquence qu\'une fois les séquences requises terminées.')}
     >
       <Assignments />
     </EditorPage>

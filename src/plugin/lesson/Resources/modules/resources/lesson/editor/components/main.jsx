@@ -24,7 +24,8 @@ const LessonEditor = () => {
           name: 'content',
           title: trans('pages'),
           help: trans('Gérez les différentes pages de votre Connaissance.'),
-          component: LessonEditorContent
+          component: LessonEditorContent,
+          displayed: false
         }
       ]}
     />

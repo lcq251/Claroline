@@ -57,7 +57,7 @@ const SequenceEditorAppearance = () => {
           name: 'opening',
           icon: 'fa fa-fw fa-sign-in',
           title: trans('opening_parameters'),
-          subtitle: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
+          description: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
           primary: true,
           fields: [
             {
@@ -77,7 +77,7 @@ const SequenceEditorAppearance = () => {
           ]
         }, {
           title: trans('Bouton "Quitter"'),
-          subtitle: trans('Configurez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
+          description: trans('Configurez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
           primary: true,
           fields: [
             {

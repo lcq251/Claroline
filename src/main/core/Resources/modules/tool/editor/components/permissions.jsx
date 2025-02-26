@@ -14,7 +14,7 @@ const ToolEditorPermissions = (props) => {
   return (
     <EditorPage
       title={trans('permissions')}
-      help={trans('Gérez les différents droits d\'accès et de modifications de vos utilisateurs.')}
+      help={trans('permissions_help')}
       managerOnly={true}
     >
       {props.rights &&

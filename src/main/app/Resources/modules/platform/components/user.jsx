@@ -53,7 +53,13 @@ const UserMenu = (props) => {
         <Thumbnail thumbnail={get(props.user, 'poster')} className="z-n1 rounded-top-4"/>
       }
 
-      <div className="px-3" role="presentation" style={get(props.user, 'poster') ? {marginTop: '-3.5rem'} : undefined}>
+      <div
+        className={classes('px-3', {
+          'pt-3': !get(props.user, 'poster')
+        })}
+        role="presentation"
+        style={get(props.user, 'poster') ? {marginTop: '-3.5rem'} : undefined}
+      >
         <UserAvatar
           user={props.user}
           size="md"

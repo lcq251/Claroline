@@ -10,6 +10,8 @@ import {EvaluationStatus} from '#/main/evaluation/components/status'
 import {EvaluationUserCard} from '#/main/evaluation/components/card'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {EvaluationScore} from '#/main/evaluation/components/score'
+import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 
 const EvaluationList = (props) => {
   return (
@@ -92,7 +94,7 @@ const EvaluationList = (props) => {
         }
       ].concat(props.customDefinition)}
       actions={(rows) => [
-        /*{
+        {
           name: 'send-message',
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-envelope',
@@ -101,7 +103,7 @@ const EvaluationList = (props) => {
           modal: [MODAL_MESSAGE, {
             receivers: {users: rows.map((row => row.user))}
           }]
-        }*/
+        }
       ]}
       card={EvaluationUserCard}
 

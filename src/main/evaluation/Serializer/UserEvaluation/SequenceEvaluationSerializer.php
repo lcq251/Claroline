@@ -46,7 +46,7 @@ class SequenceEvaluationSerializer
             'status' => $evaluation->getStatus(),
             'duration' => $evaluation->getDuration(),
             'progression' => $progression,
-            'required' => $evaluation->isRequired(),
+            // 'required' => $evaluation->isRequired(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 

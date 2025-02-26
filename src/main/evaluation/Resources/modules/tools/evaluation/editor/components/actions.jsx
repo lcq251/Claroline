@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
-import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {selectors as toolSelectors} from '#/main/core/tool'
 import {ToolEditorActions} from '#/main/core/tool/editor'
@@ -23,7 +23,7 @@ const EvaluationEditorActions = () => {
             label: trans('initialize', {}, 'actions'),
             displayed: 'workspace' === contextType,
             request: {
-              url: ['apiv2_workspace_evaluations_init', {workspace: contextId}],
+              url: ['apiv2_workspace_evaluation_init', {workspace: contextId}],
               request: {
                 method: 'PUT'
               }
@@ -31,14 +31,14 @@ const EvaluationEditorActions = () => {
           }
         }, {
           title: trans('recompute_evaluations', {}, 'actions'),
-          help: trans('recompute_evaluations_help', {}, 'actions'),
+          help: trans('recompute_workspace_evaluations_help', {}, 'actions'),
           action: {
             name: 'recompute',
             type: ASYNC_BUTTON,
             label: trans('recalculate', {}, 'actions'),
             displayed: 'workspace' === contextType,
             request: {
-              url: ['apiv2_workspace_evaluations_recompute', {workspace: contextId}],
+              url: ['apiv2_workspace_evaluation_recompute', {workspaceId: contextId}],
               request: {
                 method: 'PUT'
               }
@@ -59,13 +59,21 @@ const EvaluationEditorActions = () => {
             }
           }
         }, {
-          title: trans('Purger les évaluations'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
+          title: trans('purge_evaluations', {}, 'actions'),
+          help: trans('purge_workspace_evaluations_help', {}, 'actions'),
           action: {
             label: trans('purge', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true,
-            disabled: true
+            type: ASYNC_BUTTON,
+            confirm: {
+              message: trans('purge_workspace_evaluations_confirm', {}, 'actions'),
+              additional: trans('irreversible_action_confirm')
+            },
+            request: {
+              url: ['apiv2_workspace_evaluation_purge', {workspaceId: contextId}],
+              request: {
+                method: 'DELETE'
+              }
+            }
           },
           dangerous: true,
           managerOnly: true

@@ -7,11 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait AccessCode
 {
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'access_code', type: Types::STRING, nullable: true)]
-    protected $accessCode;
+    protected ?string $accessCode = null;
 
     /**
      * Returns the access code.

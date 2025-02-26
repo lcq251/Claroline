@@ -4,11 +4,11 @@ namespace Claroline\EvaluationBundle\Messenger\Message;
 
 use Claroline\AppBundle\Messenger\Message\AsyncHighMessageInterface;
 
-final class InitializeWorkspaceEvaluations implements AsyncHighMessageInterface
+final readonly class InitializeWorkspaceEvaluations implements AsyncHighMessageInterface
 {
     public function __construct(
-        private readonly int $workspaceId,
-        private readonly array $userIds
+        private int $workspaceId,
+        private array $userIds
     ) {
     }
 

@@ -20,7 +20,7 @@ const AnnouncementEditorAppearance = () =>
         }]
       }, {
         title: trans('Templates'),
-        subtitle: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum scelerisque lorem, non finibus ligula pretium et.'),
+        description: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum scelerisque lorem, non finibus ligula pretium et.'),
         primary: true,
         fields: [{
           name: 'parameters.templateEmail',

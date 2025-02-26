@@ -24,6 +24,10 @@ const DataCard = {
       'meta',
       'description'
     ])),
+    status: T.shape({
+      variant: T.oneOf(['primary', 'secondary', 'success', 'info', 'warning', 'danger']).isRequired,
+      text: T.string.isRequired
+    }),
     primaryAction: T.oneOfType([
       // a regular action
       T.shape(merge({}, Action.propTypes, {
@@ -46,7 +50,6 @@ const DataCard = {
     ]),
     toolbar: T.string,
 
-    footer: T.node,
     children: T.node,
     invalidated: T.bool.isRequired,
     loaded: T.bool.isRequired

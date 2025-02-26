@@ -34,6 +34,7 @@ const ActionCard = (props) => {
           'btn-danger' : props.dangerous,
           'btn-body': !props.dangerous
         })}
+        dangerous={props.dangerous}
         {...props.action}
       />
     </article>

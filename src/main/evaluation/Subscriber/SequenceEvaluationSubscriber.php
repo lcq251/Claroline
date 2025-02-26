@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class SequenceEvaluationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly SequenceEvaluationManager $manager
+        private readonly SequenceEvaluationManager $evaluationManager
     ) {
     }
 
@@ -48,9 +48,9 @@ class SequenceEvaluationSubscriber implements EventSubscriberInterface
         $resourceNode = $event->getResourceNode();
 
         // find sequences which use the resource and recompute the user evaluations for them
-        $sequences = $this->manager->getByResource($resourceNode);
+        $sequences = $this->evaluationManager->getByResourceAndUser($resourceNode, $user);
         foreach ($sequences as $sequence) {
-            $this->manager->computeEvaluation($sequence, $user);
+            $this->evaluationManager->computeEvaluation($sequence, $user);
         }
     }
 
@@ -64,9 +64,9 @@ class SequenceEvaluationSubscriber implements EventSubscriberInterface
 
         if ($resourceNode->isPublished()) {
             // find sequences which use the resource and recompute the user evaluations for them
-            $sequences = $this->manager->getByResource($resourceNode);
+            $sequences = $this->evaluationManager->getByResource($resourceNode);
             foreach ($sequences as $sequence) {
-                $this->manager->recomputeEvaluations($sequence);
+                $this->evaluationManager->recomputeEvaluations($sequence);
             }
         }
     }
@@ -79,9 +79,9 @@ class SequenceEvaluationSubscriber implements EventSubscriberInterface
 
         if (!empty($oldData['meta']) && ($oldData['meta']['published'] !== $resourceNode->isPublished())) {
             // find sequences which use the resource and recompute the user evaluations for them
-            $sequences = $this->manager->getByResource($resourceNode);
+            $sequences = $this->evaluationManager->getByResource($resourceNode);
             foreach ($sequences as $sequence) {
-                $this->manager->recomputeEvaluations($sequence);
+                $this->evaluationManager->recomputeEvaluations($sequence);
             }
         }
     }

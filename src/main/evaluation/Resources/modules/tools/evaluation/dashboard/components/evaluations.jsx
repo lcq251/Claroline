@@ -26,7 +26,7 @@ const EvaluationDashboardEvaluations = (props) => {
         <EvaluationList
           className="mb-5"
           name={selectors.STORE_NAME + '.workspaceEvaluations'}
-          url={['apiv2_workspace_evaluations_list', {workspace: props.contextId}]}
+          url={['apiv2_workspace_evaluation_list', {workspace: props.contextId}]}
           primaryAction={(row) => getDefaultAction(row, evaluationsRefresher, props.path, props.currentUser)}
           actions={(rows) => getActions(rows, evaluationsRefresher, props.path, props.currentUser)}
           customDefinition={[

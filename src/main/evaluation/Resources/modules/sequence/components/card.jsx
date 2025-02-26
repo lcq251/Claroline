@@ -40,6 +40,10 @@ const SequenceCard = props =>
     icon="fa fa-route"
     name={props.data.name}
     title={props.data.name}
+    status={false === get(props.data, 'meta.published') ? {
+      variant: 'secondary',
+      text: trans('not_published')
+    } : undefined}
     meta={
       <>
         {get(props.data, 'evaluation.estimatedDuration') &&

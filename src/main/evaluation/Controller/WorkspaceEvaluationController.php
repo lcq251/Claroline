@@ -40,7 +40,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Manages user evaluations for resources {@see Evaluation}}.
+ * Manages user evaluations for workspaces {@see WorkspaceEvaluation}}.
  */
 #[Route(path: '/evaluations/workspace')]
 class WorkspaceEvaluationController
@@ -60,7 +60,7 @@ class WorkspaceEvaluationController
         $this->authorization = $authorization;
     }
 
-    #[Route(path: '/{workspace}', name: 'apiv2_workspace_evaluations_list', methods: ['GET'])]
+    #[Route(path: '/{workspace}', name: 'apiv2_workspace_evaluation_list', methods: ['GET'])]
     public function listAction(
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery(),
@@ -100,7 +100,7 @@ class WorkspaceEvaluationController
     /**
      * Initializes evaluations for all the users of a workspace.
      */
-    #[Route(path: '/{workspace}/init', name: 'apiv2_workspace_evaluations_init', methods: ['PUT'])]
+    #[Route(path: '/{workspace}/init', name: 'apiv2_workspace_evaluation_init', methods: ['PUT'])]
     public function initializeAction(
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
         Workspace $workspace
@@ -108,21 +108,6 @@ class WorkspaceEvaluationController
         $this->checkToolAccess('EDIT', $workspace);
 
         $this->manager->initialize($workspace);
-
-        return new JsonResponse(null, 204);
-    }
-
-    /**
-     * Recalculates (score, status, progression, ...) evaluations for all the users of a workspace.
-     */
-    #[Route(path: '/{workspace}/recompute', name: 'apiv2_workspace_evaluations_recompute', methods: ['PUT'])]
-    public function recomputeAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace
-    ): JsonResponse {
-        $this->checkToolAccess('EDIT', $workspace);
-
-        $this->manager->recomputeEvaluations($workspace);
 
         return new JsonResponse(null, 204);
     }
@@ -169,48 +154,32 @@ class WorkspaceEvaluationController
         );
     }
 
-    #[Route(path: '/{workspace}/requirements', name: 'apiv2_workspace_required_resource_add', methods: ['PATCH'])]
-    public function addRequiredResourcesAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        Request $request
+    /**
+     * Recalculates (score, status, progression, ...) evaluations for all the users of a workspace.
+     */
+    #[Route(path: '/{workspaceId}/recompute', name: 'apiv2_workspace_evaluation_recompute', methods: ['PUT'])]
+    public function recomputeAction(
+        #[MapEntity(mapping: ['workspaceId' => 'uuid'])]
+        Workspace $workspace
     ): JsonResponse {
         $this->checkToolAccess('EDIT', $workspace);
 
-        $resources = $this->decodeIdsString($request, ResourceNode::class);
-
-        // we can not do it inside a flush suite because it will trigger the Workspace to recompute its evaluation
-        // and it requires to have all the data recorded inside the db.
-        // we can create a messenger message for it later if there are performances issues.
-        foreach ($resources as $resource) {
-            $this->crud->update($resource, [
-                'id' => $resource->getUuid(),
-                'evaluation' => ['required' => true],
-            ], [Crud::NO_PERMISSIONS]);
-        }
+        $this->manager->recomputeEvaluations($workspace);
 
         return new JsonResponse(null, 204);
     }
 
-    #[Route(path: '/{workspace}/requirements', name: 'apiv2_workspace_required_resource_remove', methods: ['DELETE'])]
-    public function removeRequiredResourcesAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        Request $request
+    /**
+     * Removes all user evaluations for the workspace.
+     */
+    #[Route(path: '/{workspaceId}', name: 'apiv2_workspace_evaluation_purge', methods: ['DELETE'])]
+    public function purgeAction(
+        #[MapEntity(mapping: ['workspaceId' => 'uuid'])]
+        Workspace $workspace
     ): JsonResponse {
-        $this->checkToolAccess('EDIT', $workspace);
+        $this->checkToolAccess('ADMINISTRATE', $workspace);
 
-        $resources = $this->decodeIdsString($request, ResourceNode::class);
-
-        // we can not do it inside a flush suite because it will trigger the Workspace to recompute its evaluation,
-        // and it requires to have all the data recorded inside the db.
-        // we can create a messenger message for it later if there are performances issues.
-        foreach ($resources as $resource) {
-            $this->crud->update($resource, [
-                'id' => $resource->getUuid(),
-                'evaluation' => ['required' => false],
-            ], [Crud::NO_PERMISSIONS]);
-        }
+        $this->manager->purgeEvaluations($workspace);
 
         return new JsonResponse(null, 204);
     }

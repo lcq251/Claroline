@@ -42,7 +42,7 @@ const FormContent = (props) => {
               className={primarySection.className}
               title={primarySection.title}
               hideTitle={0 === index || primarySection.hideTitle}
-              description={primarySection.description || primarySection.subtitle}
+              description={primarySection.description}
               actions={primarySection.actions}
             >
               <FormFieldset
@@ -65,7 +65,7 @@ const FormContent = (props) => {
               displayLevel={props.displayLevel}
               className={primarySection.className}
               title={primarySection.title}
-              description={primarySection.description || primarySection.subtitle}
+              description={primarySection.description}
               actions={primarySection.actions}
               disabled={disabled || (typeof primarySection.disabled === 'function' ? primarySection.disabled(props.data) : primarySection.disabled)}
               displayed={typeof primarySection.enabled === 'function' ? !!primarySection.enabled(props.data) : primarySection.enabled}
@@ -105,7 +105,7 @@ const FormContent = (props) => {
               key={getSectionId(section, props.id)}
               icon={section.icon}
               title={section.title}
-              subtitle={section.description || section.subtitle}
+              subtitle={section.description}
               errors={getSectionErrors(section.fields, props.errors)}
               actions={section.actions}
               fill={section.fill}

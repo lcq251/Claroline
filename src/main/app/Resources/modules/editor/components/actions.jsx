@@ -19,11 +19,15 @@ const EditorActions = (props) => {
 
   return (
     <EditorPage
-      title={trans('Actions avancées')}
-      help={trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?')}
+      title={trans('advanced_actions', {}, 'actions')}
+      // help={trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?')}
     >
       {actions.map(action =>
-        <ActionCard {...action} className="mb-2" />
+        <ActionCard
+          {...action}
+          key={action.title}
+          className="mb-2"
+        />
       )}
 
       {!isEmpty(actions) && !isEmpty(dangerousActions) &&
@@ -31,7 +35,11 @@ const EditorActions = (props) => {
       }
 
       {dangerousActions.map((action) =>
-        <ActionCard {...action} className="mb-2" />
+        <ActionCard
+          {...action}
+          key={action.title}
+          className="mb-2"
+        />
       )}
     </EditorPage>
   )
