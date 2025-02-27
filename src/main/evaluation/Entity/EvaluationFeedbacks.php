@@ -5,6 +5,9 @@ namespace Claroline\EvaluationBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ */
 trait EvaluationFeedbacks
 {
     #[ORM\Column(name: 'success_message', type: Types::TEXT, nullable: true)]

@@ -37,6 +37,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'

@@ -11,7 +11,7 @@ export default (resourceNodes, nodesRefresher, path) => ({
   name: 'show-dashboard',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-sliders',
-  label: trans('show-dashboard', {}, 'actions'),
+  label: trans('show_dashboard', {}, 'actions'),
   target: `${route(resourceNodes[0], path)}/dashboard`,
   displayed: -1 !== resourceNodes.findIndex(resourceNode => hasPermission('edit', resourceNode)),
   scope: ['object'],

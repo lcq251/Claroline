@@ -110,5 +110,6 @@
   "hide_description": "Cacher la description",
   "resume": "Reprendre",
   "show_history": "Voir l'historique",
-  "exit_impersonation": "Quitter l'usurpation"
+  "exit_impersonation": "Quitter l'usurpation",
+  "show_dashboard": "Ouvrir le tableau de bord"
 }

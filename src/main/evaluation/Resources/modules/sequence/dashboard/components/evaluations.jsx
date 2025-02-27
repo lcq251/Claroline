@@ -1,21 +1,36 @@
-import React from 'react'
-import {useSelector} from 'react-redux'
+import React, {useCallback} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 
-import {trans} from '#/main/app/intl/translation'
-import {MODAL_BUTTON} from '#/main/app/buttons'
+
 import {PageContent, PageSection} from '#/main/app/page'
+import {actions as listActions} from '#/main/app/content/list'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {EvaluationList} from '#/main/evaluation/components/list'
 
-import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
+import {EvaluationSequenceCard} from '#/main/evaluation/sequence/components/card'
+import {getEvaluationActions, getEvaluationDefaultAction} from '#/main/evaluation/sequence/utils'
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
-import {EvaluationSequenceCard} from '#/main/evaluation/sequence/components/card'
-import {EvaluationList} from '#/main/evaluation/components/list'
 
 const SequenceDashboardEvaluations = () => {
+  const dispatch = useDispatch()
+
+  const currentUser = useSelector(securitySelectors.currentUser)
+  const sequencePath = useSelector(sequenceSelectors.path)
   const sequenceId = useSelector(sequenceSelectors.id)
   const hasScore = useSelector(sequenceSelectors.hasScore)
   const totalScore = useSelector(sequenceSelectors.totalScore)
+
+  const invalidateList = useCallback(() => {
+    dispatch(listActions.invalidateData(selectors.STORE_NAME + '.evaluations'))
+  }, [selectors.STORE_NAME + '.evaluations'])
+
+  const evaluationsRefresher = {
+    add:    invalidateList,
+    update: invalidateList,
+    delete: invalidateList
+  }
 
   return (
     <PageContent className="d-flex">
@@ -23,16 +38,8 @@ const SequenceDashboardEvaluations = () => {
         <EvaluationList
           name={selectors.STORE_NAME+'.evaluations'}
           url={['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}]}
-          primaryAction={(row) => ({
-            name: 'about',
-            type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-circle-info',
-            label: trans('show-info', {}, 'actions'),
-            modal: [MODAL_RESOURCE_EVALUATIONS, {
-              userEvaluation: row
-            }],
-            scope: ['object']
-          })}
+          primaryAction={(row) => getEvaluationDefaultAction(row, evaluationsRefresher, sequencePath, currentUser)}
+          actions={(rows) => getEvaluationActions(rows, evaluationsRefresher, sequencePath, currentUser)}
           card={EvaluationSequenceCard}
           hasScore={hasScore}
           totalScore={totalScore}

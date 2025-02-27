@@ -20,6 +20,7 @@ class AssignmentRepository extends EntityRepository
             LEFT JOIN Claroline\CoreBundle\Entity\Role AS r WITH (a.role = r)
             LEFT JOIN a.sequence AS s
             WHERE s.workspace = :workspace
+              AND s.published = 1
               AND r.name IN (:roles)
        ';
 

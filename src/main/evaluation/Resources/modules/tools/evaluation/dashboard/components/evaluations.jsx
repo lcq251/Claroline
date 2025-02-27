@@ -12,9 +12,9 @@ import {EvaluationList} from '#/main/evaluation/components/list'
 
 const EvaluationDashboardEvaluations = (props) => {
   const evaluationsRefresher = {
-    add:    () => props.invalidate(),
-    update: () => props.invalidate(),
-    delete: () => props.invalidate()
+    add:    props.invalidate,
+    update: props.invalidate,
+    delete: props.invalidate
   }
 
   return (

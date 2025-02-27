@@ -1,25 +1,34 @@
+import isEmpty from 'lodash/isEmpty'
+
 import {trans} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 
-export default (evaluations) => ({
-  name: 'download-certificate',
-  type: ASYNC_BUTTON,
-  icon: 'fa fa-fw ' + (evaluations.length > 1 ? 'fa-file-zipper' : 'fa-file-pdf'),
-  label: evaluations.length > 1
-    ? trans('download_certificates', {}, 'actions')
-    : trans('download_certificate', {}, 'actions'),
-  displayed: !!evaluations.find(evaluation => hasPermission('open', evaluation)),
-  request: {
-    url: ['apiv2_workspace_download_certificate'],
+import {constants} from '#/main/evaluation/constants'
+
+export default (evaluations) => {
+  const processable = evaluations.filter(evaluation =>
+    !!evaluation.certified
+    && hasPermission('open', evaluation)
+    && [constants.EVALUATION_STATUS_COMPLETED, constants.EVALUATION_STATUS_PASSED].includes(evaluation.status)
+  )
+
+  return ({
+    name: 'download-certificate',
+    type: ASYNC_BUTTON,
+    icon: 'fa fa-fw ' + (processable.length > 1 ? 'fa-file-zipper' : 'fa-file-pdf'),
+    label: processable.length > 1
+      ? trans('download_certificates', {}, 'actions')
+      : trans('download_certificate', {}, 'actions'),
+    displayed: !isEmpty(processable),
     request: {
-      method: 'POST',
-      body: JSON.stringify(evaluations
-        .filter(evaluation => hasPermission('open', evaluation))
-        .map(evaluation => evaluation.id)
-      )
-    }
-  },
-  scope: ['object', 'collection'],
-  group: trans('transfer')
-})
+      url: ['apiv2_workspace_download_certificate'],
+      request: {
+        method: 'POST',
+        body: JSON.stringify(processable.map(evaluation => evaluation.id))
+      }
+    },
+    scope: ['object', 'collection'],
+    group: trans('transfer')
+  })
+}

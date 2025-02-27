@@ -1,0 +1,29 @@
+<?php
+
+namespace Claroline\EvaluationBundle\Installation\DataFixtures\Template;
+
+use Claroline\CoreBundle\Installation\DataFixtures\AbstractTemplateFixture;
+
+class EvaluationSuccessCertificateData extends AbstractTemplateFixture
+{
+    protected static function getTemplateType(): string
+    {
+        return 'evaluation_success_certificate';
+    }
+
+    protected function getSystemTemplates(): array
+    {
+        return [
+            'Claroline Connect' => [
+                'en' => [
+                    'title' => 'Certificate of achievement in "%evaluated_content_name%"',
+                    'content' => $this->twig->render('@ClarolineEvaluation/template/evaluation_success_certificate.en.pdf.twig'),
+                ],
+                'fr' => [
+                    'title' => 'Certificat de réussite à "%evaluated_content_name%"',
+                    'content' => $this->twig->render('@ClarolineEvaluation/template/evaluation_success_certificate.fr.pdf.twig'),
+                ],
+            ],
+        ];
+    }
+}

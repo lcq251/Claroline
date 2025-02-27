@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Controller;
+namespace Claroline\EvaluationBundle\Controller\Certificate;
 
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -26,8 +26,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-#[Route(path: '/certificate')]
-class CertificateController
+#[Route(path: '/workspace_certificate')]
+class WorkspaceCertificateController
 {
     use RequestDecoderTrait;
     use PermissionCheckerTrait;

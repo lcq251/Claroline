@@ -4,6 +4,9 @@ namespace Claroline\EvaluationBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
 
+/**
+ * @deprecated use EvaluationSuccessCertificatePdf
+ */
 class WorkspaceSuccessCertificatePdf extends PdfComponent
 {
     public static function getName(): string

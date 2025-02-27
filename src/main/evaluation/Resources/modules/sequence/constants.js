@@ -8,10 +8,10 @@ const NUMBERING_LITERAL = 'literal'
 const NUMBERING_CUSTOM  = 'custom'
 
 const PATH_NUMBERINGS = {
-  [NUMBERING_NONE]: trans('path_numbering_none', {}, 'path'),
-  [NUMBERING_NUMERIC]: trans('path_numbering_numeric', {}, 'path'),
-  [NUMBERING_LITERAL]: trans('path_numbering_literal', {}, 'path'),
-  // [NUMBERING_CUSTOM]: trans('path_numbering_custom', {}, 'path')
+  [NUMBERING_NONE]: trans('numbering_none'),
+  [NUMBERING_NUMERIC]: trans('numbering_numeric'),
+  [NUMBERING_LITERAL]: trans('numbering_literal'),
+  // [NUMBERING_CUSTOM]: trans('numbering_custom')
 }
 
 const STATUS_UNSEEN = 'unseen'

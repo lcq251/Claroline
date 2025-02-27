@@ -1,4 +1,4 @@
-import {getActions as getPluginsActions} from '#/main/app/plugins'
+import {getActions as getPluginsActions, getDefaultAction as getPluginsDefaultAction} from '#/main/app/plugins'
 
 import {constants} from '#/main/evaluation/sequence/constants'
 
@@ -13,6 +13,14 @@ function getDefaultAction(sequence, refresher = {}, path, currentUser = null) {
   return getActions([sequence], refresher, path, currentUser, true)
     // only get the default one
     .then(actions => actions.find(action => action.default))
+}
+
+function getEvaluationActions(evaluations, refresher, path, currentUser, withDefault = false) {
+  return getPluginsActions('sequence_evaluation', evaluations, refresher, path, currentUser, withDefault)
+}
+
+function getEvaluationDefaultAction(evaluation, refresher, path, currentUser = null) {
+  return getPluginsDefaultAction('sequence_evaluation', evaluation, refresher, path, currentUser)
 }
 
 /**
@@ -133,6 +141,8 @@ function getPrevious(steps, current) {
 export {
   getActions,
   getDefaultAction,
+  getEvaluationActions,
+  getEvaluationDefaultAction,
   flattenSteps,
   getNumbering,
   getPrevious,

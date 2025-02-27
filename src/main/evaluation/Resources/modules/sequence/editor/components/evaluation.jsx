@@ -45,24 +45,6 @@ const SequenceEditorEvaluation = () => {
       help={trans('evaluation_help', {}, 'evaluation')}
       definition={[
         {
-          title: trans('general'),
-          primary: true,
-          fields: [
-            /*{
-              name: 'evaluation.estimatedDuration',
-              label: trans('estimated_duration'),
-              type: 'number',
-              options: {
-                unit: trans('minutes')
-              },
-              help: trans('estimated_duration_help')
-            }, */{
-              name: 'evaluation._enable',
-              type: 'boolean',
-              label: trans('enable_evaluation', {}, 'evaluation')
-            }
-          ]
-        }, {
           title: trans('score', {}, 'evaluation'),
           description: trans('score_help', {}, 'evaluation'),
           primary: true,

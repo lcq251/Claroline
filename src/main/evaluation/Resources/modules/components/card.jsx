@@ -42,7 +42,7 @@ const EvaluationContentCard = (props) => {
       poster={get(props.content, 'thumbnail')}
       name={get(props.content, 'name')}
       title={get(props.content, 'name')}
-      contentText={get(props.content, 'meta.description')}
+      contentText={get(props.content, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
     >
       <div className={classes('d-flex gap-2', {
         'flex-column mt-4': 'col' === props.orientation,
@@ -56,7 +56,7 @@ const EvaluationContentCard = (props) => {
         />
 
         <div className=" fs-sm text-body-secondary" role="presentation">
-          <b className="text-uppercase text-nowrap d-block">
+          <b className="text-uppercase text-nowrap d-block text-body">
             {[constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_FAILED].includes(status) ?
               constants.EVALUATION_STATUSES_SHORT[status] :
               trans('completion', {current: progression}, 'evaluation')
@@ -85,7 +85,7 @@ EvaluationContentCard.propTypes = {
     thumbnail: T.string
   }),
   data: T.shape({
-    id: T.number,
+    id: T.string,
     date: T.string,
     status: T.string,
     duration: T.number,

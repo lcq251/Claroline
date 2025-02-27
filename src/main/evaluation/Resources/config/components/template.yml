@@ -1,4 +1,10 @@
 services:
+    Claroline\EvaluationBundle\Component\Template\EvaluationParticipationCertificatePdf:
+        tags: [ 'claroline.component.template' ]
+
+    Claroline\EvaluationBundle\Component\Template\EvaluationSuccessCertificatePdf:
+        tags: [ 'claroline.component.template' ]
+
     Claroline\EvaluationBundle\Component\Template\WorkspaceParticipationCertificatePdf:
         tags: [ 'claroline.component.template' ]
 

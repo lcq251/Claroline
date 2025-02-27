@@ -5,7 +5,7 @@ namespace Claroline\EvaluationBundle\Serializer;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
-use Claroline\EvaluationBundle\Entity\Certificate;
+use Claroline\EvaluationBundle\Entity\Certificate\WorkspaceCertificate;
 use Claroline\EvaluationBundle\Serializer\UserEvaluation\WorkspaceEvaluationSerializer;
 
 class CertificateSerializer
@@ -23,10 +23,10 @@ class CertificateSerializer
 
     public function getClass(): string
     {
-        return Certificate::class;
+        return WorkspaceCertificate::class;
     }
 
-    public function serialize(Certificate $certificate, ?array $options = []): array
+    public function serialize(WorkspaceCertificate $certificate, ?array $options = []): array
     {
         $serialized = [
             'id' => $certificate->getUuid(),

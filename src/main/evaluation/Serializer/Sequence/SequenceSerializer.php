@@ -16,6 +16,8 @@ use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
 use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SequenceSerializer
@@ -27,6 +29,7 @@ class SequenceSerializer
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
+        private readonly TemplateSerializer $templateSerializer,
         private readonly UserSerializer $userSerializer,
         private readonly WorkspaceSerializer $workspaceSerializer,
         private readonly ResourceNodeSerializer $resourceNodeSerializer,
@@ -103,6 +106,10 @@ class SequenceSerializer
                 return $this->stepSerializer->serialize($step, $options);
             }, $sequence->getRootSteps())),
             'evaluation' => [
+                'certified' => $sequence->isCertified(),
+                'certificateTemplate' => $sequence->getCertificateTemplate() ?
+                    $this->templateSerializer->serialize($sequence->getCertificateTemplate(), [SerializerInterface::SERIALIZE_MINIMAL]) :
+                    null,
                 'estimatedDuration' => $sequence->getEstimatedDuration(),
                 'scoreTotal' => $sequence->getScoreTotal(),
                 'successCondition' => $sequence->getSuccessCondition(),
@@ -175,6 +182,15 @@ class SequenceSerializer
             $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
             $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
             $this->sipe('evaluation.successCondition', 'setSuccessCondition', $data, $sequence);
+            $this->sipe('evaluation.certified', 'setCertified', $data, $sequence);
+
+            if (array_key_exists('certificateTemplate', $data['evaluation'])) {
+                $template = null;
+                if (!empty($data['evaluation']['certificateTemplate']) && !empty($data['evaluation']['certificateTemplate']['id'])) {
+                    $template = $this->om->getRepository(Template::class)->findOneBy(['uuid' => $data['evaluation']['certificateTemplate']['id']]);
+                }
+                $sequence->setCertificateTemplate($template);
+            }
         }
 
         if (!empty($data['workspace'])) {

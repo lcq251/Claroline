@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {toKey} from '#/main/app/utils/text'
 import {Toolbar} from '#/main/app/action'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON, CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {Html} from '#/main/app/components/html'
 import {Alert} from '#/main/app/components/alert'
@@ -152,10 +152,16 @@ const SequenceOverview = () => {
       displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_FAILED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
     }, {
       name: 'download-certificate',
-      type: CALLBACK_BUTTON,
+      type: ASYNC_BUTTON,
       label: trans('download_certificate', {}, 'actions'),
-      callback: () => true,
-      displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
+      request: {
+        url: ['apiv2_sequence_download_certificate'],
+        request: {
+          method: 'POST',
+          body: JSON.stringify([userEvaluation ? userEvaluation.id : null])
+        }
+      },
+      displayed: !!userEvaluation && !!userEvaluation.certified && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
     }
   ]
 

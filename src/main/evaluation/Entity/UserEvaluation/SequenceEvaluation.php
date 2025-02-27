@@ -27,6 +27,9 @@ class SequenceEvaluation extends AbstractUserEvaluation
         $this->sequence = $sequence;
     }
 
+    /**
+     * @deprecated
+     */
     public function isRequired(): bool
     {
         if ($this->sequence) {
@@ -34,6 +37,11 @@ class SequenceEvaluation extends AbstractUserEvaluation
         }
 
         return false;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->sequence->isCertified();
     }
 
     public function getEstimatedDuration(): ?int

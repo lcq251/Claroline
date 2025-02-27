@@ -12,6 +12,7 @@
 namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
+use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\EvaluationBundle\Library\EvaluationInterface;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Doctrine\DBAL\Types\Types;
@@ -21,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractEvaluation implements EvaluationInterface
 {
     use Id;
+    use Uuid;
 
     #[ORM\Column(name: 'started_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $startedAt = null;
@@ -48,6 +50,11 @@ abstract class AbstractEvaluation implements EvaluationInterface
 
     #[ORM\Column(type: Types::FLOAT)]
     protected ?float $progression = 0;
+
+    public function __construct()
+    {
+        $this->refreshUuid();
+    }
 
     public function getStartedAt(): ?\DateTimeInterface
     {

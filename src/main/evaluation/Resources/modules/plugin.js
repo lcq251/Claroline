@@ -37,6 +37,13 @@ registry.add('ClarolineEvaluationBundle', {
       'show-dashboard': () => { return import(/* webpackChunkName: "evaluation-action-sequence-dashboard" */   '#/main/evaluation/actions/sequence/show-dashboard') }
     },
 
+    sequence_evaluation: {
+      'send-message': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-send-message" */ '#/main/evaluation/actions/sequence_evaluation/send-message') },
+      'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-show-profile" */ '#/main/evaluation/actions/sequence_evaluation/show-profile') },
+      'download-certificate': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-certificate" */ '#/main/evaluation/actions/sequence_evaluation/download-certificate') },
+      'regenerate-certificate': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-regenerate-certificate" */ '#/main/evaluation/actions/sequence_evaluation/regenerate-certificate') },
+    },
+
     workspace_evaluation: {
       'open': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-open" */ '#/main/evaluation/actions/workspace_evaluation/open') },
       'open-workspace': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-open-ws" */ '#/main/evaluation/actions/workspace_evaluation/open-workspace') },

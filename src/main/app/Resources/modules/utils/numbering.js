@@ -9,5 +9,5 @@ const NUMBERINGS = {
   [NUMBERING_NONE]: trans('numbering_none'),
   [NUMBERING_NUMERIC]: trans('numbering_numeric'),
   [NUMBERING_LITERAL]: trans('numbering_literal'),
-  // [NUMBERING_CUSTOM]: trans('lesson_numbering_custom')
+  // [NUMBERING_CUSTOM]: trans('numbering_custom')
 }

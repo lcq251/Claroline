@@ -11,8 +11,9 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Manager\LocaleManager;
 use Claroline\CoreBundle\Manager\Template\TemplateManager;
-use Claroline\EvaluationBundle\Entity\Certificate;
+use Claroline\EvaluationBundle\Entity\Certificate\WorkspaceCertificate;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,7 +34,7 @@ class CertificateManager
 
     public function getCertificate(WorkspaceEvaluation $evaluation, bool $regenerate = false): ?string
     {
-        $certificate = $this->om->getRepository(Certificate::class)->findOneBy([
+        $certificate = $this->om->getRepository(WorkspaceCertificate::class)->findOneBy([
             'evaluation' => $evaluation,
             'user' => $evaluation->getUser(),
         ]);
@@ -52,12 +53,12 @@ class CertificateManager
         }
 
         $html = $this->templateManager->getTemplate(
-            $evaluation->isTerminated() ? 'workspace_success_certificate' : 'workspace_participation_certificate',
+            EvaluationStatus::PASSED === $evaluation->getStatus() ? 'workspace_success_certificate' : 'workspace_participation_certificate',
             $placeholders,
             $locale
         );
 
-        $certificate = new Certificate();
+        $certificate = new WorkspaceCertificate();
         $certificate->setUser($evaluation->getUser());
         $certificate->setIssueDate(new \DateTime());
         $certificate->setEvaluation($evaluation);
@@ -92,7 +93,7 @@ class CertificateManager
         return $tmpFile;
     }
 
-    private function getCertificateFilepath(Certificate $certificate): string
+    private function getCertificateFilepath(WorkspaceCertificate $certificate): string
     {
         $path = $this->fileManager->getDirectory();
         $path .= DIRECTORY_SEPARATOR.'certificates';

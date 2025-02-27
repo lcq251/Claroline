@@ -2,6 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Entity\Parameters;
 
+use Claroline\EvaluationBundle\Entity\Certified;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_evaluation_sequence_parameters')]
 class SequenceParameters extends AbstractEvaluationParameters
 {
+    use Certified;
+
     #[ORM\JoinColumn(name: 'sequence_id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Sequence::class)]
     private ?Sequence $sequence = null;

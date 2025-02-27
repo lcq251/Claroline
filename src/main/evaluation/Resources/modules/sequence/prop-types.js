@@ -70,7 +70,7 @@ const Sequence = {
 
 const SequenceEvaluation = {
   propTypes: {
-    id: T.number.isRequired,
+    id: T.string.isRequired,
     date: T.string.isRequired,
     status: T.string.isRequired,
     duration: T.number,

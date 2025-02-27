@@ -46,7 +46,7 @@ const EvaluationEditorActions = () => {
           }
         }, {
           title: trans('download_all_certificates', {}, 'actions'),
-          help: trans('download_all_certificates_help', {}, 'actions'),
+          help: trans('download_all_workspace_certificates_help', {}, 'actions'),
           action: {
             name: 'download_all_certificates',
             type: ASYNC_BUTTON,

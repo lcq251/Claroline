@@ -38,6 +38,20 @@ const SequenceEditorActions = () => {
             }
           }
         }, {
+          title: trans('download_all_certificates', {}, 'actions'),
+          help: trans('download_all_sequence_certificates_help', {}, 'actions'),
+          action: {
+            name: 'download_all_certificates',
+            type: ASYNC_BUTTON,
+            label: trans('download', {}, 'actions'),
+            request: {
+              url: ['apiv2_sequence_download_all_certificates', {sequence: sequence.id}],
+              request: {
+                method: 'GET'
+              }
+            }
+          }
+        }, {
           title: trans('purge_evaluations', {}, 'actions'),
           help: trans('purge_sequence_evaluations_help', {}, 'actions'),
           action: {

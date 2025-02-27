@@ -21,7 +21,13 @@ services:
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
             - '@Claroline\AppBundle\API\Crud'
 
-    Claroline\EvaluationBundle\Controller\CertificateController:
+    Claroline\EvaluationBundle\Controller\Certificate\SequenceCertificateController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\EvaluationBundle\Manager\SequenceCertificateManager'
+
+    Claroline\EvaluationBundle\Controller\Certificate\WorkspaceCertificateController:
         arguments:
             - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'

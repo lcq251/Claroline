@@ -40,7 +40,7 @@ class ResourceAttemptSerializer
         }
 
         $serialized = [
-            'id' => $resourceEvaluation->getId(),
+            'id' => $resourceEvaluation->getUuid(),
             'date' => DateNormalizer::normalize($resourceEvaluation->getLastActivityAt()),
             'lastActivityAt' => DateNormalizer::normalize($resourceEvaluation->getLastActivityAt()),
             'startedAt' => DateNormalizer::normalize($resourceEvaluation->getStartedAt()),

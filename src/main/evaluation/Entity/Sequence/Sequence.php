@@ -23,6 +23,7 @@ use Claroline\AppBundle\Entity\Restriction\AccessibleUntil;
 use Claroline\CoreBundle\Entity\Resource\HasEndPage;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Model\HasWorkspace;
+use Claroline\EvaluationBundle\Entity\Certified;
 use Claroline\EvaluationBundle\Entity\Evaluated;
 use Claroline\EvaluationBundle\Entity\EvaluationFeedbacks;
 use Claroline\EvaluationBundle\Finder\SequenceType;
@@ -60,6 +61,7 @@ class Sequence implements CrudEntityInterface
     // evaluation parameters
     use Evaluated;
     use EvaluationFeedbacks;
+    use Certified;
 
     use HasEndPage;
 

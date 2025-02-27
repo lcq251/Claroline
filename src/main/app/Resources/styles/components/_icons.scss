@@ -80,7 +80,7 @@
 
     .thumbnail-#{$size} {
         // for .fa when no picture
-        font-size: ($value / 3) * 2;
+        font-size: calc(($value / 3) * 2);
     }
 
     .thumbnail-icon-#{$size} {
@@ -88,7 +88,7 @@
         width: $value;
         height: $value;
         // for .fa when no picture
-        font-size: $value / 3;
+        font-size: calc($value / 3);
     }
 }
 

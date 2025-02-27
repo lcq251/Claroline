@@ -122,6 +122,9 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     #[ORM\OneToOne(targetEntity: WorkspaceOptions::class, mappedBy: 'workspace', cascade: ['persist'])]
     private WorkspaceOptions $options;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $contactEmail = null;
 
@@ -142,6 +145,9 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     // not mapped. Used for creation
     private ?Workspace $workspaceModel = null;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $estimatedDuration = null;
 
@@ -359,11 +365,17 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
         return $this->workspaceModel;
     }
 
+    /**
+     * @deprecated
+     */
     public function getContactEmail(): ?string
     {
         return $this->contactEmail;
     }
 
+    /**
+     * @deprecated
+     */
     public function setContactEmail(string $email = null): void
     {
         $this->contactEmail = $email;
@@ -379,11 +391,17 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
         $this->successCondition = $successCondition;
     }
 
+    /**
+     * @deprecated
+     */
     public function getEstimatedDuration(): ?int
     {
         return $this->estimatedDuration;
     }
 
+    /**
+     * @deprecated
+     */
     public function setEstimatedDuration(int $estimatedDuration = null): void
     {
         $this->estimatedDuration = $estimatedDuration;

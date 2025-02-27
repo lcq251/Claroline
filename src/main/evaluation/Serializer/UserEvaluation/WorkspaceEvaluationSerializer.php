@@ -45,6 +45,7 @@ class WorkspaceEvaluationSerializer
             'status' => $evaluation->getStatus(),
             'duration' => $evaluation->getDuration(),
             'progression' => $progression,
+            'certified' => $evaluation->isCertified(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 

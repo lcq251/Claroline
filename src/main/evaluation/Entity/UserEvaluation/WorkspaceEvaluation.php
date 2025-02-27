@@ -24,16 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[CrudEntity(finderClass: WorkspaceEvaluationType::class)]
 class WorkspaceEvaluation extends AbstractUserEvaluation
 {
-    use Uuid;
-
     #[ORM\JoinColumn(name: 'workspace_id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Workspace::class)]
     private ?Workspace $workspace = null;
-
-    public function __construct()
-    {
-        $this->refreshUuid();
-    }
 
     public function getWorkspace(): ?Workspace
     {
@@ -43,6 +36,11 @@ class WorkspaceEvaluation extends AbstractUserEvaluation
     public function setWorkspace(Workspace $workspace): void
     {
         $this->workspace = $workspace;
+    }
+
+    public function isCertified(): bool
+    {
+        return true;
     }
 
     public function getEstimatedDuration(): ?int

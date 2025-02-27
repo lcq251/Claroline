@@ -26,6 +26,9 @@ class ResourceEvaluation extends AbstractUserEvaluation
     #[ORM\Column(name: 'nb_attempts', type: Types::INTEGER)]
     private ?int $nbAttempts = 0;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(name: 'nb_openings', type: Types::INTEGER)]
     private ?int $nbOpenings = 0;
 
@@ -49,16 +52,25 @@ class ResourceEvaluation extends AbstractUserEvaluation
         $this->nbAttempts = $nbAttempts;
     }
 
+    /**
+     * @deprecated
+     */
     public function getNbOpenings(): int
     {
         return $this->nbOpenings ?? 0;
     }
 
+    /**
+     * @deprecated
+     */
     public function setNbOpenings(int $nbOpenings): void
     {
         $this->nbOpenings = $nbOpenings;
     }
 
+    /**
+     * @deprecated
+     */
     public function isRequired(): bool
     {
         if ($this->resourceNode) {
@@ -77,6 +89,9 @@ class ResourceEvaluation extends AbstractUserEvaluation
         return 0;
     }
 
+    /**
+     * @deprecated
+     */
     public function isEvaluated(): bool
     {
         if ($this->resourceNode) {

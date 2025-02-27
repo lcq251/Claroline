@@ -1,17 +1,15 @@
 <?php
 
-namespace Claroline\EvaluationBundle\Entity;
+namespace Claroline\EvaluationBundle\Entity\Certificate;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'claro_evaluation_certificate')]
-#[ORM\Entity]
-class Certificate
+#[ORM\MappedSuperclass]
+abstract class AbstractCertificate
 {
     use Uuid;
     use Id;
@@ -33,10 +31,6 @@ class Certificate
 
     #[ORM\Column(name: 'language', type: Types::STRING, length: 255, nullable: false)]
     private string $language;
-
-    #[ORM\JoinColumn(name: 'evaluation_id', nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: WorkspaceEvaluation::class)]
-    private ?WorkspaceEvaluation $evaluation;
 
     #[ORM\JoinColumn(name: 'user_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -111,16 +105,6 @@ class Certificate
     public function setLanguage(string $language): void
     {
         $this->language = $language;
-    }
-
-    public function getEvaluation(): ?WorkspaceEvaluation
-    {
-        return $this->evaluation;
-    }
-
-    public function setEvaluation(?WorkspaceEvaluation $evaluation): void
-    {
-        $this->evaluation = $evaluation;
     }
 
     public function getUser(): ?User

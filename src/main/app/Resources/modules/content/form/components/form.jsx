@@ -12,7 +12,11 @@ const FormWrapper = props => props.embedded ?
     {props.children}
   </fieldset>
   :
-  <form id={props.id} className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-md')}>
+  <form
+    id={props.id}
+    className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-md')}
+    onSubmit={(e) => e.preventDefault()}
+  >
     {props.children}
   </form>
 
