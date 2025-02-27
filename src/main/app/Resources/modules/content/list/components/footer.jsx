@@ -15,6 +15,7 @@ const ListFooter = props =>
     {props.pagination &&
       <Pagination
         {...props.pagination}
+        className="ms-auto"
         disabled={props.disabled}
         totalResults={props.totalResults}
       />

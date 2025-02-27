@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 
 import {constants} from '#/main/app/content/pagination/constants'
 import {countPages} from '#/main/app/content/pagination/utils'
@@ -14,11 +15,12 @@ const Pagination = ({
   current = 0,
   pageSize = constants.DEFAULT_PAGE_SIZE,
   availableSizes = constants.AVAILABLE_PAGE_SIZES,
-  disabled = false
+  disabled = false,
+  className
 }) => {
   if (availableSizes[0] < totalResults) {
     return (
-      <div className="d-flex gap-2" role="presentation">
+      <div className={classes('d-flex gap-2', className)} role="presentation">
         <PaginationPages
           disabled={disabled}
           current={current}
@@ -40,6 +42,7 @@ const Pagination = ({
 }
 
 Pagination.propTypes = {
+  className: T.string,
   disabled: T.bool.isRequired,
   totalResults: T.number.isRequired,
   current: T.number,
