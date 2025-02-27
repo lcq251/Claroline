@@ -95,6 +95,7 @@ class ResourceNodeSerializer
                 'updated' => DateNormalizer::normalize($resourceNode->getModificationDate()),
                 'published' => $resourceNode->isPublished(),
                 'active' => $resourceNode->isActive(),
+                'downloadable' => $resourceNode->isDownloadable(),
                 'views' => $resourceNode->getViewsCount(),
             ],
             'workspace' => $serializedWorkspace,
@@ -179,6 +180,7 @@ class ResourceNodeSerializer
         $resourceNode->setMimeType($mimeType);
 
         $this->sipe('meta.published', 'setPublished', $data, $resourceNode);
+        $this->sipe('meta.downloadable', 'setDownloadable', $data, $resourceNode);
         $this->sipe('meta.description', 'setDescription', $data, $resourceNode);
         $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $resourceNode);
 

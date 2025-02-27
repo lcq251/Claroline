@@ -7,10 +7,11 @@ import get from 'lodash/get'
 import {url} from '#/main/app/api'
 import {asset} from '#/main/app/config'
 import {trans, transChoice} from '#/main/app/intl'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
 import {MediaInfo} from '#/main/app/media'
+
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const VideoPlayer = props => {
   let lastSaved = 0
@@ -18,6 +19,7 @@ const VideoPlayer = props => {
   const embedded = useSelector(resourceSelectors.embedded)
   const showHeader = useSelector(resourceSelectors.showHeader)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const downloadable = useSelector(resourceSelectors.downloadable)
 
   return (
     <ResourcePage>
@@ -29,7 +31,7 @@ const VideoPlayer = props => {
           <video
             className="video-js vjs-fluid vjs-fill vjs-waiting rounded-4 overflow-hidden"
             controls={true}
-            data-download={false}
+            data-download={downloadable}
             data-setup={JSON.stringify(Object.assign({
               poster: resourceNode.poster ? asset(resourceNode.poster) : undefined
             }, embedded ? {

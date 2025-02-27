@@ -119,6 +119,9 @@ class ResourceNode implements CrudEntityInterface
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
     private bool $active = true;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $downloadable = false;
+
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $accesses = [];
 
@@ -291,6 +294,16 @@ class ResourceNode implements CrudEntityInterface
         if (!$this->children->contains($resourceNode)) {
             $this->children->add($resourceNode);
         }
+    }
+
+    public function isDownloadable(): bool
+    {
+        return $this->downloadable;
+    }
+
+    public function setDownloadable(bool $downloadable): void
+    {
+        $this->downloadable = $downloadable;
     }
 
     public function isActive(): bool

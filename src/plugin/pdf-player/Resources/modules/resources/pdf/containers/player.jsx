@@ -16,6 +16,7 @@ const PdfPlayer = connect(
   (state) => ({
     nodeId: resourceSelectors.id(state),
     embedded: resourceSelectors.embedded(state),
+    downloadable: resourceSelectors.downloadable(state),
     currentUser: securitySelectors.currentUser(state)
   }),
   (dispatch) => ({

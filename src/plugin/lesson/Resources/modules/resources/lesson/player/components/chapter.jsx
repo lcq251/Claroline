@@ -14,6 +14,7 @@ import {UserMicro} from '#/main/core/user/components/micro'
 import {Datetime} from '#/main/app/components/date'
 import {CALLBACK_BUTTON, LINK_BUTTON, LinkButton, MODAL_BUTTON} from '#/main/app/buttons'
 
+import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-types'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
@@ -107,6 +108,7 @@ const Chapter = props => {
   const lesson = useSelector(selectors.lesson)
   const showNavigation = useSelector(selectors.showNavigation)
   const numbering = useSelector(selectors.numbering)
+  const downloadable = useSelector(resourceSelectors.downloadable)
 
   const chapterNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
 
@@ -136,6 +138,7 @@ const Chapter = props => {
             type: CALLBACK_BUTTON,
             icon: 'fa fa-fw fa-download',
             label: trans('download', {}, 'actions'),
+            displayed: downloadable,
             callback: downloadChapter,
           }, {
             name: 'add-subpage',

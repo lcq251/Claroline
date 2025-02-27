@@ -17,5 +17,7 @@
   "add_workspace_model": "Add a workspace model",
   "add_workspace_models": "Add workspace models",
   "add_location": "Add a location",
-  "add_locations": "Add locations"
+  "add_locations": "Add locations",
+  "add_resource": "Add a resource",
+  "add_resources": "Add resources"
 }

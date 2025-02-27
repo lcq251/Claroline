@@ -204,16 +204,18 @@ const PdfMenu = (props) => {
         />
       }
 
-      <Button
-        className="btn btn-text-body p-2 py-1 focus-ring"
-        type={ASYNC_BUTTON}
-        icon="fa fa-fw fa-file-download"
-        label={trans('download', {}, 'actions')}
-        tooltip="bottom"
-        request={{
-          url: url(['claro_resource_download'], {ids: [props.nodeId]})
-        }}
-      />
+      {props.downloadable &&
+        <Button
+          className="btn btn-text-body p-2 py-1 focus-ring"
+          type={ASYNC_BUTTON}
+          icon="fa fa-fw fa-file-download"
+          label={trans('download', {}, 'actions')}
+          tooltip="bottom"
+          request={{
+            url: url(['claro_resource_download'], {ids: [props.nodeId]})
+          }}
+        />
+      }
     </div>
   )
 }
@@ -226,6 +228,7 @@ PdfMenu.propTypes = {
     label: T.string,
     children: T.arrayOf(T.object)
   })),
+  downloadable: T.bool,
 
   currentPage: T.number,
   pages: T.number,
@@ -387,6 +390,7 @@ class PdfPlayer extends Component {
             scale={this.scale}
             scrollMode={this.state.scrollMode}
             changeScrollMode={this.changeScrollMode}
+            downloadable={this.props.downloadable}
           />
 
           <div
@@ -413,6 +417,7 @@ class PdfPlayer extends Component {
 
 PdfPlayer.propTypes = {
   nodeId: T.string.isRequired,
+  downloadable: T.bool.isRequired,
   embedded: T.bool,
   updateProgression: T.func.isRequired,
   currentUser: T.object,

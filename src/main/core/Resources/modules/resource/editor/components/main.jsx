@@ -59,7 +59,6 @@ const ResourceEditor = (props) => {
       close={resourcePath}
       onSave={refresh}
       canAdministrate={hasPermission('administrate', resourceNode || {})}
-      defaultPage={props.defaultPage}
       overviewPage={props.overviewPage}
       appearancePage={props.appearancePage}
       historyPage={props.historyPage}
@@ -87,7 +86,6 @@ const ResourceEditor = (props) => {
 }
 
 ResourceEditor.propTypes = {
-  defaultPage: T.string,
   // standard pages
   overviewPage: T.elementType,
   appearancePage: T.elementType,
@@ -98,6 +96,7 @@ ResourceEditor.propTypes = {
   pages: T.arrayOf(T.shape({
 
   })),
+
   /**
    * A func that returns some data to add to the Editor store on initialization.
    */
@@ -106,7 +105,6 @@ ResourceEditor.propTypes = {
 }
 
 ResourceEditor.defaultProps = {
-  defaultPage: 'overview',
   overviewPage: ResourceEditorOverview,
   appearancePage: ResourceEditorAppearance,
   historyPage: ResourceEditorHistory,

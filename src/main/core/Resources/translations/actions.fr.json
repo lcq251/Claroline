@@ -17,5 +17,7 @@
   "add_workspace_model": "Ajouter un modèle",
   "add_workspace_models": "Ajouter des modèles",
   "add_location": "Ajouter un lieu",
-  "add_locations": "Ajouter des lieux"
+  "add_locations": "Ajouter des lieux",
+  "add_resource": "Ajouter une ressource",
+  "add_resources": "Ajouter des ressources"
 }

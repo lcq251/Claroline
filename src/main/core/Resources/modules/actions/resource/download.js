@@ -1,9 +1,12 @@
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+
 import {trans} from '#/main/app/intl/translation'
 import {DOWNLOAD_BUTTON} from '#/main/app/buttons'
 import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
-import {getType} from '#/main/core/resource/utils'
-import isEmpty from 'lodash/isEmpty'
+
+import {supportDownload} from '#/main/core/resource/utils'
 
 /**
  * Downloads resource nodes.
@@ -11,7 +14,11 @@ import isEmpty from 'lodash/isEmpty'
  * @param {Array} resourceNodes - the list of resource nodes on which we want to execute the action.
  */
 export default (resourceNodes) => {
-  const processable = resourceNodes.filter(resourceNode => hasPermission('open', resourceNode) && getType(resourceNode).downloadable)
+  const processable = resourceNodes.filter(resourceNode =>
+    hasPermission('open', resourceNode)
+    && supportDownload(resourceNode)
+    && get(resourceNode, 'meta.downloadable', false)
+  )
 
   return {
     name: 'download',

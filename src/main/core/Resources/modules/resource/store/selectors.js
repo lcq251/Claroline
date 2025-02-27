@@ -102,6 +102,11 @@ const published = createSelector(
   (meta) => meta.published
 )
 
+const downloadable = createSelector(
+  [meta],
+  (meta) => meta.downloadable
+)
+
 const resourceType = createSelector(
   [meta],
   (meta) => meta.type
@@ -179,6 +184,7 @@ export const selectors = {
   parent,
   meta,
   published,
+  downloadable,
   resourceType,
   mimeType,
   // evaluation

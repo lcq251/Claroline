@@ -32,6 +32,12 @@ function supportEvaluation(resourceNode) {
   return !!resourceType && resourceType.evaluation
 }
 
+function supportDownload(resourceNode) {
+  const resourceType = getType(resourceNode)
+
+  return !!resourceType && resourceType.downloadable
+}
+
 /**
  * Loads the available actions apps from configuration.
  *
@@ -143,6 +149,7 @@ export {
   getType,
   getTypes,
   supportEvaluation,
+  supportDownload,
   getActions,
   getDefaultAction
 }

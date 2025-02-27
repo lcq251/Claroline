@@ -16,6 +16,7 @@ const ImagePlayer = () => {
   const embedded = useSelector(resourceSelectors.embedded)
   const showHeader = useSelector(resourceSelectors.showHeader)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const downloadable = useSelector(resourceSelectors.downloadable)
 
   return (
     <ResourcePage>
@@ -35,7 +36,9 @@ const ImagePlayer = () => {
               className="img-fluid mx-auto rounded-4"
               src={url(['apiv2_image_file', {id: resourceNode.id}])}
               onContextMenu={(e)=> {
-                e.preventDefault()
+                if (!downloadable) {
+                  e.preventDefault()
+                }
               }}
             />
           </ModalButton>

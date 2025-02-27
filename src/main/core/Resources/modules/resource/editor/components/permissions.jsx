@@ -10,6 +10,7 @@ import {EditorPage} from '#/main/app/editor'
 import {ContentRights} from '#/main/app/content/components/rights'
 
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
+import {supportDownload} from '#/main/core/resource/utils'
 
 const restrictedByDates = (formData) => get(formData, 'resourceNode.restrictions.enableDates') || !isEmpty(get(formData, 'resourceNode.restrictions.dates'))
 const restrictedByCode = (formData) => get(formData, 'resourceNode.restrictions.enableCode') || !!get(formData, 'resourceNode.restrictions.code')
@@ -30,12 +31,13 @@ const ResourceEditorPermissions = (props) => {
           icon: 'fa fa-fw fa-download',
           title: trans('download'),
           primary: true,
+          displayed: supportDownload(props.resourceNode),
           fields: [
             {
-              name: 'resourceNode.downloadable',
+              name: 'resourceNode.meta.downloadable',
               type: 'boolean',
-              label: trans('Autoriser le téléchargement'),
-              help: trans('Les utilisateurs ayant la permission "Ouvrir" peuvent télécharger une copie locale de la ressource.')
+              label: trans('allow_download', {}, 'resource'),
+              help: trans('allow_download_help', {}, 'resource')
             }
           ]
         }, {
