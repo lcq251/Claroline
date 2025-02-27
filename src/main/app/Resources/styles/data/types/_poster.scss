@@ -1,19 +1,6 @@
 
-.poster-control {
-
-}
-
-.poster-preview {
-  max-width: 100%;
-  //border-radius: $input-border-radius;
-
-  .poster {
-    max-width: 100%;
-    //border-radius: $input-border-radius;
-  }
-}
-
-.poster-placeholder {
-  background: var(--#{$prefix}tertiary-bg);
-  border-radius: $input-border-radius;
+.posters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: map-get($spacers, 3);
 }
