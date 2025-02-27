@@ -46,10 +46,10 @@ class Paper
     private bool $interrupted = true;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $score;
+    private ?float $score = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $total;
+    private ?float $total = null;
 
     /**
      * Anonymize the user information when showing the paper.

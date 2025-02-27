@@ -1,12 +1,12 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import get from 'lodash/get'
 import isNil from 'lodash/isNil'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
 
-import {actions} from '#/main/evaluation/sequence/editor/store'
+import {actions, selectors} from '#/main/evaluation/sequence/editor/store'
 
 const enableScore = (formData) => get(formData, 'evaluation._enableScore', false)
   || !isNil(get(formData, 'evaluation.scoreTotal'))
@@ -38,6 +38,7 @@ const enableFailureMessage = (formData) => get(formData, 'evaluation._enableFail
 const SequenceEditorEvaluation = () => {
   const dispatch = useDispatch()
   const updateProp = (propPath, propValue) => dispatch(actions.update(propValue, propPath))
+  const editedSequence = useSelector(selectors.data)
 
   return (
     <EditorPage
@@ -181,7 +182,7 @@ const SequenceEditorEvaluation = () => {
                   displayed: enableCustomCertificate,
                   required: true,
                   options: {
-                    templateType: 'sequence_success_certificate'
+                    templateType: enableSuccessCondition(editedSequence) ? 'evaluation_success_certificate' : 'evaluation_participation_certificate'
                   }
                 }
               ]
