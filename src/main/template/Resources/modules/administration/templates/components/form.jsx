@@ -1,6 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
@@ -15,6 +14,8 @@ import {useSelector} from 'react-redux'
 const TemplateForm = (props) => {
   const templateType = useSelector(selectors.templateType)
 
+  console.log(templateType)
+
   return (
     <FormData
       level={2}
@@ -22,12 +23,12 @@ const TemplateForm = (props) => {
       buttons={true}
       cancel={{
         type: LINK_BUTTON,
-        target: props.path + `/${templateType.type}`,
+        target: props.path + `/${templateType.name}`,
         exact: true
       }}
       save={{
         type: CALLBACK_BUTTON,
-        callback: () => props.saveForm(templateType, props.template.id, props.new)
+        callback: () => props.saveForm(templateType.name, props.template.id, props.new)
       }}
       definition={[
         {
