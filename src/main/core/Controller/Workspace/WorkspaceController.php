@@ -314,7 +314,7 @@ class WorkspaceController extends AbstractCrudController
     ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $workspace, [], true);
 
-        $workspaceRoles = $this->roleManager->getWorkspaceRoles($workspace);
+        // $workspaceRoles = $this->roleManager->getWorkspaceRoles($workspace);
         $finderQuery->addFilter('workspace', $workspace);
         /*$finderQuery->addFilter('roles', array_map(function (Role $role) {
             return $role->getName();

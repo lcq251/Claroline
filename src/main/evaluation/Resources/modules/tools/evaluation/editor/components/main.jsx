@@ -7,7 +7,6 @@ import {ToolEditor, selectors as toolSelectors} from '#/main/core/tool'
 
 import {EvaluationEditorOverview} from '#/main/evaluation/tools/evaluation/editor/components/overview'
 import {EvaluationEditorActions} from '#/main/evaluation/tools/evaluation/editor/components/actions'
-import {EvaluationToolAppearance} from '#/main/evaluation/tools/evaluation/editor/components/appearance'
 import {EvaluationEditorSkill} from '#/main/evaluation/tools/evaluation/editor/skill/containers/main'
 
 const EvaluationEditor = () => {
@@ -20,7 +19,6 @@ const EvaluationEditor = () => {
       })}
       overviewPage={EvaluationEditorOverview}
       actionsPage={EvaluationEditorActions}
-      appearancePage={EvaluationToolAppearance}
       pages={[
         {
           name: 'skills',

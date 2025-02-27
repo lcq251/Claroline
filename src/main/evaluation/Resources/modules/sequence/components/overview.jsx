@@ -162,7 +162,7 @@ const SequenceOverview = () => {
   return (
     <SequencePage>
       <PageContent poster={get(sequence, 'poster')}>
-        <PageAffix
+        {/*<PageAffix
           affix={
             <SequenceOverviewAffix
               actions={actions}
@@ -170,7 +170,7 @@ const SequenceOverview = () => {
               sequence={sequence}
             />
           }
-        >
+        >*/}
           <SequenceOverviewContent
             path={sequencePath}
             sequence={sequence}
@@ -214,7 +214,7 @@ const SequenceOverview = () => {
               }
             </PageSection>
           </SequenceOverviewContent>
-        </PageAffix>
+        {/*</PageAffix>*/}
       </PageContent>
     </SequencePage>
   )

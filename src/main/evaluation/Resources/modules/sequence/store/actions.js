@@ -18,13 +18,12 @@ actions.updateStepProgression = makeActionCreator(STEP_UPDATE_PROGRESSION, 'step
 
 actions.reload = makeActionCreator(SEQUENCE_RELOAD, 'sequence')
 
-actions.updateProgression = (stepId, status = constants.STATUS_SEEN, silent = true) => ({
+actions.updateProgression = (stepId, silent = true) => ({
   [API_REQUEST]: {
     silent: silent,
     url: ['apiv2_sequence_evaluation_update', {id: stepId}],
     request: {
-      method: 'PUT',
-      body: JSON.stringify({status: status})
+      method: 'PUT'
     },
     success: (response, dispatch) => {
       dispatch(actions.updateUserEvaluation(response.userEvaluation, response.resourceEvaluations))

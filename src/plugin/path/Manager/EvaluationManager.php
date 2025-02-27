@@ -11,7 +11,7 @@ use Claroline\EvaluationBundle\Library\Checker\ScoreChecker;
 use Claroline\EvaluationBundle\Library\EvaluationAggregator;
 use Claroline\EvaluationBundle\Library\GenericEvaluation;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
-use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Innova\PathBundle\Entity\Path\Path;
 use Innova\PathBundle\Entity\Step;

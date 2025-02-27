@@ -97,7 +97,7 @@ const DirectoryPlayer = (props) => {
               {...{
                 name: 'add',
                 type: MODAL_BUTTON,
-                label: trans('add_resource', {}, 'resource'),
+                label: trans('add_resource', {}, 'actions'),
                 modal: [MODAL_RESOURCE_CREATION, {
                   parent: props.currentNode,
                   add: props.updateNodes

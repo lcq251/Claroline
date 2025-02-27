@@ -36,15 +36,16 @@ registry.add('ClarolineCoreBundle', {
 
     resource: {
       // all resources
-      'configure': () => { return import(/* webpackChunkName: "core-action-resource-configure" */   '#/main/core/actions/resource/configure') },
-      'copy'     : () => { return import(/* webpackChunkName: "core-action-resource-copy" */        '#/main/core/actions/resource/copy') },
-      'delete'   : () => { return import(/* webpackChunkName: "core-action-resource-delete" */      '#/main/core/actions/resource/delete') },
-      'download'   : () => { return import(/* webpackChunkName: "core-action-resource-export" */      '#/main/core/actions/resource/download') },
-      'move'     : () => { return import(/* webpackChunkName: "core-action-resource-move" */        '#/main/core/actions/resource/move') },
-      'open'     : () => { return import(/* webpackChunkName: "core-action-resource-open" */        '#/main/core/actions/resource/open') },
-      'publish'  : () => { return import(/* webpackChunkName: "core-action-resource-publish" */     '#/main/core/actions/resource/publish') },
-      'restore'  : () => { return import(/* webpackChunkName: "core-action-resource-restore" */     '#/main/core/actions/resource/restore') },
-      'unpublish': () => { return import(/* webpackChunkName: "core-action-resource-unpublish" */   '#/main/core/actions/resource/unpublish') },
+      'configure'     : () => { return import(/* webpackChunkName: "core-action-resource-configure" */ '#/main/core/actions/resource/configure') },
+      'copy'          : () => { return import(/* webpackChunkName: "core-action-resource-copy" */      '#/main/core/actions/resource/copy') },
+      'delete'        : () => { return import(/* webpackChunkName: "core-action-resource-delete" */    '#/main/core/actions/resource/delete') },
+      'download'      : () => { return import(/* webpackChunkName: "core-action-resource-export" */    '#/main/core/actions/resource/download') },
+      'move'          : () => { return import(/* webpackChunkName: "core-action-resource-move" */      '#/main/core/actions/resource/move') },
+      'open'          : () => { return import(/* webpackChunkName: "core-action-resource-open" */      '#/main/core/actions/resource/open') },
+      'publish'       : () => { return import(/* webpackChunkName: "core-action-resource-publish" */   '#/main/core/actions/resource/publish') },
+      'restore'       : () => { return import(/* webpackChunkName: "core-action-resource-restore" */   '#/main/core/actions/resource/restore') },
+      'unpublish'     : () => { return import(/* webpackChunkName: "core-action-resource-unpublish" */ '#/main/core/actions/resource/unpublish') },
+      'show-dashboard': () => { return import(/* webpackChunkName: "core-action-resource-dashboard" */ '#/main/core/actions/resource/show-dashboard') },
 
       // directory resource
       'add'       : () => { return import(/* webpackChunkName: "core-action-resource-add" */       '#/main/core/resources/directory/actions/add') },
@@ -126,10 +127,9 @@ registry.add('ClarolineCoreBundle', {
 
   data: {
     types: {
-      'location'          : () => { return import(/* webpackChunkName: "core-data-type-location" */  '#/main/core/data/types/location') },
-      'resource'          : () => { return import(/* webpackChunkName: "core-data-type-resource" */  '#/main/core/data/types/resource') },
-      'resources'         : () => { return import(/* webpackChunkName: "core-data-type-resources" */ '#/main/core/data/types/resources') },
-      'workspace'         : () => { return import(/* webpackChunkName: "core-data-type-workspace" */ '#/main/core/data/types/workspace') }
+      'location' : () => { return import(/* webpackChunkName: "core-data-type-location" */  '#/main/core/data/types/location') },
+      'resource' : () => { return import(/* webpackChunkName: "core-data-type-resource" */  '#/main/core/data/types/resource') },
+      'workspace': () => { return import(/* webpackChunkName: "core-data-type-workspace" */ '#/main/core/data/types/workspace') }
     },
     sources: {
       'resources'    : () => { return import(/* webpackChunkName: "core-data-source-resources" */    '#/main/core/data/sources/resources') },

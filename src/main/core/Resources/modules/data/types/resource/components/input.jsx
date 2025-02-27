@@ -1,59 +1,22 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
-import {route} from '#/main/core/resource/routing'
-import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
-import {ResourceCard} from '#/main/core/resource/components/card'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {MODAL_RESOURCES} from '#/main/core/modals/resources'
+import {EntityInput} from '#/main/app/data/types/entity'
+import isEmpty from 'lodash/isEmpty'
+import {ResourceCard} from '#/main/core/resource/components/card'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {route} from '#/main/core/resource'
+import {Button} from '#/main/app/action'
+import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
+import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 
-const ResourceInput = props => {
-  if (!isEmpty(props.value) && !props.embedded) {
-    return (
-      <ResourceCard
-        data={props.value}
-        size="xs"
-        primaryAction={{
-          type: LINK_BUTTON,
-          label: trans('open', {}, 'actions'),
-          target: route(props.value)
-        }}
-        actions={[
-          {
-            name: 'replace',
-            type: MODAL_BUTTON,
-            icon: 'fa fa-fw fa-recycle',
-            label: trans('replace', {}, 'actions'),
-            disabled: props.disabled,
-            modal: [MODAL_RESOURCES, {
-              ...props.picker,
-              selectAction: (selected) => ({
-                type: CALLBACK_BUTTON,
-                label: trans('replace', {}, 'actions'),
-                callback: () => props.onChange(selected[0])
-              })
-            }]
-          }, {
-            name: 'delete',
-            type: CALLBACK_BUTTON,
-            icon: 'fa fa-fw fa-trash',
-            label: trans('delete', {}, 'actions'),
-            dangerous: true,
-            disabled: props.disabled,
-            callback: () => props.onChange(null)
-          }
-        ]}
-      />
-    )
-  }
-  else if (!isEmpty(props.value) && props.embedded) {
+const ResourceInputOld = props => {
+  if (!isEmpty(props.value) && props.embedded) {
     return (
       <div id={props.id} className="position-relative">
         <Button
@@ -100,6 +63,13 @@ const ResourceInput = props => {
     </ContentPlaceholder>
   )
 }
+
+const ResourceInput = props =>
+  <EntityInput
+    {...props}
+    add={trans(props.multiple ? 'add_resources' : 'add_resource', {}, 'actions')}
+    pickerType={MODAL_RESOURCES}
+  />
 
 implementPropTypes(ResourceInput, DataInputTypes, {
   value: T.shape(

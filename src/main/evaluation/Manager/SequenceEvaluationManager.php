@@ -130,7 +130,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         return $stepsProgression;
     }
 
-    public function update(Step $step, User $user, string $status): SequenceProgression
+    public function update(Step $step, User $user): SequenceProgression
     {
         // Retrieve the current progression for this step
         $progression = $this->progressionRepo->findOneBy([
@@ -143,17 +143,14 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             $progression = new SequenceProgression();
             $progression->setStep($step);
             $progression->setUser($user);
+            $progression->setStatus('seen');
+
+            $this->om->persist($progression);
+            $this->om->flush();
+
+            // recompute sequence progression for user
+            $this->computeEvaluation($step->getSequence(), $user);
         }
-
-        if ('seen' !== $status || 'unseen' === $progression->getStatus()) {
-            $progression->setStatus($status);
-        }
-
-        $this->om->persist($progression);
-        $this->om->flush();
-
-        // recompute sequence progression for user
-        $this->computeEvaluation($step->getSequence(), $user);
 
         return $progression;
     }

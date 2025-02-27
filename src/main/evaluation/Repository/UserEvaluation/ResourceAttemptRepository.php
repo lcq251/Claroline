@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Repository;
+namespace Claroline\EvaluationBundle\Repository\UserEvaluation;
 
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;

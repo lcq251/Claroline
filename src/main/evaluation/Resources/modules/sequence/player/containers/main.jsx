@@ -20,8 +20,8 @@ const SequencePlayer = connect(
     resourceEvaluations: selectors.resourceEvaluations(state)
   }),
   dispatch => ({
-    updateProgression(stepId, status = constants.STATUS_SEEN, silent) {
-      dispatch(actions.updateProgression(stepId, status, silent))
+    updateProgression(stepId, silent) {
+      dispatch(actions.updateProgression(stepId, silent))
     },
     enableNavigation() {
       dispatch(actions.enableNavigation())

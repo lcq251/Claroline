@@ -53,7 +53,7 @@ const SequenceEditorAppearance = () => {
               }
             }
           ]
-        }, {
+        }, /*{
           name: 'opening',
           icon: 'fa fa-fw fa-sign-in',
           title: trans('opening_parameters'),
@@ -75,54 +75,37 @@ const SequenceEditorAppearance = () => {
               }
             }
           ]
-        }, {
+        }, */{
           title: trans('Bouton "Quitter"'),
-          description: trans('Configurez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
+          description: trans('Personnalizez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
           primary: true,
+          enabled: (sequence) => !!get(sequence, 'end.back.type') || get(sequence, 'end.back._enabled'),
+          onToggle: (enabled) => {
+            updateProp('end.back._enabled', enabled)
+            if (!enabled) {
+              updateProp('end.back.type', null)
+              updateProp('end.back.label', null)
+            }
+          },
           fields: [
             {
-              name: 'end.back._enabled',
-              type: 'boolean',
-              label: trans('Personnaliser le bouton "Quitter"', {}, 'resource'),
-              calculated: (path) => !!get(path, 'end.back.type') || get(path, 'end.back._enabled'),
-              onChange: (enabled) => {
-                if (!enabled) {
-                  updateProp('end.back.type', null)
-                  updateProp('end.back.label', null)
-                  updateProp('end.back.target', null)
+              name: 'end.back.label',
+              type: 'string',
+              label: trans('resource_end_back_label', {}, 'resource'),
+              placeholder: trans('exit', {}, 'actions'),
+              //displayed: (path) => (!!get(path, 'end.back.type') || get(path, 'end.back._enabled'))
+            }, {
+              name: 'end.back.type',
+              type: 'choice',
+              //displayed: (path) => (!!get(path, 'end.back.type') || get(path, 'end.back._enabled')),
+              label: trans('resource_end_back_type', {}, 'resource'),
+              required: true,
+              options: {
+                choices: {
+                  workspace: trans('resource_end_back_workspace', {}, 'resource'),
+                  desktop: trans('resource_end_back_desktop', {}, 'resource')
                 }
-              },
-              linked: [
-                {
-                  name: 'end.back.label',
-                  type: 'string',
-                  label: trans('resource_end_back_label', {}, 'resource'),
-                  placeholder: trans('exit', {}, 'actions'),
-                  displayed: (path) => (!!get(path, 'end.back.type') || get(path, 'end.back._enabled'))
-                }, {
-                  name: 'end.back.type',
-                  displayed: (path) => (!!get(path, 'end.back.type') || get(path, 'end.back._enabled')),
-                  label: trans('resource_end_back_type', {}, 'resource'),
-                  type: 'choice',
-                  required: true,
-                  options: {
-                    choices: {
-                      workspace: trans('resource_end_back_workspace', {}, 'resource'),
-                      desktop: trans('resource_end_back_desktop', {}, 'resource'),
-                      resource: trans('resource_end_back_resource', {}, 'resource')
-                    }
-                  },
-                  linked: [
-                    {
-                      name: 'end.back.target',
-                      type: 'resource',
-                      required: true,
-                      label: trans('resource'),
-                      displayed: (path) => 'resource' === get(path, 'end.back.type')
-                    }
-                  ]
-                }
-              ]
+              }
             }
           ]
         }

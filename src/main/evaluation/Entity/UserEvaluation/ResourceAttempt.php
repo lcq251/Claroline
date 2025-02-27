@@ -12,7 +12,7 @@
 namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
 use Doctrine\DBAL\Types\Types;
-use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

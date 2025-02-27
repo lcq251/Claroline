@@ -33,7 +33,8 @@ registry.add('ClarolineEvaluationBundle', {
       'delete'   : () => { return import(/* webpackChunkName: "evaluation-action-sequence-delete" */    '#/main/evaluation/actions/sequence/delete') },
       'open'     : () => { return import(/* webpackChunkName: "evaluation-action-sequence-open" */      '#/main/evaluation/actions/sequence/open') },
       'publish'  : () => { return import(/* webpackChunkName: "evaluation-action-sequence-publish" */   '#/main/evaluation/actions/sequence/publish') },
-      'unpublish': () => { return import(/* webpackChunkName: "evaluation-action-sequence-unpublish" */ '#/main/evaluation/actions/sequence/unpublish') }
+      'unpublish': () => { return import(/* webpackChunkName: "evaluation-action-sequence-unpublish" */ '#/main/evaluation/actions/sequence/unpublish') },
+      'show-dashboard': () => { return import(/* webpackChunkName: "evaluation-action-sequence-dashboard" */   '#/main/evaluation/actions/sequence/show-dashboard') }
     },
 
     workspace_evaluation: {

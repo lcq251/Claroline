@@ -42,9 +42,10 @@ const EvaluationContentCard = (props) => {
       poster={get(props.content, 'thumbnail')}
       name={get(props.content, 'name')}
       title={get(props.content, 'name')}
+      contentText={get(props.content, 'meta.description')}
     >
       <div className={classes('d-flex gap-2', {
-        'flex-column mt-3': 'col' === props.orientation,
+        'flex-column mt-4': 'col' === props.orientation,
         'flex-row align-items-center': 'row' === props.orientation
       })} role="presentation">
         <ProgressBar

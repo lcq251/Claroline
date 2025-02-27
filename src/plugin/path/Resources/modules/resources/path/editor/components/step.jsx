@@ -116,10 +116,11 @@ const PathEditorStep = props => {
               linked: [
                 {
                   name: 'secondaryResources',
-                  type: 'resources',
+                  type: 'resource',
                   label: trans('secondary_resources', {}, 'path'),
                   displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
                   options: {
+                    multiple: true,
                     picker: {
                       contextId: workspaceId
                     }

@@ -21,7 +21,7 @@ const SecondaryResources = props =>
     {props.resources.map(resource =>
       <ResourceCard
         key={resource.id}
-        size="xs"
+        size="sm"
         orientation="row"
         primaryAction={{
           type: URL_BUTTON,

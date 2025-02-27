@@ -14,11 +14,11 @@ const PickerButton = props =>
     type={MODAL_BUTTON}
     icon={props.icon}
     label={props.label}
-    modal={[props.type, {
-      url: props.url,
+    modal={[props.type, Object.assign({}, props.picker, {
+      // url: props.url,
       title: props.title,
       subtitle: props.help,
-      filters: props.filters,
+      // filters: props.filters,
       multiple: props.multiple,
       selectAction: (selected) => ({
         type: CALLBACK_BUTTON,
@@ -40,7 +40,7 @@ const PickerButton = props =>
           }
         }
       })
-    }]}
+    })]}
     size={props.size}
     disabled={props.disabled}
   />
@@ -48,11 +48,18 @@ const PickerButton = props =>
 PickerButton.propTypes = {
   className: T.string,
   type: T.string.isRequired,
-  url: T.oneOfType([T.string, T.array]),
+  picker: T.shape({
+    url: T.oneOfType([T.string, T.array]),
+    title: T.string,
+    filters: T.arrayOf(T.shape({
+      // list filter types
+    }))
+  }),
+  // url: T.oneOfType([T.string, T.array]),
   title: T.string,
-  filters: T.arrayOf(T.shape({
+  /*filters: T.arrayOf(T.shape({
     // list filter types
-  })),
+  })),*/
   value: T.oneOfType([
     T.object, // multiple = false
     T.arrayOf(T.object) // multiple = true
@@ -74,6 +81,7 @@ const EntityInput = (props) => {
           label={props.add}
           title={props.label}
           {...props.picker}
+          picker={props.picker}
           type={props.pickerType}
           size={props.size}
           value={props.value}

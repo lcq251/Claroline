@@ -1,4 +1,5 @@
 import React from 'react'
+import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
@@ -8,13 +9,17 @@ import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors} from '#/main/core/resource/store'
 import {ResourceDashboardActivity} from '#/main/core/resource/dashboard/components/activity'
 import {ResourceEvaluations} from '#/main/evaluation/resource/evaluation'
+import {ResourceDashboardOverview} from '#/main/core/resource/dashboard/components/overview'
+import {ResourceDashboardStats} from '#/main/core/resource/dashboard/components/stats'
 
-const ResourceDashboard = () => {
+const ResourceDashboard = (props) => {
   const resourcePath = useSelector(selectors.path)
   const hasEvaluation = useSelector(selectors.hasEvaluation)
 
   return (
-    <ResourcePage title={trans('dashboard')}>
+    <ResourcePage
+      title={trans('dashboard')}
+    >
       <Dashboard
         path={resourcePath+'/dashboard'}
         pages={[
@@ -22,7 +27,7 @@ const ResourceDashboard = () => {
             name: 'overview',
             icon: 'fa fa-temperature-half',
             title: trans('overview'),
-            render: () => <></>
+            component: props.overviewPage || ResourceDashboardOverview
           }, {
             name: 'results',
             icon: 'fa fa-award',
@@ -33,7 +38,7 @@ const ResourceDashboard = () => {
             name: 'stats',
             icon: 'fa fa-pie-chart',
             title: trans('statistics'),
-            render: () => <></>
+            component: props.statsPage || ResourceDashboardStats
           }, {
             name: 'activity',
             icon: 'fa fa-line-chart',
@@ -44,6 +49,11 @@ const ResourceDashboard = () => {
       />
     </ResourcePage>
   )
+}
+
+ResourceDashboard.propTypes = {
+  overviewPage: T.elementType,
+  statsPage: T.elementType
 }
 
 export {

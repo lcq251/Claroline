@@ -1,36 +1,29 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 
-import {trans} from '#/main/app/intl/translation'
-import {MODAL_BUTTON} from '#/main/app/buttons'
+import {selectors} from '#/main/core/resource/dashboard/store'
 
-import {ResourceCard} from '#/main/evaluation/resource/components/card'
-import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
-import {selectors} from '#/main/evaluation/resource/evaluation/store'
+import {Routes} from '#/main/app/router'
+import {ResourceEvaluationList} from '#/main/evaluation/resource/evaluation/components/list'
 
-import {PageContent, PageSection} from '#/main/app/page'
-import {EvaluationList} from '#/main/evaluation/components/list'
 
-const ResourceEvaluations = (props) =>
-  <PageContent className="d-flex">
-    <PageSection size="full" className="d-flex flex-fill">
-      <EvaluationList
-        className="mb-5"
-        name={selectors.STORE_NAME}
-        url={['apiv2_resource_evaluation_list', {nodeId: props.nodeId}]}
-        primaryAction={(row) => ({
-          name: 'about',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-circle-info',
-          label: trans('show-info', {}, 'actions'),
-          modal: [MODAL_RESOURCE_EVALUATIONS, {
-            userEvaluation: row
-          }]
-        })}
-        card={ResourceCard}
-      />
-    </PageSection>
-  </PageContent>
+const ResourceEvaluations = () => {
+  const dashboardPath = useSelector(selectors.path)
+
+  return (
+    <Routes
+      path={dashboardPath+'/evaluations'}
+      routes={[
+        {
+          path: '/',
+          exact: true,
+          component: ResourceEvaluationList
+        }
+      ]}
+    />
+  )
+}
 
 ResourceEvaluations.propTypes = {
   nodeId: T.string.isRequired

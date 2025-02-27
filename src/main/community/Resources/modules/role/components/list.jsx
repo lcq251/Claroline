@@ -60,10 +60,7 @@ const RoleListComponent = props => {
           name: 'user',
           type: 'user',
           label: trans('user'),
-          filterable: false,
-          options: {
-            placeholder: false
-          }
+          filterable: false
         }
       ].concat(props.customDefinition)}
 

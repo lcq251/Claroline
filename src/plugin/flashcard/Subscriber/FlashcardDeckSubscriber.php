@@ -10,7 +10,7 @@ use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
-use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 use Claroline\FlashcardBundle\Entity\FlashcardDeck;
 use Claroline\FlashcardBundle\Manager\EvaluationManager;
 use Claroline\FlashcardBundle\Manager\FlashcardManager;

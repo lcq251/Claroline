@@ -88,8 +88,7 @@ class SequenceEvaluationController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Step $step,
         #[CurrentUser]
-        ?User $user,
-        Request $request
+        ?User $user
     ): JsonResponse {
         if (null === $user) {
             return new JsonResponse(null, 204);
@@ -99,7 +98,7 @@ class SequenceEvaluationController
 
         $this->checkPermission('OPEN', $sequence, [], true);
 
-        $stepProgression = $this->evaluationManager->update($step, $user, $this->decodeRequest($request)['status']);
+        $stepProgression = $this->evaluationManager->update($step, $user);
 
         $userEvaluation = $this->evaluationManager->getUserEvaluation($sequence, $user, false);
         // get embedded resources evaluations

@@ -35,5 +35,9 @@
   "user_offline_help": "Offline",
   "user_dont_disturb": "Do not disturb",
   "form_validating_desc": "Some errors or missing information prevent saving data.",
-  "recent_activity": "Recent activity"
+  "recent_activity": "Recent activity",
+  "numbering_none": "None",
+  "numbering_numeric": "Numeric",
+  "numbering_literal": "Literal",
+  "numbering_custom": "Custom"
 }

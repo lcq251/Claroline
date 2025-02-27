@@ -10,11 +10,10 @@ const dataType = {
   meta: {
     creatable: false,
     icon: 'fa fa-fw fa fa-folder',
-    label: trans('resource', {}, 'data'),
+    label: trans('resource_embedded', {}, 'data'),
     description: trans('resource_desc', {}, 'data')
   },
-  // todo : maybe create a validator based on propTypes (would be helpful for this)
-  //validate: (value, options) => chain(value, options, [string, match, lengthInRange]),
+  render: (raw) => raw && raw.map(r => r.name).join(', '),
   components: {
     table: ResourceCell,
     details: ResourceDisplay,

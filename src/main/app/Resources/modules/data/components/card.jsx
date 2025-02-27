@@ -171,7 +171,7 @@ const DataCard = props => {
           </p>
         }
 
-        {props.loaded && !props.children && -1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
+        {props.loaded && -1 !== props.display.indexOf('description') && ('xs' !== props.size || !isEmpty(props.contentText)) &&
           <p className={classes('data-card-description text-body-secondary', {
             'mb-0': -1 !== ['xs', 'sm'].indexOf(props.size) || !props.meta || (-1 === props.display.indexOf('meta') && -1 === props.display.indexOf('flags'))
           })}>

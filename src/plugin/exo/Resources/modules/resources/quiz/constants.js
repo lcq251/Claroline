@@ -55,9 +55,9 @@ const NUMBERING_LITERAL = 'litteral'
 const NUMBERING_NUMERIC = 'numeric'
 
 const QUIZ_NUMBERINGS = {
-  [NUMBERING_NONE]   : trans('quiz_numbering_none', {}, 'quiz'),
-  [NUMBERING_NUMERIC]: trans('quiz_numbering_numeric', {}, 'quiz'),
-  [NUMBERING_LITERAL]: trans('quiz_numbering_literal', {}, 'quiz')
+  [NUMBERING_NONE]   : trans('numbering_none'),
+  [NUMBERING_NUMERIC]: trans('numbering_numeric'),
+  [NUMBERING_LITERAL]: trans('numbering_literal')
 }
 
 export const constants = {

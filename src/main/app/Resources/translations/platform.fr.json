@@ -42,5 +42,10 @@
   "main_menu": "Menu principal de l'application",
   "context_menu": "Menu de l'espace de travail",
   "quick_access_links": "Liens d'accès rapide",
-  "quick_access_links_help": "Accédez directement à la section de la page qui vous intéresse."
+  "quick_access_links_help": "Accédez directement à la section de la page qui vous intéresse.",
+
+  "numbering_none": "Aucune",
+  "numbering_numeric": "Numérique",
+  "numbering_literal": "Littérale",
+  "numbering_custom": "Customisée"
 }

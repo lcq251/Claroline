@@ -82,6 +82,7 @@ const SequenceEditorStep = props => {
           ]
         }, {
           title: trans('activity'),
+          description: trans('Choisissez l\'activité à réaliser dans le cadre de cette étape.'),
           primary: true,
           fields: [
             {
@@ -91,7 +92,6 @@ const SequenceEditorStep = props => {
               hideLabel: true,
               options: {
                 embedded: true,
-                showHeader: true,
                 picker: {
                   contextId: workspace.id
                 }
@@ -143,25 +143,18 @@ const SequenceEditorStep = props => {
                 unit: trans('minutes')
               }
             }, {
-              name: '_enableSecondaryResources',
-              type: 'boolean',
-              label: trans('Ajouter des ressources complémentaires', {}, 'path'),
+              name: 'secondaryResources',
+              type: 'resource',
+              label: trans('secondary_resources', {}, 'path'),
               help: trans('Ajoutez des liens vers les ressources qui peuvent être utiles à la réalisation de l\'activité.', {}, 'path'),
-              calculated: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
-              linked: [
-                {
-                  name: 'secondaryResources',
-                  type: 'resources',
-                  label: trans('secondary_resources', {}, 'path'),
-                  displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
-                  required: true,
-                  options: {
-                    picker: {
-                      contextId: workspace.id
-                    }
-                  }
+              // displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
+              //required: true,
+              options: {
+                multiple: true,
+                picker: {
+                  contextId: workspace.id
                 }
-              ]
+              }
             }
           ]
         }

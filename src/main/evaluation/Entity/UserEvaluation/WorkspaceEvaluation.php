@@ -15,7 +15,7 @@ use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Finder\WorkspaceEvaluationType;
-use Claroline\EvaluationBundle\Repository\WorkspaceEvaluationRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\WorkspaceEvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_workspace_evaluation')]

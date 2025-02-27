@@ -22,7 +22,6 @@ class ResourceEvaluationType extends AbstractType
     {
         $builder
             ->add('nbAttempts', NumericType::class)
-            ->add('nbOpenings', NumericType::class)
             ->add('resourceNode', ResourceNodeType::class)
         ;
     }

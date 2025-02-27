@@ -1,7 +1,5 @@
 {
     "add_files": "Ajouter des fichiers",
-    "add_resource": "Ajouter une ressource",
-    "add_resources": "Ajouter des ressources",
     "no_resource": "Aucune ressource n'a été ajoutée pour le moment.",
     "change_file": "Modifier le fichier",
     "directory": "Dossier",
@@ -93,5 +91,7 @@
     "description_short_help": "Décrivez succintement votre ressource (La description courte est affichée dans les listes).",
     "resource_name": "%type% : %name%",
     "publish_resource": "Publier la ressource",
-    "publish_resource_help": "Temps que la ressource n'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission \"Modifier\"."
+    "publish_resource_help": "Temps que la ressource n'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission \"Modifier\".",
+    "allow_download": "Autoriser le téléchargement",
+    "allow_download_help": "Les utilisateurs ayant la permission \"Ouvrir\" peuvent télécharger une copie locale de la ressource."
 }

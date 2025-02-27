@@ -5,7 +5,7 @@ namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Finder\SequenceEvaluationType;
-use Claroline\EvaluationBundle\Repository\SequenceEvaluationRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\SequenceEvaluationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_evaluation_sequence_evaluation')]

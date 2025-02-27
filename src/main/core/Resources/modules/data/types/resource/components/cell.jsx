@@ -1,27 +1,24 @@
 import React from 'react'
+import {PropTypes as T} from 'prop-types'
 
-import {url} from '#/main/app/api'
-import {Button} from '#/main/app/action/components/button'
-import {URL_BUTTON} from '#/main/app/buttons'
-import {DataCell as DataCellTypes} from '#/main/app/data/types/prop-types'
+import {EntityCell} from '#/main/app/data/types/entity/components/cell'
+import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 
-import {route as resourceRoute} from '#/main/core/resource/routing'
+const ResourceCell = props =>
+  <EntityCell
+    {...props}
+  />
 
-const ResourceCell = props => {
-  if (props.data) {
-    return (
-      <Button
-        type={URL_BUTTON}
-        label={props.data.name}
-        target={url(['claro_index']) + '#' + resourceRoute(props.data)}
-      />
-    )
-  }
-
-  return null
+ResourceCell.propTypes = {
+  data: T.oneOfType([
+    T.shape(
+      ResourceNodeTypes.propTypes
+    ),
+    T.arrayOf(T.shape(
+      ResourceNodeTypes.propTypes
+    ))
+  ])
 }
-
-ResourceCell.propTypes = DataCellTypes.propTypes
 
 export {
   ResourceCell

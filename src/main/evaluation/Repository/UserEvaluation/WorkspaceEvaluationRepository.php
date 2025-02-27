@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Repository;
+namespace Claroline\EvaluationBundle\Repository\UserEvaluation;
 
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Doctrine\ORM\EntityRepository;
 
-class ResourceEvaluationRepository extends EntityRepository
+class WorkspaceEvaluationRepository extends EntityRepository
 {
-    public function findInProgress(ResourceNode $resourceNode): array
+    public function findInProgress(Workspace $workspace): array
     {
-        return $this->createQueryBuilder('e')
-            ->where('e.status IN (:status)')
-            ->andWhere('e.workspace = :resourceNode')
+        return $this->createQueryBuilder('we')
+            ->where('we.status IN (:status)')
+            ->andWhere('we.workspace = :workspace')
             ->setParameter('status', [
                 EvaluationStatus::NOT_ATTEMPTED,
                 EvaluationStatus::INCOMPLETE,
             ])
-            ->setParameter('resourceNode', $resourceNode)
+            ->setParameter('workspace', $workspace)
             ->getQuery()
             ->getResult();
     }

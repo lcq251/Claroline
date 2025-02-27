@@ -8,7 +8,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceAttempt;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Manager\ResourceEvaluationManager;
-use Claroline\EvaluationBundle\Repository\ResourceAttemptRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 
 class EvaluationManager
 {
