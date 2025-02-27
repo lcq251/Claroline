@@ -276,7 +276,7 @@ class SequenceSerializer
         $currentSteps = $sequence->getRootSteps();
         foreach ($currentSteps as $currentStep) {
             if (!in_array($currentStep->getUuid(), $ids)) {
-                $currentStep->setPath(null);
+                $currentStep->setSequence(null);
             }
         }
     }

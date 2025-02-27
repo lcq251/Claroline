@@ -43,13 +43,14 @@ class SequenceRepository extends EntityRepository
                 FROM Claroline\EvaluationBundle\Entity\Sequence\Sequence AS p
                 LEFT JOIN Claroline\EvaluationBundle\Entity\Sequence\Step AS s WITH (s.path = p)
                 LEFT JOIN s.resource AS n
-                WHERE s.resource = :resourceNode 
+                WHERE p.published = 1
+                  AND s.resource = :resourceNode 
                   AND s.required = true
                   AND EXISTS (
                     SELECT a.id
                     FROM Claroline\EvaluationBundle\Entity\Sequence\Assignment AS a
                     LEFT JOIN Claroline\CoreBundle\Entity\Role AS r WITH (a.role = r)
-                    WHERE a.sequence = :sequence
+                    WHERE a.sequence = p
                       AND r.name IN (:roles)
                   )
            ')

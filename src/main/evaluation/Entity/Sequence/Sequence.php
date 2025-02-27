@@ -170,6 +170,8 @@ class Sequence implements CrudEntityInterface
 
     /**
      * Get root step of the sequence.
+     *
+     * @return Step[]
      */
     public function getRootSteps(): array
     {
