@@ -10,102 +10,108 @@ import {FormSections, FormSection} from '#/main/app/content/form/components/sect
 import {selectors} from '#/main/template/administration/templates/store'
 import {constants} from '#/main/template/administration/templates/constants'
 import {Template as TemplateTypes} from '#/main/template/data/types/template/prop-types'
+import {useSelector} from 'react-redux'
 
-const TemplateForm = (props) =>
-  <FormData
-    level={2}
-    name={selectors.STORE_NAME + '.template'}
-    buttons={true}
-    cancel={{
-      type: LINK_BUTTON,
-      target: props.path + (props.template && props.template.type ? `/${props.template.type.type}/${props.template.type.id}` : ''),
-      exact: true
-    }}
-    save={{
-      type: CALLBACK_BUTTON,
-      callback: () => props.saveForm(get(props.template, 'type.id'), props.template.id, props.new)
-    }}
-    definition={[
-      {
-        title: trans('general'),
-        primary: true,
+const TemplateForm = (props) => {
+  const templateType = useSelector(selectors.templateType)
+
+  return (
+    <FormData
+      level={2}
+      name={selectors.STORE_NAME + '.template'}
+      buttons={true}
+      cancel={{
+        type: LINK_BUTTON,
+        target: props.path + `/${templateType.type}`,
+        exact: true
+      }}
+      save={{
+        type: CALLBACK_BUTTON,
+        callback: () => props.saveForm(templateType, props.template.id, props.new)
+      }}
+      definition={[
+        {
+          title: trans('general'),
+          primary: true,
+          fields: [
+            {
+              name: 'name',
+              type: 'string',
+              label: trans('name'),
+              required: true,
+              disabled: (template) => template.system
+            }, {
+              name: 'description',
+              type: 'string',
+              label: trans('description'),
+              recommended: true,
+              options: {long: true},
+              disabled: (template) => template.system
+            }, {
+              name: 'default',
+              type: 'boolean',
+              label: trans('define_as_default_for_type', {}, 'template')
+            }
+          ]
+        }
+      ].concat(props.locales.map(locale => ({
+        title: trans(locale),
+        defaultOpened: locale === props.defaultLocale,
+        opened: locale === props.defaultLocale,
         fields: [
           {
-            name: 'name',
+            name: `contents.${locale}.title`,
             type: 'string',
-            label: trans('name'),
-            required: true,
+            label: trans('title'),
             disabled: (template) => template.system
           }, {
-            name: 'description',
+            name: `contents.${locale}.content`,
             type: 'string',
-            label: trans('description'),
-            recommended: true,
-            options: {long: true},
-            disabled: (template) => template.system
-          }, {
-            name: 'default',
-            type: 'boolean',
-            label: trans('define_as_default_for_type', {}, 'template')
+            label: trans('content'),
+            disabled: (template) => template.system,
+            options: {
+              long: true
+            }
           }
         ]
-      }
-    ].concat(props.locales.map(locale => ({
-      title: trans(locale),
-      defaultOpened: locale === props.defaultLocale,
-      opened: locale === props.defaultLocale,
-      fields: [
-        {
-          name: `contents.${locale}.title`,
-          type: 'string',
-          label: trans('title'),
-          disabled: (template) => template.system
-        }, {
-          name: `contents.${locale}.content`,
-          type: 'string',
-          label: trans('content'),
-          disabled: (template) => template.system,
-          options: {
-            long: true
-          }
-        }
-      ]
-    })))}
-  >
-    <FormSections level={3}>
-      <FormSection
-        icon="fa fa-fw fa-exchange-alt"
-        title={trans('parameters')}
-      >
-        <div className="alert alert-info">
-          {trans('placeholders_info', {}, 'template')}
-        </div>
+      })))}
+    >
+      <FormSections level={3}>
+        <FormSection
+          icon="fa fa-fw fa-exchange-alt"
+          title={trans('parameters')}
+        >
+          <div className="alert alert-info">
+            {trans('placeholders_info', {}, 'template')}
+          </div>
 
-        <table className="table table-bordered table-striped table-hover">
-          <thead>
-            <tr>
-              <th>{trans('parameter')}</th>
-              <th>{trans('description')}</th>
-            </tr>
-          </thead>
-          <tbody>
+          <table className="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th>{trans('parameter')}</th>
+                <th>{trans('description')}</th>
+              </tr>
+            </thead>
+            <tbody>
             {constants.DEFAULT_PLACEHOLDERS.map((placeholder, idx) =>
               <tr key={`default-placeholder-${idx}`}>
                 <td>{`%${placeholder}%`}</td>
                 <td>{trans(`${placeholder}_desc`, {}, 'template')}</td>
               </tr>
             )}
-            {props.template.type && props.template.type.placeholders && props.template.type.placeholders.map((placeholder, idx) =>
+            {templateType && templateType.placeholders && templateType.placeholders.map((placeholder, idx) =>
               <tr key={`custom-placeholder-${idx}`}>
                 <td>{`%${placeholder}%`}</td>
                 <td>{trans(`${placeholder}_desc`, {}, 'template')}</td>
               </tr>
             )}
-          </tbody>
-        </table>
-      </FormSection>
-    </FormSections>
-  </FormData>
+            </tbody>
+          </table>
+        </FormSection>
+      </FormSections>
+    </FormData>
+  )
+}
 
 TemplateForm.propTypes = {
   path: T.string.isRequired,

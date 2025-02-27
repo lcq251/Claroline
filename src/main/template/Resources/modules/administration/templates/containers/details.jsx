@@ -18,7 +18,7 @@ const TemplateDetails = connect(
     openForm(templateType, defaultLocale, id = null) {
       const defaultData = {
         lang: defaultLocale,
-        type: cloneDeep(templateType)
+        type: templateType.name
       }
       dispatch(actions.openForm(selectors.STORE_NAME + '.template', defaultData, id))
     },
@@ -26,7 +26,7 @@ const TemplateDetails = connect(
       const defaultData = {
         id: makeId(),
         lang: defaultLocale,
-        type: cloneDeep(templateType)
+        type: templateType.name
       }
       dispatch(actions.resetForm(selectors.STORE_NAME + '.template', defaultData))
     },

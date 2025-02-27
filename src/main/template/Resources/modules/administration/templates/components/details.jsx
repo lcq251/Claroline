@@ -30,46 +30,12 @@ const TemplateDetails = (props) => {
     <TemplatePage
       templateType={props.templateType}
     >
-      {false && !isEmpty(currentTemplate) &&
-        <div className="p-4">
-          <h1 className="h4">{currentTemplate.name}</h1>
-          <p className="lead">{currentTemplate.description || <em className="text-body-tertiary">{trans('no_description')}</em>}</p>
-
-          <Toolbar
-            primaryAction="add"
-            actions={[
-              {
-                name: 'add',
-                type: LINK_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                label: trans('add_template'),
-                target: `${props.path}/${props.templateType.type}/${props.templateType.id}/form`,
-                primary: true,
-                exact: true
-              }, {
-                name: 'delete',
-                type: CALLBACK_BUTTON,
-                icon: 'fa fa-fw fa-trash',
-                label: trans('delete', {}, 'actions'),
-                displayed: !currentTemplate.system,
-                callback: () => props.deleteTemplate(props.templateType.id, currentTemplate.id),
-                confirm: {
-                  title: trans('template_delete_confirm', {}, 'template'),
-                  message: trans('template_delete_confirm_message', {}, 'template')
-                },
-                dangerous: true
-              }
-            ]}
-          />
-        </div>
-      }
-
       <div className="row">
         <div className="col-md-3">
           <ContentNav
             path={props.path + '/' + props.templateType.type + '/' + props.templateType.name}
             type="vertical"
-            sections={props.templates.map(template => ({
+            sections={[].concat(props.templates.map(template => ({
               id: template.id,
               title: (
                 <>
@@ -97,7 +63,16 @@ const TemplateDetails = (props) => {
                   dangerous: true
                 }
               ]
-            }))}
+            })), [
+              {
+                name: 'add',
+                type: LINK_BUTTON,
+                icon: 'fa fa-fw fa-plus',
+                title: trans('add_template'),
+                path: `${props.path}/${props.templateType.type}/form`,
+                exact: true
+              },
+            ])}
           />
         </div>
 

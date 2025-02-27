@@ -70,6 +70,7 @@ class TemplateSerializer
         $this->sipe('name', 'setName', $data, $template);
         $this->sipe('type', 'setType', $data, $template);
         $this->sipe('description', 'setDescription', $data, $template);
+        $this->sipe('default', 'setDefault', $data, $template);
 
         if (isset($data['contents'])) {
             foreach ($data['contents'] as $locale => $localizedData) {

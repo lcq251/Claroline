@@ -16,12 +16,12 @@ const TemplateForm = connect(
     locales: selectors.locales(state)
   }),
   (dispatch) => ({
-    saveForm(templateTypeId, templateId, isNew = false) {
+    saveForm(templateType, templateId, isNew = false) {
       dispatch(formActions.saveForm(`${selectors.STORE_NAME}.template`, isNew ?
         ['apiv2_template_create'] :
         ['apiv2_template_update', {id: templateId}])
       ).then(() => {
-        dispatch(actions.open(templateTypeId))
+        dispatch(actions.open(templateType))
       })
     }
   })
