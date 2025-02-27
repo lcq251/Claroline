@@ -2,6 +2,10 @@
 
 namespace Claroline\TemplateBundle\Component\Template;
 
+/**
+ * Definition for a generic templates.
+ * Usually used for templates directly rendered in the Claroline client (e.g. terms of services).
+ */
 abstract class TemplateComponent implements TemplateInterface
 {
     public static function getType(): string
@@ -14,7 +18,7 @@ abstract class TemplateComponent implements TemplateInterface
         return [];
     }
 
-    public static function getSamples(): array
+    public function getSamples(): array
     {
         return [];
     }

@@ -14,5 +14,5 @@ interface TemplateInterface extends ComponentInterface
 
     public function getPlaceholders(): array;
 
-    public static function getSamples(): array;
+    public function getSamples(): array;
 }

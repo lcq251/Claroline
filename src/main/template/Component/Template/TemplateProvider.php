@@ -2,22 +2,7 @@
 
 namespace Claroline\TemplateBundle\Component\Template;
 
-use Claroline\AppBundle\API\Crud;
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
-use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\AbstractComponentProvider;
-use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
-use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Tool\OrderedTool;
-use Claroline\CoreBundle\Entity\Tool\ToolRights;
-use Claroline\CoreBundle\Event\CatalogEvents\ToolEvents;
-use Claroline\CoreBundle\Event\Tool\ConfigureToolEvent;
-use Claroline\CoreBundle\Event\Tool\ExportToolEvent;
-use Claroline\CoreBundle\Event\Tool\ImportToolEvent;
-use Claroline\CoreBundle\Event\Tool\OpenToolEvent;
-use Claroline\CoreBundle\Repository\Tool\OrderedToolRepository;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Aggregates all the templates defined in the Claroline app.

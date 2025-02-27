@@ -47,6 +47,7 @@ class TemplateTypeController
                 'name' => $templateType::getName(),
                 'type' => $templateType::getType(),
                 'placeholders' => $templateType->getPlaceholders(),
+                'samples' => $templateType->getSamples(),
             ],
             'templates' => array_map(function (Template $template) {
                 return $this->serializer->serialize($template);

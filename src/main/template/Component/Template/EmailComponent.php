@@ -14,7 +14,7 @@ abstract class EmailComponent implements TemplateInterface
         return [];
     }
 
-    public static function getSamples(): array
+    public function getSamples(): array
     {
         return [];
     }
