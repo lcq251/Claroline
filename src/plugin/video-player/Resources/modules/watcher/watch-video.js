@@ -1,16 +1,13 @@
 import observe from './observe'
-import $ from 'jquery'
 import get from 'lodash/get'
 
-/* global videojs */
+import videojs from 'video.js'
 
 observe('video', callback)
 
 function callback(el) {
-  const html = $(el).parent().html()
-  const parsed = $.parseHTML(html)[0]
   if (parseInt(el.getAttribute('data-download')) !== 1) {
-    $(el).on('contextmenu', (e) => {e.preventDefault()})
+    el.addEventListener('contextmenu', (e) => e.preventDefault())
   }
 
   let setup = {}
@@ -18,7 +15,7 @@ function callback(el) {
     setup = JSON.parse(el.getAttribute('data-setup'))
   }
 
-  const autoplay = parsed.autoplay ? parsed.autoplay : false
+  const autoplay = el.autoplay || false
   videojs(el, {
     class: 'vjs-custom',
     autoplay: autoplay,

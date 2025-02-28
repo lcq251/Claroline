@@ -4,10 +4,14 @@ import merge from 'lodash/merge'
 
 /* global videojs */
 
-const Video = (props) => {
+const Video = ({
+  options,
+  onReady,
+  sources,
+  className
+}) => {
   const videoRef = useRef(null)
   const playerRef = useRef(null)
-  const {options, onReady, sources} = props
 
   useEffect(() => {
     // Make sure Video.js player is only initialized once
@@ -46,13 +50,16 @@ const Video = (props) => {
   }, [playerRef])
 
   return (
-    <div data-vjs-player className={props.className} ref={videoRef} />
+    <div data-vjs-player={true} className={className} ref={videoRef} />
   )
 }
 
 Video.propTypes = {
   className: T.string,
-  options: T.object,
+  options: T.shape({
+    controls: T.bool,
+    autoplay: T.bool
+  }),
   sources: T.arrayOf(T.shape({
     src: T.string.isRequired,
     type: T.string

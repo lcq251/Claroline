@@ -7,7 +7,7 @@ import get from 'lodash/get'
 import {url} from '#/main/app/api'
 import {asset} from '#/main/app/config'
 import {trans, transChoice} from '#/main/app/intl'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
 import {MediaInfo} from '#/main/app/media'
 
@@ -80,10 +80,12 @@ const VideoPlayer = props => {
                 {transChoice('display_views', get(resourceNode, 'meta.views', 0), {count: get(resourceNode, 'meta.views', 0)})}
               </>
             )}
-            downloadAction={{
-              type: CALLBACK_BUTTON,
-              callback: () => true
-            }}
+            downloadAction={downloadable ? {
+              type: ASYNC_BUTTON,
+              request: {
+                url: url(['claro_resource_download'], {ids: [resourceNode.id]})
+              }
+            } : undefined}
           />
         </PageSection>
       </PageContent>
