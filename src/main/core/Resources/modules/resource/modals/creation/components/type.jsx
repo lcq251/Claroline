@@ -15,6 +15,7 @@ const CreationType = props =>
     <div className="modal-body" role="presentation">
       <ContentMenu
         className="mb-3"
+        color={false}
         items={props.types
           .filter(name => !isEmpty(getType({meta: {type: name}})))
           .filter(resourceType => ![

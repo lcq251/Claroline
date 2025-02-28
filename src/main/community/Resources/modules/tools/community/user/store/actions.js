@@ -1,23 +1,11 @@
-import merge from 'lodash/merge'
 
 import {API_REQUEST, url} from '#/main/app/api'
-import {selectors as securitySelectors} from '#/main/app/security/store/selectors'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
-import {User as UserTypes} from '#/main/community/user/prop-types'
 import {selectors} from '#/main/community/tools/community/user/store/selectors'
 
 export const actions = {}
-
-actions.new = (defaultProps) => (dispatch, getState) => {
-  const defaultOrganization = securitySelectors.mainOrganization(getState())
-
-  return dispatch(formActions.resetForm(selectors.FORM_NAME, merge({
-    mainOrganization: defaultOrganization,
-    organizations: defaultOrganization ? [defaultOrganization] : []
-  }, UserTypes.defaultProps, defaultProps), true))
-}
 
 actions.open = (username, reload = false) => (dispatch, getState) => {
   if (!reload) {

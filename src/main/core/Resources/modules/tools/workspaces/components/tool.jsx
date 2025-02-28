@@ -69,7 +69,12 @@ const WorkspacesTool = (props) => {
                   // icon: 'fa fa-fw fa-plus',
                   label: trans('add_workspace', {}, 'actions'),
                   displayed: props.canCreate,
-                  modal: [MODAL_WORKSPACE_CREATION]
+                  modal: [MODAL_WORKSPACE_CREATION, {
+                    onCreate: () => {
+                      props.invalidateList('workspaces.registered')
+                      props.invalidateList('workspaces.public')
+                    }
+                  }]
                 }}
               >
                 <WorkspaceList

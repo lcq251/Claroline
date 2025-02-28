@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {Alert} from '#/main/app/components/alert'
 import {PageListSection} from '#/main/app/page'
@@ -12,6 +12,7 @@ import {getPlatformRoles, getWorkspaceRoles} from '#/main/community/utils'
 import {UserList as BaseUserList} from '#/main/community/user/components/list'
 import {selectors} from '#/main/community/tools/community/user/store'
 import {MODAL_REGISTER} from '#/main/community/modals/register'
+import {MODAL_USER_CREATION} from '#/main/community/user/modals/creation'
 
 const UserList = props =>
   <ToolPage
@@ -38,12 +39,16 @@ const UserList = props =>
           }]
         } : {
           name: 'add',
-          type: LINK_BUTTON,
+          type: MODAL_BUTTON,
           label: trans('register_users'),
           icon: 'fa fa-fw fa-plus',
-          target: `${props.path}/users/new`,
           displayed: props.canRegister && !props.limitReached,
-          primary: true
+          primary: true,
+          modal: [MODAL_USER_CREATION, {
+            path: props.path,
+            contextId: get(props.contextData, 'id'),
+            onCreate: props.registerUsers
+          }]
         }
       }
     >
@@ -137,7 +142,6 @@ UserList.propTypes = {
   contextType: T.string.isRequired,
   contextData: T.object,
   canRegister: T.bool.isRequired,
-  canAdministrate: T.bool.isRequired,
   limitReached: T.bool.isRequired,
   unregisterUsers: T.func.isRequired,
   registerUsers: T.func.isRequired

@@ -58,26 +58,16 @@ const CreationInfo = (props) => {
           type={CALLBACK_BUTTON}
           label={trans('create_and_configure', {}, 'actions')}
           className="btn btn-link"
-          callback={() => {
-            props.create().then((workspace) => {
-              props.fadeModal()
-
-              history.push(route(workspace)+'/edit')
-            })
-          }}
+          callback={() => props.create().then((workspace) => {
+            history.push(route(workspace)+'/edit')
+          })}
         />
         <Button
           type={CALLBACK_BUTTON}
           label={trans('create', {}, 'actions')}
           className="btn btn-primary"
           htmlType="submit"
-          callback={() => {
-            props.create().then((workspace) => {
-              props.fadeModal()
-
-              history.push(route(workspace))
-            })
-          }}
+          callback={props.create}
         />
       </div>
     </FormData>
@@ -86,7 +76,6 @@ const CreationInfo = (props) => {
 
 CreationInfo.propTypes = {
   create: T.func.isRequired,
-  fadeModal: T.func.isRequired,
   changeStep: T.func.isRequired
 }
 

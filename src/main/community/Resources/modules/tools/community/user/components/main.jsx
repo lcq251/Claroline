@@ -4,7 +4,6 @@ import {PropTypes as T} from 'prop-types'
 import {Routes} from '#/main/app/router'
 
 import {UserList} from '#/main/community/tools/community/user/containers/list'
-import {UserCreate} from '#/main/community/tools/community/user/containers/create'
 import {UserShow} from '#/main/community/tools/community/user/containers/show'
 import {UserEditor} from '#/main/community/user/editor/containers/main'
 
@@ -16,11 +15,6 @@ const UserMain = props =>
         path: '/',
         component: UserList,
         exact: true
-      }, {
-        path: '/new',
-        component: UserCreate,
-        onEnter: props.new,
-        disabled: 'desktop' !== props.contextType || !props.canRegister
       }, {
         path: '/:username/edit',
         render: (routerProps) => (
@@ -37,10 +31,7 @@ const UserMain = props =>
 UserMain.propTypes = {
   path: T.string.isRequired,
   contextType: T.string.isRequired,
-  canRegister: T.bool.isRequired,
-
-  open: T.func.isRequired,
-  new: T.func.isRequired
+  open: T.func.isRequired
 }
 
 export {

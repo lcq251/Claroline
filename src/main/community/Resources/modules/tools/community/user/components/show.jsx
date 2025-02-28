@@ -193,8 +193,6 @@ UserShow.propTypes = {
     UserTypes.propTypes
   ),
   reload: T.func.isRequired,
-  addRoles: T.func.isRequired,
-  addOrganizations: T.func.isRequired,
   addGroups: T.func.isRequired
 }
 
