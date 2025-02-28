@@ -4,7 +4,7 @@ import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON, LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON, CALLBACK_BUTTON, LINK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
 import {route as desktopRoute} from '#/main/core/tool/routing'
 import {route as workspaceRoute} from '#/main/core/workspace/routing'
@@ -28,7 +28,7 @@ const PlayerEnd = () => {
     <PageContent className="py-4 d-flex flex-column justify-content-center">
       {userEvaluation &&
         <PageSection size="md" className="py-4">
-          <h2 className="visually-hidden">Résultats</h2>
+          <h2 className="visually-hidden">{trans('results')}</h2>
           <EvaluationGauge
             size="xl"
             className="mx-auto"
@@ -38,7 +38,7 @@ const PlayerEnd = () => {
       }
 
       <PageSection size="md" className="py-4 text-center">
-        <h2 className="visually-hidden">Messages</h2>
+        <h2 className="visually-hidden">{trans('messages')}</h2>
         <p className="h4 mb-0">Félicitations vous avez terminé la séquence.</p>
         {!isHtmlEmpty(userFeedback) &&
           <Html className="content-text mt-3">
@@ -48,7 +48,7 @@ const PlayerEnd = () => {
       </PageSection>
 
       <PageSection size="md" className="py-4">
-        <h2 className="visually-hidden">Navigation</h2>
+        <h2 className="visually-hidden">{trans('navigation')}</h2>
 
         <Toolbar
           className="d-flex align-items-start"
@@ -75,11 +75,17 @@ const PlayerEnd = () => {
               primary: true
             }, {
               name: 'download-certificate',
-              type: CALLBACK_BUTTON,
+              type: ASYNC_BUTTON,
               icon: 'fa fa-fw fa-download me-0 mb-3 fs-2',
               label: trans('download_certificate', {}, 'actions'),
-              callback: () => true,
-              displayed: !!userEvaluation && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
+              request: {
+                url: ['apiv2_sequence_download_certificate'],
+                request: {
+                  method: 'POST',
+                  body: JSON.stringify([userEvaluation ? userEvaluation.id : null])
+                }
+              },
+              displayed: !!userEvaluation && !!userEvaluation.certified && [constants.EVALUATION_STATUS_PASSED, constants.EVALUATION_STATUS_COMPLETED].includes(userEvaluation.status)
             }, {
               name: 'show-results',
               type: LINK_BUTTON,

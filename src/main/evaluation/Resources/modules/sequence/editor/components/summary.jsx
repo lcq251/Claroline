@@ -80,7 +80,7 @@ const SequenceEditorSummary = () => {
   return (
     <EditorPage
       title={trans('Scenario')}
-      help={trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?')}
+      help={trans('Construisez votre scénario pédagogique en définissant vos objectifs d\'apprentissage et en ajoutant les différentes activités à effectuer par les utilisateurs.')}
       definition={[
         {
           title: trans('general'),
@@ -90,6 +90,7 @@ const SequenceEditorSummary = () => {
               name: 'overview.resource',
               type: 'resource',
               label: trans('resource'),
+              help: trans('Ajoutez une ressource sur la page "A propos" de votre séquence pour introduire le contenu ou le travail à effectuer.'),
               options: {
                 picker: {
                   contextId: get(workspace, 'id')
