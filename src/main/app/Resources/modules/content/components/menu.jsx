@@ -24,14 +24,12 @@ const ContentMenuItem = (props) =>
       className="list-group-item list-group-item-action d-flex gap-3 align-items-center focus-ring"
       autoFocus={props.autoFocus}
       icon={props.icon &&
-        <>
+        <Thumbnail square={true} size="sm" color={props.color}>
           {typeof props.icon === 'string' ?
-            <Thumbnail square={true} size="sm" color={props.color}>
-              <span className={`fa fa-${props.icon}`} />
-            </Thumbnail>  :
+            <span className={`fa fa-${props.icon}`} /> :
             cloneElement(props.icon, {size: 'sm'})
           }
-        </>
+        </Thumbnail>
       }
       label={
         <>
@@ -65,8 +63,13 @@ ContentMenuItem.propTypes = {
   })
 }
 
-const ContentMenu = (props) => {
-  const displayedTypes = props.items.filter(
+const ContentMenu = ({
+  className,
+  items,
+  color = true,
+  autoFocus = true
+}) => {
+  const displayedTypes = items.filter(
     action => undefined === action.displayed || action.displayed
   )
 
@@ -87,13 +90,13 @@ const ContentMenu = (props) => {
   }
 
   return (
-    <div className={props.className} role="presentation">
+    <div className={className} role="presentation">
       {unclassifiedTypes.map((creationType, index) =>
         <ContentMenuItem
           key={creationType.id}
           className={0 !== index ? 'mt-2' : undefined}
-          autoFocus={ props.autoFocus && 0 === index}
-          color={props.color ? COLORS[index] : undefined}
+          autoFocus={autoFocus && 0 === index}
+          color={color ? COLORS[index % COLORS.length] : undefined}
           {...creationType}
         />
       )}
@@ -104,7 +107,7 @@ const ContentMenu = (props) => {
           <ContentMenuItem
             key={creationType.id}
             className={0 !== index ? 'mt-2' : undefined}
-            color={props.color ? COLORS[unclassifiedTypes.length + index] : undefined}
+            color={color ? COLORS[unclassifiedTypes.length + index] : undefined}
             {...creationType}
           />
         )

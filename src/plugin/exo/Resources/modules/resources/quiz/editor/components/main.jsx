@@ -22,7 +22,6 @@ const QuizEditor = () => {
         additionalData={() => ({
           resource: quiz
         })}
-        /*defaultPage="steps"*/
         appearancePage={QuizEditorAppearance}
         pages={[
           {
@@ -36,7 +35,8 @@ const QuizEditor = () => {
           }, {
             name: 'bank',
             title: trans('questions_bank', {}, 'quiz'),
-            component: QuizEditorBank
+            component: QuizEditorBank,
+            displayed: false
           }
         ]}
       />

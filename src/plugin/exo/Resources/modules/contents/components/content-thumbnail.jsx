@@ -61,7 +61,7 @@ Actions.propTypes = {
   handleExpand: T.func
 }
 
-let ContentThumbnail = props => props.connectDropTarget(
+const ContentThumbnailComponent = props => props.connectDropTarget(
   <span
     className={classes('content-thumbnail', {'active': props.active})}
     style={{opacity: props.isDragging ? 0 : 1}}
@@ -98,7 +98,7 @@ let ContentThumbnail = props => props.connectDropTarget(
   </span>
 )
 
-ContentThumbnail.propTypes = {
+ContentThumbnailComponent.propTypes = {
   id: T.string.isRequired,
   index: T.number.isRequired,
   data: T.string,
@@ -118,18 +118,18 @@ ContentThumbnail.propTypes = {
   connectDropTarget: T.func.isRequired
 }
 
-ContentThumbnail = makeSortable(
-  ContentThumbnail,
+const ContentThumbnailSortable = makeSortable(
+  ContentThumbnailComponent,
   'CONTENT_THUMBNAIL',
   ContentThumbnailDragPreview
 )
 
-ContentThumbnail = connect(
+const ContentThumbnail = connect(
   null,
   (dispatch) => ({
     showModal: (type, props) => dispatch(modalActions.showModal(type, props))
   })
-)(ContentThumbnail)
+)(ContentThumbnailSortable)
 
 export {
   ContentThumbnail

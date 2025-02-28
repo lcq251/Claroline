@@ -11,7 +11,6 @@ const QuizEditorAppearance = () =>
     definition={[
       {
         name: 'numbering',
-        //icon: 'fa fa-fw fa-desktop',
         title: trans('Titres et numérotation'),
         primary: true,
         fields: [
@@ -28,7 +27,7 @@ const QuizEditorAppearance = () =>
                 displayed: (quiz) => get(quiz, 'resource.parameters.showTitles', false),
                 options: {
                   noEmpty: true,
-                  condensed: true,
+                  condensed: false,
                   choices: constants.QUIZ_NUMBERINGS
                 }
               }
@@ -46,7 +45,7 @@ const QuizEditorAppearance = () =>
                 displayed: (quiz) => get(quiz, 'resource.parameters.showQuestionTitles', false),
                 options: {
                   noEmpty: true,
-                  condensed: true,
+                  condensed: false,
                   choices: constants.QUIZ_NUMBERINGS
                 }
               }

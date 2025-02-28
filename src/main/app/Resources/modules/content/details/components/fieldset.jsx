@@ -91,7 +91,7 @@ DetailsFieldset.propTypes = {
   errors: T.object,
   data: T.object,
   fields: T.arrayOf(T.shape({
-    // TODO : fields propTypes
+    // fields propTypes
   })).isRequired,
   children: T.node
 }

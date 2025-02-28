@@ -182,7 +182,7 @@ const QUIZ_TYPES = {
   [QUIZ_FORMATIVE]        : formativeType,
   [QUIZ_SUMMATIVE]        : summativeType,
   [QUIZ_CERTIFICATION]    : certificationType,
-  [QUIZ_SURVEY]           : surveyType,
+  // [QUIZ_SURVEY]           : surveyType,
   [QUIZ_CUSTOM]           : customType
 }
 

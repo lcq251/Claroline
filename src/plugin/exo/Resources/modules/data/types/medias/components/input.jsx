@@ -1,8 +1,11 @@
 import React, {Component} from 'react'
+import classes from 'classnames'
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ModalButton} from '#/main/app/buttons'
+import {Button} from '#/main/app/action'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
@@ -23,8 +26,8 @@ class MediasInput extends Component {
 
   render() {
     return (
-      <div>
-        <div className="item-object-thumbnail-box">
+      <div role="presentation">
+        <div className="d-flex flex-row flex-wrap gap-2">
           {this.props.value.map((object, index) =>
             <ContentThumbnail
               id={object.id}
@@ -65,27 +68,6 @@ class MediasInput extends Component {
               }}
             />
           )}
-          <ModalButton
-            className="btn"
-            title={trans('add_object', {}, 'quiz')}
-            modal={[MODAL_ADD_MEDIA, {
-              title: trans('add_object', {}, 'quiz'),
-              handleSelect: (object) => {
-                const newValue = cloneDeep(this.props.value)
-                newValue.push(object)
-                this.props.onChange(newValue)
-
-                if (isEditableType(object.type)) {
-                  this.setState({currentObjectId: object.id})
-                } else {
-                  this.setState({currentObjectId: null})
-                }
-              }
-            }]}
-          >
-            <span className="fa fa-fw fa-plus"/>
-            {trans('add_object', {}, 'quiz')}
-          </ModalButton>
         </div>
 
         {this.state.currentObjectId && this.props.value.find(o => o.id === this.state.currentObjectId) &&
@@ -97,6 +79,29 @@ class MediasInput extends Component {
             }
           )
         }
+
+        <Button
+          className={classes('btn-add btn btn-link ms-n3', {
+            'mt-3': !isEmpty(this.props.value)
+          })}
+          type={MODAL_BUTTON}
+          icon="fa fa-fw fa-plus"
+          label={trans('add_object', {}, 'quiz')}
+          modal={[MODAL_ADD_MEDIA, {
+            title: trans('add_object', {}, 'quiz'),
+            handleSelect: (object) => {
+              const newValue = cloneDeep(this.props.value)
+              newValue.push(object)
+              this.props.onChange(newValue)
+
+              if (isEditableType(object.type)) {
+                this.setState({currentObjectId: object.id})
+              } else {
+                this.setState({currentObjectId: null})
+              }
+            }
+          }]}
+        />
       </div>
     )
   }

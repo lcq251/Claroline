@@ -39,7 +39,7 @@ class CreationModal extends Component {
         <div className="modal-body" role="presentation">
           <ContentMenu
             className="mb-3"
-            color={false}
+            // color={false}
             items={this.state.types.map(type => {
               return ({
                 id: type.type,

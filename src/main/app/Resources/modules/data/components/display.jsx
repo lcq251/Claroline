@@ -9,9 +9,6 @@ import {getType} from '#/main/app/data/types'
 
 import {FormGroup} from '#/main/app/content/form/components/group'
 
-// todo : add loading placeholder
-// todo : better error handling on undefined types
-
 class DataDisplay extends Component {
   constructor(props) {
     super(props)

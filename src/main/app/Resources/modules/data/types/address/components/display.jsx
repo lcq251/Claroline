@@ -7,8 +7,8 @@ import {Address as AddressTypes} from '#/main/app/data/types/address/prop-types'
 import {Address} from '#/main/app/components/address'
 
 const AddressDisplay = (props) => {
-  const filledAddressParts = Object.keys(props.data || {})
-    .map((name) => props.data[name])
+  const filledAddressParts = Object.keys(props.value || {})
+    .map((name) => props.value[name])
     .filter(addressPart => !isEmpty(addressPart))
 
   if (isEmpty(filledAddressParts)) {
@@ -19,15 +19,15 @@ const AddressDisplay = (props) => {
 
   return (
     <address>
-      <Address {...props.data} />
+      <Address {...props.value} />
     </address>
   )
 }
 
 AddressDisplay.propTypes = {
-  data: T.shape(
+  value: T.shape(
     AddressTypes.propTypes
-  ).isRequired
+  )
 }
 
 export {

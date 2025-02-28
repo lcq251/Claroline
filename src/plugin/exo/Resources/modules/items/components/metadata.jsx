@@ -1,8 +1,8 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {ContentHtml} from '#/main/app/content/components/html'
-import {ObjectsPlayer} from '#/plugin/exo/items/components/item-objects'
+import {Html} from '#/main/app/components/html'
+import {MediasDisplay} from '#/plugin/exo/data/types/medias/components/display'
 
 const Metadata = props =>
   <>
@@ -17,15 +17,15 @@ const Metadata = props =>
     }
 
     {props.item.content && !props.isContentItem &&
-      <ContentHtml className="item-content lead mb-3">{props.item.content}</ContentHtml>
+      <Html className="content-text item-content lead mb-3">{props.item.content}</Html>
     }
 
     {props.item.description &&
-      <ContentHtml className="item-description mb-3">{props.item.description}</ContentHtml>
+      <Html className="content-text item-description mb-3">{props.item.description}</Html>
     }
 
     {props.item.objects && 0 !== props.item.objects.length &&
-      <ObjectsPlayer item={props.item} />
+      <MediasDisplay data={props.item.objects} />
     }
   </>
 

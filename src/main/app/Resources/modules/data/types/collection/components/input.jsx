@@ -16,7 +16,7 @@ import {DataInput} from '#/main/app/data/components/input'
 const CollectionInput = props =>
   <div id={props.id} className={classes('collection-control', props.className)}>
     {isEmpty(props.value) &&
-      <ContentPlaceholder title={props.placeholder} size={props.size} className="mb-2" />
+      <ContentPlaceholder title={props.placeholder} size={props.size} />
     }
 
     {!isEmpty(props.value) &&
@@ -32,7 +32,7 @@ const CollectionInput = props =>
     }
 
     {!isEmpty(props.value) &&
-      <ul>
+      <ul className="mb-0">
         {props.value.map((value, index) => {
           let customInput
           if (props.component) {
@@ -83,7 +83,7 @@ const CollectionInput = props =>
                 className="btn btn-text-danger btn-delete"
                 type={CALLBACK_BUTTON}
                 icon="fa fa-fw fa-trash"
-                label={trans('delete')}
+                label={trans('delete', {}, 'actions')}
                 tooltip="left"
                 disabled={props.disabled}
                 dangerous={true}
@@ -103,8 +103,7 @@ const CollectionInput = props =>
     }
 
     <Button
-      variant="btn"
-      className="w-100 btn-add"
+      className="btn btn-link btn-add text-start ms-n3 mt-3"
       type={CALLBACK_BUTTON}
       icon="fa fa-fw fa-plus"
       label={props.button}

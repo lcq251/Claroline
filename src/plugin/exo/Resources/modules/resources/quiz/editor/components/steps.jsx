@@ -48,6 +48,7 @@ const QuizEditorSteps = (props) => {
         type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-download',
         label: trans('add_question_from_existing', {}, 'quiz'),
+        displayed: false,
         modal: [MODAL_ITEM_IMPORT, {
           selectAction: (items) => ({
             type: CALLBACK_BUTTON,
