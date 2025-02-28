@@ -1,4 +1,3 @@
-import $ from 'jquery'
 
 export default function observe(selector, callback, containers = [document.body]) {
   window.MutationObserver = window.MutationObserver || window.WebKitMutationObserver
@@ -10,16 +9,14 @@ export default function observe(selector, callback, containers = [document.body]
 
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
-      if (mutation.type == 'childList' && 0 !== mutation.addedNodes.length) {
+      if (mutation.type === 'childList' && 0 !== mutation.addedNodes.length) {
         mutation.addedNodes.forEach(node => {
-          const videos = []
+          let videos = []
           if (node.tagName === selector.toUpperCase()) {
             videos.push(node)
+          } else if (node.querySelectorAll) {
+            videos = videos.concat(node.querySelector(selector) || [])
           }
-
-          $(node).find(selector).each((i, el) => {
-            videos.push(el)
-          })
 
           videos.map(video => {
             let keepGoing = true

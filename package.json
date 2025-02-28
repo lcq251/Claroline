@@ -31,7 +31,6 @@
     "flag-icons": "^7.1",
     "html-react-parser": "^5.1.10",
     "invariant": "^2.2.4",
-    "jquery": "2.2.4",
     "jsplumb": "^2.2.11",
     "lodash": "^4.17.21",
     "mathjax": "2.7.4",
