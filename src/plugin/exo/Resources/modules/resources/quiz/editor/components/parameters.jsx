@@ -352,7 +352,6 @@ const QuizEditorParameters = props => {
         }, {
           icon: 'fa fa-fw fa-flag-checkered',
           title: trans('end_page'),
-          displayed: false,
           fields: [
             {
               name: 'parameters.showEndPage',
@@ -436,12 +435,12 @@ const QuizEditorParameters = props => {
                   name: 'parameters.workspaceCertificates',
                   type: 'boolean',
                   label: trans('resource_end_certificates', {}, 'resource'),
-                  displayed: hasEnd
+                  displayed: false /*hasEnd*/
                 }, {
                   name: 'parameters._showEndStats',
                   type: 'boolean',
                   label: trans('show_attempts_stats', {}, 'quiz'),
-                  displayed: (quiz) => get(quiz, 'parameters.hasExpectedAnswers') && hasEnd(quiz),
+                  displayed: (quiz) => false && get(quiz, 'parameters.hasExpectedAnswers') && hasEnd(quiz),
                   calculated: (quiz) => 'none' !== get(quiz, 'parameters.endStats'),
                   onChange: (checked) => {
                     if (checked) {
