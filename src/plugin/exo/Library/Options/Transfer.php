@@ -51,8 +51,10 @@ final class Transfer
      * Persist the tags of the question.
      *
      * @var string
+     *
+     * @deprecated
      */
-    public const PERSIST_TAG = 'persistTag';
+    public const PERSIST_TAG = ApiOptions::PERSIST_TAG;
 
     /**
      * Refresh UUID for steps and questions before persisting.

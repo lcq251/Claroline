@@ -178,7 +178,7 @@ class DirectoryListener extends ResourceComponent
             $resourceNode->setParent($parent);
             $resourceNode->setWorkspace($parent->getWorkspace());
 
-            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS], $options));
+            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS, Options::PERSIST_TAG], $options));
         } catch (InvalidDataException $e) {
             // for resource creation we submit the resourceNode and resource data at once
             // we need to update the errors path for correct rendering in form
@@ -200,7 +200,7 @@ class DirectoryListener extends ResourceComponent
             $resource = new $resourceClass();
             $resource->setResourceNode($resourceNode);
 
-            $this->crud->create($resource, $resourceData, $options);
+            $this->crud->create($resource, $resourceData, array_merge([Options::PERSIST_TAG], $options));
         } catch (InvalidDataException $e) {
             // for resource creation we submit the resourceNode and resource data at once
             // we need to update the errors path for correct rendering in form

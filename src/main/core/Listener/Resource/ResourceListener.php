@@ -117,7 +117,7 @@ class ResourceListener
 
             if (!empty($data['resource'])) {
                 try {
-                    $this->crud->update($resource, $data['resource']);
+                    $this->crud->update($resource, $data['resource'], [Options::PERSIST_TAG]);
                 } catch (InvalidDataException $e) {
                     // for resource edit we submit the resourceNode and resource data at once
                     // we need to update the errors path for correct rendering in form

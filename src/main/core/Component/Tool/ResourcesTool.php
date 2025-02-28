@@ -137,7 +137,7 @@ class ResourcesTool extends ToolComponent
                 unset($nodeData['parent']);
             }
 
-            $this->crud->create($resourceNode, $nodeData, [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION, Options::NO_RIGHTS/* , Options::REFRESH_UUID */]);
+            $this->crud->create($resourceNode, $nodeData, [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION, Options::PERSIST_TAG, Options::NO_RIGHTS/* , Options::REFRESH_UUID */]);
 
             $entities[$nodeData['id']] = $resourceNode;
 

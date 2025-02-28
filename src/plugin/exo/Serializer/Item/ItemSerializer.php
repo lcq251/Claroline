@@ -106,7 +106,7 @@ class ItemSerializer
     }
 
     /**
-     * Converts raw data into a Item entity.
+     * Converts raw data into an Item entity.
      */
     public function deserialize(array $data, ?Item $item = null, ?array $options = []): Item
     {
