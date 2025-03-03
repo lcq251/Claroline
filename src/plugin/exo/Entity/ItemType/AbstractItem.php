@@ -10,33 +10,24 @@ use UJM\ExoBundle\Entity\Item\Item;
 abstract class AbstractItem
 {
     use Id;
-    /**
-     *
-     * @var Item
-     */
+
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: Item::class)]
     protected ?Item $question = null;
 
-    final public function setQuestion(Item $question)
+    final public function setQuestion(Item $question): void
     {
         $this->question = $question;
 
         $question->setInteraction($this);
     }
 
-    /**
-     * @return Item
-     */
-    public function getQuestion()
+    public function getQuestion(): ?Item
     {
         return $this->question;
     }
 
-    /**
-     * @return bool
-     */
-    public function isContentItem()
+    public function isContentItem(): bool
     {
         return false;
     }

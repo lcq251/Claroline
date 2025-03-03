@@ -21,43 +21,23 @@ class OpenQuestion extends AbstractItem
     #[ORM\OneToMany(targetEntity: Keyword::class, mappedBy: 'interactionopen', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $keywords;
 
-    /**
-     * @var string
-     */
     #[ORM\Column]
-    private $contentType = 'text';
+    private string $contentType = 'text';
 
-    /**
-     * The max allowed length fot answers to this question.
-     *
-     *
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
-    private $maxAnswerLength = 0;
+    private ?int $maxAnswerLength = 0;
 
-    /**
-     * OpenQuestion constructor.
-     */
     public function __construct()
     {
         $this->keywords = new ArrayCollection();
     }
 
-    /**
-     * Get keywords.
-     *
-     * @return ArrayCollection
-     */
-    public function getKeywords()
+    public function getKeywords(): Collection
     {
         return $this->keywords;
     }
 
-    /**
-     * Sets keywords collection.
-     */
-    public function setKeywords(array $keywords)
+    public function setKeywords(array $keywords): void
     {
         // Removes old keywords
         $oldKeywords = array_filter($this->keywords->toArray(), function (Keyword $keyword) use ($keywords) {
@@ -73,10 +53,7 @@ class OpenQuestion extends AbstractItem
         });
     }
 
-    /**
-     * Adds a keyword.
-     */
-    public function addKeyword(Keyword $keyword)
+    public function addKeyword(Keyword $keyword): void
     {
         if (!$this->keywords->contains($keyword)) {
             $this->keywords->add($keyword);
@@ -84,44 +61,29 @@ class OpenQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes a keyword.
-     */
-    public function removeKeyword(Keyword $keyword)
+    public function removeKeyword(Keyword $keyword): void
     {
         if ($this->keywords->contains($keyword)) {
             $this->keywords->removeElement($keyword);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
 
-    /**
-     * @param int $maxLength
-     */
-    public function setAnswerMaxLength($maxLength)
+    public function setAnswerMaxLength(int $maxLength): void
     {
         $this->maxAnswerLength = $maxLength;
     }
 
-    /**
-     * @return int
-     */
-    public function getAnswerMaxLength()
+    public function getAnswerMaxLength(): ?int
     {
         return $this->maxAnswerLength;
     }

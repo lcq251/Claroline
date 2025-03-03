@@ -2,8 +2,8 @@
 
 namespace UJM\ExoBundle\Entity\ItemType;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Content\Image;
 use UJM\ExoBundle\Entity\Misc\Area;
@@ -15,65 +15,42 @@ use UJM\ExoBundle\Entity\Misc\Area;
 #[ORM\Entity]
 class GraphicQuestion extends AbstractItem
 {
-    const SHAPE_RECT = 'rect';
-    const SHAPE_CIRCLE = 'circle';
+    public const SHAPE_RECT = 'rect';
+    public const SHAPE_CIRCLE = 'circle';
 
     /**
      * The image of the question.
-     *
-     *
-     * @var Image
      */
     #[ORM\ManyToOne(targetEntity: Image::class, cascade: ['persist'])]
     private ?Image $image = null;
 
     /**
-     * @todo remove the mapped by and add a join table
      * @var Collection<int, Area>
      */
     #[ORM\OneToMany(targetEntity: Area::class, mappedBy: 'interactionGraphic', cascade: ['all'], orphanRemoval: true)]
     private Collection $areas;
 
-    /**
-     * GraphicQuestion constructor.
-     */
     public function __construct()
     {
         $this->areas = new ArrayCollection();
     }
 
-    /**
-     * Gets image.
-     *
-     * @return Image
-     */
-    public function getImage()
+    public function getImage(): ?Image
     {
         return $this->image;
     }
 
-    /**
-     * Sets image.
-     */
-    public function setImage(Image $image)
+    public function setImage(Image $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * Gets areas.
-     *
-     * @return ArrayCollection
-     */
-    public function getAreas()
+    public function getAreas(): Collection
     {
         return $this->areas;
     }
 
-    /**
-     * Adds an area.
-     */
-    public function addArea(Area $area)
+    public function addArea(Area $area): void
     {
         if (!$this->areas->contains($area)) {
             $this->areas->add($area);
@@ -81,10 +58,7 @@ class GraphicQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes an area.
-     */
-    public function removeArea(Area $area)
+    public function removeArea(Area $area): void
     {
         if ($this->areas->contains($area)) {
             $this->areas->removeElement($area);

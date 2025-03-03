@@ -21,9 +21,6 @@ class Hint implements PenaltyItemInterface
     use PenaltyTrait;
     use Uuid;
 
-    /**
-     * @var Item
-     */
     #[ORM\ManyToOne(targetEntity: Item::class, inversedBy: 'hints')]
     private ?Item $question = null;
 
@@ -32,15 +29,12 @@ class Hint implements PenaltyItemInterface
         $this->refreshUuid();
     }
 
-    public function setQuestion(Item $question)
+    public function setQuestion(Item $question): void
     {
         $this->question = $question;
     }
 
-    /**
-     * @return Item
-     */
-    public function getQuestion()
+    public function getQuestion(): ?Item
     {
         return $this->question;
     }

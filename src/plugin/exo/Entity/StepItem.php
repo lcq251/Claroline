@@ -2,8 +2,8 @@
 
 namespace UJM\ExoBundle\Entity;
 
+use Claroline\AppBundle\Entity\Display\Order;
 use Doctrine\DBAL\Types\Types;
-use Claroline\AppBundle\Entity\Meta\Order;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Item\Item;
 
@@ -22,9 +22,6 @@ class StepItem
 
     /**
      * The parent step.
-     *
-     *
-     * @var Step
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\Id]
@@ -33,9 +30,6 @@ class StepItem
 
     /**
      * The linked question.
-     *
-     *
-     * @var Item
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\Id]
@@ -48,58 +42,39 @@ class StepItem
      * @var bool
      */
     #[ORM\Column(name: 'mandatory', type: Types::BOOLEAN, nullable: true)]
-    private $mandatory = false;
+    private bool $mandatory = false;
 
     /**
      * Set Step.
      */
-    public function setStep(Step $step)
+    public function setStep(Step $step): void
     {
         $this->step = $step;
 
         $step->addStepQuestion($this);
     }
 
-    /**
-     * Get Step.
-     *
-     * @return Step
-     */
-    public function getStep()
+    public function getStep(): ?Step
     {
         return $this->step;
     }
 
-    /**
-     * Set Item.
-     */
-    public function setQuestion(Item $question)
+    public function setQuestion(Item $question): void
     {
         $this->question = $question;
     }
 
-    /**
-     * Get Item.
-     *
-     * @return Item
-     */
-    public function getQuestion()
+    public function getQuestion(): ?Item
     {
         return $this->question;
     }
 
-    /**
-     * @return bool
-     */
-    public function isMandatory()
+    public function isMandatory(): bool
     {
         return $this->mandatory;
     }
 
-    /**
-     * @param bool $mandatory
-     */
-    public function setMandatory($mandatory)
+    public function setMandatory(bool $mandatory): void
     {
         $this->mandatory = $mandatory;
     }

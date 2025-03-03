@@ -14,8 +14,6 @@ import {useSelector} from 'react-redux'
 const TemplateForm = (props) => {
   const templateType = useSelector(selectors.templateType)
 
-  console.log(templateType)
-
   return (
     <FormData
       level={2}

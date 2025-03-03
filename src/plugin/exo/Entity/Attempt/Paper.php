@@ -213,7 +213,7 @@ class Paper
      *
      * @return Answer[]|ArrayCollection
      */
-    public function getAnswers()
+    public function getAnswers(): Collection
     {
         return $this->answers;
     }
@@ -240,8 +240,6 @@ class Paper
 
     /**
      * Get all the hints available in the paper structure.
-     *
-     * @return array
      */
     public function getHints(): array
     {
@@ -263,12 +261,8 @@ class Paper
 
     /**
      * Gets the answer to a question if any exist.
-     *
-     * @param string $questionUuid
-     *
-     * @return Answer
      */
-    public function getAnswer($questionUuid)
+    public function getAnswer(string $questionUuid): ?Answer
     {
         $found = null;
         foreach ($this->answers as $answer) {
@@ -284,7 +278,7 @@ class Paper
     /**
      * Adds an answer.
      */
-    public function addAnswer(Answer $answer)
+    public function addAnswer(Answer $answer): void
     {
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
@@ -295,14 +289,14 @@ class Paper
     /**
      * Removes an answer.
      */
-    public function removeAnswer(Answer $answer)
+    public function removeAnswer(Answer $answer): void
     {
         if ($this->answers->contains($answer)) {
             $this->answers->removeElement($answer);
         }
     }
 
-    private function getDecodedStructure()
+    private function getDecodedStructure(): ?array
     {
         if (empty($this->decodedStructure)) {
             $this->decodeStructure();
@@ -311,7 +305,7 @@ class Paper
         return $this->decodedStructure;
     }
 
-    private function decodeStructure()
+    private function decodeStructure(): void
     {
         $this->decodedStructure = json_decode($this->structure, true);
     }

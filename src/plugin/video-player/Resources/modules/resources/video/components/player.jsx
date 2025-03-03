@@ -7,7 +7,7 @@ import get from 'lodash/get'
 import {url} from '#/main/app/api'
 import {asset} from '#/main/app/config'
 import {trans, transChoice} from '#/main/app/intl'
-import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
 import {MediaInfo} from '#/main/app/media'
 

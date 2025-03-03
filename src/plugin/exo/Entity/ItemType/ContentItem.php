@@ -13,29 +13,19 @@ use Doctrine\ORM\Mapping as ORM;
 class ContentItem extends AbstractItem
 {
     #[ORM\Column(name: 'content_data', type: Types::TEXT)]
-    private $data;
+    private ?string $data = null;
 
-    /**
-     * Gets data.
-     *
-     * @return string
-     */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    /**
-     * Sets data.
-     *
-     * @param string $data
-     */
-    public function setData($data)
+    public function setData(?string $data): void
     {
         $this->data = $data;
     }
 
-    public function isContentItem()
+    public function isContentItem(): bool
     {
         return true;
     }

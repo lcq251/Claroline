@@ -2,9 +2,9 @@
 
 namespace UJM\ExoBundle\Entity\ItemType;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Misc\OrderingItem;
 use UJM\ExoBundle\Library\Model\PenaltyTrait;
@@ -24,73 +24,51 @@ class OrderingQuestion extends AbstractItem
      *
      * @var string
      */
-    const MODE_INSIDE = 'inside';
+    public const MODE_INSIDE = 'inside';
 
     /**
      * The user will reorder items in another container.
      *
      * @var string
      */
-    const MODE_BESIDE = 'beside';
+    public const MODE_BESIDE = 'beside';
 
     /**
-     *
      * @var Collection<int, OrderingItem>
      */
     #[ORM\OneToMany(targetEntity: OrderingItem::class, mappedBy: 'question', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $items;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING)]
-    private $direction = Direction::VERTICAL;
+    private string $direction = Direction::VERTICAL;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING)]
-    private $mode = self::MODE_INSIDE;
+    private string $mode = self::MODE_INSIDE;
 
-    /**
-     * Constructs a new instance of Ordering question.
-     */
     public function __construct()
     {
         $this->items = new ArrayCollection();
     }
 
-    /**
-     * @param $mode
-     */
-    public function setMode($mode)
+    public function setMode(string $mode): void
     {
         if (self::MODE_INSIDE === $mode || self::MODE_BESIDE === $mode) {
             $this->mode = $mode;
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getMode()
+    public function getMode(): string
     {
         return $this->mode;
     }
 
-    /**
-     * @param $direction
-     */
-    public function setDirection($direction)
+    public function setDirection(string $direction): void
     {
         $this->direction = $direction;
     }
 
-    /**
-     * @return string
-     */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->direction;
     }
@@ -100,19 +78,12 @@ class OrderingQuestion extends AbstractItem
      *
      * @return OrderingItem[]|ArrayCollection
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
-    /**
-     * Get an item by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return OrderingItem|null
-     */
-    public function getItem($uuid)
+    public function getItem($uuid): ?OrderingItem
     {
         $found = null;
         foreach ($this->items as $item) {
@@ -125,10 +96,7 @@ class OrderingQuestion extends AbstractItem
         return $found;
     }
 
-    /**
-     * Add item.
-     */
-    public function addItem(OrderingItem $item)
+    public function addItem(OrderingItem $item): void
     {
         if (!$this->items->contains($item)) {
             $item->setQuestion($this);
@@ -136,10 +104,7 @@ class OrderingQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Remove item.
-     */
-    public function removeItem(OrderingItem $item)
+    public function removeItem(OrderingItem $item): void
     {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);

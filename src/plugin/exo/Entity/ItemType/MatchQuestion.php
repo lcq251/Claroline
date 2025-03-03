@@ -25,7 +25,6 @@ class MatchQuestion extends AbstractItem
     use PenaltyTrait;
 
     /**
-     *
      * @var Collection<int, Label>
      */
     #[ORM\OneToMany(targetEntity: Label::class, mappedBy: 'interactionMatching', cascade: ['all'], orphanRemoval: true)]
@@ -33,7 +32,6 @@ class MatchQuestion extends AbstractItem
     private Collection $labels;
 
     /**
-     *
      * @var Collection<int, Proposal>
      */
     #[ORM\OneToMany(targetEntity: Proposal::class, mappedBy: 'interactionMatching', cascade: ['all'], orphanRemoval: true)]
@@ -46,9 +44,6 @@ class MatchQuestion extends AbstractItem
     #[ORM\OneToMany(targetEntity: Association::class, mappedBy: 'question', cascade: ['all'], orphanRemoval: true)]
     private Collection $associations;
 
-    /**
-     * MatchQuestion constructor.
-     */
     public function __construct()
     {
         $this->labels = new ArrayCollection();
@@ -56,20 +51,12 @@ class MatchQuestion extends AbstractItem
         $this->associations = new ArrayCollection();
     }
 
-    /**
-     * Gets associations.
-     *
-     * @return ArrayCollection
-     */
-    public function getAssociations()
+    public function getAssociations(): Collection
     {
         return $this->associations;
     }
 
-    /**
-     * Adds an association.
-     */
-    public function addAssociation(Association $association)
+    public function addAssociation(Association $association): void
     {
         if (!$this->associations->contains($association)) {
             $this->associations->add($association);
@@ -77,30 +64,19 @@ class MatchQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes an association.
-     */
-    public function removeAssociation(Association $association)
+    public function removeAssociation(Association $association): void
     {
         if ($this->associations->contains($association)) {
             $this->associations->removeElement($association);
         }
     }
 
-    /**
-     * Gets labels.
-     *
-     * @return ArrayCollection
-     */
-    public function getLabels()
+    public function getLabels(): Collection
     {
         return $this->labels;
     }
 
-    /**
-     * Adds a label.
-     */
-    public function addLabel(Label $label)
+    public function addLabel(Label $label): void
     {
         if (!$this->labels->contains($label)) {
             $this->labels->add($label);
@@ -108,30 +84,19 @@ class MatchQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes a label.
-     */
-    public function removeLabel(Label $label)
+    public function removeLabel(Label $label): void
     {
         if ($this->labels->contains($label)) {
             $this->labels->removeElement($label);
         }
     }
 
-    /**
-     * Gets proposals.
-     *
-     * @return ArrayCollection
-     */
-    public function getProposals()
+    public function getProposals(): Collection
     {
         return $this->proposals;
     }
 
-    /**
-     * Adds a proposal.
-     */
-    public function addProposal(Proposal $proposal)
+    public function addProposal(Proposal $proposal): void
     {
         if (!$this->proposals->contains($proposal)) {
             $this->proposals->add($proposal);
@@ -139,10 +104,7 @@ class MatchQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes a proposal.
-     */
-    public function removeProposal(Proposal $proposal)
+    public function removeProposal(Proposal $proposal): void
     {
         if ($this->proposals->contains($proposal)) {
             $this->proposals->removeElement($proposal);

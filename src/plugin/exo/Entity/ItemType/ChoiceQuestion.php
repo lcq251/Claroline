@@ -19,14 +19,12 @@ use UJM\ExoBundle\Library\Options\ExerciseNumbering;
 class ChoiceQuestion extends AbstractItem
 {
     use ShuffleTrait;
+
     /**
      * Is it a multiple or a unique choice question ?
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(type: Types::BOOLEAN)]
-    private $multiple = false;
+    private bool $multiple = false;
 
     /**
      * @var Collection<int, Choice>
@@ -35,60 +33,38 @@ class ChoiceQuestion extends AbstractItem
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $choices;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING)]
-    private $numbering = ExerciseNumbering::NONE;
+    private string $numbering = ExerciseNumbering::NONE;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING)]
-    private $direction = Direction::VERTICAL;
+    private string $direction = Direction::VERTICAL;
 
-    /**
-     * ChoiceQuestion constructor.
-     */
     public function __construct()
     {
         $this->choices = new ArrayCollection();
     }
 
-    /**
-     * Is multiple ?
-     *
-     * @return bool
-     */
-    public function isMultiple()
+    public function isMultiple(): bool
     {
         return $this->multiple;
     }
 
-    /**
-     * Sets multiple.
-     *
-     * @param bool $multiple
-     */
-    public function setMultiple($multiple)
+    public function setMultiple(bool $multiple): void
     {
         $this->multiple = $multiple;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getChoices()
+    public function getChoices(): Collection
     {
         return $this->choices;
     }
 
-    public function setChoices(ArrayCollection $choices)
+    public function setChoices(ArrayCollection $choices): void
     {
         $this->choices = $choices;
     }
 
-    public function addChoice(Choice $choice)
+    public function addChoice(Choice $choice): void
     {
         if (!$this->choices->contains($choice)) {
             $this->choices->add($choice);
@@ -96,35 +72,29 @@ class ChoiceQuestion extends AbstractItem
         }
     }
 
-    public function removeChoice(Choice $choice)
+    public function removeChoice(Choice $choice): void
     {
         if ($this->choices->contains($choice)) {
             $this->choices->removeElement($choice);
         }
     }
 
-    public function setNumbering($numbering)
+    public function setNumbering(string $numbering): void
     {
         $this->numbering = $numbering;
     }
 
-    public function getNumbering()
+    public function getNumbering(): string
     {
         return $this->numbering;
     }
 
-    /**
-     * @param string $direction
-     */
-    public function setDirection($direction)
+    public function setDirection(string $direction): void
     {
         $this->direction = $direction;
     }
 
-    /**
-     * @return string
-     */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->direction;
     }

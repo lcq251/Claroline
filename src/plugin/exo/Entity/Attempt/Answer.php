@@ -2,12 +2,11 @@
 
 namespace UJM\ExoBundle\Entity\Attempt;
 
-use UJM\ExoBundle\Repository\AnswerRepository;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use UJM\ExoBundle\Entity\Item\Item;
+use UJM\ExoBundle\Repository\AnswerRepository;
 
 /**
  * An answer represents a user answer to a question.
@@ -19,123 +18,77 @@ class Answer
     use Id;
     use Uuid;
 
-    /**
-     * @var string
-     */
     #[ORM\Column]
-    private $ip;
+    private ?string $ip = null;
 
     /**
      * The score obtained for this question.
-     *
-     * @var float
      */
     #[ORM\Column(name: 'mark', type: Types::FLOAT, nullable: true)]
-    private $score;
+    private ?float $score = null;
 
     /**
      * A custom feedback sets by a creator.
-     *
-     * @var string
      */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $feedback = '';
+    private string $feedback = '';
 
-    /**
-     * @var int
-     */
     #[ORM\Column(name: 'nb_tries', type: Types::INTEGER)]
-    private $tries = 0;
+    private int $tries = 0;
 
     /**
      * The answer data formatted in string for DB storage.
-     *
-     * @var string
      */
     #[ORM\Column(name: 'response', type: Types::TEXT, nullable: true)]
-    private $data;
+    private ?string $data = null;
 
     /**
      * The list of hints used to answer the question.
-     *
-     *
-     * @var array
      */
     #[ORM\Column(name: 'used_hints', type: Types::SIMPLE_ARRAY, nullable: true)]
-    private $usedHints = [];
+    private array $usedHints = [];
 
-    /**
-     * @var Paper
-     */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Paper::class, inversedBy: 'answers')]
     private ?Paper $paper = null;
 
     /**
      * The id of the question that is answered.
-     *
-     * @var Item
      */
     #[ORM\Column(name: 'question_id', type: Types::STRING, length: 36)]
-    private $questionId;
+    private ?string $questionId = null;
 
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    /**
-     * @param string $ip
-     */
-    public function setIp($ip)
+    public function setIp(string $ip): void
     {
         $this->ip = $ip;
     }
 
-    /**
-     * @return string
-     */
-    public function getIp()
+    public function getIp(): ?string
     {
         return $this->ip;
     }
 
-    /**
-     * Sets score.
-     *
-     * @param float $score
-     */
-    public function setScore($score)
+    public function setScore(?float $score): void
     {
         $this->score = $score;
     }
 
-    /**
-     * Gets score.
-     *
-     * @return float
-     */
-    public function getScore()
+    public function getScore(): ?float
     {
         return $this->score;
     }
 
-    /**
-     * Sets feedback.
-     *
-     * @param $feedback
-     */
-    public function setFeedback($feedback)
+    public function setFeedback(?string $feedback): void
     {
         $this->feedback = $feedback;
     }
 
-    /**
-     * Gets feedback.
-     *
-     * @return string
-     */
-    public function getFeedback()
+    public function getFeedback(): string
     {
         if (!$this->feedback) {
             return '';
@@ -144,74 +97,39 @@ class Answer
         return $this->feedback;
     }
 
-    /**
-     * Gets number or tries.
-     *
-     * @param int $tries
-     */
-    public function setTries($tries)
+    public function setTries(int $tries): void
     {
         $this->tries = $tries;
     }
 
-    /**
-     * Sets number of tries.
-     *
-     * @return int
-     */
-    public function getTries()
+    public function getTries(): int
     {
         return $this->tries;
     }
 
-    /**
-     * Sets data.
-     *
-     * @param string $data
-     */
-    public function setData($data)
+    public function setData(?string $data): void
     {
         $this->data = $data;
     }
 
-    /**
-     * Gets data.
-     *
-     * @return string
-     */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    /**
-     * Gets used hints.
-     *
-     * @return array
-     */
-    public function getUsedHints()
+    public function getUsedHints(): ?array
     {
         return $this->usedHints;
     }
 
-    /**
-     * Adds an Hint.
-     *
-     * @param string $hintId
-     */
-    public function addUsedHint($hintId)
+    public function addUsedHint(string $hintId): void
     {
         if (!in_array($hintId, $this->usedHints)) {
             $this->usedHints[] = $hintId;
         }
     }
 
-    /**
-     * Removes an Hint.
-     *
-     * @param string $hintId
-     */
-    public function removeUsedHint($hintId)
+    public function removeUsedHint(string $hintId): void
     {
         $pos = array_search($hintId, $this->usedHints);
         if (false !== $pos) {
@@ -219,31 +137,22 @@ class Answer
         }
     }
 
-    public function setPaper(Paper $paper)
+    public function setPaper(Paper $paper): void
     {
         $this->paper = $paper;
     }
 
-    /**
-     * @return Paper
-     */
-    public function getPaper()
+    public function getPaper(): ?Paper
     {
         return $this->paper;
     }
 
-    /**
-     * @return string
-     */
-    public function getQuestionId()
+    public function getQuestionId(): ?string
     {
         return $this->questionId;
     }
 
-    /**
-     * @param string $questionId
-     */
-    public function setQuestionId($questionId)
+    public function setQuestionId(string $questionId): void
     {
         $this->questionId = $questionId;
     }

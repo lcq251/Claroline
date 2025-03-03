@@ -20,22 +20,12 @@ class BooleanQuestion extends AbstractItem
     #[ORM\OneToMany(targetEntity: BooleanChoice::class, mappedBy: 'question', cascade: ['all'], orphanRemoval: true)]
     private Collection $choices;
 
-    /**
-     * Constructs a new instance of choices.
-     */
     public function __construct()
     {
         $this->choices = new ArrayCollection();
     }
 
-    /**
-     * Get a choice by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return BooleanChoice|null
-     */
-    public function getChoice($uuid)
+    public function getChoice(string $uuid): ?BooleanChoice
     {
         $found = null;
         foreach ($this->choices as $choice) {
@@ -48,15 +38,12 @@ class BooleanQuestion extends AbstractItem
         return $found;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getChoices()
+    public function getChoices(): Collection
     {
         return $this->choices;
     }
 
-    public function addChoice(BooleanChoice $choice)
+    public function addChoice(BooleanChoice $choice): void
     {
         if (!$this->choices->contains($choice)) {
             $this->choices->add($choice);
@@ -64,7 +51,7 @@ class BooleanQuestion extends AbstractItem
         }
     }
 
-    public function removeChoice(BooleanChoice $choice)
+    public function removeChoice(BooleanChoice $choice): void
     {
         if ($this->choices->contains($choice)) {
             $this->choices->removeElement($choice);

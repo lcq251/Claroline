@@ -17,12 +17,9 @@ class ClozeQuestion extends AbstractItem
 {
     /**
      * The HTML text with empty holes.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(name: 'htmlWithoutValue', type: Types::TEXT)]
-    private $text;
+    private ?string $text = null;
 
     /**
      * The list of holes present in the text.
@@ -33,30 +30,17 @@ class ClozeQuestion extends AbstractItem
     #[ORM\OneToMany(targetEntity: Hole::class, mappedBy: 'interactionHole', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $holes;
 
-    /**
-     * ClozeQuestion constructor.
-     */
     public function __construct()
     {
         $this->holes = new ArrayCollection();
     }
 
-    /**
-     * Gets text.
-     *
-     * @return string
-     */
-    public function getText()
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * Sets text.
-     *
-     * @param $text
-     */
-    public function setText($text)
+    public function setText(string $text): void
     {
         $this->text = $text;
     }
@@ -66,19 +50,12 @@ class ClozeQuestion extends AbstractItem
      *
      * @return Hole[]|ArrayCollection
      */
-    public function getHoles()
+    public function getHoles(): Collection
     {
         return $this->holes;
     }
 
-    /**
-     * Retrieves a hole by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return Hole
-     */
-    public function getHole($uuid)
+    public function getHole(string $uuid): ?Hole
     {
         $found = null;
         foreach ($this->holes as $hole) {
@@ -91,10 +68,7 @@ class ClozeQuestion extends AbstractItem
         return $found;
     }
 
-    /**
-     * Adds a hole.
-     */
-    public function addHole(Hole $hole)
+    public function addHole(Hole $hole): void
     {
         if (!$this->holes->contains($hole)) {
             $this->holes->add($hole);
@@ -102,10 +76,7 @@ class ClozeQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Removes a hole.
-     */
-    public function removeHole(Hole $hole)
+    public function removeHole(Hole $hole): void
     {
         if ($this->holes->contains($hole)) {
             $this->holes->removeElement($hole);

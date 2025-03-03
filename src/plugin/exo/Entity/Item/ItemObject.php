@@ -2,10 +2,10 @@
 
 namespace UJM\ExoBundle\Entity\Item;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\AppBundle\Entity\Meta\Order;
+use Claroline\AppBundle\Entity\Display\Order;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,8 +21,6 @@ class ItemObject
 
     /**
      * Owning Item.
-     *
-     * @var Item
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Item::class, inversedBy: 'objects')]
@@ -30,80 +28,44 @@ class ItemObject
 
     /**
      * The mime type of the Item object.
-     *
-     *
-     * @var string
      */
     #[ORM\Column('mime_type', type: Types::STRING)]
-    private $mimeType;
+    private ?string $mimeType = null;
 
     #[ORM\Column(name: 'object_data', type: Types::TEXT)]
-    private $data;
+    private ?string $data = null;
 
-    /**
-     * ItemObject constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    /**
-     * Set question.
-     *
-     * @param Item $question
-     */
-    public function setQuestion(Item $question = null)
+    public function setQuestion(Item $question = null): void
     {
         $this->question = $question;
     }
 
-    /**
-     * Get question.
-     *
-     * @return Item
-     */
-    public function getQuestion()
+    public function getQuestion(): ?Item
     {
         return $this->question;
     }
 
-    /**
-     * Gets mime type.
-     *
-     * @return string
-     */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
-    /**
-     * Sets mime type.
-     *
-     * @param $mimeType
-     */
-    public function setMimeType($mimeType)
+    public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }
 
-    /**
-     * Gets data.
-     *
-     * @return string
-     */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    /**
-     * Sets data.
-     *
-     * @param string $data
-     */
-    public function setData($data)
+    public function setData(string $data): void
     {
         $this->data = $data;
     }

@@ -10,59 +10,32 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait ContentTrait
 {
-    /**
-     * The content data.
-     *
-     * @var string
-     */
     #[ORM\Column(name: 'data', type: 'text', nullable: true)]
-    private $data;
+    private ?string $data = null;
 
     /**
      * A resource node holding the content.
-     *
-     * @var ResourceNode
      */
     #[ORM\JoinColumn(name: 'resourceNode_id', referencedColumnName: 'id', nullable: true)]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
-    private $resourceNode;
+    private ?ResourceNode $resourceNode = null;
 
-    /**
-     * Sets data.
-     *
-     * @param string $data
-     */
-    public function setData($data)
+    public function setData(?string $data): void
     {
         $this->data = $data;
     }
 
-    /**
-     * Gets data.
-     *
-     * @returns string
-     */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    /**
-     * Sets ResourceNode.
-     *
-     * @param ResourceNode $resourceNode
-     */
-    public function setResourceNode(ResourceNode $resourceNode = null)
+    public function setResourceNode(?ResourceNode $resourceNode = null): void
     {
         $this->resourceNode = $resourceNode;
     }
 
-    /**
-     * Gets ResourceNode.
-     *
-     * @return ResourceNode
-     */
-    public function getResourceNode()
+    public function getResourceNode(): ?ResourceNode
     {
         return $this->resourceNode;
     }

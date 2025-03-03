@@ -2,9 +2,9 @@
 
 namespace UJM\ExoBundle\Entity\ItemType;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\Misc\Cell;
 use UJM\ExoBundle\Library\Model\PenaltyTrait;
@@ -24,21 +24,20 @@ class GridQuestion extends AbstractItem
     /**
      * @var string
      */
-    const SUM_CELL = 'cell';
+    public const SUM_CELL = 'cell';
 
     /**
      * @var string
      */
-    const SUM_COLUMN = 'col';
+    public const SUM_COLUMN = 'col';
 
     /**
      * @var string
      */
-    const SUM_ROW = 'row';
+    public const SUM_ROW = 'row';
 
     /**
      * List of available cells for the question.
-     *
      *
      * @var Collection<int, Cell>
      */
@@ -47,52 +46,34 @@ class GridQuestion extends AbstractItem
 
     /**
      * Sum sub mode ["cell", "row", "col"].
-     *
-     *
-     * @var string
      */
     #[ORM\Column(type: Types::STRING)]
-    private $sumMode = self::SUM_CELL;
+    private string $sumMode = self::SUM_CELL;
 
     /**
      * Number of rows to draw.
-     *
-     *
-     * @var int
      */
     #[ORM\Column(name: 'grid_rows', type: Types::INTEGER)]
-    private $rows;
+    private ?int $rows = null;
 
     /**
      * Number of columns to draw.
-     *
-     *
-     * @var int
      */
     #[ORM\Column(name: 'grid_columns', type: Types::INTEGER)]
-    private $columns;
+    private ?int $columns = null;
 
     /**
      * Grid border width.
-     *
-     *
-     * @var int
      */
     #[ORM\Column(type: Types::INTEGER)]
-    private $borderWidth = 1;
+    private int $borderWidth = 1;
 
     /**
      * Grid border color.
-     *
-     *
-     * @var string
      */
     #[ORM\Column(type: Types::STRING)]
-    private $borderColor = '#DDDDDD';
+    private ?string $borderColor = '#DDDDDD';
 
-    /**
-     * GridQuestion constructor.
-     */
     public function __construct()
     {
         $this->cells = new ArrayCollection();
@@ -103,19 +84,12 @@ class GridQuestion extends AbstractItem
      *
      * @return Cell[]|ArrayCollection
      */
-    public function getCells()
+    public function getCells(): Collection
     {
         return $this->cells;
     }
 
-    /**
-     * Get a cell by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return Cell|null
-     */
-    public function getCell($uuid)
+    public function getCell(string $uuid): ?Cell
     {
         $found = null;
         foreach ($this->cells as $cell) {
@@ -128,10 +102,7 @@ class GridQuestion extends AbstractItem
         return $found;
     }
 
-    /**
-     * Add cell.
-     */
-    public function addCell(Cell $cell)
+    public function addCell(Cell $cell): void
     {
         if (!$this->cells->contains($cell)) {
             $cell->SetQuestion($this);
@@ -139,115 +110,68 @@ class GridQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Remove cell.
-     */
-    public function removeCell(Cell $cell)
+    public function removeCell(Cell $cell): void
     {
         if ($this->cells->contains($cell)) {
             $this->cells->removeElement($cell);
         }
     }
 
-    /**
-     * @param string $mode
-     */
-    public function setSumMode($mode)
+    public function setSumMode(string $mode): void
     {
         $this->sumMode = $mode;
     }
 
-    /**
-     * @return string
-     */
-    public function getSumMode()
+    public function getSumMode(): string
     {
         return $this->sumMode;
     }
 
-    /**
-     * Number of rows for the grid.
-     *
-     * @param number $rows
-     */
-    public function setRows($rows)
+    public function setRows(int $rows): void
     {
         $this->rows = $rows;
     }
 
-    /**
-     * Number of rows for the grid.
-     *
-     * @return number
-     */
-    public function getRows()
+    public function getRows(): ?int
     {
         return $this->rows;
     }
 
-    /**
-     * Number of cols for the grid.
-     *
-     * @param number $columns
-     */
-    public function setColumns($columns)
+    public function setColumns(int $columns): void
     {
         $this->columns = $columns;
     }
 
-    /**
-     * Number of cols for the grid.
-     *
-     * @return number
-     */
-    public function getColumns()
+    public function getColumns(): ?int
     {
         return $this->columns;
     }
 
-    /**
-     * Grid border width.
-     *
-     * @param number $width
-     */
-    public function setBorderWidth($width)
+    public function setBorderWidth(int $width): void
     {
         $this->borderWidth = $width;
     }
 
-    /**
-     * @return number
-     */
-    public function getBorderWidth()
+    public function getBorderWidth(): ?int
     {
         return $this->borderWidth;
     }
 
-    /**
-     * Grid border color.
-     *
-     * @param string $color
-     */
-    public function setBorderColor($color)
+    public function setBorderColor(?string $color): void
     {
         $this->borderColor = $color;
     }
 
-    /**
-     * @return string
-     */
-    public function getBorderColor()
+    public function getBorderColor(): ?string
     {
         return $this->borderColor;
     }
 
-    /**
-     * Get styles for the grid.
-     *
-     * @return array
-     */
-    public function getGridStyle()
+    public function getGridStyle(): array
     {
-        return ['width' => $this->borderWidth, 'color' => $this->borderColor];
+        return [
+            'width' => $this->borderWidth,
+            'color' => $this->borderColor,
+        ];
     }
 }

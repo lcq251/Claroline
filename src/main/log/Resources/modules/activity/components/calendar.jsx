@@ -19,32 +19,33 @@ const ActivityCalendar = (props) => {
     <div className={classes('activity-calendar-container', props.className)}>
       <table className="activity-calendar">
         <thead>
-        <tr>
-          <th scope="col">
-            <span className="visually-hidden">{trans('days')}</span>
-          </th>
-          {times(12, (monthNum) => {
-            //const date = moment(startRange).set('month', monthNum)
-            return (
-              <th scope="col" colSpan={4}>{moment.monthsShort(monthNum)}</th>
-            )
-          })}
-        </tr>
+          <tr>
+            <th scope="col">
+              <span className="visually-hidden">{trans('days')}</span>
+            </th>
+            {times(12, (monthNum) => {
+              //const date = moment(startRange).set('month', monthNum)
+              return (
+                <th key={monthNum} scope="col" colSpan={4}>{moment.monthsShort(monthNum)}</th>
+              )
+            })}
+          </tr>
         </thead>
 
         <tbody>
-        {times(7, (dayNum) =>
-          <tr>
-            <th className="activity-calendar-day-label" scope="row">{moment.weekdaysShort(dayNum)}</th>
+          {times(7, (dayNum) =>
+            <tr key={dayNum}>
+              <th className="activity-calendar-day-label" scope="row">{moment.weekdaysShort(dayNum)}</th>
 
-            {times(diff.asWeeks(), (week) =>
-              <td className={classes('activity-calendar-day', `activity-calendar-day-`+random(0, 4))}>
-              </td>
-            )}
-          </tr>
-        )}
+              {times(diff.asWeeks(), (week) =>
+                <td key={week} className={classes('activity-calendar-day', `activity-calendar-day-`+random(0, 4))}>
+                </td>
+              )}
+            </tr>
+          )}
         </tbody>
       </table>
+
       <div className="activity-calendar-legend">
         <span className="">{trans('Moins')}</span>
 

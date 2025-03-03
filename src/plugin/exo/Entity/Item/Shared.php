@@ -12,9 +12,6 @@ class Shared
 {
     /**
      * The user with whom the question is shared.
-     *
-     *
-     * @var User
      */
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\Id]
@@ -23,9 +20,6 @@ class Shared
 
     /**
      * The shared question.
-     *
-     *
-     * @var Item
      */
     #[ORM\JoinColumn(name: 'question_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\Id]
@@ -34,65 +28,36 @@ class Shared
 
     /**
      * Gives the user the ability to edit and delete the question.
-     *
-     *
-     * @var bool
      */
     #[ORM\Column(type: Types::BOOLEAN)]
-    private $adminRights = false;
+    private bool $adminRights = false;
 
-    /**
-     * Sets user.
-     */
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     * Gets user.
-     *
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * Sets question.
-     */
-    public function setQuestion(Item $question)
+    public function setQuestion(Item $question): void
     {
         $this->question = $question;
     }
 
-    /**
-     * Gets question.
-     *
-     * @return Item
-     */
-    public function getQuestion()
+    public function getQuestion(): ?Item
     {
         return $this->question;
     }
 
-    /**
-     * Sets admin right.
-     *
-     * @param bool $adminRights
-     */
-    public function setAdminRights($adminRights)
+    public function setAdminRights(bool $adminRights): void
     {
         $this->adminRights = $adminRights;
     }
 
-    /**
-     * Does user have admin rights?
-     *
-     * @return bool
-     */
-    public function hasAdminRights()
+    public function hasAdminRights(): bool
     {
         return $this->adminRights;
     }

@@ -33,6 +33,7 @@ abstract class AbstractLogSerializer
         }
 
         return [
+            'id' => $log->getId(),
             'date' => DateNormalizer::normalize($log->getDate()),
             'event' => $log->getEvent(),
             'details' => $log->getDetails(),

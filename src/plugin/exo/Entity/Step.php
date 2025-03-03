@@ -2,12 +2,12 @@
 
 namespace UJM\ExoBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\AppBundle\Entity\Meta\Order;
+use Claroline\AppBundle\Entity\Display\Order;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use UJM\ExoBundle\Entity\Item\Item;
@@ -15,7 +15,7 @@ use UJM\ExoBundle\Library\Model\AttemptParametersTrait;
 
 /**
  * A step represents a group of items (questions or content) inside an exercise.
- * It also have its specific attempt parameters.
+ * It also has its specific attempt parameters.
  */
 #[ORM\Table(name: 'ujm_step')]
 #[ORM\Entity]
@@ -26,17 +26,11 @@ class Step
     use Order;
     use Uuid;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private $title;
+    private ?string $title = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private $description;
+    private ?string $description = null;
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Exercise::class, inversedBy: 'steps')]
@@ -45,72 +39,46 @@ class Step
     /**
      * @var Collection<int, StepItem>
      */
-    #[ORM\OneToMany(mappedBy: 'step', targetEntity: StepItem::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: StepItem::class, mappedBy: 'step', cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $stepQuestions;
 
     #[ORM\Column(length: 128)]
     #[Gedmo\Slug(fields: ['title'], unique: false)]
-    private $slug;
+    private ?string $slug = null;
 
-    /**
-     * Step constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
         $this->stepQuestions = new ArrayCollection();
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Set description.
-     *
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setExercise(Exercise $exercise)
+    public function setExercise(Exercise $exercise): void
     {
         $this->exercise = $exercise;
     }
 
-    /**
-     * @return Exercise
-     */
-    public function getExercise()
+    public function getExercise(): ?Exercise
     {
         return $this->exercise;
     }
@@ -118,33 +86,26 @@ class Step
     /**
      * @return ArrayCollection|StepItem[]
      */
-    public function getStepQuestions()
+    public function getStepQuestions(): Collection
     {
         return $this->stepQuestions;
     }
 
-    public function addStepQuestion(StepItem $stepQuestion)
+    public function addStepQuestion(StepItem $stepQuestion): void
     {
         if (!$this->stepQuestions->contains($stepQuestion)) {
             $this->stepQuestions->add($stepQuestion);
         }
     }
 
-    public function removeStepQuestion(StepItem $stepQuestion)
+    public function removeStepQuestion(StepItem $stepQuestion): void
     {
         if ($this->stepQuestions->contains($stepQuestion)) {
             $this->stepQuestions->removeElement($stepQuestion);
         }
     }
 
-    /**
-     * Gets a question by its uuid.
-     *
-     * @param string $uuid
-     *
-     * @return Item|null
-     */
-    public function getQuestion($uuid)
+    public function getQuestion(string $uuid): ?Item
     {
         $found = null;
         foreach ($this->stepQuestions as $stepQuestion) {
@@ -162,7 +123,7 @@ class Step
      *
      * @return Item[]
      */
-    public function getQuestions()
+    public function getQuestions(): array
     {
         return array_map(function (StepItem $stepQuestion) {
             return $stepQuestion->getQuestion();
@@ -177,7 +138,7 @@ class Step
      *
      * @return StepItem
      */
-    public function addQuestion(Item $question)
+    public function addQuestion(Item $question): StepItem
     {
         $stepQuestions = $this->stepQuestions->toArray();
         foreach ($stepQuestions as $stepQuestion) {
@@ -196,12 +157,12 @@ class Step
         return $stepQuestion;
     }
 
-    public function setSlug($slug)
+    public function setSlug(string $slug): void
     {
         $this->slug = $slug;
     }
 
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }

@@ -2,14 +2,11 @@
 
 namespace UJM\ExoBundle\Entity\Content;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Image.
- */
 #[ORM\Table(name: 'ujm_picture')]
 #[ORM\Entity]
 class Image
@@ -17,132 +14,72 @@ class Image
     use Id;
     use Uuid;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: Types::STRING, length: 255)]
-    private $title;
+    private ?string $title = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'url', type: Types::STRING, length: 255)]
-    private $url;
+    private ?string $url = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'type', type: Types::STRING, length: 255)]
-    private $type;
+    private ?string $type = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
-    private $width;
+    private ?int $width = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
-    private $height;
+    private ?int $height = null;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    /**
-     * Set title.
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Set url.
-     *
-     * @param string $url
-     */
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
 
-    /**
-     * Get url.
-     *
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * Set type.
-     *
-     * @param string $type
-     */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param int $width
-     */
-    public function setWidth($width)
+    public function setWidth(int $width): void
     {
         $this->width = $width;
     }
 
-    /**
-     * @return int
-     */
-    public function getWidth()
+    public function getWidth(): ?int
     {
         return $this->width;
     }
 
-    /**
-     * @param int $height
-     */
-    public function setHeight($height)
+    public function setHeight(int $height): void
     {
         $this->height = $height;
     }
 
-    /**
-     * @return int
-     */
-    public function getHeight()
+    public function getHeight(): ?int
     {
         return $this->height;
     }

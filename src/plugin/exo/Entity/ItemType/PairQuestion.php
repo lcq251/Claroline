@@ -27,7 +27,6 @@ class PairQuestion extends AbstractItem
     /**
      * List of available items for the question.
      *
-     *
      * @var Collection<int, GridItem>
      */
     #[ORM\JoinTable(name: 'ujm_question_pair_items')]
@@ -48,9 +47,6 @@ class PairQuestion extends AbstractItem
     #[ORM\OneToMany(targetEntity: GridOdd::class, mappedBy: 'question', cascade: ['all'], orphanRemoval: true)]
     private Collection $oddItems;
 
-    /**
-     * PairQuestion constructor.
-     */
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -63,19 +59,12 @@ class PairQuestion extends AbstractItem
      *
      * @return GridItem[]|ArrayCollection
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
-    /**
-     * Get an item by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return GridItem|null
-     */
-    public function getItem($uuid)
+    public function getItem(string $uuid): ?GridItem
     {
         $found = null;
         foreach ($this->items as $item) {
@@ -91,7 +80,7 @@ class PairQuestion extends AbstractItem
     /**
      * Add item.
      */
-    public function addItem(GridItem $gridItem)
+    public function addItem(GridItem $gridItem): void
     {
         if (!$this->items->contains($gridItem)) {
             $this->items->add($gridItem);
@@ -101,7 +90,7 @@ class PairQuestion extends AbstractItem
     /**
      * Remove item.
      */
-    public function removeItem(GridItem $gridItem)
+    public function removeItem(GridItem $gridItem): void
     {
         if ($this->items->contains($gridItem)) {
             $this->items->removeElement($gridItem);
@@ -113,7 +102,7 @@ class PairQuestion extends AbstractItem
      *
      * @return GridRow[]|ArrayCollection
      */
-    public function getRows()
+    public function getRows(): Collection
     {
         return $this->rows;
     }
@@ -121,7 +110,7 @@ class PairQuestion extends AbstractItem
     /**
      * Add row.
      */
-    public function addRow(GridRow $row)
+    public function addRow(GridRow $row): void
     {
         if (!$this->rows->contains($row)) {
             $this->rows->add($row);
@@ -132,7 +121,7 @@ class PairQuestion extends AbstractItem
     /**
      * Remove row.
      */
-    public function removeRow(GridRow $row)
+    public function removeRow(GridRow $row): void
     {
         if ($this->rows->contains($row)) {
             $this->rows->removeElement($row);
@@ -144,19 +133,12 @@ class PairQuestion extends AbstractItem
      *
      * @return GridOdd[]|ArrayCollection
      */
-    public function getOddItems()
+    public function getOddItems(): Collection
     {
         return $this->oddItems;
     }
 
-    /**
-     * Get an odd item by its uuid.
-     *
-     * @param $uuid
-     *
-     * @return GridOdd|null
-     */
-    public function getOddItem($uuid)
+    public function getOddItem(string $uuid): ?GridOdd
     {
         $found = null;
         foreach ($this->oddItems as $oddItem) {
@@ -169,10 +151,7 @@ class PairQuestion extends AbstractItem
         return $found;
     }
 
-    /**
-     * Add odd item.
-     */
-    public function addOddItem(GridOdd $gridOdd)
+    public function addOddItem(GridOdd $gridOdd): void
     {
         if (!$this->oddItems->contains($gridOdd)) {
             $this->oddItems->add($gridOdd);
@@ -180,10 +159,7 @@ class PairQuestion extends AbstractItem
         }
     }
 
-    /**
-     * Remove odd item.
-     */
-    public function removeOddItem(GridOdd $gridOdd)
+    public function removeOddItem(GridOdd $gridOdd): void
     {
         if ($this->oddItems->contains($gridOdd)) {
             $this->oddItems->removeElement($gridOdd);
