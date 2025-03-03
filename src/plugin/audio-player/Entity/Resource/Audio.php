@@ -2,28 +2,20 @@
 
 namespace Claroline\AudioPlayerBundle\Entity\Resource;
 
-use Claroline\AppBundle\Entity\Identifier\Id;
-use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_audio_params')]
 #[ORM\Entity]
-class AudioParams
+class Audio extends AbstractResource
 {
-    use Id;
-    use Uuid;
     use Description;
 
     public const MANAGER_TYPE = 'manager';
     public const USER_TYPE = 'user';
     public const NO_TYPE = 'none';
-
-    #[ORM\JoinColumn(name: 'node_id', nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
-    private ?ResourceNode $resourceNode = null;
 
     #[ORM\Column(name: 'sections_type')]
     private string $sectionsType = self::MANAGER_TYPE;
@@ -31,19 +23,17 @@ class AudioParams
     #[ORM\Column(name: 'rate_control', type: Types::BOOLEAN)]
     private bool $rateControl = true;
 
-    public function __construct()
+    #[ORM\Column(nullable: false)]
+    private ?string $url = null;
+
+    public function getUrl(): ?string
     {
-        $this->refreshUuid();
+        return $this->url;
     }
 
-    public function getResourceNode(): ?ResourceNode
+    public function setUrl(string $url): void
     {
-        return $this->resourceNode;
-    }
-
-    public function setResourceNode(ResourceNode $resourceNode): void
-    {
-        $this->resourceNode = $resourceNode;
+        $this->url = $url;
     }
 
     public function getSectionsType(): string

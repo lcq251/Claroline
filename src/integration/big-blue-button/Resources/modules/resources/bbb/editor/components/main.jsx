@@ -16,7 +16,6 @@ const BBBEditor = () => {
       additionalData={() => ({
         resource: bbb
       })}
-      defaultPage="parameters"
       appearancePage={BBBEditorAppearance}
       pages={[
         {

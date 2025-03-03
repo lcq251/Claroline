@@ -1,9 +1,4 @@
 services:
-    _defaults:
-        autowire: false
-        autoconfigure: false
-        public: true
-
     Claroline\AudioPlayerBundle\Serializer\Resource\SectionSerializer:
         tags: [claroline.serializer]
         arguments:
@@ -16,7 +11,7 @@ services:
             - '@Claroline\AudioPlayerBundle\Serializer\Resource\SectionSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
-    Claroline\AudioPlayerBundle\Serializer\Resource\AudioParamsSerializer:
+    Claroline\AudioPlayerBundle\Serializer\Resource\AudioSerializer:
         tags: [claroline.serializer]
 
     Claroline\AudioPlayerBundle\Serializer\Quiz\WaveformQuestionSerializer:

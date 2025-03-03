@@ -7,7 +7,6 @@ import classes from 'classnames'
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
-import {FormData} from '#/main/app/content/form/containers/data'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {FileInput} from '#/main/app/data/types/file/components/input'
 import {CallbackButton} from '#/main/app/buttons'
@@ -19,9 +18,10 @@ import {selectors as resourceSelect} from '#/main/core/resource/store'
 import {Checkbox} from '#/main/app/input/components/checkbox'
 import {TextGroup}  from '#/main/core/layout/form/components/group/text-group'
 
-import {constants} from '#/plugin/audio-player/files/audio/constants'
-import {Audio as AudioType, Section as SectionType} from '#/plugin/audio-player/files/audio/prop-types'
+import {constants} from '#/plugin/audio-player/resources/audio/constants'
+import {Audio as AudioType, Section as SectionType} from '#/plugin/audio-player/resources/audio/prop-types'
 import {Waveform} from '#/plugin/audio-player/waveform/components/waveform'
+import {EditorPage} from '#/main/app/editor'
 
 const SectionAudio = props =>
   <div className="section-audio-group">
@@ -287,21 +287,14 @@ AudioConfiguration.propTypes = {
 }
 
 const Audio = props =>
-  <FormData
-    className="audio-editor"
-    embedded={true}
-    name={editorSelect.FORM_NAME}
+  <EditorPage
+    title={trans('parameters')}
     definition={[
       {
         title: trans('general'),
         primary: true,
-        icon: 'fa fa-fw fa-headphones',
         fields: [
           {
-            name: 'description',
-            label: trans('description'),
-            type: 'html'
-          }, {
             name: 'sectionsType',
             type: 'choice',
             label: trans('sections_type', {}, 'audio'),
@@ -309,7 +302,7 @@ const Audio = props =>
             options: {
               noEmpty: true,
               multiple: false,
-              condensed: true,
+              condensed: false,
               choices: constants.SECTIONS_TYPES
             },
             onChange: () => props.update('sections', [])
@@ -347,7 +340,7 @@ Audio.propTypes = {
   update: T.func.isRequired
 }
 
-const AudioEditor = connect(
+const AudioEditorParameters = connect(
   (state) => ({
     mimeType: fileSelect.mimeType(state),
     fileForm: formSelectors.data(formSelectors.form(state, editorSelect.FORM_NAME)),
@@ -361,5 +354,5 @@ const AudioEditor = connect(
 )(Audio)
 
 export {
-  AudioEditor
+  AudioEditorParameters
 }

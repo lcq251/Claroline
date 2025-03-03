@@ -25,7 +25,7 @@ class SectionController extends AbstractCrudController
 
     public static function getName(): string
     {
-        return 'resource_audio_section_';
+        return 'resource_audio_section';
     }
 
     public static function getClass(): string

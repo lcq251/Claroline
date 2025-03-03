@@ -2,6 +2,14 @@ services:
     _defaults:
         public: true # because controller
 
+    Claroline\AudioPlayerBundle\Controller\AudioController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\CoreBundle\Manager\FileManager'
+            - '@Claroline\AudioPlayerBundle\Manager\EvaluationManager'
+
     Claroline\AudioPlayerBundle\Controller\SectionCommentController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true

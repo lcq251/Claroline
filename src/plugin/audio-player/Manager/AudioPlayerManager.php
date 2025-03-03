@@ -12,7 +12,7 @@
 namespace Claroline\AudioPlayerBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\AudioPlayerBundle\Entity\Resource\AudioParams;
+use Claroline\AudioPlayerBundle\Entity\Resource\Audio;
 use Claroline\AudioPlayerBundle\Entity\Resource\Section;
 use Claroline\AudioPlayerBundle\Entity\Resource\SectionComment;
 use Claroline\AudioPlayerBundle\Serializer\Resource\SectionSerializer;
@@ -22,7 +22,6 @@ use Doctrine\Persistence\ObjectRepository;
 
 class AudioPlayerManager
 {
-    private ObjectRepository $audioParamsRepo;
     private ObjectRepository $sectionRepo;
     private ObjectRepository $sectionCommentRepo;
 
@@ -30,23 +29,8 @@ class AudioPlayerManager
         private readonly ObjectManager $om,
         private readonly SectionSerializer $sectionSerializer
     ) {
-        $this->audioParamsRepo = $om->getRepository(AudioParams::class);
         $this->sectionRepo = $om->getRepository(Section::class);
         $this->sectionCommentRepo = $om->getRepository(SectionComment::class);
-    }
-
-    public function getAudioParams(ResourceNode $resourceNode): AudioParams
-    {
-        $audioParams = $this->audioParamsRepo->findOneBy(['resourceNode' => $resourceNode]);
-
-        if (!$audioParams) {
-            $audioParams = new AudioParams();
-            $audioParams->setResourceNode($resourceNode);
-            $this->om->persist($audioParams);
-            $this->om->flush();
-        }
-
-        return $audioParams;
     }
 
     public function deserializeSections(ResourceNode $resourceNode, ?array $data = []): void
@@ -82,14 +66,14 @@ class AudioPlayerManager
 
     public function getManagerSections(ResourceNode $resourceNode): array
     {
-        return $this->sectionRepo->findBy(['resourceNode' => $resourceNode, 'type' => AudioParams::MANAGER_TYPE]);
+        return $this->sectionRepo->findBy(['resourceNode' => $resourceNode, 'type' => Audio::MANAGER_TYPE]);
     }
 
     public function getUserSections(ResourceNode $resourceNode, User $user): array
     {
         return $this->sectionRepo->findBy([
             'resourceNode' => $resourceNode,
-            'type' => AudioParams::USER_TYPE,
+            'type' => Audio::USER_TYPE,
             'user' => $user,
         ]);
     }

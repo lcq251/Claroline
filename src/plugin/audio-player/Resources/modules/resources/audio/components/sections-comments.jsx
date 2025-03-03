@@ -10,8 +10,8 @@ import {ListData} from '#/main/app/content/list/containers/data'
 
 import {UserMessage} from '#/main/core/user/message/components/user-message'
 
-import {reducer, selectors} from '#/plugin/audio-player/files/audio/store'
-import {Audio as AudioType, Comment as CommentType} from '#/plugin/audio-player/files/audio/prop-types'
+import {reducer, selectors} from '#/plugin/audio-player/resources/audio/store'
+import {Audio as AudioType, Comment as CommentType} from '#/plugin/audio-player/resources/audio/prop-types'
 import {Waveform} from '#/plugin/audio-player/waveform/components/waveform'
 
 const Comments = props =>

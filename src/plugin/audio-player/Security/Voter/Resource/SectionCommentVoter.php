@@ -12,7 +12,7 @@
 namespace Claroline\AudioPlayerBundle\Security\Voter\Resource;
 
 use Claroline\AppBundle\Security\Voter\AbstractVoter;
-use Claroline\AudioPlayerBundle\Entity\Resource\AudioParams;
+use Claroline\AudioPlayerBundle\Entity\Resource\Audio;
 use Claroline\AudioPlayerBundle\Entity\Resource\SectionComment;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -58,9 +58,9 @@ class SectionCommentVoter extends AbstractVoter
             && $section->isCommentsAllowed()
             && $sectionComment->getUser()->getUuid() === $user->getUuid()
             && (
-                AudioParams::MANAGER_TYPE === $section->getType()
+                Audio::MANAGER_TYPE === $section->getType()
                 || (
-                    AudioParams::USER_TYPE === $section->getType()
+                    Audio::USER_TYPE === $section->getType()
                     && $section->getUser()->getUuid() === $user->getUuid()
                 )
             )

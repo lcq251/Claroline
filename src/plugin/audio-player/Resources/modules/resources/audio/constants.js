@@ -5,9 +5,9 @@ const USER_TYPE = 'user'
 const NO_TYPE = 'none'
 
 const SECTIONS_TYPES = {
+  [NO_TYPE]: trans('none'),
   [MANAGER_TYPE]: trans('section_type_manager', {}, 'audio'),
-  [USER_TYPE]: trans('section_type_user', {}, 'audio'),
-  [NO_TYPE]: trans('none')
+  [USER_TYPE]: trans('section_type_user', {}, 'audio')
 }
 
 export const constants = {

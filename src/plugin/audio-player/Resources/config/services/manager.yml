@@ -1,10 +1,10 @@
 services:
-    _defaults:
-        autowire: false
-        autoconfigure: false
-        public: false
-
     Claroline\AudioPlayerBundle\Manager\AudioPlayerManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AudioPlayerBundle\Serializer\Resource\SectionSerializer'
+
+    Claroline\AudioPlayerBundle\Manager\EvaluationManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'

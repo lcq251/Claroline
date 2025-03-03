@@ -1,0 +1,10 @@
+services:
+    Claroline\AudioPlayerBundle\Component\Resource\AudioResource:
+        tags: [ 'claroline.component.resource', 'kernel.event_subscriber' ]
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\CoreBundle\Manager\FileManager'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AudioPlayerBundle\Manager\AudioPlayerManager'
+            - '@Claroline\AudioPlayerBundle\Manager\EvaluationManager'

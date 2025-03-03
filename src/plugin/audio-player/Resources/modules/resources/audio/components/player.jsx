@@ -5,33 +5,35 @@ import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import classes from 'classnames'
 
+import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {asset} from '#/main/app/config/asset'
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, CallbackButton} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {makeId} from '#/main/app/utils/id'
-import {selectors as fileSelect} from '#/main/core/resources/file/store'
 import {selectors as resourceSelect} from '#/main/core/resource/store'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {UserMessageForm} from '#/main/core/user/message/components/user-message-form'
 import {UserMessage} from '#/main/core/user/message/components/user-message'
 
-import {constants} from '#/plugin/audio-player/files/audio/constants'
-import {actions} from '#/plugin/audio-player/files/audio/store'
-import {Audio as AudioType, Section as SectionType} from '#/plugin/audio-player/files/audio/prop-types'
+import {constants} from '#/plugin/audio-player/resources/audio/constants'
+import {actions} from '#/plugin/audio-player/resources/audio/store'
+import {Audio as AudioType, Section as SectionType} from '#/plugin/audio-player/resources/audio/prop-types'
 import {Waveform} from '#/plugin/audio-player/waveform/components/waveform'
-import {SectionsComments} from '#/plugin/audio-player/files/audio/components/sections-comments'
-import {ResourcePage} from '#/main/core/resource'
+import {SectionsComments} from '#/plugin/audio-player/resources/audio/components/sections-comments'
+import {ResourceOverview} from '#/main/core/resource'
 import {Toolbar} from '#/main/app/action'
-import {PageContent} from '#/main/app/page'
+import {PageSection} from '#/main/app/page'
+
+import {selectors} from '#/plugin/audio-player/resources/audio/store'
+import {Html} from '#/main/app/components/html'
 
 const Transcripts = props =>
   <div className="audio-player-transcripts">
     {props.transcripts.map((transcript, idx) =>
-      <ContentHtml key={`transcript-${idx}`}>
+      <Html key={`transcript-${idx}`}>
         {transcript}
-      </ContentHtml>
+      </Html>
     )}
   </div>
 
@@ -88,9 +90,9 @@ const Section = props =>
       }
 
       {props.options.showHelp &&
-        <ContentHtml className="section-help">
+        <Html className="section-help">
           {props.section.help}
-        </ContentHtml>
+        </Html>
       }
 
       {props.options.showComment && (!props.section.comment || props.options.showCommentForm ?
@@ -237,8 +239,8 @@ class Audio extends Component {
 
   render() {
     return (
-      <ResourcePage>
-        <PageContent className="audio-resource-player">
+      <ResourceOverview>
+        <PageSection size="full">
           {this.props.canEdit &&
             <div className="comments-buttons">
               {(constants.USER_TYPE === this.props.file.sectionsType ||
@@ -258,9 +260,9 @@ class Audio extends Component {
           }
 
           {this.props.file.description &&
-            <ContentHtml className="audio-player-transcripts">
+            <Html className="audio-player-transcripts">
               {this.props.file.description}
-            </ContentHtml>
+            </Html>
           }
 
           {(!this.props.canEdit || !this.state.displayAllComments) &&
@@ -277,7 +279,7 @@ class Audio extends Component {
           {(!this.props.canEdit || !this.state.displayAllComments) &&
             <Waveform
               id={`resource-audio-${this.props.file.id}`}
-              url={this.props.file.url}
+              url={url(['apiv2_audio_file', {id: this.props.resourceNodeId}])}
               editable={constants.USER_TYPE === this.props.file.sectionsType}
               rateControl={this.props.file.rateControl}
               regions={-1 < [constants.MANAGER_TYPE, constants.USER_TYPE].indexOf(this.props.file.sectionsType) && this.props.file.sections ?
@@ -387,15 +389,14 @@ class Audio extends Component {
               resourceNodeId={this.props.resourceNodeId}
             />
           }
-        </PageContent>
-      </ResourcePage>
+        </PageSection>
+      </ResourceOverview>
     )
   }
 }
 
 Audio.propTypes = {
   currentUser: T.object,
-  mimeType: T.string.isRequired,
   file: T.shape(AudioType.propTypes).isRequired,
   resourceNodeId: T.string.isRequired,
   canEdit: T.bool.isRequired,
@@ -408,9 +409,9 @@ Audio.propTypes = {
 const AudioPlayer = connect(
   (state) => ({
     currentUser: securitySelectors.currentUser(state),
-    mimeType: fileSelect.mimeType(state),
-    resourceNodeId: resourceSelect.resourceNode(state).id,
-    canEdit: hasPermission('edit', resourceSelect.resourceNode(state))
+    resourceNodeId: resourceSelect.id(state),
+    canEdit: hasPermission('edit', resourceSelect.resourceNode(state)),
+    file: selectors.resource(state)
   }),
   (dispatch) => ({
     saveSection(sections, section, isNew) {

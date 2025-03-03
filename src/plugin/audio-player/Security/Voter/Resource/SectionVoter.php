@@ -12,7 +12,7 @@
 namespace Claroline\AudioPlayerBundle\Security\Voter\Resource;
 
 use Claroline\AppBundle\Security\Voter\AbstractVoter;
-use Claroline\AudioPlayerBundle\Entity\Resource\AudioParams;
+use Claroline\AudioPlayerBundle\Entity\Resource\Audio;
 use Claroline\AudioPlayerBundle\Entity\Resource\Section;
 use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -52,8 +52,8 @@ class SectionVoter extends AbstractVoter
         $resourceNode = $section->getResourceNode();
         $user = $token->getUser();
 
-        if ((AudioParams::MANAGER_TYPE === $section->getType() && $this->isGranted(self::EDIT, $resourceNode))
-            || (AudioParams::USER_TYPE === $section->getType() && $user instanceof User && $this->isGranted(self::OPEN, $resourceNode))
+        if ((Audio::MANAGER_TYPE === $section->getType() && $this->isGranted(self::EDIT, $resourceNode))
+            || (Audio::USER_TYPE === $section->getType() && $user instanceof User && $this->isGranted(self::OPEN, $resourceNode))
         ) {
             return VoterInterface::ACCESS_GRANTED;
         }
@@ -67,9 +67,9 @@ class SectionVoter extends AbstractVoter
         $sectionUser = $section->getUser();
         $user = $token->getUser();
 
-        if ((AudioParams::MANAGER_TYPE === $section->getType() && $this->isGranted(self::EDIT, $resourceNode))
+        if ((Audio::MANAGER_TYPE === $section->getType() && $this->isGranted(self::EDIT, $resourceNode))
             || (
-                AudioParams::USER_TYPE === $section->getType()
+                Audio::USER_TYPE === $section->getType()
                 && $user instanceof User
                 && $this->isGranted(self::OPEN, $resourceNode)
                 && $sectionUser

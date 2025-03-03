@@ -357,10 +357,8 @@ class Waveform extends Component {
   render() {
     return (
       <div>
-        <div id={this.props.id}>
-        </div>
-        <div id={`${this.props.id}-timeline`}>
-        </div>
+        <div id={this.props.id} />
+        <div id={`${this.props.id}-timeline`} />
         <div
           id={`${this.props.id}-cmd`}
           style={{
