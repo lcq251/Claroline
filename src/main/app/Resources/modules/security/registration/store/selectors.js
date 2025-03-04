@@ -15,7 +15,6 @@ const options = createSelector(
   (store) => store.options
 )
 
-
 export const selectors = {
   STORE_NAME,
   FORM_NAME,

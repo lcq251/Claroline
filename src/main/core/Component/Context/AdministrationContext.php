@@ -55,7 +55,7 @@ class AdministrationContext extends AbstractContext
         return $this->securityManager->isImpersonated();
     }
 
-    public function isManager(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool
+    public function isGranted(string $permission, ?ContextSubjectInterface $contextSubject): bool
     {
         return $this->securityManager->isAdmin();
     }

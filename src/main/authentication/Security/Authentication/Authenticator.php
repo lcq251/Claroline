@@ -58,7 +58,7 @@ class Authenticator
 
     public function createAdminToken(User $user): TokenInterface
     {
-        $token = new UsernamePasswordToken($user,'main', [PlatformRoles::ADMIN]);
+        $token = new UsernamePasswordToken($user, 'main', [PlatformRoles::ADMIN]);
         $this->tokenStorage->setToken($token);
 
         return $token;

@@ -75,13 +75,10 @@ class ContextProvider extends AbstractComponentProvider
         return $available;
     }
 
-    public function getContext(string $contextName/* , string $contextId = null */): ContextInterface
+    public function getContext(string $contextName): ContextInterface
     {
         /** @var ContextInterface $contextHandler */
         $contextHandler = $this->getComponent($contextName);
-        /*if (!$contextHandler->isAvailable()) {
-            throw new \RuntimeException(sprintf('Context "%s(%s)" is not available. Check %s::isAvailable() for more info.', $contextName, $contextId || '', get_class($contextHandler)));
-        }*/
 
         return $contextHandler;
     }

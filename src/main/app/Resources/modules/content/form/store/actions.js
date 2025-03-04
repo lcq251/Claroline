@@ -92,15 +92,15 @@ actions.save = (formName, target) => (dispatch, getState) => {
         method: formNew ? 'POST' : 'PUT',
         body: JSON.stringify(formData)
       },
-      success: (response, dispatch) => {
+      success: (response) => {
         dispatch(actions.submitSuccess(formName, response))
 
         if (response) {
-          // I should check status code (204) instead but I don't have access to it here
+          // I should check status code (204) instead, but I don't have access to it here
           dispatch(actions.reset(formName, response, false))
         }
       },
-      error: (errors, status, dispatch) => dispatch(actions.errors(formName, errors))
+      error: (errors) => dispatch(actions.errors(formName, errors))
     }
   })
 }

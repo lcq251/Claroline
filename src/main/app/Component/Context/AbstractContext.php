@@ -30,6 +30,5 @@ abstract class AbstractContext implements ContextInterface
 
     public function create(array $data): void
     {
-
     }
 }

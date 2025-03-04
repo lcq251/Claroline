@@ -25,7 +25,7 @@ const SecurityPage = (props) => {
       className="auth-page"
       title={props.title + ' | ' + name}
     >
-      <div className="col auth-page-meta px-4 py-5">
+      <div className="auth-page-col auth-page-meta px-4 py-5">
         {brand &&
           <img
             className={classes('auth-page-brand mb-3 mx-auto', props.className)}
@@ -41,7 +41,7 @@ const SecurityPage = (props) => {
         }
       </div>
 
-      <div className="col auth-page-content">
+      <div className="auth-page-col auth-page-content">
         <div className="content-sm px-4 py-5 mt-auto" role="presentation">
           <h2 className="text-center">{props.title}</h2>
           {props.description &&

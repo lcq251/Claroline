@@ -64,7 +64,6 @@ class AutoloadListData extends Component {
       <ListDataComponent
         {...this.props}
         loading={!this.props.loaded || this.props.invalidated}
-        /*loading={true}*/
       />
     )
   }

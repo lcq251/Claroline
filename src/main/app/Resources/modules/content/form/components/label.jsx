@@ -20,7 +20,7 @@ const FormLabel = props =>
     {props.label}
 
     {props.optional &&
-      <Badge variant={props.recommended ? 'primary' : 'secondary'} subtle={true} className=" fw-normal text-lowercase fs-sm">
+      <Badge variant={props.recommended ? 'primary' : 'secondary'} subtle={true} className="fw-normal text-lowercase fs-sm">
         {props.recommended ? trans('recommended') : trans('optional')}
       </Badge>
     }

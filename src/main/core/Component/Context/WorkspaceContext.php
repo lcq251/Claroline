@@ -12,10 +12,12 @@ use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class WorkspaceContext extends AbstractContext
 {
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly SecurityManager $securityManager,
         private readonly WorkspaceManager $manager,
@@ -54,12 +56,9 @@ class WorkspaceContext extends AbstractContext
         return true;
     }
 
-    public function isManager(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool
+    public function isGranted(string $permission, ?ContextSubjectInterface $contextSubject): bool
     {
-        /** @var Workspace $workspace */
-        $workspace = $contextSubject;
-
-        return $this->manager->isManager($workspace, $token);
+        return $this->authorization->isGranted($permission, $contextSubject);
     }
 
     public function getAccessErrors(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array

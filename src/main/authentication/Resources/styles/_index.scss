@@ -20,14 +20,14 @@
 .auth-page {
   display: flex;
   flex-direction: row;
+}
 
-  .col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+.auth-page-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .auth-page-brand {

@@ -54,7 +54,7 @@ class ContextController
     {
         // retrieve the requested context
         try {
-            $contextHandler = $this->contextProvider->getContext($context, $contextId);
+            $contextHandler = $this->contextProvider->getContext($context);
             $contextSubject = $contextHandler->getObject($contextId);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
@@ -65,13 +65,13 @@ class ContextController
         }
 
         $contextRoles = $contextHandler->getRoles($this->tokenStorage->getToken(), $contextSubject);
-        $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
         $isImpersonated = $contextHandler->isImpersonated($this->tokenStorage->getToken(), $contextSubject);
 
-        if (!$contextSubject || $this->authorization->isGranted('OPEN', $contextSubject)) {
+        if ($contextHandler->isGranted('OPEN', $contextSubject)) {
             $openEvent = new OpenContextEvent($context, $contextSubject);
             $this->eventDispatcher->dispatch($openEvent, ContextEvents::OPEN);
 
+            $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
             $contextTools = $contextHandler->getTools($contextSubject);
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
@@ -124,13 +124,13 @@ class ContextController
         }
 
         $contextSubject = $contextHandler->getObject($contextId);
-        $contextTools = $contextHandler->getTools($contextSubject);
 
-        if (!$this->authorization->isGranted('ADMINISTRATE', $contextSubject)) {
+        if (!$contextHandler->isGranted('ADMINISTRATE', $contextSubject)) {
             throw new AccessDeniedException();
         }
 
         $data = $this->decodeRequest($request);
+        $contextTools = $contextHandler->getTools($contextSubject);
 
         $this->om->startFlushSuite();
 
@@ -184,7 +184,7 @@ class ContextController
         $contextHandler = $this->contextProvider->getContext($context);
         $contextSubject = $contextHandler->getObject($contextId);
 
-        if (!$this->authorization->isGranted('ADMINISTRATE', $contextSubject)) {
+        if (!$contextHandler->isGranted('ADMINISTRATE', $contextSubject)) {
             throw new AccessDeniedException();
         }
 

@@ -53,8 +53,10 @@ class RegistrationController
     {
         $this->checkAccess();
 
+        $data = $this->decodeRequest($request);
+
         /** @var array|User $user */
-        $user = $this->crud->create(User::class);
+        $user = $this->crud->create(User::class, $data);
 
         $validation = $this->config->getParameter('registration.validation');
         // auto log user if option is set and account doesn't need to be validated
@@ -80,7 +82,7 @@ class RegistrationController
         return new JsonResponse([
             'termOfService' => $terms,
             'options' => [
-                'validation' => $this->config->getParameter('registration.validation'),
+                'validation' => (bool) $this->config->getParameter('registration.validation'),
             ],
         ]);
     }

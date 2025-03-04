@@ -16,7 +16,7 @@ interface ContextInterface extends ComponentInterface
 
     public function isAvailable(): bool;
 
-    public function isManager(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool;
+    public function isGranted(string $permission, ?ContextSubjectInterface $contextSubject): bool;
 
     public function isImpersonated(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool;
 

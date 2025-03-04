@@ -205,7 +205,7 @@ class UserSerializer
             'description' => $user->getDescription(),
             'mailValidated' => $user->isMailValidated(),
             'mailNotified' => $user->isMailNotified(),
-            'personalWorkspace' => (bool) $user->getPersonalWorkspace(),
+            // 'personalWorkspace' => (bool) $user->getPersonalWorkspace(),
             'locale' => $user->getLocale(),
         ];
     }
@@ -216,6 +216,7 @@ class UserSerializer
         $this->sipe('description', 'setDescription', $meta, $user);
         $this->sipe('mailNotified', 'setMailNotified', $meta, $user);
         $this->sipe('mailValidated', 'setMailValidated', $meta, $user);
+        $this->sipe('acceptedTerms', 'setAcceptedTerms', $meta, $user);
     }
 
     private function serializePermissions(User $user): array

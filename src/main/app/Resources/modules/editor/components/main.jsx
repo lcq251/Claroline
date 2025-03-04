@@ -25,14 +25,12 @@ const Editor = (props) => {
     }, {
       name: 'appearance',
       title: trans('appearance'),
-      help: trans('Personnalisez les paramètres d\'affichage avancés de vos contenus.'),
       disabled: !props.appearancePage,
       component: props.appearancePage,
       standard: true
     }, {
       name: 'permissions',
       title: trans('permissions'),
-      help: trans('permissions_help'),
       disabled: !props.permissionsPage,
       component: props.permissionsPage,
       standard: true,
@@ -40,14 +38,12 @@ const Editor = (props) => {
     }, {
       name: 'history',
       title: trans('history'),
-      help: trans('Retrouvez toutes les modifications effectuées sur vos contenus.'),
       disabled: !props.historyPage,
       component: props.historyPage,
       advanced: true
     }, {
       name: 'actions',
       title: trans('advanced_actions', {}, 'actions'),
-      // help: trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?'),
       disabled: !props.actionsPage,
       component: props.actionsPage,
       advanced: true

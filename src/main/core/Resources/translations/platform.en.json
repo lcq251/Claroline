@@ -579,6 +579,8 @@
     "accept_terms_of_service": "Accept terms of service",
     "registered_at": "registered at",
     "last_activity_at": "Last activity at",
+    "started_at": "Started at",
+    "ended_at": "Ended at",
     "optional": "optional",
     "recommended": "recommended",
     "field_required": "Make the field mandatory",

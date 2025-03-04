@@ -3,6 +3,7 @@ services:
         parent: Claroline\AppBundle\Component\Context\AbstractContext
         tags: [ 'claroline.component.context' ]
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\Manager\SecurityManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'

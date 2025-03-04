@@ -7,6 +7,7 @@ import {FormError} from '#/main/app/content/form/components/error'
 import {FormHelp} from '#/main/app/content/form/components/help'
 import {trans} from '#/main/app/intl'
 import {getValidationClassName} from '#/main/app/content/form/validator'
+import {Badge} from '#/main/app/components/badge'
 
 /**
  * Overrides default form group to let each range part render its own errors
@@ -29,7 +30,9 @@ const DateRangeGroup = props => {
           {props.label}
 
           {props.optional &&
-            <small className="text-secondary fw-normal text-lowercase">({trans('optional')})</small>
+            <Badge variant={props.recommended ? 'primary' : 'secondary'} subtle={true} className="fw-normal text-lowercase fs-sm">
+              {props.recommended ? trans('recommended') : trans('optional')}
+            </Badge>
           }
         </legend>
       }

@@ -35,18 +35,18 @@ class DesktopContext extends AbstractContext
     public function getObject(?string $contextId): ?ContextSubjectInterface
     {
         return null;
-
-        // return $this->securityManager->getCurrentUser()?->getMainOrganization();
     }
 
     public function isAvailable(): bool
     {
-        return !empty($this->securityManager->getCurrentUser());
+        return true;
     }
 
     public function getAccessErrors(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
     {
-        return [];
+        return [
+            'noRights' => true,
+        ];
     }
 
     public function isImpersonated(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool
@@ -54,9 +54,13 @@ class DesktopContext extends AbstractContext
         return $this->securityManager->isImpersonated();
     }
 
-    public function isManager(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool
+    public function isGranted(string $permission, ?ContextSubjectInterface $contextSubject): bool
     {
-        return $this->securityManager->isAdmin();
+        if ('ADMINISTRATE' === strtoupper($permission)) {
+            return $this->securityManager->isAdmin();
+        }
+
+        return !$this->securityManager->isAnonymous();
     }
 
     public function getRoles(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array

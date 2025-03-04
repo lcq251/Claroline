@@ -58,7 +58,7 @@ const ContextMenu = (props) => {
       {1 < toolLinks.length &&
         <nav aria-labelledby={toolsTitleId} className="d-flex flex-column flex-fill">
           <h3 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h3>
-          <ul className={classes('app-menu-items list-unstyled flex-fill px-0 mb-3', {
+          <ul className={classes('app-menu-items list-unstyled flex-fill px-0 mb-3 justify-content-start', {
           })}>
             {toolLinks.map(toolLink =>
               <li key={toolLink.name} className={classes('parameters' === toolLink.name && 'mt-auto')}>

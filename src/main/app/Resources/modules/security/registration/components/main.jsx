@@ -27,7 +27,7 @@ class RegistrationMain extends Component {
             title: trans('general'),
             primary: true,
             fields: [
-              /*{
+              {
                 name: 'lastName',
                 type: 'string',
                 label: trans('last_name'),
@@ -37,7 +37,7 @@ class RegistrationMain extends Component {
                 type: 'string',
                 label: trans('first_name'),
                 required: true
-              }, */{
+              }, {
                 name: 'email',
                 type: 'email',
                 label: trans('email'),
@@ -47,11 +47,6 @@ class RegistrationMain extends Component {
                     check: ['apiv2_user_get', {field: 'email'}]
                   }
                 }
-              }, {
-                name: 'plainPassword',
-                type: 'password',
-                label: trans('password'),
-                required: true
               }, {
                 name: 'username',
                 type: 'string',
@@ -65,11 +60,14 @@ class RegistrationMain extends Component {
                   }
                 }
               }, {
-                name: 'meta.acceptTerms',
+                name: 'plainPassword',
+                type: 'password',
+                label: trans('password'),
+                required: true
+              }, {
+                name: 'meta.acceptedTerms',
                 type: 'boolean',
-                label: (
-                  <>Accepter les <a href="#">Conditions d'utilisation</a> de la plateforme.</>
-                ),
+                label: trans('accept_terms_of_service'),
                 required: true
               }
             ]
@@ -81,28 +79,8 @@ class RegistrationMain extends Component {
           size="lg"
           type={CALLBACK_BUTTON}
           label={trans('create-account', {}, 'actions')}
-          callback={() => this.props.register(this.props.user, (user) => {
-            this.props.onRegister(user)
-          })}
+          callback={() => this.props.register(this.props.user, this.props.onRegister)}
           htmlType="submit"
-          confirm={{
-            title: trans('registration'),
-            message: trans('register_confirm_message'),
-            button: trans('registration_confirm'),
-            additional: constants.REGISTRATION_MAIL_VALIDATION_NONE !== this.props.options.validation ? (
-              <div className="modal-body">
-                <Alert type="info">
-                  {trans('registration_mail_help')}
-                </Alert>
-
-                {constants.REGISTRATION_MAIL_VALIDATION_FULL === this.props.options.validation &&
-                  <Alert type="warning">
-                    {trans('registration_validation_help')}
-                  </Alert>
-                }
-              </div>
-            ) : undefined
-          }}
         />
 
         <Button

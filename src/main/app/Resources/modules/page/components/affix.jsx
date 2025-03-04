@@ -7,7 +7,7 @@ import {toKey} from '#/main/app/utils/text'
 import isEmpty from 'lodash/isEmpty'
 
 const PageAffixCard = (props) =>
-  <div className={classes('card shadow', props.className)}>
+  <div className={classes('card shadow m-4', props.className)} style={{width: '24rem'}}>
     <div className="p-4" role="presentation">
       {props.children}
 
@@ -76,7 +76,7 @@ const PageAffix = props =>
       {props.children}
     </div>
 
-    <div className="p-4 sticky-top" style={{width: '27rem'}} role="presentation">
+    <div className="sticky-top" role="presentation">
       {props.affix}
     </div>
   </div>

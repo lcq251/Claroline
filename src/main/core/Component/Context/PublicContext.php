@@ -41,7 +41,7 @@ class PublicContext extends AbstractContext
     public function isAvailable(): bool
     {
         return 'tool' === $this->config->getParameter('home.type')
-            && (empty($this->securityManager->getCurrentUser()) || $this->securityManager->isAdmin());
+            /* && (empty($this->securityManager->getCurrentUser()) || $this->securityManager->isAdmin()) */;
     }
 
     public function getAccessErrors(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array
@@ -54,9 +54,13 @@ class PublicContext extends AbstractContext
         return $this->securityManager->isImpersonated();
     }
 
-    public function isManager(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): bool
+    public function isGranted(string $permission, ?ContextSubjectInterface $contextSubject): bool
     {
-        return $this->securityManager->isAdmin();
+        if ('ADMINISTRATE' === strtoupper($permission)) {
+            return $this->securityManager->isAdmin();
+        }
+
+        return true;
     }
 
     public function getRoles(?TokenInterface $token, ?ContextSubjectInterface $contextSubject): array

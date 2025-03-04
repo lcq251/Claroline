@@ -8,21 +8,22 @@ import {EditorPage} from '#/main/app/editor/components/page'
 import {EditorContext} from '#/main/app/editor/context'
 import {ActionCard} from '#/main/app/action/components/card'
 
-const EditorActions = (props) => {
+const EditorActions = ({
+  actions = []
+}) => {
   const editorDef = useContext(EditorContext)
 
-  const actions = props.actions
+  const displayedActions = actions
     .filter(action => (undefined === action.displayed || action.displayed) && !action.dangerous && (!action.managerOnly || editorDef.canAdministrate))
 
-  const dangerousActions = props.actions
+  const dangerousActions = actions
     .filter(action => (undefined === action.displayed || action.displayed)  && action.dangerous && (!action.managerOnly || editorDef.canAdministrate))
 
   return (
     <EditorPage
       title={trans('advanced_actions', {}, 'actions')}
-      // help={trans('Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?')}
     >
-      {actions.map(action =>
+      {displayedActions.map(action =>
         <ActionCard
           {...action}
           key={action.title}
@@ -30,7 +31,7 @@ const EditorActions = (props) => {
         />
       )}
 
-      {!isEmpty(actions) && !isEmpty(dangerousActions) &&
+      {!isEmpty(displayedActions) && !isEmpty(dangerousActions) &&
         <hr className="mt-3 mb-4" aria-hidden={true} />
       }
 
@@ -54,10 +55,6 @@ EditorActions.propTypes = {
     action: T.object.isRequired,
     dangerous: T.bool
   }))
-}
-
-EditorActions.defaultProps = {
-  actions: []
 }
 
 export {
