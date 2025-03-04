@@ -18,9 +18,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 abstract class AbstractRoleEvent extends Event
 {
     /** @var User[] */
-    private $users;
-    /** @var Role */
-    private $role;
+    private array $users;
+    private Role $role;
 
     public function __construct(array $users, Role $role)
     {
@@ -33,7 +32,7 @@ abstract class AbstractRoleEvent extends Event
         return $this->users;
     }
 
-    public function getRole()
+    public function getRole(): Role
     {
         return $this->role;
     }

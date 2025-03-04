@@ -62,13 +62,38 @@ class WorkspaceManager implements LoggerAwareInterface
         return false;
     }
 
-    public function addUser(Workspace $workspace, User $user): User
+    public function registerUsers(array $users, Workspace $workspace, ?Role $role = null, ?array $options = []): void
     {
-        if ($workspace->getDefaultRole() && !$user->hasRole($workspace->getDefaultRole()->getName())) {
-            $this->crud->patch($user, 'role', Crud::COLLECTION_ADD, [$workspace->getDefaultRole()]);
+        if (empty($role)) {
+            $role = $workspace->getDefaultRole();
         }
 
-        return $user;
+        $this->crud->patch($role, 'user', Crud::COLLECTION_ADD, $users, $options);
+    }
+
+    public function unregisterUsers(array $users, Workspace $workspace, ?array $options = []): void
+    {
+        $roles = $workspace->getRoles()->toArray();
+        foreach ($roles as $role) {
+            $this->crud->patch($role, 'user', Crud::COLLECTION_REMOVE, $users, $options);
+        }
+    }
+
+    public function registerGroups(array $groups, Workspace $workspace, ?Role $role = null, ?array $options = []): void
+    {
+        if (empty($role)) {
+            $role = $workspace->getDefaultRole();
+        }
+
+        $this->crud->patch($role, 'group', Crud::COLLECTION_ADD, $groups, $options);
+    }
+
+    public function unregisterGroups(array $groups, Workspace $workspace, array $options = []): void
+    {
+        $roles = $workspace->getRoles()->toArray();
+        foreach ($roles as $role) {
+            $this->crud->patch($role, 'group', Crud::COLLECTION_REMOVE, $groups, $options);
+        }
     }
 
     /**
@@ -212,10 +237,5 @@ class WorkspaceManager implements LoggerAwareInterface
         }
 
         return $workspace;
-    }
-
-    public function unregister(AbstractRoleSubject $subject, Workspace $workspace, array $options = []): void
-    {
-        $this->crud->patch($subject, 'role', Crud::COLLECTION_REMOVE, $workspace->getRoles()->toArray(), $options);
     }
 }

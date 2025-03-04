@@ -87,7 +87,7 @@ class RegistrationController
      * )
      */
     #[Route(path: '/{id}/registration/validate', name: 'apiv2_workspace_registration_validate', methods: ['PATCH'])]
-    public function validateRegistrationAction(
+    public function validatePendingAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace,
         Request $request
@@ -122,7 +122,7 @@ class RegistrationController
      * )
      */
     #[Route(path: '/{id}/registration/remove', name: 'apiv2_workspace_registration_remove', methods: ['DELETE'])]
-    public function removeRegistrationAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
+    public function removePendingAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace): JsonResponse
     {
         $query = $request->query->all();
@@ -159,13 +159,7 @@ class RegistrationController
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
 
-        $this->om->startFlushSuite();
-
-        foreach ($users as $user) {
-            $this->workspaceManager->unregister($user, $workspace);
-        }
-
-        $this->om->endFlushSuite();
+        $this->workspaceManager->unregisterUsers($users, $workspace);
 
         return new JsonResponse(null, 204);
     }
@@ -188,13 +182,7 @@ class RegistrationController
         $query = $request->query->all();
         $groups = $this->om->getRepository(Group::class)->findBy(['uuid' => $query['ids']]);
 
-        $this->om->startFlushSuite();
-
-        foreach ($groups as $group) {
-            $this->workspaceManager->unregister($group, $workspace);
-        }
-
-        $this->om->endFlushSuite();
+        $this->workspaceManager->unregisterGroups($groups, $workspace);
 
         return new JsonResponse(null, 204);
     }
@@ -219,17 +207,17 @@ class RegistrationController
         $groups = isset($data['groups']) ? $this->om->getRepository(Group::class)->findBy(['uuid' => $data['groups']]) : [];
 
         foreach ($workspaces as $workspace) {
-            if ('' === $role) {
-                $roleEntity = $workspace->getDefaultRole();
-            } else {
+            $roleEntity = null;
+            if (!empty($role)) {
                 $roleEntity = $this->om->getRepository(Role::class)
                     ->findOneBy(['translationKey' => $role, 'workspace' => $workspace]);
             }
+
             if (!empty($users)) {
-                $this->crud->patch($roleEntity, 'user', Crud::COLLECTION_ADD, $users);
+                $this->workspaceManager->registerUsers($users, $workspace, $roleEntity);
             }
             if (!empty($groups)) {
-                $this->crud->patch($roleEntity, 'group', Crud::COLLECTION_ADD, $groups);
+                $this->workspaceManager->registerGroups($groups, $workspace, $roleEntity);
             }
         }
 
@@ -257,7 +245,7 @@ class RegistrationController
         $workspaces = $this->decodeIdsString($request, Workspace::class, 'workspaces');
 
         foreach ($workspaces as $workspace) {
-            $this->workspaceManager->unregister($user, $workspace);
+            $this->workspaceManager->unregisterUsers([$user], $workspace);
         }
 
         return new JsonResponse(array_map(function (Workspace $workspace) {
@@ -274,16 +262,18 @@ class RegistrationController
      * )
      */
     #[Route(path: '/{workspace}/register/self', name: 'apiv2_workspace_self_register', methods: ['PUT'])]
-    public function selfRegisterAction(#[MapEntity(class: 'Claroline\CoreBundle\Entity\Workspace\Workspace', mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace, #[CurrentUser] ?User $currentUser): JsonResponse
-    {
+    public function selfRegisterAction(
+        #[MapEntity(mapping: ['workspace' => 'uuid'])]
+        Workspace $workspace,
+        #[CurrentUser] ?User $currentUser
+    ): JsonResponse {
         if (null === $currentUser || !$workspace->getSelfRegistration() || $workspace->isArchived()) {
             throw new AccessDeniedException();
         }
 
         if (!$this->workspaceManager->isRegistered($workspace, $currentUser)) {
             if (!$workspace->getRegistrationValidation()) {
-                $this->workspaceManager->addUser($workspace, $currentUser);
+                $this->workspaceManager->registerUsers([$currentUser], $workspace);
             } elseif (!$this->registrationQueueManager->isUserInValidationQueue($workspace, $currentUser)) {
                 $this->registrationQueueManager->addUserQueue($workspace, $currentUser);
             }

@@ -205,6 +205,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
         $this->id = $data['id'];
         $this->username = $data['username'];
         $this->email = $data['email'];
+        $this->roles = new ArrayCollection();
     }
 
     public function getUserIdentifier(): string
