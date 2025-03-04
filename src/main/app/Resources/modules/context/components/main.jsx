@@ -31,17 +31,10 @@ const ContextMain = (props) => {
     event.stopPropagation()
   })
 
-  // change current context
-  useEffect(() => {
-    if (props.name) {
-      props.open(props.name, props.id)
-    }
-  }, [props.name, props.id])
-
   // fetch current context data
   useEffect(() => {
     let openQuery
-    if (props.name && !props.loaded) {
+    if (props.name) {
       openQuery = makeCancelable(
         props.fetch(props.name, props.id)
       )
@@ -59,11 +52,11 @@ const ContextMain = (props) => {
     }
 
     return () => {
-      if (openQuery && props.loaded) {
+      if (openQuery) {
         openQuery.cancel()
       }
     }
-  }, [props.loaded])
+  }, [props.name, props.id])
 
   // fetch tool apps
   const [toolApps, setToolApps] = useState(null)

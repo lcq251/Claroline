@@ -135,6 +135,12 @@ class Role implements CrudEntityInterface
         return $this->users;
     }
 
+
+    public function hasUser(User $user): bool
+    {
+        return $user->hasRole($this);
+    }
+
     /**
      * @deprecated no replacement
      */
@@ -153,7 +159,14 @@ class Role implements CrudEntityInterface
     public function removeUser(User $user): void
     {
         $this->users->removeElement($user);
-        $user->removeRole($this);
+        if ($user->hasRole($this)) {
+            $user->removeRole($this);
+        }
+    }
+
+    public function hasGroup(Group $group): bool
+    {
+        return $group->hasRole($this);
     }
 
     /**
