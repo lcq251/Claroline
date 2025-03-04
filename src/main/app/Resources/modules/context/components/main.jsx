@@ -31,10 +31,18 @@ const ContextMain = (props) => {
     event.stopPropagation()
   })
 
+  // change current context
+  useEffect(() => {
+    if (props.name) {
+      props.open(props.name, props.id)
+    }
+  }, [props.name, props.id])
+
   // fetch current context data
   useEffect(() => {
     let openQuery
-    if (props.name) {
+    let appPromise
+    if (props.name && !props.loaded) {
       openQuery = makeCancelable(
         props.fetch(props.name, props.id)
       )
@@ -52,11 +60,11 @@ const ContextMain = (props) => {
     }
 
     return () => {
-      if (openQuery) {
+      if (openQuery && props.loaded) {
         openQuery.cancel()
       }
     }
-  }, [props.name, props.id])
+  }, [props.loaded])
 
   // fetch tool apps
   const [toolApps, setToolApps] = useState(null)
@@ -91,7 +99,7 @@ const ContextMain = (props) => {
         appPromise.cancel()
       }
     }
-  }, [props.loaded, props.name, props.tools.map(t => t.name).join('-')])
+  }, [props.loaded, props.name, props.id, props.tools.map(t => t.name).join('-')])
 
   if (!props.loaded || !toolApps) {
     return props.loadingPage ?

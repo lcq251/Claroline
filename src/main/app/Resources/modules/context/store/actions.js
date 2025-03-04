@@ -51,7 +51,7 @@ actions.fetch = (contextType, contextId = null) => (dispatch) => dispatch({
     url: contextId ?
       ['claro_context_open', {context: contextType, contextId: contextId}] :
       ['claro_context_open', {context: contextType}],
-    before: () => dispatch(actions.open(contextType, contextId)),
+    // before: () => dispatch(actions.open(contextType, contextId)),
     success: (response) => dispatch(actions.load(response)),
     error: (response, status) => {
       switch (status) {
