@@ -28,20 +28,36 @@ class RemoveAllUsers extends AbstractImporter
             throw new \Exception('Workspace '.$this->printError($data['workspace'])." doesn't exists.");
         }
 
-        $users = $this->om->getRepository(User::class)->findByWorkspaces([$workspace]);
+        $role = $this->om->getRepository(Role::class)
+            ->findOneBy(['workspace' => $workspace, 'translationKey' => $data['role']['translationKey']]);
 
-        foreach ($users as $user) {
-            $role = $this->om->getRepository(Role::class)
-                ->findOneBy(['workspace' => $workspace, 'translationKey' => $data['role']['translationKey']]);
-
-            if (!$role) {
-                throw new \Exception('Role '.$this->printError($data['role'])." doesn't exists.");
-            }
-
-            $this->crud->patch($user, 'role', 'remove', [$role]);
+        if (!$role) {
+            throw new \Exception('Role '.$this->printError($data['role'])." doesn't exists.");
         }
 
-        return [];
+        /** @var User[] $users */
+        $users = $this->om->getRepository(User::class)->findByRoles([$role], false);
+        if (empty($users)) {
+            return [
+                'remove_all_users' => [[
+                    'data' => $data,
+                    'log' => 'No user registered with the role '.$role->getName().'.',
+                ]],
+            ];
+        }
+
+        $logs = [];
+        foreach ($users as $user) {
+            $this->crud->patch($user, 'role', 'remove', [$role]);
+            $logs[] = [
+                'data' => $data,
+                'log' => 'Removed role '.$role->getName().' for user '.$user->getUsername().'.',
+            ];
+        }
+
+        return [
+            'remove_all_users' => $logs,
+        ];
     }
 
     private function printError(array $el): string
