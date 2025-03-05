@@ -57,6 +57,8 @@ const reducer = combineReducers({
     [CONTEXT_NOT_FOUND]: () => true
   }),
   accessErrors: makeReducer({}, {
+    [SECURITY_USER_CHANGE]: () => ({}),
+    [PLATFORM_SET_CURRENT_ORGANIZATION]: () => ({}),
     [CONTEXT_OPEN]: () => ({}),
     [CONTEXT_LOAD]: (state, action) => action.contextData.accessErrors || {}
   }),

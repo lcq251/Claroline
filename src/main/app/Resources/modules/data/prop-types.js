@@ -18,7 +18,7 @@ const DataCard = {
     icon: T.oneOfType([T.string, T.element]),
     asIcon: T.bool,
     name: T.string,
-    title: T.node.isRequired,
+    title: T.node,
     contentText: T.node,
     display: T.arrayOf(T.oneOf([
       'meta',
