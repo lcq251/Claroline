@@ -15,7 +15,9 @@ import {selectors} from '#/main/app/context/store'
 import {ContextFavourite} from '#/main/app/context/components/favorite'
 import {useLocaleStorage} from '#/main/app/storage'
 
-const ContextMenu = (props) => {
+const ContextSidebar = ({
+  className
+}) => {
   const dispatch = useDispatch()
 
   const notFound = useSelector(selectors.notFound)
@@ -40,7 +42,7 @@ const ContextMenu = (props) => {
   }
 
   return (
-    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0 border-end', props.className)} style={{width: '16rem'}}>
+    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0 border-end', className)} style={{width: '16rem'}}>
       <h2 className="visually-hidden">{trans('context_menu')}</h2>
       <div className="d-flex flex-row align-items-center">
         <Button
@@ -112,10 +114,10 @@ const ContextMenu = (props) => {
   )
 }
 
-ContextMenu.propTypes = {
+ContextSidebar.propTypes = {
   className: T.string
 }
 
 export {
-  ContextMenu
+  ContextSidebar
 }

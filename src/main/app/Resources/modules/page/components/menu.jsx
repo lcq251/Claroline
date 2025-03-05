@@ -1,13 +1,19 @@
 import React, {createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 
 import {toKey} from '#/main/app/utils/text'
 import {Button, Toolbar} from '#/main/app/action'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
-import isEmpty from 'lodash/isEmpty'
+import {selectors as securitySelectors} from '#/main/app/security/store'
+import {useSelector} from 'react-redux'
+import {LINK_BUTTON} from '#/main/app/buttons'
+import {trans} from '#/main/app/intl'
 
 const PageMenu = (props) => {
+  const isAuthenticated = useSelector(securitySelectors.isAuthenticated)
+
   let displayedNav = []
   if (!isEmpty(props.nav)) {
     displayedNav = props.nav
@@ -22,7 +28,7 @@ const PageMenu = (props) => {
 
       {props.children}
 
-      {(0 < displayedNav.length || props.actions) &&
+      {(0 < displayedNav.length || props.actions || (!props.embedded && !isAuthenticated)) &&
         <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm" role="presentation">
           {0 < displayedNav.length &&
             <nav className="text-nowrap d-flex">
@@ -47,6 +53,15 @@ const PageMenu = (props) => {
               tooltip="bottom"
               actions={props.actions}
               role="toolbar"
+            />
+          }
+
+          {!props.embedded && !isAuthenticated &&
+            <Button
+              className="btn btn-primary my-auto fs-sm me-n3"
+              type={LINK_BUTTON}
+              label={trans('login')}
+              target="/login"
             />
           }
         </div>

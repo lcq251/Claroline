@@ -17,7 +17,7 @@ import {hasPermission} from '#/main/app/security'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
-import {ContextMenu} from '#/main/app/context/components/nav'
+import {ContextSidebar} from '#/main/app/context/components/sidebar'
 import {useLocaleStorage} from '#/main/app/storage'
 
 const ContextMain = (props) => {
@@ -132,7 +132,7 @@ const ContextMain = (props) => {
         <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
 
         {pinedMenu &&
-          <ContextMenu />
+          <ContextSidebar />
         }
 
         <Routes
