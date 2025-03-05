@@ -22,7 +22,9 @@ import {useLocaleStorage} from '#/main/app/storage'
 
 const ContextMain = (props) => {
   const dispatch = useDispatch()
+
   const [pinedMenu] = useLocaleStorage('contextMenuPined', false)
+  const [toolApps, setToolApps] = useState({loaded: false, tools: []})
 
   useCtrlKeyPress('k', (event) => {
     dispatch(modalActions.showModal(MODAL_COMMAND_PALETTE))
@@ -35,6 +37,7 @@ const ContextMain = (props) => {
   useEffect(() => {
     if (props.name) {
       props.open(props.name, props.id)
+      setToolApps({loaded: false, tools: []})
     }
   }, [props.name, props.id])
 
@@ -49,6 +52,31 @@ const ContextMain = (props) => {
 
       openQuery.promise
         .then((response) => {
+          // load apps for every tool defined in this context
+          appPromise = makeCancelable(Promise.all(
+            response.tools.map(tool => getTool(tool.name, props.name)
+              .then(toolApp => ({
+                name: tool.name,
+                app: toolApp.default.component
+              }))
+              .catch(e => console.error(e))
+            )
+          ))
+
+          appPromise.promise
+            .then(loadedApps => {
+              setToolApps({
+                loaded: true,
+                tools: loadedApps.reduce((acc, current) => Object.assign(acc, {
+                  [current.name]: current.app
+                }), {})
+              })
+            })
+            .then(
+              () => appPromise = null,
+              () => appPromise = null
+            )
+
           if (props.onOpen) {
             props.onOpen(response.data)
           }
@@ -63,12 +91,15 @@ const ContextMain = (props) => {
       if (openQuery && props.loaded) {
         openQuery.cancel()
       }
+
+      if (appPromise) {
+        appPromise.cancel()
+      }
     }
   }, [props.loaded])
 
   // fetch tool apps
-  const [toolApps, setToolApps] = useState(null)
-  useEffect(() => {
+  /*useEffect(() => {
     let appPromise
     if (props.loaded) {
       // load apps for every tool defined in this context
@@ -99,78 +130,82 @@ const ContextMain = (props) => {
         appPromise.cancel()
       }
     }
-  }, [props.loaded, props.name, props.id, props.tools.map(t => t.name).join('-')])
+  }, [props.loaded, props.name, props.id, props.tools.map(t => t.name).join('-')])*/
 
-  if (!props.loaded || !toolApps) {
-    return props.loadingPage ?
-      createElement(props.loadingPage) :
-      <ContentLoader
-        size="lg"
-        description={trans('loading')}
-      />
-  } else if (props.notFound) {
-    return props.notFoundPage ?
-      createElement(props.notFoundPage) :
-      <ContentNotFound
-        size="lg"
-        title={trans('not_found')}
-        description={trans('not_found_desc')}
-      />
-  } else if (!isEmpty(props.accessErrors)) {
-    return props.forbiddenPage ?
-      createElement(props.forbiddenPage) :
-      <ContentForbidden
-        size="lg"
-        title={trans('access_forbidden')}
-        description={trans('access_forbidden_help')}
-      />
+  if (props.loaded && toolApps.loaded) {
+    if (!isEmpty(props.accessErrors)) {
+      return props.forbiddenPage ?
+        createElement(props.forbiddenPage) :
+        <ContentForbidden
+          size="lg"
+          title={trans('access_forbidden')}
+          description={trans('access_forbidden_help')}
+        />
+    }
+
+    if (props.notFound) {
+      return props.notFoundPage ?
+        createElement(props.notFoundPage) :
+        <ContentNotFound
+          size="lg"
+          title={trans('not_found')}
+          description={trans('not_found_desc')}
+        />
+    }
+
+    return (
+      <>
+        <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
+
+        {pinedMenu &&
+          <ContextMenu />
+        }
+
+        <Routes
+          path={props.path}
+          routes={[
+            {
+              path: '/profile',
+              component: ContextProfile
+            }, {
+              path: '/edit',
+              component: props.editor || ContextEditor
+            }, {
+              path: '/:toolName',
+              onEnter: (params = {}) => {
+                const openedTool = props.tools.find(tool => tool.name === params.toolName)
+                if (isEmpty(openedTool) || !hasPermission('open', openedTool)) {
+                  // tool is disabled (or does not exist) for the context
+                  // let's go to the default opening of the context
+                  props.history.replace(props.path)
+                }
+              },
+              render: (routerProps) => {
+                const params = routerProps.match.params
+
+                return createElement(toolApps.tools[params.toolName], {
+                  name: params.toolName,
+                  path: props.path+'/'+params.toolName
+                })
+              }
+            }
+          ]}
+          redirect={[
+            {from: '/', exact: true, to: `/${props.defaultOpening}`, disabled: !props.defaultOpening}
+          ]}
+        />
+
+        {props.children}
+      </>
+    )
   }
 
-  return (
-    <>
-      <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
-
-      {pinedMenu &&
-        <ContextMenu />
-      }
-
-      <Routes
-        path={props.path}
-        routes={[
-          {
-            path: '/profile',
-            component: ContextProfile
-          }, {
-            path: '/edit',
-            component: props.editor || ContextEditor
-          }, {
-            path: '/:toolName',
-            onEnter: (params = {}) => {
-              const openedTool = props.tools.find(tool => tool.name === params.toolName)
-              if (isEmpty(openedTool) || !hasPermission('open', openedTool)) {
-                // tool is disabled (or does not exist) for the context
-                // let's go to the default opening of the context
-                props.history.replace(props.path)
-              }
-            },
-            render: (routerProps) => {
-              const params = routerProps.match.params
-
-              return createElement(toolApps[params.toolName], {
-                name: params.toolName,
-                path: props.path+'/'+params.toolName
-              })
-            }
-          }
-        ]}
-        redirect={[
-          {from: '/', exact: true, to: `/${props.defaultOpening}`, disabled: !props.defaultOpening}
-        ]}
-      />
-
-      {props.children}
-    </>
-  )
+  return props.loadingPage ?
+    createElement(props.loadingPage) :
+    <ContentLoader
+      size="lg"
+      description={trans('loading')}
+    />
 }
 
 ContextMain.propTypes = {
