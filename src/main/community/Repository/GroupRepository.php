@@ -65,8 +65,8 @@ class GroupRepository extends EntityRepository
         return $this->getEntityManager()
             ->createQuery('
                 SELECT DISTINCT g
-                FROM Claroline\CoreBundle\Entity\Group u
-                JOIN g.roles r
+                FROM Claroline\CoreBundle\Entity\Group AS g
+                JOIN g.roles AS r
                 WHERE r.id = :roleId
             ')
             ->setParameter('roleId', $role->getId())

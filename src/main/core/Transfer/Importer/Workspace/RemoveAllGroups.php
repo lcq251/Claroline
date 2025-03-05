@@ -28,20 +28,37 @@ class RemoveAllGroups extends AbstractImporter
             throw new \Exception('Workspace '.$this->printError($data['workspace'])." doesn't exists.");
         }
 
-        $groups = $this->om->getRepository(Group::class)->findByWorkspace($workspace);
+        $role = $this->om->getRepository(Role::class)->findOneBy([
+            'workspace' => $workspace,
+            'translationKey' => $data['role']['translationKey'],
+        ]);
 
-        foreach ($groups as $group) {
-            $role = $this->om->getRepository(Role::class)
-                ->findOneBy(['workspace' => $workspace, 'translationKey' => $data['role']['translationKey']]);
-
-            if (!$role) {
-                throw new \Exception('Role '.$this->printError($data['role'])." doesn't exists.");
-            }
-
-            $this->crud->patch($group, 'role', 'remove', [$role]);
+        if (!$role) {
+            throw new \Exception('Role '.$this->printError($data['role'])." doesn't exists.");
         }
 
-        return [];
+        $groups = $this->om->getRepository(Group::class)->findByRole($role);
+        if (empty($groups)) {
+            return [
+                'remove_all_groups' => [[
+                    'data' => $data,
+                    'log' => 'No group registered with the role '.$role->getName().'.',
+                ]],
+            ];
+        }
+
+        $logs = [];
+        foreach ($groups as $group) {
+            $this->crud->patch($group, 'role', 'remove', [$role]);
+            $logs[] = [
+                'data' => $data,
+                'log' => 'Removed role '.$role->getName().' for group '.$group->getName().'.',
+            ];
+        }
+
+        return [
+            'remove_all_groups' => $logs,
+        ];
     }
 
     private function printError(array $el): string
