@@ -13,6 +13,7 @@ const RegistrationModal = props =>
     {...omit(props, 'onRegister')}
     title={trans('registration')}
     size="lg"
+    enforceFocus={true}
   >
     <div className="modal-body">
       <Router embedded={true}>

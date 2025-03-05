@@ -83,7 +83,7 @@ class ModalEmpty extends Component {
       <BaseModal
         {...omit(this.props, 'fadeModal', 'hideModal', 'closeButton', 'className', 'children')}
         autoFocus={true}
-        enforceFocus={true}
+        enforceFocus={false}
         restoreFocus={true}
         dialogClassName={this.props.className}
         fullscreen={this.props.fullscreen}

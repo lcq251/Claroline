@@ -66,6 +66,7 @@ const PickerModal = (props) => {
       onExited={reset}
       centered={true}
       scrollable={true}
+      enforceFocus={true}
     >
       <div className="modal-body p-0 d-flex">
         {props.definition ?

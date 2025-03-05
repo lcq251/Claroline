@@ -12,6 +12,7 @@ const LocaleModal = props =>
   <Modal
     {...omit(props, 'current', 'available')}
     title={trans('language')}
+    enforceFocus={true}
   >
     <div className="modal-body">
       <LocaleInput

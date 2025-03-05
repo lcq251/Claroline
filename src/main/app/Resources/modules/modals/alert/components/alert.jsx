@@ -17,6 +17,7 @@ const AlertModal = props =>
       'fa-minus-circle':         props.type === 'danger'
     })}
     title={props.title}
+    enforceFocus={true}
   >
     <ContentHtml className="modal-body">
       {props.message}

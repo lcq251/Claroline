@@ -16,6 +16,7 @@ const ConfirmModal = (props) =>
     {...omit(props, 'dangerous', 'question', 'additional', 'items', 'confirmAction')}
     centered={true}
     size="sm"
+    enforceFocus={true}
   >
     <div className="modal-body mt-3" role="presentation">
       <Html className="lead" align="center">

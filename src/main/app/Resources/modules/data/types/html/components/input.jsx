@@ -58,12 +58,6 @@ class HtmlInput extends Component {
             disabled={this.props.disabled}
             actions={[
               {
-                name: 'fullscreen',
-                type: CALLBACK_BUTTON,
-                label: trans('fullscreen_on'),
-                icon: 'fa fa-fw fa-expand',
-                callback: () => this.toggleEditor(this.state.minimal, !this.state.fullscreen)
-              }, {
                 name: 'toggle-editor',
                 type: CALLBACK_BUTTON,
                 icon: classes('fa fa-fw', {
@@ -72,6 +66,12 @@ class HtmlInput extends Component {
                 }),
                 label: trans(this.state.minimal ? 'show_editor_toolbar' : 'hide_editor_toolbar'),
                 callback: () => this.toggleEditor(!this.state.minimal, this.state.fullscreen)
+              }, {
+                name: 'fullscreen',
+                type: CALLBACK_BUTTON,
+                label: trans('fullscreen_on'),
+                icon: 'fa fa-fw fa-expand',
+                callback: () => this.toggleEditor(this.state.minimal, !this.state.fullscreen)
               }
             ]}
           />
