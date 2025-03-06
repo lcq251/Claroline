@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import classes from 'classnames'
 import get from 'lodash/get'
 
 import {Routes} from '#/main/app/router'
@@ -19,6 +20,8 @@ const LessonPlayer = () => {
 
   const resourcePath = useSelector(resourceSelectors.path)
   const resourceName = useSelector(resourceSelectors.name)
+  const embedded = useSelector(resourceSelectors.embedded)
+
   const lesson = useSelector(selectors.lesson)
   const root = useSelector(selectors.root)
   const tree = useSelector(selectors.treeData)
@@ -52,18 +55,25 @@ const LessonPlayer = () => {
 
   return (
     <ResourcePage>
-      <PageAside closable={true}>
-        <PlayerSummary
-          path={resourcePath}
-          title={resourceName}
-          summary={get(tree, 'children', []).map(getPageSummary)}
-          showOverview={showOverview}
-        />
-      </PageAside>
+      {!embedded &&
+        <PageAside closable={true} show={!embedded}>
+          <PlayerSummary
+            path={resourcePath}
+            title={resourceName}
+            summary={get(tree, 'children', []).map(getPageSummary)}
+            showOverview={showOverview}
+          />
+        </PageAside>
+      }
 
-      <PageContent className="d-flex flex-column">
+      <PageContent className={classes('d-flex flex-column', {
+        'mx-n4': embedded
+      })}>
         <Routes
           path={resourcePath}
+          redirect={[
+            {from: '/', exact: true, to: '/'+get(tree, 'children[0].slug', null), disabled: showOverview || !get(tree, 'children[0]', null)}
+          ]}
           routes={[
             {
               path: '/',

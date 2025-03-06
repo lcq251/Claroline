@@ -23,7 +23,7 @@ const PlayerSummary = (props) => {
       <SearchMinimal
         className="mb-3"
         placeholder={trans('search', {}, 'actions')}
-        search={(searchStr) => {
+        search={() => {
 
         }}
       />

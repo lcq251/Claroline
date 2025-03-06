@@ -65,7 +65,7 @@ const TreeItem = ({
             <TreeItem
               key={child.id}
               item={child}
-              size="sm"
+              size={size}
             />
           )}
         </ul>

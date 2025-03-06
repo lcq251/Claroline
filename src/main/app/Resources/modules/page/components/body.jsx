@@ -10,10 +10,11 @@ import {Collapse} from 'react-bootstrap'
 
 const PageAside = ({
   children,
-  closable = true
+  closable = true,
+  show = true
 }) => {
   const asideId = useId()
-  const [opened, setOpened] = useState(true)
+  const [opened, setOpened] = useState(show)
 
   return (
     <div className="position-relative" role="presentation">
@@ -41,7 +42,8 @@ const PageAside = ({
 
 PageAside.propTypes = {
   children: T.any,
-  closable: T.bool
+  closable: T.bool,
+  show: T.bool
 }
 
 const PageBody = ({

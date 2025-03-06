@@ -1,15 +1,19 @@
 {
     "page": "Page %number%",
     "chapter_numbering": "Numérotation",
-    "chapter_loading": "Nous chargeons votre chapitre...",
+    "chapter_loading": "Nous chargeons votre page...",
     "page_delete_message": "Êtes-vous sûr(e) de vouloir supprimer cette page ainsi que toutes ses sous-pages ?",
     "internal_note_visibility_help": "Les notes internes sont uniquement visibles par les utilisateurs ayant la permission 'Voir les notes internes'.",
     "lesson_search": "Rechercher dans le cours",
     "lesson_numbering": "Numérotation des pages",
-    "move_destination": "Où placer le chapitre :",
-    "move_chapter": "Déplacer le chapitre",
-    "move_relation" : "Relation avec le chapitre parent",
-    "subchapter": "En tant que sous-chapitre",
+    "move_destination": "Où placer le page :",
+    "move_chapter": "Déplacer le page",
+    "move_relation" : "Relation avec le page parent",
+    "subchapter": "En tant que sous-page",
     "sibling": "Au même niveau",
-    "add_internal_note": "Ajouter une note interne"
+    "add_internal_note": "Ajouter une note interne",
+    "show_overview": "Afficher la vue \"A propos\"",
+    "show_overview_help": "La vue \"A propos\" contient l'image de converture de la ressource, sa description longue ainsi que le sommaire des pages de la Connaissance.",
+    "show_navigation": "Afficher la navigation",
+    "show_navigation_help": "Affichez des boutons \"Précédent\" et \"Suivant\" pour naviguer facilement entre les pages."
 }

@@ -1,6 +1,8 @@
 import React from 'react'
-import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
+
 import {trans} from '#/main/app/intl'
+import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
+
 import {constants} from '#/plugin/lesson/resources/lesson/constants'
 
 const LessonEditorAppearance = () =>
@@ -16,13 +18,13 @@ const LessonEditorAppearance = () =>
           {
             name: 'resource.display.showOverview',
             type: 'boolean',
-            label: trans('Afficher la vue "A propos"'),
-            help: trans('La vue "A propos" contient l\'image de converture de la ressource, sa description longue ainsi que le sommaire des pages de la Connaissance.')
+            label: trans('show_overview', {}, 'lesson'),
+            help: trans('show_overview_help', {}, 'lesson')
           }, {
             name: 'resource.display.navigation',
             type: 'boolean',
-            label: trans('Afficher la navigation'),
-            help: trans('Affiche des boutons "Précédent" et "Suivant" pour naviguer facilement entre les pages.')
+            label: trans('show_navigation', {}, 'lesson'),
+            help: trans('show_navigation_help', {}, 'lesson')
           }, {
             name: 'resource.display.numbering',
             type: 'choice',
