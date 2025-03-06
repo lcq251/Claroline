@@ -16,7 +16,7 @@ export default (evaluations) => {
   return ({
     name: 'download-certificate',
     type: ASYNC_BUTTON,
-    icon: 'fa fa-fw ' + (processable.length > 1 ? 'fa-file-zipper' : 'fa-file-pdf'),
+    icon: 'fa fa-fw fa-download',
     label: processable.length > 1
       ? trans('download_certificates', {}, 'actions')
       : trans('download_certificate', {}, 'actions'),

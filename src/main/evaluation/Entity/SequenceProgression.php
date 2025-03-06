@@ -5,17 +5,17 @@ namespace Claroline\EvaluationBundle\Entity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\SequenceProgressionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * SequenceProgression
  * Represents the progression of a User in a Step.
- *
- * @deprecated
  */
 #[ORM\Table(name: 'innova_path_progression')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: SequenceProgressionRepository::class)]
 class SequenceProgression
 {
     use Id;
@@ -23,22 +23,22 @@ class SequenceProgression
     /**
      * Step for which we track the progression.
      */
-    #[ORM\JoinColumn(name: 'step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Step::class)]
+    #[ORM\JoinColumn(name: 'step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Step $step;
 
     /**
      * User for which we track the progression.
      */
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?User $user = null;
 
     /**
      * Current state of the Step.
      */
     #[ORM\Column(name: 'progression_status', type: Types::STRING)]
-    private string $status = 'seen';
+    private string $status = EvaluationStatus::NOT_ATTEMPTED;
 
     public function getStep(): ?Step
     {

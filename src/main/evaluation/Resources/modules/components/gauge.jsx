@@ -30,7 +30,7 @@ const EvaluationProgress = (props) => {
     .innerRadius(innerRadius)
 
   return (
-    <GaugeContainer className={classes('mx-auto', props.size && `evaluation-gauge-${props.size}`)} type={props.type} width={radius * 2} height={radius * 2} radius={radius} >
+    <GaugeContainer className={classes('mx-auto')} type={props.type} width={radius * 2} height={radius * 2} radius={radius} >
       <g transform={`translate(${radius}, ${radius})`}>
         <path
           className="bg"
@@ -60,7 +60,7 @@ EvaluationProgress.propTypes = {
 }
 
 const EvaluationGauge = (props) =>
-  <div className={classes('evaluation-gauge', props.className, constants.EVALUATION_STATUS_COLOR[props.status])}>
+  <div className={classes('evaluation-gauge', props.size && `evaluation-gauge-${props.size}`, props.className, constants.EVALUATION_STATUS_COLOR[props.status])}>
     <EvaluationProgress
       size={props.size}
       progression={props.progression}

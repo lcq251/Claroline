@@ -54,20 +54,14 @@ const navigationEnabled = createSelector(
   (store) => store.navigationEnabled
 )
 
-const stepsProgression = createSelector(
-  [data],
-  (data) => data.stepsProgression
-)
-
 const evaluation = createSelector(
   [data],
   (data) => data.userEvaluation
 )
 
-// evaluation for the required resource of the path
-const resourceEvaluations = createSelector(
+const progression = createSelector(
   [data],
-  (data) => data.resourceEvaluations
+  (data) => data.progression
 )
 
 const userFeedback = createSelector(
@@ -107,8 +101,7 @@ export const selectors = {
   empty,
   navigationEnabled,
   evaluation,
-  resourceEvaluations,
-  stepsProgression,
+  progression,
   userFeedback,
   hasScore,
   totalScore

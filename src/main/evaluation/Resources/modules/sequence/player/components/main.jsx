@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl/translation'
 import {LinkButton} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
+import {SequenceEvaluation as SequenceEvaluationTypes} from '#/main/evaluation/sequence/prop-types'
 
 import {Sequence as SequenceTypes, Step as StepTypes} from '#/main/evaluation/sequence/prop-types'
 import {Step} from '#/main/evaluation/sequence/player/components/step'
@@ -37,8 +37,7 @@ const SequencePlayer = props => {
           path={route(props.sequence, null, props.path)}
           sequence={props.sequence}
           userEvaluation={props.evaluation}
-          resourceEvaluations={props.resourceEvaluations}
-          stepsProgression={props.stepsProgression}
+          progression={props.progression}
         />
       </PageAside>
 
@@ -99,7 +98,6 @@ const SequencePlayer = props => {
                         subtitle={trans('sequence_step_count', {current: stepIndex+1, total: props.steps.length}, 'evaluation')}
                         currentUser={props.currentUser}
                         numbering={getNumbering(props.sequence.display.numbering, props.sequence.steps, step)}
-                        progression={props.stepsProgression[step.id]}
                         updateProgression={props.updateProgression}
                         enableNavigation={props.enableNavigation}
                         disableNavigation={props.disableNavigation}
@@ -157,13 +155,10 @@ SequencePlayer.propTypes = {
   steps: T.arrayOf(T.shape(
     StepTypes.propTypes
   )),
-  stepsProgression: T.object,
-  evaluation: T.shape({
-    // SequenceEvaluation types
-  }),
-  resourceEvaluations: T.arrayOf(T.shape(
-    ResourceEvaluationTypes.propTypes
-  )),
+  progression: T.object,
+  evaluation: T.shape(
+    SequenceEvaluationTypes.propTypes
+  ),
   updateProgression: T.func.isRequired,
   enableNavigation: T.func.isRequired,
   disableNavigation: T.func.isRequired

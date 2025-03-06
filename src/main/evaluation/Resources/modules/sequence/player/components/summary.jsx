@@ -1,18 +1,15 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
-import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
-import {number, trans} from '#/main/app/intl'
+import {trans} from '#/main/app/intl'
 import {LinkButton} from '#/main/app/buttons'
 
-import {EvaluationScore} from '#/main/evaluation/components/score'
-import {constants} from '#/main/evaluation/constants'
-import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
+import {SequenceEvaluation as SequenceEvaluationTypes} from '#/main/evaluation/sequence/prop-types'
 import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
 import {flattenSteps, getNumbering} from '#/main/evaluation/sequence/utils'
 import {ProgressBar} from '#/main/app/components/progress-bar'
+import {StepStatus} from '#/main/evaluation/sequence/components/step-status'
 
 const PlayerSummary = (props) => {
   const steps = flattenSteps(props.sequence.steps)
@@ -38,12 +35,9 @@ const PlayerSummary = (props) => {
       }
 
       <ul className="list-unstyled mb-0 mx-n3 mt-4">
-        {steps.map((step, index) => {
+        {steps.map((step) => {
           const numbering = getNumbering(props.sequence.display.numbering, props.sequence.steps, step)
-          let resourceEvaluation
-          if (!isEmpty(step.primaryResource) && !isEmpty(props.resourceEvaluations)) {
-            resourceEvaluation = props.resourceEvaluations.find(evaluation => get(evaluation, 'resourceNode.id') === get(step, 'primaryResource.id'))
-          }
+          const stepProgression = props.progression[step.id] || {}
 
           return (
             <li key={step.id}>
@@ -58,40 +52,10 @@ const PlayerSummary = (props) => {
                   {step.title}
                 </div>
 
-                <span className="step-status">
-                  {!resourceEvaluation &&
-                    <span className={classes('fa fa-fw', {
-                      // status for steps without required resource
-                      'far fa-circle not_started': !props.stepsProgression[step.id] || ['unseen', 'to_do'].includes(props.stepsProgression[step.id]),
-                      'fa-circle-check': ['seen', 'done'].includes(props.stepsProgression[step.id]),
-                      'fa-circle-xmark': ['to_review'].includes(props.stepsProgression[step.id])
-                    })} />
-                  }
-
-                  {resourceEvaluation &&
-                    <>
-                      {get(props.sequence, 'display.showScore') && resourceEvaluation.scoreMax &&
-                        <EvaluationScore
-                          score={get(props.sequence, 'evaluation.scoreTotal') ? (resourceEvaluation.score / resourceEvaluation.scoreMax) * get(props.sequence, 'evaluation.scoreTotal') : resourceEvaluation.score}
-                          scoreMax={get(props.sequence, 'evaluation.scoreTotal') ? get(props.sequence, 'evaluation.scoreTotal') : resourceEvaluation.scoreMax}
-                          size="sm"
-                        />
-                      }
-
-                      {!resourceEvaluation.scoreMax && [constants.EVALUATION_STATUS_INCOMPLETE].includes(resourceEvaluation.status) &&
-                        <span className="step-progression">{number(resourceEvaluation.progression) || '0'} %</span>
-                      }
-
-                      <span className={classes('fa fa-fw icon-with-text-left', {
-                        // status for steps with a required resource
-                        'far fa-circle not_started': constants.EVALUATION_STATUS_NOT_ATTEMPTED === resourceEvaluation.status,
-                        'fa-circle-notch fa-spin': constants.EVALUATION_STATUS_INCOMPLETE === resourceEvaluation.status,
-                        'fa-circle-check': [constants.EVALUATION_STATUS_COMPLETED, constants.EVALUATION_STATUS_PASSED].includes(resourceEvaluation.status),
-                        'fa-circle-xmark': constants.EVALUATION_STATUS_FAILED === resourceEvaluation.status
-                      })} />
-                    </>
-                  }
-                </span>
+                <StepStatus
+                  progression={stepProgression}
+                  totalScore={get(props.sequence, 'evaluation.scoreTotal')}
+                />
               </LinkButton>
             </li>
           )
@@ -108,12 +72,9 @@ PlayerSummary.propTypes = {
     SequenceTypes.propTypes
   ).isRequired,
   userEvaluation: T.shape(
-    ResourceEvaluationTypes.propTypes
+    SequenceEvaluationTypes.propTypes
   ),
-  stepsProgression: T.object,
-  resourceEvaluations: T.arrayOf(T.shape(
-    ResourceEvaluationTypes.propTypes
-  ))
+  progression: T.object
 }
 
 export {

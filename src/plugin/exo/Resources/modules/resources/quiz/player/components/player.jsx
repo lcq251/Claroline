@@ -24,16 +24,14 @@ import {actions} from '#/plugin/exo/quiz/player/actions'
 import {ItemPlayer} from '#/plugin/exo/items/components/item-player'
 import {ItemFeedback} from '#/plugin/exo/items/components/item-feedback'
 import {ContentItemPlayer} from '#/plugin/exo/contents/components/content-item-player'
-import {PlayerNav} from '#/plugin/exo/quiz/player/components/nav-bar'
-import {PlayerRestrictions} from '#/plugin/exo/quiz/player/components/restrictions'
+import {PlayerNav} from '#/plugin/exo/resources/quiz/player/components/nav-bar'
+import {PlayerRestrictions} from '#/plugin/exo/resources/quiz/player/components/restrictions'
 import {CustomDragLayer} from '#/plugin/exo/utils/custom-drag-layer'
 import {DragDropProvider} from '#/main/app/overlays/dnd/components/provider'
 import {ResourcePage} from '#/main/core/resource'
 import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {PageContent} from '#/main/app/page'
-
-// TODO : rethink the loading paper process (it's a little hacky to make it quickly compatible with Router)
 
 const CurrentStep = props => {
   const numbering = getNumbering(props.numbering, props.number - 1)

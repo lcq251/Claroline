@@ -2,6 +2,8 @@
 
 namespace Claroline\EvaluationBundle\Manager;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
@@ -18,18 +20,19 @@ use Claroline\EvaluationBundle\Library\Checker\MinSuccessChecker;
 use Claroline\EvaluationBundle\Library\Checker\ProgressionChecker;
 use Claroline\EvaluationBundle\Library\Checker\ScoreChecker;
 use Claroline\EvaluationBundle\Library\EvaluationAggregator;
+use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Claroline\EvaluationBundle\Library\GenericEvaluation;
 use Claroline\EvaluationBundle\Messenger\Message\PurgeSequenceEvaluations;
 use Claroline\EvaluationBundle\Messenger\Message\RecomputeSequenceEvaluations;
 use Claroline\EvaluationBundle\Repository\SequenceRepository;
-use Doctrine\Persistence\ObjectRepository;
+use Claroline\EvaluationBundle\Repository\UserEvaluation\SequenceProgressionRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SequenceEvaluationManager extends AbstractEvaluationManager
 {
-    private ObjectRepository $progressionRepo;
+    private SequenceProgressionRepository $progressionRepo;
     private SequenceRepository $sequenceRepo;
 
     public function __construct(
@@ -37,6 +40,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         private readonly MessageBusInterface $messageBus,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer,
         private readonly ResourceEvaluationManager $resourceEvalManager
     ) {
         $this->progressionRepo = $this->om->getRepository(SequenceProgression::class);
@@ -112,19 +116,56 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         return $this->sequenceRepo->findResourceEvaluations($sequence, $user);
     }
 
+    public function getProgression(Sequence $sequence, User $user): array
+    {
+        $progression = $this->progressionRepo->findBySequenceAndUser($sequence, $user);
+        $resourceEvaluations = $this->getResourceEvaluations($sequence, $user);
+
+        $result = [];
+        foreach ($progression as $stepProgression) {
+            $step = $stepProgression->getStep();
+            if (!empty($step->getResource()) && $step->isRequired()) {
+                $resourceId = $step->getResource()->getId();
+                $stepEvaluation = null;
+                foreach ($resourceEvaluations as $resourceEvaluation) {
+                    if ($resourceEvaluation->getResourceNode()->getId() === $resourceId) {
+                        $stepEvaluation = $resourceEvaluation;
+                        break;
+                    }
+                }
+
+                if ($stepEvaluation) {
+                    $result[$stepProgression->getStep()->getUuid()] = $this->serializer->serialize($stepEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
+                }
+            } else {
+                $result[$stepProgression->getStep()->getUuid()] = [
+                    'status' => $stepProgression->getStatus(),
+                ];
+            }
+        }
+
+        // adds steps with no progression at all
+        foreach ($sequence->getSteps() as $step) {
+            if (!array_key_exists($step->getUuid(), $result)) {
+                $result[$step->getUuid()] = [
+                    'status' => EvaluationStatus::NOT_ATTEMPTED,
+                ];
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Get all steps progression for a user.
      */
     public function getStepsProgressionForUser(Sequence $sequence, User $user): array
     {
+        $progression = $this->progressionRepo->findBySequenceAndUser($sequence, $user);
+
         $stepsProgression = [];
-
-        foreach ($sequence->getSteps() as $step) {
-            $userProgression = $this->progressionRepo->findOneBy(['step' => $step, 'user' => $user]);
-
-            if ($userProgression) {
-                $stepsProgression[$step->getUuid()] = $userProgression->getStatus();
-            }
+        foreach ($progression as $stepProgression) {
+            $stepsProgression[$stepProgression->getStep()->getUuid()] = $stepProgression->getStatus();
         }
 
         return $stepsProgression;
@@ -143,7 +184,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             $progression = new SequenceProgression();
             $progression->setStep($step);
             $progression->setUser($user);
-            $progression->setStatus('seen');
+            $progression->setStatus(EvaluationStatus::COMPLETED);
 
             $this->om->persist($progression);
             $this->om->flush();
@@ -210,7 +251,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 $aggregator->addEvaluation($resourceEvaluation, $step->isScored());
             } else {
                 // no required resource in the step, we only check if the step is seen/done
-                $stepDone = !empty($stepsProgression[$step->getUuid()]) && in_array($stepsProgression[$step->getUuid()], ['seen', 'done']);
+                $stepDone = !empty($stepsProgression[$step->getUuid()]) && EvaluationStatus::COMPLETED === $stepsProgression[$step->getUuid()];
                 $aggregator->addEvaluation(new GenericEvaluation($stepDone ? 100 : 0));
             }
         }

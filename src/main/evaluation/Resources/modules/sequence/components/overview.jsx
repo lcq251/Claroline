@@ -1,5 +1,4 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -17,8 +16,6 @@ import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {PathSummary} from '#/main/evaluation/sequence/components/summary'
 import {PageSection} from '#/main/app/page/components/section'
 import {SequencePage} from '#/main/evaluation/sequence/components/page'
-import {PageAffix, PageAffixCard} from '#/main/app/page/components/affix'
-import {EvaluationStatus} from '#/main/evaluation/components/status'
 
 import {EvaluationProgression} from '#/main/evaluation/components/progression'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
@@ -82,48 +79,11 @@ const SequenceOverviewContent = (props) => {
   )
 }
 
-const SequenceOverviewAffix = (props) => {
-  return (
-    <PageAffixCard
-      actions={props.actions}
-      info={[
-        {
-          icon: 'fa fa-clock',
-          label: trans('estimated_duration'),
-          value: get(props.sequence, 'evaluation.estimatedDuration') + ' ' + trans('minutes'),
-          displayed: !!get(props.sequence, 'evaluation.estimatedDuration')
-        }, {
-          icon: 'fa fa-list',
-          label: trans('content'),
-          value: (
-            <>
-              3 activités / 2 évènements
-            </>
-          )
-        }
-      ]}
-    >
-      {props.evaluationStatus &&
-        <EvaluationStatus
-          status={props.evaluationStatus}
-          subtle={true}
-          className="fs-base lh-base mb-2 d-block w-100 py-2 px-3"
-        />
-      }
-    </PageAffixCard>
-  )
-}
-
-SequenceOverviewAffix.propTypes = {
-  evaluationStatus: T.string
-}
-
 const SequenceOverview = () => {
   const sequence = useSelector(selectors.sequence)
   const sequencePath = useSelector(selectors.path)
   const userEvaluation = useSelector(selectors.evaluation)
-  const resourceEvaluations = useSelector(selectors.resourceEvaluations)
-  const stepsProgression = useSelector(selectors.stepsProgression)
+  const progression = useSelector(selectors.progression)
 
   const actions = [
     {
@@ -168,59 +128,48 @@ const SequenceOverview = () => {
   return (
     <SequencePage>
       <PageContent poster={get(sequence, 'poster')}>
-        {/*<PageAffix
-          affix={
-            <SequenceOverviewAffix
-              actions={actions}
-              evaluationStatus={get(userEvaluation, 'status')}
-              sequence={sequence}
-            />
-          }
-        >*/}
-          <SequenceOverviewContent
-            path={sequencePath}
-            sequence={sequence}
-            actions={actions}
-            userEvaluation={userEvaluation}
-            display={{
-              score: get(sequence, 'display.showScore'),
-              scoreMax: get(sequence, 'evaluation.scoreTotal'),
-              feedback: !!get(sequence, 'evaluation.successMessage') || !!get(sequence, 'evaluation.failureMessage')
-            }}
-            feedbacks={{
-              success: get(sequence, 'evaluation.successMessage'),
-              failure: get(sequence, 'evaluation.failureMessage')
-            }}
-          >
-            {!isEmpty(get(sequence, 'overview.resource')) &&
-              <PageSection size="md" className="mb-5">
-                <ResourceEmbedded
-                  resourceNode={get(sequence, 'overview.resource')}
-                  showHeader={false}
-                />
-              </PageSection>
-            }
-
-            <PageSection
-              size="md"
-              className="mb-5"
-              title={trans('content')}
-            >
-              {!isEmpty(sequence.steps) ?
-                <PathSummary
-                  path={sequencePath}
-                  sequence={sequence}
-                  resourceEvaluations={resourceEvaluations}
-                  stepsProgression={stepsProgression}
-                /> :
-                <ContentPlaceholder
-                  size="lg"
-                  title={trans('no_step', {}, 'path')}
-                />
-              }
+        <SequenceOverviewContent
+          path={sequencePath}
+          sequence={sequence}
+          actions={actions}
+          userEvaluation={userEvaluation}
+          display={{
+            score: get(sequence, 'display.showScore'),
+            scoreMax: get(sequence, 'evaluation.scoreTotal'),
+            feedback: !!get(sequence, 'evaluation.successMessage') || !!get(sequence, 'evaluation.failureMessage')
+          }}
+          feedbacks={{
+            success: get(sequence, 'evaluation.successMessage'),
+            failure: get(sequence, 'evaluation.failureMessage')
+          }}
+        >
+          {!isEmpty(get(sequence, 'overview.resource')) &&
+            <PageSection size="md" className="mb-5">
+              <ResourceEmbedded
+                resourceNode={get(sequence, 'overview.resource')}
+                showHeader={false}
+              />
             </PageSection>
-          </SequenceOverviewContent>
-        {/*</PageAffix>*/}
+          }
+
+          <PageSection
+            size="md"
+            className="mb-5"
+            title={trans('content')}
+          >
+            {!isEmpty(sequence.steps) ?
+              <PathSummary
+                path={sequencePath}
+                sequence={sequence}
+                progression={progression}
+              /> :
+              <ContentPlaceholder
+                size="lg"
+                title={trans('no_step', {}, 'path')}
+              />
+            }
+          </PageSection>
+        </SequenceOverviewContent>
       </PageContent>
     </SequencePage>
   )

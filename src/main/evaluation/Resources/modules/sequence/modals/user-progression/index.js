@@ -1,6 +1,6 @@
 /**
  * User progression in path modal.
- * Displays the progression of an user in the path.
+ * Displays the progression of a user in the path.
  */
 
 import {registry} from '#/main/app/modals/registry'

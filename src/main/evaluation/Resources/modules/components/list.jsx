@@ -10,23 +10,12 @@ import {EvaluationStatus} from '#/main/evaluation/components/status'
 import {EvaluationUserCard} from '#/main/evaluation/components/card'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {EvaluationScore} from '#/main/evaluation/components/score'
-import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
-import {MODAL_BUTTON} from '#/main/app/buttons'
 
 const EvaluationList = (props) => {
   return (
     <ListData
       definition={[
         {
-          name: 'status',
-          type: 'choice',
-          label: trans('status'),
-          options: {
-            choices: constants.EVALUATION_STATUSES_SHORT
-          },
-          displayed: true,
-          render: (row) => <EvaluationStatus status={row.status} />
-        }, {
           name: 'user',
           type: 'user',
           label: trans('user'),
@@ -64,6 +53,15 @@ const EvaluationList = (props) => {
             type: 'learning'
           }
         }, {
+          name: 'status',
+          type: 'choice',
+          label: trans('status'),
+          options: {
+            choices: constants.EVALUATION_STATUSES_SHORT
+          },
+          displayed: true,
+          render: (row) => <EvaluationStatus status={row.status} />
+        }, {
           name: 'displayScore',
           type: 'score',
           alias: 'score',
@@ -93,21 +91,9 @@ const EvaluationList = (props) => {
           filterable: true
         }
       ].concat(props.customDefinition)}
-      actions={(rows) => [
-        {
-          name: 'send-message',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-envelope',
-          label: trans('send-message', {}, 'actions'),
-          scope: ['object', 'collection'],
-          modal: [MODAL_MESSAGE, {
-            receivers: {users: rows.map((row => row.user))}
-          }]
-        }
-      ]}
       card={EvaluationUserCard}
 
-      {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions')}
+      {...omit(props, 'path', 'url', 'autoload', 'customDefinition')}
 
       name={props.name}
       fetch={{

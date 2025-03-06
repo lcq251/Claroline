@@ -12,7 +12,6 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -85,27 +84,19 @@ class SequenceController extends AbstractCrudController
         $user = $this->tokenStorage->getToken()?->getUser();
 
         $evaluation = null;
-        $resourceEvaluations = [];
-        $stepsProgression = [];
+        $progression = [];
         if ($user instanceof User) {
-            // retrieve user progression
             $evaluation = $this->serializer->serialize(
                 $this->evaluationManager->getUserEvaluation($sequence, $user),
                 [SerializerInterface::SERIALIZE_MINIMAL]
             );
-
-            $resourceEvaluations = array_map(function (ResourceEvaluation $resourceEvaluation) {
-                return $this->serializer->serialize($resourceEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $this->evaluationManager->getResourceEvaluations($sequence, $user));
-
-            $stepsProgression = $this->evaluationManager->getStepsProgressionForUser($sequence, $user);
+            $progression = $this->evaluationManager->getProgression($sequence, $user);
         }
 
         return new JsonResponse([
             'sequence' => $this->serializer->serialize($sequence),
             'userEvaluation' => $evaluation,
-            'resourceEvaluations' => $resourceEvaluations,
-            'stepsProgression' => $stepsProgression,
+            'progression' => $progression,
         ]);
     }
 

@@ -1,12 +1,10 @@
-import cloneDeep from 'lodash/cloneDeep'
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
 
 import {
   SEQUENCE_RELOAD,
   STEP_ENABLE_NAVIGATION,
   STEP_DISABLE_NAVIGATION,
-  SEQUENCE_EVALUATION_UPDATE,
-  STEP_UPDATE_PROGRESSION
+  SEQUENCE_EVALUATION_UPDATE
 } from '#/main/evaluation/sequence/store/actions'
 import {makeFetchReducer} from '#/main/app/api/fetch/store'
 
@@ -16,6 +14,7 @@ const reducer = makeFetchReducer(selectors.STORE_NAME, {
   data: {
     sequence: null,
     userEvaluation: null,
+    progression: [],
     resourceEvaluations: []
   }
 }, {
@@ -26,18 +25,8 @@ const reducer = makeFetchReducer(selectors.STORE_NAME, {
     userEvaluation: makeReducer([], {
       [SEQUENCE_EVALUATION_UPDATE]: (state, action) => action.userEvaluation || state,
     }),
-    // the list of evaluation for the embedded required resources
-    resourceEvaluations: makeReducer([], {
-      [SEQUENCE_EVALUATION_UPDATE]: (state, action) => action.resourceEvaluations || state,
-    }),
-    stepsProgression: makeReducer({}, {
-      [STEP_UPDATE_PROGRESSION]: (state, action) => {
-        const newState = cloneDeep(state)
-
-        newState[action.stepId] = action.status
-
-        return newState
-      }
+    progression: makeReducer([], {
+      [SEQUENCE_EVALUATION_UPDATE]: (state, action) => action.progression || state,
     })
   }),
   navigationEnabled: makeReducer(true, {

@@ -12,6 +12,7 @@ import {getEvaluationActions, getEvaluationDefaultAction} from '#/main/evaluatio
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
+import {SequenceDashboardActivity} from '#/main/evaluation/sequence/dashboard/components/activity'
 
 const SequenceDashboardEvaluations = () => {
   const dispatch = useDispatch()
@@ -34,7 +35,7 @@ const SequenceDashboardEvaluations = () => {
 
   return (
     <PageContent className="d-flex">
-      <PageSection size="full" className="d-flex flex-fill">
+      <PageSection size="full" className="d-flex flex-fill mt-4">
         <EvaluationList
           name={selectors.STORE_NAME+'.evaluations'}
           url={['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}]}

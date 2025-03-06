@@ -70,7 +70,7 @@ const Step = props =>
     }
 
     {props.primaryResource &&
-      <PageSection size="md" className="mb-5">
+      <PageSection size="md" className="mb-5 flex-fill d-flex flex-column">
         <ResourceEmbedded
           resourceNode={props.primaryResource}
           showHeader={props.showResourceHeader}

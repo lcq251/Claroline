@@ -20,7 +20,6 @@ const EvaluationTool = (props) => {
   return (
     <Tool
       {...props}
-      styles={['claroline-distribution-plugin-path-path-resource']}
       menu={[
         {
           name: 'about',
@@ -39,8 +38,7 @@ const EvaluationTool = (props) => {
           type: LINK_BUTTON,
           label: trans('activities'),
           target: props.path+'/activities',
-          //displayed: canFollow,
-          displayed: 'workspace' === props.contextType
+          displayed: canFollow && 'workspace' === props.contextType
         }
       ]}
       pages={[
@@ -56,12 +54,8 @@ const EvaluationTool = (props) => {
           component: EvaluationSequences
         }, {
           path: '/activities',
-          component: EvaluationActivities,
-        }/*, {
-          path: '/users/:userId/:workspaceId?',
-          onEnter: (params = {}) => props.openEvaluation(params.workspaceId || props.contextId, params.userId),
-          component: EvaluationUser
-        }*/
+          component: EvaluationActivities
+        }
       ]}
       editor={EvaluationEditor}
       dashboard={EvaluationDashboard}
@@ -71,11 +65,7 @@ const EvaluationTool = (props) => {
 
 EvaluationTool.propTypes = {
   path: T.string.isRequired,
-  contextType: T.string.isRequired,
-  contextId: T.string,
-  currentUserId: T.string,
-  permissions: T.object,
-  openEvaluation: T.func.isRequired
+  contextType: T.string.isRequired
 }
 
 export {

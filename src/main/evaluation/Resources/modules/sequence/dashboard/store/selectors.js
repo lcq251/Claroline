@@ -1,9 +1,15 @@
-import get from 'lodash/get'
+import {createSelector} from 'reselect'
+
+import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store/selectors'
 
 const STORE_NAME = 'sequenceDashboard'
 
-const store = (state) => get(state, STORE_NAME)
+const path = createSelector(
+  [sequenceSelectors.path],
+  (sequencePath) => sequencePath + '/dashboard'
+)
 
 export const selectors = {
-  STORE_NAME
+  STORE_NAME,
+  path
 }

@@ -20,12 +20,11 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
+use Composer\DependencyResolver\Request;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
@@ -98,22 +97,21 @@ class SequenceEvaluationController
 
         $this->checkPermission('OPEN', $sequence, [], true);
 
-        $stepProgression = $this->evaluationManager->update($step, $user);
-
-        $userEvaluation = $this->evaluationManager->getUserEvaluation($sequence, $user, false);
-        // get embedded resources evaluations
-        $resourceEvaluations = $this->evaluationManager->getResourceEvaluations($sequence, $user);
+        $this->evaluationManager->update($step, $user);
 
         return new JsonResponse([
-            'userEvaluation' => $this->serializer->serialize($userEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]),
-            'resourceEvaluations' => array_map(function (ResourceEvaluation $resourceEvaluation) {
-                return $this->serializer->serialize($resourceEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
-            }, $resourceEvaluations),
-            'userProgression' => [
-                'stepId' => $step->getUuid(),
-                'status' => $stepProgression->getStatus(),
-            ],
+            'userEvaluation' => $this->serializer->serialize(
+                $this->evaluationManager->getUserEvaluation($sequence, $user, false),
+                [SerializerInterface::SERIALIZE_MINIMAL]
+            ),
+            'progression' => $this->evaluationManager->getProgression($sequence, $user),
         ]);
+    }
+
+    #[Route(path: '/', name: 'apiv2_sequence_evaluation_delete', methods: ['DELETE'])]
+    public function deleteAction(Request $request): JsonResponse
+    {
+        return new JsonResponse(null, 204);
     }
 
     /**

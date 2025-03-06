@@ -10,6 +10,7 @@ import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {FormData} from '#/main/app/content/form/containers/data'
 
 import {selectors} from '#/main/evaluation/sequence/editor/modals/position/store/selectors'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const PositionModal = props => {
   const parentChoices = props.steps
@@ -135,16 +136,23 @@ const PositionModal = props => {
           }
         ]}
       >
-        <Button
-          label={trans('select', {}, 'actions')}
-          {...selectAction}
-          className="modal-btn"
-          variant="btn"
-          size="lg"
-          primary={true}
-          htmlType="submit"
-          onClick={props.fadeModal}
-        />
+        <div className="modal-footer">
+          <Button
+            className="btn btn-text-body"
+            type={CALLBACK_BUTTON}
+            label={trans('cancel', {}, 'actions')}
+            htmlType="submit"
+            callback={props.fadeModal}
+          />
+
+          <Button
+            className="btn btn-primary"
+            label={trans('select', {}, 'actions')}
+            {...selectAction}
+            htmlType="submit"
+            onClick={props.fadeModal}
+          />
+        </div>
       </FormData>
     </Modal>
   )

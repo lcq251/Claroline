@@ -37,11 +37,20 @@ registry.add('ClarolineEvaluationBundle', {
       'show-dashboard': () => { return import(/* webpackChunkName: "evaluation-action-sequence-dashboard" */   '#/main/evaluation/actions/sequence/show-dashboard') }
     },
 
+    resource_evaluation: {
+      'open': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-open" */ '#/main/evaluation/actions/resource_evaluation/open') },
+      'send-message': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-send-message" */ '#/main/evaluation/actions/resource_evaluation/send-message') },
+      'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-show-profile" */ '#/main/evaluation/actions/resource_evaluation/show-profile') }
+    },
+
     sequence_evaluation: {
+      'open': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-open" */ '#/main/evaluation/actions/sequence_evaluation/open') },
       'send-message': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-send-message" */ '#/main/evaluation/actions/sequence_evaluation/send-message') },
       'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-show-profile" */ '#/main/evaluation/actions/sequence_evaluation/show-profile') },
       'download-certificate': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-certificate" */ '#/main/evaluation/actions/sequence_evaluation/download-certificate') },
       'regenerate-certificate': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-regenerate-certificate" */ '#/main/evaluation/actions/sequence_evaluation/regenerate-certificate') },
+      'delete': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-delete" */ '#/main/evaluation/actions/sequence_evaluation/delete') },
+      'recompute': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-recompute" */ '#/main/evaluation/actions/sequence_evaluation/recompute') }
     },
 
     workspace_evaluation: {

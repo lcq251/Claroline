@@ -48,7 +48,6 @@ class ResourceEvaluationSerializer
             'startedAt' => DateNormalizer::normalize($evaluation->getStartedAt()),
             'endedAt' => DateNormalizer::normalize($evaluation->getEndedAt()),
             'status' => $evaluation->getStatus(),
-            'duration' => $evaluation->getDuration(),
             'score' => $score,
             'scoreMin' => $evaluation->getScoreMin(),
             'scoreMax' => $evaluation->getScoreMax(),
@@ -56,6 +55,7 @@ class ResourceEvaluationSerializer
             'nbAttempts' => $evaluation->getNbAttempts(),
             // 'nbOpenings' => $evaluation->getNbOpenings(),
             // 'required' => $evaluation->isRequired(),
+            'duration' => $evaluation->getDuration(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];
 

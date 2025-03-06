@@ -39,16 +39,14 @@ class SequenceEvaluationSerializer
 
         $serialized = [
             'id' => $evaluation->getUuid(),
-            'date' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
             'lastActivityAt' => DateNormalizer::normalize($evaluation->getLastActivityAt()),
             'startedAt' => DateNormalizer::normalize($evaluation->getStartedAt()),
             'endedAt' => DateNormalizer::normalize($evaluation->getEndedAt()),
             'status' => $evaluation->getStatus(),
-            'duration' => $evaluation->getDuration(),
             'progression' => $progression,
-            // 'required' => $evaluation->isRequired(),
-            'certified' => $evaluation->isCertified(),
+            'duration' => $evaluation->getDuration(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
+            'certified' => $evaluation->isCertified(),
         ];
 
         // evaluation has a score, expose it

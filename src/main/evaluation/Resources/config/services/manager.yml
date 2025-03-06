@@ -13,6 +13,7 @@ services:
             - '@messenger.default_bus'
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
 
     Claroline\EvaluationBundle\Manager\ResourceEvaluationManager:

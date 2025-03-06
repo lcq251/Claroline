@@ -80,7 +80,7 @@ class ResourceEvaluationController
 
     #[Route(path: '/attempts/{userEvaluationId}', name: 'apiv2_resource_evaluation_list_attempts', methods: ['GET'])]
     public function listAttemptsAction(
-        #[MapEntity(mapping: ['userEvaluationId' => 'id'])]
+        #[MapEntity(mapping: ['userEvaluationId' => 'uuid'])]
         ResourceEvaluation $userEvaluation,
         Request $request
     ): JsonResponse {
@@ -95,7 +95,7 @@ class ResourceEvaluationController
 
     #[Route(path: '/attempts/{userEvaluationId}', name: 'apiv2_resource_evaluation_give_attempt', methods: ['PUT'])]
     public function giveAnotherAttemptAction(
-        #[MapEntity(mapping: ['userEvaluationId' => 'id'])]
+        #[MapEntity(mapping: ['userEvaluationId' => 'uuid'])]
         ResourceEvaluation $userEvaluation
     ): JsonResponse {
         $this->checkPermission('ADMINISTRATE', $userEvaluation, [], true);

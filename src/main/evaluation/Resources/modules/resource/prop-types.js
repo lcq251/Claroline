@@ -6,7 +6,9 @@ import {User} from '#/main/community/user/prop-types'
 const ResourceEvaluation = {
   propTypes: {
     id: T.string.isRequired,
-    date: T.string.isRequired,
+    lastActivityAt: T.string,
+    startedAt: T.string,
+    endedAt: T.string,
     status: T.string.isRequired,
     duration: T.number,
     score: T.number,
@@ -33,7 +35,9 @@ const ResourceEvaluation = {
 const ResourceAttempt = {
   propTypes: {
     id: T.string.isRequired,
-    date: T.string.isRequired,
+    lastActivityAt: T.string,
+    startedAt: T.string,
+    endedAt: T.string,
     status: T.string.isRequired,
     duration: T.number,
     score: T.number,

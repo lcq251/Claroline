@@ -14,7 +14,7 @@ export default (evaluations) => {
   return ({
     name: 'regenerate-certificate',
     type: ASYNC_BUTTON,
-    icon: 'fa fa-fw fa-arrows-rotate',
+    icon: 'fa fa-fw fa-file-export',
     label: processable.length > 1
       ? trans('regenerate_certificates', {}, 'actions')
       : trans('regenerate_certificate', {}, 'actions'),

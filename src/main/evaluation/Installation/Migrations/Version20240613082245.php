@@ -15,8 +15,8 @@ final class Version20240613082245 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('
-            INSERT INTO claro_ordered_tool (uuid, tool_name, context_name, context_id, entity_order, fullscreen)
-            SELECT UUID() AS uuid, "progression" AS tool_name, "workspace" AS context_name, w.uuid AS context_id, 0 AS entity_order, 0 AS fullscreen
+            INSERT INTO claro_ordered_tool (uuid, tool_name, context_name, context_id, entity_order)
+            SELECT UUID() AS uuid, "progression" AS tool_name, "workspace" AS context_name, w.uuid AS context_id, 0 AS entity_order
             FROM claro_workspace AS w  
             WHERE NOT EXISTS (
                 SELECT o2.id 
