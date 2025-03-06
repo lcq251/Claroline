@@ -28,7 +28,7 @@ const GaugeContainer = props =>
 
 GaugeContainer.propTypes = {
   className: T.string,
-  type: T.oneOf(['primary', 'success', 'warning', 'danger', 'info', 'user', 'custom']).isRequired,
+  type: T.oneOf(['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'user', 'custom']).isRequired,
   width: T.oneOfType([T.string, T.number]).isRequired,
   height: T.oneOfType([T.string, T.number]).isRequired,
   radius: T.number.isRequired,

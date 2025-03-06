@@ -12,17 +12,10 @@ use Claroline\CoreBundle\Entity\File\PublicFile;
  */
 class PublicFileSerializer
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var PlatformManager */
-    private $platformManager;
-
     public function __construct(
-        ObjectManager $om,
-        PlatformManager $platformManager
+        private readonly ObjectManager $om,
+        private readonly PlatformManager $platformManager
     ) {
-        $this->om = $om;
-        $this->platformManager = $platformManager;
     }
 
     public function getClass(): string

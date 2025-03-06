@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux'
 
 import {API_REQUEST} from '#/main/app/api'
 import {PlaceholderText} from '#/main/app/components/placeholder'
-import {ContentHtml} from '#/main/app/content/components/html'
+import {Html} from '#/main/app/components/html'
 
 const TermsOfService = () => {
   const dispatch = useDispatch()
@@ -35,7 +35,7 @@ const TermsOfService = () => {
 
   if (content) {
     return (
-      <ContentHtml>{content}</ContentHtml>
+      <Html className="content-text">{content}</Html>
     )
   }
 

@@ -12,7 +12,7 @@ import {PaperTabs} from '#/plugin/exo/items/components/paper-tabs'
 import {utils} from '#/plugin/exo/items/grid/utils/utils'
 import {WarningIcon} from '#/plugin/exo/components/warning-icon'
 import {constants} from '#/plugin/exo/items/grid/constants'
-import {SCORE_SUM, SCORE_FIXED} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM, SCORE_FIXED} from '#/plugin/exo/scores/constants'
 
 
 class ExpectedGridCell extends Component {

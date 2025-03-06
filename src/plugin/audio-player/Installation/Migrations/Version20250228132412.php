@@ -19,6 +19,7 @@ final class Version20250228132412 extends AbstractMigration
             LEFT JOIN claro_resource_node AS n ON n.id = a.resourceNode_id
             LEFT JOIN claro_file AS f ON n.id = f.resourceNode_id
             SET a.url = f.hash_name
+            WHERE f.hash_name IS NOT NULL
         ');
 
         $this->addSql('

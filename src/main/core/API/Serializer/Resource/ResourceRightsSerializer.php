@@ -12,29 +12,19 @@ use Claroline\CoreBundle\Manager\Resource\MaskManager;
 
 class ResourceRightsSerializer
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var RoleSerializer */
-    private $roleSerializer;
-    /** @var MaskManager */
-    private $maskManager;
-
     public function __construct(
-        ObjectManager $om,
-        RoleSerializer $roleSerializer,
-        MaskManager $maskManager
+        private readonly ObjectManager $om,
+        private readonly RoleSerializer $roleSerializer,
+        private readonly MaskManager $maskManager
     ) {
-        $this->om = $om;
-        $this->roleSerializer = $roleSerializer;
-        $this->maskManager = $maskManager;
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         return ResourceRights::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'resource_rights';
     }

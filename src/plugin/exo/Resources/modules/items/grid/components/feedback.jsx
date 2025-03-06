@@ -5,7 +5,7 @@ import {FeedbackButton as Feedback} from '#/plugin/exo/buttons/feedback/componen
 import {utils} from '#/plugin/exo/items/grid/utils/utils'
 import {WarningIcon} from '#/plugin/exo/components/warning-icon'
 import {constants} from '#/plugin/exo/items/grid/constants'
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 
 class YourGridCell extends Component {
   constructor(props) {

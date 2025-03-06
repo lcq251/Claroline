@@ -1,5 +1,4 @@
 
-// TODO : make dynamic registry
 import ScoreFixed from '#/plugin/exo/scores/fixed'
 import ScoreManual from '#/plugin/exo/scores/manual'
 import ScoreNone from '#/plugin/exo/scores/none'

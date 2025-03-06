@@ -5,7 +5,6 @@ namespace Claroline\CoreBundle\API\Serializer\Widget;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\API\Finder\Widget\WidgetInstanceFinder;
 use Claroline\CoreBundle\Entity\Widget\WidgetContainer;
 use Claroline\CoreBundle\Entity\Widget\WidgetContainerConfig;
 use Claroline\CoreBundle\Entity\Widget\WidgetInstance;
@@ -14,31 +13,18 @@ class WidgetContainerSerializer
 {
     use SerializerTrait;
 
-    /** @var ObjectManager */
-    private $om;
-
-    /** @var WidgetInstanceFinder */
-    private $widgetInstanceFinder;
-
-    /** @var WidgetInstanceSerializer */
-    private $widgetInstanceSerializer;
-
     public function __construct(
-        ObjectManager $om,
-        WidgetInstanceFinder $widgetInstanceFinder,
-        WidgetInstanceSerializer $widgetInstanceSerializer
+        private readonly ObjectManager $om,
+        private readonly WidgetInstanceSerializer $widgetInstanceSerializer
     ) {
-        $this->om = $om;
-        $this->widgetInstanceFinder = $widgetInstanceFinder;
-        $this->widgetInstanceSerializer = $widgetInstanceSerializer;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'widget_container';
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         return WidgetContainer::class;
     }
@@ -71,7 +57,7 @@ class WidgetContainerSerializer
         ];
     }
 
-    public function serializeDisplay(WidgetContainerConfig $widgetContainerConfig)
+    public function serializeDisplay(WidgetContainerConfig $widgetContainerConfig): array
     {
         return [
             'layout' => $widgetContainerConfig->getLayout(),

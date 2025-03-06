@@ -8,9 +8,10 @@ import {Dashboard} from '#/main/app/dashboard'
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {selectors} from '#/main/core/resource/store'
 import {ResourceDashboardActivity} from '#/main/core/resource/dashboard/components/activity'
-import {ResourceEvaluations} from '#/main/evaluation/resource/evaluation'
+import {ResourceDashboardEvaluations} from '#/main/evaluation/resource/evaluation'
 import {ResourceDashboardOverview} from '#/main/core/resource/dashboard/components/overview'
 import {ResourceDashboardStats} from '#/main/core/resource/dashboard/components/stats'
+import {ResourceDashboardActions} from '#/main/core/resource/dashboard/components/actions'
 
 const ResourceDashboard = (props) => {
   const resourcePath = useSelector(selectors.path)
@@ -32,7 +33,7 @@ const ResourceDashboard = (props) => {
             name: 'results',
             icon: 'fa fa-award',
             title: trans('evaluation'),
-            component: ResourceEvaluations,
+            component: ResourceDashboardEvaluations,
             disabled: !hasEvaluation
           }, {
             name: 'stats',
@@ -46,6 +47,7 @@ const ResourceDashboard = (props) => {
             component: ResourceDashboardActivity
           }
         ]}
+        actionsPage={props.actionsPage || ResourceDashboardActions}
       />
     </ResourcePage>
   )
@@ -53,7 +55,9 @@ const ResourceDashboard = (props) => {
 
 ResourceDashboard.propTypes = {
   overviewPage: T.elementType,
-  statsPage: T.elementType
+  statsPage: T.elementType,
+  // standard pages
+  actionsPage: T.elementType
 }
 
 export {

@@ -17,17 +17,15 @@ class ResourceWidgetSerializer
     use SerializerTrait;
 
     private TokenStorageInterface $tokenStorage;
-    private ObjectManager $om;
     private ResourceNodeSerializer $nodeSerializer;
     private ResourceNodeRepository $nodeRepo;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         ObjectManager $om,
-        ResourceNodeSerializer $nodeSerializer)
-    {
+        ResourceNodeSerializer $nodeSerializer
+    ) {
         $this->tokenStorage = $tokenStorage;
-        $this->om = $om;
         $this->nodeSerializer = $nodeSerializer;
 
         $this->nodeRepo = $om->getRepository(ResourceNode::class);

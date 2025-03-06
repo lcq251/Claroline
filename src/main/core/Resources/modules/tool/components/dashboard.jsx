@@ -16,6 +16,7 @@ const ToolDashboard = (props) => {
       <Dashboard
         path={toolPath+'/dashboard'}
         pages={props.pages}
+        actionsPage={props.actionsPage}
       />
     </ToolPage>
   )
@@ -29,7 +30,10 @@ ToolDashboard.propTypes = {
     component: T.elementType,
     render: T.func,
     disabled: T.bool
-  }))
+  })),
+
+  // standard pages
+  actionsPage: T.elementType
 }
 
 export {

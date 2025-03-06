@@ -9,8 +9,8 @@ import {Resource} from '#/main/core/resource'
 import {DragDropProvider} from '#/main/app/overlays/dnd/components/provider'
 import {CustomDragLayer} from '#/plugin/exo/utils/custom-drag-layer'
 
-import {Player}     from '#/plugin/exo/quiz/player/components/player'
-import {AttemptEnd} from '#/plugin/exo/quiz/player/components/attempt-end'
+import {Player}     from '#/plugin/exo/resources/quiz/player/components/player'
+import {AttemptEnd} from '#/plugin/exo/resources/quiz/player/components/attempt-end'
 
 import {QuizOverview}   from '#/plugin/exo/resources/quiz/containers/overview'
 import {QuizEditor}     from '#/plugin/exo/resources/quiz/editor/components/main'

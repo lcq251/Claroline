@@ -12,7 +12,7 @@ import {makeId} from '#/main/app/utils/id'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 import {makeDraggable, makeDroppable} from '#/plugin/exo/utils/dragAndDrop'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 import {utils} from '#/plugin/exo/items/pair/utils'

@@ -23,11 +23,6 @@ final class Version20240307120358 extends AbstractMigration
         ');
 
         $this->addSql('
-            INSERT INTO claro_ordered_tool (uuid, context_name, tool_name, entity_order, fullscreen)
-            VALUES ((SELECT UUID()), "account", "appearance", 2, 0)
-        ');
-
-        $this->addSql('
             CREATE TABLE claro_theme_user_preferences (
                 id INT AUTO_INCREMENT NOT NULL, 
                 user_id INT NOT NULL, 

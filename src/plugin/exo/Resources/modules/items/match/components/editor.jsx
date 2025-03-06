@@ -12,7 +12,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 import {emptyAnswer} from '#/plugin/exo/items/utils'
 import {MatchItem as MatchItemTypes} from '#/plugin/exo/items/match/prop-types'

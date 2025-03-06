@@ -15,7 +15,7 @@ const ResourceIcon = props =>
 ResourceIcon.propTypes = {
   className: T.string,
   size: T.string,
-  mimeType: T.string.isRequired
+  mimeType: T.string
 }
 
 export {

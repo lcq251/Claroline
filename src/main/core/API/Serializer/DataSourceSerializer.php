@@ -6,9 +6,14 @@ use Claroline\CoreBundle\Entity\DataSource;
 
 class DataSourceSerializer
 {
-    public function getClass()
+    public function getClass(): string
     {
         return DataSource::class;
+    }
+
+    public function getName(): string
+    {
+        return 'data_source';
     }
 
     public function serialize(DataSource $dataSource): array
@@ -22,10 +27,5 @@ class DataSourceSerializer
             ],
             'tags' => $dataSource->getTags(),
         ];
-    }
-
-    public function getName()
-    {
-        return 'data_source';
     }
 }

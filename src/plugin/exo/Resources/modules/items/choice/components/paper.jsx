@@ -5,7 +5,7 @@ import classes from 'classnames'
 import {trans} from '#/main/app/intl/translation'
 import {ContentHtml} from '#/main/app/content/components/html'
 
-import {SCORE_FIXED, SCORE_RULES} from '#/plugin/exo/quiz/enums'
+import {SCORE_FIXED, SCORE_RULES} from '#/plugin/exo/scores/constants'
 import {utils} from '#/plugin/exo/items/choice/utils'
 import {FeedbackButton as Feedback} from '#/plugin/exo/buttons/feedback/components/button'
 import {SolutionScore} from '#/plugin/exo/components/score'

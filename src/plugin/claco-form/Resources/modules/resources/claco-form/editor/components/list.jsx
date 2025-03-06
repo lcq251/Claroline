@@ -40,6 +40,10 @@ const EditorList = () => {
           title: trans('general'),
           fields: [
             {
+              name: 'details.search_enabled',
+              type: 'boolean',
+              label: trans('label_search_enabled', {}, 'clacoform')
+            }, {
               name: 'random.enabled',
               type: 'boolean',
               label: trans('label_random_enabled', {}, 'clacoform'),
@@ -64,10 +68,6 @@ const EditorList = () => {
                   displayed: (clacoForm) => get(clacoForm, 'random.enabled', false)
                 }
               ]
-            }, {
-              name: 'details.search_enabled',
-              type: 'boolean',
-              label: trans('label_search_enabled', {}, 'clacoform')
             }, {
               name: 'details.display_title',
               type: 'choice',

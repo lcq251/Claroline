@@ -1,16 +1,11 @@
 services:
     _defaults:
-        autowire: false
-        autoconfigure: false
-        public: true
         tags: [claroline.validator]
 
-    Claroline\CoreBundle\API\Validator\WorkspaceValidator: ~
-
-    Claroline\CoreBundle\API\Validator\Resource\ResourceNodeValidator:
+    Claroline\CoreBundle\Validator\ResourceNodeValidator:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
-    Claroline\CoreBundle\API\Validator\PublicFileValidator:
+    Claroline\CoreBundle\Validator\PublicFileValidator:
         arguments:
             - '@Claroline\CoreBundle\Manager\FileManager'

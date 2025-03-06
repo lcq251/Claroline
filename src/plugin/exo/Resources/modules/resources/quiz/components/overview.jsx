@@ -8,7 +8,7 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {ResourceEvaluation as ResourceEvaluationTypes} from '#/main/evaluation/resource/prop-types'
 import {ResourceOverview} from '#/main/core/resource/components/overview'
 
-import {correctionModes, markModes, SHOW_CORRECTION_AT_DATE, SHOW_SCORE_AT_NEVER} from '#/plugin/exo/quiz/enums'
+import {constants} from '#/plugin/exo/resources/quiz/constants'
 import {AttemptsChart} from '#/plugin/exo/charts/attempts/components/chart'
 import {PageSection} from '#/main/app/page/components/section'
 
@@ -19,9 +19,9 @@ const Parameters = props =>
       {trans('results_availability', {}, 'quiz')} :
       &nbsp;
       <b>
-        {props.showCorrectionAt === SHOW_CORRECTION_AT_DATE ?
+        {props.showCorrectionAt === constants.QUIZ_RESULTS_AT_DATE ?
           displayDate(props.correctionDate, false, true) :
-          trans(correctionModes.find(mode => mode[0] === props.showCorrectionAt)[1], {}, 'quiz')
+          constants.QUIZ_RESULTS_AVAILABILITY[props.showCorrectionAt]
         }
       </b>
     </li>
@@ -30,7 +30,7 @@ const Parameters = props =>
       <span className="fa fa-fw fa-percent icon-with-text-right" />
       {trans('score_availability', {}, 'quiz')} :
       &nbsp;
-      <b>{trans(markModes.find(mode => mode[0] === props.showScoreAt)[1], {}, 'quiz')}</b>
+      <b>{constants.QUIZ_SCORE_AVAILABILITY[props.showScoreAt]}</b>
     </li>
 
     <li className="exercise-parameter">
@@ -80,7 +80,7 @@ const QuizOverview = props => {
   return (
     <ResourceOverview
       display={{
-        score: props.quiz.parameters.showScoreAt !== SHOW_SCORE_AT_NEVER,
+        score: props.quiz.parameters.showScoreAt !== constants.QUIZ_SCORE_AT_NEVER,
         scoreMax: get(props.quiz, 'score.total'),
         successScore: get(props.quiz, 'parameters.successScore'),
         feedback: !!props.quiz.parameters.successMessage || !!props.quiz.parameters.failureMessage

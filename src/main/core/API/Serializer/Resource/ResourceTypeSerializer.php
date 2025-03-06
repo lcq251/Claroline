@@ -17,6 +17,11 @@ class ResourceTypeSerializer
     ) {
     }
 
+    public function getClass(): string
+    {
+        return ResourceType::class;
+    }
+
     public function getName(): string
     {
         return 'resource_type';

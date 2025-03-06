@@ -11,7 +11,7 @@ import {FormGroup} from '#/main/app/content/form/components/group'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 import {emptyAnswer} from '#/plugin/exo/items/utils'
 import {makeDraggable, makeDroppable} from '#/plugin/exo/utils/dragAndDrop'
 import {ItemEditor as ItemEditorType} from '#/plugin/exo/items/prop-types'

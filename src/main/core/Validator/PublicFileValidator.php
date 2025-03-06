@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\CoreBundle\API\Validator;
+namespace Claroline\CoreBundle\Validator;
 
 use Claroline\AppBundle\API\ValidatorInterface;
 use Claroline\CoreBundle\Entity\File\PublicFile;

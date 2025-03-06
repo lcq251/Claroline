@@ -1,4 +1,4 @@
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 
 export const utils = {
   answerIsValid(answer, solutions){

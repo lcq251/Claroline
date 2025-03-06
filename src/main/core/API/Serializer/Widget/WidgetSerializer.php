@@ -6,12 +6,12 @@ use Claroline\CoreBundle\Entity\Widget\Widget;
 
 class WidgetSerializer
 {
-    public function getClass()
+    public function getClass(): string
     {
         return Widget::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'widget';
     }

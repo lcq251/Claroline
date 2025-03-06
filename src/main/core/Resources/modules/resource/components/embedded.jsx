@@ -81,7 +81,7 @@ class ResourceEmbedded extends Component {
 
   render() {
     return (
-      <div ref={element => this.mountNode = element} className={classes('resource-container embedded-resource', this.props.className)} />
+      <div ref={element => this.mountNode = element} className={classes('resource-container embedded-resource flex-fill d-flex flex-column', this.props.className)} />
     )
   }
 }

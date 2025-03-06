@@ -1,6 +1,6 @@
 import {PropTypes as T} from 'prop-types'
 
-import {SCORE_MANUAL} from '#/plugin/exo/quiz/enums'
+import {SCORE_MANUAL} from '#/plugin/exo/scores/constants'
 
 const OpenItem = {
   propTypes: {

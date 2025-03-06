@@ -32,6 +32,7 @@ import {ResourcePage} from '#/main/core/resource'
 import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {PageContent} from '#/main/app/page'
+import {Html} from '#/main/app/components/html'
 
 const CurrentStep = props => {
   const numbering = getNumbering(props.numbering, props.number - 1)
@@ -49,7 +50,7 @@ const CurrentStep = props => {
       }
 
       {props.step.description &&
-        <ContentHtml className="mb-3 lead">{props.step.description}</ContentHtml>
+        <Html className="content-text mb-3 lead">{props.step.description}</Html>
       }
 
       {props.items.map((item, index) => (

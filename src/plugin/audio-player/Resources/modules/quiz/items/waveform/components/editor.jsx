@@ -11,7 +11,7 @@ import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
 import {makeId} from '#/main/app/utils/id'
 
-import {SCORE_SUM} from '#/plugin/exo/quiz/enums'
+import {SCORE_SUM} from '#/plugin/exo/scores/constants'
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 
 import {isOverlayed} from '#/plugin/audio-player/quiz/items/waveform/utils'

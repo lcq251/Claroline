@@ -13,12 +13,13 @@ import {EditorComments} from '#/plugin/claco-form/resources/claco-form/editor/co
 import {EditorKeywords} from '#/plugin/claco-form/resources/claco-form/editor/components/keywords'
 import {EditorList} from '#/plugin/claco-form/resources/claco-form/editor/components/list'
 import {ClacoFormEditorActions} from '#/plugin/claco-form/resources/claco-form/editor/components/actions'
+import {ClacoFormEditorEntries} from '#/plugin/claco-form/resources/claco-form/editor/components/entries'
+import {ClacoFormEditorAppearance} from '#/plugin/claco-form/resources/claco-form/editor/components/appearance'
 
 const ClacoFormEditor = (props) => {
   const clacoForm = useSelector(selectors.clacoForm)
   const categories = useSelector(selectors.categories)
   const keywords = useSelector(selectors.keywords)
-  const roles = useSelector(selectors.roles)
 
   return (
     <ResourceEditor
@@ -27,8 +28,8 @@ const ClacoFormEditor = (props) => {
         categories: categories,
         keywords: keywords
       })}
+      appearancePage={ClacoFormEditorAppearance}
       actionsPage={ClacoFormEditorActions}
-      defaultPage="parameters"
       pages={[
         {
           name: 'parameters',
@@ -40,29 +41,20 @@ const ClacoFormEditor = (props) => {
             />
           )
         }, {
+          name: 'entries',
+          icon: 'fa fa-fw fa-file',
+          title: trans('entries', {}, 'clacoform'),
+          component: ClacoFormEditorEntries
+        }, {
           name: 'list',
           icon: 'fa fa-fw fa-list',
-          title: trans('list'),
+          title: trans('entries_list', {}, 'clacoform'),
           component: EditorList
-        }, {
-          name: 'comments',
-          icon: 'fa fa-fw fa-comments',
-          title: trans('comments'),
-          render: () => (
-            <EditorComments
-              roles={roles}
-            />
-          )
         }, {
           name: 'categories',
           icon: 'fa fa-fw fa-object-group',
           title: trans('categories'),
           component: EditorCategories
-        }, {
-          name: 'keywords',
-          icon: 'fa fa-fw fa-font',
-          title: trans('keywords'),
-          component: EditorKeywords
         }
       ]}
     />

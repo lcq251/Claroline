@@ -47,7 +47,7 @@ $login-bg-image:  "#{$images-path}login.jpg" !default; // will fallback on $body
 // By default it reuses some of the styles from the app header.
 // ---
 
-$toolbar-size:           22.5rem; // 24rem !default;
+$toolbar-size:           24rem;
 $toolbar-bg:             var(--#{$prefix}body-bg) !default; // var(--#{$prefix}secondary-bg) !default;
 $toolbar-bg-subtle:      var(--#{$prefix}tertiary-bg) !default;
 $toolbar-color:          null !default; //color-contrast($toolbar-bg-subtle) !default;

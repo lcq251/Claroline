@@ -16,25 +16,18 @@ class WidgetInstanceSerializer
 {
     use SerializerTrait;
 
-    /** @var ObjectManager */
-    private $om;
-    /** @var SerializerProvider */
-    private $serializer;
-
     public function __construct(
-        ObjectManager $om,
-        SerializerProvider $serializer
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer
     ) {
-        $this->om = $om;
-        $this->serializer = $serializer;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'widget_instance';
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         return WidgetInstance::class;
     }

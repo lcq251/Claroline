@@ -5,19 +5,16 @@ namespace Claroline\CoreBundle\API\Serializer\Widget\Type;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\CoreBundle\Entity\Widget\Type\ListWidget;
 
-/**
- * @todo : find a way to merge with directory serializer
- */
 class ListWidgetSerializer
 {
     use SerializerTrait;
 
-    public function getClass()
+    public function getClass(): string
     {
         return ListWidget::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'list_widget';
     }

@@ -12,7 +12,7 @@ import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 
 import {makeSortable, SORT_HORIZONTAL, SORT_VERTICAL} from '#/plugin/exo/utils/sortable'
-import {SCORE_FIXED} from '#/plugin/exo/quiz/enums'
+import {SCORE_FIXED} from '#/plugin/exo/scores/constants'
 import {constants} from '#/plugin/exo/items/ordering/constants'
 import {ItemEditor as ItemEditorType} from '#/plugin/exo/items/prop-types'
 import {OrderingItem as OrderingItemType} from '#/plugin/exo/items/ordering/prop-types'

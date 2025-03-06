@@ -10,20 +10,17 @@ class PluginSerializer
 {
     use SerializerTrait;
 
-    /** @var PluginManager */
-    private $pluginManager;
-
-    public function __construct(PluginManager $pluginManager)
-    {
-        $this->pluginManager = $pluginManager;
+    public function __construct(
+        private readonly PluginManager $pluginManager
+    ) {
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         return Plugin::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'plugin';
     }

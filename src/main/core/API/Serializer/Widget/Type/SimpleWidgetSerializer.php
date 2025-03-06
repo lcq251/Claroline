@@ -9,12 +9,12 @@ class SimpleWidgetSerializer
 {
     use SerializerTrait;
 
-    public function getClass()
+    public function getClass(): string
     {
         return SimpleWidget::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'simple_widget';
     }
