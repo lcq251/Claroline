@@ -1,11 +1,20 @@
 
 .flyout-menu {
-  max-height: 80vh;
-  overflow-y: hidden;
   flex-direction: column;
+  overflow-y: hidden;
+
+  @include border-radius(var(--#{$prefix}border-radius-xl));
 
   &.show {
     display: flex !important;
+  }
+}
+
+.flyout-menu-close {
+  margin: map-get($spacers, 4) * .5;
+
+  .btn-close {
+    padding: map-get($spacers, 4) * .5;
   }
 }
 

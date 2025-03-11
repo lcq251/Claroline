@@ -5,7 +5,6 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
 import {selectors as securitySelectors} from '#/main/app/security/store'
@@ -17,13 +16,6 @@ import {PageContent} from '#/main/app/page'
 
 const Team = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('teams', {}, 'community'),
-        target: `${props.path}/teams`
-      }
-    ]}
     title={trans('team_name', {name: get(props.team, 'name', trans('loading'))}, 'community')}
     description={get(props.team, 'meta.description')}
   >

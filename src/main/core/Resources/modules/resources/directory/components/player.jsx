@@ -43,8 +43,12 @@ function transformAction(action, resourceNodes, embedded = false) {
 const DirectoryPlayer = (props) => {
   return (
     <ResourcePage
-      name={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}
-      /*title={props.isRoot ? trans('resources', {}, 'tools') : get(props.currentNode, 'name', null)}*/
+      breadcrumb={props.isRoot ? [
+        {
+          label: trans('resources', {}, 'tools'),
+          target: props.path
+        }
+      ] : undefined}
     >
       <PageContent className="d-flex flex-column">
         <FileDrop

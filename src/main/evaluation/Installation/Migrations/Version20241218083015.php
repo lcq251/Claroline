@@ -64,6 +64,8 @@ final class Version20241218083015 extends AbstractMigration
                 p.estimatedDuration = n.estimatedDuration,
                 p.accessible_from = n.accessible_from,
                 p.accessible_until = n.accessible_until
+            WHERE p.resourceNode_id IS NOT NULL
+              AND n.id IS NOT NULL
         ');
 
         $this->addSql('

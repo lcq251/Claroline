@@ -13,7 +13,7 @@ import {PlatformRegistration} from '#/main/app/platform/components/registration'
 import {PlatformSendPassword} from '#/main/app/platform/components/send-password'
 import {PlatformNewPassword} from '#/main/app/platform/components/new-password'
 import {PlatformLogin} from '#/main/app/platform/components/login'
-import {PlatformNav} from '#/main/app/platform/containers/nav'
+import {PlatformMenu} from '#/main/app/platform/menu'
 import {selectors} from '#/main/app/platform/store'
 
 const Platform = () => {
@@ -54,8 +54,9 @@ const Platform = () => {
   return (
     <>
       {authenticated &&
-        <PlatformNav />
+        <PlatformMenu />
       }
+
       <Routes
         redirect={[
           {from: '/', exact: true, to: '/unavailable', disabled: !unavailable},

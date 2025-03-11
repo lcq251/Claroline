@@ -25,38 +25,24 @@ import {constants} from '#/main/evaluation/constants'
 
 const SequenceOverviewContent = (props) => {
   const description = get(props.sequence, 'meta.descriptionHtml', null)
+  const overviewResource = get(props.sequence, 'overview.resource')
 
   return (
     <>
-      {(props.userEvaluation || description) &&
-        <PageSection size="md" className="pt-5">
-          {props.userEvaluation &&
-            <EvaluationProgression
-              {...props.userEvaluation}
-              target={props.path+'/progression'}
-            />
-          }
-
-          {props.actions &&
-            <Toolbar
-              className="d-flex gap-1 mb-5"
-              buttonName="btn"
-              primaryName="btn-primary"
-              defaultName="btn-link"
-              actions={props.actions}
-            />
-          }
-
-          {description &&
-            <Html className="content-text mb-5">{description}</Html>
-          }
-        </PageSection>
-      }
-
       {props.userEvaluation &&
-        <>
-          {((!isEmpty(props.userEvaluation) && get(props, 'display.feedback', false)) || !isEmpty(get(props.feedbacks, 'closed'))) &&
-            <PageSection size="md" className="resource-feedbacks py-3">
+        <PageSection
+          size="md"
+          className="pt-5 mb-5"
+          title={trans('my_progression')}
+          showTitle={false}
+        >
+          <EvaluationProgression
+            {...props.userEvaluation}
+            target={props.path+'/progression'}
+          />
+
+          {(get(props, 'display.feedback', false) || !isEmpty(get(props.feedbacks, 'closed'))) &&
+            <div className="mt-4" role="presentation">
               {!isEmpty(props.userEvaluation) && get(props, 'display.feedback', false) &&
                 <EvaluationFeedback
                   status={props.userEvaluation.status}
@@ -69,9 +55,39 @@ const SequenceOverviewContent = (props) => {
                   <Html>{closedMessage[1]}</Html>
                 </Alert>
               )}
-            </PageSection>
+            </div>
           }
-        </>
+
+          {props.actions &&
+            <Toolbar
+              className="d-flex gap-1 mt-4"
+              buttonName="btn"
+              primaryName="btn-primary"
+              defaultName="btn-link"
+              actions={props.actions}
+            />
+          }
+        </PageSection>
+      }
+
+      {(description || overviewResource) &&
+        <PageSection
+          size="md"
+          className="mb-5"
+          title={trans('about')}
+          showTitle={false}
+        >
+          {description &&
+            <Html className="content-text mb-5">{description}</Html>
+          }
+
+          {overviewResource &&
+            <ResourceEmbedded
+              resourceNode={overviewResource}
+              showHeader={false}
+            />
+          }
+        </PageSection>
       }
 
       {props.children}
@@ -143,15 +159,6 @@ const SequenceOverview = () => {
             failure: get(sequence, 'evaluation.failureMessage')
           }}
         >
-          {!isEmpty(get(sequence, 'overview.resource')) &&
-            <PageSection size="md" className="mb-5">
-              <ResourceEmbedded
-                resourceNode={get(sequence, 'overview.resource')}
-                showHeader={false}
-              />
-            </PageSection>
-          }
-
           <PageSection
             size="md"
             className="mb-5"

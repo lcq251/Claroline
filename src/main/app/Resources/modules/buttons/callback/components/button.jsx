@@ -19,11 +19,6 @@ const CallbackButton = forwardRef((props, ref) => {
 
       props.callback(e)
     }
-
-    // e.preventDefault()
-    // e.stopPropagation()
-
-    //e.target.blur()
   }, [props.disabled, props.callback, props.onClick])
 
   return (

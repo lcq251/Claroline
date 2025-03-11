@@ -11,11 +11,6 @@ import {selectors} from '#/plugin/cursus/tools/events/store'
 
 const EventsPresences = (props) =>
   <ToolPage
-    breadcrumb={[{
-      type: LINK_BUTTON,
-      label: (props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus'),
-      target: `${props.path}/presences`
-    }]}
     title={(props.canEdit || props.canRegister) ? trans('presences', {}, 'cursus') : trans('my_presences', {}, 'cursus')}
   >
     <PageListSection

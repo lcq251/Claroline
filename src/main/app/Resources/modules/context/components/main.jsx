@@ -129,8 +129,6 @@ const ContextMain = (props) => {
 
     return (
       <>
-        <h1 className="visually-hidden">{get(props.contextData, 'name') || trans(props.name, {}, 'context')}</h1>
-
         {pinedMenu &&
           <ContextSidebar />
         }

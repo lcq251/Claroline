@@ -146,7 +146,6 @@ const ImageEditorModal = (props) => {
           type={CALLBACK_BUTTON}
           label={trans('upload_file', {}, 'actions')}
           callback={() => inputRef.current.click()}
-          /*size="sm"*/
         />
 
         <Button

@@ -39,6 +39,7 @@ const ResourceOverview = props => {
           })}>
             {userEvaluation &&
               <EvaluationProgression
+                className="mb-4"
                 {...userEvaluation}
                 target={path+'/progression'}
               />

@@ -71,3 +71,9 @@ h1, h2, h3, h4, h5, h6,
     color: $text-selection-color;
     background: $text-selection-bg;
 }
+
+@each $nbLines in [1, 2, 3] {
+    .line-clamp-#{$nbLines} {
+        @include line-clamp($nbLines);
+    }
+}

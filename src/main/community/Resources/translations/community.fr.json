@@ -72,5 +72,6 @@
   "managers": "Gestionnaires",
   "members": "Membres",
   "user_loading": "Nous chargeons l'utilisateur...",
-  "user_registered": "Utilisateur inscrit"
+  "user_registered": "Utilisateur inscrit",
+  "change_organization_help": "Changez d'organisation pour voir les contenus associés à cette organisation"
 }

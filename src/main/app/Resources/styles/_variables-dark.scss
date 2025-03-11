@@ -16,19 +16,21 @@ $learning-bg-subtle-dark:           shade-color($learning, 90%); // custom claro
 // Menu
 //
 
-$toolbar-bg-dark:             shade-color($gray-900, 25%) !default; // shade-color($gray-900, 25%) !default;
-$toolbar-bg-subtle-dark:      shade-color($gray-900, 10%) !default; // shade-color($gray-900, 10%) !default;
-$toolbar-color-dark:          null !default; // color-contrast($toolbar-bg-subtle-dark) !default;
+$toolbar-bg-dark:             shade-color($gray-900, 25%) !default;
+$toolbar-bg-subtle-dark:      shade-color($gray-900, 10%) !default;
+$toolbar-color-dark:          null !default;
 
 $toolbar-header-color-dark: var(--#{$prefix}tertiary-color) !default;
 
-$toolbar-link-color-dark:          var(--#{$prefix}secondary-color) !default; // fade-out($toolbar-color-dark, .375) !default;
+$toolbar-link-color-dark:          var(--#{$prefix}secondary-color) !default;
 $toolbar-link-bg-dark:             null !default;
-$toolbar-link-hover-color-dark:    null !default; // fade-out($toolbar-color-dark, .125) !default;
+$toolbar-link-hover-color-dark:    null !default;
 $toolbar-link-hover-bg-dark:       rgba(255, 255, 255, .025) !default;
-$toolbar-link-active-color-dark:   $toolbar-link-hover-color-dark !default; // $toolbar-color-dark !default;
+$toolbar-link-active-color-dark:   $toolbar-link-hover-color-dark !default;
 $toolbar-link-active-bg-dark:      $toolbar-link-hover-bg-dark !default;
-$toolbar-link-disabled-color-dark: null !default; // fade-out($toolbar-color-dark, .5) !default;
+$toolbar-link-disabled-color-dark: null !default;
 $toolbar-link-disabled-bg-dark:    null !default;
 
 $data-card-bg-dark: $toolbar-bg-dark;
+
+$nav-underline-link-active-color-dark: var(--#{$prefix}body-color) !default;

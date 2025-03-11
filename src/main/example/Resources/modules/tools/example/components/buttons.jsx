@@ -65,10 +65,10 @@ const ExampleButtons = () =>
 
     <ContentTitle level={2} title="Special buttons" />
     <div className="btn-toolbar gap-1 mb-3">
-      {['body', 'subtitles'].map(type =>
+      {['body', 'text-body', 'text-subtitles'].map(type =>
         <Button
           key={type}
-          className={classes('btn btn-text-'+type)}
+          className={classes('btn btn-'+type)}
           type={CALLBACK_BUTTON}
           label={type.charAt(0).toUpperCase() + type.slice(1)}
           callback={() => true}

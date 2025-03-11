@@ -13,11 +13,6 @@ import {selectors} from '#/main/example/tools/example/crud/store/selectors'
 
 const CrudList = (props) =>
   <ToolPage
-    breadcrumb={[{
-      type: LINK_BUTTON,
-      label: 'Simple CRUD',
-      target: `${props.path}/crud`
-    }]}
     title="Simple CRUD"
   >
     <PageListSection

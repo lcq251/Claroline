@@ -13,13 +13,6 @@ import {selectors} from '#/plugin/open-badge/tools/badges/store/selectors'
 const BadgeEdit = (props) =>
   <BadgePage
     path={props.path}
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('edition'),
-        target: '' // current page, link is not needed
-      }
-    ]}
     badge={props.badge}
     reload={props.reload}
   >

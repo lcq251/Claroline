@@ -1,15 +1,53 @@
-import React, {createElement} from 'react'
+import React, {createElement, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
+import omit from 'lodash/omit'
 
-import {toKey} from '#/main/app/utils/text'
+import {trans} from '#/main/app/intl'
 import {Button, Toolbar} from '#/main/app/action'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
 import {selectors as securitySelectors} from '#/main/app/security/store'
-import {useSelector} from 'react-redux'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
+
+const PageBreadcrumb = props => {
+  const items = props.breadcrumb
+    .filter(item => undefined === item.displayed || item.displayed)
+
+  if (0 !== items.length) {
+    return (
+      <nav aria-label={trans('breadcrumb')} className="mx-n2 my-2">
+        <ol className="breadcrumb d-inline-flex flex-row flex-nowrap align-items-center list-unstyled mb-0">
+          {items
+            .filter(item => undefined === item.displayed || item.displayed)
+            .map((item) =>
+              <li key={item.label} className="d-inline-flex align-items-center breadcrumb-item">
+                <Button
+                  className="text-body py-1 px-2 rounded-1 fs-sm focus-ring text-truncate"
+                  type={LINK_BUTTON}
+                  exact={true}
+                  {...omit(item, 'displayed')}
+                />
+              </li>
+            )
+          }
+        </ol>
+      </nav>
+    )
+  }
+
+  return null
+}
+
+PageBreadcrumb.propTypes = {
+  className: T.string,
+  breadcrumb: T.arrayOf(T.shape({
+    label: T.string.isRequired,
+    displayed: T.bool,
+    target: T.oneOfType([T.string, T.array])
+  }))
+}
 
 const PageMenu = (props) => {
   const isAuthenticated = useSelector(securitySelectors.isAuthenticated)
@@ -20,51 +58,61 @@ const PageMenu = (props) => {
       .filter(action => undefined === action.displayed || action.displayed)
   }
 
+  const toolMenuTitleId = useId()
+
   return (
-    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-stretch bg-body z-2')} role="presentation">
+    <div className={classes('app-page-menu px-4 d-flex gap-4 flex-nowrap align-items-center bg-body z-2')} role="presentation">
       {!props.embedded && props.affix && createElement(props.affix, {
-        name: props.name
+        breadcrumb: props.breadcrumb
       })}
+
+      {!isEmpty(props.breadcrumb) &&
+        <PageBreadcrumb breadcrumb={props.breadcrumb} />
+      }
 
       {props.children}
 
-      {(0 < displayedNav.length || props.actions || (!props.embedded && !isAuthenticated)) &&
-        <div className="ms-auto d-flex flex-nowrap gap-4 fs-sm" role="presentation">
-          {0 < displayedNav.length &&
-            <nav className="text-nowrap d-flex">
-              <ul className="nav nav-underline flex-nowrap">
-                {displayedNav.map((nav) =>
-                  <li className="nav-item" key={nav.name || toKey(nav.label)}>
-                    <Button
-                      {...nav}
-                      className="nav-link fw-bolder"
-                    />
-                  </li>
-                )}
-              </ul>
-            </nav>
-          }
+      {(!isEmpty(displayedNav) || props.actions) &&
+        <nav
+          className="app-tool-menu ms-auto d-flex flex-nowrap gap-4 fs-sm"
+          aria-labelledby={toolMenuTitleId}
+        >
+          <h2 id={toolMenuTitleId} className="visually-hidden">{trans('tool_menu')}</h2>
+          <ul className="nav nav-underline flex-nowrap">
+            {!isEmpty(displayedNav) && displayedNav.map((nav) =>
+              <li className="nav-item" key={nav.name || nav.label}>
+                <Button
+                  {...nav}
+                  icon={nav.icon ? classes(nav.icon, 'lh-base') : undefined}
+                  className="nav-link text-nowrap"
+                />
+              </li>
+            )}
 
-          {props.actions &&
-            <Toolbar
-              className="nav nav-underline flex-nowrap gap-4 d-flex"
-              buttonName="nav-link fw-bolder"
-              toolbar={props.toolbar || 'more'}
-              tooltip="bottom"
-              actions={props.actions}
-              role="toolbar"
-            />
-          }
+            {props.actions &&
+              <li className="nav-item">
+                <Toolbar
+                  className="d-flex"
+                  buttonName="nav-link"
+                  toolbar="more"
+                  tooltip="bottom"
+                  actions={props.actions}
+                />
+              </li>
+            }
+          </ul>
+        </nav>
+      }
 
-          {!props.embedded && !isAuthenticated &&
-            <Button
-              className="btn btn-primary my-auto fs-sm me-n3"
-              type={LINK_BUTTON}
-              label={trans('login')}
-              target="/login"
-            />
-          }
-        </div>
+      {!props.embedded && !isAuthenticated &&
+        <Button
+          className={classes('btn btn-primary my-auto fs-sm me-n3', {
+            'ms-auto': isEmpty(displayedNav) && isEmpty(props.actions)
+          })}
+          type={LINK_BUTTON}
+          label={trans('login')}
+          target="/login"
+        />
       }
     </div>
   )

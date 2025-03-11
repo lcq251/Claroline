@@ -48,7 +48,6 @@ const StandardMenu = (props) => {
   return (
     <Menu
       {...omit(props, 'menu')}
-      align={props.menu.align}
       className={props.className}
     >
       {(props.menu.label && 0 !== actions.unclassified.length) &&
@@ -122,17 +121,26 @@ StandardMenu.propTypes = {
 const MenuButton = forwardRef((props, ref) => {
   const isStandard = typeof props.menu === 'object' && props.menu.items
   let hasActions = false
+  let menuComponent
   if (isStandard) {
     // check there is actions in the menu
     hasActions = !!props.menu.items.find(
       action => undefined === action.displayed || action.displayed
     )
+  } else {
+    if (typeof props.menu === 'object' && props.menu.render) {
+      menuComponent = props.menu.render()
+    } else {
+      menuComponent = props.menu
+    }
   }
 
   return (
     <MenuOverlay
       show={props.opened}
       position={props.menu.position}
+      align={props.menu.align}
+      drop={props.menu.drop}
       className={classes(props.containerClassName, 'btn-group')}
       disabled={(isStandard && !hasActions) || props.disabled}
       onToggle={props.onToggle}
@@ -150,7 +158,7 @@ const MenuButton = forwardRef((props, ref) => {
         <StandardMenu
           menu={props.menu}
         /> :
-        props.menu
+        menuComponent
       }
     </MenuOverlay>
   )
@@ -166,11 +174,12 @@ implementPropTypes(MenuButton, ButtonTypes, {
     // an action menu
     T.shape({
       label: T.string,
+      drop: T.oneOf(['up', 'start', 'end', 'down']),
       align: T.oneOf(['start', 'end']),
-      position: T.oneOf(['top', 'bottom']),
       items: T.arrayOf(T.shape(
         ActionTypes.propTypes
-      )).isRequired
+      )),
+      render: T.func
     })
   ]).isRequired
 })

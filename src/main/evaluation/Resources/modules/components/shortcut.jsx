@@ -4,7 +4,9 @@ import classes from 'classnames'
 
 import {Badge} from '#/main/app/components/badge'
 import {constants} from '#/main/evaluation/constants'
-import {LinkButton} from '#/main/app/buttons'
+import {LINK_BUTTON, LinkButton} from '#/main/app/buttons'
+import {Button} from '#/main/app/action'
+import {trans} from '#/main/app/intl'
 
 const EvaluationShortcut = (props) => {
   let status = props.status
@@ -18,8 +20,11 @@ const EvaluationShortcut = (props) => {
   }
 
   return (
-    <LinkButton
+    <Button
+      type={LINK_BUTTON}
+      label={trans('show_my_progression', {}, 'actions')}
       target={props.target} className={classes('focus-ring rounded-1', `focus-ring-${constants.EVALUATION_STATUS_COLOR[status]}`, props.className)}
+      tooltip="bottom"
     >
       <Badge
         className={classes('fs-sm lh-base py-1', props.className)}
@@ -27,7 +32,7 @@ const EvaluationShortcut = (props) => {
       >
         {statusText}
       </Badge>
-    </LinkButton>
+    </Button>
   )
 }
 

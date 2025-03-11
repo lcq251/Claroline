@@ -663,10 +663,10 @@ $font-sizes: (
 // scss-docs-end font-sizes
 
 // scss-docs-start headings-variables
-$headings-margin-bottom:      $spacer; // $spacer * .5 !default;
+$headings-margin-bottom:      $spacer;
 $headings-font-family:        null !default;
 $headings-font-style:         null !default;
-$headings-font-weight:        $font-weight-medium !default;
+$headings-font-weight:        bolder !default;
 $headings-line-height:        1.2 !default;
 $headings-color:              null !default;
 // scss-docs-end headings-variables
@@ -1190,8 +1190,7 @@ $nav-pills-link-active-bg:          $component-active-bg !default;
 $nav-underline-gap:                     1.5rem !default; // 1rem !default;
 $nav-underline-border-width:            .125rem !default;
 $nav-underline-link-active-font-weight: $nav-link-font-weight !default; // custom claroline
-$nav-underline-link-active-color:       var(--#{$prefix}emphasis-color) !default;
-$nav-underline-border-active-color:     var(--#{$prefix}primary) !default; // custom claroline
+$nav-underline-link-active-color:       var(--#{$prefix}primary) !default;
 // scss-docs-end nav-variables
 
 
@@ -1645,7 +1644,7 @@ $figure-caption-color:              var(--#{$prefix}secondary-color) !default;
 $breadcrumb-font-size:              $font-size-sm !default;
 $breadcrumb-padding-y:              0 !default;
 $breadcrumb-padding-x:              0 !default;
-$breadcrumb-item-padding-x:         .375rem !default;
+$breadcrumb-item-padding-x:         .25rem !default;
 $breadcrumb-margin-bottom:          0 !default;
 $breadcrumb-bg:                     null !default;
 $breadcrumb-divider-color:          var(--#{$prefix}secondary-color) !default;

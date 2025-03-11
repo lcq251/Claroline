@@ -1,4 +1,5 @@
 import React from 'react'
+import classes from 'classnames'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
@@ -9,6 +10,7 @@ const MenuAction = (props) =>
   <MenuItem
     as={Button}
     {...props}
+    className={classes(props.className, 'focus-ring')}
   />
 
 implementPropTypes(MenuAction, ActionTypes, {

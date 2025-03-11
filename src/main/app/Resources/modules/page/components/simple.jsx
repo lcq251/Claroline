@@ -4,7 +4,6 @@ import {Helmet} from 'react-helmet'
 import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
-import {asset} from '#/main/app/config/asset'
 import {theme} from '#/main/app/config/theme'
 
 /**
@@ -14,7 +13,6 @@ const PageSimple = ({
   className,
   title,
   description,
-  poster,
   children,
   styles = [],
   embedded = false,
@@ -31,19 +29,8 @@ const PageSimple = ({
         {title &&
           <title>{title}</title>
         }
-
-        {title &&
-          <meta property="og:title" content={title}/>
-        }
-
-        <meta property="og:type" content="website" />
-
-        {poster &&
-          <meta property="og:image" content={asset(poster)}/>
-        }
-
         {description &&
-          <meta name="description" property="og:description" content={description} />
+          <meta name="description" content={description} />
         }
       </Helmet>
     }
@@ -67,7 +54,6 @@ PageSimple.propTypes ={
    */
   title: T.string,
   description: T.string,
-  poster: T.string,
 
   /**
    * A list of additional styles to add to the page.

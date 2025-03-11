@@ -15,6 +15,7 @@ import {UserEditorPermissions} from '#/main/community/user/editor/components/per
 import {UserEditorHistory} from '#/main/community/user/editor/components/history'
 import {UserEditorIntl} from '#/main/community/user/editor/components/intl'
 import {UserEditorNotifications} from '#/main/community/user/editor/components/notifications'
+import {UserEditorFavourites} from '#/main/community/user/editor/components/favourites'
 import {getAccount} from '#/main/community/user/utils'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
@@ -57,20 +58,17 @@ const UserEditor = (props) => {
         {
           name: 'locale',
           title: trans('Langue', {}, 'tools'),
-          help: trans('Choisissez la langue et le format de date à utiliser dans votre compte.'),
           component: UserEditorIntl,
           group: trans('preferences')
         }, {
           name: 'notifications',
           title: trans('Notifications', {}, 'tools'),
-          help: trans('Choisissez la langue et le format de date à utiliser dans votre compte.'),
           component: UserEditorNotifications,
           group: trans('preferences')
         }, {
-          name: 'favorites',
+          name: 'favourites',
           title: trans('favourites', {}, 'favourite'),
-          help: trans('Ajoutez des champs personnalisés pour enrichir le profil de vos utilisateurs.'),
-          component: (<></>),
+          component: UserEditorFavourites,
           group: trans('preferences')
         }
       ].concat(accountPages)}

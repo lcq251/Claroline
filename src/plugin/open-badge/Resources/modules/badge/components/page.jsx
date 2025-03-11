@@ -17,7 +17,6 @@ import {PageContent} from '#/main/app/page'
 
 const Badge = (props) =>
   <ToolPage
-    breadcrumb={props.badge ? props.breadcrumb : []}
     title={trans('badge_name', {name: get(props.badge, 'name', trans('loading'))}, 'badge')}
     description={get(props.badge, 'meta.description')}
   >
@@ -51,7 +50,6 @@ const Badge = (props) =>
 
 Badge.propTypes = {
   path: T.string,
-  breadcrumb: T.array,
   badge: T.shape(
     BadgeTypes.propTypes
   ),

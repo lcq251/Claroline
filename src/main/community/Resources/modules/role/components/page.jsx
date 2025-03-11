@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/role/utils'
@@ -17,13 +16,6 @@ import {PageContent} from '#/main/app/page'
 
 const Role = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('roles', {}, 'community'),
-        target: `${props.path}/roles`
-      }
-    ]}
     title={trans('role_name', {name: trans(get(props.role, 'translationKey', 'loading'))}, 'community')}
     description={get(props.role, 'meta.description')}
   >

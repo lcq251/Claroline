@@ -1,0 +1,9 @@
+
+@mixin line-clamp($nb-lines, $line-height: $line-height-base) {
+  height: $line-height * 1em * $nb-lines;
+  // display the '...' if the text is truncated on browsers which support it
+  display: -webkit-box;
+  -webkit-line-clamp: $nb-lines; /* number of lines to show */
+  line-clamp: $nb-lines;
+  -webkit-box-orient: vertical;
+}

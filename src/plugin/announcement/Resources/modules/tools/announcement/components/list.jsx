@@ -65,9 +65,9 @@ const Announce = (props) =>
         </div>
 
         <LinkButton target={`${props.path}/${get(props.announcement, 'id')}`} className="text-reset text-decoration-none d-block">
-          <h1 className={classes('h5 mt-3 mb-0', {
+          <h2 className={classes('h5 mt-3 mb-0', {
             'placeholder rounded-1 w-100': !props.loaded
-          })}>{get(props.announcement, 'title')}</h1>
+          })}>{get(props.announcement, 'title')}</h2>
 
           {props.loaded && get(props.announcement, 'content') ?
             <>
@@ -142,9 +142,7 @@ const AnnouncementList = () => {
           />
         }
 
-        <PageSection
-          size="lg"
-        >
+        <PageSection size="lg">
           {!loaded &&
             <ul className="announcements-list list-unstyled my-5 placeholder-glow">
               <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />

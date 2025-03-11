@@ -81,7 +81,7 @@ const Thumbnail = ({
   return (
     <div
       style={!isEmpty(styles) ? styles : undefined}
-      className={classes('thumbnail ratio', className, {
+      className={classes('thumbnail ratio z-0', className, {
         'placeholder': !loaded,
         [`thumbnail-${size} ratio-thumbnail`]: !square,
         [`thumbnail-icon thumbnail-icon-${size} ratio-1x1`]: square

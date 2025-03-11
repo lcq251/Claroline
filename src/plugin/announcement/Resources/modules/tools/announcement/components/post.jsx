@@ -21,19 +21,15 @@ const AnnouncementPost = (props) => {
 
   if (!props.announcement) {
     return (
-      <ContentLoader size="lg" />
+      <ToolPage>
+        <ContentLoader size="lg" />
+      </ToolPage>
     )
   }
 
   return (
     <ToolPage
       title={props.announcement.title}
-      breadcrumb={[
-        {
-          label: props.announcement.title,
-          target: props.path+'/'+props.announcement.id
-        }
-      ]}
     >
       <PageContent>
         <PageHeading

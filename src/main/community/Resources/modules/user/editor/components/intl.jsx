@@ -24,6 +24,7 @@ const UserEditorIntl = () =>
         title: trans('Date & Heure'),
         description: trans('Lorem ipsum dolor sit amet'),
         primary: true,
+        displayed: false,
         fields: [
           {
             name: 'meta.dateFormat',

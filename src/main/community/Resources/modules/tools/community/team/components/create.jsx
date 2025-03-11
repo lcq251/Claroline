@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {ToolPage} from '#/main/core/tool'
-import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {TeamForm} from '#/main/community/team/components/form'
 import {selectors} from '#/main/community/tools/community/team/store'
@@ -11,13 +10,6 @@ import {PageContent} from '#/main/app/page'
 
 const TeamCreate = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('teams', {}, 'community'),
-        target: `${props.path}/teams`
-      }
-    ]}
     title={trans('new_team', {}, 'community')}
   >
     <PageContent>

@@ -41,7 +41,7 @@ Text.propTypes = {
    * Additional classes to add to the DOM.
    */
   className: T.string,
-  align: T.oneOf(['start', 'center', 'end', 'justify']).isRequired,
+  align: T.oneOf(['start', 'center', 'end', 'justify']),
   nl2br: T.bool
 }
 

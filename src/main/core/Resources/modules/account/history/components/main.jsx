@@ -1,5 +1,6 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {EditorPage} from '#/main/app/editor'
@@ -7,9 +8,8 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {selectors as editorSelectors} from '#/main/community/user/editor'
 import {ContextHistory} from '#/main/app/context/components/history'
-import isEmpty from 'lodash/isEmpty'
 
-const AccountHistory = props => {
+const AccountHistory = () => {
   const authenticatedUserId = useSelector(securitySelectors.currentUserId)
   const user = useSelector(editorSelectors.user)
 
@@ -32,7 +32,8 @@ const AccountHistory = props => {
               type: 'boolean',
               label: trans('enable_history', {}, 'history'),
               help: trans('enable_history_help', {}, 'history'),
-              required: true
+              calculated: () => true,
+              disabled: true
             }
           ]
         },

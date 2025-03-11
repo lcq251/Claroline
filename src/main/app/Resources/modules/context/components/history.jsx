@@ -4,12 +4,26 @@ import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, LinkButton} from '#/main/app/buttons'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {getRecent, removeRecent, parseRecent, hasRecent, emptyRecent} from '#/main/app/history'
 import {Datetime} from '#/main/app/components/date'
 import {Button} from '#/main/app/action'
+import {Thumbnail} from '#/main/app/components/thumbnail'
+import {getPlainText} from '#/main/app/data/types/html/utils'
+
+const test = () => ({
+  name: 'delete',
+  type: CALLBACK_BUTTON,
+  icon: 'fa fa-fw fa-times',
+  label: trans('delete', {}, 'actions'),
+  displayed: props.delete,
+  callback: () => {
+    const newRecent = removeRecent(result.id)
+    setHistory(parseRecent(newRecent))
+  }
+})
 
 const ContextHistory = (props) => {
   let recent = getRecent()
@@ -43,48 +57,42 @@ const ContextHistory = (props) => {
         />
       }
 
-      <h5 className="fs-sm text-uppercase text-body-secondary">{trans('recent', {}, 'history')}</h5>
-      <div className="d-flex flex-column gap-2" role="presentation">
+      <div className={classes('list-group', {
+        'list-group-flush': props.flush
+      })}>
         {history
           .sort((a, b) => a.date > b.date ? -1 : 1)
-          .map(result => (
-            <DataCard
-              key={result.id}
-              id={result.id}
-              size={props.size}
-              direction="row"
-              title={result.name}
-              name={result.name}
-              contentText={result.description}
-              poster={result.thumbnail}
-              icon={!result.thumbnail ? <>{result.name.charAt(0)}</> : null}
-              primaryAction={{
-                type: LINK_BUTTON,
-                label: trans('open', {}, 'actions'),
+          .map(result => {
+            console.log(result)
+            return (
+              /*<li key={result.id}>*/
+                <LinkButton
+                  key={result.id}
+                  className={classes('list-group-item list-group-item-action d-flex flex-row align-items-center gap-3', {
+                    'px-4': props.flush
+                  })}
+                  target={result.target}
+                  onClick={props.onOpen}
+                  exact={true}
+                >
+                  <Thumbnail
+                    thumbnail={result.thumbnail}
+                    name={result.name}
+                    size="sm"
+                    square={true}
+                  />
+                  <div className="overflow-hidden" role="presentation">
+                    <div className="h6 mb-1">{result.name}</div>
+                    {result.description ?
+                      <p className="text-body-secondary line-clamp-1 fs-sm mb-0">{getPlainText(result.description)}</p> :
+                      <em className="fs-sm text-body-tertiary">{trans('no_description')}</em>
+                    }
+                  </div>
+                </LinkButton>
 
-                target: result.target,
-                onClick: props.onOpen
-              }}
-              meta={
-                <div className="text-body-tertiary ms-auto" role="presentation">
-                  Dernière consultation le <Datetime value={result.date} time={true} />
-                </div>
-              }
-              actions={[
-                {
-                  name: 'delete',
-                  type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-times',
-                  label: trans('delete', {}, 'actions'),
-                  displayed: props.delete,
-                  callback: () => {
-                    const newRecent = removeRecent(result.id)
-                    setHistory(parseRecent(newRecent))
-                  }
-                }
-              ]}
-            />
-          ))
+              /*</li>*/
+            )
+          })
         }
       </div>
     </div>
@@ -95,6 +103,7 @@ ContextHistory.propTypes = {
   className: T.string,
   size: T.string,
   delete: T.bool,
+  flush: T.bool,
   onOpen: T.func
 }
 

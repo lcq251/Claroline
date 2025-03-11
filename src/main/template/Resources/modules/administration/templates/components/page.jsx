@@ -10,17 +10,6 @@ import {PageContent} from '#/main/app/page'
 const TemplatePage = (props) => {
   return (
     <ToolPage
-      breadcrumb={[
-        {
-          type: LINK_BUTTON,
-          label: trans(get(props.templateType, 'type')),
-          target: props.path + '/' + get(props.templateType, 'type')
-        }, {
-          type: LINK_BUTTON,
-          label: trans(get(props.templateType, 'name'), {}, 'template'),
-          target: props.path + '/' + get(props.templateType, 'type') + '/' + get(props.templateType, 'name')
-        }
-      ]}
       title={trans(get(props.templateType, 'name'), {}, 'template')}
       description={trans(get(props.templateType, 'description'), {}, 'template')}
 

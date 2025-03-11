@@ -10,7 +10,6 @@
 
     background-color: var(--#{$prefix}menu-bg);
     color: var(--#{$prefix}menu-color);
-    // border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
 }
 
 .app-menu-items {
@@ -91,6 +90,29 @@
         }
     }
 }
+
+.app-context-menu {
+    &.flyout-menu {
+        max-height: 80vh;
+        overflow-y: hidden;
+    }
+
+    &.app-menu {
+        width: 16rem;
+    }
+}
+
+.app-contexts-menu,
+.app-user-menu {
+    width: 24rem;
+    //margin-left: map-get($spacers, 2);
+    transform: none !important;
+
+    left: 5.5rem !important;
+    bottom: 1rem !important;
+    top: 4rem !important;
+}
+
 
 @if $enable-dark-mode {
     @include color-mode(dark) {

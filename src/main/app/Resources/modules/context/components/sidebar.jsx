@@ -31,37 +31,51 @@ const ContextSidebar = ({
   const [pinedMenu, setPinedMenu] = useLocaleStorage('contextMenuPined', false)
   const toggleMenu = useCallback(() => {
     setPinedMenu(!pinedMenu)
-    document.querySelector('.app-context-menu-toggle').focus()
+    setTimeout(() => {
+      document.querySelector('.app-context-menu-toggle').focus()
+    }, 0)
   }, [contextPath])
 
+  const menuId = useId()
+  const menuTitleId = useId()
   const toolsTitleId = useId()
   const organizationsTitleId = useId()
+  const organizationsDescId = useId()
 
   if (notFound || hasErrors) {
     return null
   }
 
   return (
-    <div className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0 border-end', className)} style={{width: '16rem'}}>
-      <h2 className="visually-hidden">{trans('context_menu')}</h2>
-      <div className="d-flex flex-row align-items-center">
+    <div
+      id={menuId}
+      className={classes('app-context-menu app-menu d-flex flex-column flex-shrink-0 border-end', className)}
+      role="navigation"
+      aria-labelledby={menuTitleId}
+    >
+      <h1 id={menuTitleId} className="visually-hidden">{trans('context_menu')}</h1>
+      <div className="d-flex flex-row align-items-center" role="presentation">
         <Button
           id="toggle-menu"
           type={CALLBACK_BUTTON}
           className="app-context-menu-toggle btn btn-text-body my-1 ms-2 focus-ring"
           icon="fa fa-angles-left"
-          label={trans('unpin-menu', {}, 'actions')}
+          label={trans('close_context_menu', {}, 'actions')}
           tooltip="bottom"
           callback={toggleMenu}
+          aria-expanded={true}
+          aria-controls={menuId}
         />
         <ContextFavourite className="text-start" />
       </div>
 
       {1 < toolLinks.length &&
-        <nav aria-labelledby={toolsTitleId} className="d-flex flex-column flex-fill">
-          <h3 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h3>
-          <ul className={classes('app-menu-items list-unstyled flex-fill px-0 mb-3 justify-content-start', {
-          })}>
+        <div className="d-flex flex-column flex-fill" role="presentation">
+          <h2 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h2>
+          <ul
+            className="app-menu-items list-unstyled flex-fill px-0 mb-3 justify-content-start"
+            aria-labelledby={toolsTitleId}
+          >
             {toolLinks.map(toolLink =>
               <li key={toolLink.name} className={classes('parameters' === toolLink.name && 'mt-auto')}>
                 <Button
@@ -73,16 +87,21 @@ const ContextSidebar = ({
               </li>
             )}
           </ul>
-        </nav>
+        </div>
       }
 
       {1 < organizations.length &&
-        <nav className="bg-body-tertiary p-4 d-flex flex-column mt-auto" aria-labelledby={organizationsTitleId}>
-          <h3 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
+        <div className="bg-body-tertiary p-4 d-flex flex-column mt-auto" role="presentation">
+          <h2 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
             {trans('organizations', {}, 'community')}
-          </h3>
+          </h2>
+          <p id={organizationsDescId} className="visually-hidden">{trans('change_organization_help', {}, 'community')}</p>
 
-          <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
+          <ul
+            className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0"
+            aria-labelledby={organizationsTitleId}
+            aria-describedby={organizationsDescId}
+          >
             {organizations.slice(0, 3).map(organization => (
               <li key={organization.id}>
                 <CallbackButton
@@ -108,7 +127,7 @@ const ContextSidebar = ({
               <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
             </Button>
           }
-        </nav>
+        </div>
       }
     </div>
   )

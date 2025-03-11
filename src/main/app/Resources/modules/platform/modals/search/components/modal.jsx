@@ -9,8 +9,8 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 
 import {getApps} from '#/main/app/plugins'
-import {SearchResults} from '#/main/app/context/modals/search/components/results'
-import {SearchRecent} from '#/main/app/context/modals/search/components/recent'
+import {SearchResults} from '#/main/app/platform/modals/search/components/results'
+import {SearchRecent} from '#/main/app/platform/modals/search/components/recent'
 import {route} from '#/main/core/tool/routing'
 
 class SearchModal extends Component {
@@ -101,14 +101,14 @@ class SearchModal extends Component {
             />
           }
 
-          {!this.state.currentSearch &&
+          {false && !this.state.currentSearch &&
             <SearchRecent
               fadeModal={this.props.fadeModal}
             />
           }
         </div>
 
-        <div className="modal-footer gap-2 flex-column flex-md-row">
+        {/*<div className="modal-footer gap-2 flex-column flex-md-row">
           Vous ne trouvez pas ce que vous cherchez ?
 
           <Button
@@ -119,7 +119,7 @@ class SearchModal extends Component {
             target={route('workspaces')}
             onClick={this.props.fadeModal}
           />
-        </div>
+        </div>*/}
       </Modal>
     )
   }

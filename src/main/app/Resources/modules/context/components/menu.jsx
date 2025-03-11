@@ -25,15 +25,20 @@ const ContextFlyout = (props) => {
   // get context tools
   const toolLinks = useSelector(selectors.toolLinks)
 
+  const menuTitleId = useId()
   const toolsTitleId = useId()
   const organizationsTitleId = useId()
+  const organizationsDescId = useId()
 
   return (
     <Menu
-      className="flyout-menu app-context-menu p-0 rounded-4"
+      id={props.id}
+      className="app-context-menu flyout-menu p-0 mt-2"
+      role="navigation"
+      aria-labelledby={menuTitleId}
     >
-      <h2 className="visually-hidden">{trans('context_menu')}</h2>
-      <div className="flyout-menu-content rounded-bottom-4" role="presentation">
+      <div className="flyout-menu-content" role="presentation">
+        <h1 id={menuTitleId} className="visually-hidden">{trans('context_menu')}</h1>
         <div className="d-flex gap-3 px-4 pt-4 my-n1 align-items-center" role="presentation">
           <Button
             id="toggle-menu"
@@ -51,12 +56,15 @@ const ContextFlyout = (props) => {
         </div>
 
         {1 < toolLinks.length &&
-          <nav aria-labelledby={toolsTitleId}>
-            <h3 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h3>
-            <ul className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
-              'flyout-menu-items-2': 6 >= toolLinks.length,
-              'flyout-menu-items-4': 6 < toolLinks.length
-            })}>
+          <div role="presentation">
+            <h2 id={toolsTitleId} className="visually-hidden">{trans('tools')}</h2>
+            <ul
+              className={classes('flyout-menu-items list-unstyled p-4 mb-0', {
+                'flyout-menu-items-2': 6 >= toolLinks.length,
+                'flyout-menu-items-4': 6 < toolLinks.length
+              })}
+              aria-labelledby={toolsTitleId}
+            >
               {toolLinks.map(toolLink =>
                 <li key={toolLink.name}>
                   <Button
@@ -69,16 +77,21 @@ const ContextFlyout = (props) => {
                 </li>
               )}
             </ul>
-          </nav>
+          </div>
         }
 
         {1 < organizations.length &&
-          <nav className="bg-body-tertiary p-4 d-flex flex-column rounded-bottom-4" aria-labelledby={organizationsTitleId}>
-            <h3 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
+          <div className="bg-body-tertiary p-4 d-flex flex-column" role="presentation">
+            <h2 id={organizationsTitleId} className="fs-sm text-body-secondary text-uppercase">
               {trans('organizations', {}, 'community')}
-            </h3>
+            </h2>
+            <p id={organizationsDescId} className="visually-hidden">{trans('change_organization_help', {}, 'community')}</p>
 
-            <ul className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0">
+            <ul
+              className="list-unstyled d-flex flex-column gap-2 m-n1 mb-0"
+              aria-labelledby={organizationsTitleId}
+              aria-describedby={organizationsDescId}
+            >
               {organizations.slice(0, 3).map(organization => (
                 <li key={organization.id}>
                   <CallbackButton
@@ -106,7 +119,7 @@ const ContextFlyout = (props) => {
                 <span className="fa fa-arrow-right ms-2" aria-hidden={true} />
               </Button>
             }
-          </nav>
+          </div>
         }
       </div>
     </Menu>
@@ -114,6 +127,7 @@ const ContextFlyout = (props) => {
 }
 
 ContextFlyout.propTypes = {
+  id: T.string.isRequired,
   path: T.string,
   contextData: T.object,
   contextType: T.string,
@@ -121,15 +135,14 @@ ContextFlyout.propTypes = {
   closeMenu: T.func.isRequired
 }
 
-const ContextMenu = (props) => {
+const ContextMenu = () => {
   const dispatch = useDispatch()
 
   const contextPath = useSelector(selectors.path)
-  const contextData = useSelector(selectors.data)
-  const contextType = useSelector(selectors.type)
   const notFound = useSelector(selectors.notFound)
   const hasErrors = useSelector(selectors.hasErrors)
 
+  const menuId = useId()
   const menuOpened = useSelector(selectors.menuOpened)
   const toggleMenu = useCallback(() => {
     dispatch(actions.toggleMenuOpen())
@@ -137,46 +150,37 @@ const ContextMenu = (props) => {
 
   const [pinedMenu, setPinedMenu] = useLocaleStorage('contextMenuPined', false)
 
-  return (
-    <div className="d-flex flex-row align-items-center gap-3" role="presentation">
-      {!pinedMenu &&
-        <Button
-          id="toggle-menu"
-          type={MENU_BUTTON}
-          className="app-context-menu-toggle btn btn-text-body focus-ring py-1 px-2 ms-n2"
-          icon="fa fa-bars"
-          label={trans(menuOpened ? 'hide-menu': 'show-menu', {}, 'actions')}
-          tooltip="bottom"
-          onToggle={toggleMenu}
-          disabled={notFound || hasErrors}
-          opened={menuOpened}
-          menu={
-            <ContextFlyout
-              togglePin={() => {
-                setPinedMenu(!pinedMenu)
-                toggleMenu()
+  if (!pinedMenu) {
+    return (
+      <Button
+        id="toggle-menu"
+        type={MENU_BUTTON}
+        className="app-context-menu-toggle btn btn-text-body focus-ring py-1 px-2 mx-n2 my-2 rounded-1"
+        icon="fa fa-bars"
+        label={trans(menuOpened ? 'close_context_menu': 'show_context_menu', {}, 'actions')}
+        tooltip="bottom"
+        onToggle={toggleMenu}
+        disabled={notFound || hasErrors}
+        opened={menuOpened}
+        aria-controls={menuId}
+        menu={
+          <ContextFlyout
+            id={menuId}
+            togglePin={() => {
+              setPinedMenu(!pinedMenu)
+              toggleMenu()
+              setTimeout(() => {
                 document.querySelector('.app-context-menu-toggle').focus()
-              }}
-              closeMenu={toggleMenu}
-            />
-          }
-        />
-      }
-
-      <div className="text-start text-truncate mb-0 fs-sm" role="presentation">
-        {contextData.name || trans(contextType, {}, 'context')}
-
-        {props.name &&
-          <>
-            <span className="mx-1" role="presentation"> / </span>
-            <span className="text-body-secondary">
-              {props.name}
-            </span>
-          </>
+              }, 0)
+            }}
+            closeMenu={toggleMenu}
+          />
         }
-      </div>
-    </div>
-  )
+      />
+    )
+  }
+
+  return null
 }
 
 export {

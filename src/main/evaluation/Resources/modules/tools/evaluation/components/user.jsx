@@ -18,12 +18,6 @@ import {PageContent} from '#/main/app/page'
 
 const EvaluationUser = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        label: trans('users'),
-        target: props.path + '/users'
-      }
-    ]}
     title={get(props.workspaceEvaluation, 'user.name')}
   >
     {!props.loaded &&

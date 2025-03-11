@@ -25,7 +25,12 @@ const SequencePage = (props) => {
 
   return (
     <ToolPage
-      name={sequence ? sequence.name : trans('loading')}
+      breadcrumb={[
+        {
+          label: sequence ? sequence.name : trans('loading'),
+          target: sequencePath
+        }
+      ]}
       title={props.title ?
         props.title + ' | ' + sequence.name :
         trans('sequence_name', {name: get(sequence, 'name', trans('loading'))}, 'evaluation')

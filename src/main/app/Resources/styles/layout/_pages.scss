@@ -99,3 +99,19 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.app-page-menu {
+    .breadcrumb-item a,
+    .app-context-menu-toggle {
+        text-decoration: none;
+
+        &:hover/*,
+        &:focus*/ {
+            background: var(--#{$prefix}secondary-bg);
+        }
+    }
+
+    .breadcrumb-item a {
+        line-height: $line-height-base * $font-size-base;
+    }
+}

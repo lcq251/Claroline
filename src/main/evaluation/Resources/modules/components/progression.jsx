@@ -10,7 +10,7 @@ import {LinkButton} from '#/main/app/buttons'
 import {constants} from '#/main/evaluation/constants'
 
 const EvaluationProgression = (props) =>
-  <div className={classes('bg-body-tertiary rounded-3 p-3 mb-4', props.className)}>
+  <div className={classes('bg-body-tertiary rounded-3 p-3', props.className)}>
     <ProgressBar value={props.progression} size="xs" variant="learning" />
 
     <div className="d-flex flex-row gap-3 flex-wrap align-items-center mt-2" role="presentation">

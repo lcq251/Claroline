@@ -9,7 +9,7 @@ const PaginationSize = props =>
     containerClassName="results-per-page"
     className="btn btn-body"
     menu={{
-      position: 'top',
+      drop: 'up',
       align: 'end',
       label: trans('results_per_page'),
       items: props.availableSizes.map((size) => ({

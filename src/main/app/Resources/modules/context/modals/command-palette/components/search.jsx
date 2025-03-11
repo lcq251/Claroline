@@ -8,7 +8,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {useKeyPress} from '#/main/app/dom/key'
 
 const CommandPaletteSearch = (props) => {
-  const inputRef = useRef()
+  const inputRef = useRef(null)
 
   useKeyPress('Backspace', () => {
     if (isEmpty(props.search)) {

@@ -20,7 +20,7 @@ const PaginationPages = props =>
       className="w-100 btn btn-body"
       disabled={props.disabled || 1 === props.pages}
       menu={{
-        position: 'top',
+        drop: 'up',
         label: trans('pages'),
         items: times(props.pages, (page) => ({
           type: CALLBACK_BUTTON,

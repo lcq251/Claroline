@@ -26,20 +26,19 @@ class BBBTool extends Component {
   render() {
     if (!this.props.loaded) {
       return (
-        <ContentLoader
-          size="lg"
-          description="Nous chargeons votre outil..."
-        />
+        <ToolPage
+          title={trans('bbb', {}, 'integration')}
+        >
+          <ContentLoader
+            size="lg"
+            description="Nous chargeons votre outil..."
+          />
+        </ToolPage>
       )
     }
 
     return (
       <ToolPage
-        breadcrumb={[{
-          type: LINK_BUTTON,
-          label: trans('bbb', {}, 'integration'),
-          target: `${this.props.path}/bbb`
-        }]}
         title={trans('bbb', {}, 'integration')}
       >
         <PageContent>

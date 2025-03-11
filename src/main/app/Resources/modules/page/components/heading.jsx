@@ -38,13 +38,13 @@ const PageHeading = props =>
         'mt-5': !props.icon && !props.backAction,
         'mt-2': !!props.icon || !!props.backAction
       })} role="presentation">
-        <h2 className="h1 app-page-title m-0">
+        <h1 className="h1 app-page-title m-0">
           {props.subtitle &&
             <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2" role="presentation">{props.subtitle}</span>
           }
 
           {props.title}
-        </h2>
+        </h1>
 
         {props.actions instanceof Promise ?
           <Await for={props.actions} then={(resolvedActions) => (

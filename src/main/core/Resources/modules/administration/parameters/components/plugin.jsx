@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading} from '#/main/app/page/components/heading'
@@ -59,13 +59,6 @@ const Plugin = (props) => {
 
   return (
     <ToolPage
-      breadcrumb={[
-        {
-          type: LINK_BUTTON,
-          label: trans(props.plugin.name, {}, 'plugin'),
-          target: `${props.path}/plugins/${props.plugin.id}`
-        }
-      ]}
       title={trans(props.plugin.name, {}, 'plugin')}
     >
       <PageContent>

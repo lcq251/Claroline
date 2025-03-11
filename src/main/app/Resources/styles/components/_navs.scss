@@ -18,18 +18,20 @@
 .app .nav-underline {
     // scss-docs-start nav-underline-css-vars
     --#{$prefix}nav-underline-link-active-font-weight: #{$nav-underline-link-active-font-weight};
-    --#{$prefix}nav-underline-border-active-color: #{$nav-underline-border-active-color};
     // scss-docs-end nav-underline-css-vars
-
-    /*.nav-link {
-        padding-left: map-get($spacers, 2);
-        padding-right: map-get($spacers, 2);
-    }*/
 
     .nav-link.active,
     .show > .nav-link {
-        font-weight: var(--#{$prefix}nav-underline-link-active-font-weight); // their is no ver in bootstrap for that
-        color: var(--#{$prefix}nav-underline-link-active-color);
-        border-bottom-color: var(--#{$prefix}nav-underline-border-active-color); // their is no ver in bootstrap for that
+        // there is no var in bootstrap for that
+        // and the bootstrap default increases the font weight which slightly moves items position (ugly)
+        font-weight: var(--#{$prefix}nav-underline-link-active-font-weight);
+    }
+}
+
+@if $enable-dark-mode {
+    @include color-mode(dark) {
+        .app .nav-underline {
+            --#{$prefix}nav-underline-link-active-color: #{$nav-underline-link-active-color-dark};
+        }
     }
 }

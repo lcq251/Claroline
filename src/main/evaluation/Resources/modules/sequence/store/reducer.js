@@ -14,8 +14,7 @@ const reducer = makeFetchReducer(selectors.STORE_NAME, {
   data: {
     sequence: null,
     userEvaluation: null,
-    progression: [],
-    resourceEvaluations: []
+    progression: []
   }
 }, {
   data: combineReducers({

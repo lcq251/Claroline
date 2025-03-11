@@ -1,6 +1,5 @@
 import React, {useCallback, useContext} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {selectors as securitySelectors} from '#/main/app/security/store'
@@ -27,20 +26,15 @@ const ToolPage = props => {
   return (
     <ContextPage
       className={props.className}
-      breadcrumb={[
+      breadcrumb={props.breadcrumb || [
         {
           label: trans(toolName, {}, 'tools'),
           target: toolPath
         }
-      ].concat(props.breadcrumb || [])}
-      name={trans(toolName, {}, 'tools')}
-      title={props.title ?
-        // props.title + ' | ' + trans(toolName, {}, 'tools') :
-        props.title :
-        trans(toolName, {}, 'tools')
-      }
-      description={trans(toolName+'_desc', {}, 'tools')}
-      menu={{
+      ]}
+      title={props.title || trans(toolName, {}, 'tools')}
+      description={props.description || trans(toolName+'_desc', {}, 'tools')}
+      menu={props.menu || {
         nav: toolDef.menu,
         toolbar: 'search more',
         // get actions injected through plugins and the ones defined by the current tool
@@ -53,11 +47,12 @@ const ToolPage = props => {
           label: trans('search', {}, 'actions') + ' (Ctrl + K)',
           modal: [MODAL_COMMAND_PALETTE],
           displayed: false
-        }].concat(loadedActions.filter(action => 'configure' !== action.name), toolDef.actions || []))
+        }].concat(loadedActions.filter(action => 'configure' !== action.name && 'dashboard' !== action.name), toolDef.actions || []))
       }}
 
       styles={[].concat(toolDef.styles || [], props.styles || [])}
-      {...omit(props, 'className', 'breadcrumb', 'title', 'styles')}
+      embedded={props.embedded}
+      showHeader={props.showHeader}
     >
       {props.children}
     </ContextPage>

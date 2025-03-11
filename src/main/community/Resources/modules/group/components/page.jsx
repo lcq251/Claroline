@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/group/utils'
@@ -18,13 +17,6 @@ import {PageContent} from '#/main/app/page'
 
 const Group = (props) =>
   <ToolPage
-    breadcrumb={[
-      {
-        type: LINK_BUTTON,
-        label: trans('groups', {}, 'community'),
-        target: `${props.path}/groups`
-      }
-    ]}
     title={trans('group_name', {name: get(props.group, 'name', trans('loading'))}, 'community')}
     description={get(props.group, 'meta.description')}
   >

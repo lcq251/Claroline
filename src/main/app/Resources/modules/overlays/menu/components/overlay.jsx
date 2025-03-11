@@ -7,7 +7,8 @@ import Dropdown from 'react-bootstrap/Dropdown'
 const MenuOverlay = forwardRef((props, ref) =>
   <Dropdown
     show={props.show}
-    drop={'top' === props.position ? 'up' : 'down'}
+    drop={props.drop}
+    align={props.align}
     autoClose={true}
     className={props.className}
     disabled={props.disabled}
@@ -22,7 +23,8 @@ MenuOverlay.propTypes = {
   show: T.bool,
   className: T.string,
   disabled: T.bool,
-  position: T.oneOf(['top', 'bottom']),
+  drop: T.oneOf(['up', 'start', 'end', 'down']),
+  align: T.oneOf(['start', 'end']),
   children: T.node.isRequired,
   onToggle: T.func
 }

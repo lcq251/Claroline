@@ -19,6 +19,13 @@ const USER_STATUS_COLORS = {
   [USER_STATUS_OFFLINE]: 'secondary'
 }
 
+const USER_STATUS_ICONS = {
+  [USER_STATUS_ONLINE]: 'circle-check',
+  [USER_STATUS_ABSENT]: 'clock',
+  [USER_STATUS_DONT_DISTURB]: 'circle-minus',
+  [USER_STATUS_OFFLINE]: 'circle-xmark'
+}
+
 export const constants = {
   USER_STATUSES,
   USER_STATUS_ONLINE,
@@ -26,5 +33,6 @@ export const constants = {
   USER_STATUS_DONT_DISTURB,
   USER_STATUS_OFFLINE,
 
-  USER_STATUS_COLORS
+  USER_STATUS_COLORS,
+  USER_STATUS_ICONS
 }
