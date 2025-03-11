@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
@@ -12,23 +12,33 @@ import {FormContent} from '#/main/app/content/form/containers/content'
 import {EditorContext} from '#/main/app/editor/context'
 import {Badge} from '#/main/app/components/badge'
 import {Heading} from '#/main/app/components/heading'
+import {Helmet} from 'react-helmet'
 
 const EditorPage = (props) => {
   const editorDef = useContext(EditorContext)
 
+  const titleId = useId()
+  const descriptionId = useId()
+
   return (
     <>
+      <Helmet>
+        <title>{editorDef.title} - {props.title}</title>
+      </Helmet>
+
       <Form
         className="app-editor-form flex-fill"
         name={editorDef.name}
-        level={1}
+        level={2}
         target={editorDef.target}
         onSave={editorDef.onSave}
         buttons={true}
+        aria-labelledby={titleId}
+        aria-describedby={props.help ? descriptionId : undefined}
       >
         <header className="mb-5">
           <div className="d-flex flex-row align-items-center gap-2" role="presentation">
-            <Heading level={1} displayLevel={4} className="app-editor-title m-0">
+            <Heading id={titleId} level={2} displayLevel={4} className="app-editor-title m-0">
               {props.title}
             </Heading>
 
@@ -38,17 +48,16 @@ const EditorPage = (props) => {
           </div>
 
           {props.help &&
-            <p className="lead text-body-secondary mt-2 mb-0">{props.help}</p>
+            <p id={descriptionId} className="lead text-body-secondary mt-2 mb-0">{props.help}</p>
           }
         </header>
 
         {!isEmpty(props.definition) &&
           <FormContent
-            level={2}
+            level={3}
             displayLevel={5}
             disabled={props.disabled}
             name={editorDef.name}
-            autoFocus={undefined === props.autoFocus || props.autoFocus}
             dataPart={props.dataPart}
             definition={props.definition}
             locked={props.locked}
@@ -85,7 +94,6 @@ EditorPage.propTypes = {
   children: T.any,
   managerOnly: T.bool,
   disabled: T.bool,
-  autoFocus: T.bool,
   actions: T.arrayOf(T.shape({
 
   })),

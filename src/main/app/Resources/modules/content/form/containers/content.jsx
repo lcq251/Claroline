@@ -25,7 +25,6 @@ const FormContent = connect(
 
     return {
       id: ownProps.id || toKey(ownProps.name),
-      mode: selectors.mode(formState),
       data: data,
       errors: errors
     }

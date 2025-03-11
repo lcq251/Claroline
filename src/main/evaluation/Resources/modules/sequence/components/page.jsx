@@ -59,11 +59,22 @@ const SequencePage = (props) => {
             tooltip: 'bottom',
             target: sequencePath+'/dashboard',
             displayed: hasPermission('edit', sequence)
+          }, {
+            name: 'parameters',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-sliders',
+            label: trans('parameters'),
+            tooltip: 'bottom',
+            target: sequencePath+'/edit',
+            displayed: hasPermission('edit', sequence)
           }
         ],
-        toolbar: 'configure more',
+        toolbar: 'more',
         // get actions injected through plugins and the ones defined by the current tool
-        actions: sequence ? getActions([sequence], {}, toolPath, currentUser, false) : []
+        actions: sequence ?
+          getActions([sequence], {}, toolPath, currentUser, false)
+            .then(loadedActions => loadedActions.filter(action => 'configure' !== action.name && 'show-dashboard' !== action.name))
+          : []
       }}
       {...omit(props, 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}
     >

@@ -35,8 +35,7 @@ const ResourceEditorOverview = (props) =>
             name: 'resourceNode.name',
             label: trans('name'),
             type: 'string',
-            required: true,
-            autoFocus: true
+            required: true
           }, {
             name: 'resourceNode.code',
             label: trans('code'),

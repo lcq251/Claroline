@@ -1,6 +1,5 @@
 import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useSelector} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -9,7 +8,6 @@ import {CALLBACK_BUTTON, LINK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
 import {route} from '#/main/core/workspace/routing'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
-import {selectors} from '#/main/app/platform/store'
 import {PlatformMenuUser} from '#/main/app/platform/menu/components/user'
 
 import {Menu} from '#/main/app/overlays/menu'
@@ -20,7 +18,6 @@ import {PlatformMenuHelp} from '#/main/app/platform/menu/components/help'
 import {PlatformMenuGlobal} from '#/main/app/platform/menu/components/global'
 
 const AllContexts = () => {
-
   return (
     <Menu className="app-contexts-menu flyout-menu position-fixed p-0">
       <nav className="d-flex flex-row border-bottom align-items-center">

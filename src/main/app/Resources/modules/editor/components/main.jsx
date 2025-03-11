@@ -58,6 +58,7 @@ const Editor = (props) => {
     <EditorContext.Provider
       value={{
         name: props.name,
+        title: props.title,
         target: props.target,
         onSave: props.onSave,
         close: props.close,
@@ -66,9 +67,7 @@ const Editor = (props) => {
     >
       {(!isEmpty(props.styles) || props.title) &&
         <Helmet>
-          {props.title &&
-            <title>{props.title} - {trans('edition')}</title>
-          }
+          <title>{props.title} - {trans('edition')}</title>
 
           {!isEmpty(props.styles) && props.styles.map(style =>
             <link key={style} rel="stylesheet" type="text/css" href={theme(style)} />
@@ -87,6 +86,7 @@ const Editor = (props) => {
           // TODO : check pending changes
           history.push(props.close)
         }}
+        aria-label={`${props.title} - ${trans('edition')}`}
       >
         <EditorMenu
           path={props.path}
@@ -95,7 +95,7 @@ const Editor = (props) => {
           thumbnail={props.thumbnail}
         />
 
-        <div className="app-editor-body" role="presentation" tabIndex={-1   }>
+        <div className="app-editor-body" role="presentation" tabIndex={-1}>
           <Routes
             path={props.path}
             redirect={!isEmpty(pages) ? [

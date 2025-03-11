@@ -87,8 +87,6 @@ const UserMenu = (props) => {
             label={userConst.USER_STATUSES[get(props.user, 'status')]}
             containerClassName="w-100"
             menu={{
-              align: 'end',
-              drop: 'end',
               items: Object.keys(userConst.USER_STATUSES).map(status => ({
                 type: CALLBACK_BUTTON,
                 icon: classes(`fa fa-fw fa-${userConst.USER_STATUS_ICONS[status]}`, `text-${userConst.USER_STATUS_COLORS[status]}`),
@@ -106,6 +104,7 @@ const UserMenu = (props) => {
         <div className="list-group mx-3 mb-3">
           {accountLinks.map((accountLink) => (
             <Button
+              key={accountLink.name}
               {...accountLink}
               className={classes('list-group-item list-group-item-action focus-ring', accountLink.className)}
             />

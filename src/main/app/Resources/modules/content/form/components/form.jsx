@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
+import omit from 'lodash/omit'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
@@ -8,12 +9,15 @@ import {ContentTitle} from '#/main/app/content/components/title'
 import {FormSave} from '#/main/app/content/form/components/save'
 
 const FormWrapper = props => props.embedded ?
-  <fieldset id={props.id} className={classes('form data-form', props.className, props.flush && 'data-form-flush')}>
+  <fieldset
+    {...omit(props, 'embedded', 'flush', 'children')}
+    className={classes('form data-form', props.className, props.flush && 'data-form-flush')}
+  >
     {props.children}
   </fieldset>
   :
   <form
-    id={props.id}
+    {...omit(props, 'embedded', 'flush', 'children')}
     className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-md')}
     onSubmit={(e) => e.preventDefault()}
   >
@@ -63,7 +67,9 @@ class Form extends Component {
 
   render() {
     return (
-      <FormWrapper id={this.props.id} embedded={this.props.embedded} flush={this.props.flush} className={this.props.className}>
+      <FormWrapper
+        {...omit(this.props, 'new', 'name', 'buttons', 'data', 'level', 'displayLevel', 'title', 'errors', 'pendingChanges', 'alertExit', 'children', 'save', 'cancel', 'onSave', 'target', 'saveForm', 'cancelForm')}
+      >
         {this.props.title &&
           <ContentTitle
             level={this.props.level}

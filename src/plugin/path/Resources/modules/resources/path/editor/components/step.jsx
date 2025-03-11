@@ -78,7 +78,6 @@ const PathEditorStep = props => {
               name: 'title',
               type: 'string',
               label: trans('title'),
-              autoFocus: true,
               required: true
             }
           ]

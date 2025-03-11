@@ -19,15 +19,9 @@ const FormData = connect(
     }
 
     return {
-      mode: selectors.mode(formState),
       data: data
     }
-  },
-  (dispatch, ownProps) => ({
-    setMode(mode) {
-      dispatch(actions.setMode(ownProps.name, mode))
-    }
-  })
+  }
 )(FormDataComponent)
 
 FormData.propTypes = {

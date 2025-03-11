@@ -67,8 +67,7 @@ const LessonEditorChapter = (props) => {
               name: 'title',
               label: trans('title'),
               type: 'string',
-              required: true,
-              autoFocus: true
+              required: true
             }, {
               name: 'text',
               type: 'html',

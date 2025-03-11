@@ -158,7 +158,6 @@ FormContent.defaultProps = {
   level: 2,
   disabled: false,
   flush: false,
-  //autoFocus: true,
   data: {}
 }
 

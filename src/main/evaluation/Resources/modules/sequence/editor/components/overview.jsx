@@ -20,8 +20,7 @@ const SequenceEditorOverview = () =>
             name: 'name',
             label: trans('name'),
             type: 'string',
-            required: true,
-            autoFocus: true
+            required: true
           }, {
             name: 'code',
             label: trans('code'),

@@ -42,6 +42,7 @@
   "main_menu": "Menu principal de l'application",
   "context_menu": "Menu de l'espace de travail",
   "tool_menu": "Menu de l'outil",
+  "editor_menu": "Menu d'édition",
   "global_links": "Liens généraux",
   "global_links_help": "Accédez à votre bureau ou recherchez un élément dans la plateforme.",
   "quick_access_links": "Liens d'accès rapide",
@@ -51,7 +52,7 @@
   "my_workspaces": "Mes espaces d'activités",
   "account_links": "Mon compte & Aide",
   "account_links_help": "Accédez à vos paramètres personnels et au centre d'aide de la plateforme.",
-
+  "general_parameters": "Paramètres généraux",
   "numbering_none": "Aucune",
   "numbering_numeric": "Numérique",
   "numbering_literal": "Littérale",
