@@ -127,7 +127,6 @@ class SubjectComponent extends Component {
 
           <PageSection size="md" className="mb-5">
             <Content
-              placeholder={trans('no_content')}
               meta={
                 <>
                   <UserMicro

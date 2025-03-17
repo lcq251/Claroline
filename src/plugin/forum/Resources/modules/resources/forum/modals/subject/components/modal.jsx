@@ -40,8 +40,7 @@ const SubjectModal = (props) =>
           }, {
             name: 'content',
             type: 'html',
-            label: trans('post', {}, 'forum'),
-            required: true
+            label: trans('post', {}, 'forum')
           }, {
             name: 'tags',
             type: 'tag',

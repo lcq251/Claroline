@@ -10,6 +10,7 @@ import {useCurrentUser} from '#/main/app/security'
 import {UserMessageForm} from '#/main/core/user/message/components/user-message-form'
 import {UserMessage} from '#/main/core/user/message/components/user-message'
 import isEmpty from 'lodash/isEmpty'
+import {Alert} from '#/main/app/components/alert'
 
 const ForumMessages = (props) => {
   const currentUser = useCurrentUser()
@@ -93,6 +94,15 @@ const ForumMessages = (props) => {
             </li>
           )}
         </ul>
+      }
+
+      {!!props.root && !props.canReply &&
+        <Alert
+          className="mt-4"
+          type="warning"
+        >
+          {trans('subject_closed_help', {}, 'forum')}
+        </Alert>
       }
 
       {(currentUser && props.canReply) &&

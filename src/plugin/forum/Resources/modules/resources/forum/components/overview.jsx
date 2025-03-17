@@ -1,24 +1,29 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
+import {useHistory} from 'react-router-dom'
+import classes from 'classnames'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {MODAL_BUTTON} from '#/main/app/buttons'
-import {PageListSection, PageSection} from '#/main/app/page'
+import {PageSection} from '#/main/app/page'
+import {ButtonSticky} from '#/main/app/button'
 
 import {ResourceOverview, selectors as resourceSelectors} from '#/main/core/resource'
 
 import {selectors} from '#/plugin/forum/resources/forum/store'
 import {Subjects} from '#/plugin/forum/resources/forum/components/subjects'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
-import {useHistory} from 'react-router-dom'
-import {ButtonSticky} from '#/main/app/button'
 
 const ForumOverview = () => {
   const history = useHistory()
 
   const resourcePath = useSelector(resourceSelectors.path)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const showHeader = useSelector(resourceSelectors.showHeader)
+  const embedded = useSelector(resourceSelectors.embedded)
+
   const forumId = useSelector(selectors.forumId)
 
   return (
@@ -26,6 +31,9 @@ const ForumOverview = () => {
       <PageSection
         size="md"
         flush={false}
+        className={classes({
+          'pt-5': (!embedded || showHeader) && !get(resourceNode, 'meta.description')
+        })}
       >
         <Subjects
           className="mb-5"

@@ -29,5 +29,6 @@
     "subject": "Sujet",
     "subjects": "Sujets",
     "unstick": "Désépingler",
-    "unflag": "Ne plus signaler"
+    "unflag": "Ne plus signaler",
+    "subject_closed_help": "Ce sujet est fermé et n'accepte plus de nouvelles réponses."
 }
