@@ -36,7 +36,7 @@ class WidgetsTabParameters extends Component {
     const widgets = get(this.props.currentTab, 'parameters.widgets', [])
 
     return (
-      <div className="widgets-grid">
+      <div className="widgets-grid container-fluid">
         {widgets.map((widgetContainer, index) => (
           <WidgetEditor
             key={widgetContainer.id || index}

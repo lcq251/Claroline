@@ -29,7 +29,7 @@ const WidgetsTab = props => {
       }
 
       {0 !== visibleWidgets.length &&
-        <div className="widgets-grid" style={{marginTop: 20}}>
+        <div className="widgets-grid container-fluid" style={{marginTop: 20}}>
           {visibleWidgets.map((widget, index) =>
             <Widget
               key={index}
