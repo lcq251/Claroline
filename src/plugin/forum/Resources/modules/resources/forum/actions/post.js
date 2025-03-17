@@ -7,5 +7,6 @@ export default (resourceNodes, nodesRefresher, path) => ({
   label: trans('add_subject', {}, 'actions'),
   icon: 'fa fa-fw fa-plus',
   primary: true,
-  target: `${path}/${resourceNodes[0].slug}/subjects`
+  target: `${path}/${resourceNodes[0].slug}/subjects`,
+  exact: true
 })

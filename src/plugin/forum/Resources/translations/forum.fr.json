@@ -20,7 +20,6 @@
     "remove_subject_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce sujet ainsi que tous ses messages ?",
     "remove_subjects_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ces %count% sujet(s) ?",
     "remove_post_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce message ainsi que ses commentaires ?",
-    "remove_comment_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce commentaire ?",
     "reply": "Répondre",
     "see_message_context": "Voir le message en contexte",
     "see_subject": "Voir le sujet",
@@ -30,5 +29,9 @@
     "subjects": "Sujets",
     "unstick": "Désépingler",
     "unflag": "Ne plus signaler",
-    "subject_closed_help": "Ce sujet est fermé et n'accepte plus de nouvelles réponses."
+    "subject_closed_help": "Ce sujet est fermé et n'accepte plus de nouvelles réponses.",
+    "close_subject_confirm": "Êtes-vous sûr(e) de vouloir fermer ce sujet ?",
+    "close_subject_confirm_additional": "Les utilisateurs ne pourront plus poster de réponses pour ce sujet.",
+    "open_subject_confirm": "Êtes-vous sûr(e) de vouloir ouvrir ce sujet ?",
+    "open_subject_confirm_additional": "Les utilisateurs pourront de nouveau poster des réponses pour ce sujet."
 }

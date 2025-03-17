@@ -120,6 +120,7 @@ const SubjectsList = (props) =>
     ]}
     actions={(rows) => [
       {
+        name: 'edit',
         type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-pencil',
         label: trans('edit', {}, 'actions'),
@@ -130,18 +131,21 @@ const SubjectsList = (props) =>
         }],
         displayed: canEdit(rows[0], props.moderator, props.currentUser)
       }, {
+        name: 'pin',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-thumb-tack',
         label: trans('stick', {}, 'forum'),
         callback: () => props.stickSubject(rows[0]),
         displayed: !rows[0].meta.sticky && props.moderator
       }, {
+        name: 'unpin',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-thumb-tack',
         label: trans('unstick', {}, 'forum'),
         callback: () => props.unStickSubject(rows[0]),
         displayed: rows[0].meta.sticky && props.moderator
       }, {
+        name: 'flag',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-flag',
         label: trans('flag', {}, 'forum'),
@@ -149,6 +153,7 @@ const SubjectsList = (props) =>
         callback: () => props.flagSubject(rows[0]),
         scope: ['object']
       }, {
+        name: 'unflag',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-flag',
         label: trans('unflag', {}, 'forum'),
@@ -156,19 +161,29 @@ const SubjectsList = (props) =>
         callback: () => props.unFlagSubject(rows[0]),
         scope: ['object']
       }, {
+        name: 'close',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-circle-xmark',
         label: trans('close_subject', {}, 'forum'),
         callback: () => props.closeSubject(rows[0]),
         displayed: -1 !== rows.findIndex(row => !row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
-        scope: ['object']
+        scope: ['object'],
+        confirm: {
+          message: trans('close_subject_confirm', {}, 'forum'),
+          additional: trans('close_subject_confirm_additional', {}, 'forum')
+        }
       }, {
+        name: 'open',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-circle-check',
         label: trans('open_subject', {}, 'forum'),
         callback: () => props.unCloseSubject(rows[0]),
         displayed: -1 !== rows.findIndex(row => row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
-        scope: ['object']
+        scope: ['object'],
+        confirm: {
+          message: trans('open_subject_confirm', {}, 'forum'),
+          additional: trans('open_subject_confirm_additional', {}, 'forum')
+        }
       }
     ]}
     card={SubjectCard}

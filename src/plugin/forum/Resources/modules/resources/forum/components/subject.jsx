@@ -90,14 +90,22 @@ class SubjectComponent extends Component {
                 icon: 'fa fa-fw fa-circle-xmark',
                 label: trans('close_subject', {}, 'forum'),
                 displayed: !(get(this.props.subject, 'meta.closed', true)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
-                callback: () => this.props.closeSubject(this.props.subject)
+                callback: () => this.props.closeSubject(this.props.subject),
+                confirm: {
+                  message: trans('close_subject_confirm', {}, 'forum'),
+                  additional: trans('close_subject_confirm_additional', {}, 'forum')
+                }
               }, {
                 name: 'open',
                 type: CALLBACK_BUTTON,
                 icon: 'fa fa-fw fa-circle-check',
                 label: trans('open_subject', {}, 'forum'),
                 displayed: (get(this.props.subject, 'meta.closed', false)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
-                callback: () => this.props.unCloseSubject(this.props.subject)
+                callback: () => this.props.unCloseSubject(this.props.subject),
+                confirm: {
+                  message: trans('open_subject_confirm', {}, 'forum'),
+                  additional: trans('open_subject_confirm_additional', {}, 'forum')
+                }
               }, {
                 name: 'flag',
                 type: CALLBACK_BUTTON,
@@ -131,7 +139,6 @@ class SubjectComponent extends Component {
                 <>
                   <UserMicro
                     {...get(this.props.subject, 'meta.creator', {})}
-                    // noStatus={true}
                     link={true}
                   />
 

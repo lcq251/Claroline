@@ -1,16 +1,16 @@
 import React, {useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
+import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {useCurrentUser} from '#/main/app/security'
 
 import {UserMessageForm} from '#/main/core/user/message/components/user-message-form'
 import {UserMessage} from '#/main/core/user/message/components/user-message'
-import isEmpty from 'lodash/isEmpty'
-import {Alert} from '#/main/app/components/alert'
 
 const ForumMessages = (props) => {
   const currentUser = useCurrentUser()
