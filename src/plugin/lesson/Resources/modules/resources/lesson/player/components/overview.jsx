@@ -10,11 +10,11 @@ import {selectors} from '#/plugin/lesson/resources/lesson/store'
 import {trans} from '#/main/app/intl'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {PageSection} from '#/main/app/page/components/section'
-import {PageContent} from '#/main/app/page'
 import {Html} from '#/main/app/components/html'
 import {ContentSummary} from '#/main/app/content/components/summary'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
+import {Poster} from '#/main/app/components/poster'
 
 const LessonPlayerOverview = () => {
   const resourcePath = useSelector(resourceSelectors.path)
@@ -39,7 +39,11 @@ const LessonPlayerOverview = () => {
   }
 
   return (
-    <PageContent poster={showHeader ? get(resourceNode, 'poster') : undefined} className="d-flex flex-column">
+    <>
+      {showHeader && get(resourceNode, 'poster') &&
+        <Poster url={get(resourceNode, 'poster')} className="app-page-poster" />
+      }
+
       {description &&
         <PageSection size="md" className={classes({
           'pt-5': !embedded || showHeader
@@ -68,7 +72,7 @@ const LessonPlayerOverview = () => {
           />
         }
       </PageSection>
-    </PageContent>
+    </>
   )
 }
 

@@ -10,7 +10,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const TreeItem = ({
   item,
-  size = 'md'
+  size
 }) => {
   const [expanded, setExpanded] = useState(true)
 
@@ -98,6 +98,7 @@ const Tree = ({
 
 Tree.propTypes = {
   className: T.string,
+  size: T.oneOf(['sm']),
   items: T.arrayOf(T.shape({
     id: T.string.isRequired,
     label: T.string.isRequired,

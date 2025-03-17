@@ -65,7 +65,7 @@ const PageContent = ({
 }) =>
   <div className={classes('app-page-content', className)} role="presentation">
     {poster &&
-      <Poster url={poster} className="app-page-poster z-n1" />
+      <Poster url={poster} className="app-page-poster" />
     }
 
     {children}

@@ -7,90 +7,20 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageContent, PageHeading, PageSection} from '#/main/app/page'
+import {PageHeading, PageSection} from '#/main/app/page'
 import {Content} from '#/main/app/components/content'
 import {Html} from '#/main/app/components/html'
 import {UserMicro} from '#/main/core/user/components/micro'
 import {Datetime} from '#/main/app/components/date'
-import {CALLBACK_BUTTON, LINK_BUTTON, LinkButton, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-types'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {MODAL_PAGE_HISTORY} from '#/plugin/lesson/resources/lesson/modals/history'
-
-const ChapterNavigation = (props) => {
-  const showOverview = useSelector(selectors.showOverview)
-  const numbering = useSelector(selectors.numbering)
-
-  const next = useSelector(selectors.nextPage)
-  const nextNumbering = next ? getNumbering(numbering, props.treeData.children, next) : null
-
-  const previous = useSelector(selectors.previousPage)
-  const previousNumbering = previous ? getNumbering(numbering, props.treeData.children, previous) : null
-
-  if (showOverview || previous || next) {
-    return (
-      <nav className="d-flex flex-row content-md px-2 mt-auto pb-5">
-        {(previous || showOverview) &&
-          <LinkButton
-            className="btn btn-text-body focus-ring w-50 text-start d-flex flex-row align-items-center gap-4 justify-content-start"
-            target={`${props.path}/${previous ? previous.slug : ''}`}
-            exact={true}
-          >
-            <span className="fa fa-chevron-left fs-lg" aria-hidden={true} />
-
-            <div className="d-flex flex-column overflow-hidden" role="presentation">
-              <b>{trans('previous')}</b>
-              {previous ?
-                <span className="text-truncate fs-sm" role="presentation">
-                  {previousNumbering ?
-                    previousNumbering + ' ' + previous.title :
-                    previous.title
-                  }
-                </span> :
-                <span className="text-truncate fs-sm" role="presentation">
-                  {trans('resource_overview', {}, 'resource')}
-                </span>
-              }
-            </div>
-          </LinkButton>
-        }
-
-        {next &&
-          <LinkButton
-            className="btn btn-text-body focus-ring w-50 text-end d-flex flex-row align-items-center gap-4 justify-content-end ms-auto"
-            target={`${props.path}/${next.slug}`}
-          >
-            <div className="d-flex flex-column overflow-hidden" role="presentation">
-              <b>{trans('next')}</b>
-              <span className="text-truncate fs-sm" role="presentation">
-                {nextNumbering ?
-                  nextNumbering + ' ' + next.title :
-                  next.title
-                }
-              </span>
-            </div>
-
-            <span className="fa fa-chevron-right fs-lg" aria-hidden={true} />
-          </LinkButton>
-        }
-      </nav>
-    )
-  }
-
-  return null
-}
-
-ChapterNavigation.propTypes = {
-  path: T.string.isRequired,
-  chapter: T.shape(
-    ChapterTypes.propTypes
-  ),
-  treeData: T.object,
-  internalNotes: T.bool
-}
+import {LessonPlayerNav} from '#/plugin/lesson/resources/lesson/player/components/nav'
+import {hasPermission} from '#/main/app/security'
 
 const Chapter = props => {
   const history = useHistory()
@@ -105,11 +35,13 @@ const Chapter = props => {
     )
   }
 
+  const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const canEdit = hasPermission('edit', resourceNode)
+  const downloadable = useSelector(resourceSelectors.downloadable)
+
   const lesson = useSelector(selectors.lesson)
   const showNavigation = useSelector(selectors.showNavigation)
   const numbering = useSelector(selectors.numbering)
-  const downloadable = useSelector(resourceSelectors.downloadable)
-
   const chapterNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
 
   const downloadChapter = useCallback(() => {
@@ -123,7 +55,7 @@ const Chapter = props => {
   }, [lesson.id, props.chapter.slug])
 
   return (
-    <PageContent className="d-flex flex-column">
+    <>
       <PageHeading
         size="md"
         poster={props.chapter.poster}
@@ -146,7 +78,8 @@ const Chapter = props => {
             icon: 'fa fa-fw fa-plus',
             label: trans('add_subpage', {}, 'actions'),
             target: `${props.path}/new/${props.chapter.slug}`,
-            group: trans('management')
+            group: trans('management'),
+            displayed: canEdit
           }, {
             name: 'edit',
             type: LINK_BUTTON,
@@ -154,14 +87,16 @@ const Chapter = props => {
             label: trans('edit', {}, 'actions'),
             target: `${props.path}/${props.chapter.slug}/edit`,
             group: trans('management'),
-            exact: true
+            exact: true,
+            displayed: canEdit
           }, {
             name: 'move',
             type: CALLBACK_BUTTON,
             icon: 'fa fa-fw fa-arrows',
             label: trans('move', {}, 'actions'),
             callback: () => true,
-            group: trans('management')
+            group: trans('management'),
+            displayed: canEdit
           }, {
             name: 'show-history',
             type: MODAL_BUTTON,
@@ -181,7 +116,8 @@ const Chapter = props => {
             confirm: {
               message: trans('page_delete_message', {}, 'lesson'),
               additional: trans('irreversible_action_confirm')
-            }
+            },
+            displayed: canEdit
           }
         ]}
       />
@@ -223,13 +159,12 @@ const Chapter = props => {
       }
 
       {showNavigation &&
-        <ChapterNavigation
+        <LessonPlayerNav
           path={props.path}
-          chapter={props.chapter}
           treeData={props.treeData}
         />
       }
-    </PageContent>
+    </>
   )
 }
 

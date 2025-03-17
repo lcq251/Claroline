@@ -119,7 +119,7 @@ const PlatformMenu = (props) => {
               </li>
             ))}
 
-            <li>
+            {/*<li>
               <Button
                 type={MENU_BUTTON}
                 className="app-context-btn focus-ring"
@@ -134,7 +134,7 @@ const PlatformMenu = (props) => {
                   )
                 }}
               />
-            </li>
+            </li>*/}
           </ul>
         </>
       }

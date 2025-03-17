@@ -77,12 +77,12 @@
 .app-page-body {
     display: flex;
     flex-direction: row;
-    flex: 1;
+    flex: 1 1 auto;
 }
 
 .app-page-content {
     height: 100%;
-    flex: 1;
+    flex: 1 1 auto;
 }
 
 .app-page-aside {
