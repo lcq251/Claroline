@@ -35,7 +35,7 @@ final class Version20241206102033 extends AbstractMigration
             DROP expandComments
         ');
         $this->addSql('
-            DELETE FROM claro_forum_message WHERE moderation IS NOT NULL AND moderation != "NONE" 
+            DELETE FROM claro_forum_message WHERE moderation IS NOT NULL AND moderation != "NONE" AND first = 0
         ');
         $this->addSql('
             ALTER TABLE claro_forum_message 
