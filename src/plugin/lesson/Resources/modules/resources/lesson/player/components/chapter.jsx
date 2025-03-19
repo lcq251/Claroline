@@ -10,8 +10,6 @@ import {ContentLoader} from '#/main/app/content/components/loader'
 import {PageHeading, PageSection} from '#/main/app/page'
 import {Content} from '#/main/app/components/content'
 import {Html} from '#/main/app/components/html'
-import {UserMicro} from '#/main/core/user/components/micro'
-import {Datetime} from '#/main/app/components/date'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
@@ -21,6 +19,7 @@ import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {MODAL_PAGE_HISTORY} from '#/plugin/lesson/resources/lesson/modals/history'
 import {LessonPlayerNav} from '#/plugin/lesson/resources/lesson/player/components/nav'
 import {hasPermission} from '#/main/app/security'
+import {ContentPublication} from '#/main/app/content/components/publication'
 
 const Chapter = props => {
   const history = useHistory()
@@ -126,18 +125,10 @@ const Chapter = props => {
         <Content
           placeholder={trans('no_content')}
           meta={
-            <>
-              <UserMicro
-                {...get(props.chapter, 'meta.creator', {})}
-                link={true}
-              />
-
-              <span>-</span>
-
-              {get(props.chapter, 'meta.createdAt') &&
-                <Datetime value={get(props.chapter, 'meta.createdAt')} long={true} />
-              }
-            </>
+            <ContentPublication
+              user={get(props.chapter, 'meta.creator', {})}
+              publishedAt={get(props.chapter, 'meta.createdAt')}
+            />
           }
         >
           {props.chapter.text}

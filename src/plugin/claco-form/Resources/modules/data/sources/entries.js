@@ -2,12 +2,10 @@ import {createElement} from 'react'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
-
-import {DataCard} from '#/main/app/data/components/card'
-import {UserAvatar} from '#/main/app/user/components/avatar'
 import {displayDate} from '#/main/app/intl/date'
 import {constants as intlConstants} from '#/main/app/intl/constants'
+import {LINK_BUTTON} from '#/main/app/buttons'
+import {DataCard} from '#/main/app/data/components/card'
 
 import {canViewEntryMetadata, isEntryManager, isEntryOwner} from '#/plugin/claco-form/resources/claco-form/permissions'
 
@@ -213,22 +211,6 @@ export default (clacoForm, canViewMetadata = false, canEdit = false, isCategoryM
           }), {}) : {}
         },
         calculated: (rowData) => rowData.categories ? rowData.categories.map(c => c.id) : []
-      }, {
-        name: 'keywords',
-        label: trans('keywords', {}, 'clacoform'),
-        type: 'choice',
-        displayed: hasKeywords,
-        displayable: hasKeywords,
-        filterable: hasKeywords,
-        sortable: hasKeywords,
-        options: {
-          multiple: true,
-          condensed: true, // for search
-          choices: clacoForm.keywords ? clacoForm.keywords.reduce((acc, keyword) => Object.assign(acc, {
-            [keyword.id]: keyword.name
-          }), {}) : {}
-        },
-        calculated: (rowData) => rowData.keywords ? rowData.keywords.map(c => c.id) : []
       }
     ].concat(
       // Fields defined in ClacoForm
@@ -265,9 +247,11 @@ export default (clacoForm, canViewMetadata = false, canEdit = false, isCategoryM
     ),
     card: (props) => createElement(DataCard, Object.assign({}, props, {
       id: props.data.id,
-      icon: createElement(UserAvatar, {user: props.data.user}),
+      poster: get(props.data, 'user.picture'),
+      icon: 'fa fa-user',
+      name: get(props.data, 'user.creator.name'),
+      asIcon: true,
       title: getCardValue(clacoForm, props.data, 'title', currentUser),
-      subtitle: getCardValue(clacoForm, props.data, 'subtitle', currentUser),
       contentText: getCardValue(clacoForm, props.data, 'content', currentUser)
     }))
   }

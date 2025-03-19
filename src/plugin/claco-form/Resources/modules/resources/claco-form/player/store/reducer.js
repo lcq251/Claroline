@@ -24,7 +24,6 @@ import {
   ENTRY_USER_RESET,
   ENTRY_CATEGORY_ADD,
   ENTRY_CATEGORY_REMOVE,
-  ENTRY_KEYWORD_ADD,
   ENTRY_KEYWORD_REMOVE,
   USED_COUNTRIES_LOAD
 } from '#/plugin/claco-form/resources/claco-form/player/store/actions'
@@ -77,63 +76,11 @@ const reducer = combineReducers({
         }
 
         return newState
-      },
-      [ENTRY_KEYWORD_ADD]: (state, action) => {
-        const newState = cloneDeep(state)
-        const keyword = newState['keywords'].find(k => k.name.toUpperCase() === action.keyword.name.toUpperCase())
-
-        if (!keyword) {
-          newState['keywords'].push(action.keyword)
-        }
-
-        return newState
-      },
-      [ENTRY_KEYWORD_REMOVE]: (state, action) => {
-        const newState = cloneDeep(state)
-        const index = newState['keywords'].findIndex(k => k.id === action.keywordId)
-
-        if (index > -1) {
-          newState['keywords'].splice(index, 1)
-        }
-
-        return newState
-      },
-      [ENTRY_COMMENT_ADD]: (state, action) => {
-        const newState = cloneDeep(state)
-        const comment = newState['comments'].find(c => c.id === action.comment.id)
-
-        if (!comment) {
-          newState['comments'].unshift(action.comment)
-        }
-
-        return newState
-      },
-      [ENTRY_COMMENT_UPDATE]: (state, action) => {
-        const newState = cloneDeep(state)
-        const index = newState['comments'].findIndex(c => c.id === action.comment.id)
-
-        if (index > -1) {
-          newState['comments'][index] = action.comment
-        }
-
-        return newState
-      },
-      [ENTRY_COMMENT_REMOVE]: (state, action) => {
-        const newState = cloneDeep(state)
-        const index = newState['comments'].findIndex(c => c.id === action.commentId)
-
-        if (index > -1) {
-          newState['comments'].splice(index, 1)
-        }
-
-        return newState
       }
     }),
     pendingChanges: makeReducer(false, {
       [ENTRY_CATEGORY_ADD]: () => true,
-      [ENTRY_CATEGORY_REMOVE]: () => true,
-      [ENTRY_KEYWORD_ADD]: () => true,
-      [ENTRY_KEYWORD_REMOVE]: () => true
+      [ENTRY_CATEGORY_REMOVE]: () => true
     })
   }),
   entryUser: makeReducer({}, {

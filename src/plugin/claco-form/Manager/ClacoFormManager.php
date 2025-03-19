@@ -304,15 +304,14 @@ class ClacoFormManager
         $this->om->flush();
     }
 
-    public function createEntryUser(Entry $entry, User $user, bool $shared = false, bool $notifyEdition = false, bool $notifyComment = false, bool $notifyVote = false): EntryUser
+    public function createEntryUser(Entry $entry, User $user, bool $shared = false, bool $notifyEdition = false): EntryUser
     {
         $entryUser = new EntryUser();
         $entryUser->setEntry($entry);
         $entryUser->setUser($user);
         $entryUser->setShared($shared);
         $entryUser->setNotifyEdition($notifyEdition);
-        $entryUser->setNotifyComment($notifyComment);
-        $entryUser->setNotifyVote($notifyVote);
+
         $this->om->persist($entryUser);
         $this->om->flush();
 

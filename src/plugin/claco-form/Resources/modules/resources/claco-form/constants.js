@@ -19,25 +19,13 @@ const CHOICE_ADD = 'add'
 const CHOICE_ALL = 'all'
 const CHOICE_NONE = 'none'
 
-const CHOICE_DOWN = 'down'
-const CHOICE_UP = 'up'
-const CHOICE_BOTH = 'both'
-
 const CHOICE_MANAGER = 'manager'
-const CHOICE_ANONYMOUS = 'anonymous'
 
 const DEFAULT_HOME_CHOICES = {
-  [CHOICE_MENU]: trans('menu', {}, 'clacoform'),
+  [CHOICE_MENU]: trans('home', {}, 'clacoform'),
   [CHOICE_RANDOM]: trans('random_mode', {}, 'clacoform'),
   [CHOICE_SEARCH]: trans('search_mode', {}, 'clacoform'),
   [CHOICE_ADD]: trans('entry_addition', {}, 'clacoform')
-}
-
-const MENU_POSITION_CHOICES = {
-  [CHOICE_DOWN]: trans('choice_menu_position_down', {}, 'clacoform'),
-  [CHOICE_UP]: trans('choice_menu_position_up', {}, 'clacoform'),
-  [CHOICE_BOTH]: trans('both', {}, 'clacoform'),
-  [CHOICE_NONE]: trans('none')
 }
 
 const DISPLAY_METADATA_CHOICES = {
@@ -46,19 +34,11 @@ const DISPLAY_METADATA_CHOICES = {
   [CHOICE_MANAGER]: trans('choice_manager_only', {}, 'clacoform')
 }
 
-const MODERATE_COMMENTS_CHOICES = {
-  [CHOICE_ALL]: trans('yes'),
-  [CHOICE_NONE]: trans('no'),
-  [CHOICE_ANONYMOUS]: trans('choice_anonymous_comments_only', {}, 'clacoform')
-}
-
 export const constants = {
   FILE_TYPES,
   ENTRY_STATUS_PENDING,
   ENTRY_STATUS_PUBLISHED,
   ENTRY_STATUS_UNPUBLISHED,
   DEFAULT_HOME_CHOICES,
-  MENU_POSITION_CHOICES,
-  DISPLAY_METADATA_CHOICES,
-  MODERATE_COMMENTS_CHOICES
+  DISPLAY_METADATA_CHOICES
 }

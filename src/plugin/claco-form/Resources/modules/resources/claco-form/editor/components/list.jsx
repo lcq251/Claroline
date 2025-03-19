@@ -28,7 +28,7 @@ const generateDisplayList = (fields = []) => {
 
 const EditorList = () => {
   const clacoForm = useSelector(selectors.clacoForm)
-  const categories = useSelector(selectors.categories)
+
 
   return (
     <EditorPage
@@ -40,48 +40,9 @@ const EditorList = () => {
           title: trans('general'),
           fields: [
             {
-              name: 'details.search_enabled',
-              type: 'boolean',
-              label: trans('label_search_enabled', {}, 'clacoform')
-            }, {
-              name: 'random.enabled',
-              type: 'boolean',
-              label: trans('label_random_enabled', {}, 'clacoform'),
-              linked: [
-                {
-                  name: 'random.categories',
-                  type: 'choice',
-                  label: trans('label_random_categories', {}, 'clacoform'),
-                  displayed: (clacoForm) => !isEmpty(categories) && get(clacoForm, 'random.enabled', false),
-                  options: {
-                    multiple: true,
-                    condensed: false,
-                    inline: false,
-                    choices: categories ? categories.reduce((acc, cat) => Object.assign(acc, {
-                      [cat.id]: cat.name
-                    }), {}) : {}
-                  }
-                }, {
-                  name: 'random.dates',
-                  type: 'date-range',
-                  label: trans('label_random_dates', {}, 'clacoform'),
-                  displayed: (clacoForm) => get(clacoForm, 'random.enabled', false)
-                }
-              ]
-            }, {
               name: 'details.display_title',
               type: 'choice',
               label: trans('field_for_title', {}, 'clacoform'),
-              required: true,
-              options: {
-                noEmpty: true,
-                condensed: true,
-                choices: generateDisplayList(clacoForm.fields)
-              }
-            }, {
-              name: 'details.display_subtitle',
-              type: 'choice',
-              label: trans('field_for_subtitle', {}, 'clacoform'),
               required: true,
               options: {
                 noEmpty: true,

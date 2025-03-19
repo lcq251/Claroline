@@ -14,11 +14,14 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\FacetManager'
 
-    Claroline\ClacoFormBundle\Serializer\EntryUserSerializer: ~
+    Claroline\ClacoFormBundle\Serializer\EntryUserSerializer:
+        arguments:
+            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
     Claroline\ClacoFormBundle\Serializer\EntrySerializer:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.authorization_checker'
             - '@Claroline\ClacoFormBundle\Serializer\CategorySerializer'
             - '@Claroline\ClacoFormBundle\Serializer\CommentSerializer'
             - '@Claroline\ClacoFormBundle\Serializer\KeywordSerializer'

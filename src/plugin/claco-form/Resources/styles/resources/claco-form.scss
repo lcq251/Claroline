@@ -16,46 +16,6 @@
     @include border-radius($border-radius);
 }
 
-// same as announce
-.entry-meta {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    color: var(--#{$prefix}secondary-color);
-    background: var(--#{$prefix}tertiary-bg);
-    padding: 5px 10px;
-    margin-bottom: $component-margin-bottom;
-
-    .entry-info {
-        flex: 1 0 auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-
-        .date {
-            padding: 0 10px;
-            font-size: $font-size-sm;
-            font-style: italic;
-        }
-    }
-
-    .entry-actions {
-        margin-left: auto;
-        padding-left: 10px;
-        border-left: 1px solid #ccc;
-
-        .btn {
-            padding: 0;
-            + .btn {
-                margin-left: 5px;
-            }
-        }
-    }
-}
-
 .entry-footer {
     .title {
         display: inline-block;
@@ -80,8 +40,4 @@
             margin-left: 5px;
         }
     }
-}
-
-.entry-menu {
-    text-align: right;
 }

@@ -8,6 +8,32 @@ import {PageActions} from '#/main/app/page/components/actions'
 import {PagePoster} from '#/main/app/page/components/poster'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
+import {TextSkeleton} from '#/main/app/components/placeholder'
+
+const PageHeadingSkeleton = (props) => {
+  return (
+    <header className={classes('app-page-heading placeholder-glow px-4 mb-5', props.className, props.size && `content-${props.size}`)}>
+      <h1 className="h1 app-page-title mt-5 mb-0">
+        {(props.eyebrow) &&
+          <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2 w-25 placeholder rounded-1" role="presentation">&nbsp;</span>
+        }
+
+        <span className="placeholder rounded-1 w-75">&nbsp;</span>
+      </h1>
+
+      {props.description &&
+        <TextSkeleton className="lead text-body-secondary mt-3 mb-0" rows={3} />
+      }
+    </header>
+  )
+}
+
+PageHeadingSkeleton.propTypes = {
+  className: T.string,
+  size: T.oneOf(['sm', 'md', 'lg', 'full']),
+  eyebrow: T.bool,
+  description: T.bool
+}
 
 const PageHeading = props =>
   <>
@@ -39,8 +65,8 @@ const PageHeading = props =>
         'mt-2': !!props.icon || !!props.backAction
       })} role="presentation">
         <h1 className="h1 app-page-title m-0">
-          {props.subtitle &&
-            <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2" role="presentation">{props.subtitle}</span>
+          {(props.subtitle || props.eyebrow) &&
+            <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2" role="presentation">{props.subtitle || props.eyebrow}</span>
           }
 
           {props.title}
@@ -84,7 +110,11 @@ PageHeading.propTypes = {
    */
   icon: T.element,
   title: T.oneOfType([T.string, T.element]).isRequired,
+  /**
+   * @deprecated use eyebrow.
+   */
   subtitle: T.string,
+  eyebrow: T.string,
   description: T.string,
   primaryAction: T.string,
   secondaryAction: T.string,
@@ -104,5 +134,6 @@ PageHeading.propTypes = {
 }
 
 export {
-  PageHeading
+  PageHeading,
+  PageHeadingSkeleton
 }

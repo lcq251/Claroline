@@ -3,10 +3,11 @@ import classes from 'classnames'
 
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ContentTitle} from '#/main/app/content/components/title'
-import {PageSection} from '#/main/app/page'
+import {PageHeading, PageSection} from '#/main/app/page'
+import {PageHeadingSkeleton} from '#/main/app/page/components/heading'
 
 const ExampleContent = () =>
-  <PageSection size="lg">
+  <PageSection size="lg" className="pb-5">
     <ContentTitle title="Titles" />
 
     <ContentTitle title="Title 1" level={1} numbering={1} />
@@ -30,7 +31,7 @@ const ExampleContent = () =>
     )}
 
     <hr className="my-5" />
-    <ContentTitle title="Placeholders" />
+    <ContentTitle title="Empty states" />
 
     <ContentPlaceholder
       className="mb-3"
@@ -56,6 +57,18 @@ const ExampleContent = () =>
       className="mb-3"
       title="No content found."
       size="sm"
+    />
+
+    <hr className="my-5" />
+    <PageHeading
+      eyebrow="Eyebrow"
+      title="Page heading title"
+      description="Nulla aliquam condimentum ipsum sit amet bibendum. Nulla nec gravida augue. Integer quis felis vel massa interdum tristique sed at tellus. Sed congue fringilla orci at rutrum. Curabitur id nibh pulvinar massa volutpat auctor a sit amet dui."
+    />
+
+    <PageHeadingSkeleton
+      eyebrow={true}
+      description={true}
     />
   </PageSection>
 

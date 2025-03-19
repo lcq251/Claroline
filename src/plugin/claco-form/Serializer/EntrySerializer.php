@@ -2,7 +2,6 @@
 
 namespace Claroline\ClacoFormBundle\Serializer;
 
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -23,6 +22,7 @@ use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Manager\FacetManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EntrySerializer
 {
@@ -36,6 +36,7 @@ class EntrySerializer
 
     public function __construct(
         ObjectManager $om,
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly CategorySerializer $categorySerializer,
         private readonly CommentSerializer $commentSerializer,
         private readonly KeywordSerializer $keywordSerializer,
@@ -92,11 +93,17 @@ class EntrySerializer
             $serialized['values'] = $fieldValues;
         }
 
-        if (!in_array(Options::SERIALIZE_MINIMAL, $options)) {
+        if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
+            $isAdmin = $this->authorization->isGranted('ADMINISTRATE', $entry);
+            $serialized['permissions'] = [
+                'open' => $isAdmin || $this->authorization->isGranted('OPEN', $entry),
+                'edit' => $isAdmin || $this->authorization->isGranted('EDIT', $entry),
+                'administrate' => $isAdmin,
+                'delete' => $isAdmin || $this->authorization->isGranted('DELETE', $entry),
+            ];
+
             $serialized = array_merge($serialized, [
                 'categories' => $this->getCategories($entry),
-                'keywords' => $this->getKeywords($entry),
-                'comments' => $this->getComments($entry),
             ]);
         }
 
@@ -199,7 +206,7 @@ class EntrySerializer
     {
         return array_map(
             function (Category $category) {
-                return $this->categorySerializer->serialize($category);
+                return $this->categorySerializer->serialize($category, [SerializerInterface::SERIALIZE_MINIMAL]);
             },
             $entry->getCategories()
         );

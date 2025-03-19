@@ -8,7 +8,7 @@ import {
 } from '#/main/app/page/components/body'
 
 import {PagePoster} from '#/main/app/page/components/poster'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageListSection} from '#/main/app/page/components/list-section'
 import {PageContentList} from '#/main/app/page/components/list-section'
@@ -22,6 +22,7 @@ export {
   PageContentList,
   PagePoster,
   PageHeading,
+  PageHeadingSkeleton,
   PageSection,
   PageListSection,
   PageTabbedSection

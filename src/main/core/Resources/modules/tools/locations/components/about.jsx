@@ -22,7 +22,7 @@ const LocationAbout = (props) =>
       <DetailsData
         className="mt-3"
         name={`${selectors.STORE_NAME}.current`}
-        sections={[
+        definition={[
           {
             title: trans('general'),
             primary: true,

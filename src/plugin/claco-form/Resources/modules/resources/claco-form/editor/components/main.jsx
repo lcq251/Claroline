@@ -1,5 +1,4 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
@@ -9,37 +8,31 @@ import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
 
 import {EditorParameters} from '#/plugin/claco-form/resources/claco-form/editor/components/parameters'
 import {EditorCategories} from '#/plugin/claco-form/resources/claco-form/editor/components/categories'
-import {EditorComments} from '#/plugin/claco-form/resources/claco-form/editor/components/comments'
-import {EditorKeywords} from '#/plugin/claco-form/resources/claco-form/editor/components/keywords'
 import {EditorList} from '#/plugin/claco-form/resources/claco-form/editor/components/list'
 import {ClacoFormEditorActions} from '#/plugin/claco-form/resources/claco-form/editor/components/actions'
 import {ClacoFormEditorEntries} from '#/plugin/claco-form/resources/claco-form/editor/components/entries'
 import {ClacoFormEditorAppearance} from '#/plugin/claco-form/resources/claco-form/editor/components/appearance'
+import {ClacoFormEditorPermissions} from '#/plugin/claco-form/resources/claco-form/editor/components/permissions'
 
-const ClacoFormEditor = (props) => {
+const ClacoFormEditor = () => {
   const clacoForm = useSelector(selectors.clacoForm)
   const categories = useSelector(selectors.categories)
-  const keywords = useSelector(selectors.keywords)
 
   return (
     <ResourceEditor
       additionalData={() => ({
         resource: clacoForm,
-        categories: categories,
-        keywords: keywords
+        categories: categories
       })}
       appearancePage={ClacoFormEditorAppearance}
+      permissionsPage={ClacoFormEditorPermissions}
       actionsPage={ClacoFormEditorActions}
       pages={[
         {
           name: 'parameters',
           icon: 'fa fa-fw fa-cog',
           title: trans('parameters'),
-          render: () => (
-            <EditorParameters
-              validateTemplate={props.validateTemplate}
-            />
-          )
+          component: EditorParameters
         }, {
           name: 'entries',
           icon: 'fa fa-fw fa-file',
@@ -59,10 +52,6 @@ const ClacoFormEditor = (props) => {
       ]}
     />
   )
-}
-
-ClacoFormEditor.propTypes = {
-  validateTemplate: T.func.isRequired
 }
 
 export {

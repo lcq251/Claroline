@@ -6,8 +6,6 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
-import {UserMicro} from '#/main/core/user/components/micro'
-import {Datetime} from '#/main/app/components/date'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
@@ -15,6 +13,7 @@ import {PageHeading} from '#/main/app/page/components/heading'
 import {Content} from '#/main/app/components/content'
 import {ToolPage} from '#/main/core/tool'
 import {ContentLoader} from '#/main/app/content/components/loader'
+import {ContentPublication} from '#/main/app/content/components/publication'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()
@@ -91,18 +90,10 @@ const AnnouncementPost = (props) => {
           <Content
             placeholder={trans('no_content')}
             meta={
-              <>
-                <UserMicro
-                  {...get(props.announcement, 'meta.creator', {})}
-                  link={true}
-                />
-
-                <span>-</span>
-
-                {get(props.announcement, 'meta.publishedAt') &&
-                  <Datetime value={get(props.announcement, 'meta.publishedAt')} long={true} />
-                }
-              </>
+              <ContentPublication
+                user={get(props.announcement, 'meta.creator', {})}
+                publishedAt={get(props.announcement, 'meta.publishedAt')}
+              />
             }
             tags={props.announcement.tags}
           >

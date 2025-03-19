@@ -2,11 +2,11 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\ClacoFormBundle\Repository\EntryUserRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\ClacoFormBundle\Repository\EntryUserRepository;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_clacoformbundle_entry_user')]
@@ -17,102 +17,62 @@ class EntryUser
     use Id;
     use Uuid;
 
-    /**
-     *
-     * @var Entry
-     */
     #[ORM\JoinColumn(name: 'entry_id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Entry::class, inversedBy: 'entryUsers')]
-    protected ?Entry $entry = null;
+    private ?Entry $entry = null;
 
-    /**
-     *
-     * @var User
-     */
     #[ORM\JoinColumn(name: 'user_id', onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    protected ?User $user = null;
+    private ?User $user = null;
 
     #[ORM\Column(name: 'shared', type: Types::BOOLEAN)]
-    protected $shared = false;
+    private bool $shared = false;
 
     #[ORM\Column(name: 'notify_edition', type: Types::BOOLEAN)]
-    protected $notifyEdition = false;
-
-    #[ORM\Column(name: 'notify_comment', type: Types::BOOLEAN)]
-    protected $notifyComment = false;
-
-    #[ORM\Column(name: 'notify_vote', type: Types::BOOLEAN)]
-    protected $notifyVote = false;
+    private bool $notifyEdition = false;
 
     public function __construct()
     {
         $this->refreshUuid();
     }
 
-    /**
-     * @return Entry
-     */
-    public function getEntry()
+    public function getEntry(): ?Entry
     {
         return $this->entry;
     }
 
-    public function setEntry(Entry $entry)
+    public function setEntry(Entry $entry): void
     {
         $this->entry = $entry;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
 
-    public function isShared()
+    public function isShared(): bool
     {
         return $this->shared;
     }
 
-    public function setShared($shared)
+    public function setShared(bool $shared): void
     {
         $this->shared = $shared;
     }
 
-    public function getNotifyEdition()
+    public function getNotifyEdition(): bool
     {
         return $this->notifyEdition;
     }
 
-    public function setNotifyEdition($notifyEdition)
+    public function setNotifyEdition(bool $notifyEdition): void
     {
         $this->notifyEdition = $notifyEdition;
-    }
-
-    public function getNotifyComment()
-    {
-        return $this->notifyComment;
-    }
-
-    public function setNotifyComment($notifyComment)
-    {
-        $this->notifyComment = $notifyComment;
-    }
-
-    public function getNotifyVote()
-    {
-        return $this->notifyVote;
-    }
-
-    public function setNotifyVote($notifyVote)
-    {
-        $this->notifyVote = $notifyVote;
     }
 }

@@ -5,7 +5,6 @@ import {trans, displayDate} from '#/main/app/intl'
 
 import {getCountry, generateFieldKey} from '#/plugin/claco-form/resources/claco-form/utils'
 
-// TODO : find a way to use data api instead of big switch
 function generateFromTemplate(template, fields, entry, isOwner = false, isManager = false) {
   let generated = template.replace('%clacoform_entry_title%', entry.title)
 
@@ -71,7 +70,7 @@ function generateFromTemplate(template, fields, entry, isOwner = false, isManage
   return generated
 }
 
-function getTemplateErrors(template, fields) {
+function getTemplateErrors(template, fields = []) {
   const errors = []
 
   if (template) {
@@ -109,10 +108,10 @@ function getTemplateErrors(template, fields) {
   return errors
 }
 
-function getTemplateHelp(fields) {
+function getTemplateHelp(fields = [], titleLabel = null) {
   return [
     trans('template_variables_message', {}, 'clacoform'),
-    `${trans('title')} : %clacoform_entry_title% (${trans('required')})`
+    `${titleLabel || trans('title')} : %clacoform_entry_title% (${trans('required')})`
   ].concat(fields
     .map(field => field.required ?
       `${field.label} : ${generateFieldKey(field.id)}`

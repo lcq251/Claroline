@@ -131,9 +131,7 @@ const canAdministrate = createSelector(
 )
 
 const canSearchEntry = createSelector(
-  resourceSelect.resourceNode,
-  isAnon,
-  params,
+  [resourceSelect.resourceNode, isAnon, params],
   (resourceNode, isAnon, params) => hasPermission('edit', resourceNode) || !isAnon || (params && params['search_enabled'])
 )
 

@@ -46,7 +46,6 @@ const Category = {
       notify_addition: T.bool,
       notify_edition: T.bool,
       notify_removal: T.bool,
-      notify_pending_comment: T.bool,
       color: T.string
     }),
     managers: T.arrayOf(T.shape({

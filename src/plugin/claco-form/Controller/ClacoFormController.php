@@ -168,9 +168,10 @@ class ClacoFormController
      * Retrieves list of users the entry is shared with.
      */
     #[Route(path: '/entry/{entry}/shared/users/list', name: 'claro_claco_form_entry_shared_users_list', methods: ['GET'])]
-    public function entrySharedUsersListAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry): JsonResponse
-    {
+    public function entrySharedUsersListAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry
+    ): JsonResponse {
         $this->clacoFormManager->checkEntryShareRight($entry);
 
         $results = $this->finder->searchEntities(EntryUser::class, [
@@ -188,9 +189,11 @@ class ClacoFormController
      * Shares entry ownership to users.
      */
     #[Route(path: '/entry/{entry}/users/share', name: 'claro_claco_form_entry_users_share', methods: ['PUT'])]
-    public function entryUsersShareAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, Request $request): JsonResponse
-    {
+    public function entryUsersShareAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry,
+        Request $request
+    ): JsonResponse {
         $this->clacoFormManager->checkEntryShareRight($entry);
 
         $usersIds = $request->get('ids', false);
@@ -205,9 +208,11 @@ class ClacoFormController
      * Unshares entry ownership from user.
      */
     #[Route(path: '/entry/{entry}/unshare', name: 'claro_claco_form_entry_user_unshare', methods: ['DELETE'])]
-    public function entryUserUnshareAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, Request $request): JsonResponse
-    {
+    public function entryUserUnshareAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry,
+        Request $request
+    ): JsonResponse {
         $this->clacoFormManager->checkEntryShareRight($entry);
 
         $users = $this->decodeIdsString($request, User::class);
@@ -225,9 +230,10 @@ class ClacoFormController
      * Exports entries.
      */
     #[Route(path: '/{clacoForm}/entries/export', name: 'claro_claco_form_entries_export', methods: ['GET'])]
-    public function clacoFormEntriesExportAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
-        ClacoForm $clacoForm): BinaryFileResponse
-    {
+    public function clacoFormEntriesExportAction(
+        #[MapEntity(mapping: ['clacoForm' => 'uuid'])]
+        ClacoForm $clacoForm
+    ): BinaryFileResponse {
         $this->checkPermission('EDIT', $clacoForm->getResourceNode(), [], true);
 
         $export = $this->exportManager->exportEntries($clacoForm);
@@ -241,11 +247,13 @@ class ClacoFormController
      * Changes owner of an entry.
      */
     #[Route(path: '/entry/{entry}/user/{user}/change', name: 'claro_claco_form_entry_user_change', methods: ['PUT'])]
-    public function entryOwnerChangeAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, #[MapEntity(class: 'Claroline\CoreBundle\Entity\User', mapping: ['user' => 'uuid'])]
-        User $user): JsonResponse
-    {
-        $this->checkPermission('ADMINISTRATE', $entry->getClacoForm()->getResourceNode(), [], true);
+    public function entryOwnerChangeAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry,
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user
+    ): JsonResponse {
+        $this->checkPermission('ADMINISTRATE', $entry, [], true);
 
         $updatedEntry = $this->clacoFormManager->changeEntryOwner($entry, $user);
         $serializedEntry = $this->serializer->serialize($updatedEntry);
@@ -257,10 +265,11 @@ class ClacoFormController
      * Switches lock of an entry.
      */
     #[Route(path: '/entry/{entry}/lock/switch', name: 'claro_claco_form_entry_lock_switch', methods: ['PUT'])]
-    public function entryLockSwitchAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry): JsonResponse
-    {
-        $this->checkPermission('ADMINISTRATE', $entry->getClacoForm()->getResourceNode(), [], true);
+    public function entryLockSwitchAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry
+    ): JsonResponse {
+        $this->checkPermission('ADMINISTRATE', $entry, [], true);
 
         $updatedEntry = $this->clacoFormManager->switchEntryLock($entry);
         $serializedEntry = $this->serializer->serialize($updatedEntry);

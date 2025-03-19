@@ -5,10 +5,8 @@ namespace Claroline\ClacoFormBundle\Serializer;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\ClacoFormBundle\Entity\Category;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
 use Claroline\ClacoFormBundle\Entity\Field;
-use Claroline\ClacoFormBundle\Entity\Keyword;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 
 class ClacoFormSerializer
@@ -50,7 +48,6 @@ class ClacoFormSerializer
             // TODO : use camelCase
             'details' => [
                 'max_entries' => $clacoForm->getMaxEntries(),
-                'creation_enabled' => $clacoForm->isCreationEnabled(),
                 'edition_enabled' => $clacoForm->isEditionEnabled(),
                 'moderated' => $clacoForm->isModerated(),
                 'default_home' => $clacoForm->getDefaultHome(),
@@ -79,7 +76,7 @@ class ClacoFormSerializer
 
             'display' => [
                 'statistics' => $clacoForm->hasStatistics(),
-                'showEntryNav' => $clacoForm->getShowEntryNav(),
+                // 'showEntryNav' => $clacoForm->getShowEntryNav(),
                 'showConfirm' => $clacoForm->getShowConfirm(),
                 'confirmMessage' => $clacoForm->getConfirmMessage(),
             ],

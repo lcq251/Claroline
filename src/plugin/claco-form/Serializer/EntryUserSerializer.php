@@ -2,58 +2,45 @@
 
 namespace Claroline\ClacoFormBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\ClacoFormBundle\Entity\EntryUser;
+use Claroline\CommunityBundle\Serializer\UserSerializer;
 
 class EntryUserSerializer
 {
     use SerializerTrait;
 
-    /**
-     * Serializes an EntryUser entity for the JSON api.
-     *
-     * @param EntryUser $entryUser - the entry user to serialize
-     * @param array     $options   - a list of serialization options
-     *
-     * @return array - the serialized representation of the entry user
-     */
-    public function serialize(EntryUser $entryUser, array $options = [])
-    {
-        $serialized = [
-            'id' => $entryUser->getUuid(),
-            'autoId' => $entryUser->getId(),
-            'entry' => [
-                'id' => $entryUser->getEntry()->getUuid(),
-            ],
-            'user' => [
-                'id' => $entryUser->getUser()->getUuid(),
-            ],
-            'shared' => $entryUser->isShared(),
-            'notifyEdition' => $entryUser->getNotifyEdition(),
-            'notifyComment' => $entryUser->getNotifyComment(),
-            'notifyVote' => $entryUser->getNotifyVote(),
-        ];
-
-        return $serialized;
+    public function __construct(
+        private readonly UserSerializer $userSerializer
+    ) {
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'clacoform_entry_user';
     }
 
-    /**
-     * @param array $data
-     *
-     * @return EntryUser
-     */
-    public function deserialize($data, EntryUser $entryUser, array $options = [])
+    public function getClass(): string
+    {
+        return EntryUser::class;
+    }
+
+    public function serialize(EntryUser $entryUser, array $options = []): array
+    {
+        return [
+            'id' => $entryUser->getUuid(),
+            'user' => $this->userSerializer->serialize($entryUser->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]),
+            'shared' => $entryUser->isShared(),
+            'notifyEdition' => $entryUser->getNotifyEdition(),
+        ];
+    }
+
+    public function deserialize(array $data, EntryUser $entryUser, array $options = []): EntryUser
     {
         $this->sipe('id', 'setUuid', $data, $entryUser);
         $this->sipe('shared', 'setShared', $data, $entryUser);
         $this->sipe('notifyEdition', 'setNotifyEdition', $data, $entryUser);
-        $this->sipe('notifyComment', 'setNotifyComment', $data, $entryUser);
-        $this->sipe('notifyVote', 'setNotifyVote', $data, $entryUser);
 
         return $entryUser;
     }

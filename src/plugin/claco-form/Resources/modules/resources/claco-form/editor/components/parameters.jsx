@@ -1,41 +1,17 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
-import {useSelector} from 'react-redux'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {EditorPage} from '#/main/app/editor'
-import {selectors as editorSelectors} from '#/main/core/resource/editor'
 
-import {getTemplateHelp} from '#/plugin/claco-form/resources/claco-form/template'
 import {constants} from '#/plugin/claco-form/resources/claco-form/constants'
 
-const EditorParameters = (props) => {
-  const clacoForm = useSelector(editorSelectors.resource)
-  const errors = useSelector(editorSelectors.errors)
-
+const EditorParameters = () => {
   return (
     <EditorPage
       title={trans('parameters')}
       dataPart="resource"
       definition={[
         {
-          icon: 'fa fa-fw fa-home',
-          title: trans('overview'),
-          fields: [
-            {
-              name: 'details.default_home',
-              type: 'choice',
-              label: trans('label_default_home', {}, 'clacoform'),
-              required: true,
-              options: {
-                noEmpty: true,
-                condensed: true,
-                choices: constants.DEFAULT_HOME_CHOICES
-              }
-            }
-          ]
-        }, {
           id: 'display',
           icon: 'fa fa-fw fa-desktop',
           title: trans('display_parameters'),
@@ -44,52 +20,6 @@ const EditorParameters = (props) => {
               name: 'details.title_field_label',
               type: 'string',
               label: trans('title_field_label', {}, 'clacoform')
-            }, {
-              name: 'details.menu_position',
-              type: 'choice',
-              label: trans('label_menu_position', {}, 'clacoform'),
-              required: true,
-              options: {
-                noEmpty: true,
-                condensed: true,
-                choices: constants.MENU_POSITION_CHOICES
-              }
-            }, {
-              name: 'template.enabled',
-              label: trans('use_template', {}, 'clacoform'),
-              type: 'boolean',
-              linked: [
-                {
-                  name: 'template.content',
-                  type: 'html',
-                  label: trans('template', {}, 'clacoform'),
-                  help: getTemplateHelp(clacoForm.fields || []),
-                  displayed: (clacoForm) => get(clacoForm, 'template.enabled'),
-                  required: true,
-                  onChange: (template) => props.validateTemplate(template, clacoForm.fields, errors)
-                }
-              ]
-            }, {
-              name: 'display.showConfirm',
-              label: trans('show_confirm', {}, 'clacoform'),
-              type: 'boolean',
-              help: trans('show_confirm_help', {}, 'clacoform'),
-              linked: [
-                {
-                  name: 'display.confirmMessage',
-                  label: trans('confirm_message', {}, 'clacoform'),
-                  type: 'html',
-                  displayed: (resource) => get(resource, 'display.showConfirm')
-                }
-              ]
-            }, {
-              name: 'display.showEntryNav',
-              type: 'boolean',
-              label: trans('show_entry_nav', {}, 'clacoform')
-            }, {
-              name: 'display.statistics',
-              type: 'boolean',
-              label: trans('enable_statistics')
             }
           ]
         }, {
@@ -115,24 +45,12 @@ const EditorParameters = (props) => {
               options: {
                 min: 0
               }
-            }, {
-              name: 'details.edition_enabled',
-              type: 'boolean',
-              label: trans('label_edition_enabled', {}, 'clacoform')
-            }, {
-              name: 'details.moderated',
-              type: 'boolean',
-              label: trans('label_moderated', {}, 'clacoform')
             }
           ]
         }
       ]}
     />
   )
-}
-
-EditorParameters.propTypes = {
-  validateTemplate: T.func.isRequired
 }
 
 export {

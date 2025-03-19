@@ -10,11 +10,10 @@ import {Resource} from '#/main/core/resource'
 import {ClacoForm as ClacoFormTypes} from '#/plugin/claco-form/resources/claco-form/prop-types'
 import {Overview} from '#/plugin/claco-form/resources/claco-form/components/overview'
 import {Entries} from '#/plugin/claco-form/resources/claco-form/player/components/entries'
-import {EntryForm} from '#/plugin/claco-form/resources/claco-form/player/components/entry-form'
-import {Entry} from '#/plugin/claco-form/resources/claco-form/player/components/entry'
+import {EntryForm} from '#/plugin/claco-form/resources/claco-form/player/containers/entry-form'
+import {Entry} from '#/plugin/claco-form/resources/claco-form/player/containers/entry'
 import {StatsMain} from '#/plugin/claco-form/resources/claco-form/stats/containers/main'
-import {ClacoFormEditor} from '#/plugin/claco-form/resources/claco-form/editor/containers/main'
-
+import {ClacoFormEditor} from '#/plugin/claco-form/resources/claco-form/editor/components/main'
 
 function getHome(type) {
   switch (type) {
@@ -36,12 +35,10 @@ function getHome(type) {
 const ClacoFormResource = props =>
   <Resource
     {...omit(props)}
-    styles={['claroline-distribution-plugin-claco-form-resource']}
     menu={[
       {
         name: 'list',
         type: LINK_BUTTON,
-        /*icon: 'fa fa-fw fa-search',*/
         label: trans('entries_list', {}, 'clacoform'),
         displayed: props.canSearchEntry,
         target: `${props.path}/entries`,

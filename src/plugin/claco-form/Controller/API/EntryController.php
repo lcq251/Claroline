@@ -52,9 +52,11 @@ class EntryController extends AbstractCrudController
     }
 
     #[Route(path: '/clacoform/{clacoForm}/entries/list', name: 'claroform_list', methods: ['GET'])]
-    public function entriesListAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
-    ClacoForm $clacoForm, Request $request): JsonResponse
-    {
+    public function entriesListAction(
+        #[MapEntity(mapping: ['clacoForm' => 'uuid'])]
+        ClacoForm $clacoForm,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $clacoForm->getResourceNode(), [], true);
 
         $params = $request->query->all();
@@ -91,9 +93,11 @@ class EntryController extends AbstractCrudController
     }
 
     #[Route(path: '/clacoform/{clacoForm}/file/upload', name: 'file_upload', methods: ['POST'])]
-    public function uploadAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
-    ClacoForm $clacoForm, Request $request): JsonResponse
-    {
+    public function uploadAction(
+        #[MapEntity(mapping: ['clacoForm' => 'uuid'])]
+        ClacoForm $clacoForm,
+        Request $request
+    ): JsonResponse {
         $this->checkPermission('OPEN', $clacoForm->getResourceNode(), [], true);
 
         $files = $request->files->all();
@@ -108,12 +112,12 @@ class EntryController extends AbstractCrudController
 
     /**
      * Returns id of a random entry.
-     *
      */
     #[Route(path: '/{clacoForm}/random', name: 'random', methods: ['GET'])]
-    public function randomAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
-    ClacoForm $clacoForm): JsonResponse
-    {
+    public function randomAction(
+        #[MapEntity(mapping: ['clacoForm' => 'uuid'])]
+        ClacoForm $clacoForm
+    ): JsonResponse {
         $this->checkPermission('OPEN', $clacoForm->getResourceNode(), [], true);
 
         $entryId = $this->manager->getRandomEntryId($clacoForm);
@@ -123,7 +127,6 @@ class EntryController extends AbstractCrudController
 
     /**
      * Changes status of an entry.
-     *
      */
     #[Route(path: '/entry/{entry}/status/change', name: 'change_status', methods: ['PUT'])]
     public function changeStatusAction(#[MapEntity(mapping: ['entry' => 'uuid'])] Entry $entry): JsonResponse
@@ -145,9 +148,6 @@ class EntryController extends AbstractCrudController
 
     /**
      * Changes status of entries.
-     *
-     *
-     * @param int $status
      */
     #[Route(path: '/entries/status/{status}/change', name: 'change_status_bulk', methods: ['PUT'])]
     public function changeStatusBulkAction(int $status, Request $request): JsonResponse

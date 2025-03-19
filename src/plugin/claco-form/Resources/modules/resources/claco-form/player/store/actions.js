@@ -11,16 +11,11 @@ import {selectors} from '#/plugin/claco-form/resources/claco-form/store/selector
 const ENTRIES_UPDATE = 'ENTRIES_UPDATE'
 const ENTRY_CREATED = 'ENTRY_CREATED'
 const CURRENT_ENTRY_LOAD = 'CURRENT_ENTRY_LOAD'
-const ENTRY_COMMENT_ADD = 'ENTRY_COMMENT_ADD'
-const ENTRY_COMMENT_UPDATE = 'ENTRY_COMMENT_UPDATE'
-const ENTRY_COMMENT_REMOVE = 'ENTRY_COMMENT_REMOVE'
 const ENTRY_USER_UPDATE = 'ENTRY_USER_UPDATE'
 const ENTRY_USER_UPDATE_PROP = 'ENTRY_USER_UPDATE_PROP'
 const ENTRY_USER_RESET = 'ENTRY_USER_RESET'
 const ENTRY_CATEGORY_ADD = 'ENTRY_CATEGORY_ADD'
 const ENTRY_CATEGORY_REMOVE = 'ENTRY_CATEGORY_REMOVE'
-const ENTRY_KEYWORD_ADD = 'ENTRY_KEYWORD_ADD'
-const ENTRY_KEYWORD_REMOVE = 'ENTRY_KEYWORD_REMOVE'
 const USED_COUNTRIES_LOAD = 'USED_COUNTRIES_LOAD'
 
 const actions = {}
@@ -28,15 +23,10 @@ const actions = {}
 actions.updateEntries = makeActionCreator(ENTRIES_UPDATE, 'entries')
 actions.addCreatedEntry = makeActionCreator(ENTRY_CREATED, 'entry')
 actions.loadCurrentEntry = makeActionCreator(CURRENT_ENTRY_LOAD, 'entry')
-actions.addEntryComment = makeActionCreator(ENTRY_COMMENT_ADD, 'comment')
-actions.updateEntryComment = makeActionCreator(ENTRY_COMMENT_UPDATE, 'comment')
-actions.removeEntryComment = makeActionCreator(ENTRY_COMMENT_REMOVE, 'commentId')
 actions.updateEntryUser = makeActionCreator(ENTRY_USER_UPDATE, 'entryUser')
 actions.resetEntryUser = makeActionCreator(ENTRY_USER_RESET)
 actions.addCategory = makeActionCreator(ENTRY_CATEGORY_ADD, 'category')
 actions.removeCategory = makeActionCreator(ENTRY_CATEGORY_REMOVE, 'categoryId')
-actions.addKeyword = makeActionCreator(ENTRY_KEYWORD_ADD, 'keyword')
-actions.removeKeyword = makeActionCreator(ENTRY_KEYWORD_REMOVE, 'keywordId')
 actions.loadUsedCountries = makeActionCreator(USED_COUNTRIES_LOAD, 'countries')
 
 actions.deleteEntry = (entry) => (dispatch) => dispatch({
@@ -98,66 +88,6 @@ actions.downloadEntryPdf = (entryId) => ({
   }
 })
 
-// TODO : should send the whole comment object
-actions.createComment = (entryId, content) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_comment_create', {entry: entryId}],
-    request: {
-      method: 'POST',
-      body: JSON.stringify({message: content})
-    },
-    success: (data, dispatch) => dispatch(actions.addEntryComment(data))
-  }
-})
-
-// TODO : should send the whole comment object
-actions.editComment = (commentId, content) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_comment_edit', {comment: commentId}],
-    request: {
-      method: 'POST',
-      body: JSON.stringify({message: content})
-    },
-    success: (data, dispatch) => dispatch(actions.updateEntryComment(data))
-  }
-})
-
-actions.deleteComment = (commentId) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_comment_delete', {comment: commentId}],
-    request: {
-      method: 'DELETE'
-    },
-    success: (data, dispatch) => {
-      dispatch(actions.removeEntryComment(commentId))
-    }
-  }
-})
-
-actions.activateComment = (commentId) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_comment_activate', {comment: commentId}],
-    request: {
-      method: 'PUT'
-    },
-    success: (data, dispatch) => {
-      dispatch(actions.updateEntryComment(data))
-    }
-  }
-})
-
-actions.blockComment = (commentId) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_comment_block', {comment: commentId}],
-    request: {
-      method: 'PUT'
-    },
-    success: (data, dispatch) => {
-      dispatch(actions.updateEntryComment(data))
-    }
-  }
-})
-
 actions.changeEntryOwner = (entryId, userId) => ({
   [API_REQUEST]: {
     url: ['claro_claco_form_entry_user_change', {entry: entryId, user: userId}],
@@ -167,18 +97,6 @@ actions.changeEntryOwner = (entryId, userId) => ({
     success: (data, dispatch) => dispatch(actions.loadCurrentEntry(data))
   }
 })
-
-actions.shareEntry = (entryId, users) => (dispatch) => {
-  dispatch({
-    [API_REQUEST]: {
-      url: url(['claro_claco_form_entry_users_share', {entry: entryId}], {ids: users}),
-      request: {
-        method: 'PUT'
-      },
-      success: (data, dispatch) => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.entries.sharedUsers'))
-    }
-  })
-}
 
 actions.openForm = (formName, id = null, defaultProps) => {
   if (id) {
@@ -239,15 +157,10 @@ export {
   ENTRIES_UPDATE,
   ENTRY_CREATED,
   CURRENT_ENTRY_LOAD,
-  ENTRY_COMMENT_ADD,
-  ENTRY_COMMENT_UPDATE,
-  ENTRY_COMMENT_REMOVE,
   ENTRY_USER_UPDATE,
   ENTRY_USER_UPDATE_PROP,
   ENTRY_USER_RESET,
   ENTRY_CATEGORY_ADD,
   ENTRY_CATEGORY_REMOVE,
-  ENTRY_KEYWORD_ADD,
-  ENTRY_KEYWORD_REMOVE,
   USED_COUNTRIES_LOAD
 }

@@ -37,6 +37,24 @@ const ClacoFormEditorEntries = () => {
 
                   return 0
                 })
+            }, {
+              name: 'display.showConfirm',
+              label: trans('show_confirm', {}, 'clacoform'),
+              type: 'boolean',
+              help: trans('show_confirm_help', {}, 'clacoform'),
+              linked: [
+                {
+                  name: 'display.confirmMessage',
+                  label: trans('confirm_message', {}, 'clacoform'),
+                  type: 'html',
+                  displayed: (resource) => get(resource, 'display.showConfirm')
+                }
+              ]
+            }, {
+              name: 'details.moderated',
+              type: 'boolean',
+              label: trans('enable_moderation', {}, 'clacoform'),
+              help: trans('enable_moderation_help', {}, 'clacoform')
             }
           ]
         }, {

@@ -107,5 +107,6 @@
   "resume": "Resume",
   "show_history": "Show history",
   "show_context_menu": "Open workspace menu",
-  "close_context_menu": "Close workspace menu"
+  "close_context_menu": "Close workspace menu",
+  "change_owner": "Change owner"
 }

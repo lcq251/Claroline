@@ -4,6 +4,24 @@ import classes from 'classnames'
 import random from 'lodash/random'
 import range from 'lodash/range'
 
+const TextSkeleton = ({
+  className,
+  rows = 5
+}) =>
+  <p className={classes('placeholder-glow', className)}>
+    {range(0, rows).map(row =>
+      <span key={row} className={classes('placeholder rounded-1', {
+        'w-100': row !== rows - 1,
+        'w-25': row === rows - 1
+      })} />
+    )}
+  </p>
+
+TextSkeleton.propTypes = {
+  className: T.string,
+  rows: T.number
+}
+
 const PlaceholderTitle = (props) => createElement(`h`+props.level, {
   className: classes('placeholder-glow', props.displayLevel && `h`+props.displayLevel, {
     'text-end': 'end' === props.align
@@ -70,6 +88,7 @@ PlaceholderText.defaultProps = {
 }
 
 export {
+  TextSkeleton,
   PlaceholderTitle,
   PlaceholderText,
   PlaceholderParagraph

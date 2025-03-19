@@ -68,7 +68,7 @@ class Form extends Component {
   render() {
     return (
       <FormWrapper
-        {...omit(this.props, 'new', 'name', 'buttons', 'data', 'level', 'displayLevel', 'title', 'errors', 'pendingChanges', 'alertExit', 'children', 'save', 'cancel', 'onSave', 'target', 'saveForm', 'cancelForm')}
+        {...omit(this.props, 'new', 'name', 'dataPart', 'buttons', 'data', 'level', 'displayLevel', 'title', 'errors', 'pendingChanges', 'alertExit', 'children', 'save', 'cancel', 'onSave', 'target', 'saveForm', 'cancelForm')}
       >
         {this.props.title &&
           <ContentTitle

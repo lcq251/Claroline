@@ -63,19 +63,6 @@ const WorkspacesTool = (props) => {
             <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
               <PageListSection
                 title={trans('my_workspaces', {}, 'workspace')}
-                addAction={{
-                  name: 'add',
-                  type: MODAL_BUTTON,
-                  // icon: 'fa fa-fw fa-plus',
-                  label: trans('add_workspace', {}, 'actions'),
-                  displayed: props.canCreate,
-                  modal: [MODAL_WORKSPACE_CREATION, {
-                    onCreate: () => {
-                      props.invalidateList('workspaces.registered')
-                      props.invalidateList('workspaces.public')
-                    }
-                  }]
-                }}
               >
                 <WorkspaceList
                   className="mb-5"

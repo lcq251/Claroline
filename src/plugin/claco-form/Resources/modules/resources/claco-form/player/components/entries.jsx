@@ -29,6 +29,16 @@ const EntriesComponent = props =>
   >
     <PageListSection
       title={trans('entries_list', {}, 'clacoform')}
+      addAction={{
+        name: 'add-entry',
+        type: LINK_BUTTON,
+        label: trans('add-entry', {}, 'actions'),
+        icon: 'fa fa-fw fa-plus',
+        primary: true,
+        target: `${props.path}/entry/form`,
+        exact: true,
+        displayed: props.canAddEntry
+      }}
     >
       <ListSource
         className="mb-5"
@@ -124,6 +134,7 @@ EntriesComponent.propTypes = {
   ),
   canEdit: T.bool.isRequired,
   canViewMetadata: T.bool.isRequired,
+  canAddEntry: T.bool.isRequired,
   isCategoryManager: T.bool.isRequired,
   canGeneratePdf: T.bool.isRequired,
 
@@ -138,6 +149,7 @@ const Entries = connect(
     currentUser: securitySelectors.currentUser(state),
     listConfiguration: selectors.listConfiguration(state),
     clacoForm: selectors.clacoForm(state),
+    canAddEntry: selectors.canAddEntry(state),
     canEdit: selectors.canEdit(state),
     canViewMetadata: selectors.canViewMetadata(state),
     canGeneratePdf: selectors.canGeneratePdf(state),

@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
 
 import {PlaceholderText} from '#/main/app/components/placeholder'
-import {ContentHtml} from '#/main/app/content/components/html'
 import {PrivacySummary} from '#/main/privacy/components/summary'
 import {API_REQUEST} from '#/main/app/api'
+import {Html} from '#/main/app/components/html'
 
 const Privacy = (props) => {
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ const Privacy = (props) => {
           dpo={privacy.dpo}
           countryStorage={privacy.countryStorage}
         />
-        <ContentHtml>{privacy.content}</ContentHtml>
+        <Html className="content-text">{privacy.content}</Html>
       </>
     )
   }

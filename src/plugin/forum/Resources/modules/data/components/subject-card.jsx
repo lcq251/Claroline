@@ -11,7 +11,9 @@ const SubjectCard = (props) =>
     {...props}
     id={props.data.id}
     poster={get(props.data, 'meta.creator.picture')}
-    icon={!get(props.data, 'meta.creator.picture') && get(props.data, 'meta.creator') ? <>{props.data.meta.creator.name.charAt(0)}</> : <span className="fa fa-user" aria-hidden={true}/>}
+    name={get(props.data, 'meta.creator.name')}
+    icon="fa fa-user"
+    asIcon={true}
     title={
       <div className="d-flex flex-row gap-2 align-items-baseline" role="presentation">
         {get(props.data, 'meta.sticky') &&

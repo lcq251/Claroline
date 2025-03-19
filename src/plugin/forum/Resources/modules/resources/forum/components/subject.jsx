@@ -16,12 +16,10 @@ import {selectors} from '#/plugin/forum/resources/forum/store'
 import {actions} from '#/plugin/forum/resources/forum/store'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {Content} from '#/main/app/components/content'
-import {UserMicro} from '#/main/core/user/components/micro'
-import {Datetime} from '#/main/app/components/date'
 import {PageContent, PageSection} from '#/main/app/page'
-import {Badge} from '#/main/app/components/badge'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 import {ForumMessages} from '#/plugin/forum/resources/forum/components/messages'
+import {ContentPublication} from '#/main/app/content/components/publication'
 
 class SubjectComponent extends Component {
   constructor(props) {
@@ -136,22 +134,10 @@ class SubjectComponent extends Component {
           <PageSection size="md" className="mb-5">
             <Content
               meta={
-                <>
-                  <UserMicro
-                    {...get(this.props.subject, 'meta.creator', {})}
-                    link={true}
-                  />
-
-                  <span>-</span>
-
-                  <Datetime value={get(this.props.subject, 'meta.created')} long={true} time={true} />
-
-                  {get(this.props.subject, 'meta.closed') &&
-                    <Badge variant="danger" subtle={true} className="ms-auto">
-                      {trans('closed_subject', {}, 'forum')}
-                    </Badge>
-                  }
-                </>
+                <ContentPublication
+                  user={get(this.props.subject, 'meta.creator', {})}
+                  publishedAt={get(this.props.subject, 'meta.created')}
+                />
               }
               tags={get(this.props.subject, 'tags')}
             >

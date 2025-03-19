@@ -16,7 +16,6 @@ const EventAbout = (props) =>
   <DetailsData
     data={props.event}
     flush={true}
-    meta={true}
     definition={[
       {
         title: trans('general'),

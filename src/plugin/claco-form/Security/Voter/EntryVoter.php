@@ -29,6 +29,8 @@ class EntryVoter extends AbstractVoter
             case self::EDIT:
             case self::DELETE:
                 return $this->checkEdit($token, $object);
+            case self::ADMINISTRATE:
+                return $this->checkAdministrate($object);
         }
 
         return VoterInterface::ACCESS_ABSTAIN;
@@ -41,7 +43,7 @@ class EntryVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::ADMINISTRATE, self::DELETE];
     }
 
     private function checkOpen(Entry $entry): int
@@ -51,6 +53,19 @@ class EntryVoter extends AbstractVoter
         if ($this->isGranted('OPEN', $clacoForm->getResourceNode())) {
             return VoterInterface::ACCESS_GRANTED;
         }
+
+        return VoterInterface::ACCESS_DENIED;
+    }
+
+    private function checkAdministrate(Entry $entry): int
+    {
+        $clacoForm = $entry->getClacoForm();
+
+        if ($this->isGranted('ADMINISTRATE', $clacoForm->getResourceNode())) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        // TODO : category managers
 
         return VoterInterface::ACCESS_DENIED;
     }

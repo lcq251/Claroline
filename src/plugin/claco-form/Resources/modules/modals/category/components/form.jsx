@@ -184,21 +184,18 @@ const CategoryFormModal = props => {
                   choices: {
                     notify_addition: trans('addition', {}, 'clacoform'),
                     notify_edition: trans('edition'),
-                    notify_removal: trans('removal', {}, 'clacoform'),
-                    notify_pending_comment: trans('comment_to_moderate', {}, 'clacoform')
+                    notify_removal: trans('removal', {}, 'clacoform')
                   }
                 },
                 calculated: (category) => [
                   'notify_addition',
                   'notify_edition',
-                  'notify_removal',
-                  'notify_pending_comment'
+                  'notify_removal'
                 ].filter(prop => category && category.details && category.details[prop]),
                 onChange: (value) => {
                   props.updateProp('details.notify_addition', -1 !== value.indexOf('notify_addition'))
                   props.updateProp('details.notify_edition', -1 !== value.indexOf('notify_edition'))
                   props.updateProp('details.notify_removal', -1 !== value.indexOf('notify_removal'))
-                  props.updateProp('details.notify_pending_comment', -1 !== value.indexOf('notify_pending_comment'))
                 }
               }
             ]

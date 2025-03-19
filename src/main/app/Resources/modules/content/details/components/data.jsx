@@ -1,10 +1,8 @@
 import React, {createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
-import get from 'lodash/get'
 
 import {toKey} from '#/main/app/utils/text'
-import {ContentMeta} from '#/main/app/content/components/meta'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {Sections, Section} from '#/main/app/content/components/sections'
 
@@ -27,7 +25,7 @@ const DetailsData = props => {
     hDisplay = props.displayLevel + (props.title ? 1 : 0)
   }
 
-  const sections = createDetailsDefinition(props.definition || props.sections, props.data)
+  const sections = createDetailsDefinition(props.definition, props.data)
 
   const primarySections = 1 === sections.length ? [sections[0]] : sections.filter(section => section.primary)
   const otherSections = 1 !== sections.length ? sections.filter(section => !section.primary) : []
@@ -43,14 +41,6 @@ const DetailsData = props => {
         />
       }
 
-      {props.meta &&
-        <ContentMeta
-          creator={get(props.data, 'meta.creator')}
-          created={get(props.data, 'meta.created')}
-          updated={get(props.data, 'meta.updated')}
-        />
-      }
-
       {primarySections.map(primarySection =>
         <section key={toKey(primarySection.title)} className={classes('details-primary-section', !props.flush && 'mb-3')}>
           <ContentTitle
@@ -63,7 +53,6 @@ const DetailsData = props => {
             id={getSectionId(primarySection, props.id)}
             fields={primarySection.fields}
             data={props.data}
-            errors={props.errors}
             help={primarySection.help}
           >
             {primarySection.component && createElement(primarySection.component)}
@@ -71,8 +60,6 @@ const DetailsData = props => {
           </DetailsFieldset>
         </section>
       )}
-
-      {props.affix}
 
       {0 !== otherSections.length &&
         <Sections
@@ -94,7 +81,6 @@ const DetailsData = props => {
                 id={getSectionId(section, props.id)}
                 fields={section.fields}
                 data={props.data}
-                errors={props.errors}
                 help={section.help}
               >
                 {section.component && createElement(section.component)}
@@ -117,22 +103,10 @@ DetailsData.propTypes = {
   displayLevel: T.number,
   title: T.string,
   data: T.object,
-  errors: T.object,
-  meta: T.bool,
   flush: T.bool,
-  /**
-   * @deprecated use definition instead
-   */
-  sections: T.arrayOf(T.shape(
-    DataDetailsSectionTypes.propTypes
-  )),
   definition: T.arrayOf(T.shape(
     DataDetailsSectionTypes.propTypes
   )).isRequired,
-  /**
-   * @deprecated only used by Profile facets
-   */
-  affix: T.node,
   children: T.node
 }
 

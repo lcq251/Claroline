@@ -242,19 +242,6 @@ class ClacoForm extends AbstractResource
         $this->details['max_entries'] = $maxEntries;
     }
 
-    public function isCreationEnabled(): bool
-    {
-        return !is_null($this->details) && isset($this->details['creation_enabled']) ? $this->details['creation_enabled'] : true;
-    }
-
-    public function setCreationEnabled($creationEnabled): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['creation_enabled'] = $creationEnabled;
-    }
-
     public function isEditionEnabled(): bool
     {
         return !is_null($this->details) && isset($this->details['edition_enabled']) ? $this->details['edition_enabled'] : true;
