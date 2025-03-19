@@ -4,6 +4,7 @@ namespace Claroline\EvaluationBundle\Controller\Sequence;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -44,6 +45,14 @@ class SequenceController extends AbstractCrudController
     public static function getClass(): string
     {
         return Sequence::class;
+    }
+
+    public static function getOptions(): array
+    {
+        return array_merge(parent::getOptions(), [
+            'create' => [Options::PERSIST_TAG],
+            'update' => [Options::PERSIST_TAG],
+        ]);
     }
 
     #[Route(path: '/context/{context}/{contextId}', name: 'context_list', defaults: ['contextId' => null], methods: ['GET'])]

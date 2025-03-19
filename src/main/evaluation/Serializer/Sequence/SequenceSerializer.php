@@ -2,6 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Serializer\Sequence;
 
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -10,6 +11,7 @@ use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
@@ -18,6 +20,7 @@ use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
 use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Serializer\TemplateSerializer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SequenceSerializer
@@ -27,6 +30,7 @@ class SequenceSerializer
     private ResourceNodeRepository $resourceNodeRepo;
 
     public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly TemplateSerializer $templateSerializer,
@@ -136,6 +140,7 @@ class SequenceSerializer
             'assignments' => array_map(function (Assignment $assignment) {
                 return $this->assignmentSerializer->serialize($assignment, [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $sequence->getAssignments()->toArray()),
+            'tags' => $this->serializeTags($sequence),
         ];
 
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
@@ -212,9 +217,6 @@ class SequenceSerializer
         }
 
         if (!empty($data['end'])) {
-            // $this->sipe('end.message', 'setEndMessage', $data, $sequence);
-            // $this->sipe('end.navigation', 'setEndNavigation', $data, $sequence);
-
             if (!empty($data['end']['back'])) {
                 $this->sipe('end.back.type', 'setEndBackType', $data, $sequence);
                 $this->sipe('end.back.label', 'setEndBackLabel', $data, $sequence);
@@ -246,6 +248,10 @@ class SequenceSerializer
 
         if (array_key_exists('assignments', $data)) {
             $this->deserializeAssignments($data['assignments'] ?? [], $sequence, $options);
+        }
+
+        if (isset($data['tags'])) {
+            $this->deserializeTags($sequence, $data['tags'], $options);
         }
 
         return $sequence;
@@ -290,6 +296,36 @@ class SequenceSerializer
             $sequence->addAssignment($assignment);
 
             $this->assignmentSerializer->deserialize($assignmentData, $assignment, $options);
+        }
+    }
+
+    private function serializeTags(Sequence $sequence): array
+    {
+        $event = new GenericDataEvent([
+            'class' => Sequence::class,
+            'ids' => [$sequence->getUuid()],
+        ]);
+        $this->eventDispatcher->dispatch($event, 'claroline_retrieve_used_tags_by_class_and_ids');
+
+        return $event->getResponse() ?? [];
+    }
+
+    private function deserializeTags(Sequence $sequence, array $tags = [], array $options = []): void
+    {
+        if (in_array(Options::PERSIST_TAG, $options)) {
+            $event = new GenericDataEvent([
+                'tags' => $tags,
+                'data' => [
+                    [
+                        'class' => Sequence::class,
+                        'id' => $sequence->getUuid(),
+                        'name' => $sequence->getName(),
+                    ],
+                ],
+                'replace' => true,
+            ]);
+
+            $this->eventDispatcher->dispatch($event, 'claroline_tag_multiple_data');
         }
     }
 }

@@ -35,6 +35,7 @@ services:
     # Sequences
     Claroline\EvaluationBundle\Serializer\Sequence\SequenceSerializer:
         arguments:
+            - '@event_dispatcher'
             - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
