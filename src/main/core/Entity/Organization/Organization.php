@@ -134,7 +134,7 @@ class Organization implements CrudEntityInterface, ContextSubjectInterface
     }
 
     /**
-     * @deprecated no replacement. Required by OrganizationController::HasGroupsTrait.
+     * @deprecated no replacement. Required by OrganizationController::HasWorkspacesTrait.
      */
     public function addWorkspace(Workspace $workspace): void
     {

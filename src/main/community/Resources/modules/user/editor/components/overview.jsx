@@ -43,6 +43,10 @@ const UserEditorOverview = () => {
               label: trans('poster'),
               hideLabel: true
             }, {
+              name: 'picture',
+              type: 'image',
+              label: trans('picture')
+            }, {
               name: 'username',
               type: 'string',
               label: trans('username'),
@@ -62,7 +66,7 @@ const UserEditorOverview = () => {
                 long: true,
                 minRows: 2
               }
-            }, {
+            }/*, {
               name: 'public',
               type: 'boolean',
               label: trans('Rendre mon profil public'),
@@ -71,11 +75,11 @@ const UserEditorOverview = () => {
                 trans('Lorsque votre profil est public, tous les membres de la plateforme peuvent le consulter (à l\'esception des informations marquées "confidentielles").', {}, 'community'),
                 trans('Tous les membres de la plateforme peuvent voir certaines informations, comme votre nom d\'utilisateur et votre photo de profil.')
               ]
-            }
+            }*/
           ]
         }, {
           title: trans('Informations personnelles'),
-          description: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet tristique diam, sit amet auctor erat.'),
+          // description: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet tristique diam, sit amet auctor erat.'),
           primary: true,
           fields: [
             {
