@@ -41,9 +41,6 @@ final class Version20241129000000 extends AbstractMigration
             ON DELETE SET NULL
         ');
         $this->addSql('
-            ALTER TABLE claro_cursusbundle_presence_status RENAME INDEX idx_dfe5e1fe349a94c7 TO IDX_DFE5E1FEE8DE7170
-        ');
-        $this->addSql('
             ALTER TABLE claro_cursusbundle_course_session 
             DROP plainDescription, 
             DROP entity_name, 
