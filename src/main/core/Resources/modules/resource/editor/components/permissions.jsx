@@ -127,7 +127,7 @@ const ResourceEditorPermissions = (props) => {
             }
           ]
         }
-      ]}
+      ].concat(props.definition || [])}
     />
   )
 }
