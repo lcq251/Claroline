@@ -1,21 +1,25 @@
 import React, {useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import {CloseButton} from 'react-bootstrap'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
-import {MENU_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Menu} from '#/main/app/overlays/menu'
 import {Html} from '#/main/app/components/html'
 import {Contact} from '#/main/app/components/contact'
 
 import {selectors} from '#/main/app/platform/store'
-import {CloseButton} from 'react-bootstrap'
+import {route} from '#/main/app/context/routing'
 
 const HelpMenu = (props) => {
   const currentOrganization = useSelector(selectors.currentOrganization)
+  const availableContexts = useSelector(selectors.availableContexts)
+
+  console.log(availableContexts)
 
   return (
     <Menu id={props.id} className="app-user-menu flyout-menu p-0 position-fixed">
@@ -45,6 +49,23 @@ const HelpMenu = (props) => {
           phone={get(currentOrganization, 'phone')}
           address={get(currentOrganization, 'address')}
         />
+
+        <div className="list-group mb-4">
+          {availableContexts
+            .filter(appContext => 'workspace' !== appContext.name)
+            .map(appContext =>
+              <Button
+                className="list-group-item list-group-item-action"
+                type={LINK_BUTTON}
+                icon={`fa fa-fw fa-${appContext.icon}`}
+                label={trans(appContext.name, {}, 'context')}
+                exact={true}
+                target={route(appContext.name)}
+                onClick={props.closeMenu}
+              />
+            )
+          }
+        </div>
 
         <nav>
           <ul className="list-group mb-4">
