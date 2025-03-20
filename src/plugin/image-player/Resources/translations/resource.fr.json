@@ -1,3 +1,4 @@
 {
-  "image": "Image"
+  "image": "Image",
+  "image_desc": "Intégrez une image (png, jpg, webp, etc.)."
 }

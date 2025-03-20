@@ -1,4 +1,5 @@
 {
   "pdf": "PDF",
+  "pdf_desc": "Integrate a PDF file.",
   "count_pages": "{0, 1} %count% page|]1,Inf[ %count% pages"
 }

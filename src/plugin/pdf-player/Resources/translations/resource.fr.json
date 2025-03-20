@@ -1,5 +1,6 @@
 {
   "pdf": "PDF",
+  "pdf_desc": "Intégrez un fichier PDF.",
   "count_pages": "{0, 1} %count% page|]1,Inf[ %count% pages",
   "pdf_zoom_auto": "Zoom automatique",
   "pdf_zoom_actual": "Taille réelle",
