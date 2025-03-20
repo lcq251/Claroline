@@ -15,8 +15,8 @@ const BadgeTool = withReducer(selectors.STORE_NAME, reducer)(
       openBadge(id = null, workspace = null) {
         dispatch(actions.openBadge(selectors.FORM_NAME, id, workspace))
       },
-      openAssertion(id) {
-        dispatch(actions.openAssertion(selectors.FORM_NAME +'.assertion', id))
+      openAssertion(badgeId) {
+        dispatch(actions.openAssertion(badgeId))
       }
     })
   )(BadgeToolComponent)

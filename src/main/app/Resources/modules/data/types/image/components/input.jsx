@@ -14,6 +14,7 @@ import {actions} from '#/main/app/api/store'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import isEmpty from 'lodash/isEmpty'
 import {getValidationClassName} from '#/main/app/content/form/validator'
+import {Toolbar} from '#/main/app/action'
 
 class ImageInputComponent extends PureComponent {
   constructor(props) {
@@ -90,6 +91,22 @@ class ImageInputComponent extends PureComponent {
   render() {
     return (
       <div className={this.props.className} role="presentation">
+        <input
+          id={this.props.id}
+          style={this.state.notFound ? {display: 'none'} : undefined}
+          type="file"
+          className={classes('form-control', getValidationClassName(this.props.error), this.props.className, {
+            [`form-control-${this.props.size}`]: !!this.props.size,
+            'visually-hidden': this.state.notFound || this.props.value || this.state.file
+          })}
+          accept="image"
+          ref={input => this.input = input}
+          onChange={this.onChange}
+          disabled={this.props.disabled}
+          aria-required={this.props.required}
+          aria-invalid={!isEmpty(this.props.error)}
+        />
+
         {this.state.notFound && !this.state.file &&
           <Alert type="warning" className="mb-3">
             {trans('image_not_found')}
@@ -99,7 +116,7 @@ class ImageInputComponent extends PureComponent {
                 className="btn btn-warning"
                 size="sm"
                 type={CALLBACK_BUTTON}
-                callback={() => this.input.click()}
+                callback={this.input.click}
                 label={trans('replace_image', {}, 'actions')}
                 disabled={this.props.disabled}
               />
@@ -113,42 +130,34 @@ class ImageInputComponent extends PureComponent {
           </Alert>
         }
 
-        {(!this.props.value || !this.state.file) &&
-          <input
-            id={this.props.id}
-            style={this.state.notFound ? {display: 'none'} : undefined}
-            type="file"
-            className={classes('form-control', getValidationClassName(this.props.error), this.props.className, {
-              [`form-control-${this.props.size}`]: !!this.props.size,
-              'visually-hidden': this.state.notFound
-            })}
-            accept="image"
-            ref={input => this.input = input}
-            onChange={this.onChange}
-            disabled={this.props.disabled}
-            aria-required={this.props.required}
-            aria-invalid={!isEmpty(this.props.error)}
-          />
-        }
-
         {this.props.value && this.state.loaded &&
-          <div className="img-preview">
+          <div className="img-preview d-flex align-items-start gap-2" role="presentation">
             <img
-              className="img-thumbnail"
+              className="img-thumbnail overflow-hidden"
               src={asset(this.props.value)}
+              style={{maxHeight: '12rem'}}
             />
-
-            <Button
-              id={`${this.props.id}-delete`}
-              type={CALLBACK_BUTTON}
-              variant="btn"
-              size="sm"
-              icon="fa fa-fw fa-trash"
-              label={trans('delete', {}, 'actions')}
+            <Toolbar
+              className="d-flex flex-column gap-1"
               tooltip="left"
               disabled={this.props.disabled}
-              callback={this.onDelete}
-              dangerous={true}
+              size="sm"
+              buttonName="btn btn-body"
+              actions={[
+                {
+                  name: 'replace',
+                  type: CALLBACK_BUTTON,
+                  icon: 'fa fa-fw fa-arrow-right-arrow-left',
+                  label: trans('replace_image', {}, 'actions'),
+                  callback: () => this.input.click()
+                }, {
+                  name: 'delete',
+                  type: CALLBACK_BUTTON,
+                  icon: 'fa fa-fw fa-trash',
+                  label: trans('remove_image', {}, 'actions'),
+                  callback: this.onDelete
+                }
+              ]}
             />
           </div>
         }

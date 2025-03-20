@@ -32,6 +32,7 @@ const Role = (props) =>
           size="md"
           title={trans(get(props.role, 'translationKey', 'loading'))}
           description={get(props.role, 'meta.description')}
+          primaryAction="edit"
           actions={!isEmpty(props.role) ? getActions([props.role], {
             add: () => props.reload(props.role.id),
             update: () => props.reload(props.role.id),

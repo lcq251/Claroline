@@ -8,7 +8,7 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Button} from '#/main/app/action/components/button'
 
-import {selectors} from '#/plugin/open-badge/tools/badges/assertion/modals/evidence/store/selectors'
+import {selectors} from '#/plugin/open-badge/assertion/modals/evidence/store/selectors'
 
 const EvidenceModal = props =>
   <Modal

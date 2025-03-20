@@ -20,6 +20,7 @@ use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Archived;
 use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Description;
+use Claroline\AppBundle\Entity\Meta\DescriptionHtml;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\Organization\Organization;
@@ -44,6 +45,7 @@ class BadgeClass implements CrudEntityInterface
     use Uuid;
     use Name;
     use Description;
+    use DescriptionHtml;
     use CreatedAt;
     use UpdatedAt;
     use Color;

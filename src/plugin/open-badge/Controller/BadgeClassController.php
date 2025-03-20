@@ -92,6 +92,27 @@ class BadgeClassController extends AbstractCrudController
         );
     }
 
+    #[Route(path: '/{badge}/users/current', name: 'current_user', methods: ['GET'])]
+    public function getCurrentUserAction(
+        #[MapEntity(mapping: ['badge' => 'uuid'])]
+        BadgeClass $badge
+    ): JsonResponse {
+        $this->checkPermission('OPEN', $badge, [], true);
+
+        if ($this->tokenStorage->getToken()?->getUser()) {
+            $assertion = $this->om->getRepository(Assertion::class)->findOneBy([
+                'badge' => $badge,
+                'recipient' => $this->tokenStorage->getToken()?->getUser(),
+            ]);
+
+            if ($assertion) {
+                return new JsonResponse($this->serializer->serialize($assertion));
+            }
+        }
+
+        return new JsonResponse(null, 204);
+    }
+
     #[Route(path: '/{badge}/users/add', name: 'add_users', methods: ['PATCH'])]
     public function addUsersAction(
         #[MapEntity(mapping: ['badge' => 'uuid'])]

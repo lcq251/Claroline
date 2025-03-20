@@ -138,8 +138,8 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     /**
      * @var Collection<int, Organization>
      */
-    #[ORM\JoinTable(name: 'workspace_organization')]
     #[ORM\ManyToMany(targetEntity: Organization::class)]
+    #[ORM\JoinTable(name: 'workspace_organization')]
     private Collection $organizations;
 
     // not mapped. Used for creation

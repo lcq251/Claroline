@@ -35,7 +35,7 @@
     "course_long_desc_help": "Décrivez de manière détaillée le contenu de votre formation (La description détaillée est affichée sur la vue \"À propos\" à la place de la description courte).",
     "course_permissions_help": "Gérez les différents droits et de modifications de votre formation.",
     "course_registration_help": "Gérez les paramètres d'inscription et de désinscription liés à votre formation.",
-    "course_short_desc_help": "Décrivez succintement votre formation (La description courte est affichée dans les listes et sur la vue \"À propos\").",
+    "course_short_desc_help": "Décrivez succinctement votre formation (La description courte est affichée dans les listes et sur la vue \"À propos\").",
     "course_type_model": "Utiliser un modèle d'espace d'activités pour générer un nouvel espace pour chaque session de la formation.",
     "course_type_workspace": "Utiliser le même espace d'activités pour toutes les sessions de la formation.",
     "course_workspaces_help": "Rattachez une espace d'activités à votre formation pour gérer et partager vos contenus avec les utilisateurs inscrits.",

@@ -11,10 +11,10 @@
 
 namespace Claroline\OpenBadgeBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Claroline\OpenBadgeBundle\Entity\Evidence;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,10 +47,12 @@ class EvidenceController extends AbstractCrudController
     }
 
     #[Route(path: '/assertion/{assertion}', name: 'create_at', methods: ['POST'])]
-    public function createAtAction(Request $request, #[MapEntity(class: 'Claroline\OpenBadgeBundle\Entity\Assertion', mapping: ['assertion' => 'uuid'])]
-    Assertion $assertion): JsonResponse
-    {
-        $object = $this->crud->create($this->getClass(), $this->decodeRequest($request));
+    public function createAtAction(
+        Request $request,
+        #[MapEntity(mapping: ['assertion' => 'uuid'])]
+        Assertion $assertion
+    ): JsonResponse {
+        $object = $this->crud->create(Evidence::class, $this->decodeRequest($request));
         $object->setAssertion($assertion);
 
         $this->om->persist($object);

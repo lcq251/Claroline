@@ -37,7 +37,7 @@ const WorkspaceEditorOverview = () =>
             name: 'data.meta.description',
             type: 'string',
             label: trans('description_short'),
-            help: trans('Décrivez succintement votre espace d\'activités (La description courte est affichée dans les listes et sur la vue "À propos").'),
+            help: trans('Décrivez succinctement votre espace d\'activités (La description courte est affichée dans les listes et sur la vue "À propos").'),
             recommended: true,
             options: {
               long: true,

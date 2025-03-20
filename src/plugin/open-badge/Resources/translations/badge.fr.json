@@ -44,7 +44,8 @@
   "profile_completed": "Profile complété",
   "granted_at": "obtenu le %date%",
   "granted_date": "Date d'obtention",
-  "not_granted": "Vous ne possédez pas ce badge",
+  "user_not_granted": "Vous ne possédez pas encore ce badge.",
+  "user_granted": "Vous avez obtenu ce badge le %date%.",
   "grant_users": "Attribuer à des utilisateurs",
   "badge_archived_help": "Ce badge est archivé et ne peut être attribué.",
   "no_criteria": "Aucun critère d'attribution n'a été défini.",
@@ -57,6 +58,7 @@
   "transfer_to": "Transférer vers",
   "transferred": "Badge transféré",
   "delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce badge ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% badges ?",
+  "delete_assertion_confirm_message": "{1} Êtes-vous sûr(e) de vouloir retirer le badge de cet utilisateur ? | [2,Inf[ Êtes-vous sûr(e) de vouloir retirer le badge de ces %count% utilisateurs ?",
   "archive_confirm_message": "{1} Êtes-vous sûr(e) de vouloir archiver ce badge ? | [2,Inf[ Êtes-vous sûr(e) de vouloir archiver ces %count% badges ?",
   "badge_name": "Badge : %name%"
 }

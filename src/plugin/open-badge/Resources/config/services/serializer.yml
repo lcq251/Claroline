@@ -4,6 +4,7 @@ services:
 
     Claroline\OpenBadgeBundle\Serializer\AssertionSerializer:
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\OpenBadgeBundle\Serializer\BadgeClassSerializer'
 

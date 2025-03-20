@@ -19,6 +19,8 @@ const BadgeFormComponent = (props) =>
     {...props}
     name={props.name}
     buttons={true}
+    level={3}
+    displayLevel={5}
     target={(badge, isNew) => isNew ?
       ['apiv2_badge_create'] :
       ['apiv2_badge_update', {id: props.badge.id}]
@@ -34,6 +36,11 @@ const BadgeFormComponent = (props) =>
         primary: true,
         fields: [
           {
+            name: 'data.poster',
+            type: 'poster',
+            label: trans('poster'),
+            hideLabel: true
+          }, {
             name: 'name',
             type: 'string',
             label: trans('name'),
@@ -42,17 +49,29 @@ const BadgeFormComponent = (props) =>
             name: 'image',
             type: 'image',
             label: trans('image'),
-            required: true
+            recommended: true
           }
         ]
       }, {
-        icon: 'fa fa-fw fa-circle-info',
-        title: trans('information'),
+        title: trans('further_information'),
+        description: trans('further_information_help'),
+        primary: true,
         fields: [
           {
-            name: 'description',
-            label: trans('description'),
-            type: 'html'
+            name: 'meta.description',
+            type: 'string',
+            label: trans('description_short'),
+            help: trans('Décrivez succinctement votre badge (La description courte est affichée dans les listes et sur la vue "À propos").'),
+            recommended: true,
+            options: {
+              long: true,
+              minRows: 2
+            }
+          }, {
+            name: 'meta.descriptionHtml',
+            label: trans('description_long'),
+            type: 'html',
+            help: trans('Décrivez de manière détaillée le contenu de votre badge, la travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue "À propos" à la place de la description courte).')
           }, {
             name: 'tags',
             label: trans('tags'),

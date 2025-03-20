@@ -35,6 +35,10 @@
     "workspace.open_desc": "Lorsqu'un utilisateur consulte un espace d'activités de la plateforme.",
     "workspace.open_message": "a <b>ouvert</b> l'espace d'activités %workspace%.",
 
+    "workspace.delete": "Suppression d'un espace d'activités",
+    "workspace.delete_desc": "Lorsqu'un utilisateur supprime un espace d'activités.",
+    "workspace.delete_message": "a <b>supprimé</b> l'espace d'activités %object%.",
+
     "resource": "Ressource",
     "workspace": "Espace d'activités"
 }

@@ -34,6 +34,19 @@ function getColor(str, s = 65, l = 40) {
   return 'hsl('+h+', '+s+'%, '+l+'%)';
 }
 
+const ThumbnailSkeleton = ({
+  className,
+  size = 'md',
+  square = false
+}) =>
+  <div
+    className={classes('placeholder thumbnail ratio z-0', className, {
+      [`thumbnail-${size} ratio-thumbnail`]: !square,
+      [`thumbnail-icon thumbnail-icon-${size} ratio-1x1`]: square
+    })}
+    aria-hidden={true}
+  />
+
 /**
  * A square visual representation of an entity.
  *
@@ -109,5 +122,6 @@ Thumbnail.propTypes = {
 }
 
 export {
-  Thumbnail
+  Thumbnail,
+  ThumbnailSkeleton
 }

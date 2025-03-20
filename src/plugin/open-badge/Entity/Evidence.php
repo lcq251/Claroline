@@ -20,7 +20,6 @@ use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro__open_badge_evidence')]
 #[ORM\Entity]
 class Evidence
@@ -32,7 +31,6 @@ class Evidence
     #[ORM\Column]
     private ?string $name = null;
 
-    
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Assertion::class, inversedBy: 'evidences')]
     private ?Assertion $assertion = null;
@@ -48,7 +46,6 @@ class Evidence
     #[ORM\ManyToOne(targetEntity: Rule::class)]
     private ?Rule $rule = null;
 
-    
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;

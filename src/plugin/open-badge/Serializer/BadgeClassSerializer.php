@@ -54,16 +54,17 @@ class BadgeClassSerializer
             return [
                 'id' => $badge->getUuid(),
                 'name' => $badge->getName(),
-                'description' => $badge->getDescription(),
                 'image' => $badge->getImage(),
                 'color' => $badge->getColor(),
+                'meta' => [
+                    'description' => $badge->getDescription(),
+                ],
             ];
         }
 
         $data = [
             'id' => $badge->getUuid(),
             'name' => $badge->getName(),
-            'description' => $badge->getDescription(),
             'image' => $badge->getImage(),
             'poster' => $badge->getPoster(),
             'color' => $badge->getColor(),
@@ -71,6 +72,8 @@ class BadgeClassSerializer
             'duration' => $badge->getDurationValidation(),
             'tags' => $this->serializeTags($badge),
             'meta' => [
+                'description' => $badge->getDescription(),
+                'descriptionHtml' => $badge->getDescriptionHtml(),
                 'createdAt' => DateNormalizer::normalize($badge->getCreatedAt()),
                 'updatedAt' => DateNormalizer::normalize($badge->getUpdatedAt()),
                 'archived' => $badge->isArchived(),
@@ -104,7 +107,6 @@ class BadgeClassSerializer
     public function deserialize(array $data, BadgeClass $badge = null, array $options = []): BadgeClass
     {
         $this->sipe('name', 'setName', $data, $badge);
-        $this->sipe('description', 'setDescription', $data, $badge);
         $this->sipe('image', 'setImage', $data, $badge);
         $this->sipe('color', 'setColor', $data, $badge);
         $this->sipe('poster', 'setPoster', $data, $badge);
@@ -115,6 +117,8 @@ class BadgeClassSerializer
         $this->sipe('restrictions.hideRecipients', 'setHideRecipients', $data, $badge);
 
         if (isset($data['meta'])) {
+            $this->sipe('meta.description', 'setDescription', $data, $badge);
+            $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $badge);
             $this->sipe('meta.archived', 'setArchived', $data, $badge);
 
             if (isset($data['meta']['createdAt'])) {

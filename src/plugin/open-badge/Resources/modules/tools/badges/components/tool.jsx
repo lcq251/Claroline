@@ -7,10 +7,9 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 import {constants as toolConstants} from '#/main/core/tool/constants'
 import {Tool} from '#/main/core/tool'
 
-import {Assertions} from '#/plugin/open-badge/tools/badges/assertion/components/list'
-import {AssertionDetails} from '#/plugin/open-badge/tools/badges/assertion/components/details'
+import {Assertions} from '#/plugin/open-badge/tools/badges/components/assertions'
 import {BadgeList}  from '#/plugin/open-badge/tools/badges/badge/containers/list'
-import {BadgeEdit} from '#/plugin/open-badge/tools/badges/badge/containers/edit'
+import {BadgeEdit} from '#/plugin/open-badge/tools/badges/badge/components/edit'
 import {BadgeCreate} from '#/plugin/open-badge/tools/badges/badge/components/create'
 import {BadgeShow} from '#/plugin/open-badge/tools/badges/badge/containers/show'
 import {BadgesEditor} from '#/plugin/open-badge/tools/badges/editor/containers/main'
@@ -18,7 +17,6 @@ import {BadgesEditor} from '#/plugin/open-badge/tools/badges/editor/containers/m
 const BadgeTool = props =>
   <Tool
     {...props}
-    styles={['claroline-distribution-plugin-open-badge-badges-tool']}
     menu={[
       {
         name: 'my-badges',
@@ -39,7 +37,8 @@ const BadgeTool = props =>
       {
         path: '/',
         component: Assertions,
-        exact: true
+        exact: true,
+        disabled: props.contextType === toolConstants.TOOL_WORKSPACE && !get(props.workspace, 'meta.model'),
       }, {
         path: '/all',
         component: BadgeList
@@ -53,13 +52,11 @@ const BadgeTool = props =>
         component: BadgeEdit
       }, {
         path: '/:id',
-        onEnter: (params) => props.openBadge(params.id, props.currentContext.data),
+        onEnter: (params) => {
+          props.openBadge(params.id, props.currentContext.data)
+          props.openAssertion(params.id)
+        },
         component: BadgeShow,
-        exact: true
-      }, {
-        path: '/badges/:id/assertion/:assertionId',
-        component: AssertionDetails,
-        onEnter: (params) => props.openAssertion(params.assertionId),
         exact: true
       }
     ]}

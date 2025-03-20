@@ -6,10 +6,6 @@
       "type": "string",
       "description": "The badge id"
     },
-    "description": {
-      "type": "string",
-      "description": "The badge description"
-    },
     "image": {
       "type": "string",
       "description": "The URL of the badge image"
@@ -28,9 +24,21 @@
       "items": {
         "type": "string"
       }
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "A short description of the badge"
+        },
+        "descriptionHtml": {
+          "type": "string",
+          "description": "A long HTML description of the badge"
+        }
+      }
     }
   },
-  "required": ["image"],
   "claroline": {
     "ids": ["id"]
   }

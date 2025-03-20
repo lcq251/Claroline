@@ -4,8 +4,8 @@ import {withReducer} from '#/main/app/store/components/withReducer'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
-import {EvidenceModal as EvidenceModalComponent} from '#/plugin/open-badge/tools/badges/assertion/modals/evidence/components/modal'
-import {reducer, selectors} from '#/plugin/open-badge/tools/badges/assertion/modals/evidence/store'
+import {EvidenceModal as EvidenceModalComponent} from '#/plugin/open-badge/assertion/modals/evidence/components/modal'
+import {reducer, selectors} from '#/plugin/open-badge/assertion/modals/evidence/store'
 
 const EvidenceModal = withReducer(selectors.STORE_NAME, reducer)(
   connect(

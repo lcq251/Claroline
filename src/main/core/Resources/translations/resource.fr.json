@@ -88,7 +88,7 @@
     "resources_count": "Nombre de ressources",
     "file_drop_help": "Déposez vos fichiers pour les importer dans le dossier",
     "description_long_help": "Décrivez de manière détaillée le contenu de votre ressource, la travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue \"À propos\").",
-    "description_short_help": "Décrivez succintement votre ressource (La description courte est affichée dans les listes).",
+    "description_short_help": "Décrivez succinctement votre ressource (La description courte est affichée dans les listes).",
     "resource_name": "%type% : %name%",
     "publish_resource": "Publier la ressource",
     "publish_resource_help": "Temps que la ressource n'est pas publiée, elle est uniquement accessible aux utilisateurs ayant la permission \"Modifier\".",

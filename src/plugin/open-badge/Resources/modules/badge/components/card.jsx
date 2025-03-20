@@ -15,7 +15,7 @@ const BadgeCard = props =>
     icon="fa fa-trophy"
     name={get(props.data, 'name')}
     title={get(props.data, 'name')}
-    contentText={get(props.data, 'description')}
+    contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
     meta={get(props.data, 'meta.archived', false) &&
       <span className="badge bg-secondary-subtle text-secondary-emphasis text-capitalize">{trans('disabled')}</span>
     }

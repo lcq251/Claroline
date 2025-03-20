@@ -45,7 +45,7 @@ const Group = (props) =>
           }
           title={get(props.group, 'name', trans('loading'))}
           description={get(props.group, 'meta.description')}
-          //primaryAction="edit"
+          primaryAction="edit"
           actions={!isEmpty(props.group) ? getActions([props.group], {
             add: () => props.reload(props.group.id),
             update: () => props.reload(props.group.id),

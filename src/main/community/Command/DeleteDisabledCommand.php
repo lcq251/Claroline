@@ -43,7 +43,7 @@ class DeleteDisabledCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $users = $this->om->getRepository(User::class)->findBy([
-            'disabled' => true
+            'disabled' => true,
         ], [], $input->getOption('limit'));
 
         $this->om->startFlushSuite();

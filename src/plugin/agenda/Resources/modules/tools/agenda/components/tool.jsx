@@ -20,7 +20,8 @@ const AgendaTool = (props) =>
         type: LINK_BUTTON,
         label: trans('about'),
         target: props.path,
-        exact: true
+        exact: true,
+        displayed: false
       }, {
         name: 'calendar',
         type: LINK_BUTTON,
@@ -33,11 +34,15 @@ const AgendaTool = (props) =>
         target: props.path+'/events'
       }
     ]}
+    redirect={[
+      {from: '/', exact: true, to: '/calendar'}
+    ]}
     pages={[
       {
         path: '/',
         component: AgendaOverview,
-        exact: true
+        exact: true,
+        disabled: true
       }, {
         path: '/calendar',
         component: AgendaCalendar

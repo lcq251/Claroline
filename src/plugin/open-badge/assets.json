@@ -1,7 +1,0 @@
-{
-  "styles": {
-    "entry": {
-      "badges-tool": "tools/badges.scss"
-    }
-  }
-}

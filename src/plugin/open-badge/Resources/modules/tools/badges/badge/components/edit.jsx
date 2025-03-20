@@ -1,33 +1,22 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
-import {LINK_BUTTON} from '#/main/app/buttons'
-
-import {Badge as BadgeTypes} from '#/plugin/open-badge//prop-types'
-import {BadgePage} from '#/plugin/open-badge/badge/components/page'
 import {BadgeForm} from '#/plugin/open-badge/badge/components/form'
 
 import {selectors} from '#/plugin/open-badge/tools/badges/store/selectors'
+import {ToolPage} from '#/main/core/tool'
+import {PageContent} from '#/main/app/page'
 
-const BadgeEdit = (props) =>
-  <BadgePage
-    path={props.path}
-    badge={props.badge}
-    reload={props.reload}
+const BadgeEdit = () =>
+  <ToolPage
+    title={trans('edit_badge', {}, 'badge')}
   >
-    <BadgeForm
-      name={selectors.FORM_NAME}
-    />
-  </BadgePage>
-
-BadgeEdit.propTypes = {
-  path: T.string.isRequired,
-  badge: T.shape(
-    BadgeTypes.propTypes
-  ),
-  reload: T.func.isRequired
-}
+    <PageContent className="py-5">
+      <BadgeForm
+        name={selectors.FORM_NAME}
+      />
+    </PageContent>
+  </ToolPage>
 
 export {
   BadgeEdit

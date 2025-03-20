@@ -43,16 +43,13 @@ class CrudEvent extends Event
     }
 
     /**
-     * @deprecated only used by Organization to avoid deleting the default Organization.
+     * @deprecated only used by Organization to avoid deleting the default Organization
      */
     public function block(): void
     {
         $this->block = true;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowed(): bool
     {
         return !$this->block;

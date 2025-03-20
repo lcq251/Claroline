@@ -50,7 +50,7 @@ const CreationInfo = (props) => {
               name: 'meta.description',
               type: 'string',
               label: trans('description_short'),
-              help: trans('Décrivez succintement votre ressource (La description courte est affichée dans les listes).'),
+              help: trans('Décrivez succinctement votre ressource (La description courte est affichée dans les listes).'),
               recommended: true,
               options: {
                 long: true,

@@ -3,7 +3,6 @@
  */
 
 .data-form {
-    // flex: 1 0 auto; // to fill page if needed
     display: flex;
     flex-direction: column;
     justify-content: stretch;
@@ -98,8 +97,6 @@
 .form-pending-changes {
     bottom: map-get($spacers, 3);
     z-index: $zindex-dropdown - 1;
-    /*background: $black;
-    color: color-contrast($black);*/
 
     @include box-shadow($box-shadow);
     @include border-radius($border-radius);

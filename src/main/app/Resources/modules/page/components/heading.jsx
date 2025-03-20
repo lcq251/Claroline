@@ -9,19 +9,35 @@ import {PagePoster} from '#/main/app/page/components/poster'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {TextSkeleton} from '#/main/app/components/placeholder'
+import {ThumbnailSkeleton} from '#/main/app/components/thumbnail'
 
-const PageHeadingSkeleton = (props) => {
+const PageHeadingSkeleton = ({
+  className,
+  size,
+  icon = false,
+  eyebrow = false,
+  description = false
+}) => {
   return (
-    <header className={classes('app-page-heading placeholder-glow px-4 mb-5', props.className, props.size && `content-${props.size}`)}>
-      <h1 className="h1 app-page-title mt-5 mb-0">
-        {(props.eyebrow) &&
+    <header className={classes('app-page-heading placeholder-glow px-4 mb-5', className, size && `content-${size}`)}>
+      {icon &&
+        <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
+          <ThumbnailSkeleton size="lg" square={true} />
+        </div>
+      }
+
+      <h1 className={classes('h1 app-page-title mb-0', {
+        'mt-5': !icon,
+        'mt-2': icon
+      })}>
+        {eyebrow &&
           <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2 w-25 placeholder rounded-1" role="presentation">&nbsp;</span>
         }
 
-        <span className="placeholder rounded-1 w-75">&nbsp;</span>
+        <span className="placeholder rounded-1 w-75" role="presentation">&nbsp;</span>
       </h1>
 
-      {props.description &&
+      {description &&
         <TextSkeleton className="lead text-body-secondary mt-3 mb-0" rows={3} />
       }
     </header>
@@ -31,6 +47,7 @@ const PageHeadingSkeleton = (props) => {
 PageHeadingSkeleton.propTypes = {
   className: T.string,
   size: T.oneOf(['sm', 'md', 'lg', 'full']),
+  icon: T.bool,
   eyebrow: T.bool,
   description: T.bool
 }

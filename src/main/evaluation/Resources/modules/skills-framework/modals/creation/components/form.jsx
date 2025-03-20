@@ -43,7 +43,7 @@ const CreationForm = (props) => {
                 name: 'description',
                 type: 'string',
                 label: trans('description_short'),
-                help: trans('Décrivez succintement votre référentiel de compétences (La description courte est affichée dans les listes et sur la vue "À propos").'),
+                help: trans('Décrivez succinctement votre référentiel de compétences (La description courte est affichée dans les listes et sur la vue "À propos").'),
                 options: {
                   long: true,
                   minRows: 2

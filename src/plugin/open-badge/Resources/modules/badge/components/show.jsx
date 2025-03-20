@@ -9,11 +9,11 @@ import {ToolPage} from '#/main/core/tool'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/plugin/open-badge/badge/utils'
-import {Badge as BadgeTypes} from '#/plugin/open-badge/prop-types'
+import {Assertion as AssertionTypes, Badge as BadgeTypes} from '#/plugin/open-badge/prop-types'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageContent} from '#/main/app/page'
+import {BadgeDetails} from '#/plugin/open-badge/badge/components/details'
 
 const Badge = (props) =>
   <ToolPage
@@ -21,10 +21,13 @@ const Badge = (props) =>
     description={get(props.badge, 'meta.description')}
   >
     {isEmpty(props.badge) &&
-      <ContentLoader
-        size="lg"
-        description={trans('badge_loading', {}, 'badge')}
-      />
+      <PageContent>
+        <PageHeadingSkeleton
+          size="md"
+          icon={true}
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.badge) &&
@@ -33,7 +36,7 @@ const Badge = (props) =>
           size="md"
           poster={get(props.badge, 'poster')}
           icon={<BadgeImage badge={props.badge} size="lg" />}
-          title={get(props.badge, 'name', trans('loading'))}
+          title={get(props.badge, 'name')}
           description={get(props.badge, 'meta.description')}
           primaryAction="edit"
           actions={!isEmpty(props.badge) ? getActions([props.badge], {
@@ -43,7 +46,11 @@ const Badge = (props) =>
           }, props.path, props.currentUser) : []}
         />
 
-        {props.children}
+        <BadgeDetails
+          path={props.path}
+          badge={props.badge}
+          assertion={props.assertion}
+        />
       </PageContent>
     }
   </ToolPage>
@@ -53,21 +60,19 @@ Badge.propTypes = {
   badge: T.shape(
     BadgeTypes.propTypes
   ),
+  assertion: T.shape(
+    AssertionTypes.propTypes
+  ),
   currentUser: T.object,
-  children: T.any,
   reload: T.func
 }
 
-Badge.defaultProps = {
-  breadcrumb: []
-}
-
-const BadgePage = connect(
+const BadgeShow = connect(
   (state) => ({
     currentUser: securitySelectors.currentUser(state)
   })
 )(Badge)
 
 export {
-  BadgePage
+  BadgeShow
 }

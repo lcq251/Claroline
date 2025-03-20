@@ -22,6 +22,12 @@ registry.add('ClarolineOpenBadgeBundle', {
       'archive'    : () => { return import(/* webpackChunkName: "badge-action-badge-enable" */      '#/plugin/open-badge/actions/badge/archive') },
       'unarchive'  : () => { return import(/* webpackChunkName: "badge-action-badge-disable" */     '#/plugin/open-badge/actions/badge/unarchive') },
       'recalculate': () => { return import(/* webpackChunkName: "badge-action-badge-recalculate" */ '#/plugin/open-badge/actions/badge/recalculate') }
+    },
+    badge_assertion: {
+      'open'          : () => { return import(/* webpackChunkName: "badge-action-badge_assertion-open" */           '#/plugin/open-badge/actions/badge_assertion/open') },
+      'download'      : () => { return import(/* webpackChunkName: "badge-action-badge_assertion-download" */       '#/plugin/open-badge/actions/badge_assertion/download') },
+      'delete'        : () => { return import(/* webpackChunkName: "badge-action-badge_assertion-delete" */         '#/plugin/open-badge/actions/badge_assertion/delete') },
+      'show-evidences': () => { return import(/* webpackChunkName: "badge-action-badge_assertion-show-evidences" */ '#/plugin/open-badge/actions/badge_assertion/show-evidences') }
     }
   },
 
