@@ -47,6 +47,7 @@ class Updater150000 extends Updater
         $this->removePlugin('Claroline', 'HistoryBundle');
         $this->removePlugin('HeVinci', 'CompetencyBundle');
         $this->removePlugin('Claroline', 'SlideshowBundle');
+        $this->removePlugin('Claroline', 'TextPlayerBundle');
 
         $this->removeTool('notifications');
     }
