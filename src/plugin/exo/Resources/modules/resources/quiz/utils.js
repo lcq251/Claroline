@@ -32,7 +32,7 @@ function getNumbering(type, stepIndex, itemIndex) {
     case constants.NUMBERING_NUMERIC:
       return numbering
         .map(idx => idx + 1)
-        .join('.')
+        .join('.') + '.'
 
     /**
      * The numbering label is a letter.
@@ -40,7 +40,7 @@ function getNumbering(type, stepIndex, itemIndex) {
     case constants.NUMBERING_LITERAL:
       return numbering
         .map(idx => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[idx])
-        .join('.')
+        .join('.') + '.'
 
     /**
      * The numbering feature is disabled.

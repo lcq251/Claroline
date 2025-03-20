@@ -31,17 +31,15 @@ const QuizEditorStep = props => {
     }
   }, [props.currentItemId])
 
+  let title = ''
+  if (numbering) {
+    title += numbering + ' '
+  }
+  title += props.title || trans('step', {number: props.index + 1}, 'quiz')
+
   return (
     <EditorPage
-      title={
-        <>
-          {numbering &&
-            <span className="h-numbering">{numbering}</span>
-          }
-
-          {props.title || trans('step', {number: props.index + 1}, 'quiz')}
-        </>
-      }
+      title={title}
       actions={[
         {
           name: 'summary',
