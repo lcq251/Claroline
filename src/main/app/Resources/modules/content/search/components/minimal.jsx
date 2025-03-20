@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
@@ -6,56 +6,41 @@ import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
-class SearchMinimal extends Component {
-  constructor(props) {
-    super(props)
+const SearchMinimal = ({
+  className,
+  search,
+  onSearch,
+  placeholder = trans('search', {}, 'actions'),
+  autoFocus = false
+}) =>
+  <div className={classes('d-flex flex-row align-items-center bg-body-secondary rounded-2 py-1', className)}>
+    <span className="fa fa-search text-body-tertiary ms-3" />
+    <input
+      className="form-control border-0 shadow-none bg-transparent"
+      type="text"
+      placeholder={placeholder}
+      onChange={(e) => onSearch(e.target.value)}
+      value={search}
+      autoFocus={autoFocus}
+    />
 
-    this.state = {
-      currentSearch: ''
+    {search &&
+      <Button
+        className="btn btn-text-body focus-ring rounded-2"
+        type={CALLBACK_BUTTON}
+        icon="fa fa-delete-left"
+        label={trans('remove_filters', {}, 'actions')}
+        callback={() => onSearch('')}
+        tooltip="bottom"
+      />
     }
-  }
-
-  render() {
-    return (
-      <form
-        className={classes('input-group', this.props.className, {
-          [`input-group-${this.props.size}`]: !!this.props.size
-        })}
-      >
-        <input
-          type="search"
-          className="form-control" placeholder={this.props.placeholder}
-          value={this.state.currentSearch}
-          onChange={(e) => this.setState({currentSearch: e.target.value || ''})}
-        />
-
-        <Button
-          className="btn btn-body"
-          type={CALLBACK_BUTTON}
-          icon="fa fa-fw fa-search"
-          label={trans('search', {}, 'actions')}
-          tooltip="left"
-          htmlType="submit"
-          callback={() => {
-            this.props.search(this.state.currentSearch)
-            this.setState({currentSearch: ''})
-          }}
-          disabled={!this.state.currentSearch}
-        />
-      </form>
-    )
-  }
-}
+  </div>
 
 SearchMinimal.propTypes = {
-  className: T.string,
-  size: T.string,
+  search: T.string,
   placeholder: T.string,
-  search: T.func.isRequired
-}
-
-SearchMinimal.defaultProps = {
-  placeholder: trans('search', {}, 'actions')
+  autoFocus: T.bool,
+  onSearch: T.func.isRequired
 }
 
 export {

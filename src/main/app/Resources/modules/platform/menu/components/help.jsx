@@ -55,6 +55,7 @@ const HelpMenu = (props) => {
             .filter(appContext => 'workspace' !== appContext.name)
             .map(appContext =>
               <Button
+                key={appContext.name}
                 className="list-group-item list-group-item-action"
                 type={LINK_BUTTON}
                 icon={`fa fa-fw fa-${appContext.icon}`}

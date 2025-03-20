@@ -16,6 +16,7 @@ const CreationType = props =>
       <ContentMenu
         className="mb-3"
         color={false}
+        search={true}
         items={props.types
           .filter(name => !isEmpty(getType({meta: {type: name}})))
           .filter(resourceType => ![

@@ -507,7 +507,6 @@
     "yes": "Oui",
     "access_code": "Code d'accès",
     "allow_ip_filtering": "Activer le filtrage par IP",
-    "remove_all_filter": "Retirer tous les filtres",
     "delete_all": "tout supprimer",
     "ip_input_help": "Chaque partie de l'adresse doit être un nombre entre 0 et 255 ou *.",
     "list_columns": "Colonnes disponibles",

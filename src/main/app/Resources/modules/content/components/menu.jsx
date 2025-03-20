@@ -1,10 +1,11 @@
-import React, {cloneElement} from 'react'
+import React, {cloneElement, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {Thumbnail} from '#/main/app/components/thumbnail'
+import {SearchMinimal} from '#/main/app/content/search/components/minimal'
 
 const COLORS = [
   'var(--bs-pink)',
@@ -66,12 +67,15 @@ ContentMenuItem.propTypes = {
 const ContentMenu = ({
   className,
   items,
+  search = false,
   color = true,
   autoFocus = true
 }) => {
-  const displayedTypes = items.filter(
-    action => undefined === action.displayed || action.displayed
-  )
+  const [searchStr, setSearch] = useState('')
+
+  const displayedTypes = items
+    .filter(action => undefined === action.displayed || action.displayed)
+    .filter(action => 3 > searchStr.length || action.label.toLowerCase().includes(searchStr.toLowerCase()) || action.description.toLowerCase().includes(searchStr.toLowerCase()))
 
   const unclassifiedTypes = displayedTypes
     .filter(action => !action.group)
@@ -91,11 +95,20 @@ const ContentMenu = ({
 
   return (
     <div className={className} role="presentation">
+      {search &&
+        <SearchMinimal
+          className="mb-4"
+          search={searchStr}
+          onSearch={setSearch}
+          autoFocus={autoFocus}
+        />
+      }
+
       {unclassifiedTypes.map((creationType, index) =>
         <ContentMenuItem
           key={creationType.id}
           className={0 !== index ? 'mt-2' : undefined}
-          autoFocus={autoFocus && 0 === index}
+          autoFocus={!search && autoFocus && 0 === index}
           color={color ? COLORS[index % COLORS.length] : undefined}
           {...creationType}
         />
@@ -119,6 +132,7 @@ const ContentMenu = ({
 ContentMenu.propTypes = {
   autoFocus: T.bool,
   className: T.string,
+  search: T.bool,
   items: T.arrayOf(T.shape({
     id: T.string.isRequired,
     icon: T.oneOfType([T.string, T.node]),
@@ -132,11 +146,6 @@ ContentMenu.propTypes = {
     group: T.string
   })),
   color: T.bool
-}
-
-ContentMenu.defaultProps = {
-  color: true,
-  autoFocus: true
 }
 
 export {

@@ -115,5 +115,6 @@
   "show_dashboard": "Ouvrir le tableau de bord",
   "show_context_menu": "Ouvrir le menu de l'espace",
   "close_context_menu": "Fermer le menu de l'espace",
-  "change_owner": "Changer le propriétaire"
+  "change_owner": "Changer le propriétaire",
+  "remove_filters": "Retirer les filtres"
 }
