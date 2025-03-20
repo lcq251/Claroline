@@ -7,7 +7,7 @@ import {route as workspaceRoute} from '#/main/core/workspace/routing'
 
 import {AssertionBadgeCard} from '#/plugin/open-badge/assertion/components/card'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
-import {getActions, getDefaultAction} from '#/plugin/open-badge/badge/utils'
+import {getActions, getDefaultAction} from '#/plugin/open-badge/assertion/utils'
 
 export default (contextType, contextData, refresher, currentUser) => {
   let basePath
