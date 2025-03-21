@@ -95,3 +95,14 @@ actions.fromFile = (file) => (dispatch) => {
     }
   })
 }
+
+actions.fromUrl = (url) => (dispatch) => dispatch({
+  [API_REQUEST]: {
+    url: ['claro_resource_check_url'],
+    type: 'upload',
+    request: {
+      method: 'POST',
+      body: JSON.stringify([url])
+    }
+  }
+})

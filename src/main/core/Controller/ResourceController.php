@@ -134,9 +134,11 @@ class ResourceController
      * Submit access code.
      */
     #[Route(path: '/unlock/{id}', name: 'claro_resource_unlock', methods: ['POST'])]
-    public function unlockAction(#[MapEntity(mapping: ['id' => 'uuid'])]
-        ResourceNode $resourceNode, Request $request): JsonResponse
-    {
+    public function unlockAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        ResourceNode $resourceNode,
+        Request $request
+    ): JsonResponse {
         $this->restrictionsManager->unlock($resourceNode, json_decode($request->getContent(), true)['code']);
 
         return new JsonResponse(null, 204);
@@ -165,10 +167,21 @@ class ResourceController
     /**
      * Checks if a resource is creatable for the submitted url.
      */
-    #[Route(path: '/check/url', name: 'check_url', methods: ['POST'])]
+    #[Route(path: '/check/url', name: 'claro_resource_check_url', methods: ['POST'])]
     public function checkUrlAction(Request $request): JsonResponse
     {
-        return new JsonResponse();
+        $urls = $this->decodeRequest($request);
+
+        foreach ($urls as $url) {
+            $urlData = $this->resourceProvider->fromUrl($url);
+            if (empty($urlData)) {
+                return new JsonResponse(null, 404);
+            }
+
+            return new JsonResponse($urlData);
+        }
+
+        return new JsonResponse(null, 404);
     }
 
     /**

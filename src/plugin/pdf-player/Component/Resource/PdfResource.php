@@ -77,9 +77,10 @@ class PdfResource extends ResourceComponent implements DownloadableResourceInter
         $workspace = $resourceNode->getWorkspace();
         $workspaceDir = 'WORKSPACE_'.$workspace->getId();
 
-        if (!$filesystem->exists($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf')) {
-            $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf');
-        }
+        $filesystem->mkdir([
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir,
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'pdf',
+        ]);
 
         $finalPath = $workspaceDir.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$file->guessExtension();
         $filesystem->rename($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$finalPath);

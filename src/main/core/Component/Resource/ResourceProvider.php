@@ -43,6 +43,37 @@ class ResourceProvider extends AbstractComponentProvider
     {
     }
 
+    public function fromUrl(string $url): ?array
+    {
+        $urlHandler = null;
+        foreach ($this->getRegisteredComponents() as $resourceHandler) {
+            if ($resourceHandler instanceof UrlAdapterInterface) {
+                // checks if the current resource supports the submitted url
+                $support = $resourceHandler->supportsUrl($url);
+                if (UrlAdapterInterface::SUPPORTED === $support) {
+                    // perfect file match
+                    $urlHandler = $resourceHandler;
+                    break;
+                } elseif (UrlAdapterInterface::SUPPORTED_PARTIAL === $support) {
+                    // only partial support, continue searching to find a perfect support if any
+                    $urlHandler = $resourceHandler;
+                }
+            }
+        }
+
+        if (!$urlHandler) {
+            // the url type is not supported by any enabled resource
+            return null;
+        }
+
+        return array_merge([
+            'meta' => [
+                'type' => $urlHandler::getName(),
+            ],
+            'url' => $url,
+        ], $urlHandler->fromUrl($url) ?? []);
+    }
+
     public function fromFile(UploadedFile $file): ?array
     {
         $fileHandler = null;

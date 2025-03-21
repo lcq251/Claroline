@@ -114,9 +114,10 @@ class AudioResource extends ResourceComponent implements DownloadableResourceInt
         $workspace = $resourceNode->getWorkspace();
         $workspaceDir = 'WORKSPACE_'.$workspace->getId();
 
-        if (!$filesystem->exists($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'audio')) {
-            $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'audio');
-        }
+        $filesystem->mkdir([
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir,
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'audio',
+        ]);
 
         $finalPath = $workspaceDir.DIRECTORY_SEPARATOR.'audio'.DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$file->guessExtension();
         $filesystem->rename($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$finalPath);

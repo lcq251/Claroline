@@ -24,10 +24,12 @@ use Claroline\CoreBundle\Event\Resource\File\LoadFileEvent;
 use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
+use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -70,6 +72,34 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     }
 
     /** @param FileResource $resource */
+    public function create(AbstractResource $resource, array $data): void
+    {
+        $filesystem = new Filesystem();
+
+        try {
+            $file = new File($resource->getUrl());
+        } catch (FileNotFoundException $e) {
+            throw new InvalidDataException('Cannot find the file for file resource.');
+        }
+
+        $resourceNode = $resource->getResourceNode();
+        $workspace = $resourceNode->getWorkspace();
+        $workspaceDir = 'WORKSPACE_'.$workspace->getId();
+
+        $filesystem->mkdir([
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir,
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'file',
+        ]);
+
+        $finalPath = $workspaceDir.DIRECTORY_SEPARATOR.'file'.DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$file->guessExtension();
+        $filesystem->rename($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$finalPath);
+
+        $resource->setUrl($finalPath);
+        $this->om->persist($resource);
+        $this->om->flush();
+    }
+
+    /** @param FileResource $resource */
     public function download(AbstractResource $resource): ?string
     {
         if ($this->fileManager->exists($resource->getHashName())) {
@@ -82,9 +112,9 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     /** @param FileResource $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
-        if (!$softDelete && $this->fileManager->exists($resource->getHashName())) {
-            $pathName = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
-            $fileBag->add($resource->getHashName(), $pathName);
+        if (!$softDelete && $this->fileManager->exists($resource->getUrl())) {
+            $pathName = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+            $fileBag->add($resource->getUrl(), $pathName);
         }
 
         return true;
@@ -93,9 +123,9 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     /** @param FileResource $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
-        if ($this->fileManager->exists($resource->getHashName())) {
-            $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
-            $fileBag->add($resource->getHashName(), $path);
+        if ($this->fileManager->exists($resource->getUrl())) {
+            $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+            $fileBag->add($resource->getUrl(), $path);
         }
 
         return [];
@@ -106,7 +136,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     {
         $workspace = $resource->getResourceNode()->getWorkspace();
 
-        $realFile = $fileBag->get($resource->getHashName());
+        $realFile = $fileBag->get($resource->getUrl());
         if (empty($realFile)) {
             return;
         }
@@ -122,7 +152,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         $fileSystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.'WORKSPACE_'.$workspace->getId());
         $fileSystem->copy($realFile, $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$hashName);
 
-        $resource->setHashName($hashName);
+        $resource->setUrl($hashName);
 
         $this->om->persist($resource);
         $this->om->flush();
@@ -134,7 +164,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
      */
     public function copy(AbstractResource $original, AbstractResource $copy): void
     {
-        if (!$this->fileManager->exists($original->getHashName())) {
+        if (!$this->fileManager->exists($original->getUrl())) {
             return;
         }
 
@@ -142,7 +172,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         $workspace = $destParent->getWorkspace();
 
         $hashName = 'WORKSPACE_'.$workspace->getId().DIRECTORY_SEPARATOR.Uuid::uuid4()->toString();
-        $ext = pathinfo($original->getHashName(), PATHINFO_EXTENSION);
+        $ext = pathinfo($original->getUrl(), PATHINFO_EXTENSION);
         if ($ext) {
             $hashName .= '.'.$ext;
         }
@@ -150,7 +180,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         // create workspace dir if missing
         $fileSystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.'WORKSPACE_'.$workspace->getId());
         $fileSystem->copy(
-            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$original->getHashName(),
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$original->getUrl(),
             $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$hashName
         );
 
@@ -169,7 +199,7 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         $data = $event->getData();
 
         if ($file && !empty($data) && !empty($data['file'])) {
-            $file->setHashName($data['file']['url']);
+            $file->setUrl($data['file']['url']);
             $file->setSize($data['file']['size']);
 
             $file->setMimeType($data['file']['mimeType']);

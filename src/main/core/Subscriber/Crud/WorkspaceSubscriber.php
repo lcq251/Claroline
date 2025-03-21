@@ -22,6 +22,7 @@ use Claroline\CoreBundle\Manager\ResourceManager;
 use Claroline\CoreBundle\Manager\Workspace\TransferManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class WorkspaceSubscriber implements EventSubscriberInterface
@@ -86,6 +87,9 @@ class WorkspaceSubscriber implements EventSubscriberInterface
     {
         /** @var Workspace $workspace */
         $workspace = $event->getObject();
+
+        $filesystem = new Filesystem();
+        $filesystem->mkdir($this->manager->getStorageDirectory($workspace));
 
         // give the creator the manager role
         /*if (!$workspace->isModel() && !$workspace->isPersonal() && $workspace->getManagerRole() && $workspace->getCreator()) {

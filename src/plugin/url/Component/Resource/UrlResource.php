@@ -1,13 +1,14 @@
 <?php
 
-namespace HeVinci\UrlBundle\Listener\Resource;
+namespace HeVinci\UrlBundle\Component\Resource;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
+use Claroline\CoreBundle\Component\Resource\UrlAdapterInterface;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use HeVinci\UrlBundle\Entity\Url;
 
-class UrlListener extends ResourceComponent
+class UrlResource extends ResourceComponent implements UrlAdapterInterface
 {
     public function __construct(
         private readonly SerializerProvider $serializer
@@ -31,6 +32,19 @@ class UrlListener extends ResourceComponent
     {
         return [
             'resource' => $this->serializer->serialize($resource),
+        ];
+    }
+
+    public function supportsUrl(string $url): int
+    {
+        return UrlAdapterInterface::SUPPORTED_PARTIAL;
+    }
+
+    public function fromUrl(string $url): ?array
+    {
+        return [
+            'name' => trim(str_replace(['http://', 'https://'], '', $url), '/'),
+            'raw' => $url,
         ];
     }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CurlManager
 {
-    public function exec($url, $payload = null, $type = 'GET', $options = [], $autoClose = true, &$ch = null)
+    public function exec(string $url, mixed $payload = null, string $type = 'GET', ?array $options = [], bool $autoClose = true, \CurlHandle &$ch = null): mixed
     {
         $options[CURLOPT_RETURNTRANSFER] = true;
 
@@ -68,19 +68,19 @@ class CurlManager
         return $serverOutput;
     }
 
-    private function setPostCurl($ch, $payload)
+    private function setPostCurl(\CurlHandle $ch, mixed $payload): void
     {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     }
 
-    private function setPutCurl($ch, $payload)
+    private function setPutCurl(\CurlHandle $ch, mixed $payload): void
     {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     }
 
-    private function setDeleteCurl($ch)
+    private function setDeleteCurl(\CurlHandle $ch): void
     {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
     }

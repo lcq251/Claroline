@@ -15,6 +15,9 @@ const ResourceCreationModal = withReducer(selectors.STORE_NAME, reducer)(
       fromFile(file) {
         return dispatch(actions.fromFile(file))
       },
+      fromUrl(url) {
+        return dispatch(actions.fromUrl(url))
+      },
       create(parent) {
         return dispatch(actions.create(parent))
       },

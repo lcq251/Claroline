@@ -54,23 +54,37 @@ class File extends AbstractResource
         $this->opening = $opening;
     }
 
+    public function getUrl(): ?string
+    {
+        return $this->hashName;
+    }
+
+    public function setUrl(string $url): void
+    {
+        $this->hashName = $url;
+    }
+
     /**
      * Returns the name of the file actually stored in the file directory (as
      * opposed to the file original name, which is kept in the entity name
      * attribute).
+     *
+     * @deprecated use getUrl()
      */
     public function getHashName(): ?string
     {
-        return $this->hashName;
+        return $this->getUrl();
     }
 
     /**
      * Sets the name of the physical file that will be stored in the file directory.
      * To prevent file name issues (e.g. with special characters), the original
      * file should be renamed with a standard unique identifier.
+     *
+     * @deprecated use setUrl()
      */
     public function setHashName(string $hashName): void
     {
-        $this->hashName = $hashName;
+        $this->setUrl($hashName);
     }
 }

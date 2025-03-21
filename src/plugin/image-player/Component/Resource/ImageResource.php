@@ -78,9 +78,10 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
         $workspace = $resourceNode->getWorkspace();
         $workspaceDir = 'WORKSPACE_'.$workspace->getId();
 
-        if (!$filesystem->exists($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'image')) {
-            $filesystem->mkdir($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'image');
-        }
+        $filesystem->mkdir([
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir,
+            $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$workspaceDir.DIRECTORY_SEPARATOR.'image',
+        ]);
 
         $finalPath = $workspaceDir.DIRECTORY_SEPARATOR.'image'.DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$file->guessExtension();
         $filesystem->rename($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$finalPath);
