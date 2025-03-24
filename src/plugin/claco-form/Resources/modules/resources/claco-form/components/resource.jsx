@@ -93,7 +93,6 @@ const ClacoFormResource = props =>
                 .then(entryId => {
                   if (entryId) {
                     props.openEntryForm(entryId, props.clacoForm.id, [], props.currentUser)
-                    props.loadEntryUser(entryId, props.currentUser)
                   }
                 })
               break
@@ -123,17 +122,12 @@ const ClacoFormResource = props =>
         component: Entry,
         onEnter: (params) => {
           props.openEntryForm(params.id, props.clacoForm.id, [], props.currentUser)
-          props.loadEntryUser(params.id, props.currentUser)
         }
       }, {
         path: '/entry/form/:id?',
         component: EntryForm,
         onEnter: (params) => {
           props.openEntryForm(params.id, props.clacoForm.id, props.clacoForm.fields, props.currentUser)
-
-          if (params.id) {
-            props.loadEntryUser(params.id, props.currentUser)
-          }
         }
       }, {
         path: '/stats',
@@ -162,7 +156,6 @@ ClacoFormResource.propTypes = {
   defaultHome: T.string,
   resetForm: T.func.isRequired,
   openEntryForm: T.func.isRequired,
-  loadEntryUser: T.func.isRequired,
   loadAllUsedCountries: T.func.isRequired,
   loadStats: T.func.isRequired
 }

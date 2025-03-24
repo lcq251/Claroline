@@ -58,13 +58,6 @@ const Category = {
   }
 }
 
-const Keyword = {
-  propTypes: {
-    id: T.string,
-    name: T.string
-  }
-}
-
 const ClacoForm = {
   propTypes: {
     id: T.string,
@@ -80,18 +73,6 @@ const ClacoForm = {
       search_columns: T.array,
       display_metadata: T.string,
       display_categories: T.bool,
-      comments_enabled: T.bool,
-      anonymous_comments_enabled: T.bool,
-      moderate_comments: T.string,
-      display_comments: T.bool,
-      open_comments: T.bool,
-      display_comment_author: T.bool,
-      display_comment_date: T.bool,
-      comments_roles: T.array,
-      comments_display_roles: T.array,
-      keywords_enabled: T.bool,
-      new_keywords_enabled: T.bool,
-      display_keywords: T.bool,
       default_display_mode: T.string,
       display_title: T.string,
       display_subtitle: T.string,
@@ -110,7 +91,6 @@ const ClacoForm = {
       categories: T.array
     }),
     categories: T.arrayOf(T.shape(Category.propTypes)),
-    keywords: T.arrayOf(T.shape(Keyword.propTypes)),
     fields: T.arrayOf(T.shape(Field.propTypes))
   }
 }
@@ -131,37 +111,10 @@ const Entry = {
   }
 }
 
-const EntryUser = {
-  propTypes: {
-    id: T.string,
-    autoId: T.number,
-    shared: T.bool,
-    notifyEdition: T.bool,
-    notifyComment: T.bool,
-    notifyVote: T.bool,
-    user: T.object,
-    entry: T.object
-  }
-}
-
-const Comment = {
-  propTypes: {
-    id: T.string,
-    content: T.string,
-    status: T.number,
-    creationDate: T.string,
-    editionDate: T.string,
-    user: T.shape(UserType.propTypes)
-  }
-}
-
 export {
   Field,
   FieldChoiceCategory,
   Category,
-  Keyword,
   ClacoForm,
-  Entry,
-  EntryUser,
-  Comment
+  Entry
 }

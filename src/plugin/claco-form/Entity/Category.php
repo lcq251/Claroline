@@ -11,13 +11,13 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\ClacoFormBundle\Repository\CategoryRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\ClacoFormBundle\Repository\CategoryRepository;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_clacoformbundle_category')]
@@ -160,20 +160,5 @@ class Category
             $this->details = [];
         }
         $this->details['notify_removal'] = $notifyRemoval;
-    }
-
-    public function getNotifyPendingComment(): bool
-    {
-        return !is_null($this->details) && isset($this->details['notify_pending_comment']) ?
-            $this->details['notify_pending_comment'] :
-            true;
-    }
-
-    public function setNotifyPendingComment(bool $notifyPendingComment): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['notify_pending_comment'] = $notifyPendingComment;
     }
 }

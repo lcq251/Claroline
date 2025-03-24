@@ -23,7 +23,7 @@ class EntryRepository extends EntityRepository
      *
      * @return Entry[]
      */
-    public function findPublishedEntriesByDates(ClacoForm $clacoForm, $startDate = null, $endDate = null)
+    public function findPublishedEntriesByDates(ClacoForm $clacoForm, ?\DateTimeInterface $startDate = null, ?\DateTimeInterface $endDate = null): array
     {
         $dql = '
             SELECT e
@@ -63,7 +63,7 @@ class EntryRepository extends EntityRepository
      *
      * @return Entry[]
      */
-    public function findPublishedEntriesByCategoriesAndDates(ClacoForm $clacoForm, $categoriesIds = [], $startDate = null, $endDate = null)
+    public function findPublishedEntriesByCategoriesAndDates(ClacoForm $clacoForm, ?array $categoriesIds = [], ?\DateTimeInterface $startDate = null, ?\DateTimeInterface $endDate = null): array
     {
         $dql = '
             SELECT e

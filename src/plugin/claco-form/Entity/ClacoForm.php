@@ -41,12 +41,6 @@ class ClacoForm extends AbstractResource
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'clacoForm')]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Keyword>
-     */
-    #[ORM\OneToMany(targetEntity: Keyword::class, mappedBy: 'clacoForm', orphanRemoval: true)]
-    private Collection $keywords;
-
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $details = [];
 
@@ -71,7 +65,6 @@ class ClacoForm extends AbstractResource
 
         $this->categories = new ArrayCollection();
         $this->fields = new ArrayCollection();
-        $this->keywords = new ArrayCollection();
     }
 
     public function getTemplate(): ?string
@@ -148,44 +141,6 @@ class ClacoForm extends AbstractResource
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
             $category->setClacoForm(null);
-        }
-    }
-
-    public function getKeyword(string $keywordId): ?Keyword
-    {
-        $found = null;
-
-        foreach ($this->keywords as $keyword) {
-            if ($keyword->getUuid() === $keywordId) {
-                $found = $keyword;
-                break;
-            }
-        }
-
-        return $found;
-    }
-
-    /**
-     * @return Keyword[]
-     */
-    public function getKeywords(): array
-    {
-        return $this->keywords->toArray();
-    }
-
-    public function addKeyword(Keyword $keyword): void
-    {
-        if (!$this->keywords->contains($keyword)) {
-            $this->keywords->add($keyword);
-            $keyword->setClacoForm($this);
-        }
-    }
-
-    public function removeKeyword(Keyword $keyword): void
-    {
-        if ($this->keywords->contains($keyword)) {
-            $this->keywords->removeElement($keyword);
-            $keyword->setClacoForm(null);
         }
     }
 
@@ -380,7 +335,7 @@ class ClacoForm extends AbstractResource
     {
         return !is_null($this->details) && isset($this->details['search_columns']) ?
             $this->details['search_columns'] :
-            ['title', 'date', 'user', 'categories', 'keywords'];
+            ['title', 'date', 'user', 'categories'];
     }
 
     public function setSearchColumns(array $searchColumns): void
@@ -415,136 +370,6 @@ class ClacoForm extends AbstractResource
             $this->details = [];
         }
         $this->details['display_categories'] = $displayCategories;
-    }
-
-    public function isCommentsEnabled()
-    {
-        return !is_null($this->details) && isset($this->details['comments_enabled']) ? $this->details['comments_enabled'] : false;
-    }
-
-    public function setCommentsEnabled($commentsEnabled): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['comments_enabled'] = $commentsEnabled;
-    }
-
-    public function isAnonymousCommentsEnabled()
-    {
-        return !is_null($this->details) && isset($this->details['anonymous_comments_enabled']) ? $this->details['anonymous_comments_enabled'] : false;
-    }
-
-    public function setAnonymousCommentsEnabled($anonymousCommentsEnabled): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['anonymous_comments_enabled'] = $anonymousCommentsEnabled;
-    }
-
-    public function getModerateComments()
-    {
-        return !is_null($this->details) && isset($this->details['moderate_comments']) ? $this->details['moderate_comments'] : 'none';
-    }
-
-    public function setModerateComments($moderateComments): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['moderate_comments'] = $moderateComments;
-    }
-
-    public function getDisplayComments()
-    {
-        return !is_null($this->details) && isset($this->details['display_comments']) ? $this->details['display_comments'] : false;
-    }
-
-    public function setDisplayComments($displayComments): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['display_comments'] = $displayComments;
-    }
-
-    public function getOpenComments()
-    {
-        return !is_null($this->details) && isset($this->details['open_comments']) ? $this->details['open_comments'] : false;
-    }
-
-    public function setOpenComments($openComments): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['open_comments'] = $openComments;
-    }
-
-    public function getDisplayCommentAuthor()
-    {
-        return !is_null($this->details) && isset($this->details['display_comment_author']) ? $this->details['display_comment_author'] : true;
-    }
-
-    public function setDisplayCommentAuthor($displayCommentAuthor): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['display_comment_author'] = $displayCommentAuthor;
-    }
-
-    public function getDisplayCommentDate()
-    {
-        return !is_null($this->details) && isset($this->details['display_comment_date']) ? $this->details['display_comment_date'] : true;
-    }
-
-    public function setDisplayCommentDate($displayCommentDate): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['display_comment_date'] = $displayCommentDate;
-    }
-
-    public function isKeywordsEnabled()
-    {
-        return !is_null($this->details) && isset($this->details['keywords_enabled']) ? $this->details['keywords_enabled'] : false;
-    }
-
-    public function setKeywordsEnabled($keywordsEnabled): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['keywords_enabled'] = $keywordsEnabled;
-    }
-
-    public function isNewKeywordsEnabled()
-    {
-        return !is_null($this->details) && isset($this->details['new_keywords_enabled']) ? $this->details['new_keywords_enabled'] : false;
-    }
-
-    public function setNewKeywordsEnabled($newKeywordsEnabled): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['new_keywords_enabled'] = $newKeywordsEnabled;
-    }
-
-    public function getDisplayKeywords()
-    {
-        return !is_null($this->details) && isset($this->details['display_keywords']) ? $this->details['display_keywords'] : false;
-    }
-
-    public function setDisplayKeywords($displayKeywords): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['display_keywords'] = $displayKeywords;
     }
 
     public function getUseTemplate()
@@ -612,36 +437,6 @@ class ClacoForm extends AbstractResource
         $this->details['display_content'] = $displayContent;
     }
 
-    public function getCommentsRoles()
-    {
-        return !is_null($this->details) && isset($this->details['comments_roles']) ?
-            $this->details['comments_roles'] :
-            [];
-    }
-
-    public function setCommentsRoles(array $commentsRoles): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['comments_roles'] = $commentsRoles;
-    }
-
-    public function getCommentsDisplayRoles()
-    {
-        return !is_null($this->details) && isset($this->details['comments_display_roles']) ?
-            $this->details['comments_display_roles'] :
-            [];
-    }
-
-    public function setCommentsDisplayRoles(array $commentsDisplayRoles): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['comments_display_roles'] = $commentsDisplayRoles;
-    }
-
     public function getTitleFieldLabel()
     {
         return !is_null($this->details) && isset($this->details['title_field_label']) ?
@@ -683,19 +478,6 @@ class ClacoForm extends AbstractResource
             $this->details = [];
         }
         $this->details['search_restricted_columns'] = $searchRestrictedColumns;
-    }
-
-    public function getShowEntryNav(): bool
-    {
-        return !is_null($this->details) && isset($this->details['showEntryNav']) ? $this->details['showEntryNav'] : false;
-    }
-
-    public function setShowEntryNav($showEntryNav): void
-    {
-        if (is_null($this->details)) {
-            $this->details = [];
-        }
-        $this->details['showEntryNav'] = $showEntryNav;
     }
 
     public function hasStatistics(): bool

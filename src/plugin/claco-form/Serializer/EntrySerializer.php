@@ -7,15 +7,12 @@ use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\ClacoFormBundle\Entity\Category;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
-use Claroline\ClacoFormBundle\Entity\Comment;
 use Claroline\ClacoFormBundle\Entity\Entry;
 use Claroline\ClacoFormBundle\Entity\Field;
 use Claroline\ClacoFormBundle\Entity\FieldValue;
-use Claroline\ClacoFormBundle\Entity\Keyword;
 use Claroline\ClacoFormBundle\Repository\CategoryRepository;
 use Claroline\ClacoFormBundle\Repository\ClacoFormRepository;
 use Claroline\ClacoFormBundle\Repository\FieldRepository;
-use Claroline\ClacoFormBundle\Repository\KeywordRepository;
 use Claroline\CommunityBundle\Repository\UserRepository;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
@@ -31,22 +28,18 @@ class EntrySerializer
     private ClacoFormRepository $clacoFormRepo;
     private FieldRepository $fieldRepo;
     private CategoryRepository $categoryRepo;
-    private KeywordRepository $keywordRepo;
     private UserRepository $userRepo;
 
     public function __construct(
         ObjectManager $om,
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly CategorySerializer $categorySerializer,
-        private readonly CommentSerializer $commentSerializer,
-        private readonly KeywordSerializer $keywordSerializer,
         private readonly UserSerializer $userSerializer,
         private readonly FacetManager $facetManager
     ) {
         $this->clacoFormRepo = $om->getRepository(ClacoForm::class);
         $this->fieldRepo = $om->getRepository(Field::class);
         $this->categoryRepo = $om->getRepository(Category::class);
-        $this->keywordRepo = $om->getRepository(Keyword::class);
         $this->userRepo = $om->getRepository(User::class);
     }
 
@@ -136,9 +129,6 @@ class EntrySerializer
         if (isset($data['categories'])) {
             $this->deserializeCategories($entry, $data['categories']);
         }
-        if (isset($data['keywords'])) {
-            $this->deserializeKeywords($entry, $data['keywords']);
-        }
 
         if ($entry->getClacoForm()) {
             $clacoForm = $entry->getClacoForm();
@@ -212,30 +202,6 @@ class EntrySerializer
         );
     }
 
-    private function getKeywords(Entry $entry): array
-    {
-        return $entry->getClacoForm()->isKeywordsEnabled() ?
-            array_map(
-                function (Keyword $keyword) {
-                    return $this->keywordSerializer->serialize($keyword);
-                },
-                $entry->getKeywords()
-            ) :
-            [];
-    }
-
-    private function getComments(Entry $entry): array
-    {
-        return $entry->getClacoForm()->isCommentsEnabled() ?
-            array_map(
-                function (Comment $comment) {
-                    return $this->commentSerializer->serialize($comment);
-                },
-                $entry->getComments()
-            ) :
-            [];
-    }
-
     private function deserializeCategories(Entry $entry, array $categoriesData): Entry
     {
         $entry->emptyCategories();
@@ -245,31 +211,6 @@ class EntrySerializer
 
             if (!empty($category)) {
                 $entry->addCategory($category);
-            }
-        }
-
-        return $entry;
-    }
-
-    private function deserializeKeywords(Entry $entry, array $keywordsData): Entry
-    {
-        $entry->emptyKeywords();
-
-        foreach ($keywordsData as $keywordData) {
-            $keyword = $this->keywordRepo->findOneBy(['uuid' => $keywordData['id']]);
-
-            if (!empty($keyword)) {
-                $entry->addKeyword($keyword);
-            } else {
-                $clacoForm = $entry->getClacoForm();
-
-                if ($clacoForm->isNewKeywordsEnabled()) {
-                    $keyword = new Keyword();
-                    $keyword->setClacoForm($clacoForm);
-                    $this->keywordSerializer->deserialize($keywordData, $keyword);
-
-                    $entry->addKeyword($keyword);
-                }
             }
         }
 

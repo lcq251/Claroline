@@ -14,8 +14,7 @@ import {MODAL_USERS} from '#/main/community/modals/users'
 
 import {
   Field as FieldType,
-  Entry as EntryType,
-  EntryUser as EntryUserType
+  Entry as EntryType
 } from '#/plugin/claco-form/resources/claco-form/prop-types'
 import {generateFromTemplate} from '#/plugin/claco-form/resources/claco-form/template'
 import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
@@ -25,7 +24,6 @@ import {PageContent, PageHeading, PageSection} from '#/main/app/page'
 import {Html} from '#/main/app/components/html'
 import {ContentPublication} from '#/main/app/content/components/publication'
 import {Tags} from '#/main/app/components/tags'
-import {MODAL_ENTRY_SHARED} from '#/plugin/claco-form/resources/claco-form/player/modals/shared'
 
 class Entry extends Component {
   canViewMetadata() {
@@ -153,16 +151,6 @@ class Entry extends Component {
                 dangerous: true,
                 displayed: !this.props.entry.locked && this.props.canAdministrate,
                 group: trans('management')
-              }, {
-                name: 'share',
-                type: MODAL_BUTTON,
-                icon: 'fa fa-fw fa-share-alt',
-                label: trans('share', {}, 'actions'),
-                modal: [MODAL_ENTRY_SHARED, {
-                  entryId: this.props.entry.id
-                }],
-                displayed: this.props.canEdit,
-                group: trans('community')
               }
             ]}
           />
@@ -222,15 +210,12 @@ Entry.propTypes = {
   titleLabel: T.string,
 
   entry: T.shape(EntryType.propTypes),
-  entryUser: T.shape(EntryUserType.propTypes),
   fields: T.arrayOf(T.shape(FieldType.propTypes)),
   deleteEntry: T.func.isRequired,
   switchEntryStatus: T.func.isRequired,
   switchEntryLock: T.func.isRequired,
   downloadEntryPdf: T.func.isRequired,
   changeEntryOwner: T.func.isRequired,
-  updateEntryUserProp: T.func.isRequired,
-  saveEntryUser: T.func.isRequired,
   history: T.object.isRequired
 }
 

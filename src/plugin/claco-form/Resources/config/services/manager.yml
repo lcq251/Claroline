@@ -4,10 +4,6 @@ services:
             - '@security.authorization_checker'
             - '%claroline.param.files_directory%'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@router'
-            - '@security.token_storage'
-            - '@translator'
-            - '@messenger.default_bus'
             - '@Claroline\ClacoFormBundle\Manager\CategoryManager'
 
     Claroline\ClacoFormBundle\Manager\CategoryManager:
@@ -19,6 +15,7 @@ services:
 
     Claroline\ClacoFormBundle\Manager\ExportManager:
         arguments:
+            - '@security.authorization_checker'
             - '@router'
             - '@Claroline\ClacoFormBundle\Manager\ClacoFormManager'
             - '@Claroline\AppBundle\Manager\File\TempFileManager'

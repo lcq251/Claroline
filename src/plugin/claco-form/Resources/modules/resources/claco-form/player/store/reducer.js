@@ -16,15 +16,8 @@ import {
   ENTRIES_UPDATE,
   ENTRY_CREATED,
   CURRENT_ENTRY_LOAD,
-  ENTRY_COMMENT_ADD,
-  ENTRY_COMMENT_UPDATE,
-  ENTRY_COMMENT_REMOVE,
-  ENTRY_USER_UPDATE,
-  ENTRY_USER_UPDATE_PROP,
-  ENTRY_USER_RESET,
   ENTRY_CATEGORY_ADD,
   ENTRY_CATEGORY_REMOVE,
-  ENTRY_KEYWORD_REMOVE,
   USED_COUNTRIES_LOAD
 } from '#/plugin/claco-form/resources/claco-form/player/store/actions'
 
@@ -83,16 +76,6 @@ const reducer = combineReducers({
       [ENTRY_CATEGORY_REMOVE]: () => true
     })
   }),
-  entryUser: makeReducer({}, {
-    [ENTRY_USER_UPDATE]: (state, action) => action.entryUser,
-    [ENTRY_USER_RESET]: () => ({}),
-    [ENTRY_USER_UPDATE_PROP]: (state, action) => {
-      const newEntryUser = cloneDeep(state)
-      newEntryUser[action.property] = action.value
-
-      return newEntryUser
-    }
-  }),
   myEntriesCount: makeReducer(0, {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.myEntriesCount || state,
     [ENTRY_CREATED]: (state) => {
@@ -101,11 +84,6 @@ const reducer = combineReducers({
   }),
   countries: makeReducer([], {
     [USED_COUNTRIES_LOAD]: (state, action) => action.countries
-  }),
-  sharedUsers: makeListReducer(selectors.STORE_NAME+'.entries.sharedUsers', {}, {
-    invalidated: makeReducer(false, {
-      //[CURRENT_ENTRY_LOAD]: (state, action) => true
-    })
   })
 })
 

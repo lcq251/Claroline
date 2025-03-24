@@ -5,7 +5,6 @@ namespace Claroline\ClacoFormBundle\Manager;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
-use Claroline\ClacoFormBundle\Entity\Comment;
 use Claroline\ClacoFormBundle\Entity\Entry;
 use Claroline\ClacoFormBundle\Entity\Field;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
@@ -15,12 +14,14 @@ use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Manager\LocationManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class ExportManager
 {
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly RouterInterface $router,
         private readonly ClacoFormManager $clacoFormManager,
         private readonly TempFileManager $tempManager,
@@ -44,7 +45,7 @@ class ExportManager
         }
 
         $displayMeta = $clacoForm->getDisplayMetadata();
-        $isEntryManager = $user instanceof User && $this->clacoFormManager->isEntryManager($entry, $user);
+        $isEntryManager = $this->authorization->isGranted('ADMINISTRATE', $entry);
         $isEntryOwner = $user instanceof User && $entry->getUser() === $user;
         $withMeta = 'all' === $displayMeta || ('manager' === $displayMeta && $isEntryManager);
 
@@ -78,18 +79,6 @@ class ExportManager
             }
         }
 
-        $canViewComments = $this->clacoFormManager->canViewComments($clacoForm);
-        $comments = [];
-        if ($canViewComments) {
-            $entryComments = $entry->getComments();
-
-            foreach ($entryComments as $comment) {
-                if (Comment::VALIDATED === $comment->getStatus()) {
-                    $comments[] = $comment;
-                }
-            }
-        }
-
         return $this->pdfManager->fromHtml(
             $this->templating->render('@ClarolineClacoForm/claco_form/entry.html.twig', [
                 'entry' => $entry,
@@ -98,8 +87,6 @@ class ExportManager
                 'withMeta' => $withMeta,
                 'fields' => $displayedFields,
                 'fieldValues' => $fieldValues,
-                'canViewComments' => $canViewComments,
-                'comments' => $comments,
             ])
         );
     }

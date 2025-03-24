@@ -65,41 +65,18 @@ class Entry
     private Collection $fieldValues;
 
     /**
-     * @var Collection<int, Comment>
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'entry')]
-    #[ORM\OrderBy(['creationDate' => 'DESC'])]
-    private Collection $comments;
-
-    /**
      * @var Collection<int, Category>
      */
     #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_category')]
     #[ORM\ManyToMany(targetEntity: Category::class)]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Keyword>
-     */
-    #[ORM\JoinTable(name: 'claro_clacoformbundle_entry_keyword')]
-    #[ORM\ManyToMany(targetEntity: Keyword::class, cascade: ['persist'])]
-    private Collection $keywords;
-
-    /**
-     * @var Collection<int, EntryUser>
-     */
-    #[ORM\OneToMany(targetEntity: EntryUser::class, mappedBy: 'entry')]
-    private Collection $entryUsers;
-
     public function __construct()
     {
         $this->refreshUuid();
 
         $this->categories = new ArrayCollection();
-        $this->comments = new ArrayCollection();
         $this->fieldValues = new ArrayCollection();
-        $this->keywords = new ArrayCollection();
-        $this->entryUsers = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -221,30 +198,6 @@ class Entry
     }
 
     /**
-     * Get comments.
-     *
-     * @return Comment[]
-     */
-    public function getComments(): array
-    {
-        return $this->comments->toArray();
-    }
-
-    public function addComment(Comment $comment): void
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-        }
-    }
-
-    public function removeComment(Comment $comment): void
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-        }
-    }
-
-    /**
      * Get categories.
      *
      * @return Category[]
@@ -279,44 +232,5 @@ class Entry
     public function emptyCategories(): void
     {
         $this->categories->clear();
-    }
-
-    /**
-     * Get keywords.
-     *
-     * @return Keyword[]
-     */
-    public function getKeywords(): array
-    {
-        return $this->keywords->toArray();
-    }
-
-    public function addKeyword(Keyword $keyword): void
-    {
-        if (!$this->keywords->contains($keyword)) {
-            $this->keywords->add($keyword);
-        }
-    }
-
-    public function removeKeyword(Keyword $keyword): void
-    {
-        if ($this->keywords->contains($keyword)) {
-            $this->keywords->removeElement($keyword);
-        }
-    }
-
-    public function emptyKeywords(): void
-    {
-        $this->keywords->clear();
-    }
-
-    /**
-     * Get entry users.
-     *
-     * @return EntryUser[]
-     */
-    public function getEntryUsers(): array
-    {
-        return $this->entryUsers->toArray();
     }
 }

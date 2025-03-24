@@ -2,8 +2,6 @@ services:
     _defaults:
         tags: [claroline.serializer]
 
-    Claroline\ClacoFormBundle\Serializer\KeywordSerializer: ~
-
     Claroline\ClacoFormBundle\Serializer\FieldSerializer:
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Facet\FieldFacetSerializer'
@@ -14,29 +12,18 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\FacetManager'
 
-    Claroline\ClacoFormBundle\Serializer\EntryUserSerializer:
-        arguments:
-            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
-
     Claroline\ClacoFormBundle\Serializer\EntrySerializer:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@security.authorization_checker'
             - '@Claroline\ClacoFormBundle\Serializer\CategorySerializer'
-            - '@Claroline\ClacoFormBundle\Serializer\CommentSerializer'
-            - '@Claroline\ClacoFormBundle\Serializer\KeywordSerializer'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CoreBundle\Manager\FacetManager'
-
-    Claroline\ClacoFormBundle\Serializer\CommentSerializer:
-        arguments:
-            - '@Claroline\CommunityBundle\Serializer\UserSerializer'
 
     Claroline\ClacoFormBundle\Serializer\ClacoFormSerializer:
         arguments:
             - '@Claroline\ClacoFormBundle\Serializer\CategorySerializer'
             - '@Claroline\ClacoFormBundle\Serializer\FieldSerializer'
-            - '@Claroline\ClacoFormBundle\Serializer\KeywordSerializer'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     Claroline\ClacoFormBundle\Serializer\CategorySerializer:

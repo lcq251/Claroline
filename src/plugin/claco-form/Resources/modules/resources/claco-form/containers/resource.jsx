@@ -43,8 +43,7 @@ const ClacoFormResource = withRouter(
               id: clacoFormId
             },
             user: currentUser,
-            categories: [],
-            keywords: []
+            categories: []
           }
           fields.forEach(f => {
             if (f.type === 'date') {
@@ -53,11 +52,6 @@ const ClacoFormResource = withRouter(
           })
 
           dispatch(entryActions.openForm(selectors.STORE_NAME+'.entries.current', id, defaultValue))
-        },
-        loadEntryUser(entryId, currentUser) {
-          if (currentUser) {
-            dispatch(entryActions.loadEntryUser(entryId))
-          }
         },
         loadAllUsedCountries(clacoFormId) {
           dispatch(entryActions.loadAllUsedCountries(clacoFormId))

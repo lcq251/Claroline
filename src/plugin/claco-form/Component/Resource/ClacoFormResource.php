@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\ClacoFormBundle\Listener\Resource;
+namespace Claroline\ClacoFormBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
@@ -20,23 +20,19 @@ use Claroline\ClacoFormBundle\Entity\Category;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
 use Claroline\ClacoFormBundle\Entity\Entry;
 use Claroline\ClacoFormBundle\Entity\Field;
-use Claroline\ClacoFormBundle\Entity\Keyword;
 use Claroline\ClacoFormBundle\Manager\ClacoFormManager;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Manager\RoleManager;
-use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ClacoFormListener extends ResourceComponent
+class ClacoFormResource extends ResourceComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
-        private readonly RoleManager $roleManager,
         private readonly ClacoFormManager $clacoFormManager
     ) {
     }
@@ -46,7 +42,7 @@ class ClacoFormListener extends ResourceComponent
         return 'claroline_claco_form';
     }
 
-    /** @var ClacoForm $resource */
+    /** @param ClacoForm $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         /** @var User|string $user */
@@ -54,39 +50,22 @@ class ClacoFormListener extends ResourceComponent
         $isAnon = !$user instanceof User;
         $myEntries = $isAnon ? [] : $this->clacoFormManager->getUserEntries($resource, $user);
         $canGeneratePdf = !$isAnon;
-        $roles = [];
-        $roleUser = $this->roleManager->getRoleByName(PlatformRoles::USER);
-        $roleAnonymous = $this->roleManager->getRoleByName(PlatformRoles::ANONYMOUS);
-        $workspaceRoles = $this->roleManager->getWorkspaceRoles($resource->getResourceNode()->getWorkspace());
-        $roles[] = $this->serializer->serialize($roleUser, [Options::SERIALIZE_MINIMAL]);
-        $roles[] = $this->serializer->serialize($roleAnonymous, [Options::SERIALIZE_MINIMAL]);
-
-        foreach ($workspaceRoles as $workspaceRole) {
-            $roles[] = $this->serializer->serialize($workspaceRole, [Options::SERIALIZE_MINIMAL]);
-        }
-        $myRoles = $isAnon ? [$roleAnonymous->getName()] : $user->getRoles();
 
         $categories = $resource->getCategories();
-        $keywords = $resource->getKeywords();
 
         return [
             'resource' => $this->serializer->serialize($resource),
             'categories' => array_map(function (Category $category) {
                 return $this->serializer->serialize($category);
             }, $categories),
-            'keywords' => array_map(function (Keyword $keyword) {
-                return $this->serializer->serialize($keyword);
-            }, $keywords),
 
             'myEntriesCount' => count($myEntries),
             // this should use the standard right system.
             'canGeneratePdf' => $canGeneratePdf,
-            'roles' => $roles,
-            'myRoles' => $myRoles,
         ];
     }
 
-    /** @var ClacoForm $resource */
+    /** @param ClacoForm $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         $this->om->startFlushSuite();
@@ -124,52 +103,15 @@ class ClacoFormListener extends ResourceComponent
             }
         }
 
-        if (isset($data['keywords'])) {
-            $ids = [];
-            foreach ($data['keywords'] as $keywordData) {
-                $new = false;
-                if ($keywordData['id']) {
-                    $keyword = $resource->getKeyword($keywordData['id']);
-                }
-
-                if (empty($keyword)) {
-                    $keyword = new Keyword();
-                    $new = true;
-                }
-
-                $resource->addKeyword($keyword);
-                if ($new) {
-                    $this->crud->create($keyword, $keywordData, [Crud::NO_PERMISSIONS]);
-                } else {
-                    $this->crud->update($keyword, $keywordData, [Crud::NO_PERMISSIONS]);
-                }
-
-                $ids[] = $keyword->getUuid();
-            }
-
-            // removes categories which no longer exists
-            $currentKeywords = $resource->getKeywords();
-            foreach ($currentKeywords as $currentKeyword) {
-                if (!in_array($currentKeyword->getUuid(), $ids)) {
-                    $this->crud->delete($currentKeyword);
-                    $resource->removeKeyword($currentKeyword);
-                }
-            }
-        }
-
         $this->om->endFlushSuite();
 
         $categories = $resource->getCategories();
-        $keywords = $resource->getKeywords();
 
         return [
             'resource' => $this->serializer->serialize($resource),
             'categories' => array_map(function (Category $category) {
                 return $this->serializer->serialize($category);
             }, $categories),
-            'keywords' => array_map(function (Keyword $keyword) {
-                return $this->serializer->serialize($keyword);
-            }, $keywords),
         ];
     }
 
@@ -182,27 +124,23 @@ class ClacoFormListener extends ResourceComponent
         $this->clacoFormManager->copyClacoForm($original, $copy);
     }
 
-    /** @var ClacoForm $resource */
+    /** @param ClacoForm $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         $categories = $resource->getCategories();
-        $keywords = $resource->getKeywords();
         $entries = $this->clacoFormManager->getAllEntries($resource);
 
         return [
             'categories' => array_map(function (Category $category) {
                 return $this->serializer->serialize($category);
             }, $categories),
-            'keywords' => array_map(function (Keyword $keyword) {
-                return $this->serializer->serialize($keyword);
-            }, $keywords),
             'entries' => array_map(function (Entry $entry) {
                 return $this->serializer->serialize($entry);
             }, $entries),
         ];
     }
 
-    /** @var ClacoForm $resource */
+    /** @param ClacoForm $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         // We will replace UUIDs in the string version of the data,
@@ -245,20 +183,6 @@ class ClacoFormListener extends ResourceComponent
 
                 // replace UUIDs for Entries data
                 $rawData = str_replace($categoryData['id'], $category->getUuid(), $rawData);
-            }
-        }
-
-        // get decoded data with new UUIDs
-        $data = json_decode($rawData, true);
-        if (!empty($data['keywords'])) {
-            foreach ($data['keywords'] as $keywordData) {
-                $keyword = new Keyword();
-                $keyword->setClacoForm($resource);
-
-                $this->crud->create($keyword, $keywordData, [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION, Options::REFRESH_UUID]);
-
-                // replace UUIDs for Entries data
-                $rawData = str_replace($keywordData['id'], $keyword->getUuid(), $rawData);
             }
         }
 

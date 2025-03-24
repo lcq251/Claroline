@@ -11,9 +11,6 @@ import {selectors} from '#/plugin/claco-form/resources/claco-form/store/selector
 const ENTRIES_UPDATE = 'ENTRIES_UPDATE'
 const ENTRY_CREATED = 'ENTRY_CREATED'
 const CURRENT_ENTRY_LOAD = 'CURRENT_ENTRY_LOAD'
-const ENTRY_USER_UPDATE = 'ENTRY_USER_UPDATE'
-const ENTRY_USER_UPDATE_PROP = 'ENTRY_USER_UPDATE_PROP'
-const ENTRY_USER_RESET = 'ENTRY_USER_RESET'
 const ENTRY_CATEGORY_ADD = 'ENTRY_CATEGORY_ADD'
 const ENTRY_CATEGORY_REMOVE = 'ENTRY_CATEGORY_REMOVE'
 const USED_COUNTRIES_LOAD = 'USED_COUNTRIES_LOAD'
@@ -23,8 +20,6 @@ const actions = {}
 actions.updateEntries = makeActionCreator(ENTRIES_UPDATE, 'entries')
 actions.addCreatedEntry = makeActionCreator(ENTRY_CREATED, 'entry')
 actions.loadCurrentEntry = makeActionCreator(CURRENT_ENTRY_LOAD, 'entry')
-actions.updateEntryUser = makeActionCreator(ENTRY_USER_UPDATE, 'entryUser')
-actions.resetEntryUser = makeActionCreator(ENTRY_USER_RESET)
 actions.addCategory = makeActionCreator(ENTRY_CATEGORY_ADD, 'category')
 actions.removeCategory = makeActionCreator(ENTRY_CATEGORY_REMOVE, 'categoryId')
 actions.loadUsedCountries = makeActionCreator(USED_COUNTRIES_LOAD, 'countries')
@@ -111,34 +106,6 @@ actions.openForm = (formName, id = null, defaultProps) => {
   }
 }
 
-actions.loadEntryUser = (entryId) => ({
-  [API_REQUEST]: {
-    url: ['claro_claco_form_entry_user_retrieve', {entry: entryId}],
-    success: (data, dispatch) => dispatch(actions.updateEntryUser(data))
-  }
-})
-
-actions.updateEntryUserProp = makeActionCreator(ENTRY_USER_UPDATE_PROP, 'property', 'value')
-
-actions.saveEntryUser = (entryUser) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_clacoformentryuser_update', {id: entryUser['id']}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify(entryUser)
-    },
-    success: (data, dispatch) => {
-      dispatch(actions.updateEntryUser(data))
-    }
-  }
-})
-
-actions.editAndSaveEntryUser = (property, value) => (dispatch, getState) => {
-  const entryUser = cloneDeep(getState().entries.entryUser)
-  entryUser[property] = value
-  dispatch(actions.saveEntryUser(entryUser))
-}
-
 actions.loadAllUsedCountries = (clacoFormId) => ({
   [API_REQUEST]: {
     silent: true,
@@ -157,9 +124,6 @@ export {
   ENTRIES_UPDATE,
   ENTRY_CREATED,
   CURRENT_ENTRY_LOAD,
-  ENTRY_USER_UPDATE,
-  ENTRY_USER_UPDATE_PROP,
-  ENTRY_USER_RESET,
   ENTRY_CATEGORY_ADD,
   ENTRY_CATEGORY_REMOVE,
   USED_COUNTRIES_LOAD

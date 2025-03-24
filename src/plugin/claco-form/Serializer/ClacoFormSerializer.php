@@ -16,7 +16,6 @@ class ClacoFormSerializer
     public function __construct(
         private readonly CategorySerializer $categorySerializer,
         private readonly FieldSerializer $fieldSerializer,
-        private readonly KeywordSerializer $keywordSerializer,
         private readonly ObjectManager $om
     ) {
     }
@@ -55,18 +54,6 @@ class ClacoFormSerializer
                 'search_enabled' => $clacoForm->getSearchEnabled(),
                 'display_metadata' => $clacoForm->getDisplayMetadata(),
                 'display_categories' => $clacoForm->getDisplayCategories(),
-                'comments_enabled' => $clacoForm->isCommentsEnabled(),
-                'anonymous_comments_enabled' => $clacoForm->isAnonymousCommentsEnabled(),
-                'moderate_comments' => $clacoForm->getModerateComments(),
-                'display_comments' => $clacoForm->getDisplayComments(),
-                'open_comments' => $clacoForm->getOpenComments(),
-                'display_comment_author' => $clacoForm->getDisplayCommentAuthor(),
-                'display_comment_date' => $clacoForm->getDisplayCommentDate(),
-                'comments_roles' => $clacoForm->getCommentsRoles(),
-                'comments_display_roles' => $clacoForm->getCommentsDisplayRoles(),
-                'keywords_enabled' => $clacoForm->isKeywordsEnabled(),
-                'new_keywords_enabled' => $clacoForm->isNewKeywordsEnabled(),
-                'display_keywords' => $clacoForm->getDisplayKeywords(),
                 'display_title' => $clacoForm->getDisplayTitle(),
                 'display_subtitle' => $clacoForm->getDisplaySubtitle(),
                 'display_content' => $clacoForm->getDisplayContent(),
@@ -76,7 +63,6 @@ class ClacoFormSerializer
 
             'display' => [
                 'statistics' => $clacoForm->hasStatistics(),
-                // 'showEntryNav' => $clacoForm->getShowEntryNav(),
                 'showConfirm' => $clacoForm->getShowConfirm(),
                 'confirmMessage' => $clacoForm->getConfirmMessage(),
             ],

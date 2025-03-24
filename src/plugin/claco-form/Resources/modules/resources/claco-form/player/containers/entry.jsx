@@ -15,7 +15,6 @@ const Entry = withRouter(connect(
     clacoFormId: selectors.clacoForm(state).id,
     entryId: ownProps.match.params.id || formSelect.data(formSelect.form(state, selectors.STORE_NAME+'.entries.current')).id,
     entry: formSelect.data(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
-    entryUser: selectors.entryUser(state),
 
     canEdit: selectors.canEditCurrentEntry(state),
     canViewEntry: selectors.canOpenCurrentEntry(state),
@@ -46,12 +45,6 @@ const Entry = withRouter(connect(
     },
     changeEntryOwner(entryId, userId) {
       dispatch(actions.changeEntryOwner(entryId, userId))
-    },
-    updateEntryUserProp(property, value) {
-      dispatch(actions.editAndSaveEntryUser(property, value))
-    },
-    saveEntryUser(entryUser) {
-      dispatch(actions.saveEntryUser(entryUser))
     }
   })
 )(EntryComponent))

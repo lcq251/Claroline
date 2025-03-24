@@ -12,14 +12,11 @@
 namespace Claroline\ClacoFormBundle\Controller;
 
 use Claroline\AppBundle\API\FinderProvider;
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
-use Claroline\ClacoFormBundle\Entity\Comment;
 use Claroline\ClacoFormBundle\Entity\Entry;
-use Claroline\ClacoFormBundle\Entity\EntryUser;
 use Claroline\ClacoFormBundle\Entity\Field;
 use Claroline\ClacoFormBundle\Manager\ClacoFormManager;
 use Claroline\ClacoFormBundle\Manager\ExportManager;
@@ -31,7 +28,6 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -58,101 +54,16 @@ class ClacoFormController
     }
 
     /**
-     * Creates a comment.
-     */
-    #[Route(path: '/entry/{entry}/comment/create', name: 'claro_claco_form_entry_comment_create', methods: ['POST'])]
-    public function commentCreateAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, Request $request): JsonResponse
-    {
-        $this->clacoFormManager->checkCommentCreationRight($entry);
-
-        $decodedRequest = $this->decodeRequest($request);
-        $authenticatedUser = $this->tokenStorage->getToken()?->getUser();
-        $user = $authenticatedUser instanceof User ? $authenticatedUser : null;
-
-        $comment = $this->clacoFormManager->createComment($entry, $decodedRequest['message'], $user);
-
-        return new JsonResponse($this->serializer->serialize($comment), 200);
-    }
-
-    /**
-     * Edits a comment.
-     */
-    #[Route(path: '/entry/comment/{comment}/edit', name: 'claro_claco_form_entry_comment_edit', methods: ['POST'])]
-    public function commentEditAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Comment', mapping: ['comment' => 'uuid'])]
-        Comment $comment, Request $request): JsonResponse
-    {
-        $this->clacoFormManager->checkCommentEditionRight($comment);
-
-        $decodedRequest = $this->decodeRequest($request);
-        $comment = $this->clacoFormManager->editComment($comment, $decodedRequest['message']);
-
-        return new JsonResponse($this->serializer->serialize($comment), 200);
-    }
-
-    /**
-     * Deletes a comment.
-     */
-    #[Route(path: '/entry/comment/{comment}/delete', name: 'claro_claco_form_entry_comment_delete', methods: ['DELETE'])]
-    public function commentDeleteAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Comment', mapping: ['comment' => 'uuid'])]
-        Comment $comment): JsonResponse
-    {
-        $this->clacoFormManager->checkCommentEditionRight($comment);
-        $this->clacoFormManager->deleteComment($comment);
-
-        return new JsonResponse(null, 204);
-    }
-
-    /**
-     * Activates a comment.
-     */
-    #[Route(path: '/entry/comment/{comment}/activate', name: 'claro_claco_form_entry_comment_activate', methods: ['PUT'])]
-    public function commentActivateAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Comment', mapping: ['comment' => 'uuid'])]
-        Comment $comment): JsonResponse
-    {
-        $this->clacoFormManager->checkEntryModeration($comment->getEntry());
-        $comment = $this->clacoFormManager->changeCommentStatus($comment, Comment::VALIDATED);
-        $serializedComment = $this->serializer->serialize($comment);
-
-        return new JsonResponse($serializedComment, 200);
-    }
-
-    /**
-     * Blocks a comment.
-     */
-    #[Route(path: '/entry/comment/{comment}/block', name: 'claro_claco_form_entry_comment_block', methods: ['PUT'])]
-    public function commentBlockAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Comment', mapping: ['comment' => 'uuid'])]
-        Comment $comment): JsonResponse
-    {
-        $this->clacoFormManager->checkEntryModeration($comment->getEntry());
-        $comment = $this->clacoFormManager->changeCommentStatus($comment, Comment::BLOCKED);
-        $serializedComment = $this->serializer->serialize($comment);
-
-        return new JsonResponse($serializedComment, 200);
-    }
-
-    /**
-     * Retrieves an entry options for current user.
-     */
-    #[Route(path: '/entry/{entry}/user/retrieve', name: 'claro_claco_form_entry_user_retrieve', methods: ['GET'])]
-    public function entryUserRetrieveAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, #[CurrentUser] ?User $user): JsonResponse
-    {
-        $this->clacoFormManager->checkEntryAccess($entry);
-        $entryUser = $this->clacoFormManager->getEntryUser($entry, $user);
-        $serializedEntryUser = $this->serializer->serialize($entryUser);
-
-        return new JsonResponse($serializedEntryUser, 200);
-    }
-
-    /**
      * Downloads pdf version of entry.
      */
     #[Route(path: '/entry/{entry}/pdf/download', name: 'claro_claco_form_entry_pdf_download', methods: ['GET'])]
-    public function entryPdfDownloadAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, #[CurrentUser] ?User $user): StreamedResponse
-    {
-        $this->clacoFormManager->checkEntryAccess($entry);
+    public function entryPdfDownloadAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry,
+        #[CurrentUser]
+        ?User $user
+    ): StreamedResponse {
+        $this->checkPermission('OPEN', $entry, [], true);
 
         $fileName = TextNormalizer::toKey($entry->getTitle());
 
@@ -162,68 +73,6 @@ class ClacoFormController
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename='.$fileName.'.pdf',
         ]);
-    }
-
-    /**
-     * Retrieves list of users the entry is shared with.
-     */
-    #[Route(path: '/entry/{entry}/shared/users/list', name: 'claro_claco_form_entry_shared_users_list', methods: ['GET'])]
-    public function entrySharedUsersListAction(
-        #[MapEntity(mapping: ['entry' => 'uuid'])]
-        Entry $entry
-    ): JsonResponse {
-        $this->clacoFormManager->checkEntryShareRight($entry);
-
-        $results = $this->finder->searchEntities(EntryUser::class, [
-            'hiddenFilters' => ['entry' => $entry, 'shared' => true],
-        ]);
-
-        return new JsonResponse(array_merge($results, [
-            'data' => array_map(function (EntryUser $entryUser) {
-                return $this->serializer->serialize($entryUser->getUser(), [Options::SERIALIZE_MINIMAL]);
-            }, $results['data']),
-        ]));
-    }
-
-    /**
-     * Shares entry ownership to users.
-     */
-    #[Route(path: '/entry/{entry}/users/share', name: 'claro_claco_form_entry_users_share', methods: ['PUT'])]
-    public function entryUsersShareAction(
-        #[MapEntity(mapping: ['entry' => 'uuid'])]
-        Entry $entry,
-        Request $request
-    ): JsonResponse {
-        $this->clacoFormManager->checkEntryShareRight($entry);
-
-        $usersIds = $request->get('ids', false);
-        if ($usersIds) {
-            $this->clacoFormManager->shareEntryWithUsers($entry, $usersIds);
-        }
-
-        return new JsonResponse(null, 204);
-    }
-
-    /**
-     * Unshares entry ownership from user.
-     */
-    #[Route(path: '/entry/{entry}/unshare', name: 'claro_claco_form_entry_user_unshare', methods: ['DELETE'])]
-    public function entryUserUnshareAction(
-        #[MapEntity(mapping: ['entry' => 'uuid'])]
-        Entry $entry,
-        Request $request
-    ): JsonResponse {
-        $this->clacoFormManager->checkEntryShareRight($entry);
-
-        $users = $this->decodeIdsString($request, User::class);
-        foreach ($users as $user) {
-            try {
-                $this->clacoFormManager->switchEntryUserShared($entry, $user, false);
-            } catch (\Exception $e) {
-            }
-        }
-
-        return new JsonResponse(null, 204);
     }
 
     /**
@@ -277,16 +126,11 @@ class ClacoFormController
         return new JsonResponse($serializedEntry, 200);
     }
 
-    /**
-     * Switches lock of entries.
-     *
-     * @param int $locked
-     */
     #[Route(path: '/entries/lock/{locked}/switch', name: 'claro_claco_form_entries_lock_switch', methods: ['PUT'])]
     public function entriesLockSwitchAction(int $locked, Request $request): JsonResponse
     {
         /** @var Entry[] $entries */
-        $entries = $this->decodeIdsString($request, 'Claroline\ClacoFormBundle\Entity\Entry');
+        $entries = $this->decodeIdsString($request, Entry::class);
         $clacoForms = [];
 
         foreach ($entries as $entry) {
@@ -311,15 +155,12 @@ class ClacoFormController
         return new JsonResponse($serializedEntries, 200);
     }
 
-    /**
-     * Downloads a file associated to a FieldValue.
-     *
-     * @return StreamedResponse|JsonResponse
-     */
     #[Route(path: '/entry/{entry}/field/{field}/file/download', name: 'claro_claco_form_field_value_file_download', methods: ['GET'])]
-    public function downloadAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\Entry', mapping: ['entry' => 'uuid'])]
-        Entry $entry, string $field): Response
-    {
+    public function downloadAction(
+        #[MapEntity(mapping: ['entry' => 'uuid'])]
+        Entry $entry,
+        string $field
+    ): StreamedResponse|JsonResponse {
         $formField = $this->om->getRepository(Field::class)->findByFieldFacetUuid($field);
         if (empty($formField) || FieldFacet::FILE_TYPE !== $formField->getType()) {
             return new JsonResponse(null, 404);
@@ -351,9 +192,10 @@ class ClacoFormController
      * Returns list of codes of all countries present in all entries.
      */
     #[Route(path: '/{clacoForm}/entries/used/countries', name: 'claro_claco_form_used_countries_load', methods: ['GET'])]
-    public function entriesUsedCountriesLoadAction(#[MapEntity(class: 'Claroline\ClacoFormBundle\Entity\ClacoForm', mapping: ['clacoForm' => 'uuid'])]
-        ClacoForm $clacoForm): JsonResponse
-    {
+    public function entriesUsedCountriesLoadAction(
+        #[MapEntity(mapping: ['clacoForm' => 'uuid'])]
+        ClacoForm $clacoForm
+    ): JsonResponse {
         $this->checkPermission('OPEN', $clacoForm->getResourceNode(), [], true);
 
         $countries = $this->clacoFormManager->getAllUsedCountriesCodes($clacoForm);

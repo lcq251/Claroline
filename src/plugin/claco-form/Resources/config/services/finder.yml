@@ -9,7 +9,3 @@ services:
         arguments:
             - '@security.token_storage'
             - '@Claroline\ClacoFormBundle\Manager\ClacoFormManager'
-
-    Claroline\ClacoFormBundle\Finder\KeywordFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]

@@ -71,9 +71,6 @@ function getCardValue(clacoForm, row, type, currentUser) {
       case 'categories':
         value = row.categories ? row.categories.map(c => c.name).join(', ') : ''
         break
-      case 'keywords':
-        value = row.keywords ? row.keywords.map(k => k.name).join(', ') : ''
-        break
       default:
         if (row.values && row.values[key]) {
           field = clacoForm.fields.find(f => f.id === key)
@@ -97,7 +94,6 @@ export default (clacoForm, canViewMetadata = false, canEdit = false, isCategoryM
   const fields = clacoForm.fields || []
   const titleLabel = get(clacoForm, 'details.title_field_label') || trans('title')
   const hasCategories = canEdit || isCategoryManager || get(clacoForm, 'details.display_categories') || false
-  const hasKeywords = get(clacoForm, 'details.display_keywords') || false
 
   return {
     primaryAction: (row) => ({

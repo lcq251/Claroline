@@ -95,26 +95,6 @@ const categories = createSelector(
   (resource) => resource.categories
 )
 
-const keywords = createSelector(
-  [resource],
-  (resource) => resource.keywords
-)
-
-const roles = createSelector(
-  [resource],
-  (resource) => resource.roles
-)
-
-const myRoles = createSelector(
-  [resource],
-  (resource) => resource.myRoles
-)
-
-const entryUser = createSelector(
-  [entries],
-  (entries) => entries.entryUser
-)
-
 const usedCountries = createSelector(
   [entries],
   (entries) => entries.countries
@@ -139,21 +119,6 @@ const isCurrentEntryOwner = createSelector(
   [authenticatedUser, isAnon, currentEntry],
   (authenticatedUser, isAnon, currentEntry) => {
     return !isAnon && authenticatedUser && currentEntry && currentEntry.user && currentEntry.user.id === authenticatedUser.id
-  }
-)
-
-const isCurrentEntrySharedUser = createSelector(
-  [authenticatedUser, isAnon, currentEntry, entryUser],
-  (authenticatedUser, isAnon, currentEntry, entryUser) => {
-    return !isAnon &&
-      authenticatedUser &&
-      currentEntry &&
-      entryUser.shared &&
-      entryUser.entry &&
-      currentEntry.id &&
-      currentEntry.id === entryUser.entry.id &&
-      entryUser.user &&
-      entryUser.user.id === authenticatedUser.id
   }
 )
 
@@ -191,9 +156,8 @@ const canEditCurrentEntry = createSelector(
   params,
   isCurrentEntryOwner,
   canManageCurrentEntry,
-  isCurrentEntrySharedUser,
-  (params, isCurrentEntryOwner, canManageCurrentEntry, isCurrentEntrySharedUser) => {
-    return canManageCurrentEntry || (params && params['edition_enabled'] && (isCurrentEntryOwner || isCurrentEntrySharedUser))
+  (params, isCurrentEntryOwner, canManageCurrentEntry) => {
+    return canManageCurrentEntry || (params && params['edition_enabled'] && (isCurrentEntryOwner))
   }
 )
 
@@ -236,35 +200,6 @@ const canViewMetadata = createSelector(
   || ('manager' === params.display_metadata && isCategoryManager)
 )
 
-const canComment = createSelector(
-  params,
-  myRoles,
-  (params, myRoles) => {
-    if (params.comments_enabled) {
-      const commentsRoles = params.comments_roles || []
-      const intersection = commentsRoles.filter(cr => myRoles.indexOf(cr) > -1)
-
-      return intersection.length > 0
-    }
-
-    return false
-  }
-)
-
-const canViewComments = createSelector(
-  params,
-  myRoles,
-  (params, myRoles) => {
-    if (params.display_comments) {
-      const commentsDisplayRoles = params.comments_display_roles || []
-      const intersection = commentsDisplayRoles.filter(cr => myRoles.indexOf(cr) > -1)
-
-      return intersection.length > 0
-    }
-
-    return false
-  }
-)
 
 const canGeneratePdf = createSelector(
   [resource],
@@ -297,7 +232,6 @@ export const selectors = {
   confirmMessage,
   entries,
   isCurrentEntryOwner,
-  isCurrentEntrySharedUser,
   canManageCurrentEntry,
   canEditCurrentEntry,
   canViewMetadata,
@@ -306,13 +240,7 @@ export const selectors = {
   canOpenCurrentEntry,
   canAdministrate,
   isCategoryManager,
-  canComment,
-  canViewComments,
   categories,
-  keywords,
-  roles,
-  myRoles,
-  entryUser,
   usedCountries,
   canGeneratePdf,
   message,

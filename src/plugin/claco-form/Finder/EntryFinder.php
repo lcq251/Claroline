@@ -120,25 +120,11 @@ class EntryFinder extends AbstractFinder
                 $this->usedJoin['categories'] = true;
                 break;
             case 'my':
-                if ($isAnon) {
-                    $qb->leftJoin('obj.user', 'u');
-                    $qb->andWhere('u.id = :userId');
-                    $qb->setParameter('userId', -1);
-                    $this->usedJoin['user'] = true;
-                } else {
-                    $qb->leftJoin('obj.user', 'u');
-                    $qb->leftJoin('obj.entryUsers', 'eu');
-                    $qb->leftJoin('eu.user', 'euu');
-                    $qb->andWhere($qb->expr()->orX(
-                        $qb->expr()->eq('u.id', ':userId'),
-                        $qb->expr()->andX(
-                            $qb->expr()->eq('euu.id', ':userId'),
-                            $qb->expr()->eq('eu.shared', true)
-                        )
-                    ));
-                    $qb->setParameter('userId', $currentUser->getId());
-                    $this->usedJoin['user'] = true;
-                }
+                $qb->leftJoin('obj.user', 'u');
+                $qb->andWhere('u.id = :userId');
+                $qb->setParameter('userId', $isAnon ? -1 : $currentUser->getId());
+                $this->usedJoin['user'] = true;
+
                 break;
         }
         foreach ($searches as $filterName => $filterValue) {
@@ -195,14 +181,6 @@ class EntryFinder extends AbstractFinder
                     $qb->setParameter('categoryUuid', !is_array($filterValue) ? [$filterValue] : $filterValue);
 
                     break;
-                case 'keywords':
-                    if (!isset($this->usedJoin['keywords'])) {
-                        $qb->leftJoin('obj.keywords', 'k');
-                        $this->usedJoin['keywords'] = true;
-                    }
-                    $qb->andWhere('k.uuid IN (:keywordUuid)');
-                    $qb->setParameter('keywordUuid', !is_array($filterValue) ? [$filterValue] : $filterValue);
-                    break;
                 default:
                     if (str_contains($filterName, 'values.')) {
                         $filterName = str_replace('values.', '', $filterName);
@@ -235,12 +213,6 @@ class EntryFinder extends AbstractFinder
                         $qb->leftJoin('obj.categories', 'c');
                     }
                     $qb->orderBy('c.name', $sortByDirection);
-                    break;
-                case 'keywords':
-                    if (!isset($this->usedJoin['keywords'])) {
-                        $qb->leftJoin('obj.keywords', 'k');
-                    }
-                    $qb->orderBy('k.name', $sortByDirection);
                     break;
                 default:
                     if (str_contains($sortByProperty, 'values.')) {

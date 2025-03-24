@@ -1,6 +1,5 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {ListForm} from '#/main/app/content/list/parameters/containers/form'
@@ -8,15 +7,13 @@ import {EditorPage} from '#/main/app/editor'
 
 import entriesSource from '#/plugin/claco-form/data/sources/entries'
 import {selectors} from '#/plugin/claco-form/resources/claco-form/editor/store'
-import isEmpty from 'lodash/isEmpty'
 
 const generateDisplayList = (fields = []) => {
   const displayList = {
     title: trans('title'),
     date: trans('date'),
     user: trans('user'),
-    categories: trans('categories'),
-    keywords: trans('keywords', {}, 'clacoform')
+    categories: trans('categories')
   }
 
   fields.map(field => {

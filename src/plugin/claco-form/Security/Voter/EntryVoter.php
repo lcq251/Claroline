@@ -23,14 +23,14 @@ class EntryVoter extends AbstractVoter
     {
         switch ($attributes[0]) {
             case self::OPEN:
-                return $this->checkOpen($object);
+                return $this->checkOpen($token, $object);
             case self::CREATE:
                 return $this->checkCreate($object);
             case self::EDIT:
             case self::DELETE:
                 return $this->checkEdit($token, $object);
             case self::ADMINISTRATE:
-                return $this->checkAdministrate($object);
+                return $this->checkAdministrate($token, $object);
         }
 
         return VoterInterface::ACCESS_ABSTAIN;
@@ -46,26 +46,31 @@ class EntryVoter extends AbstractVoter
         return [self::OPEN, self::CREATE, self::EDIT, self::ADMINISTRATE, self::DELETE];
     }
 
-    private function checkOpen(Entry $entry): int
+    private function checkOpen(TokenInterface $token, Entry $entry): int
     {
         $clacoForm = $entry->getClacoForm();
 
         if ($this->isGranted('OPEN', $clacoForm->getResourceNode())) {
-            return VoterInterface::ACCESS_GRANTED;
+            $clacoForm = $entry->getClacoForm();
+            /** @var User|string $user */
+            $user = $token->getUser();
+
+            if (($entry->getUser() === $user)
+                || $this->isEntryManager($entry, $user)
+                || ((Entry::PUBLISHED === $entry->getStatus()) && $clacoForm->getSearchEnabled())
+            ) {
+                return VoterInterface::ACCESS_GRANTED;
+            }
         }
 
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function checkAdministrate(Entry $entry): int
+    private function checkAdministrate(TokenInterface $token, Entry $entry): int
     {
-        $clacoForm = $entry->getClacoForm();
-
-        if ($this->isGranted('ADMINISTRATE', $clacoForm->getResourceNode())) {
+        if ($this->isEntryManager($entry, $token->getUser())) {
             return VoterInterface::ACCESS_GRANTED;
         }
-
-        // TODO : category managers
 
         return VoterInterface::ACCESS_DENIED;
     }
@@ -86,20 +91,36 @@ class EntryVoter extends AbstractVoter
         $clacoForm = $entry->getClacoForm();
         $user = $token->getUser();
 
-        if ($this->isGranted(self::EDIT, $clacoForm->getResourceNode()) ||
-            ($clacoForm->isEditionEnabled() && $user instanceof User && $entry->getUser()->getUuid() === $user->getUuid())
+        if ($this->isGranted(self::EDIT, $clacoForm->getResourceNode())
+            || ($clacoForm->isEditionEnabled() && $user instanceof User && $entry->getUser()->getUuid() === $user->getUuid())
         ) {
             return VoterInterface::ACCESS_GRANTED;
-        } elseif ($clacoForm->isEditionEnabled() && $user instanceof User) {
-            $entryUsers = $entry->getEntryUsers();
+        }
 
-            foreach ($entryUsers as $entryUser) {
-                if ($entryUser->isShared() && $entryUser->getUser()->getUuid() === $user->getUuid()) {
-                    return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
+    }
+
+    public function isEntryManager(Entry $entry, ?User $user): bool
+    {
+        $clacoForm = $entry->getClacoForm();
+
+        if ($this->isGranted('EDIT', $clacoForm->getResourceNode())) {
+            return true;
+        }
+
+        if ($user) {
+            $categories = $entry->getCategories();
+            foreach ($categories as $category) {
+                $managers = $category->getManagers();
+
+                foreach ($managers as $manager) {
+                    if ($manager->getId() === $user->getId()) {
+                        return VoterInterface::ACCESS_GRANTED;
+                    }
                 }
             }
         }
 
-        return VoterInterface::ACCESS_DENIED;
+        return false;
     }
 }

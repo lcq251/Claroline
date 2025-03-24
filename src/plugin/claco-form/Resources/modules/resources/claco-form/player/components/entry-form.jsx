@@ -9,17 +9,14 @@ import set from 'lodash/set'
 import {trans} from '#/main/app/intl/translation'
 import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
-import {FormData} from '#/main/app/content/form/containers/data'
 import {Form} from '#/main/app/content/form/components/form'
 import {DataInput} from '#/main/app/data/components/input'
 import {formatSections} from '#/main/app/content/form/parameters/utils'
-import {FormSections, FormSection} from '#/main/app/content/form/components/sections'
 
 import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
 import {
   Field as FieldType,
-  Entry as EntryType,
-  EntryUser as EntryUserType
+  Entry as EntryType
 } from '#/plugin/claco-form/resources/claco-form/prop-types'
 import {EntryFormData} from '#/plugin/claco-form/resources/claco-form/player/components/entry-form-data'
 import {ResourcePage} from '#/main/core/resource'
@@ -61,9 +58,7 @@ class EntryForm extends Component {
 
   // for standard form
   getSections() {
-    const isShared = this.props.entryUser && this.props.entryUser.id ? this.props.entryUser.shared : false
-
-    const hasConfidentialRights = this.props.canAdministrate || isShared
+    const hasConfidentialRights = this.props.canAdministrate
 
     const hasLockedRights = this.props.canAdministrate
 
@@ -271,7 +266,6 @@ EntryForm.propTypes = {
   isNew: T.bool.isRequired,
   errors: T.object,
   entry: T.shape(EntryType.propTypes),
-  entryUser: T.shape(EntryUserType.propTypes),
   categories: T.array,
   saveForm: T.func.isRequired,
   updateFormProp: T.func.isRequired,

@@ -31,7 +31,6 @@ const EntryForm = withRouter(connect(
     errors: formSelect.errors(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
     entry: formSelect.data(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
     pendingChanges: formSelect.pendingChanges(formSelect.form(state, selectors.STORE_NAME+'.entries.current')),
-    entryUser: selectors.entryUser(state),
     categories: selectors.categories(state)
   }),
   (dispatch) => ({

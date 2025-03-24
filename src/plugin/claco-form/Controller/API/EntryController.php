@@ -11,13 +11,13 @@
 
 namespace Claroline\ClacoFormBundle\Controller\API;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\ClacoFormBundle\Entity\ClacoForm;
 use Claroline\ClacoFormBundle\Entity\Entry;
 use Claroline\ClacoFormBundle\Manager\ClacoFormManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,7 +77,6 @@ class EntryController extends AbstractCrudController
                 'createdAfter',
                 'createdBefore',
                 'categories',
-                'keywords',
             ];
 
             foreach ($params['filters'] as $key => $value) {
@@ -131,19 +130,11 @@ class EntryController extends AbstractCrudController
     #[Route(path: '/entry/{entry}/status/change', name: 'change_status', methods: ['PUT'])]
     public function changeStatusAction(#[MapEntity(mapping: ['entry' => 'uuid'])] Entry $entry): JsonResponse
     {
-        $clacoForm = $entry->getClacoForm();
+        $this->checkPermission('ADMINISTRATE', $entry, [], true);
 
-        $this->checkPermission('EDIT', $clacoForm->getResourceNode(), [], true);
+        $this->manager->changeEntryStatus($entry);
 
-        if ($entry->isLocked()) {
-            $serializedEntry = $this->serializer->serialize($entry);
-        } else {
-            $this->manager->checkEntryModeration($entry);
-            $updatedEntry = $this->manager->changeEntryStatus($entry);
-            $serializedEntry = $this->serializer->serialize($updatedEntry);
-        }
-
-        return new JsonResponse($serializedEntry, 200);
+        return new JsonResponse($this->serializer->serialize($entry), 200);
     }
 
     /**
@@ -158,13 +149,9 @@ class EntryController extends AbstractCrudController
         /** @var Entry[] $entriesParams */
         $entriesParams = $this->decodeIdsString($request, Entry::class);
         foreach ($entriesParams as $entryParam) {
-            if (!$entryParam->isLocked()) {
+            if (!$entryParam->isLocked() && $this->checkPermission('ADMINISTRATE', $entryParam)) {
                 $entries[] = $entryParam;
             }
-        }
-
-        foreach ($entries as $entry) {
-            $this->manager->checkEntryModeration($entry);
         }
 
         $updatedEntries = $this->manager->changeEntriesStatus($entries, intval($status));

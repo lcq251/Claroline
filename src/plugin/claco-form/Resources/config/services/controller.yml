@@ -17,16 +17,6 @@ services:
             - '@Claroline\AppBundle\API\FinderProvider'
             - '@Claroline\ClacoFormBundle\Manager\ClacoFormManager'
 
-    Claroline\ClacoFormBundle\Controller\API\EntryUserController:
-        parent: Claroline\AppBundle\Controller\AbstractCrudController
-        public: true
-
-    Claroline\ClacoFormBundle\Controller\API\KeywordController:
-        parent: Claroline\AppBundle\Controller\AbstractCrudController
-        public: true
-        arguments:
-            - '@security.authorization_checker'
-
     Claroline\ClacoFormBundle\Controller\ClacoFormController:
         arguments:
             - '@security.authorization_checker'

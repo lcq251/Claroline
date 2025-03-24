@@ -43,7 +43,6 @@ class CategoryFinder extends AbstractFinder
                 case 'notify_addition':
                 case 'notify_edition':
                 case 'notify_removal':
-                case 'notify_pending_comment':
                     $value = '%"'.$filterName.'":';
                     $value .= $filterValue ? 'true' : 'false';
                     $value .= '%';

@@ -14,19 +14,10 @@ const reducer = combineReducers({
   categories: makeReducer([], {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.categories || state,
   }),
-  keywords: makeReducer([], {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.keywords || state,
-  }),
   entries: entriesReducer,
   stats: statsReducer,
   canGeneratePdf: makeReducer(false, {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.canGeneratePdf || state
-  }),
-  roles: makeReducer({}, {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.roles || state
-  }),
-  myRoles: makeReducer({}, {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.myRoles || state
   })
 })
 
