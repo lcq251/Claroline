@@ -31,7 +31,7 @@ const WorkspaceCreation = (props) =>
               type: CALLBACK_BUTTON,
               label: trans('Créer à partir du modèle', {}, 'actions'),
               callback: () => {
-                props.startCreation(merge({}, pick(selected[0], 'name', 'thumbnail', 'poster', 'meta'), {
+                props.startCreation(merge({}, pick(selected[0], 'name', 'code', 'thumbnail', 'poster', 'meta'), {
                   model: selected[0],
                   meta: {model: false, personal: false, archived: false}
                 }), 'model')
