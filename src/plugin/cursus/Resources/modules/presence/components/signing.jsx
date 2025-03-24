@@ -6,13 +6,12 @@ import {Button} from '#/main/app/action'
 import {ToolPage} from '#/main/core/tool'
 import {Alert} from '#/main/app/components/alert'
 import {displayDate, trans} from '#/main/app/intl'
-import {MODAL_LOGIN} from '#/main/app/modals/login'
+import {MODAL_SECURITY, selectors as securitySelectors} from '#/main/app/security'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {MODAL_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
 import {ContentSizing} from '#/main/app/content/components/sizing'
 
 import {selectors, actions} from '#/plugin/cursus/presence/store'
-import {selectors as securitySelectors} from '#/main/app/security/store/selectors'
 import {PageContent} from '#/main/app/page'
 
 const SignPresenceComponent = (props) => {
@@ -86,7 +85,7 @@ const SignPresenceComponent = (props) => {
                   className={'btn btn-outline-warning'}
                   label={trans('login', {}, 'actions')}
                   type={MODAL_BUTTON}
-                  modal={[MODAL_LOGIN, {
+                  modal={[MODAL_SECURITY, {
                     onLogin: () => {
                       history.push(`${props.path}/${props.currentEvent.codeEmargement}`)
                     }

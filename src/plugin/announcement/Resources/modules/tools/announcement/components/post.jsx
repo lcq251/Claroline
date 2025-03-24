@@ -5,102 +5,115 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageHeadingSkeleton, PageSection} from '#/main/app/page'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {Content} from '#/main/app/components/content'
 import {ToolPage} from '#/main/core/tool'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {ContentPublication} from '#/main/app/content/components/publication'
+import {ContentPublication, ContentPublicationSkeleton} from '#/main/app/content/components/publication'
+import {TextSkeleton} from '#/main/app/components/placeholder'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()
 
-  if (!props.announcement) {
-    return (
-      <ToolPage>
-        <ContentLoader size="lg" />
-      </ToolPage>
-    )
-  }
-
   return (
     <ToolPage
-      title={props.announcement.title}
+      title={trans('announcement_name', {name: get(props.announcement, 'title', trans('loading'))}, 'announcement')}
     >
-      <PageContent>
-        <PageHeading
-          size="md"
-          backAction={{
-            type: LINK_BUTTON,
-            label: trans('Retour aux annonces', {}, 'announcement'),
-            target: props.path,
-            exact: true
-          }}
-          poster={props.announcement.poster}
-          title={props.announcement.title}
-          primaryAction="edit"
-          actions={[
-            {
-              name: 'download',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-file-pdf',
-              label: trans('export-pdf',{}, 'actions'),
-              callback: () => props.exportPDF(props.announcement)
-            }, {
-              name: 'send',
-              type: MODAL_BUTTON,
-              icon: 'fa fa-fw fa-paper-plane',
-              label: trans('send', {}, 'actions'),
-              target: `${props.path}/${props.announcement.id}/send`,
-              modal: [MODAL_ANNOUNCEMENT_SENDING, {
-                announcement: props.announcement,
-                workspaceRoles: props.workspaceRoles
-              }],
-              displayed: props.editable
-            }, {
-              name: 'edit',
-              type: LINK_BUTTON,
-              icon: 'fa fa-fw fa-pencil',
-              label: trans('edit', {}, 'actions'),
-              target: `${props.path}/${props.announcement.id}/edit`,
-              displayed: props.editable
-            }, {
-              name: 'delete',
-              type: CALLBACK_BUTTON,
-              icon: 'fa fa-fw fa-trash',
-              label: trans('delete', {}, 'actions'),
-              callback: () => {
-                props.remove(props.announcement)
-                history.push(props.path)
-              },
-              dangerous: true,
-              confirm: {
-                title: trans('announcement_delete_confirm_title', {}, 'announcement'),
-                message: trans('announcement_delete_confirm_message', {}, 'announcement'),
-              },
-              displayed: props.editable
-            }
-          ]}
-        />
+      {!props.announcement &&
+        <PageContent className="placeholder-glow">
+          <PageHeadingSkeleton
+            size="md"
+            backAction={trans('back_to_announcements', {}, 'announcement')}
+          />
 
-        <PageSection size="md" className="mb-5">
-          <Content
-            placeholder={trans('no_content')}
-            meta={
-              <ContentPublication
-                user={get(props.announcement, 'meta.creator', {})}
-                publishedAt={get(props.announcement, 'meta.publishedAt')}
-              />
-            }
-            tags={props.announcement.tags}
-          >
-            {props.announcement.content}
-          </Content>
-        </PageSection>
-      </PageContent>
+          <PageSection size="md" className="mb-5">
+            <div className="mb-4" role="presentation">
+              <ContentPublicationSkeleton />
+            </div>
+
+            <TextSkeleton className="content-text" rows={4} />
+            <TextSkeleton className="content-text" rows={5} />
+            <TextSkeleton className="content-text" rows={3} />
+          </PageSection>
+        </PageContent>
+      }
+
+      {props.announcement &&
+        <PageContent>
+          <PageHeading
+            size="md"
+            backAction={{
+              type: LINK_BUTTON,
+              label: trans('back_to_announcements', {}, 'announcement'),
+              target: props.path,
+              exact: true
+            }}
+            poster={props.announcement.poster}
+            title={props.announcement.title}
+            primaryAction="edit"
+            actions={[
+              {
+                name: 'download',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-file-pdf',
+                label: trans('export-pdf',{}, 'actions'),
+                callback: () => props.exportPDF(props.announcement)
+              }, {
+                name: 'send',
+                type: MODAL_BUTTON,
+                icon: 'fa fa-fw fa-paper-plane',
+                label: trans('send', {}, 'actions'),
+                target: `${props.path}/${props.announcement.id}/send`,
+                modal: [MODAL_ANNOUNCEMENT_SENDING, {
+                  announcement: props.announcement,
+                  workspaceRoles: props.workspaceRoles
+                }],
+                displayed: props.editable
+              }, {
+                name: 'edit',
+                type: LINK_BUTTON,
+                icon: 'fa fa-fw fa-pencil',
+                label: trans('edit', {}, 'actions'),
+                target: `${props.path}/${props.announcement.id}/edit`,
+                displayed: props.editable
+              }, {
+                name: 'delete',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-trash',
+                label: trans('delete', {}, 'actions'),
+                callback: () => {
+                  props.remove(props.announcement)
+                  history.push(props.path)
+                },
+                dangerous: true,
+                confirm: {
+                  title: trans('announcement_delete_confirm_title', {}, 'announcement'),
+                  message: trans('announcement_delete_confirm_message', {}, 'announcement'),
+                },
+                displayed: props.editable
+              }
+            ]}
+          />
+
+          <PageSection size="md" className="mb-5">
+            <Content
+              placeholder={trans('no_content')}
+              meta={
+                <ContentPublication
+                  user={get(props.announcement, 'meta.creator', {})}
+                  publishedAt={get(props.announcement, 'meta.publishedAt')}
+                />
+              }
+              tags={props.announcement.tags}
+            >
+              {props.announcement.content}
+            </Content>
+          </PageSection>
+        </PageContent>
+      }
     </ToolPage>
   )
 }

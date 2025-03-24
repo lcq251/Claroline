@@ -21,7 +21,7 @@ const Badge = (props) =>
     description={get(props.badge, 'meta.description')}
   >
     {isEmpty(props.badge) &&
-      <PageContent>
+      <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
           size="md"
           icon={true}

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {ToolPage} from '#/main/core/tool'
-import {MODAL_LOGIN} from '#/main/app/modals/login'
+import {MODAL_SECURITY} from '#/main/app/security'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentSizing} from '#/main/app/content/components/sizing'
@@ -44,7 +44,7 @@ const EventPresenceComponent = (props) => {
                     type={MODAL_BUTTON}
                     label={trans('validate', {}, 'presence')}
                     disabled={0 >= props.code}
-                    modal={[MODAL_LOGIN, {
+                    modal={[MODAL_SECURITY, {
                       onLogin: () => {
                         history.push(`${props.path}/${props.code}`)
                       }

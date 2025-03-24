@@ -9,7 +9,7 @@ import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PasswordInput} from '#/main/app/data/types/password/components/input'
 import {FormGroup} from '#/main/app/content/form/components/group'
 import {ContentRestriction} from '#/main/app/content/components/restriction'
-import {MODAL_LOGIN} from '#/main/app/modals/login'
+import {MODAL_SECURITY} from '#/main/app/security'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {ContentHtml} from '#/main/app/content/components/html'
 import {ResourcePage} from '#/main/core/resource/components/page'
@@ -69,7 +69,7 @@ class ResourceRestrictions extends Component {
                     className="btn btn-warning"
                     type={MODAL_BUTTON}
                     label={trans('login', {}, 'actions')}
-                    modal={[MODAL_LOGIN]}
+                    modal={[MODAL_SECURITY]}
                     primary={true}
                   />
                 </div>

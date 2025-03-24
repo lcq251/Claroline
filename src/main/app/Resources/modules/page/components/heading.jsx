@@ -16,19 +16,35 @@ const PageHeadingSkeleton = ({
   size,
   icon = false,
   eyebrow = false,
+  backAction = false,
   description = false
 }) => {
   return (
-    <header className={classes('app-page-heading placeholder-glow px-4 mb-5', className, size && `content-${size}`)}>
+    <header className={classes('app-page-heading px-4 mb-5', className, size && `content-${size}`)}>
       {icon &&
         <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
           <ThumbnailSkeleton size="lg" square={true} />
         </div>
       }
 
+      {backAction &&
+        <div className={classes({
+          'mt-5': !icon,
+          'mt-2': !!icon
+        })} role="presentation">
+          <span
+            className="placeholder bg-primary rounded-1 my-2"
+            role="presentation"
+          >
+            <span className="fa fa-arrow-left icon-with-text-right" />
+            {backAction}
+          </span>
+        </div>
+      }
+
       <h1 className={classes('h1 app-page-title mb-0', {
-        'mt-5': !icon,
-        'mt-2': icon
+        'mt-5': !icon && !backAction,
+        'mt-2': !!icon || !!backAction
       })}>
         {eyebrow &&
           <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2 w-25 placeholder rounded-1" role="presentation">&nbsp;</span>
@@ -49,7 +65,8 @@ PageHeadingSkeleton.propTypes = {
   size: T.oneOf(['sm', 'md', 'lg', 'full']),
   icon: T.bool,
   eyebrow: T.bool,
-  description: T.bool
+  description: T.bool,
+  backAction: T.string
 }
 
 const PageHeading = props =>
@@ -136,7 +153,7 @@ PageHeading.propTypes = {
   primaryAction: T.string,
   secondaryAction: T.string,
   toolbar: T.string,
-  backAction: T.array,
+  backAction: T.object,
   actions: T.oneOfType([
     // a regular array of actions
     T.arrayOf(T.shape(

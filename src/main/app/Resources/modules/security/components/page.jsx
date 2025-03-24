@@ -1,48 +1,30 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-
-import {PageSimple} from '#/main/app/page/components/simple'
 import {useSelector} from 'react-redux'
-import {selectors as configSelectors} from '#/main/app/config/store'
-import classes from 'classnames'
-import {asset} from '#/main/app/config'
-import {CountryFlag} from '#/main/app/components/country-flag'
+
 import {trans} from '#/main/app/intl'
-import {MODAL_BUTTON} from '#/main/app/buttons'
-import {MODAL_LOCALE} from '#/main/app/modals/locale'
 import {Button} from '#/main/app/action'
+import {MODAL_BUTTON} from '#/main/app/buttons'
+import {PageSimple} from '#/main/app/page/components/simple'
+
+import {selectors as configSelectors} from '#/main/app/config/store'
+import {CountryFlag} from '#/main/app/components/country-flag'
+import {MODAL_LOCALE} from '#/main/app/modals/locale'
 import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
 import {MODAL_PRIVACY} from '#/main/privacy/modals/privacy'
+import {SecurityLayout} from '#/main/app/security/components/layout'
 
 const SecurityPage = (props) => {
-  const brand = useSelector((state) => configSelectors.param(state, 'theme.logo'))
   const name = useSelector((state) => configSelectors.param(state, 'name'))
-  const description = useSelector((state) => configSelectors.param(state, 'description'))
   const locale = useSelector((state) => configSelectors.param(state, 'locale.current'))
 
   return (
     <PageSimple
-      className="auth-page"
+      className="auth-page d-flex flex-row"
       title={props.title + ' | ' + name}
     >
-      <div className="auth-page-col auth-page-meta px-4 py-5">
-        {brand &&
-          <img
-            className={classes('auth-page-brand mb-3 mx-auto', props.className)}
-            src={asset(brand)}
-            alt={name}
-          />
-        }
-
-        <h1 className="text-center">{name}</h1>
-
-        {description &&
-          <p className="content-sm text-center mt-5 lead">{description}</p>
-        }
-      </div>
-
-      <div className="auth-page-col auth-page-content">
-        <div className="content-sm px-4 py-5 mt-auto" role="presentation">
+      <SecurityLayout>
+        <div className="content-sm px-4 py-5 my-auto" role="presentation">
           <h2 className="text-center">{props.title}</h2>
           {props.description &&
             <p className="lead text-center text-body-secondary mb-5">{props.description}</p>
@@ -51,7 +33,7 @@ const SecurityPage = (props) => {
           {props.children}
         </div>
 
-        <footer className="content-sm px-4 pb-5 mt-auto d-flex align-items-center justify-content-center gap-2">
+        <footer className="content-sm px-4 pb-5 d-flex align-items-center justify-content-center gap-2">
           <Button
             className="btn btn-link text-body-secondary"
             type={MODAL_BUTTON}
@@ -78,7 +60,7 @@ const SecurityPage = (props) => {
             label={trans('privacy_policy', {}, 'privacy')}
           />
         </footer>
-      </div>
+      </SecurityLayout>
     </PageSimple>
   )
 }

@@ -5,13 +5,12 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/group/utils'
 import {Group as GroupTypes} from '#/main/community/group/prop-types'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {PageContent} from '#/main/app/page'
 
@@ -21,10 +20,13 @@ const Group = (props) =>
     description={get(props.group, 'meta.description')}
   >
     {isEmpty(props.group) &&
-      <ContentLoader
-        size="lg"
-        description={trans('group_loading', {}, 'community')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          size="md"
+          icon={true}
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.group) &&
@@ -32,7 +34,7 @@ const Group = (props) =>
         <PageHeading
           size="md"
           poster={get(props.group, 'poster')}
-          icon={get(props.group, 'thumbnail') ?
+          icon={
             <Thumbnail
               size="lg"
               thumbnail={get(props.group, 'thumbnail')}
@@ -40,8 +42,7 @@ const Group = (props) =>
               square={true}
             >
               <span className="fa fa-users" aria-hidden={true} />
-            </Thumbnail> :
-            undefined
+            </Thumbnail>
           }
           title={get(props.group, 'name', trans('loading'))}
           description={get(props.group, 'meta.description')}

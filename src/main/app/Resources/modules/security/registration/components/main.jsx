@@ -4,11 +4,9 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {Button} from '#/main/app/action'
-import {Alert} from '#/main/app/components/alert'
 import {FormData} from '#/main/app/content/form'
 import {param} from '#/main/app/config'
 
-import {constants} from '#/main/app/security/registration/constants'
 import {selectors} from '#/main/app/security/registration/store'
 
 class RegistrationMain extends Component {
@@ -95,7 +93,6 @@ class RegistrationMain extends Component {
 }
 
 RegistrationMain.propTypes = {
-  path: T.string,
   className: T.string,
   history: T.shape({
     push: T.func.isRequired

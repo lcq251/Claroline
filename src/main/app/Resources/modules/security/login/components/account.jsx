@@ -23,7 +23,6 @@ class LoginAccount extends Component {
       <FormData
         name={selectors.FORM_NAME}
         alertExit={false}
-        //size="lg"
         definition={[
           {
             title: trans('general'),
@@ -31,24 +30,20 @@ class LoginAccount extends Component {
             fields: [
               {
                 name: 'username',
-                label: this.props.username ? trans('username_or_email') : trans('email'),
-                //placeholder: this.props.username ? trans('username_or_email') : trans('email'),
-                autoComplete: 'username',
-                //hideLabel: true,
                 type: 'string',
-                required: true
+                label: this.props.username ? trans('username_or_email') : trans('email'),
+                required: true,
+                autoComplete: 'username'
               }, {
                 name: 'password',
+                type: 'password',
                 label: trans('password'),
-                //placeholder: trans('password'),
+                required: true,
                 autoComplete: 'current-password',
-                //hideLabel: true,
                 options: {
                   hideStrength: true,
                   disablePasswordCheck: true
-                },
-                type: 'password',
-                required: true
+                }
               }
             ]
           }
@@ -56,7 +51,7 @@ class LoginAccount extends Component {
       >
         {this.props.resetPassword &&
           <Button
-            className="ms-auto text-wrap text-start mt-n2 mb-4"
+            className="btn btn-link border-0 p-0 ms-auto text-wrap text-start mt-n2 mb-4"
             type={LINK_BUTTON}
             label={trans('forgot_password')}
             target="/reset_password"

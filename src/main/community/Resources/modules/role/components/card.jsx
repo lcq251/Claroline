@@ -21,7 +21,7 @@ const RoleCard = props =>
     asIcon={true}
     name={trans(props.data.translationKey)}
     title={trans(props.data.translationKey)}
-    contentText={get(props.data, 'meta.description')}
+    contentText={get(props.data, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}
   />
 
 RoleCard.propTypes = {

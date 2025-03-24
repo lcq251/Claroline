@@ -13,8 +13,7 @@ import {FormGroup} from '#/main/app/content/form/components/group'
 import {ContentRestriction} from '#/main/app/content/components/restriction'
 import {ContentHtml} from '#/main/app/content/components/html'
 
-import {MODAL_LOGIN} from '#/main/app/modals/login'
-import {MODAL_REGISTRATION} from '#/main/app/modals/registration'
+import {MODAL_SECURITY} from '#/main/app/security/modals/security'
 
 import {Workspace as WorkspaceType} from '#/main/core/workspace/prop-types'
 import {getRestrictions} from '#/main/core/workspace/utils'
@@ -105,12 +104,13 @@ class StandardRestrictions extends Component {
                       className="btn btn-warning"
                       type={MODAL_BUTTON}
                       label={trans('login', {}, 'actions')}
-                      modal={[MODAL_LOGIN, {
+                      modal={[MODAL_SECURITY, {
                         onLogin: () => {
                           if (!this.props.errors.archived && this.props.errors.selfRegistration) {
                             this.props.selfRegister(this.props.workspace)
                           }
-                        }
+                        },
+                        onRegister: () => this.props.selfRegister(this.props.workspace)
                       }]}
                       primary={true}
                     />
@@ -121,7 +121,13 @@ class StandardRestrictions extends Component {
                       className="btn btn-outline-warning"
                       type={MODAL_BUTTON}
                       label={trans('create-account', {}, 'actions')}
-                      modal={[MODAL_REGISTRATION, {
+                      modal={[MODAL_SECURITY, {
+                        page: 'registration',
+                        onLogin: () => {
+                          if (!this.props.errors.archived && this.props.errors.selfRegistration) {
+                            this.props.selfRegister(this.props.workspace)
+                          }
+                        },
                         onRegister: () => this.props.selfRegister(this.props.workspace)
                       }]}
                     />

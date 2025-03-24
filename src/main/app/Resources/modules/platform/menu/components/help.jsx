@@ -6,20 +6,63 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
-import {LINK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON, MENU_BUTTON, MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Menu} from '#/main/app/overlays/menu'
 import {Html} from '#/main/app/components/html'
 import {Contact} from '#/main/app/components/contact'
 
+import {selectors as configSelectors} from '#/main/app/config/store'
 import {selectors} from '#/main/app/platform/store'
 import {route} from '#/main/app/context/routing'
+import {MODAL_TERMS_OF_SERVICE} from '#/main/privacy/modals/terms-of-service'
+import {MODAL_PRIVACY} from '#/main/privacy/modals/privacy'
 
 const HelpMenu = (props) => {
   const currentOrganization = useSelector(selectors.currentOrganization)
   const availableContexts = useSelector(selectors.availableContexts)
 
-  console.log(availableContexts)
+  const helpUrl = useSelector((state) => configSelectors.param(state, 'help'))
+
+  const links = [
+    {
+      name: 'help',
+      type: URL_BUTTON,
+      label: trans('help'),
+      target: helpUrl,
+      children: (
+        <>
+          <span className="ms-2 fa fa-arrow-up-right-from-square fs-sm" aria-hidden={true} />
+          <span className="visually-hidden" role="presentation">{trans('external_link')}</span>
+        </>
+      ),
+      displayed: !!helpUrl
+    }, {
+      name: 'sitemap',
+      type: LINK_BUTTON,
+      label: trans('Plan du site'),
+      target: '/',
+      exact: true,
+      displayed: false
+    }, {
+      name: 'accessibility',
+      type: LINK_BUTTON,
+      label: trans('Accessibilité : Non conforme'),
+      target: '/',
+      exact: true,
+      displayed: false
+    }, {
+      name: 'terms-of-service',
+      type: MODAL_BUTTON,
+      label: trans('terms_of_service', {}, 'privacy'),
+      modal: [MODAL_TERMS_OF_SERVICE]
+    }, {
+      name: 'privacy',
+      type: MODAL_BUTTON,
+      label: trans('privacy_policy', {}, 'privacy'),
+      modal: [MODAL_PRIVACY]
+    }
+  ]
 
   return (
     <Menu id={props.id} className="app-user-menu flyout-menu p-0 position-fixed">
@@ -68,27 +111,19 @@ const HelpMenu = (props) => {
           }
         </div>
 
-        <nav>
-          <ul className="list-group mb-4">
-            <li className="list-group-item">
-              Aide
-              <span className="ms-2 fa fa-arrow-up-right-from-square fs-sm" aria-hidden={true} />
-              <span className="visually-hidden" role="presentation">{trans('external_link')}</span>
-            </li>
-            <li className="list-group-item">
-              Plan du site
-            </li>
-            <li className="list-group-item">
-              Accessibilité : Non conforme
-            </li>
-            <li className="list-group-item">
-              Conditions d'utilisation
-            </li>
-            <li className="list-group-item">
-              Politique de confidentialité
-            </li>
-          </ul>
-        </nav>
+        <div className="list-group mb-4">
+          {links
+            .filter(link => undefined === link.displayed || link.displayed)
+            .map((link) => (
+              <Button
+                key={link.name}
+                {...link}
+                className="list-group-item list-group-item-action focus-ring"
+                onClick={props.closeMenu}
+              />
+            ))
+          }
+        </div>
 
         <small className="text-body-secondary mt-auto">v15.0.0</small>
       </div>

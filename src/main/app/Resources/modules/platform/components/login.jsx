@@ -1,11 +1,11 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
 import {SecurityPage} from '#/main/app/security/components/page'
 
 import {LoginMain} from '#/main/app/security/login/containers/main'
-import {useSelector} from 'react-redux'
 import {selectors as configSelectors} from '#/main/app/config/store'
 
 const PlatformLogin = () => {

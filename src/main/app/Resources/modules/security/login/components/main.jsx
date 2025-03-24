@@ -1,12 +1,13 @@
 import React, {Component, createElement} from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {trans} from '#/main/app/intl/translation'
+import {trans, transChoice} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {getSso} from '#/main/authentication/sso'
 import {LoginAccount} from '#/main/app/security/login/components/account'
+import {Divider} from '#/main/app/components/divider'
 
 class LoginMain extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class LoginMain extends Component {
     const internalAccount = this.props.forceInternalAccount || this.props.internalAccount
 
     return (
-      <div className="">
+      <>
         {internalAccount &&
           <LoginAccount
             username={this.props.username}
@@ -52,32 +53,38 @@ class LoginMain extends Component {
           />
         }
 
+        {internalAccount && 0 !== this.props.sso.length &&
+          <Divider
+            className="my-5"
+            label={trans('login_auth_or')}
+            align="center"
+          />
+        }
+
         {0 !== this.props.sso.length &&
           <>
-            <div className="authentication-or">
-              {trans('login_auth_or')}
-            </div>
-
-            <p className="authentication-help">{trans(!internalAccount ? 'login_auth_sso' : 'login_auth_sso_other')}</p>
+            <p className="lead text-center text-body-secondary mb-5 visually-hidden">
+              {transChoice(!internalAccount ? 'login_auth_sso' : 'login_auth_sso_other', this.props.sso.length)}
+            </p>
 
             <div role="presentation" className="d-grid gap-1">
               {this.props.sso.map(sso => this.state.sso[sso.service] ?
                 createElement(this.state.sso[sso.service].components.button, Object.assign({}, sso, {
                   key: sso.service,
-                  label: sso.label || trans('login_with_third_party_btn', {name: trans(sso.service, {}, 'oauth')})
+                  label: sso.label || trans('login_with_third_party_btn', {name: trans(sso.service, {}, 'oauth')}),
+                  primary: 1 === this.props.sso.length
                 })) : null
               )}
             </div>
           </>
         }
-      </div>
+      </>
     )
   }
 }
 
 LoginMain.propTypes = {
   platformName: T.string.isRequired,
-  help: T.string,
   internalAccount: T.bool.isRequired,
   forceInternalAccount: T.bool,
   sso: T.arrayOf(T.shape({
@@ -90,10 +97,6 @@ LoginMain.propTypes = {
   resetPassword: T.bool.isRequired,
   login: T.func.isRequired,
   onLogin: T.func
-}
-
-LoginMain.defaultProps = {
-  forceInternalAccount: false
 }
 
 export {

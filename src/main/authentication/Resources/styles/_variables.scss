@@ -1,13 +1,7 @@
-// -
-// External networks
-// ---
+/*
+ * Authentication plugin vars.
+ */
 
-// Login buttons
-$sso-btn-font-family:      'Font Awesome 5 Free';
-$sso-btn-font-size:        16px;
-$sso-btn-color:            #FFFFFF;
-$sso-btn-border-radius:    $btn-border-radius;
 
-// Default for unknown networks
-$sso-default-primary:      #555555;
-$sso-default-secondary:    #777777;
+// Claroline & bootstrap variables
+@import "src/main/app/Resources/styles/variables";

@@ -10,16 +10,18 @@ import {URL_BUTTON} from '#/main/app/buttons'
 
 const SsoButton = props =>
   <Button
-    className={classes('btn btn-lg btn-third-party-login', props.service, props.className)}
+    className={classes('btn', props.service, props.className, props.primary ? 'btn-primary' : 'btn-body')}
     type={URL_BUTTON}
     target={['hwi_oauth_service_redirect', {service: props.service}]}
+    size={props.primary ? 'lg' : undefined}
 
     {...omit(props, 'service')}
   />
 
 implementPropTypes(SsoButton, ButtonTypes, {
   service: T.string.isRequired,
-  label: T.node // lighten validation. We have a default if no label
+  label: T.node, // lighten validation. We have a default if no label
+  primary: T.bool
 })
 
 export {

@@ -19,5 +19,7 @@
     "roles_to_send_to": "Rôles auquels envoyer l'annonce",
     "send_at_predefined_date": "Envoyer à une date prédéfinie",
     "send_directly": "Envoyer directement",
-    "no_announcement": "Aucune annonce n'a été postée pour le moment."
+    "no_announcement": "Aucune annonce n'a été postée pour le moment.",
+    "back_to_announcements": "Retour aux annonces",
+    "announcement_name": "Annonce: %name%"
 }

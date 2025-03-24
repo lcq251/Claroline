@@ -28,23 +28,20 @@ const UserMenu = (props) => {
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-user',
       label: trans('my_profile'),
-      target: props.path+'/profile',
-      onClick: props.closeMenu
-    }, {
+      target: props.path+'/profile'
+    }/*, {
       name: 'parameters',
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-sliders',
       label: trans('parameters'),
-      target: '/account',
-      onClick: props.closeMenu
+      target: '/account'
     }, {
       name: 'appearance',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-swatchbook',
       label: trans('appearance', {}, 'tools'),
-      callback: () => true,
-      onClick: props.closeMenu
-    }
+      callback: () => true
+    }*/
   ]
 
   const changeStatus = useCallback((status) => {
@@ -106,7 +103,8 @@ const UserMenu = (props) => {
             <Button
               key={accountLink.name}
               {...accountLink}
-              className={classes('list-group-item list-group-item-action focus-ring', accountLink.className)}
+              className="list-group-item list-group-item-action focus-ring"
+              onClick={props.closeMenu}
             />
           ))}
         </div>

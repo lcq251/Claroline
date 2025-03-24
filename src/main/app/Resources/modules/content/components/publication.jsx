@@ -8,6 +8,23 @@ import {Datetime} from '#/main/app/components/date'
 import {LinkButton} from '#/main/app/buttons'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {UserMicro} from '#/main/core/user/components/micro'
+import {ThumbnailSkeleton} from '#/main/app/components/thumbnail'
+
+const ContentPublicationSkeleton = ({
+  className
+}) =>
+  <div className={classes('text-body-tertiary d-flex align-items-center gap-3', className)} role="presentation">
+    <ThumbnailSkeleton
+      size="xs"
+      square={true}
+    />
+
+    <span className="placeholder rounded-1 w-25" role="presentation" />
+  </div>
+
+ContentPublicationSkeleton.propTypes = {
+  className: T.string
+}
 
 const ContentPublication = ({
   className,
@@ -57,5 +74,6 @@ ContentPublication.propTypes = {
 }
 
 export {
-  ContentPublication
+  ContentPublication,
+  ContentPublicationSkeleton
 }

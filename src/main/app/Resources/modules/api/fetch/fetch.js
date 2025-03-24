@@ -5,7 +5,7 @@ import {url} from '#/main/app/api/router'
 import {makeId} from '#/main/app/utils/id'
 
 import {actions} from '#/main/app/api/store'
-import {MODAL_LOGIN} from '#/main/app/modals/login'
+import {MODAL_SECURITY} from '#/main/app/security'
 import {actions as modalActions} from '#/main/app/overlays/modal/store/actions'
 import {ApiRequest as ApiRequestTypes} from '#/main/app/api/prop-types'
 
@@ -107,7 +107,7 @@ function handleResponseError(dispatch, responseError, originalRequest, error) {
     if (401 === responseError.status && originalRequest.forceReauthenticate) {
       // authentication needed
       return new Promise(function (resolve, reject) {
-        dispatch(modalActions.showModal(MODAL_LOGIN, {
+        dispatch(modalActions.showModal(MODAL_SECURITY, {
           onLogin: () => resolve(apiFetch(originalRequest, dispatch)), // re-execute original request
           onAbort: () => {
             // user still not logged, forward the original error
