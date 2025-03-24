@@ -11,8 +11,7 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 import {getActions} from '#/main/community/user/utils'
 import {User as UserTypes} from '#/main/community/user/prop-types'
 import {UserAvatar} from '#/main/app/user/components/avatar'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageContent} from '#/main/app/page'
 
 const User = (props) =>
@@ -21,10 +20,13 @@ const User = (props) =>
     description={get(props.group, 'meta.description')}
   >
     {isEmpty(props.user) &&
-      <ContentLoader
-        size="lg"
-        description={trans('user_loading', {}, 'community')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          size="md"
+          icon={true}
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.user) &&

@@ -5,11 +5,12 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {route} from '#/main/community/role/routing'
 import {hasPermission} from '#/main/app/security'
+import {Alert} from '#/main/app/components/alert'
+import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
 import {DetailsData} from '#/main/app/content/details/containers/data'
-import {ContentSections} from '#/main/app/content/components/sections'
 
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {UserList} from '#/main/community/user/components/list'
@@ -21,8 +22,6 @@ import {Role as RoleTypes} from '#/main/community/role/prop-types'
 import {RolePage} from '#/main/community/role/components/page'
 import {selectors} from '#/main/community/tools/community/role/store/selectors'
 import {RoleRights} from '#/main/community/tools/community/role/components/rights'
-import {Alert} from '#/main/app/components/alert'
-import {Button} from '#/main/app/action'
 
 const RoleShow = (props) =>
   <RolePage
@@ -71,49 +70,6 @@ const RoleShow = (props) =>
       />
     </PageSection>
 
-    <PageSection size="md">
-      {'ROLE_ADMIN' === props.role.name &&
-        <Alert className="my-3" type="warning" title={trans('Les utilisateurs possédant le rôle administrateur ne sont pas soumis à la gestion de droits.')}>
-          {trans('Ils peuvent tout voir et tout faire sans restrictions. Vous ne devriez donner ce rôle qu\'à un nombre limité de personnes.')}
-        </Alert>
-      }
-
-      {'ROLE_ADMIN' !== props.role.name &&
-        <ContentSections level={3} defaultOpened="role-users" className="my-3">
-          {props.role.id && ('workspace' === props.contextType || constants.ROLE_WORKSPACE === props.role.type) &&
-            <RoleRights
-              id="role-workspace-rights"
-              disabled={!props.role.id}
-              icon="fa fa-fw fa-lock"
-              title={trans('permissions')}
-              subtitle={trans('Donnez ou retirez des droits d\'accès aux détenteurs de ce rôle')}
-              role={props.role}
-              contextType="workspace"
-              contextId={props.contextData ? props.contextData.id : get(props.role, 'workspace.id')}
-              rights={props.workspaceRights}
-              reload={props.loadWorkspaceRights}
-              fill={true}
-            />
-          }
-
-          {props.role.id && ('desktop' === props.contextType && constants.ROLE_WORKSPACE !== props.role.type) &&
-            <RoleRights
-              id="role-desktop-rights"
-              disabled={!props.role.id}
-              icon="fa fa-fw fa-lock"
-              title={trans('permissions')}
-              subtitle={trans('Donnez ou retirez des droits d\'accès aux détenteurs de ce rôle')}
-              role={props.role}
-              contextType="desktop"
-              rights={props.desktopRights}
-              reload={props.loadDesktopRights}
-              fill={true}
-            />
-          }
-        </ContentSections>
-      }
-    </PageSection>
-
     {'ROLE_ANONYMOUS' !== props.role.name &&
       <PageTabbedSection
         size="md"
@@ -123,13 +79,46 @@ const RoleShow = (props) =>
           {
             path: '',
             exact: true,
+            icon: 'fa fa-key',
+            title: trans('permissions'),
+            render: () => (
+              <>
+                {'ROLE_ADMIN' === props.role.name &&
+                  <Alert className="mt-4 mb-5" type="warning" title={trans('Les utilisateurs possédant le rôle administrateur ne sont pas soumis à la gestion de droits.')}>
+                    {trans('Ils peuvent tout voir et tout faire sans restrictions. Vous ne devriez donner ce rôle qu\'à un nombre limité de personnes.')}
+                  </Alert>
+                }
+
+                {'ROLE_ADMIN' !== props.role.name &&props.role.id && ('workspace' === props.contextType || constants.ROLE_WORKSPACE === props.role.type) &&
+                  <RoleRights
+                    role={props.role}
+                    contextType={props.contextType}
+                    contextId={props.contextData ? props.contextData.id : get(props.role, 'workspace.id')}
+                    rights={props.workspaceRights}
+                    reload={props.loadWorkspaceRights}
+                  />
+                }
+
+                {'ROLE_ADMIN' !== props.role.name && props.role.id && ('desktop' === props.contextType && constants.ROLE_WORKSPACE !== props.role.type) &&
+                  <RoleRights
+                    role={props.role}
+                    contextType={props.contextType}
+                    rights={props.desktopRights}
+                    reload={props.loadDesktopRights}
+                  />
+                }
+              </>
+            )
+          }, {
+            path: '/users',
+            exact: true,
             icon: 'fa fa-user',
             title: trans('users', {}, 'community'),
             render: () => (
               <>
                 {hasPermission('edit', props.role) && ('workspace' !== props.contextType || constants.ROLE_PLATFORM !== props.role.type) &&
                   <Button
-                    className=" btn btn-primary mt-4 me-auto"
+                    className="btn btn-primary mt-4 me-auto"
                     {...{
                       name: 'add-users',
                       type: MODAL_BUTTON,

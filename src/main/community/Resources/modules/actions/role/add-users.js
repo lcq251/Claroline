@@ -13,7 +13,7 @@ export default (role, refresher) => ({
     selectAction: (users) => ({
       type: ASYNC_BUTTON,
       request: {
-        url: url(['apiv2_role_add_users', {id: role[0].id}], {ids: users}),
+        url: url(['apiv2_role_add_users', {id: role[0].id}], {ids: users.map(user => user.id)}),
         request: {
           method: 'PATCH'
         },

@@ -5,13 +5,12 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/team/utils'
 import {Team as TeamTypes} from '#/main/community/team/prop-types'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageContent} from '#/main/app/page'
 
 const Team = (props) =>
@@ -20,10 +19,12 @@ const Team = (props) =>
     description={get(props.team, 'meta.description')}
   >
     {isEmpty(props.team) &&
-      <ContentLoader
-        size="lg"
-        description={trans('team_loading', {}, 'community')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          size="md"
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.team) &&
@@ -33,7 +34,7 @@ const Team = (props) =>
           poster={get(props.team, 'poster')}
           title={get(props.team, 'name', trans('loading'))}
           description={get(props.team, 'meta.description')}
-          // primaryAction="edit"
+          primaryAction="edit"
           actions={!isEmpty(props.team) ? getActions([props.team], {
             add: () => props.reload(props.team.id),
             update: () => props.reload(props.team.id),

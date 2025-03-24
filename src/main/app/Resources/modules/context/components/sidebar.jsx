@@ -76,8 +76,8 @@ const ContextSidebar = ({
             className="app-menu-items list-unstyled flex-fill px-0 mb-3 justify-content-start"
             aria-labelledby={toolsTitleId}
           >
-            {toolLinks.map(toolLink =>
-              <li key={toolLink.name} className={classes('parameters' === toolLink.name && 'mt-auto')}>
+            {toolLinks.map((toolLink, i) =>
+              <li key={toolLink.name} className={classes('parameters' === toolLink.name && i === toolLinks.length - 1 && 'mt-auto')}>
                 <Button
                   {...omit(toolLink, 'label')}
                   className="app-menu-item focus-ring"

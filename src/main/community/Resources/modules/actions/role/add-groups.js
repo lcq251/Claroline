@@ -8,12 +8,12 @@ export default (role, refresher) => ({
   name: 'add-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-users',
-  label: trans('add_group', {}, 'actions'),
+  label: trans('add_groups', {}, 'actions'),
   modal: [MODAL_GROUPS, {
     selectAction: (groups) => ({
       type: ASYNC_BUTTON,
       request: {
-        url: url(['apiv2_role_add_groups', {id: role[0].id}], {ids: groups}),
+        url: url(['apiv2_role_add_groups', {id: role[0].id}], {ids: groups.map(group => group.id)}),
         request: {
           method: 'PATCH'
         },

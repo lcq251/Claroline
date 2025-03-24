@@ -10,8 +10,7 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/organization/utils'
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {PageContent} from '#/main/app/page'
 
@@ -21,10 +20,13 @@ const Organization = (props) =>
     description={get(props.organization, 'meta.description')}
   >
     {isEmpty(props.organization) &&
-      <ContentLoader
-        size="lg"
-        description={trans('organization_loading', {}, 'community')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          size="md"
+          icon={true}
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.organization) &&

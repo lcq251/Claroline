@@ -10,8 +10,7 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/main/community/role/utils'
 import {Role as RoleTypes} from '#/main/community/role/prop-types'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageContent} from '#/main/app/page'
 
 const Role = (props) =>
@@ -20,10 +19,12 @@ const Role = (props) =>
     description={get(props.role, 'meta.description')}
   >
     {isEmpty(props.role) &&
-      <ContentLoader
-        size="lg"
-        description={trans('role_loading', {}, 'community')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          size="md"
+          description={true}
+        />
+      </PageContent>
     }
 
     {!isEmpty(props.role) &&

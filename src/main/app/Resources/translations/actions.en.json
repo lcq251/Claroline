@@ -25,6 +25,7 @@
   "download": "Download",
   "enable": "Enable",
   "edit": "Edit",
+  "edit_permissions": "Edit permissions",
   "exit": "Exit",
   "expand": "Expand",
   "export-csv": "Export (.csv)",

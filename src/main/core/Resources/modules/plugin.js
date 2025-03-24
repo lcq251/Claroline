@@ -74,11 +74,6 @@ registry.add('ClarolineCoreBundle', {
       'ws-register': () => { return import(/* webpackChunkName: "core-action-group-ws-register" */ '#/main/core/actions/group/ws-register') }
     },
 
-    role: {
-      'add-users': () => { return import(/* webpackChunkName: "core-action-role-add-users" */ '#/main/core/actions/role/add-users') },
-      'add-groups': () => { return import(/* webpackChunkName: "core-action-role-add-groups" */ '#/main/core/actions/role/add-groups') }
-    },
-
     context: {
       'open'     : () => { return import(/* webpackChunkName: "core-action-context-open" */      '#/main/core/actions/context/open') },
       'configure': () => { return import(/* webpackChunkName: "core-action-context-configure" */ '#/main/core/actions/context/configure') },

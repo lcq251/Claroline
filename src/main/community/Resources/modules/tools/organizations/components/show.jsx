@@ -53,10 +53,10 @@ const OrganizationShow = props =>
       />
     </PageSection>
 
-    <PageSection size="md" title={trans('managers', {}, 'community')}>
+    <PageSection size="md" title={trans('managers', {}, 'community')} className="mt-3">
       {hasPermission('edit', props.organization) &&
         <Button
-          className="btn btn-primary mt-4 me-auto"
+          className="btn btn-primary mt-3 me-auto"
           {...{
             name: 'add-managers',
             type: MODAL_BUTTON,
