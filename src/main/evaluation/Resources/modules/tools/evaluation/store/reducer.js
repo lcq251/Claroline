@@ -9,6 +9,9 @@ import {makeInstanceAction} from '#/main/app/store/actions'
 
 const reducer = combineReducers({
   current: combineReducers({
+    sequences: makeReducer([], {
+      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.sequences
+    }),
     workspaceEvaluation: makeReducer(null, {
       [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
         return action.toolData.workspaceEvaluation

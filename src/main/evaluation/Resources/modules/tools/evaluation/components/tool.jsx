@@ -1,13 +1,13 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useSelector} from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
+import omit from 'lodash/omit'
 
-import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl'
-import {Tool, selectors as toolSelectors} from '#/main/core/tool'
+import {Tool} from '#/main/core/tool'
+import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/components/main'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {EvaluationOverview} from '#/main/evaluation/tools/evaluation/components/overview'
 import {EvaluationActivities} from '#/main/evaluation/tools/evaluation/containers/activities'
 import {EvaluationDashboard} from '#/main/evaluation/tools/evaluation/dashboard/containers/main'
@@ -15,43 +15,53 @@ import {EvaluationSequences} from '#/main/evaluation/tools/evaluation/components
 import {SequenceShow} from '#/main/evaluation/sequence/containers/show'
 
 const EvaluationTool = (props) => {
-  const canFollow = useSelector((state) => hasPermission('edit', toolSelectors.toolData(state)))
+  console.log(props.assignedSequences)
+
+  let currentSequence = {}
+  if (!isEmpty(props.assignedSequences) && 1 === props.assignedSequences.length) {
+    currentSequence = props.assignedSequences[0]
+  }
 
   return (
     <Tool
-      {...props}
+      {...omit(props, 'assignedSequences', 'canFollow')}
       menu={[
         {
           name: 'about',
           type: LINK_BUTTON,
           label: trans('my_progression'),
           target: props.path,
-          exact: true
+          exact: true,
+          displayed: false
         }, {
           name: 'sequences',
           type: LINK_BUTTON,
           label: trans('sequences', {}, 'evaluation'),
-          target: props.path+'/sequences',
+          target: props.path/*+'/sequences'*/,
           displayed: 'workspace' === props.contextType
         }, {
           name: 'activities',
           type: LINK_BUTTON,
           label: trans('activities'),
           target: props.path+'/activities',
-          displayed: canFollow && 'workspace' === props.contextType
+          displayed: props.canFollow && 'workspace' === props.contextType
         }
       ]}
+      redirect={[
+        {from: '/', exact: true, to: '/sequences/'+(!isEmpty(currentSequence) ? currentSequence.id : ''), disabled: isEmpty(currentSequence) || props.canFollow}
+      ]}
       pages={[
-        {
+        /*{
           path: '/',
           component: EvaluationOverview,
           exact: true
-        }, {
+        }, */{
           path: '/sequences/:id',
           render: (routerProps) => <SequenceShow id={routerProps.match.params.id}  path={props.path + '/sequences'} />
         }, {
-          path: '/sequences',
-          component: EvaluationSequences
+          path: '/', // /sequences
+          component: EvaluationSequences,
+          exact: true
         }, {
           path: '/activities',
           component: EvaluationActivities
@@ -65,7 +75,9 @@ const EvaluationTool = (props) => {
 
 EvaluationTool.propTypes = {
   path: T.string.isRequired,
-  contextType: T.string.isRequired
+  canFollow: T.bool.isRequired,
+  contextType: T.string.isRequired,
+  assignedSequences: T.array,
 }
 
 export {

@@ -27,6 +27,11 @@ const userResourceEvaluations = createSelector(
   (user) => user.resourceEvaluations
 )
 
+const assignedSequences = createSelector(
+  [store],
+  (store) => get(store, 'current.sequences')
+)
+
 const currentWorkspaceEvaluation = createSelector(
   [store],
   (store) => get(store, 'current.workspaceEvaluation')
@@ -50,11 +55,12 @@ const hasScore = createSelector(
 export const selectors = {
   STORE_NAME,
   store,
+  assignedSequences,
   currentWorkspaceEvaluation,
   currentResourceEvaluations,
   userLoaded,
   userWorkspaceEvaluation,
   userResourceEvaluations,
   hasScore,
-  totalScore
+  totalScore,
 }
