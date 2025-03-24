@@ -16,7 +16,6 @@ import {SequenceShow} from '#/main/evaluation/sequence/containers/show'
 
 const EvaluationTool = (props) => {
   console.log(props.assignedSequences)
-
   let currentSequence = {}
   if (!isEmpty(props.assignedSequences) && 1 === props.assignedSequences.length) {
     currentSequence = props.assignedSequences[0]
@@ -48,7 +47,8 @@ const EvaluationTool = (props) => {
         }
       ]}
       redirect={[
-        {from: '/', exact: true, to: '/sequences/'+(!isEmpty(currentSequence) ? currentSequence.id : ''), disabled: isEmpty(currentSequence) || props.canFollow}
+        {from: '', exact: true, to: '/sequences/'+(!isEmpty(currentSequence) ? currentSequence.id : ''), disabled: isEmpty(currentSequence) || props.canFollow},
+        {from: '', exact: true, to: '/sequences', disabled: !isEmpty(currentSequence) || !props.canFollow}
       ]}
       pages={[
         /*{
@@ -59,7 +59,7 @@ const EvaluationTool = (props) => {
           path: '/sequences/:id',
           render: (routerProps) => <SequenceShow id={routerProps.match.params.id}  path={props.path + '/sequences'} />
         }, {
-          path: '/', // /sequences
+          path: '/sequences',
           component: EvaluationSequences,
           exact: true
         }, {
