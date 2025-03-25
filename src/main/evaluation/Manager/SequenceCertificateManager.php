@@ -109,7 +109,7 @@ class SequenceCertificateManager
         $path = $this->fileManager->getDirectory();
         $path .= DIRECTORY_SEPARATOR.'sequence_certificates';
         $path .= DIRECTORY_SEPARATOR.$certificate->getEvaluation()->getSequence()->getUuid();
-        $path .= DIRECTORY_SEPARATOR.$certificate->getUser()->getUuid().'.pdf';
+        $path .= DIRECTORY_SEPARATOR.$certificate->getUuid().'.pdf';
 
         return $path;
     }

@@ -174,6 +174,11 @@ const SequenceEditorEvaluation = () => {
               help: trans('customize_certificate_help', {}, 'evaluation'),
               type: 'boolean',
               calculated: enableCustomCertificate,
+              onChange: (enabled) => {
+                if (!enabled) {
+                  updateProp('evaluation.certificateTemplate', null)
+                }
+              },
               linked: [
                 {
                   name: 'evaluation.certificateTemplate',

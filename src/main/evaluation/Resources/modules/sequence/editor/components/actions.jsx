@@ -14,7 +14,7 @@ const SequenceEditorActions = () => {
     <EditorActions
       actions={[
         {
-          title: trans('Changer le propriétaire'),
+          title: trans('change_owner', {}, 'actions'),
           help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
           action: {
             label: trans('Transférer', {}, 'actions'),
