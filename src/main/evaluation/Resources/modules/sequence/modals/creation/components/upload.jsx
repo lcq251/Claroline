@@ -14,9 +14,7 @@ const CreationUpload = (props) =>
   <Modal
     {...omit(props, 'changeStep')}
     title={trans('new_sequence', {}, 'evaluation')}
-    /*subtitle={trans('L\'espace d\'activités est au coeur de votre formation.')}*/
     centered={true}
-    onExited={props.reset}
   >
     <FormData
       name={selectors.STORE_NAME}

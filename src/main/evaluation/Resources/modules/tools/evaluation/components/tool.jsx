@@ -15,7 +15,6 @@ import {EvaluationSequences} from '#/main/evaluation/tools/evaluation/components
 import {SequenceShow} from '#/main/evaluation/sequence/containers/show'
 
 const EvaluationTool = (props) => {
-  console.log(props.assignedSequences)
   let currentSequence = {}
   if (!isEmpty(props.assignedSequences) && 1 === props.assignedSequences.length) {
     currentSequence = props.assignedSequences[0]

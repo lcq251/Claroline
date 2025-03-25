@@ -9,11 +9,10 @@ import {ContentMenu} from '#/main/app/content/components/menu'
 
 const CreationType = (props) =>
   <Modal
-    {...omit(props, 'changeStep')}
+    {...omit(props, 'changeStep', 'startCreation')}
     title={trans('new_sequence', {}, 'evaluation')}
     subtitle={trans('new_sequence_desc', {}, 'evaluation')}
     centered={true}
-    onExited={props.reset}
   >
     <div className="modal-body">
       <ContentMenu
@@ -26,7 +25,10 @@ const CreationType = (props) =>
             description: trans('Créez une séquence vide pour pouvoir la configurer comme vous le souhaitez.'),
             action: {
               type: CALLBACK_BUTTON,
-              callback: () => props.changeStep('form')
+              callback: () => {
+                props.startCreation()
+                props.changeStep('form')
+              }
             }
           }, {
             id: 'create-from-copy',
@@ -56,8 +58,7 @@ const CreationType = (props) =>
   </Modal>
 
 CreationType.propTypes = {
-  changeStep: T.func.isRequired,
-  reset: T.func.isRequired
+  changeStep: T.func.isRequired
 }
 
 export {

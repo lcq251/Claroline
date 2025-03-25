@@ -17,21 +17,16 @@ import {selectors} from '#/main/evaluation/sequence/modals/creation/store'
 const CreationForm = (props) => {
   const history = useHistory()
 
-  const contextData = useSelector(toolSelectors.contextData)
   const toolPath = useSelector(toolSelectors.path)
 
   const dispatch = useDispatch()
-  const create = () => dispatch(formActions.save(selectors.STORE_NAME, ['apiv2_evaluation_sequence_create']))
-  const reset = () => dispatch(formActions.reset(selectors.STORE_NAME, {
-    workspace: contextData
-  }, true))
+  const reset = () => dispatch(formActions.reset(selectors.STORE_NAME, {}, true))
 
   return (
     <Modal
-      {...omit(props, 'changeStep')}
+      {...omit(props, 'create', 'changeStep')}
       title={trans('sequence', {}, 'evaluation')}
       centered={true}
-      onEntering={reset}
       onExited={reset}
     >
       <FormData
@@ -84,25 +79,16 @@ const CreationForm = (props) => {
             type={CALLBACK_BUTTON}
             label={trans('create_and_configure', {}, 'actions')}
             className="btn btn-link"
-            callback={() => {
-              create().then((sequence) => {
-                props.fadeModal()
-                history.push(route(sequence, toolPath)+'/edit')
-              })
-            }}
+            callback={() => props.create().then((sequence) => {
+              history.push(route(sequence, toolPath)+'/edit')
+            })}
           />
           <Button
             type={CALLBACK_BUTTON}
             label={trans('create', {}, 'actions')}
             className="btn btn-primary"
             htmlType="submit"
-            callback={(e) => {
-              create().then(() => {
-                props.fadeModal()
-
-                e.preventDefault() // otherwise it will redirect to the form action (which is not used and send us to desktop)
-              })
-            }}
+            callback={props.create}
           />
         </div>
       </FormData>
@@ -111,6 +97,7 @@ const CreationForm = (props) => {
 }
 
 CreationForm.propTypes = {
+  create: T.func.isRequired,
   changeStep: T.func.isRequired
 }
 

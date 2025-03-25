@@ -1,6 +1,5 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useDispatch} from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import omit from 'lodash/omit'
 
@@ -9,20 +8,16 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {SequencesModal} from '#/main/evaluation/modals/sequences/components/modal'
-import {actions as formActions} from '#/main/app/content/form'
-import {selectors} from '#/main/evaluation/sequence/modals/creation/store'
 
 const CreationCopy = (props) => {
-  const dispatch = useDispatch()
-
   return (
     <SequencesModal
-      {...omit(props, 'changeStep')}
+      {...omit(props, 'changeStep', 'startCreation')}
       autoClose={false}
       selectAction={(selected) => ({
         type: CALLBACK_BUTTON,
         callback: () => {
-          dispatch(formActions.load(selectors.STORE_NAME, cloneDeep(selected[0])))
+          props.startCreation(cloneDeep(selected[0]))
           props.changeStep('form')
         }
       })}
@@ -41,7 +36,8 @@ const CreationCopy = (props) => {
 }
 
 CreationCopy.propTypes = {
-  changeStep: T.func.isRequired
+  changeStep: T.func.isRequired,
+  startCreation: T.func.isRequired
 }
 
 export {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
 import {MODAL_BUTTON} from '#/main/app/buttons'
@@ -9,11 +9,15 @@ import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
 import {SequenceList} from '#/main/evaluation/sequence/components/list'
 import {selectors} from '#/main/evaluation/tools/evaluation/store'
 import {MODAL_SEQUENCE_CREATION} from '#/main/evaluation/sequence/modals/creation'
+import {actions as listActions} from '#/main/app/content/list'
 
 const EvaluationSequences = () => {
+  const dispatch = useDispatch()
+  
   const toolPath = useSelector(toolSelectors.path)
   const contextId = useSelector(toolSelectors.contextId)
   const contextName = useSelector(toolSelectors.contextType)
+  const contextData = useSelector(toolSelectors.contextData)
 
   return (
     <ToolPage title={trans('sequences', {}, 'evaluation')}>
@@ -23,7 +27,10 @@ const EvaluationSequences = () => {
           icon: 'fa fa-fw fa-plus',
           label: trans('add_sequence', {}, 'actions'),
           type: MODAL_BUTTON,
-          modal: [MODAL_SEQUENCE_CREATION]
+          modal: [MODAL_SEQUENCE_CREATION, {
+            workspace: contextData,
+            onCreate: () => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.sequences'))
+          }]
         }}
       >
         <SequenceList
