@@ -1,9 +1,11 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {EditorPage} from '#/main/app/editor'
+import {actions as listActions} from '#/main/app/content/list'
 
 import {WorkspaceList} from '#/main/core/workspace/components/list'
 import {selectors} from '#/main/core/tools/workspaces/editor/store/selectors'
@@ -46,25 +48,32 @@ const ModelExplain = () =>
     </div>
   </div>
 
-const EditorModels = () =>
-  <EditorPage
-    title={trans('models')}
-    help={trans('workspace_models_desc', {}, 'workspace')}
-  >
-    <ModelExplain />
+const EditorModels = () => {
+  const dispatch = useDispatch()
 
-    <Button
-      className="btn btn-primary mb-3 align-self-start"
-      type={MODAL_BUTTON}
-      label={trans('add_workspace_model', {}, 'actions')}
-      modal={[MODAL_WORKSPACE_CREATION]}
-    />
+  return (
+    <EditorPage
+      title={trans('models')}
+      help={trans('workspace_models_desc', {}, 'workspace')}
+    >
+      <ModelExplain />
 
-    <WorkspaceList
-      url={['apiv2_workspace_list_model']}
-      name={selectors.MODELS_LIST_NAME}
-    />
-  </EditorPage>
+      <Button
+        className="btn btn-primary mb-3 align-self-start"
+        type={MODAL_BUTTON}
+        label={trans('add_workspace_model', {}, 'actions')}
+        modal={[MODAL_WORKSPACE_CREATION, {
+          onCreate: () => dispatch(listActions.invalidateData(selectors.MODELS_LIST_NAME))
+        }]}
+      />
+
+      <WorkspaceList
+        url={['apiv2_workspace_list_model']}
+        name={selectors.MODELS_LIST_NAME}
+      />
+    </EditorPage>
+  )
+}
 
 export {
   EditorModels
