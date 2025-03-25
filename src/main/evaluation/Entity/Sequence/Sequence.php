@@ -95,7 +95,7 @@ class Sequence implements CrudEntityInterface
      * Supported conditions : minimal score, min successful resources, max failed resources.
      */
     #[ORM\Column(name: 'success_condition', type: Types::JSON, nullable: true)]
-    private ?array $successCondition = [];
+    private ?array $successCondition = null;
 
     /**
      * @var Collection<int, Step>

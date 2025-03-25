@@ -28,7 +28,7 @@ const CreationModal = (props) => {
         <CreationType
           {...omit(props, 'workspace', 'create', 'onCreate', 'startCreation')}
           changeStep={setCurrentStep}
-          startCreation={(formData) => props.startCreation(merge(formData, {
+          startCreation={(formData) => props.startCreation(merge({}, formData, {
             workspace: props.workspace
           }))}
         />

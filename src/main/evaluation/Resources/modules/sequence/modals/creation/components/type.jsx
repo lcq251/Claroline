@@ -7,6 +7,8 @@ import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {ContentMenu} from '#/main/app/content/components/menu'
 
+import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
+
 const CreationType = (props) =>
   <Modal
     {...omit(props, 'changeStep', 'startCreation')}
@@ -26,7 +28,7 @@ const CreationType = (props) =>
             action: {
               type: CALLBACK_BUTTON,
               callback: () => {
-                props.startCreation()
+                props.startCreation(SequenceTypes.defaultProps)
                 props.changeStep('form')
               }
             }

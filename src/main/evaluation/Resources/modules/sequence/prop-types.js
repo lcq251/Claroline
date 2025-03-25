@@ -28,6 +28,10 @@ const Step = {
 const Sequence = {
   propTypes: {
     id: T.string.isRequired,
+    name: T.string,
+    meta: T.shape({
+      published: T.bool
+    }),
     display: T.shape({
       numbering: T.oneOf(['none', 'numeric', 'literal', 'custom']),
       showScore: T.bool
@@ -58,6 +62,9 @@ const Sequence = {
     })
   },
   defaultProps: {
+    meta: {
+      published: false
+    },
     display: {
       numbering: 'none'
     },

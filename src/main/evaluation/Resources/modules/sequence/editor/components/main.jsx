@@ -4,6 +4,7 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 import {Editor} from '#/main/app/editor'
 import {selectors as toolSelectors} from '#/main/core/tool'
 
@@ -18,7 +19,7 @@ import {SequenceEditorPermissions} from '#/main/evaluation/sequence/editor/compo
 import {SequenceEditorRequirements} from '#/main/evaluation/sequence/editor/components/requirements'
 import {SequenceEditorEvaluation} from '#/main/evaluation/sequence/editor/components/evaluation'
 import {actions, selectors} from '#/main/evaluation/sequence/editor/store'
-import {Thumbnail} from '#/main/app/components/thumbnail'
+
 
 const SequenceEditor = () => {
   const dispatch = useDispatch()
@@ -65,7 +66,8 @@ const SequenceEditor = () => {
           name: 'requirements',
           title: trans('Pré-requis', {}, 'evaluation'),
           component: SequenceEditorRequirements,
-          group: trans('evaluation')
+          group: trans('evaluation'),
+          displayed: false
         }, {
           name: 'steps',
           title: trans('Scenario', {}, 'evaluation'),
