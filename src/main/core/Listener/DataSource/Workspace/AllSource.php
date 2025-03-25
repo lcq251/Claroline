@@ -17,24 +17,14 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class AllSource
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var FinderProvider */
-    private $finder;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        FinderProvider $finder
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FinderProvider $finder
     ) {
-        $this->finder = $finder;
-        $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function getData(GetDataEvent $event)
+    public function getData(GetDataEvent $event): void
     {
         $options = $event->getOptions();
 
@@ -47,6 +37,7 @@ class AllSource
         if (DataSource::CONTEXT_HOME === $event->getContext()) {
             $options['hiddenFilters']['model'] = false;
             $options['hiddenFilters']['personal'] = false;
+            $options['hiddenFilters']['public'] = true;
         }
 
         $event->setData(
