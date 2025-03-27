@@ -4,8 +4,9 @@ import {TeamDisplay} from '#/main/community/data/types/team/components/display'
 import {TeamInput} from '#/main/community/data/types/team/components/input'
 import {TeamFilter} from '#/main/community/data/types/team/components/filter'
 import {TeamCell} from '#/main/community/data/types/team/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'team',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw && raw.map(t => t.name).join(', '),
   components: {
-    details: TeamDisplay,
+    display: TeamDisplay,
     input: TeamInput,
-    search: TeamFilter,
-    table: TeamCell
+    filter: TeamFilter,
+    cell: TeamCell
   }
-}
-
-export {
-  dataType
-}
+})

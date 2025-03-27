@@ -1,21 +1,15 @@
 
 import {MediasDisplay} from '#/plugin/exo/data/types/medias/components/display'
 import {MediasInput} from '#/plugin/exo/data/types/medias/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'medias',
-  meta: {},
-
-  //validate: (value, options) => chain(value, options, [string, match, lengthInRange]),
+  meta: {
+    creatable: false
+  },
   components: {
-    details: MediasDisplay,
-
-    // new api
     input: MediasInput,
     display: MediasDisplay
   }
-}
-
-export {
-  dataType
-}
+})

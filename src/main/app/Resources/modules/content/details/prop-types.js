@@ -17,7 +17,6 @@ const DataDetailsProperty = {
   })
 }
 
-// todo merge with DataFormSection
 const DataDetailsSection = {
   propTypes: {
     icon: T.string,
@@ -32,7 +31,7 @@ const DataDetailsSection = {
     fields: T.arrayOf(T.shape(
       DataDetailsProperty.propTypes
     )),
-    component: T.node, // TODO : add warn if component and render are defined on the same section
+    component: T.node,
     render: T.func
   },
   defaultProps: {

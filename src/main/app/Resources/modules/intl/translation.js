@@ -31,26 +31,7 @@ function transChoice(key, count, placeholders = {}, domain= DEFAULT_DOMAIN) {
   return window.Translator.transChoice(key, count, placeholders, domain)
 }
 
-/**
- * Shortcut to access `validators` messages.
- *
- * @param {string} message
- * @param {object} placeholders
- *
- * @returns {string}
- *
- * @deprecated use trans(key, placeholders, 'validators')
- */
-function tval(message, placeholders = {}) {
-  return trans(message, placeholders, 'validators')
-}
-
-// reexport translator object
-//const Translator = getTranslator()
 export {
-  //Translator,
-
   trans,
-  transChoice,
-  tval
+  transChoice
 }

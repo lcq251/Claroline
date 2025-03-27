@@ -4,8 +4,9 @@ import {GroupDisplay} from '#/main/community/data/types/group/components/display
 import {GroupInput} from '#/main/community/data/types/group/components/input'
 import {GroupFilter} from '#/main/community/data/types/group/components/filter'
 import {GroupCell} from '#/main/community/data/types/group/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'group',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw && raw.map(g => g.name).join(', '),
   components: {
-    table: GroupCell,
-    details: GroupDisplay,
+    cell: GroupCell,
+    display: GroupDisplay,
     input: GroupInput,
-    search: GroupFilter
+    filter: GroupFilter
   }
-}
-
-export {
-  dataType
-}
+})

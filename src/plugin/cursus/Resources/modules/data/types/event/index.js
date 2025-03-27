@@ -4,8 +4,9 @@ import {EventDisplay} from '#/plugin/cursus/data/types/event/components/display'
 import {EventInput} from '#/plugin/cursus/data/types/event/components/input'
 import {EventCell} from '#/plugin/cursus/data/types/event/components/cell'
 import {EventFilter} from '#/plugin/cursus/data/types/event/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'training_event',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw ? raw.name : null,
   components: {
-    details: EventDisplay,
+    display: EventDisplay,
     input: EventInput,
-    table: EventCell,
-    search: EventFilter
+    cell: EventCell,
+    filter: EventFilter
   }
-}
-
-export {
-  dataType
-}
+})

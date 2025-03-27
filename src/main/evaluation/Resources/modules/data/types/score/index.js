@@ -6,13 +6,14 @@ import {chain, number, inRange} from '#/main/app/data/types/validators'
 import {displayScore} from '#/main/evaluation/data/types/score/utils'
 import {ScoreCell} from '#/main/evaluation/data/types/score/components/cell'
 import {ScoreDisplay} from '#/main/evaluation/data/types/score/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
 /**
  * Score data type.
  *
  * Manages score values.
  */
-const dataType = {
+export default declareDataType({
   name: 'score',
   meta: {
     creatable: false,
@@ -52,16 +53,7 @@ const dataType = {
    * Custom components for scores rendering.
    */
   components: {
-    // old api
-    details: ScoreDisplay,
-    table: ScoreCell,
-
-    // new api
     display: ScoreDisplay,
     cell: ScoreCell
   }
-}
-
-export {
-  dataType
-}
+})

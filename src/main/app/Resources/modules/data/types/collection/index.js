@@ -5,8 +5,9 @@ import {validateProp} from '#/main/app/content/form/validator'
 import {CollectionDisplay} from '#/main/app/data/types/collection/components/display'
 import {CollectionGroup} from '#/main/app/data/types/collection/components/group'
 import {CollectionInput} from '#/main/app/data/types/collection/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'collection',
   meta: {
     icon: 'fa fa-fw fa-th',
@@ -30,16 +31,8 @@ const dataType = {
   },
 
   components: {
-    // old api
-    details: CollectionDisplay,
-
-    // new api
     group: CollectionGroup,
     input: CollectionInput,
     display: CollectionDisplay
   }
-}
-
-export {
-  dataType
-}
+})

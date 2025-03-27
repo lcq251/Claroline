@@ -4,10 +4,9 @@ import {chain, date, string} from '#/main/app/data/types/validators'
 import {render, parse} from '#/main/app/data/types/date/utils'
 import {DateInput} from '#/main/app/data/types/date/components/input'
 import {DateSearch} from '#/main/app/data/types/date/components/search'
-import {DateDisplay} from '#/main/app/data/types/date/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
-
-const dataType = {
+export default declareDataType({
   name: 'date',
   meta: {
     creatable: true,
@@ -30,14 +29,7 @@ const dataType = {
   validate: (value, options = {}) => chain(value, options, [string, date]),
 
   components: {
-    search: DateSearch,
-
-    // new api
-    input: DateInput,
-    display: DateDisplay
+    filter: DateSearch,
+    input: DateInput
   }
-}
-
-export {
-  dataType
-}
+})

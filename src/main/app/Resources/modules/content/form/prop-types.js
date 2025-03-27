@@ -18,7 +18,6 @@ const DataFormProperty = {
       T.bool,
       T.func // a function that receives the whole form data and returns a bool
     ]),
-    readOnly: T.bool,
     autoFocus: T.bool,
 
     // field methods
@@ -29,7 +28,6 @@ const DataFormProperty = {
     required: false,
     hideLabel: false,
     disabled: false,
-    readOnly: false,
     displayed: true
   })
 }

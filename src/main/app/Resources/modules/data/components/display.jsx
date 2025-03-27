@@ -7,8 +7,6 @@ import {makeCancelable} from '#/main/app/api'
 import {trans} from '#/main/app/intl/translation'
 import {getType} from '#/main/app/data/types'
 
-import {FormGroup} from '#/main/app/content/form/components/group'
-
 class DataDisplay extends Component {
   constructor(props) {
     super(props)
@@ -17,7 +15,6 @@ class DataDisplay extends Component {
       error: false,
       loaded: false,
       display: null,
-      group: null,
       render: null
     }
   }
@@ -63,8 +60,7 @@ class DataDisplay extends Component {
       .then(
         (result = []) => this.setState({
           loaded: true,
-          group: get(result[0], 'components.group'),
-          display: get(result[0], 'components.display') || get(result[0], 'components.details'), // components.details is for retro-compatibility
+          display: get(result[0], 'components.display'),
           render: get(result[0], 'render')
         })
       )
@@ -77,7 +73,7 @@ class DataDisplay extends Component {
       )
   }
 
-  renderInput() {
+  render() {
     if (!this.state.loaded) {
       return (
         <div role="presentation" className="text-secondary">
@@ -105,12 +101,9 @@ class DataDisplay extends Component {
     if (this.state.display) {
       return createElement(this.state.display,
         // the props to pass to the input
-        merge({}, this.props.options, {
-          id: this.props.id,
-          label: this.props.label,
+        merge({}, this.props.options || {}, {
           data: this.props.value, // deprecated
           value: this.props.value,
-          error: this.props.error,
           placeholder: this.props.placeholder,
           size: this.props.size
         })
@@ -119,72 +112,32 @@ class DataDisplay extends Component {
 
     if (!this.props.value && false !== this.props.value && 0 !== this.props.value) {
       return (
-        <div role="presentation" className="text-secondary">{trans('empty_value')}</div>
+        <em role="presentation" className="text-body-tertiary">{trans('empty_value')}</em>
       )
     }
 
     if (this.state.render) {
       // type render method
-      return (
-        <div role="presentation">
-          {this.state.render(this.props.value, this.props.options || {})}
-        </div>
-      )
+      return this.state.render(this.props.value, this.props.options || {})
     }
 
-    return (
-      <div role="presentation">
-        {this.props.value}
-      </div>
-    )
-  }
-
-  render() {
-    // the group component to create
-    return createElement(this.state.group || FormGroup,
-      // the props to pass to the group
-      {
-        id: this.props.id,
-        label: this.props.label,
-        hideLabel: this.props.hideLabel,
-        help: this.props.help,
-        error: this.props.error
-      },
-      this.renderInput()
-    )
+    return this.props.value
   }
 }
 
 DataDisplay.propTypes = {
-  id: T.string.isRequired,
   type: T.string,
-  label: T.string.isRequired,
-  hideLabel: T.bool,
   options: T.object, // depends on the data type
-  help: T.oneOfType([T.string, T.arrayOf(T.string)]),
   placeholder: T.any, // depends on the data type
   size: T.oneOf(['sm', 'lg']),
 
   // field data
   value: T.any, // depends on the data type
-  error: T.oneOfType([
-    T.string,
-    T.arrayOf(T.string),
-    T.arrayOf(T.arrayOf(T.string)),
-    T.object
-  ]),
 
   // customization
   // It will replace the render of the input.
   children: T.node,
   render: T.func
-}
-
-DataDisplay.defaultProps = {
-  hideLabel: false,
-  options: {},
-  required: false,
-  disabled: false
 }
 
 export {

@@ -6,18 +6,19 @@ import {trans} from '#/main/app/intl'
 import {Phone} from '#/main/app/components/phone'
 
 const PhoneDisplay = (props) => {
-  if (isEmpty(props.data)) {
+  if (isEmpty(props.value)) {
     return (
-      <span className="text-secondary d-block" role="presentation">{trans('empty_value')}</span>
+      <em className="text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
     )
   }
 
   return (
-    <Phone phone={props.data} className="d-block" />
+    <Phone phone={props.data} className="text-reset" />
   )
 }
 
 PhoneDisplay.propTypes = {
+  placeholder: T.string,
   data: T.string
 }
 

@@ -15,10 +15,10 @@ const DataStack = (props) => {
       {objects.map((object, index) =>
         <Thumbnail
           key={index}
-          className="thumbnail-icon-bordered"
           {...object}
           size={props.size}
           square={true}
+          border={true}
         />
       )}
     </div>

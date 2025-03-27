@@ -1,12 +1,13 @@
 import {createElement} from 'react'
 
-import {trans, tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {chain, string, email, notExist} from '#/main/app/data/types/validators'
 
 import {EmailDisplay} from '#/main/app/data/types/email/components/display'
 import {EmailInput} from '#/main/app/data/types/email/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'email',
   meta: {
     icon: 'fa fa-fw fa-at',
@@ -17,7 +18,7 @@ const dataType = {
   render: (raw) => createElement('a', {href: `mailto:${raw}`}, raw),
   validate: (value, options) => {
     if (options.unique && !options.unique.error) {
-      options.unique.error = tval('This email already exists.')
+      options.unique.error = trans('This email already exists.', {}, 'validators')
     }
 
     return chain(value, options, [string, email, notExist])
@@ -26,8 +27,4 @@ const dataType = {
     input: EmailInput,
     display: EmailDisplay
   }
-}
-
-export {
-  dataType
-}
+})

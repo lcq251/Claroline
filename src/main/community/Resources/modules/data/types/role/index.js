@@ -4,8 +4,9 @@ import {RoleDisplay} from '#/main/community/data/types/role/components/display'
 import {RoleInput} from '#/main/community/data/types/role/components/input'
 import {RoleFilter} from '#/main/community/data/types/role/components/filter'
 import {RoleCell} from '#/main/community/data/types/role/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'role',
   meta: {
     icon: 'fa fa-fw fa fa-id-badge',
@@ -14,13 +15,9 @@ const dataType = {
   },
   render: (raw) => raw && raw.map(r => trans(r.translationKey)).join(', '),
   components: {
-    details: RoleDisplay,
+    display: RoleDisplay,
     input: RoleInput,
-    table: RoleCell,
-    search: RoleFilter
+    cell: RoleCell,
+    filter: RoleFilter
   }
-}
-
-export {
-  dataType
-}
+})

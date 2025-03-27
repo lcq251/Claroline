@@ -26,7 +26,7 @@ const FileThumbnail = props => {
       </div>
 
       <Toolbar
-        buttonName="btn btn-text-secondary p-2"
+        buttonName="btn btn-text-body p-2 focus-ring"
         actions={[
           {
             name: 'download',

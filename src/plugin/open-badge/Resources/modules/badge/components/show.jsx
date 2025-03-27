@@ -35,7 +35,7 @@ const Badge = (props) =>
         <PageHeading
           size="md"
           poster={get(props.badge, 'poster')}
-          icon={<BadgeImage badge={props.badge} size="lg" />}
+          icon={<BadgeImage badge={props.badge} size="lg" border={true} />}
           title={get(props.badge, 'name')}
           description={get(props.badge, 'meta.description')}
           primaryAction="edit"

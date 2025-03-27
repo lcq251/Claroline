@@ -8,7 +8,7 @@ import {trans} from '#/main/app/intl/translation'
 const ImageDisplay = (props) => {
   if (isEmpty(props.data)) {
     return (
-      <div id={props.id} className="image-display text-secondary">{props.placeholder || trans('empty_value')}</div>
+      <em id={props.id} className="image-display text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
     )
   }
 

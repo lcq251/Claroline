@@ -40,6 +40,7 @@ const Organization = (props) =>
               thumbnail={get(props.organization, 'thumbnail')}
               name={get(props.organization, 'name')}
               square={true}
+              border={true}
             >
               <span className="fa fa-building" aria-hidden={true} />
             </Thumbnail> :

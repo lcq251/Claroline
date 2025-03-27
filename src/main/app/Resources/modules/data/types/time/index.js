@@ -3,8 +3,9 @@ import {chain, number, inRange} from '#/main/app/data/types/validators'
 import {displayDuration} from '#/main/app/intl/date'
 
 import {TimeInput} from '#/main/app/data/types/time/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'time',
   meta: {
     icon: 'fa fa-fw fa-clock',
@@ -23,8 +24,4 @@ const dataType = {
   components: {
     input: TimeInput
   }
-}
-
-export {
-  dataType
-}
+})

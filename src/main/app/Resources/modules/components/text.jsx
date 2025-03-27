@@ -25,7 +25,7 @@ const Text = ({
 
   return (
     <p
-      className={classes('content-html', `text-${align}`, className)}
+      className={classes(`text-${align}`, className)}
       dangerouslySetInnerHTML={{ __html: content }}
     />
   )

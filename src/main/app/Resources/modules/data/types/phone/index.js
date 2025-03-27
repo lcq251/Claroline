@@ -5,8 +5,9 @@ import {chain, string} from '#/main/app/data/types/validators'
 
 import {PhoneDisplay} from '#/main/app/data/types/phone/components/display'
 import {PhoneInput} from '#/main/app/data/types/phone/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'email',
   meta: {
     icon: 'fa fa-fw fa-phone',
@@ -21,8 +22,4 @@ const dataType = {
     input: PhoneInput,
     display: PhoneDisplay
   }
-}
-
-export {
-  dataType
-}
+})

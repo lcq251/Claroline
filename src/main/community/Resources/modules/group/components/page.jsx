@@ -40,6 +40,7 @@ const Group = (props) =>
               thumbnail={get(props.group, 'thumbnail')}
               name={get(props.group, 'name')}
               square={true}
+              border={true}
             >
               <span className="fa fa-users" aria-hidden={true} />
             </Thumbnail>

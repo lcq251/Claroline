@@ -18,7 +18,7 @@ function getTypes() {
   ).then((loadedTypes) => loadedTypes
     .map(loadedType => {
       // append some default values
-      const defaultedType = Object.assign({}, DataType.defaultProps, loadedType.dataType)
+      const defaultedType = Object.assign({}, DataType.defaultProps, loadedType.default)
 
       // validate type def
       checkPropTypes(DataType.propTypes, defaultedType, 'prop', `DataType<${defaultedType.name}>`)
@@ -53,7 +53,7 @@ function getType(typeName) {
   return dataType()
     .then((loadedType) => {
       // append some default values
-      const defaultedType = Object.assign({}, DataType.defaultProps, loadedType.dataType)
+      const defaultedType = Object.assign({}, DataType.defaultProps, loadedType.default)
 
       // validate type def
       checkPropTypes(DataType.propTypes, defaultedType, 'prop', `DataType<${defaultedType.name}>`)
@@ -66,9 +66,19 @@ function isTypeEnabled(typeName) {
   return isAppEnabled('data.types', typeName)
 }
 
+/**
+ * Declare a new data type to the application.
+ *
+ * NB. DataType MUST be registered in the `plugin.js` file of its plugin.
+ */
+function declareDataType(typeDefinition) {
+  return typeDefinition
+}
+
 export {
   getCreatableTypes,
   getTypes,
   getType,
-  isTypeEnabled
+  isTypeEnabled,
+  declareDataType
 }

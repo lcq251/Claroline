@@ -1,13 +1,9 @@
 import {trans} from '#/main/app/intl/translation'
 
 import {RuleInput} from '#/plugin/open-badge/data/types/rule/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-// todo implements Search
-// todo implements render()
-// todo implements parse()
-// todo implements validate()
-
-const dataType = {
+export default declareDataType({
   name: 'rule',
   meta: {
     icon: 'fa fa-fw fa-calendar',
@@ -15,13 +11,6 @@ const dataType = {
     description: trans('rule')
   },
 
-  /**
-   * Validates input value for a date range.
-   *
-   * @param {string} value
-   *
-   * @return {boolean}
-   */
   validate: () => {
     return true
   },
@@ -29,8 +18,4 @@ const dataType = {
   components: {
     input: RuleInput
   }
-}
-
-export {
-  dataType
-}
+})

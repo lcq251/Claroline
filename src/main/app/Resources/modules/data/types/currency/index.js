@@ -3,12 +3,13 @@ import {currency} from '#/main/app/intl/currency'
 import {chain, number, inRange} from '#/main/app/data/types/validators'
 
 import {CurrencyInput} from '#/main/app/data/types/currency/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
 /**
  * Currency definition.
  * Manages currency values.
  */
-const dataType = {
+export default declareDataType({
   name: 'currency',
   meta: {
     icon: 'fa fa-fw fa fa-credit-card',
@@ -40,8 +41,4 @@ const dataType = {
   components: {
     input: CurrencyInput
   }
-}
-
-export {
-  dataType
-}
+})

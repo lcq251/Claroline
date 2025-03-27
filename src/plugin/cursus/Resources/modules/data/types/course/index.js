@@ -4,8 +4,9 @@ import {CourseDisplay} from '#/plugin/cursus/data/types/course/components/displa
 import {CourseInput} from '#/plugin/cursus/data/types/course/components/input'
 import {CourseFilter} from '#/plugin/cursus/data/types/course/components/filter'
 import {CourseCell} from '#/plugin/cursus/data/types/course/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'training_course',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw ? raw.name : null,
   components: {
-    table: CourseCell,
-    details: CourseDisplay,
+    cell: CourseCell,
+    display: CourseDisplay,
     input: CourseInput,
-    search: CourseFilter
+    filter: CourseFilter
   }
-}
-
-export {
-  dataType
-}
+})

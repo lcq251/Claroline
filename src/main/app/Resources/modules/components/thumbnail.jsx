@@ -69,6 +69,7 @@ const Thumbnail = ({
   children,
   size = 'md',
   square = false,
+  border = false,
   loaded = true
 }) => {
   let styles = {}
@@ -96,8 +97,9 @@ const Thumbnail = ({
       style={!isEmpty(styles) ? styles : undefined}
       className={classes('thumbnail ratio z-0', className, {
         'placeholder': !loaded,
+        'thumbnail-icon-bordered': border,
         [`thumbnail-${size} ratio-thumbnail`]: !square,
-        [`thumbnail-icon thumbnail-icon-${size} ratio-1x1`]: square
+        [`thumbnail-icon thumbnail-icon-${size} ratio-1x1`]: square,
       })}
       aria-hidden={true}
     >
@@ -118,6 +120,7 @@ Thumbnail.propTypes = {
   color: T.string,
   children: T.node,
   square: T.bool,
+  border: T.bool,
   loaded: T.bool
 }
 

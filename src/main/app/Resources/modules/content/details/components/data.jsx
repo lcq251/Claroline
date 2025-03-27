@@ -9,6 +9,7 @@ import {Sections, Section} from '#/main/app/content/components/sections'
 import {DataDetailsSection as DataDetailsSectionTypes} from '#/main/app/content/details/prop-types'
 import {createDetailsDefinition} from '#/main/app/content/details/utils'
 import {DetailsFieldset} from '#/main/app/content/details/components/fieldset'
+import {DescriptionList} from '#/main/app/data/components/description-list'
 
 function getSectionId(section, formId = null) {
   let id = formId ? `${formId}-` : ''
@@ -42,22 +43,20 @@ const DetailsData = props => {
       }
 
       {primarySections.map(primarySection =>
-        <section key={toKey(primarySection.title)} className={classes('details-primary-section', !props.flush && 'mb-3')}>
+        <section key={toKey(primarySection.title)} className={classes('details-primary-section')}>
           <ContentTitle
             level={hLevel}
             displayed={false}
             title={primarySection.title}
           />
 
-          <DetailsFieldset
-            id={getSectionId(primarySection, props.id)}
+          <DescriptionList
+            className="mb-0"
             fields={primarySection.fields}
+            more={primarySection.more}
             data={props.data}
-            help={primarySection.help}
-          >
-            {primarySection.component && createElement(primarySection.component)}
-            {!primarySection.component && primarySection.render && primarySection.render()}
-          </DetailsFieldset>
+            size={props.size}
+          />
         </section>
       )}
 
@@ -67,7 +66,6 @@ const DetailsData = props => {
           displayLevel={hDisplay}
           defaultOpened={openedSection ? openedSection.id : undefined}
           flush={props.flush}
-          className={classes(!props.flush && 'mb-3')}
         >
           {otherSections.map(section =>
             <Section

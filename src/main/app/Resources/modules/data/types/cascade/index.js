@@ -2,8 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {CascadeInput} from '#/main/app/data/types/cascade/components/input'
 import {CascadeFilter} from '#/main/app/data/types/cascade/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'cascade',
   meta: {
     creatable: true,
@@ -39,10 +40,6 @@ const dataType = {
   validate: (value, options) => !!options.choices[value],
   components: {
     input: CascadeInput,
-    search: CascadeFilter
+    filter: CascadeFilter
   }
-}
-
-export {
-  dataType
-}
+})

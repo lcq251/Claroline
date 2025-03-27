@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl/translation'
 import {color} from '#/main/theme/data/types/color/validators'
 import {ColorCell} from '#/main/theme/data/types/color/components/cell'
 import {ColorInput} from '#/main/theme/data/types/color/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'color',
   meta: {
     icon: 'fa fa-fw fa-palette',
@@ -14,10 +15,6 @@ const dataType = {
   validate: color,
   components: {
     input: ColorInput,
-    table: ColorCell
+    cell: ColorCell
   }
-}
-
-export {
-  dataType
-}
+})

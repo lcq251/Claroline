@@ -14,7 +14,7 @@ import {MODAL_GROUPS} from '#/main/community/modals/groups'
 import {GroupList} from '#/main/community/group/components/list'
 
 import {PageSection, PageTabbedSection} from '#/main/app/page'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details'
 import {Datetime} from '#/main/app/components/date'
 import {route} from '#/main/community/user/routing'
 import {Activity} from '#/main/log/activity/components/main'
@@ -55,10 +55,9 @@ const UserShow = (props) => {
         }
       </PageSection>
 
-      <PageSection size="md" className="bg-body-tertiary">
+      <PageSection size="md" className="mb-5">
         <DetailsData
-          className="mt-3"
-          name={selectors.FORM_NAME}
+          data={props.user}
           definition={[
             {
               title: trans('general'),

@@ -59,18 +59,8 @@ const DataType = {
 
     /**
      * Custom components for the data type.
-     *
-     * Keys :
-     *   - search
-     *   - form
-     *   - table
-     *   - details
      */
     components: T.shape({
-      details: T.any, // todo : rename into `display`
-      search: T.any, // todo : rename into `filter`
-      table: T.any, // todo : rename into `cell`
-
       group: T.any,
       input: T.any,
       display: T.any,
@@ -110,7 +100,7 @@ const DataProperty = {
     label: T.string.isRequired,
 
     /**
-     * The data type (eg. string, number, boolean).
+     * The data type (e.g. string, number, boolean).
      *
      * @type {string}
      */
@@ -168,16 +158,11 @@ const DataCell = {
   }
 }
 
-const DataDetails = {
+const DataDisplay = {
   propTypes: {
-    id: T.string.isRequired,
-    /**
-     * @deprecated use `value`
-     */
-    data: T.any,
     value: T.any,
-    label: T.string,
-    hideLabel: T.bool
+    placeholder: T.string,
+    size: T.oneOf(['sm', 'lg'])
   },
   defaultTypes: {
     data: null,
@@ -249,18 +234,11 @@ const DataGroup = {
     help: T.oneOfType([T.string, T.arrayOf(T.string)]),
     icon: T.string,
     error: T.oneOfType([T.string, T.arrayOf(T.string), T.arrayOf(T.arrayOf(T.string))]),
-    /**
-     * @deprecated
-     */
-    optional: T.bool,
     required: T.bool,
     recommended: T.bool
   },
   defaultProps: {
-    className: '',
     hideLabel: false,
-    warnOnly: false,
-    optional: false,
     required: true
   }
 }
@@ -269,7 +247,7 @@ export {
   DataType,
   DataProperty,
   DataCell,
-  DataDetails,
+  DataDisplay,
   DataSearch,
   DataInput,
   DataGroup

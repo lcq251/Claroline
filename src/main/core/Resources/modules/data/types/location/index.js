@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl/translation'
 import {LocationDisplay} from '#/main/core/data/types/location/components/display'
 import {LocationFilter} from '#/main/core/data/types/location/components/filter'
 import {LocationInput} from '#/main/core/data/types/location/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'location',
   meta: {
     creatable: false,
@@ -14,12 +15,8 @@ const dataType = {
   },
   render: (raw) => raw ? raw.name : null,
   components: {
-    details: LocationDisplay,
+    display: LocationDisplay,
     input: LocationInput,
-    search: LocationFilter
+    filter: LocationFilter
   }
-}
-
-export {
-  dataType
-}
+})

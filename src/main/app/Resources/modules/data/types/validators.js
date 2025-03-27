@@ -4,11 +4,9 @@ import set from 'lodash/set'
 import moment from 'moment'
 
 import {url as urlGenerator} from '#/main/app/api/router'
-import {trans, tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {isValidDate} from '#/main/app/intl/date'
 import {isHtmlEmpty} from '#/main/app/data/types/html/validators'
-
-// TODO : break me
 
 function notEmpty(value) {
   if (
@@ -18,7 +16,7 @@ function notEmpty(value) {
     || (!(value instanceof File) && typeof value === 'object' && isEmpty(value)) // objects and arrays (lodash isEmpty always returns true for files)
     || (typeof value === 'string' && ('' === value || '' === value.trim() || isHtmlEmpty(value))) // strings and HTML
   ) {
-    return tval('This value should not be blank.')
+    return trans('This value should not be blank.', {}, 'validators')
   }
 }
 
@@ -30,25 +28,25 @@ function notBlank(value, options = {}) {
   }
 
   if (value === '' || value === null || (undefined !== options.isHtml && options.isHtml && isHtmlEmpty(value))) {
-    return tval('This value should not be blank.')
+    return trans('This value should not be blank.', {}, 'validators')
   }
 }
 
 function array(value) {
   if (!Array.isArray(value)) {
-    return tval('This value should be an array.')
+    return trans('This value should be an array.', {}, 'validators')
   }
 }
 
 function string(value) {
   if (typeof value !== 'string') {
-    return tval('This value should be a string.')
+    return trans('This value should be a string.', {}, 'validators')
   }
 }
 
 function number(value) {
   if (typeof value !== 'number' && (isNaN(parseFloat(value)) || !isFinite(value))) {
-    return tval('This value should be a valid number.')
+    return trans('This value should be a valid number.', {}, 'validators')
   }
 }
 
@@ -89,7 +87,7 @@ function inRange(value, options) {
 function lengthMin(value, options) {
   if (undefined !== options.minLength && value.length < options.minLength) {
     return trans(
-      'This value should be greater than {{ limit }}.',
+      'This value must be longer than {{ limit }} characters.',
       {},
       'validators'
     ).replace('{{ limit }}', options.minLength)
@@ -99,7 +97,7 @@ function lengthMin(value, options) {
 function lengthMax(value, options) {
   if (undefined !== options.maxLength && value.length > options.maxLength) {
     return trans(
-      'This value should be lower than {{ limit }}.',
+      'This value must be less than {{ limit }} characters long.',
       {},
       'validators'
     ).replace('{{ limit }}', options.maxLength)
@@ -110,29 +108,22 @@ function lengthInRange(value, options) {
   return chain(value, options, [lengthMin, lengthMax])
 }
 
-function url(/*value*/) {
-  // TODO : fix regex
-  /*if (match(value, {regex: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/ig})) {
-    return tval('This value should be a valid url.')
-  }*/
-}
-
 function email(value) {
   // we use same regex than W3C <input type="email" />
   if (match(value, {regex: /^[a-zA-Z0-9.!#$%&'’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ig})) {
-    return tval('This value should be a valid email.')
+    return trans('This value should be a valid email.', {}, 'validators')
   }
 }
 
 function date(value) {
   if (!isValidDate(value)) {
-    return tval('This value should be a valid date.')
+    return trans('This value should be a valid date.', {}, 'validators')
   }
 }
 
 function match(value, options) {
   if (undefined !== options.regex && !options.regex.test(value)) {
-    return tval('This value should match the defined format.')
+    return trans('This value should match the defined format.', {}, 'validators')
   }
 }
 
@@ -191,8 +182,6 @@ function chainSync(value, options, validators) {
  * @param errors
  * @param errorPath
  * @param error
- *
- * @deprecated
  */
 function setIfError(errors, errorPath, error) {
   if (typeof error !== 'undefined') {
@@ -282,7 +271,7 @@ function notExist(value, options = {}) {
     })
       .then(response => {
         if (404 !== response.status) {
-          return Promise.resolve(tval(options.unique.error || 'value_not_unique'))
+          return Promise.resolve(trans(options.unique.error || 'value_not_unique', {}, 'validators'))
         }
 
         return Promise.resolve(undefined)
@@ -309,7 +298,6 @@ export {
   gtZero,
   email,
   date,
-  url,
   gteZero,
   lengthMin,
   lengthMax,

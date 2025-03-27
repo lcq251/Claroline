@@ -20,7 +20,7 @@ class BooleanInput extends PureComponent {
       <div className="form-check form-switch form-check-reverse fw-medium fs-4 d-flex flex-row flex-nowrap align-items-center" role="presentation">
         <label
           className={classes('form-check-label flex-fill fs-base text-start', {
-            'text-secondary': !this.props.value
+            'text-body-secondary': !this.props.value
           })}
           htmlFor={this.props.id}
         >

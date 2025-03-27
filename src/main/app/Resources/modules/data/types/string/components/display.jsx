@@ -3,24 +3,32 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
+import {Text} from '#/main/app/components/text'
 
 const StringDisplay = (props) => {
-  if (isEmpty(props.data)) {
+  if (isEmpty(props.value)) {
     return (
-      <div id={props.id} className="text-secondary" role="presentation">{props.placeholder || trans('empty_value')}</div>
+      <em className="text-body-tertiary" role="presentation">{props.placeholder || trans('empty_value')}</em>
+    )
+  }
+
+  if (props.long) {
+    return (
+      <Text className="mb-0" nl2br={true}>
+        {props.value}
+      </Text>
     )
   }
 
   return (
-    <p id={props.id} className="text-justify mb-0" style={props.long ? {whiteSpace: 'pre-wrap'} : undefined}>
-      {props.data}
+    <p className="mb-0">
+      {props.value}
     </p>
   )
 }
 
 StringDisplay.propTypes = {
-  id: T.string.isRequired,
-  data: T.string,
+  value: T.string,
   placeholder: T.string,
   long: T.bool
 }

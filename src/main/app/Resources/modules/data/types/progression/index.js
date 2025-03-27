@@ -3,11 +3,12 @@ import {chain, number, inRange} from '#/main/app/data/types/validators'
 
 import {ProgressionDisplay} from '#/main/app/data/types/progression/components/display'
 import {ProgressionCell} from '#/main/app/data/types/progression/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
 /**
  * Progression data type.
  */
-const dataType = {
+export default declareDataType({
   name: 'progression',
   meta: {
     creatable: false,
@@ -39,16 +40,7 @@ const dataType = {
    * Custom components for scores rendering.
    */
   components: {
-    // old api
-    details: ProgressionDisplay,
-    table: ProgressionCell,
-
-    // new api
     display: ProgressionDisplay,
     cell: ProgressionCell
   }
-}
-
-export {
-  dataType
-}
+})

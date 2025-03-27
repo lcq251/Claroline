@@ -1,10 +1,9 @@
 import {trans} from '#/main/app/intl/translation'
 
 import {FieldsInput} from '#/main/app/data/types/fields/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-// todo add validation
-
-const dataType = {
+export default declareDataType({
   name: 'fields',
   meta: {
     icon: 'fa fa-fw fa-dot',
@@ -14,8 +13,4 @@ const dataType = {
   components: {
     input: FieldsInput
   }
-}
-
-export {
-  dataType
-}
+})

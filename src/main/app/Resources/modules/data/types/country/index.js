@@ -1,11 +1,12 @@
-import {trans, tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {chain, string} from '#/main/app/data/types/validators'
 
 import {constants as intlConstants} from '#/main/app/intl/constants'
 import {CountryInput} from '#/main/app/data/types/country/components/input'
 import {CountryFilter} from '#/main/app/data/types/country/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'country',
   meta: {
     icon: 'fa fa-fw fa-globe',
@@ -34,20 +35,16 @@ const dataType = {
     if (options.multiple && Array.isArray(countryCodes)) {
       if (countryCodes.find(country => !intlConstants.REGION_CODES[country])) {
         // there are at least one invalid country in the list
-        return tval('This value should be a list of valid country codes.')
+        return trans('This value should be a list of valid country codes.', {}, 'validators')
       }
     } else if (!intlConstants.REGION_CODES.find(code => code === countryCodes)) {
       // invalid country code
-      return tval('This value should be a valid country code.')
+      return trans('This value should be a valid country code.', {}, 'validators')
     }
   }]),
 
   components: {
     input: CountryInput,
-    search: CountryFilter
+    filter: CountryFilter
   }
-}
-
-export {
-  dataType
-}
+})

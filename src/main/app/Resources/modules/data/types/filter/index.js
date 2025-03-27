@@ -1,23 +1,22 @@
-import {tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 
 import {FilterInput} from '#/main/app/data/types/filter/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'filter',
-
-  // todo : check value.value is valid against the property type
   validate: (value, options) => {
     if (value) {
       if (!value.property) {
-        return tval('This filter should have a name.')
+        return trans('This filter should have a name.', {}, 'validators')
       }
 
       if (value.property && -1 === options.properties.findIndex(prop => prop.alias ? value.property === prop.alias : value.property === prop.name)) {
-        return tval('This filter should use a filterable property.')
+        return trans('This filter should use a filterable property.', {}, 'validators')
       }
 
       if (undefined === value.value) {
-        return tval('This filter should have a value.')
+        return trans('This filter should have a value.', {}, 'validators')
       }
     }
   },
@@ -25,8 +24,4 @@ const dataType = {
   components: {
     input: FilterInput
   }
-}
-
-export {
-  dataType
-}
+})

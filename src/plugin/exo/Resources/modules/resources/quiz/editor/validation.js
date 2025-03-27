@@ -2,7 +2,7 @@ import isEmpty from 'lodash/isEmpty'
 import merge from 'lodash/merge'
 
 import {notBlank, notEmpty, number, gteZero, gtZero, chainSync} from '#/main/app/data/types/validators'
-import {tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 
 import {validate as validateItem} from '#/plugin/exo/items/validation'
 import {constants} from '#/plugin/exo/resources/quiz/constants'
@@ -61,7 +61,7 @@ function validate(quiz) {
   // validates Quiz score
   const scoreErrors = {}
   if (isEmpty(quiz.score) || isEmpty(quiz.score.type)) {
-    scoreErrors.type = tval('This value should not be blank.')
+    scoreErrors.type = trans('This value should not be blank.', {}, 'validators')
   }
 
   if (!isEmpty(scoreErrors)) {
@@ -78,7 +78,7 @@ function validate(quiz) {
       pickingErrors.pick = chainSync(picking.pick, {}, [notEmpty, (value = []) => {
         return value.map((toPick = []) => {
           if (!toPick[0] || !toPick[1]) {
-            return tval('This value should not be blank.')
+            return trans('This value should not be blank.', {}, 'validators')
           }
         })
       }])

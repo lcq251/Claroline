@@ -8,8 +8,9 @@ import {BooleanGroup} from '#/main/app/data/types/boolean/components/group'
 import {BooleanCell} from '#/main/app/data/types/boolean/components/cell'
 import {BooleanDisplay} from '#/main/app/data/types/boolean/components/display'
 import {BooleanFilter} from '#/main/app/data/types/boolean/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'boolean',
   meta: {
     icon: 'fa fa-fw fa-check-square',
@@ -22,20 +23,10 @@ const dataType = {
 
   validate: boolean,
   components: {
-    // old api
-    details: BooleanDisplay,
-    table: BooleanCell,
-    search: BooleanFilter,
-
-    // new api
     group: BooleanGroup,
     input: BooleanInput,
     display: BooleanDisplay,
     filter: BooleanFilter,
     cell: BooleanCell
   }
-}
-
-export {
-  dataType
-}
+})

@@ -2,10 +2,9 @@ import isEmpty from 'lodash/isEmpty'
 import {chain, array, string, notBlank, lengthInRange} from '#/main/app/data/types/validators'
 
 import {ScoreRulesInput} from '#/plugin/exo/data/types/score-rules/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-// TODO : create score-rule and use `collection`
-
-const dataType = {
+export default declareDataType({
   name: 'score_rules',
   validate: (value, options) => chain(value, options, [array, lengthInRange, (value) => {
     if (value) {
@@ -50,8 +49,4 @@ const dataType = {
   components: {
     input: ScoreRulesInput
   }
-}
-
-export {
-  dataType
-}
+})

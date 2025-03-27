@@ -5,7 +5,7 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details'
 import {Alert} from '#/main/app/components/alert'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
@@ -29,14 +29,13 @@ const GroupShow = (props) =>
     group={props.group}
     reload={props.reload}
   >
-    <PageSection size="md" className="bg-body-tertiary">
+    <PageSection size="md" className="mb-5">
       {hasPermission('administrate', props.group) && get(props.group, 'meta.readOnly') &&
         <Alert type="info" className="my-3">{trans('group_locked', {}, 'community')}</Alert>
       }
 
       <DetailsData
-        className="mt-3"
-        name={selectors.FORM_NAME}
+        data={props.group}
         definition={[
           {
             title: trans('general'),
@@ -55,7 +54,7 @@ const GroupShow = (props) =>
 
     <PageTabbedSection
       size="md"
-      className="mt-3 embedded-list-section"
+      className="embedded-list-section"
       path={route(props.group, props.path)}
       tabs={[
         {

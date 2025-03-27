@@ -12,6 +12,7 @@ const BadgeImage = (props) =>
     thumbnail={get(props.badge, 'image')}
     name={get(props.badge, 'name')}
     square={true}
+    border={props.border}
   >
     <span className="fa fa-trophy" aria-hidden={true} />
   </Thumbnail>
@@ -19,7 +20,8 @@ const BadgeImage = (props) =>
 BadgeImage.propTypes = {
   className: T.string,
   badge: T.object,
-  size: T.oneOf(['xs', 'sm', 'md', 'lg', 'xl'])
+  size: T.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+  border: T.bool
 }
 
 BadgeImage.defaultProps = {

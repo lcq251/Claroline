@@ -67,49 +67,30 @@ class FormFieldset extends Component {
       }
 
       rendered.push(
-        field.readOnly ?
-          <DataDisplay
-            key={field.name}
-            id={this.getFieldId(field)}
-            name={field.name}
-            type={field.type}
-            label={field.label}
-            hideLabel={field.hideLabel}
-            options={field.options}
-            help={field.help}
-            placeholder={field.placeholder}
-            size={this.props.size || field.size}
-            required={field.required}
+        <DataInput
+          key={field.name}
+          id={this.getFieldId(field)}
+          name={field.name}
+          type={field.type}
+          icon={field.icon}
+          label={field.label}
+          hideLabel={field.hideLabel}
+          options={field.options}
+          help={field.help}
+          placeholder={field.placeholder}
+          size={this.props.size || field.size}
+          required={field.required}
+          recommended={field.recommended}
+          disabled={this.props.disabled || (typeof field.disabled === 'function' ? field.disabled(this.props.data) : field.disabled)}
+          autoFocus={field.autoFocus}
 
-            value={value}
-          >
-            {customInput}
-          </DataDisplay>
-          :
-          <DataInput
-            key={field.name}
-            id={this.getFieldId(field)}
-            name={field.name}
-            type={field.type}
-            icon={field.icon}
-            label={field.label}
-            hideLabel={field.hideLabel}
-            options={field.options}
-            help={field.help}
-            placeholder={field.placeholder}
-            size={this.props.size || field.size}
-            required={field.required}
-            recommended={field.recommended}
-            disabled={this.props.disabled || (typeof field.disabled === 'function' ? field.disabled(this.props.data) : field.disabled)}
-            autoFocus={field.autoFocus}
-
-            value={value}
-            error={get(this.props.errors, field.name)}
-            onChange={(value) => this.update(field.name, value, field.onChange)}
-            onError={(error) => this.setErrors(field.name, error, field.onError)}
-          >
-            {customInput}
-          </DataInput>
+          value={value}
+          error={get(this.props.errors, field.name)}
+          onChange={(value) => this.update(field.name, value, field.onChange)}
+          onError={(error) => this.setErrors(field.name, error, field.onError)}
+        >
+          {customInput}
+        </DataInput>
       )
 
       if (field.linked && 0 !== field.linked.length) {

@@ -8,7 +8,7 @@ import {hasPermission} from '#/main/app/security'
 import {Alert} from '#/main/app/components/alert'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
 
 import {MODAL_USERS} from '#/main/community/modals/users'
@@ -29,22 +29,21 @@ const TeamShow = (props) => {
       team={props.team}
       reload={props.reload}
     >
-      <PageSection size="md" className="bg-body-tertiary">
+      <PageSection size="md" className="mb-5">
         {!full && get(props.team, 'registration.selfRegistration') &&
-          <Alert type="info" className="my-3">
+          <Alert type="info" className="mb-3">
             {trans('team_self_registration_enabled', {}, 'community')}
           </Alert>
         }
 
         {full &&
-          <Alert type="warning" className="my-3">
+          <Alert type="warning" className="mb-3">
             {trans('team_full', {}, 'community')}
           </Alert>
         }
 
         <DetailsData
-          className="mt-3"
-          name={selectors.FORM_NAME}
+          data={props.team}
           definition={[
             {
               title: trans('general'),
@@ -88,7 +87,7 @@ const TeamShow = (props) => {
 
       <PageTabbedSection
         size="md"
-        className="mt-3 embedded-list-section"
+        className="embedded-list-section"
         path={route(props.team, props.path)}
         tabs={[
           {

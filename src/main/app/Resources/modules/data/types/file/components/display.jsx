@@ -3,6 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {FileThumbnail} from '#/main/app/data/types/file/components/thumbnail'
+import {trans} from '#/main/app/intl'
 
 
 const FileDisplay = props => {
@@ -28,10 +29,13 @@ const FileDisplay = props => {
     )
   }
 
-  return null
+  return (
+    <em className="image-display text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
+  )
 }
 
 FileDisplay.propTypes = {
+  placeholder: T.string,
   // it's named `data` to be able to use it as is in Data* representation
   data: T.oneOfType([
     T.arrayOf( // for retro compatibility old file types could have multiple files

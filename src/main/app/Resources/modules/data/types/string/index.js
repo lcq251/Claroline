@@ -3,8 +3,9 @@ import {chain, lengthInRange, match, notExist, string} from '#/main/app/data/typ
 
 import {StringDisplay} from '#/main/app/data/types/string/components/display'
 import {StringInput} from '#/main/app/data/types/string/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'string',
   meta: {
     creatable: true,
@@ -49,14 +50,7 @@ const dataType = {
 
   validate: (value, options) => chain(value, options, [string, match, lengthInRange, notExist]),
   components: {
-    details: StringDisplay,
-
-    // new api
     input: StringInput,
     display: StringDisplay
   }
-}
-
-export {
-  dataType
-}
+})

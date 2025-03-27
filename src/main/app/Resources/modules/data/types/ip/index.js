@@ -2,10 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {ip} from '#/main/app/data/types/ip/validators'
 import {IpInput} from '#/main/app/data/types/ip/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-// TODO : implement IP v6 input
-
-const dataType = {
+export default declareDataType({
   name: 'ip',
 
   meta: {
@@ -19,8 +18,4 @@ const dataType = {
   components: {
     input: IpInput
   }
-}
-
-export {
-  dataType
-}
+})

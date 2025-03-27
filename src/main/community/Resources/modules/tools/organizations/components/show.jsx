@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details/'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
@@ -21,10 +21,9 @@ const OrganizationShow = props =>
     organization={props.organization}
     reload={props.reload}
   >
-    <PageSection size="md" className="bg-body-tertiary">
+    <PageSection size="md" className="mb-5">
       <DetailsData
-        className="mt-3"
-        name={selectors.FORM_NAME}
+        data={props.organization}
         definition={[
           {
             title: trans('general'),
@@ -53,7 +52,7 @@ const OrganizationShow = props =>
       />
     </PageSection>
 
-    <PageSection size="md" title={trans('managers', {}, 'community')} className="mt-3">
+    <PageSection size="md" title={trans('managers', {}, 'community')}>
       {hasPermission('edit', props.organization) &&
         <Button
           className="btn btn-primary mt-3 me-auto"

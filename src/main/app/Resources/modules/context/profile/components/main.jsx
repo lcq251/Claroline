@@ -27,7 +27,7 @@ const ContextProfile = (props) => {
           size="md"
           poster={props.currentUser.poster}
           title={props.currentUser.name}
-          icon={<UserAvatar user={props.currentUser} size="lg" />}
+          icon={<UserAvatar user={props.currentUser} size="lg" border={true} />}
           primaryAction="edit"
           actions={[
             {

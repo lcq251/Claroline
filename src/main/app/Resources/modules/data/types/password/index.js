@@ -2,8 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {passwordComplexity} from '#/main/app/data/types/password/validators'
 import {PasswordInput} from '#/main/app/data/types/password/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'password',
   meta: {
     icon: 'fa fa-fw fa-lock',
@@ -20,8 +21,4 @@ const dataType = {
   components: {
     input: PasswordInput
   }
-}
-
-export {
-  dataType
-}
+})

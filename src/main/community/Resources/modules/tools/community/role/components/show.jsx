@@ -10,7 +10,7 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageTabbedSection} from '#/main/app/page/components/tabbed-section'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details'
 
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {UserList} from '#/main/community/user/components/list'
@@ -29,10 +29,9 @@ const RoleShow = (props) =>
     role={props.role}
     reload={(role) => props.reload(role, props.contextData)}
   >
-    <PageSection size="md" className="bg-body-tertiary">
+    <PageSection size="md" className="mb-5">
       <DetailsData
-        className="mt-3"
-        name={selectors.FORM_NAME}
+        data={props.role}
         definition={[
           {
             title: trans('general'),
@@ -73,7 +72,7 @@ const RoleShow = (props) =>
     {'ROLE_ANONYMOUS' !== props.role.name &&
       <PageTabbedSection
         size="md"
-        className="mt-3 embedded-list-section"
+        className="embedded-list-section"
         path={route(props.role, props.path)}
         tabs={[
           {

@@ -47,7 +47,7 @@ const FilterInput = props => {
       </div>
 
       <Button
-        className="btn btn-text-secondary"
+        className="btn btn-text-body focus-ring"
         type={CALLBACK_BUTTON}
         icon={classes('fa fa-fw', {
           'fa-lock': filter.locked,

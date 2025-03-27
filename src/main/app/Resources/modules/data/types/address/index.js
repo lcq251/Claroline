@@ -4,8 +4,9 @@ import {getAddressString} from '#/main/app/data/types/address/utils'
 import {AddressDisplay} from '#/main/app/data/types/address/components/display'
 import {AddressInput} from '#/main/app/data/types/address/components/input'
 import {AddressGroup} from '#/main/app/data/types/address/components/group'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'address',
   meta: {
     creatable: false,
@@ -17,11 +18,6 @@ const dataType = {
   components: {
     group: AddressGroup,
     input: AddressInput,
-    display: AddressDisplay,
-    details: AddressDisplay // old
+    display: AddressDisplay
   }
-}
-
-export {
-  dataType
-}
+})

@@ -1,6 +1,6 @@
 /**
  * Entity type is not a registered type.
- * Each entity must implement its own type using the base components provided by this module.
+ * Each entity MUST implement its own type using the base components provided by this module.
  */
 
 import {EntityDisplay} from '#/main/app/data/types/entity/components/display'

@@ -4,8 +4,9 @@ import {WorkspaceCell} from '#/main/core/data/types/workspace/components/cell'
 import {WorkspaceDisplay} from '#/main/core/data/types/workspace/components/display'
 import {WorkspaceInput} from '#/main/core/data/types/workspace/components/input'
 import {WorkspaceFilter} from '#/main/core/data/types/workspace/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'workspace',
   meta: {
     icon: 'fa fa-fw fa fa-book',
@@ -13,13 +14,9 @@ const dataType = {
     description: trans('workspace_desc', {}, 'data')
   },
   components: {
-    details: WorkspaceDisplay,
+    display: WorkspaceDisplay,
     input: WorkspaceInput,
-    table: WorkspaceCell,
-    search: WorkspaceFilter
+    cell: WorkspaceCell,
+    filter: WorkspaceFilter
   }
-}
-
-export {
-  dataType
-}
+})

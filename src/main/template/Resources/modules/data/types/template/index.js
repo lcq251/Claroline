@@ -4,8 +4,9 @@ import {TemplateDisplay} from '#/main/template/data/types/template/components/di
 import {TemplateInput} from '#/main/template/data/types/template/components/input'
 import {TemplateCell} from '#/main/template/data/types/template/components/cell'
 import {TemplateFilter} from '#/main/template/data/types/template/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'template',
   meta: {
     icon: 'fa fa-fw fa fa-file-alt',
@@ -13,13 +14,9 @@ const dataType = {
     description: trans('template_desc', {}, 'data')
   },
   components: {
-    details: TemplateDisplay,
+    display: TemplateDisplay,
     input: TemplateInput,
-    search: TemplateFilter,
-    table: TemplateCell
+    filter: TemplateFilter,
+    cell: TemplateCell
   }
-}
-
-export {
-  dataType
-}
+})

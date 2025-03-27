@@ -3,10 +3,9 @@ import {chain, array, string, notBlank, lengthInRange} from '#/main/app/data/typ
 
 import {CriteriaGroup} from '#/plugin/drop-zone/data/criteria/components/group'
 import {CriteriaInput} from '#/plugin/drop-zone/data/criteria/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-// TODO : replace by a criterion type and use `collection`
-
-const dataType = {
+export default declareDataType({
   name: 'criteria',
   validate: (value, options) => chain(value, options, [array, lengthInRange, (value) => {
     if (value) {
@@ -29,8 +28,4 @@ const dataType = {
     group: CriteriaGroup,
     input: CriteriaInput
   }
-}
-
-export {
-  dataType
-}
+})

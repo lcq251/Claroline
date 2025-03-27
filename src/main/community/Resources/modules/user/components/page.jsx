@@ -35,7 +35,7 @@ const User = (props) =>
           size="md"
           poster={get(props.user, 'poster')}
           icon={
-            <UserAvatar user={props.user} size="lg" />
+            <UserAvatar user={props.user} size="lg" border={true} />
           }
           title={get(props.user, 'name', trans('loading'))}
           primaryAction="send-message"

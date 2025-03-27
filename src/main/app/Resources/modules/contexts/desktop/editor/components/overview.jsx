@@ -21,7 +21,7 @@ const DesktopEditorOverview = () =>
             type: 'string',
             label: trans('name'),
             required: true,
-            readOnly: true,
+            disabled: true,
             calculated: () => trans('desktop', {}, 'context')
           }
         ]

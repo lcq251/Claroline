@@ -66,7 +66,7 @@ class DataFilter extends Component {
           loaded: true,
           parse: get(result[0], 'parse', identity),
           validate: get(result[0], 'validate'),
-          input: get(result[0], 'components.filter') || get(result[0], 'components.search') // components.search is for retro-compatibility
+          input: get(result[0], 'components.filter')
         })
       )
       .then(

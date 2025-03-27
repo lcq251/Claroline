@@ -1,4 +1,4 @@
-import {tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 
 import {string} from '#/main/app/data/types/validators'
 import {IPv4} from '#/main/app/data/types/ip/utils'
@@ -10,7 +10,7 @@ import {IPv4} from '#/main/app/data/types/ip/utils'
  *
  * @param {string} value
  *
- * @return {boolean}
+ * @return {string}
  */
 function ip(value) {
   if (string(value)) {
@@ -18,7 +18,7 @@ function ip(value) {
   }
 
   if (!IPv4.isValid(value)) {
-    return tval('This value should be a valid IPv4.')
+    return trans('This value should be a valid IPv4.', {}, 'validators')
   }
 }
 

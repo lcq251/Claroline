@@ -37,6 +37,7 @@ const TagShow = (props) => {
                 color={tag.color}
                 name={tag.name}
                 square={true}
+                border={true}
               />
             }
             title={tag.name}

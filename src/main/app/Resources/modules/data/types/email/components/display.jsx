@@ -5,19 +5,20 @@ import {trans} from '#/main/app/intl'
 import {Email} from '#/main/app/components/email'
 
 const EmailDisplay = (props) => {
-  if (isEmpty(props.data)) {
+  if (isEmpty(props.value)) {
     return (
-      <span className="text-secondary d-block" role="presentation">{trans('empty_value')}</span>
+      <em className="text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
     )
   }
 
   return (
-    <Email email={props.data} className="d-block" />
+    <Email email={props.value} className="text-reset" />
   )
 }
 
 EmailDisplay.propTypes = {
-  data: T.string.isRequired
+  placeholder: T.string,
+  value: T.string.isRequired
 }
 
 export {

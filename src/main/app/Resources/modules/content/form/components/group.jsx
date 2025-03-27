@@ -24,7 +24,6 @@ const FormGroup = props =>
         displayed={!props.hideLabel}
         required={props.required}
         recommended={props.recommended}
-        optional={props.optional}
       />
     }
 

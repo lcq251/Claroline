@@ -2,12 +2,13 @@ import {trans} from '#/main/app/intl/translation'
 import {chain, number, inRange} from '#/main/app/data/types/validators'
 
 import {NumberInput} from '#/main/app/data/types/number/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
 /**
  * Number definition.
  * Manages numeric values.
  */
-const dataType = {
+export default declareDataType({
   name: 'number',
   meta: {
     creatable: true,
@@ -70,8 +71,4 @@ const dataType = {
   components: {
     input: NumberInput
   }
-}
-
-export {
-  dataType
-}
+})

@@ -2,8 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {FileDisplay} from '#/main/app/data/types/file/components/display'
 import {FileInput} from '#/main/app/data/types/file/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'file',
   meta: {
     creatable: true,
@@ -12,12 +13,8 @@ const dataType = {
     description: trans('file_desc', {}, 'data')
   },
   components: {
-    table: FileDisplay,
-    details: FileDisplay,
+    cell: FileDisplay,
+    display: FileDisplay,
     input: FileInput
   }
-}
-
-export {
-  dataType
-}
+})

@@ -1,4 +1,6 @@
-/**
- * Form module.
- * Manages the rendering / saving of the forms in the User Interface.
- */
+
+import {DetailsData} from '#/main/app/content/details/components/data'
+
+export {
+  DetailsData
+}

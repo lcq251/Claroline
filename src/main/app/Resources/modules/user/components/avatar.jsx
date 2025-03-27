@@ -24,7 +24,7 @@ const UserAvatar = ({
       thumbnail={get(user, 'picture')}
       name={get(user, 'name') || trans('unknown')}
       square={true}
-      className={classes(border && 'thumbnail-icon-bordered')}
+      border={border}
     />
 
     {get(user, 'status') && !noStatus &&

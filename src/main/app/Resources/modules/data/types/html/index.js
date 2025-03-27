@@ -6,8 +6,9 @@ import {chain, string} from '#/main/app/data/types/validators'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {HtmlCell} from '#/main/app/data/types/html/components/table'
 import {ContentHtml} from '#/main/app/content/components/html'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'html',
   meta: {
     creatable: true,
@@ -20,11 +21,7 @@ const dataType = {
   render: (raw) => createElement(ContentHtml, {}, raw),
   validate: (value, options) => chain(value, options, [string]),
   components: {
-    table: HtmlCell,
+    cell: HtmlCell,
     input: HtmlInput
   }
-}
-
-export {
-  dataType
-}
+})

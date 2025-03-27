@@ -27,9 +27,9 @@ const DataCellContent = props => {
     cellRendering = props.column.render(props.rowData)
   } else if (isEmpty(cellData) && props.column.placeholder) {
     cellRendering = props.column.placeholder
-  } else if (get(props.definition, 'components.table', null)) {
+  } else if (get(props.definition, 'components.cell', null)) {
     // use custom component defined in the type definition
-    cellRendering = createElement(props.definition.components.table, merge({}, props.column.options || {}, {
+    cellRendering = createElement(props.definition.components.cell, merge({}, props.column.options || {}, {
       id: toKey(props.column.name + '-' + props.rowData.id),
       label: props.column.label,
       data: cellData,

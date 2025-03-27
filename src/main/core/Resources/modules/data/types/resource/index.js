@@ -4,8 +4,9 @@ import {ResourceCell} from '#/main/core/data/types/resource/components/cell'
 import {ResourceFilter} from '#/main/core/data/types/resource/components/filter'
 import {ResourceInput} from '#/main/core/data/types/resource/components/input'
 import {ResourceDisplay} from '#/main/core/data/types/resource/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'resource',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw && raw.map(r => r.name).join(', '),
   components: {
-    table: ResourceCell,
-    details: ResourceDisplay,
+    cell: ResourceCell,
+    display: ResourceDisplay,
     input: ResourceInput,
-    search: ResourceFilter
+    filter: ResourceFilter
   }
-}
-
-export {
-  dataType
-}
+})

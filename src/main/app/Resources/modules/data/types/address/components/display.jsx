@@ -13,18 +13,19 @@ const AddressDisplay = (props) => {
 
   if (isEmpty(filledAddressParts)) {
     return (
-      <span className="text-secondary d-block" role="presentation">{trans('empty_value')}</span>
+      <em className="text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
     )
   }
 
   return (
-    <address>
+    <address className="mb-0">
       <Address {...props.value} />
     </address>
   )
 }
 
 AddressDisplay.propTypes = {
+  placeholder: T.string,
   value: T.shape(
     AddressTypes.propTypes
   )

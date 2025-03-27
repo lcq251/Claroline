@@ -4,6 +4,7 @@ import {chain, array, string, notBlank, unique} from '#/main/app/data/types/vali
 
 import {CascadeEnumInput} from '#/main/app/data/types/cascade-enum/components/input'
 import {CascadeEnumGroup} from '#/main/app/data/types/cascade-enum/components/group'
+import {declareDataType} from '#/main/app/data/types'
 
 // TODO : should not be a type. It's only used to configure "cascade" type in facets.
 
@@ -39,7 +40,7 @@ const validateChildren = (children, errors, options) => {
   return allErrors
 }
 
-const dataType = {
+export default declareDataType({
   name: 'cascade-enum',
   validate: (value, options) => chain(value, options, [array, (value) => {
     if (value) {
@@ -77,8 +78,4 @@ const dataType = {
     group: CascadeEnumGroup,
     input: CascadeEnumInput
   }
-}
-
-export {
-  dataType
-}
+})

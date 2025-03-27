@@ -1,13 +1,14 @@
 import React from 'react'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
+
+import {trans} from '#/main/app/intl'
+import {Badge} from '#/main/app/components/badge'
 
 import {FormGroup} from '#/main/app/content/form/components/group'
-import isEmpty from 'lodash/isEmpty'
 import {FormError} from '#/main/app/content/form/components/error'
 import {FormHelp} from '#/main/app/content/form/components/help'
-import {trans} from '#/main/app/intl'
 import {getValidationClassName} from '#/main/app/content/form/validator'
-import {Badge} from '#/main/app/components/badge'
 
 /**
  * Overrides default form group to let each range part render its own errors
@@ -29,7 +30,7 @@ const DateRangeGroup = props => {
 
           {props.label}
 
-          {props.optional &&
+          {!props.required &&
             <Badge variant={props.recommended ? 'primary' : 'secondary'} subtle={true} className="fw-normal text-lowercase fs-sm">
               {props.recommended ? trans('recommended') : trans('optional')}
             </Badge>

@@ -4,8 +4,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {ChoiceInput} from '#/main/app/data/types/choice/components/input'
 import {ChoiceSearch} from '#/main/app/data/types/choice/components/search'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'choice',
   meta: {
     creatable: true,
@@ -71,11 +72,7 @@ const dataType = {
     }
   },
   components: {
-    search: ChoiceSearch,
+    filter: ChoiceSearch,
     input: ChoiceInput
   }
-}
-
-export {
-  dataType
-}
+})

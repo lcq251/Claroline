@@ -1,8 +1,9 @@
 import {trans} from '#/main/app/intl/translation'
 
 import {LocaleInput} from '#/main/app/data/types/locale/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'locale',
   meta: {
     icon: 'fa fa-fw fa-globe',
@@ -13,8 +14,4 @@ const dataType = {
   components: {
     input: LocaleInput
   }
-}
-
-export {
-  dataType
-}
+})

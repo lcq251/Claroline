@@ -2,8 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 
 import {IconInput} from '#/main/theme/data/types/icon/components/input'
 import {IconDisplay} from '#/main/theme/data/types/icon/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'icon',
   meta: {
     icon: 'fa fa-fw fa-icons',
@@ -14,10 +15,6 @@ const dataType = {
   components: {
     display: IconDisplay,
     input: IconInput,
-    table: IconDisplay
+    cell: IconDisplay
   }
-}
-
-export {
-  dataType
-}
+})

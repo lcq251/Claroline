@@ -4,24 +4,22 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {PageSection} from '#/main/app/page'
-import {ContentHtml} from '#/main/app/content/components/html'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {Html} from '#/main/app/components/html'
+import {DetailsData} from '#/main/app/content/details'
 
 import {Location as LocationTypes} from '#/main/core/tools/locations/prop-types'
-import {selectors} from '#/main/core/tools/locations//store'
 
 const LocationAbout = (props) =>
   <>
     {get(props.location, 'meta.description') &&
       <PageSection size="md">
-        <ContentHtml className="lead mb-5 mt-4">{get(props.location, 'meta.description')}</ContentHtml>
+        <Html className="lead mb-5 mt-4">{get(props.location, 'meta.description')}</Html>
       </PageSection>
     }
 
-    <PageSection size="md" className="bg-body-tertiary">
+    <PageSection size="md" className="mb-5">
       <DetailsData
-        className="mt-3"
-        name={`${selectors.STORE_NAME}.current`}
+        data={props.location}
         definition={[
           {
             title: trans('general'),

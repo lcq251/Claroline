@@ -2,8 +2,9 @@ import {trans} from '#/main/app/intl/translation'
 import {chain, string} from '#/main/app/data/types/validators'
 
 import {StringInput} from '#/main/app/data/types/string/components/input'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'translation',
   meta: {
     icon: 'fa fa-fw fa fa-language',
@@ -16,8 +17,4 @@ const dataType = {
   components: {
     input: StringInput
   }
-}
-
-export {
-  dataType
-}
+})

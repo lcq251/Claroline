@@ -9,6 +9,7 @@ import {CommandPalette} from '#/main/core/tool/command-palette'
 
 /**
  * Declare a new tool to the application.
+ *
  * NB1. Tool MUST be registered in the `plugin.js` file of its plugin.
  * NB2. Tool component tree MUST start with the `Tool` component
  */

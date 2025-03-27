@@ -1,14 +1,14 @@
 import isEmpty from 'lodash/isEmpty'
 
-import {trans, tval} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {chain, date, string} from '#/main/app/data/types/validators'
 
 import {render, parse} from '#/main/app/data/types/date-range/utils'
 import {DateRangeInput} from '#/main/app/data/types/date-range/components/input'
 import {DateRangeGroup} from '#/main/app/data/types/date-range/components/group'
-import {DateRangeDisplay} from '#/main/app/data/types/date-range/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'date-range',
   meta: {
     icon: 'fa fa-fw fa-calendar-week',
@@ -39,7 +39,7 @@ const dataType = {
     ]).then(errors => {
       if (isEmpty(errors) || (isEmpty(errors[0]) && isEmpty(errors[1]))) {
         if (value[0] && value[0] > value[1]) {
-          return [null, tval('invalid_date_range')]
+          return [null, trans('invalid_date_range', {}, 'validators')]
         }
       } else {
         return errors
@@ -49,11 +49,6 @@ const dataType = {
 
   components: {
     input: DateRangeInput,
-    group: DateRangeGroup,
-    display: DateRangeDisplay
+    group: DateRangeGroup
   }
-}
-
-export {
-  dataType
-}
+})

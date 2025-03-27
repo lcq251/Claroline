@@ -1,12 +1,13 @@
 import {trans} from '#/main/app/intl/translation'
 
 import {HelpDisplay} from '#/main/app/data/types/help/components/display'
+import {declareDataType} from '#/main/app/data/types'
 
 /**
  * Display an HTML content inside Details and Forms.
  * NB. This is used for Dynamic forms.
  */
-const dataType = {
+export default declareDataType({
   name: 'help',
   meta: {
     creatable: true,
@@ -32,8 +33,4 @@ const dataType = {
     input: HelpDisplay,
     display: HelpDisplay
   }
-}
-
-export {
-  dataType
-}
+})

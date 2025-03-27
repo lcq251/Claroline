@@ -7,7 +7,7 @@ import get from 'lodash/get'
 import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {DetailsData} from '#/main/app/content/details/containers/data'
+import {DetailsData} from '#/main/app/content/details'
 import {formatField} from '#/main/app/content/form/parameters/utils'
 
 import {MODAL_USERS} from '#/main/community/modals/users'
@@ -175,7 +175,9 @@ class Entry extends Component {
                 {generateFromTemplate(this.props.template, this.props.fields, this.props.entry, this.props.isOwner, this.props.canAdministrate)}
               </Html> :
               <DetailsData
+                className="mb-4"
                 name={selectors.STORE_NAME+'.entries.current'}
+                data={this.props.entry}
                 definition={this.getSections(this.props.fields)}
               />
             }

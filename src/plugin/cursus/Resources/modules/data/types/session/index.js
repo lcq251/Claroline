@@ -4,8 +4,9 @@ import {SessionDisplay} from '#/plugin/cursus/data/types/session/components/disp
 import {SessionInput} from '#/plugin/cursus/data/types/session/components/input'
 import {SessionCell} from '#/plugin/cursus/data/types/session/components/cell'
 import {SessionFilter} from '#/plugin/cursus/data/types/session/components/filter'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'training_session',
   meta: {
     creatable: false,
@@ -15,13 +16,9 @@ const dataType = {
   },
   render: (raw) => raw ? raw.name : null,
   components: {
-    details: SessionDisplay,
+    display: SessionDisplay,
     input: SessionInput,
-    table: SessionCell,
-    search: SessionFilter
+    cell: SessionCell,
+    filter: SessionFilter
   }
-}
-
-export {
-  dataType
-}
+})

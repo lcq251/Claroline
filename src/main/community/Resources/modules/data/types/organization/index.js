@@ -4,8 +4,9 @@ import {OrganizationDisplay} from '#/main/community/data/types/organization/comp
 import {OrganizationInput} from '#/main/community/data/types/organization/components/input'
 import {OrganizationFilter} from '#/main/community/data/types/organization/components/filter'
 import {OrganizationCell} from '#/main/community/data/types/organization/components/cell'
+import {declareDataType} from '#/main/app/data/types'
 
-const dataType = {
+export default declareDataType({
   name: 'organization',
   meta: {
     creatable: false,
@@ -14,13 +15,9 @@ const dataType = {
     description: trans('organization_desc', {}, 'data')
   },
   components: {
-    table: OrganizationCell,
-    details: OrganizationDisplay,
+    cell: OrganizationCell,
+    display: OrganizationDisplay,
     input: OrganizationInput,
-    search: OrganizationFilter
+    filter: OrganizationFilter
   }
-}
-
-export {
-  dataType
-}
+})

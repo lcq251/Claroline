@@ -5,6 +5,8 @@
     "The user or group {{ name }} does not exist.": "L'utilisateur ou le groupe [{{ name }}] n'existe pas.",
     "This value should be greater than {{ limit }}.": "Cette valeur doit être plus grande que {{ limit }}.",
     "This value should be lower than {{ limit }}.": "Cette valeur doit être plus petite que {{ limit }}.",
+    "This value must be less than {{ limit }} characters long.": "Cette valeur doit faire moins de {{ limit }} caractères.",
+    "This value must be longer than {{ limit }} characters.": "Cette valeur doit faire plus de {{ limit }} caractères.",
     "This value should be a valid email.": "Cette valeur doit être une adresse email valide.",
     "This value should be a valid color.": "Cette valeur doit être une couleur valide.",
     "This value should be a valid date.": "Cette valeur doit être une date valide.",
