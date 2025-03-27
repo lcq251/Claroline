@@ -73,7 +73,6 @@ const SequenceOverviewContent = (props) => {
       {(description || overviewResource) &&
         <PageSection
           size="md"
-          className="mb-5"
           title={trans('about')}
           showTitle={false}
         >
@@ -83,6 +82,7 @@ const SequenceOverviewContent = (props) => {
 
           {overviewResource &&
             <ResourceEmbedded
+              className="mb-5"
               resourceNode={overviewResource}
               showHeader={false}
             />
