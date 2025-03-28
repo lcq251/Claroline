@@ -65,3 +65,9 @@ body {
     0%  { background-position: 0 0; }
     0% { background-position: 500% 0; }
 }
+
+@media (max-width: map-get($grid-breakpoints, 'md')) {
+    .app {
+        flex-direction: column;
+    }
+}

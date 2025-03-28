@@ -80,7 +80,7 @@ const SequencePlayer = props => {
                       })}
                       exact={true}
                     >
-                      <div className="content-md px-4" role="presentation">
+                      <div className="content-md px-4 text-truncate" role="presentation">
                         <span className="fa fa-fw fa-arrow-up icon-with-text-right" aria-hidden={true} />
                         {!previous ?
                           trans('home') :
@@ -114,7 +114,7 @@ const SequencePlayer = props => {
                           })}
                           exact={true}
                         >
-                          <div className="content-md px-4" role="presentation">
+                          <div className="content-md px-4 text-truncate" role="presentation">
                             {next &&
                               <span className="fa fa-fw fa-arrow-down icon-with-text-right" aria-hidden={true} />
                             }

@@ -147,7 +147,7 @@ UserMenu.propTypes = {
   closeMenu: T.func.isRequired
 }
 
-const PlatformMenuUser = () => {
+const PlatformMenuUser = (props) => {
   const currentUser = useSelector(securitySelectors.currentUser)
   const impersonated = useSelector(securitySelectors.isImpersonated)
   const path = useSelector(selectors.path)
@@ -158,7 +158,7 @@ const PlatformMenuUser = () => {
     <Button
       type={MENU_BUTTON}
       label={trans(impersonated ? 'impersonated_account' : 'my_account', {name: displayUsername(currentUser)})}
-      tooltip="right"
+      tooltip={props.vertical ? 'right' : 'top'}
       className="app-context-btn focus-ring rounded-circle"
       opened={menuOpened}
       onToggle={setMenuOpened}

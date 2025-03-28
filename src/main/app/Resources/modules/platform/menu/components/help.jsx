@@ -136,7 +136,7 @@ HelpMenu.propTypes = {
   closeMenu: T.func.isRequired
 }
 
-const PlatformMenuHelp = () => {
+const PlatformMenuHelp = (props) => {
   const menuId = useId()
   const [menuOpened, setMenuOpened] = useState(false)
 
@@ -146,7 +146,7 @@ const PlatformMenuHelp = () => {
         type={MENU_BUTTON}
         icon="fa fa-question"
         label={trans('help_center')}
-        tooltip="right"
+        tooltip={props.vertical ? 'right' : 'top'}
         className="app-context-btn focus-ring rounded-circle"
         opened={menuOpened}
         onToggle={setMenuOpened}

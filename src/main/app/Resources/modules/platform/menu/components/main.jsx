@@ -1,5 +1,6 @@
 import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
@@ -16,6 +17,7 @@ import {CloseButton} from 'react-bootstrap'
 import {PlatformMenuQuickAccess} from '#/main/app/platform/menu/components/quick-access'
 import {PlatformMenuHelp} from '#/main/app/platform/menu/components/help'
 import {PlatformMenuGlobal} from '#/main/app/platform/menu/components/global'
+import {constants, useSize} from '#/main/app/dom/size'
 
 const AllContexts = () => {
   return (
@@ -66,6 +68,10 @@ const AllContexts = () => {
 }
 
 const PlatformMenu = (props) => {
+  const size = useSize()
+  const vertical = ![constants.SIZE_XS, constants.SIZE_SM].includes(size)
+  console.log(size)
+
   let pinnedContexts = [].concat(props.favoriteContexts)
   if (!isEmpty(props.currentContext) && 'workspace' === props.currentContextType) {
     let currentPos = pinnedContexts.findIndex((context) => context.id === props.currentContext.id)
@@ -83,20 +89,23 @@ const PlatformMenu = (props) => {
 
   return (
     <nav
-      className="app-main-menu gap-2 border-end"
+      className={classes('app-main-menu gap-3', {
+        'app-main-menu-h': !vertical,
+        'app-main-menu-v': vertical
+      })}
       aria-labelledby={navTitleId}
     >
       <h1 id={navTitleId} className="visually-hidden">{trans('main_menu')}</h1>
 
-      <PlatformMenuQuickAccess />
-      <PlatformMenuGlobal />
+      <PlatformMenuQuickAccess vertical={vertical} />
+      <PlatformMenuGlobal vertical={vertical} />
 
       {0 !== pinnedContexts.length &&
         <>
           <h2 id={workspaceTitleId} className="visually-hidden">{trans('my_workspaces')}</h2>
           <p id={workspaceDescId} className="visually-hidden">{trans('my_workspaces_help')}</p>
           <ul
-            className="list-unstyled d-flex flex-column gap-2 mb-0 flex-fill"
+            className="app-main-menu-group list-unstyled d-flex gap-2 mb-0 flex-fill overflow-hidden"
             aria-labelledby={workspaceTitleId}
             aria-describedby={workspaceDescId}
           >
@@ -106,7 +115,7 @@ const PlatformMenu = (props) => {
                   type={LINK_BUTTON}
                   className="app-context-btn position-relative focus-ring"
                   label={pinnedContext.name || trans('loading')}
-                  tooltip="right"
+                  tooltip={vertical ? 'right' : 'top'}
                   target={route(pinnedContext)}
                 >
                   <Thumbnail
@@ -139,21 +148,21 @@ const PlatformMenu = (props) => {
         </>
       }
 
-      <hr className="app-context-separator mt-auto mx-auto my-2" aria-hidden={true} />
+      <hr className="app-main-menu-separator m-0" aria-hidden={true} />
 
       <h2 id={accountTitleId} className="visually-hidden">{trans('account_links')}</h2>
       <p id={accountDescId} className="visually-hidden">{trans('account_links_help')}</p>
       <ul
-        className="list-unstyled d-flex flex-column gap-2 mb-0"
+        className="app-main-menu-group list-unstyled d-flex gap-2 mb-0"
         aria-labelledby={accountTitleId}
         aria-describedby={accountDescId}
       >
         <li>
-          <PlatformMenuUser />
+          <PlatformMenuUser vertical={vertical} />
         </li>
 
         <li>
-          <PlatformMenuHelp />
+          <PlatformMenuHelp vertical={vertical} />
         </li>
       </ul>
     </nav>

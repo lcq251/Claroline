@@ -3,13 +3,7 @@
     .list-footer {
         margin: 0;
         padding: map-get($spacers, 2) map-get($spacers, 4);
-        // padding-right: map-get($spacers, 2);
     }
-
-    /*.content-loader {
-        margin: 0;
-        border-radius: 0;
-    }*/
 
     // customize view modes
     .data-grid-col {

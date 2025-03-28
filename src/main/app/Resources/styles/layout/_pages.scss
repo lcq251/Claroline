@@ -86,6 +86,10 @@
 }
 
 .app-page-aside {
+    position: relative; // constrains toggle button
+}
+
+.app-page-aside-content {
     width: $toolbar-size;
 }
 
@@ -105,13 +109,21 @@
     .app-context-menu-toggle {
         text-decoration: none;
 
-        &:hover/*,
-        &:focus*/ {
+        &:hover {
             background: var(--#{$prefix}secondary-bg);
         }
     }
 
     .breadcrumb-item a {
         line-height: $line-height-base * $font-size-base;
+    }
+}
+
+@media (max-width: map-get($grid-breakpoints, 'lg')) {
+    .app-page-aside {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        bottom: 0;
     }
 }

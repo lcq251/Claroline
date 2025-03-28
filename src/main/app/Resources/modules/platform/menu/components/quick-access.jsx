@@ -12,7 +12,7 @@ import {goToContent, goToContextMenu, goToToolMenu} from '#/main/app/platform/na
  *    - Go to tool menu
  *    - Go to page content
  */
-const PlatformMenuQuickAccess = () => {
+const PlatformMenuQuickAccess = (props) => {
   const quickAccessTitleId = useId()
   const quickAccessDescId = useId()
   const [quickAccess, setQuickAccess] = useState(false)
@@ -22,7 +22,7 @@ const PlatformMenuQuickAccess = () => {
       <h2 id={quickAccessTitleId} className="visually-hidden">{trans('quick_access_links')}</h2>
       <p id={quickAccessDescId} className="visually-hidden">{trans('quick_access_links_help')}</p>
       <ul
-        className={classes('list-unstyled d-flex flex-column gap-2 mb-0', {
+        className={classes('app-main-menu-group list-unstyled d-flex gap-2 mb-0', {
           'visually-hidden': !quickAccess
         })}
         aria-labelledby={quickAccessTitleId}
@@ -43,7 +43,7 @@ const PlatformMenuQuickAccess = () => {
             className="app-context-btn app-quick-access focus-ring"
             icon="fa fa-fw fa-font"
             label={trans('go_to_content', {}, 'actions')}
-            tooltip="right"
+            tooltip={props.vertical ? 'right' : 'top'}
             callback={goToContent}
           />
         </li>
@@ -53,7 +53,7 @@ const PlatformMenuQuickAccess = () => {
             className="app-context-btn app-quick-access focus-ring"
             icon="fa fa-fw fa-book"
             label={trans('go_to_context_menu', {}, 'actions')}
-            tooltip="right"
+            tooltip={props.vertical ? 'right' : 'top'}
             callback={goToContextMenu}
           />
         </li>
@@ -63,13 +63,13 @@ const PlatformMenuQuickAccess = () => {
             className="app-context-btn app-quick-access focus-ring"
             icon="fa fa-fw fa-tools"
             label={trans('go_to_tool_menu', {}, 'actions')}
-            tooltip="right"
+            tooltip={props.vertical ? 'right' : 'top'}
             callback={goToToolMenu}
           />
         </li>
       </ul>
       <hr
-        className={classes('app-context-separator mx-auto my-2', {
+        className={classes('app-main-menu-separator m-0', {
           'visually-hidden': !quickAccess
         })}
         aria-hidden={true}

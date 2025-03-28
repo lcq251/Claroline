@@ -102,18 +102,6 @@
     }
 }
 
-.app-contexts-menu,
-.app-user-menu {
-    width: 24rem;
-    //margin-left: map-get($spacers, 2);
-    transform: none !important;
-
-    left: 5.5rem !important;
-    bottom: 1rem !important;
-    top: 4rem !important;
-}
-
-
 @if $enable-dark-mode {
     @include color-mode(dark) {
         .app-menu {

@@ -9,7 +9,7 @@ import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
 import {flattenSteps, getNumbering} from '#/main/evaluation/sequence/utils'
 import {StepStatus} from '#/main/evaluation/sequence/components/step-status'
 
-const PathSummary = (props) => {
+const SequenceSummary = (props) => {
   const steps = flattenSteps(props.sequence.steps)
 
   return (
@@ -43,7 +43,7 @@ const PathSummary = (props) => {
   )
 }
 
-PathSummary.propTypes = {
+SequenceSummary.propTypes = {
   path: T.string.isRequired,
   sequence: T.shape(
     SequenceTypes.propTypes
@@ -52,5 +52,5 @@ PathSummary.propTypes = {
 }
 
 export {
-  PathSummary
+  SequenceSummary
 }

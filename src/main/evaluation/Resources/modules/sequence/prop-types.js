@@ -78,7 +78,9 @@ const Sequence = {
 const SequenceEvaluation = {
   propTypes: {
     id: T.string.isRequired,
-    date: T.string.isRequired,
+    lastActivityAt: T.string,
+    startedAt: T.string,
+    endedAt: T.string,
     status: T.string.isRequired,
     duration: T.number,
     score: T.number,
@@ -91,7 +93,6 @@ const SequenceEvaluation = {
     user: T.shape(
       User.propTypes
     ),
-    required: T.bool,
     estimatedDuration: T.string
   }
 }

@@ -9,7 +9,7 @@ import {Thumbnail} from '#/main/app/components/thumbnail'
 import {MODAL_SEARCH} from '#/main/app/platform/modals/search'
 import {selectors} from '#/main/app/platform/store'
 
-const PlatformMenuGlobal = () => {
+const PlatformMenuGlobal = (props) => {
   const currentOrganization = useSelector(selectors.currentOrganization)
 
   const globalTitleId = useId()
@@ -20,7 +20,7 @@ const PlatformMenuGlobal = () => {
       <h2 id={globalTitleId} className="visually-hidden">{trans('global_links')}</h2>
       <p id={globalDescId} className="visually-hidden">{trans('global_links_help')}</p>
       <ul
-        className="list-unstyled d-flex flex-column gap-2 mb-0"
+        className="app-main-menu-group list-unstyled d-flex gap-2 mb-0"
         aria-labelledby={globalTitleId}
         aria-describedby={globalDescId}
       >
@@ -29,7 +29,7 @@ const PlatformMenuGlobal = () => {
             type={LINK_BUTTON}
             className="app-context-btn position-relative focus-ring"
             label={trans('desktop', {}, 'context')}
-            tooltip="right"
+            tooltip={props.vertical ? 'right' : 'top'}
             target="/desktop"
           >
             <Thumbnail
@@ -47,14 +47,14 @@ const PlatformMenuGlobal = () => {
               className="app-context-btn focus-ring"
               icon="fa fa-fw fa-search"
               label={trans('search')}
-              tooltip="right"
+              tooltip={props.vertical ? 'right' : 'top'}
               modal={[MODAL_SEARCH]}
             />
           </div>
         </li>
       </ul>
       <hr
-        className="app-context-separator mx-auto my-2"
+        className="app-main-menu-separator m-0"
         aria-hidden={true}
       />
     </>

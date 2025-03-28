@@ -139,8 +139,8 @@ class SequenceCertificateManager
             'evaluation_status' => $this->translator->trans('evaluation_'.$evaluation->getStatus().'_status', [], 'evaluation'),
         ],
             $this->templateManager->formatDatePlaceholder('evaluation_last_activity', $evaluation->getLastActivityAt()),
-            $this->templateManager->formatDatePlaceholder('evaluation_start', $evaluation->getLastActivityAt()),
-            $this->templateManager->formatDatePlaceholder('evaluation_end', $evaluation->getLastActivityAt()),
+            $this->templateManager->formatDatePlaceholder('evaluation_start', $evaluation->getStartedAt()),
+            $this->templateManager->formatDatePlaceholder('evaluation_end', $evaluation->getEndedAt()),
         );
     }
 }

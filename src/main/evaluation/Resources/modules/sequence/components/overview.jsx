@@ -10,13 +10,11 @@ import {ASYNC_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {Html} from '#/main/app/components/html'
 import {Alert} from '#/main/app/components/alert'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 
-import {PathSummary} from '#/main/evaluation/sequence/components/summary'
-import {PageSection} from '#/main/app/page/components/section'
+import {SequenceSummary} from '#/main/evaluation/sequence/components/summary'
 import {SequencePage} from '#/main/evaluation/sequence/components/page'
-
 import {EvaluationProgression} from '#/main/evaluation/components/progression'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 
@@ -165,7 +163,7 @@ const SequenceOverview = () => {
             title={trans('content')}
           >
             {!isEmpty(sequence.steps) ?
-              <PathSummary
+              <SequenceSummary
                 path={sequencePath}
                 sequence={sequence}
                 progression={progression}

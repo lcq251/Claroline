@@ -3,11 +3,9 @@
   --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle};
 
   background: var(--#{$prefix}menu-bg);
-  height: 100%;
-  padding: $spacer 0;
+
   display: flex;
-  flex-direction: column;
-  width: map-get($icon-sizes, sm) + 1.5rem;
+  align-items: center;
 }
 
 .app-context-btn {
@@ -21,7 +19,6 @@
   justify-content: center;
   color: var(--#{$prefix}link-color);
   flex-shrink: 0;
-  margin: 0 .75rem;
 
   &:hover,
   &:focus,
@@ -40,25 +37,11 @@
   &:before {
     position: absolute;
     content: " ";
-    width: 4px;
-    height: 0;
-    left: -12px;
     background-color: var(--#{$prefix}body-color);
-
-    @include border-end-radius($border-radius-sm);
-    @include transition(height .15s ease);
-  }
-
-  &:focus,
-  &:hover {
-    &:before {
-      height: 24px;
-    }
   }
 
   &.active {
     &:before {
-      height: 36px;
       background-color: var(--#{$prefix}primary);
     }
   }
@@ -76,8 +59,111 @@
   box-sizing: content-box;
 }
 
-.app-context-separator {
-  width: 48px;
+.app-contexts-menu,
+.app-user-menu {
+  width: min(24rem, 100vw);
+  transform: none !important;
+}
+
+.app-main-menu-v {
+  flex-direction: column;
+  padding: $spacer 0;
+  width: map-get($icon-sizes, sm) + 1.5rem;
+  height: 100%;
+  border-right: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+
+  .app-main-menu-group {
+    flex-direction: column;
+  }
+
+  .app-context-btn {
+    margin: 0 .75rem;
+
+    &:before {
+      width: 4px;
+      height: 0;
+      left: -(calc(map-get($icon-sizes, sm) / 4));
+      @include border-end-radius($border-radius-sm);
+      @include transition(height .15s ease);
+    }
+
+    &:focus,
+    &:hover {
+      &:before {
+        height: calc(map-get($icon-sizes, sm) / 2);
+      }
+    }
+
+    &.active {
+      &:before {
+        height: calc((map-get($icon-sizes, sm) / 4)*3);
+      }
+    }
+  }
+
+  .app-main-menu-separator {
+    width: map-get($icon-sizes, sm);
+    border-top: 1px solid;
+  }
+
+  .app-contexts-menu,
+  .app-user-menu {
+    left: 5.5rem !important;
+    bottom: 1rem !important;
+    top: 4rem !important;
+  }
+}
+
+.app-main-menu-h {
+  order: 3;
+  flex-direction: row;
+  padding: 0 $spacer;
+  width: 100%;
+  height: map-get($icon-sizes, sm) + 1.5rem;
+  border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  margin-top: auto;
+
+  .app-main-menu-group {
+    flex-direction: row;
+  }
+
+  .app-context-btn {
+    margin: .75rem 0;
+
+    &:before {
+      height: 4px;
+      width: 0;
+      bottom: -(calc(map-get($icon-sizes, sm) / 4));
+
+      @include border-top-radius($border-radius-sm);
+      @include transition(width .15s ease);
+    }
+
+    &:focus,
+    &:hover {
+      &:before {
+        width: calc(map-get($icon-sizes, sm) / 2);
+      }
+    }
+
+    &.active {
+      &:before {
+        width: calc((map-get($icon-sizes, sm) / 4)*3);
+      }
+    }
+  }
+
+  .app-main-menu-separator {
+    height: map-get($icon-sizes, sm);
+    border-left: 1px solid;
+  }
+
+  .app-contexts-menu,
+  .app-user-menu {
+    bottom: 5.5rem !important;
+    top: 4rem !important;
+    right: 1rem !important;
+  }
 }
 
 @if $enable-dark-mode {
@@ -85,6 +171,20 @@
     .app-main-menu {
       --#{$prefix}menu-bg: #{$toolbar-bg-dark};
       --#{$prefix}menu-bg-subtle: #{$toolbar-bg-subtle-dark};
+    }
+  }
+}
+
+@media (max-width: map-get($grid-breakpoints, 'sm')) {
+  .app-main-menu {
+    .app-contexts-menu,
+    .app-user-menu {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0 !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      border: none;
     }
   }
 }

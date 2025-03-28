@@ -8,13 +8,10 @@ import {Datetime} from '#/main/app/components/date'
 import {LinkButton} from '#/main/app/buttons'
 
 import {constants} from '#/main/evaluation/constants'
-import get from 'lodash/get'
 
 const EvaluationProgression = (props) => {
-  const progression = get(props.data, 'progression', 0)
-
   let statusText = trans('completion', {current: props.progression}, 'evaluation')
-  if (progression < 100) {
+  if (props.progression >= 100) {
     statusText = constants.EVALUATION_STATUSES_SHORT[props.status]
   }
 
