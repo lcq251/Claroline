@@ -96,7 +96,9 @@ class BundleMigration
         $migratorConfiguration = (new MigratorConfiguration())
             ->setDryRun(false)
             ->setTimeAllQueries(true)
-            ->setAllOrNothing(true);
+            // Because MySQL does not support DDL in transactions {@see https://github.com/doctrine/migrations/issues/1426}
+            // some migrations does not use transactions
+            ->setAllOrNothing(false);
 
         $planCalculator = $this->dependencyFactory->getMigrationPlanCalculator();
         $plan = $planCalculator->getPlanUntilVersion($targetVersion);
