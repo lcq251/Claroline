@@ -29,4 +29,9 @@ final class Version20231105061318 extends AbstractMigration
             ADD redirectAfterLoginUrl VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

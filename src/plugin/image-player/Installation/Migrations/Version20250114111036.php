@@ -62,4 +62,9 @@ final class Version20250114111036 extends AbstractMigration
             DROP TABLE claro_image_resource
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

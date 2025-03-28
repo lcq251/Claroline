@@ -59,4 +59,9 @@ final class Version20220425084528 extends AbstractMigration
             DROP TABLE claro_tagbundle_tag
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

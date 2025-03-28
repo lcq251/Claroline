@@ -461,4 +461,9 @@ final class Version20230421084352 extends AbstractMigration
             DROP TABLE claro_clacoformbundle_field_value
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

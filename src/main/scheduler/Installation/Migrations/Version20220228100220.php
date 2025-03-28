@@ -94,4 +94,9 @@ final class Version20220228100220 extends AbstractMigration
             DROP TABLE claro_scheduled_task_users
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

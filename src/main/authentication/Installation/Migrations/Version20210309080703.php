@@ -94,4 +94,9 @@ final class Version20210309080703 extends AbstractMigration
             DROP TABLE claro_oauth_user
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

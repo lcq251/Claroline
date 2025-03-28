@@ -36,4 +36,9 @@ final class Version20250201085840 extends AbstractMigration
             ADD description LONGTEXT DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

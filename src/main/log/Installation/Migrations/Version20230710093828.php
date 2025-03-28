@@ -156,4 +156,9 @@ final class Version20230710093828 extends AbstractMigration
             DROP TABLE claro_log_security
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -28,4 +28,9 @@ final class Version20250117100255 extends AbstractMigration
             CHANGE completion_threshold completion_threshold NUMERIC(10, 7) DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -20,4 +20,11 @@ final class {{ class }} extends AbstractMigration
     public function down(Schema $schema): void
     {
 {{ statementBlock(downQueries) }}    }
+
+    public function isTransactional(): bool
+    {
+        // MySQL/PostgreSQL does not support DDL queries in transactions
+        // You can remove this override if your migration does not contain DDL queries
+        return false;
+    }
 }

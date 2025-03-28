@@ -33,4 +33,9 @@ final class Version20230612142019 extends AbstractMigration
             DROP TABLE claro_authentication_parameters
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

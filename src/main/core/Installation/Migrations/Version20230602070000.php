@@ -2726,4 +2726,9 @@ final class Version20230602070000 extends AbstractMigration
             DROP TABLE claro_workspace_registration_queue
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

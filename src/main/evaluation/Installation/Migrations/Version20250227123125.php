@@ -45,4 +45,9 @@ final class Version20250227123125 extends AbstractMigration
             DROP certificate_template_id
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

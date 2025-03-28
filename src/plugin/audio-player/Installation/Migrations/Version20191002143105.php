@@ -186,4 +186,9 @@ final class Version20191002143105 extends AbstractMigration
             DROP TABLE claro_audio_resource_section_comment
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

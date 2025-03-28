@@ -27,4 +27,9 @@ final class Version20241112064937 extends AbstractMigration
             ADD personal_workspace_creation_enabled TINYINT(1) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

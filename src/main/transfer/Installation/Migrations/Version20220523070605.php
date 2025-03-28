@@ -117,4 +117,9 @@ final class Version20220523070605 extends AbstractMigration
             DROP TABLE claro_transfer_import
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

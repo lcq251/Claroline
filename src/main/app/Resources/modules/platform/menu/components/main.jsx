@@ -148,7 +148,7 @@ const PlatformMenu = (props) => {
         </>
       }
 
-      <hr className="app-main-menu-separator m-0" aria-hidden={true} />
+      <hr className="app-main-menu-separator m-0 mt-auto" aria-hidden={true} />
 
       <h2 id={accountTitleId} className="visually-hidden">{trans('account_links')}</h2>
       <p id={accountDescId} className="visually-hidden">{trans('account_links_help')}</p>

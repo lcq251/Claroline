@@ -27,4 +27,9 @@ final class Version20231127105116 extends AbstractMigration
             DROP showLeitnerRules
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

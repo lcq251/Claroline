@@ -128,4 +128,9 @@ final class Version20241204065242 extends AbstractMigration
             CREATE INDEX IDX_778754E3D0BBCCBE ON claro_announcement (aggregate_id)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

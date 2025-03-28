@@ -37,4 +37,9 @@ final class Version20240618053110 extends AbstractMigration
             ADD max_day_attempts INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

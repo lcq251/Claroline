@@ -127,6 +127,8 @@ class ProgressionTool extends ToolComponent
 
         if (empty($workspaceEvaluation)) {
             $workspaceEvaluation = new WorkspaceEvaluation();
+            $workspaceEvaluation->setWorkspace($workspace);
+            $workspaceEvaluation->setUser($this->tokenStorage->getToken()?->getUser());
         }
 
         return $workspaceEvaluation;

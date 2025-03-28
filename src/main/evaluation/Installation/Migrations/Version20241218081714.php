@@ -25,4 +25,9 @@ final class Version20241218081714 extends AbstractMigration
             ALTER TABLE innova_path CHANGE score_total score_total DOUBLE PRECISION DEFAULT '100' NOT NULL
         ");
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

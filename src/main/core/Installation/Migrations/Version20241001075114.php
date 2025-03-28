@@ -29,4 +29,9 @@ final class Version20241001075114 extends AbstractMigration
             ADD `value` INT DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

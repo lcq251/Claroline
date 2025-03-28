@@ -666,4 +666,9 @@ final class Version20230416150201 extends AbstractMigration
             DROP TABLE claro_cursusbundle_session_user_values
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -29,4 +29,9 @@ final class Version20250127103658 extends AbstractMigration
             ADD fullscreen TINYINT(1) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

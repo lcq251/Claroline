@@ -53,4 +53,9 @@ final class Version20231026145055 extends AbstractMigration
             DROP TABLE claro_flashcard_drawn_progression
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

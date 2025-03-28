@@ -24,15 +24,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
 {
-    private WorkspaceManager $workspaceManager;
-    private WorkspaceRestrictionsManager $restrictionsManager;
-
     public function __construct(
-        WorkspaceManager $workspaceManager,
-        WorkspaceRestrictionsManager $restrictionsManager
+        private readonly WorkspaceManager $workspaceManager,
+        private readonly WorkspaceRestrictionsManager $restrictionsManager
     ) {
-        $this->workspaceManager = $workspaceManager;
-        $this->restrictionsManager = $restrictionsManager;
     }
 
     public function getClass(): string

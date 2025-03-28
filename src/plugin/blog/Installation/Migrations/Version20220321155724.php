@@ -202,4 +202,9 @@ final class Version20220321155724 extends AbstractMigration
             DROP TABLE icap__blog_member
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

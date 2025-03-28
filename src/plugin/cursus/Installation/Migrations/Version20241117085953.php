@@ -27,4 +27,9 @@ final class Version20241117085953 extends AbstractMigration
             DROP certification
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -90,4 +90,9 @@ final class Version20241112125622 extends AbstractMigration
             CREATE INDEX IDX_DA3985FFC889F24 ON claro_panel_facet (facet_id)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

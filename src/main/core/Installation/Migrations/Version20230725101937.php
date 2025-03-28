@@ -40,4 +40,9 @@ final class Version20230725101937 extends AbstractMigration
             DROP confidentiality
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

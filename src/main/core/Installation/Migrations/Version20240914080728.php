@@ -35,4 +35,9 @@ final class Version20240914080728 extends AbstractMigration
             ALTER TABLE claro_role CHANGE entity_type type INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

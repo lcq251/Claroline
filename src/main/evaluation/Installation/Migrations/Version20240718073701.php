@@ -53,4 +53,9 @@ final class Version20240718073701 extends AbstractMigration
             DROP TABLE claro_evaluation_skills_frameworks_workspaces
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -142,4 +142,9 @@ final class Version20241218083015 extends AbstractMigration
             CREATE UNIQUE INDEX UNIQ_CE19F054B87FAB32 ON innova_path (resourceNode_id)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

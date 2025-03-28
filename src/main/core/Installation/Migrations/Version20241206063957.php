@@ -29,4 +29,9 @@ final class Version20241206063957 extends AbstractMigration
             ADD author VARCHAR(255) DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

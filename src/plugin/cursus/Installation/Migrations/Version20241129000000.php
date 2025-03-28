@@ -88,4 +88,9 @@ final class Version20241129000000 extends AbstractMigration
             ALTER TABLE claro_cursusbundle_presence_status RENAME INDEX idx_dfe5e1fee8de7170 TO IDX_DFE5E1FE349A94C7
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

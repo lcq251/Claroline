@@ -147,4 +147,9 @@ final class Version20230421091158 extends AbstractMigration
             DROP TABLE claro_scorm_sco_tracking
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

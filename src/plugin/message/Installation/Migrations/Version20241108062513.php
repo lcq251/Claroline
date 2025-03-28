@@ -27,4 +27,9 @@ final class Version20241108062513 extends AbstractMigration
             ADD last_open_date DATETIME DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

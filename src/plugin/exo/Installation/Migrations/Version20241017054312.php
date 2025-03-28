@@ -25,4 +25,9 @@ final class Version20241017054312 extends AbstractMigration
             ALTER TABLE ujm_question CHANGE content invite LONGTEXT DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

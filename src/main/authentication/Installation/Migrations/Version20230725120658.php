@@ -37,4 +37,9 @@ final class Version20230725120658 extends AbstractMigration
             DROP redirectAfterLoginUrl
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -29,4 +29,9 @@ final class Version20250211100316 extends AbstractMigration
             CHANGE score_total score_total DOUBLE PRECISION DEFAULT '100' NOT NULL
         ");
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

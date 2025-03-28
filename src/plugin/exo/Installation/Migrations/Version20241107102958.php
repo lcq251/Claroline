@@ -25,4 +25,9 @@ final class Version20241107102958 extends AbstractMigration
             ALTER TABLE ujm_exercise CHANGE date_correction date_correction VARCHAR(255) DEFAULT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

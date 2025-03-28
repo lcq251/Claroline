@@ -43,4 +43,9 @@ final class Version20240612055556 extends AbstractMigration
             CREATE INDEX IDX_5F6CC1D754177093 ON claro_planned_object (room_id)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

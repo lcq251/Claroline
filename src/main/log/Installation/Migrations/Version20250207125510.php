@@ -25,4 +25,9 @@ final class Version20250207125510 extends AbstractMigration
             ALTER TABLE claro_log_operational CHANGE parentId parentId VARCHAR(255) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

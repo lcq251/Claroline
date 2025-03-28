@@ -66,4 +66,9 @@ final class Version20241111074450 extends AbstractMigration
             CREATE INDEX IDX_DFB26A757428AC44 ON claro_template (claro_template_type)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

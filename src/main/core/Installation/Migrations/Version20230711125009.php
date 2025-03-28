@@ -45,4 +45,9 @@ final class Version20230711125009 extends AbstractMigration
             CREATE UNIQUE INDEX UNIQ_E7C393D75E237E06 ON claro_group (name)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

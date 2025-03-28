@@ -49,4 +49,9 @@ final class Version20240915095333 extends AbstractMigration
             UPDATE claro_user SET is_enabled = !is_enabled
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

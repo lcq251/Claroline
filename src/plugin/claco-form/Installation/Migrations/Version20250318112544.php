@@ -29,4 +29,9 @@ final class Version20250318112544 extends AbstractMigration
             ADD notify_vote TINYINT(1) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -67,4 +67,9 @@ final class Version20240125114656 extends AbstractMigration
             DROP invitation_template_id
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

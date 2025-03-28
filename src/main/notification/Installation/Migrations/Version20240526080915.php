@@ -47,9 +47,13 @@ final class Version20240526080915 extends AbstractMigration
         $this->addSql('
             DROP INDEX IDX_856AFB35A76ED395 ON claro_notification
         ');
-        
         $this->addSql('
             DROP TABLE claro_notification
         ');
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 }

@@ -59,4 +59,9 @@ final class Version20240723065303 extends AbstractMigration
             ADD audience LONGTEXT CHARACTER SET utf8mb3 DEFAULT NULL COLLATE `utf8mb3_unicode_ci`
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -64,4 +64,9 @@ final class Version20240307120358 extends AbstractMigration
             ALTER TABLE claro_theme CHANGE theme_mode default_mode VARCHAR(255) CHARACTER SET utf8mb3 DEFAULT NULL COLLATE `utf8mb3_unicode_ci`
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

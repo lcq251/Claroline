@@ -37,4 +37,9 @@ final class Version20231110053448 extends AbstractMigration
             ALTER TABLE claro_workspace_evaluation CHANGE progression progression INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

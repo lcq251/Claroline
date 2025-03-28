@@ -69,4 +69,9 @@ final class Version20241017052711 extends AbstractMigration
             ALTER TABLE ujm_response CHANGE used_hints used_hints LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)'
         ");
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

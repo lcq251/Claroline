@@ -27,4 +27,9 @@ final class Version20240408151719 extends AbstractMigration
             DROP evidence
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

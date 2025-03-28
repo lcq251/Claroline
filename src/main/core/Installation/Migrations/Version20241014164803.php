@@ -47,4 +47,9 @@ final class Version20241014164803 extends AbstractMigration
             DROP INDEX context_unique_tool ON claro_ordered_tool
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

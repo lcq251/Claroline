@@ -47,4 +47,9 @@ final class Version20230510121456 extends AbstractMigration
             DROP TABLE claro_color_collection
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

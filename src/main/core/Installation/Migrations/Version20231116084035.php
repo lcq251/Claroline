@@ -116,4 +116,9 @@ final class Version20231116084035 extends AbstractMigration
             CREATE UNIQUE INDEX tool_mask_decoder_unique_tool_and_name ON claro_tool_mask_decoder (tool_id, name)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

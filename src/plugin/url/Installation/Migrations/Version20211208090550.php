@@ -69,4 +69,9 @@ final class Version20211208090550 extends AbstractMigration
             DROP TABLE hevinci_url
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

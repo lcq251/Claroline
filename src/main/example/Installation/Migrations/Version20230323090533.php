@@ -44,4 +44,9 @@ class Version20230323090533 extends AbstractMigration
             DROP TABLE claro_example_example
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

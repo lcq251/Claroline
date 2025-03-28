@@ -204,4 +204,9 @@ final class Version20230426080000 extends AbstractMigration
             DROP TABLE innova_path_progression
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

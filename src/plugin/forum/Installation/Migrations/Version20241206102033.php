@@ -88,4 +88,9 @@ final class Version20241206102033 extends AbstractMigration
             ADD banned TINYINT(1) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

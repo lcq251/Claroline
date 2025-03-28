@@ -14,7 +14,7 @@ final class Version20230421084536 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql("
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_revision (
                 id INT AUTO_INCREMENT NOT NULL, 
                 drop_id INT NOT NULL, 
@@ -26,8 +26,8 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_5D4C551261220EA6 (creator_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_drop (
                 id INT AUTO_INCREMENT NOT NULL, 
                 dropzone_id INT NOT NULL, 
@@ -48,8 +48,8 @@ final class Version20230421084536 extends AbstractMigration
                 UNIQUE INDEX dropzone_drop_unique_dropzone_team (dropzone_id, team_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_drop_users (
                 drop_id INT NOT NULL, 
                 user_id INT NOT NULL, 
@@ -57,8 +57,8 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_466E34EBA76ED395 (user_id), 
                 PRIMARY KEY(drop_id, user_id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_correction (
                 id INT AUTO_INCREMENT NOT NULL, 
                 drop_id INT NOT NULL, 
@@ -84,8 +84,8 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_CBFA3896A76ED395 (user_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_criterion (
                 id INT AUTO_INCREMENT NOT NULL, 
                 dropzone_id INT NOT NULL, 
@@ -95,8 +95,8 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_1DD9F2E254FC3EC3 (dropzone_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_grade (
                 id INT AUTO_INCREMENT NOT NULL, 
                 correction_id INT NOT NULL, 
@@ -109,8 +109,8 @@ final class Version20230421084536 extends AbstractMigration
                 UNIQUE INDEX unique_grade_for_criterion_and_correction (criterion_id, correction_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_dropzone (
                 id INT AUTO_INCREMENT NOT NULL, 
                 edition_state SMALLINT NOT NULL, 
@@ -154,7 +154,7 @@ final class Version20230421084536 extends AbstractMigration
                 UNIQUE INDEX UNIQ_FB84B2AFB87FAB32 (resourceNode_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
+        ');
         $this->addSql("
             CREATE TABLE claro_dropzonebundle_document (
                 id INT AUTO_INCREMENT NOT NULL, 
@@ -177,7 +177,7 @@ final class Version20230421084536 extends AbstractMigration
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         ");
-        $this->addSql("
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_drop_comment (
                 id INT AUTO_INCREMENT NOT NULL, 
                 drop_id INT DEFAULT NULL, 
@@ -191,8 +191,8 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_214AC1D1A76ED395 (user_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             CREATE TABLE claro_dropzonebundle_revision_comment (
                 id INT AUTO_INCREMENT NOT NULL, 
                 revision_id INT DEFAULT NULL, 
@@ -206,240 +206,245 @@ final class Version20230421084536 extends AbstractMigration
                 INDEX IDX_1756823AA76ED395 (user_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision 
             ADD CONSTRAINT FK_5D4C55124D224760 FOREIGN KEY (drop_id) 
             REFERENCES claro_dropzonebundle_drop (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision 
             ADD CONSTRAINT FK_5D4C551261220EA6 FOREIGN KEY (creator_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop 
             ADD CONSTRAINT FK_97D5DB3154FC3EC3 FOREIGN KEY (dropzone_id) 
             REFERENCES claro_dropzonebundle_dropzone (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop 
             ADD CONSTRAINT FK_97D5DB31A76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_users 
             ADD CONSTRAINT FK_466E34EB4D224760 FOREIGN KEY (drop_id) 
             REFERENCES claro_dropzonebundle_drop (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_users 
             ADD CONSTRAINT FK_466E34EBA76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_correction 
             ADD CONSTRAINT FK_CBFA38964D224760 FOREIGN KEY (drop_id) 
             REFERENCES claro_dropzonebundle_drop (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_correction 
             ADD CONSTRAINT FK_CBFA3896A76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_criterion 
             ADD CONSTRAINT FK_1DD9F2E254FC3EC3 FOREIGN KEY (dropzone_id) 
             REFERENCES claro_dropzonebundle_dropzone (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_grade 
             ADD CONSTRAINT FK_DD032F3494AE086B FOREIGN KEY (correction_id) 
             REFERENCES claro_dropzonebundle_correction (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_grade 
             ADD CONSTRAINT FK_DD032F3497766307 FOREIGN KEY (criterion_id) 
             REFERENCES claro_dropzonebundle_criterion (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_dropzone 
             ADD CONSTRAINT FK_FB84B2AFB87FAB32 FOREIGN KEY (resourceNode_id) 
             REFERENCES claro_resource_node (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             ADD CONSTRAINT FK_E846CAA84D224760 FOREIGN KEY (drop_id) 
             REFERENCES claro_dropzonebundle_drop (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             ADD CONSTRAINT FK_E846CAA889329D25 FOREIGN KEY (resource_id) 
             REFERENCES claro_resource_node (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             ADD CONSTRAINT FK_E846CAA8A76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             ADD CONSTRAINT FK_E846CAA81DFA7C8F FOREIGN KEY (revision_id) 
             REFERENCES claro_dropzonebundle_revision (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_comment 
             ADD CONSTRAINT FK_214AC1D14D224760 FOREIGN KEY (drop_id) 
             REFERENCES claro_dropzonebundle_drop (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_comment 
             ADD CONSTRAINT FK_214AC1D1A76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision_comment 
             ADD CONSTRAINT FK_1756823A1DFA7C8F FOREIGN KEY (revision_id) 
             REFERENCES claro_dropzonebundle_revision (id) 
             ON DELETE CASCADE
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision_comment 
             ADD CONSTRAINT FK_1756823AA76ED395 FOREIGN KEY (user_id) 
             REFERENCES claro_user (id) 
             ON DELETE SET NULL
-        ");
+        ');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql("
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision 
             DROP FOREIGN KEY FK_5D4C55124D224760
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision 
             DROP FOREIGN KEY FK_5D4C551261220EA6
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop 
             DROP FOREIGN KEY FK_97D5DB3154FC3EC3
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop 
             DROP FOREIGN KEY FK_97D5DB31A76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_users 
             DROP FOREIGN KEY FK_466E34EB4D224760
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_users 
             DROP FOREIGN KEY FK_466E34EBA76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_correction 
             DROP FOREIGN KEY FK_CBFA38964D224760
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_correction 
             DROP FOREIGN KEY FK_CBFA3896A76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_criterion 
             DROP FOREIGN KEY FK_1DD9F2E254FC3EC3
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_grade 
             DROP FOREIGN KEY FK_DD032F3494AE086B
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_grade 
             DROP FOREIGN KEY FK_DD032F3497766307
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_dropzone 
             DROP FOREIGN KEY FK_FB84B2AFB87FAB32
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             DROP FOREIGN KEY FK_E846CAA84D224760
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             DROP FOREIGN KEY FK_E846CAA889329D25
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             DROP FOREIGN KEY FK_E846CAA8A76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_document 
             DROP FOREIGN KEY FK_E846CAA81DFA7C8F
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_comment 
             DROP FOREIGN KEY FK_214AC1D14D224760
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_drop_comment 
             DROP FOREIGN KEY FK_214AC1D1A76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision_comment 
             DROP FOREIGN KEY FK_1756823A1DFA7C8F
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             ALTER TABLE claro_dropzonebundle_revision_comment 
             DROP FOREIGN KEY FK_1756823AA76ED395
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_revision
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_drop
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_drop_users
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_correction
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_criterion
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_grade
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_dropzone
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_document
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_drop_comment
-        ");
-        $this->addSql("
+        ');
+        $this->addSql('
             DROP TABLE claro_dropzonebundle_revision_comment
-        ");
+        ');
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 }

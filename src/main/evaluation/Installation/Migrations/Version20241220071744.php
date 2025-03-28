@@ -68,4 +68,9 @@ final class Version20241220071744 extends AbstractMigration
             DROP TABLE claro_evaluation_sequence_evaluation
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

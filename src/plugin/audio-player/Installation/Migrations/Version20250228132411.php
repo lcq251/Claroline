@@ -61,4 +61,9 @@ final class Version20250228132411 extends AbstractMigration
             CREATE INDEX IDX_B7FF82AA460D9FD7 ON claro_audio_params (node_id)
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

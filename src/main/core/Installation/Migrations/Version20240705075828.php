@@ -27,4 +27,9 @@ final class Version20240705075828 extends AbstractMigration
             )
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

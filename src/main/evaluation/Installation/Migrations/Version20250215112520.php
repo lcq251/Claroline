@@ -144,4 +144,9 @@ final class Version20250215112520 extends AbstractMigration
             DROP scored
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

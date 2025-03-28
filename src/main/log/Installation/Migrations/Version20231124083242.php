@@ -126,4 +126,9 @@ final class Version20231124083242 extends AbstractMigration
             DROP doer_city
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

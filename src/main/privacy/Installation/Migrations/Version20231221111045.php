@@ -51,4 +51,9 @@ final class Version20231221111045 extends AbstractMigration
             DROP TABLE claro_privacy_parameters
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

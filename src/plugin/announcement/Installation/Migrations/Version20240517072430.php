@@ -38,4 +38,9 @@ final class Version20240517072430 extends AbstractMigration
             REFERENCES claro_announcement (id) ON UPDATE NO ACTION ON DELETE NO ACTION
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

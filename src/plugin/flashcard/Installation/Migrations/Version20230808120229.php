@@ -87,4 +87,9 @@ final class Version20230808120229 extends AbstractMigration
             DROP TABLE claro_flashcard_card
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

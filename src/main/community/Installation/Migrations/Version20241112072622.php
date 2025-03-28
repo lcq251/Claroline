@@ -41,25 +41,6 @@ final class Version20241112072622 extends AbstractMigration
             REFERENCES claro_panel_facet (id) 
             ON DELETE CASCADE
         ');
-
-        // initialize profile object (only one for now)
-        $this->addSql('
-            INSERT INTO claro_user_profile (id) VALUE (1)
-        ');
-
-        // grabs defined profile sections
-        $this->addSql('
-            INSERT INTO claro_user_profile_sections (profile_id, section_id)
-                SELECT 1 as profile_id, s.id AS section_id
-                FROM claro_panel_facet AS s
-                LEFT JOIN claro_facet AS f ON (s.facet_id = f.id)
-                WHERE s.facet_id IS NOT NULL
-        ');
-
-        /*$this->addSql('
-            ALTER TABLE claro_panel_facet
-            DROP facet_id
-        ');*/
     }
 
     public function down(Schema $schema): void
@@ -78,5 +59,10 @@ final class Version20241112072622 extends AbstractMigration
         $this->addSql('
             DROP TABLE claro_user_profile_sections
         ');
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 }

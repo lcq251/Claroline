@@ -78,4 +78,9 @@ final class Version20241129061848 extends AbstractMigration
             CHANGE session_id session_id INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

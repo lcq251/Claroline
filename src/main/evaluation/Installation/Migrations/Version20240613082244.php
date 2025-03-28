@@ -62,4 +62,9 @@ final class Version20240613082244 extends AbstractMigration
             DROP TABLE claro_evaluation_certificate
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

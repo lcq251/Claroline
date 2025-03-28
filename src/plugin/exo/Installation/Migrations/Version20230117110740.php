@@ -1284,4 +1284,9 @@ final class Version20230117110740 extends AbstractMigration
             DROP TABLE ujm_step_question
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

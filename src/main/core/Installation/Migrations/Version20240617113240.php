@@ -27,4 +27,9 @@ final class Version20240617113240 extends AbstractMigration
             ADD defaultMask INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

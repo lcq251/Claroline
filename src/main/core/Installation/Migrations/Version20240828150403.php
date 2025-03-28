@@ -53,4 +53,9 @@ final class Version20240828150403 extends AbstractMigration
             ADD code VARCHAR(255) CHARACTER SET utf8mb3 DEFAULT NULL COLLATE `utf8mb3_unicode_ci`
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

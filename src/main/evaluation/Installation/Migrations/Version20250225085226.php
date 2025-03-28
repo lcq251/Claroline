@@ -29,12 +29,4 @@ final class Version20250225085226 extends AbstractMigration
               AND (n.required = 1 OR n.evaluated = 1)
         ');
     }
-
-    public function down(Schema $schema): void
-    {
-        $this->addSql('
-            ALTER TABLE innova_path 
-            DROP successCondition
-        ');
-    }
 }

@@ -27,4 +27,9 @@ final class Version20230726124902 extends AbstractMigration
             DROP estimatedDuration
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

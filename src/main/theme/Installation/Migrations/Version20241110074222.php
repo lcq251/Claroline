@@ -35,4 +35,9 @@ final class Version20241110074222 extends AbstractMigration
             DROP striped
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

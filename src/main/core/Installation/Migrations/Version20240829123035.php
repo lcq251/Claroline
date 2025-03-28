@@ -25,4 +25,9 @@ final class Version20240829123035 extends AbstractMigration
             ALTER TABLE claro_group CHANGE entity_name name VARCHAR(255) CHARACTER SET utf8mb3 NOT NULL COLLATE `utf8mb3_unicode_ci`
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

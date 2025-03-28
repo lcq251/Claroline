@@ -162,4 +162,9 @@ final class Version20220316131828 extends AbstractMigration
             DROP TABLE icap__wiki
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

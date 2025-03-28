@@ -31,4 +31,9 @@ final class Version20240829100115 extends AbstractMigration
             ADD maxUsers INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -76,4 +76,9 @@ final class Version20220830085450 extends AbstractMigration
             DROP TABLE claro_resource_shortcut
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -47,4 +47,9 @@ final class Version20240912144131 extends AbstractMigration
             DROP cancel_reason
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

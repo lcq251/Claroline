@@ -27,4 +27,9 @@ final class Version20240830072213 extends AbstractMigration
             ADD is_locked TINYINT(1) NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

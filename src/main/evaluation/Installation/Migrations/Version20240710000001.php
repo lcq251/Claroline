@@ -31,4 +31,9 @@ final class Version20240710000001 extends AbstractMigration
             ALTER TABLE innova_step CHANGE entity_order step_order INT NOT NULL
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }
