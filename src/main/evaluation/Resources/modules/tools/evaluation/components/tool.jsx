@@ -47,7 +47,7 @@ const EvaluationTool = (props) => {
       ]}
       redirect={[
         {from: '', exact: true, to: '/sequences/'+(!isEmpty(currentSequence) ? currentSequence.id : ''), disabled: isEmpty(currentSequence) || props.canFollow},
-        {from: '', exact: true, to: '/sequences', disabled: !isEmpty(currentSequence) || !props.canFollow}
+        {from: '', exact: true, to: '/sequences', disabled: !isEmpty(currentSequence) && !props.canFollow}
       ]}
       pages={[
         /*{
