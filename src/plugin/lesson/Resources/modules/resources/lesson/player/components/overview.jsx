@@ -15,6 +15,7 @@ import {ContentSummary} from '#/main/app/content/components/summary'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {Poster} from '#/main/app/components/poster'
+import {PageContent} from '#/main/app/page'
 
 const LessonPlayerOverview = () => {
   const resourcePath = useSelector(resourceSelectors.path)
@@ -39,7 +40,9 @@ const LessonPlayerOverview = () => {
   }
 
   return (
-    <>
+    <PageContent className={classes('d-flex flex-column', {
+      'mx-n4': embedded
+    })}>
       {showHeader && get(resourceNode, 'poster') &&
         <Poster url={get(resourceNode, 'poster')} className="app-page-poster" />
       }
@@ -72,7 +75,7 @@ const LessonPlayerOverview = () => {
           />
         }
       </PageSection>
-    </>
+    </PageContent>
   )
 }
 

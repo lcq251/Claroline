@@ -15,5 +15,7 @@
     "show_overview": "Afficher la vue \"A propos\"",
     "show_overview_help": "La vue \"A propos\" contient l'image de converture de la ressource, sa description longue ainsi que le sommaire des pages de la Connaissance.",
     "show_navigation": "Afficher la navigation",
-    "show_navigation_help": "Affichez des boutons \"Précédent\" et \"Suivant\" pour naviguer facilement entre les pages."
+    "show_navigation_help": "Affichez des boutons \"Précédent\" et \"Suivant\" pour naviguer facilement entre les pages.",
+    "show_metadata": "Afficher les meta-données des pages",
+    "show_metadata_help": "Affichez le créateur et la date de dernière modification des pages de la Connaissance."
 }

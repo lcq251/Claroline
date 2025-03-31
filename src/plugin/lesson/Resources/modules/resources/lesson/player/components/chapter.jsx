@@ -2,13 +2,14 @@ import React, {useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
+import classes from 'classnames'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {PageHeading, PageSection} from '#/main/app/page'
-import {Content} from '#/main/app/components/content'
+import {hasPermission} from '#/main/app/security'
+import {PageContent, PageHeading, PageHeadingSkeleton, PageSection} from '#/main/app/page'
+import {Content, ContentSkeleton} from '#/main/app/components/content'
 import {Html} from '#/main/app/components/html'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
@@ -18,28 +19,20 @@ import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {MODAL_PAGE_HISTORY} from '#/plugin/lesson/resources/lesson/modals/history'
 import {LessonPlayerNav} from '#/plugin/lesson/resources/lesson/player/components/nav'
-import {hasPermission} from '#/main/app/security'
 import {ContentPublication} from '#/main/app/content/components/publication'
 
 const Chapter = props => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  if (isEmpty(props.chapter)) {
-    return (
-      <ContentLoader
-        size="lg"
-        description={trans('chapter_loading', {}, 'lesson')}
-      />
-    )
-  }
-
   const resourceNode = useSelector(resourceSelectors.resourceNode)
   const canEdit = hasPermission('edit', resourceNode)
   const downloadable = useSelector(resourceSelectors.downloadable)
+  const embedded = useSelector(resourceSelectors.embedded)
 
   const lesson = useSelector(selectors.lesson)
   const showNavigation = useSelector(selectors.showNavigation)
+  const showMeta = useSelector(selectors.showMeta)
   const numbering = useSelector(selectors.numbering)
   const chapterNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
 
@@ -53,8 +46,26 @@ const Chapter = props => {
     })
   }, [lesson.id, props.chapter.slug])
 
+  if (isEmpty(props.chapter)) {
+    return (
+      <PageContent  className={classes('placeholder-glow', {
+        'mx-n4': embedded
+      })}>
+        <PageHeadingSkeleton
+          size="md"
+        />
+
+        <PageSection size="md" className="mb-5">
+          <ContentSkeleton meta={showMeta} />
+        </PageSection>
+      </PageContent>
+    )
+  }
+
   return (
-    <>
+    <PageContent className={classes('d-flex flex-column', {
+      'mx-n4': embedded
+    })}>
       <PageHeading
         size="md"
         poster={props.chapter.poster}
@@ -124,11 +135,12 @@ const Chapter = props => {
       <PageSection size="md" className="pb-5">
         <Content
           placeholder={trans('no_content')}
-          meta={
+          meta={showMeta ?
             <ContentPublication
               user={get(props.chapter, 'meta.creator', {})}
               publishedAt={get(props.chapter, 'meta.createdAt')}
-            />
+            /> :
+            undefined
           }
         >
           {props.chapter.text}
@@ -155,7 +167,7 @@ const Chapter = props => {
           treeData={props.treeData}
         />
       }
-    </>
+    </PageContent>
   )
 }
 

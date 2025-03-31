@@ -26,6 +26,11 @@ const LessonEditorAppearance = () =>
             label: trans('show_navigation', {}, 'lesson'),
             help: trans('show_navigation_help', {}, 'lesson')
           }, {
+            name: 'resource.display.showMeta',
+            type: 'boolean',
+            label: trans('show_metadata', {}, 'lesson'),
+            help: trans('show_metadata_help', {}, 'lesson')
+          }, {
             name: 'resource.display.numbering',
             type: 'choice',
             label: trans('lesson_numbering', {}, 'lesson'),

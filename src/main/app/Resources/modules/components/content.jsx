@@ -4,6 +4,25 @@ import isEmpty from 'lodash/isEmpty'
 
 import {Html} from '#/main/app/components/html'
 import {Tags} from '#/main/app/components/tags'
+import {ContentPublicationSkeleton} from '#/main/app/content/components/publication'
+import {TextSkeleton} from '#/main/app/components/placeholder'
+
+const ContentSkeleton = ({meta}) =>
+  <>
+    {meta &&
+      <div className="mb-4" role="presentation">
+        <ContentPublicationSkeleton />
+      </div>
+    }
+
+    <TextSkeleton className="content-text" rows={4} />
+    <TextSkeleton className="content-text" rows={5} />
+    <TextSkeleton className="content-text" rows={3} />
+  </>
+
+ContentSkeleton.propTypes = {
+  meta: T.bool
+}
 
 const Content = (props) =>
   <>
@@ -38,5 +57,6 @@ Content.defaultProps = {
 }
 
 export {
-  Content
+  Content,
+  ContentSkeleton
 }

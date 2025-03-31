@@ -31,6 +31,7 @@ class LessonSerializer
             'id' => $lesson->getUuid(),
             'display' => [
                 'showOverview' => $lesson->getShowOverview(),
+                'showMeta' => $lesson->getShowMeta(),
                 'numbering' => $lesson->getNumbering(),
                 'navigation' => $lesson->hasNavigation(),
             ],
@@ -47,6 +48,7 @@ class LessonSerializer
 
         $this->sipe('display.description', 'setDescription', $data, $lesson);
         $this->sipe('display.showOverview', 'setShowOverview', $data, $lesson);
+        $this->sipe('display.showMeta', 'setShowMeta', $data, $lesson);
         $this->sipe('display.numbering', 'setNumbering', $data, $lesson);
         $this->sipe('display.navigation', 'setNavigation', $data, $lesson);
 

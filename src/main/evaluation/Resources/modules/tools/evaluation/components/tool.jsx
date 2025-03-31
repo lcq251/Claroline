@@ -26,7 +26,7 @@ const EvaluationTool = (props) => {
   const history = useHistory()
 
   useEffect(() => {
-    if (loaded && !isEmpty(currentSequence)) {
+    if (loaded && !props.canFollow && !isEmpty(currentSequence)) {
       history.push(props.path+'/sequences/'+currentSequence.id)
     }
   }, [loaded])

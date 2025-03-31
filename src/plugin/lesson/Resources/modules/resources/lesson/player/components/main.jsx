@@ -66,9 +66,6 @@ const LessonPlayer = () => {
         </PageAside>
       }
 
-      <PageContent className={classes('d-flex flex-column', {
-        'mx-n4': embedded
-      })}>
         <Routes
           path={resourcePath}
           redirect={[
@@ -97,7 +94,6 @@ const LessonPlayer = () => {
             }
           ]}
         />
-      </PageContent>
     </ResourcePage>
   )
 }

@@ -19,6 +19,12 @@ class Lesson extends AbstractResource
     private bool $showOverview = true;
 
     /**
+     * Show pages meta (creator, last edition date) to users.
+     */
+    #[ORM\Column(name: 'show_meta', type: Types::BOOLEAN, options: ['default' => 1])]
+    private bool $showMeta = true;
+
+    /**
      * Displays Next and Previous button to navigate between pages.
      */
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -42,6 +48,16 @@ class Lesson extends AbstractResource
     public function getShowOverview(): bool
     {
         return $this->showOverview;
+    }
+
+    public function setShowMeta(bool $showMeta): void
+    {
+        $this->showMeta = $showMeta;
+    }
+
+    public function getShowMeta(): bool
+    {
+        return $this->showMeta;
     }
 
     public function hasNavigation(): bool

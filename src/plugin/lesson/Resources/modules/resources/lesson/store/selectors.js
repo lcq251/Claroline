@@ -56,6 +56,11 @@ const showOverview = createSelector(
   (lesson) => get(lesson, 'display.showOverview', false)
 )
 
+const showMeta = createSelector(
+  [lesson],
+  (lesson) => get(lesson, 'display.showMeta', false)
+)
+
 const showNavigation = createSelector(
   [lesson],
   (lesson) => get(lesson, 'display.navigation', false)
@@ -101,6 +106,7 @@ export const selectors = {
   canExport,
   canEdit,
   showOverview,
+  showMeta,
   showNavigation,
   numbering,
   nextPage,

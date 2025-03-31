@@ -10,10 +10,9 @@ import {PageContent, PageHeadingSkeleton, PageSection} from '#/main/app/page'
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
 import {PageHeading} from '#/main/app/page/components/heading'
-import {Content} from '#/main/app/components/content'
+import {Content, ContentSkeleton} from '#/main/app/components/content'
 import {ToolPage} from '#/main/core/tool'
-import {ContentPublication, ContentPublicationSkeleton} from '#/main/app/content/components/publication'
-import {TextSkeleton} from '#/main/app/components/placeholder'
+import {ContentPublication} from '#/main/app/content/components/publication'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()
@@ -30,13 +29,7 @@ const AnnouncementPost = (props) => {
           />
 
           <PageSection size="md" className="mb-5">
-            <div className="mb-4" role="presentation">
-              <ContentPublicationSkeleton />
-            </div>
-
-            <TextSkeleton className="content-text" rows={4} />
-            <TextSkeleton className="content-text" rows={5} />
-            <TextSkeleton className="content-text" rows={3} />
+            <ContentSkeleton meta={true} />
           </PageSection>
         </PageContent>
       }
