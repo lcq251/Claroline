@@ -13,7 +13,7 @@
 
   // styles for bg image
   background-image: url($login-bg-image);
-  background-size: cover;
+  background-size: auto;
   background-repeat: no-repeat;
   background-position: center center;
 }
@@ -21,4 +21,20 @@
 .auth-page-content {
   overflow-y: auto;
   height: 100%;
+}
+
+@media (max-width: map-get($grid-breakpoints, 'lg')) {
+  .auth-page {
+    overflow: auto;
+  }
+
+  .auth-page-brand {
+    max-width: 4rem;
+    max-height: 4rem;
+  }
+
+  .auth-page-content {
+    height: auto;
+    overflow-y: visible;
+  }
 }

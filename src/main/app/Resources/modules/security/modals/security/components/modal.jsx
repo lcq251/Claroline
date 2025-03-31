@@ -38,7 +38,7 @@ const SecurityModal = props => {
       }}
       size="xl"
     >
-      <div className="modal-body d-flex flex-row p-0 position-relative" style={{height: '90vh'}}>
+      <div className="modal-body d-flex flex-column flex-lg-row p-0 position-relative" style={{height: '90vh'}}>
         <CloseButton className="position-absolute top-0 end-0 m-4" onClick={props.fadeModal} />
         <SecurityLayout className="rounded-start-3">
           <Router embedded={true}>

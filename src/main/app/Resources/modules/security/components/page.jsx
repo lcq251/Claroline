@@ -20,7 +20,7 @@ const SecurityPage = (props) => {
 
   return (
     <PageSimple
-      className="auth-page d-flex flex-row"
+      className="auth-page d-flex flex-column flex-lg-row"
       title={props.title + ' | ' + name}
     >
       <SecurityLayout>
@@ -33,7 +33,7 @@ const SecurityPage = (props) => {
           {props.children}
         </div>
 
-        <footer className="content-sm px-4 pb-5 d-flex align-items-center justify-content-center gap-2">
+        <footer className="content-sm px-4 pb-5 d-flex flex-wrap align-items-center justify-content-center gap-2">
           <Button
             className="btn btn-link text-body-secondary"
             type={MODAL_BUTTON}

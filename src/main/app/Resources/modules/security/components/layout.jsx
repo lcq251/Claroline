@@ -15,7 +15,7 @@ const SecurityLayout = ({
 
   return (
     <>
-      <div className={classes('auth-page-col auth-page-meta flex-fill d-flex flex-column align-items-center justify-content-center px-4 py-5 w-50', className)}>
+      <div className={classes('auth-page-col auth-page-meta flex-fill d-flex flex-column align-items-center justify-content-center px-4 py-4 py-lg-5 w-lg-50', className)}>
         {brand &&
           <img
             className="auth-page-brand mb-3 mx-auto"
@@ -24,14 +24,14 @@ const SecurityLayout = ({
           />
         }
 
-        <h1 className="text-center">{name}</h1>
+        <h1 className="text-center mb-0">{name}</h1>
 
         {description &&
-          <p className="content-sm text-center mt-5 lead">{description}</p>
+          <p className="content-sm text-center mt-4 mt-lg-5 lead mb-0">{description}</p>
         }
       </div>
 
-      <div className="auth-page-col auth-page-content flex-fill d-flex flex-column align-items-center justify-content-center w-50">
+      <div className="auth-page-col auth-page-content flex-fill d-flex flex-column align-items-center w-lg-50">
         {children}
       </div>
     </>
