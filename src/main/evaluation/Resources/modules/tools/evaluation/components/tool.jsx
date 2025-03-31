@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {Tool} from '#/main/core/tool'
+import {Tool, selectors as toolSelectors} from '#/main/core/tool'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/components/main'
@@ -19,6 +21,15 @@ const EvaluationTool = (props) => {
   if (!isEmpty(props.assignedSequences) && 1 === props.assignedSequences.length) {
     currentSequence = props.assignedSequences[0]
   }
+
+  const loaded = useSelector(toolSelectors.loaded)
+  const history = useHistory()
+
+  useEffect(() => {
+    if (loaded && !isEmpty(currentSequence)) {
+      history.push(props.path+'/sequences/'+currentSequence.id)
+    }
+  }, [loaded])
 
   return (
     <Tool
