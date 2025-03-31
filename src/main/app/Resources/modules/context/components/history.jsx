@@ -63,7 +63,6 @@ const ContextHistory = (props) => {
         {history
           .sort((a, b) => a.date > b.date ? -1 : 1)
           .map(result => {
-            console.log(result)
             return (
               /*<li key={result.id}>*/
                 <LinkButton

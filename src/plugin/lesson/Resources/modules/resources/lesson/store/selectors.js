@@ -1,9 +1,8 @@
 import {createSelector} from 'reselect'
 import get from 'lodash/get'
 
-import {selectors as resourceSelect} from '#/main/core/resource/store'
-import {hasPermission} from '#/main/app/security'
-import {flattenPages} from '#/plugin/lesson/resources/lesson/utils'
+import {flattenPages, getNumbering} from '#/plugin/lesson/resources/lesson/utils'
+import {trans} from '#/main/app/intl'
 
 const STORE_NAME = 'icap_lesson'
 const LIST_NAME = STORE_NAME + '.chapters'
@@ -15,6 +14,11 @@ const store = (state) => state[STORE_NAME]
 const lesson = createSelector(
   [store],
   (store) => store.resource
+)
+
+const placeholders = createSelector(
+  [store],
+  (store) => store.placeholders
 )
 
 const chapter = createSelector(
@@ -41,15 +45,6 @@ const pages = createSelector(
   [treeData],
   (treeData) => flattenPages(get(treeData, 'children', []))
 )
-
-const treeInvalidated = createSelector(
-  [tree],
-  (tree) => tree.invalidated
-)
-
-const canExport = (state) => hasPermission('export', resourceSelect.resourceNode(state))
-
-const canEdit = (state) => hasPermission('edit', resourceSelect.resourceNode(state))
 
 const showOverview = createSelector(
   [lesson],
@@ -82,11 +77,61 @@ const nextPage = createSelector(
   }
 )
 
+const nextPath = createSelector(
+  [nextPage],
+  (nextPage) => nextPage ? '/'+nextPage.slug : null
+)
+
+const nextTitle = createSelector(
+  [nextPage, numbering, treeData],
+  (nextPage, numbering, treeData) => {
+    if (nextPage) {
+      const nextNumbering = getNumbering(numbering, treeData.children, nextPage)
+
+      return nextNumbering ?
+        nextNumbering + ' ' + nextPage.title :
+        nextPage.title
+    }
+
+    return null
+  }
+)
+
 const previousPage = createSelector(
   [chapter, pages],
   (current, pages) => {
     if (current.previousSlug) {
       return pages.find(page => page.slug === current.previousSlug)
+    }
+
+    return null
+  }
+)
+
+const previousPath = createSelector(
+  [previousPage, showOverview],
+  (previousPage, showOverview) => {
+    if (previousPage) {
+      return '/'+previousPage.slug
+    } else if (showOverview) {
+      return '/'
+    }
+
+    return null
+  }
+)
+
+const previousTitle = createSelector(
+  [previousPage, numbering, showOverview, treeData],
+  (previousPage, numbering, showOverview, treeData) => {
+    if (previousPage) {
+      const previousNumbering = getNumbering(numbering, treeData.children, previousPage)
+
+      return previousNumbering ?
+        previousNumbering + ' ' + previousPage.title :
+        previousPage.title
+    } else if (showOverview) {
+      return trans('resource_overview', {}, 'resource')
     }
 
     return null
@@ -99,16 +144,18 @@ export const selectors = {
   CHAPTER_EDIT_FORM_NAME,
 
   lesson,
+  placeholders,
   chapter,
   root,
   treeData,
-  treeInvalidated,
-  canExport,
-  canEdit,
   showOverview,
   showMeta,
   showNavigation,
   numbering,
   nextPage,
-  previousPage
+  nextTitle,
+  nextPath,
+  previousPage,
+  previousTitle,
+  previousPath
 }

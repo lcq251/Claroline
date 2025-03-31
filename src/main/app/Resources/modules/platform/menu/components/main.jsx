@@ -70,7 +70,6 @@ const AllContexts = () => {
 const PlatformMenu = (props) => {
   const size = useSize()
   const vertical = ![constants.SIZE_XS, constants.SIZE_SM].includes(size)
-  console.log(size)
 
   let pinnedContexts = [].concat(props.favoriteContexts)
   if (!isEmpty(props.currentContext) && 'workspace' === props.currentContextType) {

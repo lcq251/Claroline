@@ -50,7 +50,6 @@ const CreationUrl = (props) => {
           disabled={isEmpty(newNode.url)}
           callback={() => {
             props.fromUrl(newNode.url).then((response) => {
-              console.log(response)
               props.startCreation(
                 get(response, 'meta.type'),
                 merge({meta: {published: true}}, response),

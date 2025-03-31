@@ -9,6 +9,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
+use Claroline\CoreBundle\Manager\Template\PlaceholderManager;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
@@ -19,6 +20,7 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
+        private readonly PlaceholderManager $placeholderManager,
         private readonly ChapterManager $chapterManager
     ) {
     }
@@ -34,6 +36,7 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
         return [
             'resource' => $this->serializer->serialize($resource),
             'tree' => $this->chapterManager->serializeChapterTree($resource),
+            'placeholders' => $this->placeholderManager->getAvailablePlaceholders(),
         ];
     }
 

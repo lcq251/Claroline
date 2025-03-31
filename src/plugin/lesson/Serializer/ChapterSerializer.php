@@ -8,6 +8,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
+use Claroline\CoreBundle\Manager\Template\PlaceholderManager;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Repository\ChapterRepository;
 
@@ -21,6 +22,7 @@ class ChapterSerializer
 
     public function __construct(
         private readonly ObjectManager $om,
+        private readonly PlaceholderManager $placeholderManager,
         private readonly UserSerializer $userSerializer
     ) {
         $this->chapterRepository = $om->getRepository(Chapter::class);
@@ -67,7 +69,8 @@ class ChapterSerializer
             'slug' => $chapter->getSlug(),
             'title' => $chapter->getTitle(),
             'poster' => $chapter->getPoster(),
-            'text' => $chapter->getText(),
+            'contentRaw' => $chapter->getText(),
+            'content' => $this->placeholderManager->replacePlaceholders($chapter->getText() ?? ''),
             'meta' => [
                 'createdAt' => DateNormalizer::normalize($chapter->getCreatedAt()),
                 'updatedAt' => DateNormalizer::normalize($chapter->getUpdatedAt()),
@@ -103,7 +106,7 @@ class ChapterSerializer
         }
 
         $this->sipe('title', 'setTitle', $data, $chapter);
-        $this->sipe('text', 'setText', $data, $chapter);
+        $this->sipe('contentRaw', 'setText', $data, $chapter);
         $this->sipe('customNumbering', 'setCustomNumbering', $data, $chapter);
         $this->sipe('poster', 'setPoster', $data, $chapter);
         $this->sipe('internalNote', 'setInternalNote', $data, $chapter);

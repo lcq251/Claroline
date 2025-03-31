@@ -18,7 +18,7 @@ import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-typ
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {MODAL_PAGE_HISTORY} from '#/plugin/lesson/resources/lesson/modals/history'
-import {LessonPlayerNav} from '#/plugin/lesson/resources/lesson/player/components/nav'
+import {LessonPlayerNav, LessonPlayerNavSkeleton} from '#/plugin/lesson/resources/lesson/player/components/nav'
 import {ContentPublication} from '#/main/app/content/components/publication'
 
 const Chapter = props => {
@@ -48,7 +48,7 @@ const Chapter = props => {
 
   if (isEmpty(props.chapter)) {
     return (
-      <PageContent  className={classes('placeholder-glow', {
+      <PageContent  className={classes('placeholder-glow d-flex flex-column', {
         'mx-n4': embedded
       })}>
         <PageHeadingSkeleton
@@ -58,6 +58,10 @@ const Chapter = props => {
         <PageSection size="md" className="mb-5">
           <ContentSkeleton meta={showMeta} />
         </PageSection>
+
+        {showNavigation &&
+          <LessonPlayerNavSkeleton />
+        }
       </PageContent>
     )
   }
@@ -143,7 +147,7 @@ const Chapter = props => {
             undefined
           }
         >
-          {props.chapter.text}
+          {props.chapter.content}
         </Content>
       </PageSection>
 
@@ -164,7 +168,6 @@ const Chapter = props => {
       {showNavigation &&
         <LessonPlayerNav
           path={props.path}
-          treeData={props.treeData}
         />
       }
     </PageContent>

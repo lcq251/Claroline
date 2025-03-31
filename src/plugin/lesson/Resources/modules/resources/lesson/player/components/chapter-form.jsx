@@ -20,8 +20,7 @@ const ChapterFormComponent = props =>
     'mx-n4': props.embedded
   })}>
     <FormData
-      className="my-5 px-4"
-      id={`chapter-${props.id}`}
+      className="my-5 px-4 flex-fill"
       level={3}
       displayLevel={2}
       name={selectors.CHAPTER_EDIT_FORM_NAME}
@@ -58,13 +57,17 @@ const ChapterFormComponent = props =>
               required: true,
               label: trans('title')
             }, {
-              name: 'text',
+              name: 'contentRaw',
               type: 'html',
               label: trans('content'),
               recommended: true,
               options: {
                 workspace: props.workspace,
-                minRows: 10
+                minRows: 10,
+                config: {
+                  plugins: ['placeholders'],
+                  placeholders: props.placeholders
+                }
               }
             }, {
               name: '_internalNote',
@@ -99,6 +102,7 @@ const ChapterForm = withRouter(connect(
     embedded: resourceSelectors.embedded(state),
     lesson: selectors.lesson(state),
     chapter: selectors.chapter(state),
+    placeholders: selectors.placeholders(state),
     internalNotes: hasPermission('view_internal_notes', resourceSelectors.resourceNode(state)),
     isNew: formSelectors.isNew(formSelectors.form(state, selectors.CHAPTER_EDIT_FORM_NAME)),
     slug: formSelectors.data(formSelectors.form(state, selectors.CHAPTER_EDIT_FORM_NAME)).slug || null,
