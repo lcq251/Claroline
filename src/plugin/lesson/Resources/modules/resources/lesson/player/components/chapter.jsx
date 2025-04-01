@@ -67,7 +67,7 @@ const Chapter = props => {
   }
 
   return (
-    <PageContent className={classes('d-flex flex-column', {
+    <PageContent className={classes('d-flex flex-column w-100', {
       'mx-n4': embedded
     })}>
       <PageHeading

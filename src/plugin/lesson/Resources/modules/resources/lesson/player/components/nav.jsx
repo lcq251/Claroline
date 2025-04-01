@@ -13,8 +13,6 @@ const LessonPlayerNavSkeleton = () => {
       <span
         className="btn btn-text-body focus-ring w-50 text-start d-flex flex-row align-items-center gap-4 justify-content-start"
       >
-        {/*<span className="fa fa-chevron-left fs-lg text-body-tertiary" aria-hidden={true} />*/}
-
         <div className="d-flex flex-column overflow-hidden flex-fill align-items-start gap-1" role="presentation">
           <b className="placeholder rounded-1">{trans('previous')}</b>
           <span className="text-truncate fs-sm placeholder rounded-1 w-75" role="presentation" />
@@ -28,8 +26,6 @@ const LessonPlayerNavSkeleton = () => {
           <b className="placeholder rounded-1">{trans('next')}</b>
           <span className="text-truncate fs-sm placeholder rounded-1 w-75" role="presentation" />
         </div>
-
-        {/*<span className="fa fa-chevron-right fs-lg text-body-tertiary" aria-hidden={true} />*/}
       </span>
     </nav>
   )
@@ -55,7 +51,7 @@ const LessonPlayerNav = (props) => {
 
             <div className="d-flex flex-column overflow-hidden flex-fill align-items-start" role="presentation">
               <b>{trans('previous')}</b>
-              <span className="text-truncate fs-sm" role="presentation">
+              <span className="text-truncate fs-sm w-100" role="presentation">
                 {previousTitle}
               </span>
             </div>
@@ -69,7 +65,7 @@ const LessonPlayerNav = (props) => {
           >
             <div className="d-flex flex-column overflow-hidden flex-fill align-items-end" role="presentation">
               <b>{trans('next')}</b>
-              <span className="text-truncate fs-sm" role="presentation">
+              <span className="text-truncate fs-sm w-100" role="presentation">
                 {nextTitle}
               </span>
             </div>
