@@ -113,7 +113,7 @@ class PeerTubeManager
     private function downloadThumbnail(string $server, string $uuid): ?string
     {
         $response = $this->getVideoInfo($server, $uuid);
-        if (empty($response) || empty($result['thumbnailPath'])) {
+        if (empty($response) || empty($response['thumbnailPath'])) {
             return null;
         }
 
