@@ -97,6 +97,16 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
 
     public function fromUrl(string $url): ?array
     {
+        $peertube = $this->peerTubeManager->extractUrlParts($url);
+        if (!empty($peertube)) {
+            $info = $this->peerTubeManager->getVideoInfo($peertube['server'], $peertube['shortUuid']);
+            if (!empty($info)) {
+                return [
+                    'name' => $info['name'],
+                ];
+            }
+        }
+
         return [];
     }
 }

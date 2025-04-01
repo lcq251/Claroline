@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CurlManager
 {
-    public function exec(string $url, mixed $payload = null, string $type = 'GET', ?array $options = [], bool $autoClose = true, \CurlHandle &$ch = null): mixed
+    public function exec(string $url, mixed $payload = null, string $type = 'GET', ?array $options = [], bool $autoClose = true, \CurlHandle &$ch = null): bool|string
     {
         $options[CURLOPT_RETURNTRANSFER] = true;
 

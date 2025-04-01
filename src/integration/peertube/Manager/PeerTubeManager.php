@@ -15,21 +15,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PeerTubeManager
 {
-    private CurlManager $curlManager;
-    private FileManager $fileManager;
-    private Crud $crud;
-    private ObjectManager $om;
-
     public function __construct(
-        CurlManager $curlManager,
-        FileManager $fileManager,
-        Crud $crud,
-        ObjectManager $om
+        private readonly CurlManager $curlManager,
+        private readonly FileManager $fileManager,
+        private readonly Crud $crud,
+        private readonly ObjectManager $om
     ) {
-        $this->curlManager = $curlManager;
-        $this->fileManager = $fileManager;
-        $this->crud = $crud;
-        $this->om = $om;
     }
 
     public function checkUrl(string $url): ?string
@@ -41,14 +32,13 @@ class PeerTubeManager
         }
 
         // Call PeerTube API to know if the ID exists and is accessible
-        $uuid = null;
         try {
             $uuid = $this->getVideoUuid($urlParts['server'], $urlParts['shortUuid']);
         } catch (AccessDeniedException $e) {
             // the video requires authentication to be fetched
             return 'You do not have the right to access this video.';
         } catch (NotFoundHttpException $e) {
-            // the url doesn't not exists
+            // the url doesn't exist
             return 'This video does not exist.';
         }
 
@@ -79,19 +69,25 @@ class PeerTubeManager
         return [];
     }
 
+    public function getVideoInfo(string $server, string $shortUuid): ?array
+    {
+        $response = $this->curlManager->exec($server.'/api/v1/videos/'.$shortUuid, null, 'GET', [
+            CURLOPT_SSL_VERIFYPEER => 0,
+        ]);
+
+        if (!empty($response)) {
+            return json_decode($response, true);
+        }
+
+        return null;
+    }
+
     public function getVideoUuid(string $server, string $shortUuid): ?string
     {
-        $response = $this->curlManager->exec($server.'/api/v1/videos/'.$shortUuid);
-        if (!empty($response)) {
-            $result = json_decode($response, true);
-            if (null === $result) {
-                // not a json
-                return null;
-            }
+        $response = $this->getVideoInfo($server, $shortUuid);
 
-            if (!empty($result['uuid'])) {
-                return $result['uuid'];
-            }
+        if (!empty($response) && !empty($response['uuid'])) {
+            return $response['uuid'];
         }
 
         return null;
@@ -114,29 +110,17 @@ class PeerTubeManager
         }
     }
 
-    public function getThumbnailUrl(string $server, string $uuid): ?string
+    private function downloadThumbnail(string $server, string $uuid): ?string
     {
-        $response = $this->curlManager->exec($server.'/api/v1/videos/'.$uuid);
-        if (!empty($response)) {
-            $result = json_decode($response, true);
-            if (null !== $result && !empty($result['thumbnailPath'])) {
-                return $server.$result['thumbnailPath'];
-            }
-        }
-
-        return null;
-    }
-
-    public function downloadThumbnail(string $server, string $uuid): ?string
-    {
-        $thumbnailUrl = $this->getThumbnailUrl($server, $uuid);
-
-        if (!$thumbnailUrl) {
+        $response = $this->getVideoInfo($server, $uuid);
+        if (empty($response) || empty($result['thumbnailPath'])) {
             return null;
         }
 
         try {
-            $thumbnailFile = $this->curlManager->exec($thumbnailUrl);
+            $thumbnailFile = $this->curlManager->exec($server.$response['thumbnailPath'], null, 'GET', [
+                CURLOPT_SSL_VERIFYPEER => 0,
+            ]);
         } catch (\Exception) {
             return null;
         }
@@ -144,7 +128,7 @@ class PeerTubeManager
         return $thumbnailFile;
     }
 
-    public function getTemporaryThumbnailFile(string $url): ?UploadedFile
+    private function getTemporaryThumbnailFile(string $url): ?UploadedFile
     {
         $urlParts = $this->extractUrlParts($url);
         if (empty($urlParts)) {
