@@ -12,7 +12,7 @@
 namespace Claroline\CommunityBundle\Security\Voter\CurrentUser;
 
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Manager\Organization\OrganizationManager;
+use Claroline\CoreBundle\Manager\OrganizationManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

@@ -20,7 +20,7 @@ use Claroline\CoreBundle\Event\Security\AddRoleEvent;
 use Claroline\CoreBundle\Event\Security\RemoveRoleEvent;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
-use Claroline\CoreBundle\Manager\Organization\OrganizationManager;
+use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\CoreBundle\Manager\RoleManager;
 use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

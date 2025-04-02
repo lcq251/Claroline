@@ -4,6 +4,7 @@ namespace Claroline\CoreBundle\Installation\Updater;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
+use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\InstallationBundle\Updater\Helper\RemovePluginTrait;
 use Claroline\InstallationBundle\Updater\Helper\RemoveToolTrait;
 use Claroline\InstallationBundle\Updater\Updater;
@@ -17,6 +18,7 @@ class Updater150000 extends Updater
     public function __construct(
         private readonly Connection $connection,
         private readonly ObjectManager $om,
+        private readonly OrganizationManager $organizationManager,
         private readonly PlatformConfigurationHandler $config
     ) {
     }
@@ -28,6 +30,8 @@ class Updater150000 extends Updater
         $this->removeAccountContext();
 
         $this->removeTool('connection_messages');
+
+        $this->linkWorkspacesToOrganizations();
     }
 
     private function updateConfig(): void
@@ -58,5 +62,21 @@ class Updater150000 extends Updater
             'DELETE FROM claro_ordered_tool WHERE context_name = "account"'
         );
         $deleteTool->executeQuery();
+    }
+
+    private function linkWorkspacesToOrganizations(): void
+    {
+        $organization = $this->organizationManager->getDefault(true);
+
+        $updateQuery = $this->connection->prepare('
+            INSERT INTO workspace_organization (workspace_id, organization_id)
+            SELECT w.id AS workspace_id, :default_organization_id AS organization_id
+            FROM claro_workspace AS w 
+            LEFT JOIN workspace_organization AS wo ON w.id = wo.workspace_id 
+            WHERE wo.organization_id IS NULL
+        ');
+
+        $updateQuery->bindValue('default_organization_id', $organization->getId());
+        $updateQuery->executeQuery();
     }
 }

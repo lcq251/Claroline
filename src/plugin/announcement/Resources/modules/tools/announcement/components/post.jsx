@@ -5,14 +5,13 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {PageContent, PageHeadingSkeleton, PageSection} from '#/main/app/page'
+import {PageContent, PageHeading, PageHeadingSkeleton, PageSection} from '#/main/app/page'
+import {Content, ContentSkeleton} from '#/main/app/components/content'
+import {ContentPublication} from '#/main/app/content/components/publication'
+import {ToolPage} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
-import {PageHeading} from '#/main/app/page/components/heading'
-import {Content, ContentSkeleton} from '#/main/app/components/content'
-import {ToolPage} from '#/main/core/tool'
-import {ContentPublication} from '#/main/app/content/components/publication'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()

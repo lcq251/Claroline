@@ -196,12 +196,12 @@ services:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
-    Claroline\CoreBundle\Manager\Organization\OrganizationManager:
+    Claroline\CoreBundle\Manager\OrganizationManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     claroline.manager.organization_manager:
-        alias: Claroline\CoreBundle\Manager\Organization\OrganizationManager
+        alias: Claroline\CoreBundle\Manager\OrganizationManager
         public: true
 
     Claroline\CoreBundle\Manager\LocationManager: ~

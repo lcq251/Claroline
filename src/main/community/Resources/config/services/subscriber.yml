@@ -47,7 +47,7 @@ services:
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\CoreBundle\Manager\RoleManager'
             - '@Claroline\CommunityBundle\Manager\MailManager'
-            - '@Claroline\CoreBundle\Manager\Organization\OrganizationManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
 
     Claroline\CommunityBundle\Subscriber\DataSource\UserSourceSubscriber:

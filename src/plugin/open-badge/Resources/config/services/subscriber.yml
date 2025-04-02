@@ -5,7 +5,7 @@ services:
     Claroline\OpenBadgeBundle\Subscriber\Crud\BadgeClassSubscriber:
         arguments:
             - '@security.token_storage'
-            - '@Claroline\CoreBundle\Manager\Organization\OrganizationManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
 
     Claroline\OpenBadgeBundle\Subscriber\Crud\WorkspaceSubscriber:

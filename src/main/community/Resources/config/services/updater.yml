@@ -2,4 +2,6 @@ services:
     Claroline\CommunityBundle\Installation\Updater\Updater150000:
         tags: [ 'claroline.platform.updater' ]
         arguments:
+            - '@doctrine.dbal.default_connection'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'

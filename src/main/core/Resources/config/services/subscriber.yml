@@ -47,7 +47,7 @@ services:
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
             - '@Claroline\CoreBundle\Manager\ResourceManager'
-            - '@Claroline\CoreBundle\Manager\Organization\OrganizationManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\CoreBundle\Manager\Workspace\TransferManager'
 

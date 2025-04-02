@@ -11,7 +11,7 @@
 
 namespace Claroline\CoreBundle\Installation\DataFixtures;
 
-use Claroline\CoreBundle\Manager\Organization\OrganizationManager;
+use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\InstallationBundle\Fixtures\PreInstallInterface;
 use Claroline\InstallationBundle\Fixtures\PreUpdateInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;

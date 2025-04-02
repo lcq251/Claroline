@@ -17,13 +17,13 @@ services:
         tags:
             - { name: security.voter , priority: 245 }
         arguments:
-            - '@Claroline\CoreBundle\Manager\Organization\OrganizationManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
 
     Claroline\CommunityBundle\Security\Voter\CurrentUser\OrganizationManagerVoter:
         tags:
             - { name: security.voter , priority: 240 }
         arguments:
-            - '@Claroline\CoreBundle\Manager\Organization\OrganizationManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
 
     Claroline\CommunityBundle\Security\Voter\CurrentUser\UserSwitchVoter:
         tags: [ security.voter ]

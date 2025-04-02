@@ -8,7 +8,7 @@ use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Manager\FileManager;
-use Claroline\CoreBundle\Manager\Organization\OrganizationManager;
+use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

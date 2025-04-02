@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Manager\Organization;
+namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Organization\Organization;
@@ -17,11 +17,9 @@ use Claroline\CoreBundle\Entity\User;
 
 class OrganizationManager
 {
-    private ObjectManager $om;
-
-    public function __construct(ObjectManager $om)
-    {
-        $this->om = $om;
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
     }
 
     /**
@@ -58,7 +56,7 @@ class OrganizationManager
         return false;
     }
 
-    public function getDefault($createIfEmpty = false)
+    public function getDefault(?bool $createIfEmpty = false): ?Organization
     {
         $defaultOrganization = $this->om
             ->getRepository(Organization::class)
@@ -71,7 +69,7 @@ class OrganizationManager
         return $defaultOrganization;
     }
 
-    public function createDefault($force = false)
+    private function createDefault(?bool $force = false): ?Organization
     {
         $default = $this->getDefault();
         if (!$force && $default) {
