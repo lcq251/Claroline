@@ -8,4 +8,5 @@ services:
 
     Claroline\CursusBundle\Installation\Updater\Updater150000:
         arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@doctrine.dbal.default_connection'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
