@@ -20,13 +20,12 @@ use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
-use Claroline\AppBundle\Entity\Restriction\Locked;
 use Claroline\CommunityBundle\Finder\GroupType;
-use Claroline\CommunityBundle\Model\HasOrganizations;
 use Claroline\CommunityBundle\Repository\GroupRepository;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_group')]
@@ -43,21 +42,23 @@ class Group extends AbstractRoleSubject implements CrudEntityInterface
     use Description;
     use Poster;
     use Thumbnail;
-    use Locked;
-    use HasOrganizations;
+
+    /**
+     * If true, the Group will contain all the Users of the Organization.
+     */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $everyone = false;
 
     /**
      * @var Collection<int, Role>
      */
-    #[ORM\JoinTable(name: 'claro_group_role')]
     #[ORM\ManyToMany(targetEntity: Role::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinTable(name: 'claro_group_role')]
     protected Collection $roles;
 
-    /**
-     * @var Collection<int, Organization>
-     */
-    #[ORM\ManyToMany(targetEntity: Organization::class, fetch: 'EXTRA_LAZY')]
-    private Collection $organizations;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private ?Organization $organization = null;
 
     public function __construct()
     {
@@ -65,7 +66,6 @@ class Group extends AbstractRoleSubject implements CrudEntityInterface
 
         $this->refreshUuid();
 
-        $this->organizations = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
 
@@ -79,14 +79,40 @@ class Group extends AbstractRoleSubject implements CrudEntityInterface
         return $this->name;
     }
 
+    public function hasEveryone(): bool
+    {
+        return $this->everyone;
+    }
+
+    public function setEveryone(bool $everyone): void
+    {
+        $this->everyone = $everyone;
+    }
+
+    /**
+     * For security {@see OrganizationMemberVoter} and {@see OrganizationManagerVoter}.
+     */
+    public function getOrganizations(): array
+    {
+        return [$this->organization];
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(Organization $organization): void
+    {
+        $this->organization = $organization;
+    }
+
     /**
      * @deprecated no replacement. Required by TransferFeature and GroupController::HasUsersTrait.
      */
     public function addUser(User $user): void
     {
-        if (!$user->getGroups()->contains($this)) {
-            $user->getGroups()->add($this);
-        }
+        $user->addGroup($this);
     }
 
     /**
@@ -94,6 +120,6 @@ class Group extends AbstractRoleSubject implements CrudEntityInterface
      */
     public function removeUser(User $user): void
     {
-        $user->getGroups()->removeElement($this);
+        $user->removeGroup($this);
     }
 }

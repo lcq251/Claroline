@@ -54,7 +54,7 @@ const DescriptionList = ({
         }
 
         return (
-          <div className={classes('border-bottom py-3', {
+          <div key={field.name} className={classes('border-bottom py-3', {
             'd-flex flex-row align-items-start gap-3': inline
           })} role="presentation">
             <dt className={classes('form-label', {

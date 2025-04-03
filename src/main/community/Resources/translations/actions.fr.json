@@ -1,8 +1,10 @@
 {
   "add_group": "Ajouter un groupe",
   "add_groups": "Ajouter des groupes",
+  "save_group": "Enregistrer le groupe",
   "add_role": "Ajouter un rôle",
   "add_roles": "Ajouter des rôles",
+  "save_role": "Enregistrer le rôle",
   "add_user": "Ajouter un utilisateur",
   "add_users": "Ajouter des utilisateurs",
   "add_organization": "Ajouter une organisation",

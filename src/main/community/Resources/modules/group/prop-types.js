@@ -7,8 +7,8 @@ const Group = {
     thumbnail: T.string,
     poster: T.string,
     meta: T.shape({
-      description: T.string,
-      readOnly: T.bool
+      everyone: T.bool,
+      description: T.string
     }),
     permissions: T.shape({
       open: T.bool,

@@ -82,9 +82,11 @@ const HelpMenu = (props) => {
           {get(currentOrganization, 'name')}
         </h2>
 
-        <Html className="text-body-secondary mb-3">
-          {get(currentOrganization, 'meta.description')}
-        </Html>
+        {get(currentOrganization, 'meta.description') &&
+          <Html className="text-body-secondary mb-3">
+            {get(currentOrganization, 'meta.description')}
+          </Html>
+        }
 
         <Contact
           className="mb-4"

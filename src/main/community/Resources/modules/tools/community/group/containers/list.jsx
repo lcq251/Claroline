@@ -17,6 +17,9 @@ const GroupList = connect(
     canEdit: hasPermission('edit', toolSelectors.toolData(state))
   }),
   dispatch => ({
+    invalidateList() {
+      dispatch(listActions.invalidateData(selectors.LIST_NAME))
+    },
     unregisterGroups(groups, workspace) {
       dispatch(actions.unregisterGroups(groups, workspace))
     },

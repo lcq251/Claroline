@@ -14,17 +14,17 @@ namespace Claroline\CommunityBundle\Messenger\Message;
 use Claroline\AppBundle\Messenger\Message\AsyncLowMessageInterface;
 
 /**
- * Disable all users which have not logged in since the selected date.
+ * Adds all the organization users to the group.
  */
-class DisableInactiveUsers implements AsyncLowMessageInterface
+class AddEveryoneToGroup implements AsyncLowMessageInterface
 {
     public function __construct(
-        private readonly \DateTimeInterface $lastActivity
+        private readonly int $groupId,
     ) {
     }
 
-    public function getLastActivity(): \DateTimeInterface
+    public function getGroupId(): int
     {
-        return $this->lastActivity;
+        return $this->groupId;
     }
 }

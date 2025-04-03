@@ -1,10 +1,10 @@
 import {trans} from '#/main/app/intl/translation'
 import {url} from '#/main/app/api'
-
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
 
-export default (role, refresher) => ({
+export default (roles, refresher) => ({
   name: 'add-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-users',
@@ -13,14 +13,14 @@ export default (role, refresher) => ({
     selectAction: (groups) => ({
       type: ASYNC_BUTTON,
       request: {
-        url: url(['apiv2_role_add_groups', {id: role[0].id}], {ids: groups.map(group => group.id)}),
+        url: url(['apiv2_role_add_groups', {id: roles[0].id}], {ids: groups.map(group => group.id)}),
         request: {
           method: 'PATCH'
         },
-        success: () => refresher.update(role)
+        success: () => refresher.update(roles[0])
       }
     })
   }],
   group: trans('registration'),
-  scope: ['object', 'collection']
+  scope: ['object']
 })

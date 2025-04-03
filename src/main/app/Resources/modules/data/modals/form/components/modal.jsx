@@ -13,8 +13,9 @@ import {
   FormData,
   makeFormReducer,
   actions as formActions,
-  selectors as formSelectors
+  selectors as formSelectors, Form
 } from '#/main/app/content/form'
+import {FormContent} from '#/main/app/content/form/containers/content'
 
 const FormModal = (props) => {
   // append form reducer to the store if not already mounted
@@ -57,11 +58,21 @@ const FormModal = (props) => {
       closeButton={false}
       backdrop={hasPendingChanges ? 'static' : true}
     >
-      <FormData
-        flush={true}
+      <Form
+        className="overflow-hidden"
         name={props.name}
-        definition={props.definition}
+        level={2}
+        displayLevel={5}
       >
+        <div className="modal-body">
+          <FormContent
+            name={props.name}
+            level={2}
+            displayLevel={5}
+            definition={props.definition}
+          />
+        </div>
+
         <div
           className="modal-footer flex-sm-nowrap gap-2"
           role="toolbar"
@@ -129,7 +140,7 @@ const FormModal = (props) => {
             </CallbackButton>
           </div>
         </div>
-      </FormData>
+      </Form>
     </Modal>
   )
 }

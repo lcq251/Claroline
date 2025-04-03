@@ -1,4 +1,10 @@
 services:
+    Claroline\CommunityBundle\Messenger\AddEveryoneToGroupHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
+
     Claroline\CommunityBundle\Messenger\DisableInactiveUsersHandler:
         tags: [messenger.message_handler]
         arguments:

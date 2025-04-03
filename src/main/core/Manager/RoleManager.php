@@ -13,7 +13,6 @@ namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\RoleRepository;
-use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -45,35 +44,20 @@ class RoleManager
         return $role;
     }
 
-    /**
-     * @deprecated use CRUD instead
-     */
-    public function createBaseRole(string $name, string $translationKey, bool $isReadOnly = true, bool $makeGroup = false): Role
+    public function createBaseRole(string $name, string $translationKey, bool $isReadOnly = true): Role
     {
         $role = new Role();
         $role->setName($name);
         $role->setTranslationKey($translationKey);
         $role->setLocked($isReadOnly);
         $role->setType(Role::PLATFORM);
+
         $this->om->persist($role);
-
-        if ($makeGroup) {
-            $group = new Group();
-            $group->setName($name);
-            $group->setCode($name);
-            $group->setLocked($isReadOnly);
-            $group->addRole($role);
-            $this->om->persist($group);
-        }
-
         $this->om->flush();
 
         return $role;
     }
 
-    /**
-     * @deprecated use CRUD instead
-     */
     public function createUserRole(User $user): Role
     {
         $username = $user->getUsername();
@@ -131,7 +115,7 @@ class RoleManager
         ]);
     }
 
-    public function getUserRole($username): ?Role
+    public function getUserRole(string $username): ?Role
     {
         return $this->roleRepo->findUserRoleByUsername($username);
     }

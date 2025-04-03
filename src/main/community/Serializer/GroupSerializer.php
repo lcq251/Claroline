@@ -38,9 +38,6 @@ class GroupSerializer
         return '#/main/core/group';
     }
 
-    /**
-     * Serializes a Group entity.
-     */
     public function serialize(Group $group, array $options = []): array
     {
         if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
@@ -49,6 +46,7 @@ class GroupSerializer
                 'name' => $group->getName(),
                 'thumbnail' => $group->getThumbnail(),
                 'meta' => [
+                    'everyone' => $group->hasEveryone(),
                     'description' => $group->getDescription(),
                 ],
             ];
@@ -62,8 +60,8 @@ class GroupSerializer
             'thumbnail' => $group->getThumbnail(),
             'poster' => $group->getPoster(),
             'meta' => [
+                'everyone' => $group->hasEveryone(),
                 'description' => $group->getDescription(),
-                'readOnly' => $group->isLocked(),
             ],
             'roles' => array_map(function (Role $role) {
                 return $this->roleSerializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]);
@@ -83,15 +81,13 @@ class GroupSerializer
         return $serialized;
     }
 
-    /**
-     * Deserializes data into a Group entity.
-     */
     public function deserialize(array $data, Group $group): Group
     {
         $this->sipe('name', 'setName', $data, $group);
         $this->sipe('code', 'setCode', $data, $group);
         $this->sipe('poster', 'setPoster', $data, $group);
         $this->sipe('thumbnail', 'setThumbnail', $data, $group);
+        $this->sipe('meta.everyone', 'setEveryone', $data, $group);
         $this->sipe('meta.description', 'setDescription', $data, $group);
 
         return $group;

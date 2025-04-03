@@ -74,11 +74,6 @@ final class UserSubscriber implements EventSubscriberInterface
         // add default roles and groups
         $this->roleManager->createUserRole($user);
 
-        $groupUser = $this->om->getRepository(Group::class)->findOneBy(['name' => PlatformRoles::USER]);
-        if ($groupUser) {
-            $user->addGroup($groupUser);
-        }
-
         $defaultRole = $this->config->getParameter('registration.default_role') ?? PlatformRoles::USER;
         $roleUser = $this->roleManager->getRoleByName($defaultRole);
         if ($roleUser) {
@@ -99,6 +94,17 @@ final class UserSubscriber implements EventSubscriberInterface
                 $user->setMainOrganization($token->getUser()->getMainOrganization());
             } else {
                 $user->setMainOrganization($this->organizationManager->getDefault());
+            }
+        }
+
+        $everyoneGroups = $this->om->getRepository(Group::class)->findBy([
+            'everyone' => true,
+            'organizations' => $user->getOrganizations(),
+        ]);
+
+        if (!empty($everyoneGroups)) {
+            foreach ($everyoneGroups as $group) {
+                $user->addGroup($group);
             }
         }
     }

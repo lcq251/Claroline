@@ -43,7 +43,7 @@ class PlatformRolesData extends AbstractFixture implements PreInstallInterface, 
     public function load(ObjectManager $manager): void
     {
         if (!$this->roleManager->getRoleByName(PlatformRoles::USER)) {
-            $this->roleManager->createBaseRole(PlatformRoles::USER, 'user', true, true);
+            $this->roleManager->createBaseRole(PlatformRoles::USER, 'user');
         }
 
         if (!$this->roleManager->getRoleByName(PlatformRoles::WS_CREATOR)) {

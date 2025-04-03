@@ -33,7 +33,7 @@ const FormSave = (props) => {
           <Button
             {...props.save}
             className="btn btn-link flex-shrink-0 px-3"
-            label={trans('save', {}, 'actions')}
+            label={trans('save_and_close', {}, 'actions')}
             type={CALLBACK_BUTTON}
             size="sm"
             data-bs-theme="dark"
@@ -47,7 +47,7 @@ const FormSave = (props) => {
             className={classes('btn btn-primary flex-shrink-0 px-3', {
               'btn-wave': saveEnabled
             })}
-            label={trans('save_and_close', {}, 'actions')}
+            label={trans('save', {}, 'actions')}
             size="sm"
             htmlType="submit"
             disabled={!saveEnabled}

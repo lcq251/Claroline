@@ -48,9 +48,10 @@ registry.add('ClarolineCommunityBundle', {
     },
 
     group: {
-      'open'          : () => { return import(/* webpackChunkName: "community-action-group-open" */           '#/main/community/actions/group/open') },
-      'edit'          : () => { return import(/* webpackChunkName: "community-action-group-edit" */           '#/main/community/actions/group/edit') },
-      'delete'        : () => { return import(/* webpackChunkName: "community-action-group-delete" */         '#/main/community/actions/group/delete') }
+      'open'     : () => { return import(/* webpackChunkName: "community-action-group-open" */   '#/main/community/actions/group/open') },
+      'edit'     : () => { return import(/* webpackChunkName: "community-action-group-edit" */   '#/main/community/actions/group/edit') },
+      'delete'   : () => { return import(/* webpackChunkName: "community-action-group-delete" */ '#/main/community/actions/group/delete') },
+      'add-users': () => { return import(/* webpackChunkName: "core-action-group-add-users" */   '#/main/community/actions/group/add-users') },
     },
 
     role: {

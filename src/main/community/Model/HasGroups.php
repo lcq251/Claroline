@@ -48,7 +48,7 @@ trait HasGroups
      *
      * @param ArrayCollection|Group[] $groups
      */
-    public function setGroups($groups): void
+    public function setGroups(array|ArrayCollection $groups): void
     {
         $this->groups = $groups instanceof ArrayCollection ?
             $groups :
@@ -60,7 +60,7 @@ trait HasGroups
      *
      * @return ArrayCollection|Group[]
      */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups ?? new ArrayCollection();
     }

@@ -1,12 +1,13 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import get from 'lodash/get'
+import classes from 'classnames'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {DataCard} from '#/main/app/data/components/card'
 import {Badge} from '#/main/app/components/badge'
 
 import {Tag as TagTypes} from '#/plugin/tag/data/types/tag/prop-types'
-import classes from 'classnames'
 
 const TagCard = props =>
   <DataCard
@@ -26,10 +27,10 @@ const TagCard = props =>
     color={props.data.color}
     icon="fa fa-tag"
     name={props.data.name}
-    contentText={props.data.meta.description  || <em className="text-body-tertiary">{trans('no_description')}</em>}
+    contentText={get(props.data, 'meta.description')  || <em className="text-body-tertiary">{trans('no_description')}</em>}
     asIcon={true}
     meta={
-      <Badge variant="secondary" subtle={true}>{transChoice('count_elements', props.data.elements, {count: props.data.elements})}</Badge>
+      <Badge variant="secondary" subtle={true}>{transChoice('count_elements', get(props.data, 'elements', 0), {count: get(props.data, 'elements', 0)})}</Badge>
     }
   />
 

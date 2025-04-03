@@ -18,8 +18,6 @@ import {RoleList} from '#/main/community/role/components/list'
 import {Group as GroupTypes} from '#/main/community/group/prop-types'
 import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {GroupPage} from '#/main/community/group/components/page'
-import {MODAL_ORGANIZATIONS} from '#/main/community/modals/organizations'
-import {OrganizationList} from '#/main/community/organization/components/list'
 import {route} from '#/main/community/group/routing'
 import {Button} from '#/main/app/action'
 
@@ -64,7 +62,7 @@ const GroupShow = (props) =>
           title: trans('users', {}, 'community'),
           render: () => (
             <>
-              {hasPermission('administrate', props.group) &&
+              {hasPermission('administrate', props.group) && !get(props.group, 'meta.everyone', false) ?
                 <Button
                   className="btn btn-primary mt-4 me-auto"
                   {...{
@@ -81,7 +79,10 @@ const GroupShow = (props) =>
                       })
                     }]
                   }}
-                />
+                /> :
+                <Alert type="info" className="mt-4 mb-0">
+                  {trans('group_everyone_help', {}, 'community')}
+                </Alert>
               }
 
               <UserList
@@ -94,50 +95,7 @@ const GroupShow = (props) =>
                   url: ['apiv2_group_remove_users', {id: props.group.id}],
                   icon: 'fa fa-fw fa-times',
                   label: trans('unregister', {}, 'actions'),
-                  disabled: () => get(props.group, 'meta.readOnly'),
-                  displayed: () => hasPermission('administrate', props.group)
-                }}
-                actions={undefined}
-              />
-            </>
-          )
-        }, {
-          path: '/organizations',
-          icon: 'fa fa-building',
-          title: trans('organizations', {}, 'community'),
-          render: () => (
-            <>
-              {hasPermission('administrate', props.group) &&
-                <Button
-                  className="btn btn-primary mt-4 me-auto"
-                  {...{
-                    name: 'add',
-                    type: MODAL_BUTTON,
-                    // icon: 'fa fa-fw fa-plus',
-                    label: trans('add_organizations', {}, 'actions'),
-                    displayed: hasPermission('administrate', props.group),
-                    modal: [MODAL_ORGANIZATIONS, {
-                      selectAction: (organizations) => ({
-                        type: CALLBACK_BUTTON,
-                        label: trans('add', {}, 'actions'),
-                        callback: () => props.addOrganizations(props.group.id, organizations)
-                      })
-                    }]
-                  }}
-                />
-              }
-
-              <OrganizationList
-                className="mt-4 mb-5"
-                path={props.path}
-                name={`${selectors.FORM_NAME}.organizations`}
-                url={['apiv2_group_list_organizations', {id: props.group.id}]}
-                autoload={!!props.group.id}
-                delete={{
-                  url: ['apiv2_group_remove_organizations', {id: props.group.id}],
-                  icon: 'fa fa-fw fa-times',
-                  label: trans('remove', {}, 'actions'),
-                  displayed: () => hasPermission('administrate', props.group)
+                  displayed: () => !get(props.group, 'meta.everyone', false) && hasPermission('administrate', props.group)
                 }}
                 actions={undefined}
               />
@@ -199,8 +157,7 @@ GroupShow.propTypes = {
   ),
   reload: T.func.isRequired,
   addUsers: T.func.isRequired,
-  addRoles: T.func.isRequired,
-  addOrganizations: T.func.isRequired
+  addRoles: T.func.isRequired
 }
 
 export {

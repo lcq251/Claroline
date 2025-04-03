@@ -8,6 +8,7 @@ use Claroline\AppBundle\Event\Crud\PatchEvent;
 use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CommunityBundle\Messenger\Message\AddEveryoneToGroup;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
@@ -17,6 +18,7 @@ use Claroline\CoreBundle\Event\Security\RemoveRoleEvent;
 use Claroline\CoreBundle\Manager\FileManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class GroupSubscriber implements EventSubscriberInterface
@@ -24,6 +26,7 @@ final class GroupSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly EventDispatcherInterface $dispatcher,
+        private readonly MessageBusInterface $messageBus,
         private readonly ObjectManager $om,
         private readonly FileManager $fileManager
     ) {
@@ -47,7 +50,7 @@ final class GroupSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()?->getUser();
 
         if ($user instanceof User) {
-            $group->addOrganization($user->getMainOrganization());
+            $group->setOrganization($user->getMainOrganization());
         }
     }
 
@@ -62,6 +65,10 @@ final class GroupSubscriber implements EventSubscriberInterface
 
         if ($group->getThumbnail()) {
             $this->fileManager->linkFile(Group::class, $group->getUuid(), $group->getThumbnail());
+        }
+
+        if ($group->hasEveryone()) {
+            $this->messageBus->dispatch(new AddEveryoneToGroup($group->getId()));
         }
     }
 
@@ -84,6 +91,10 @@ final class GroupSubscriber implements EventSubscriberInterface
             $group->getThumbnail(),
             !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
         );
+
+        if ($group->hasEveryone() && !$oldData['meta']['everyone']) {
+            $this->messageBus->dispatch(new AddEveryoneToGroup($group->getId()));
+        }
     }
 
     public function postPatch(PatchEvent $event): void

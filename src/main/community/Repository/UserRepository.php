@@ -12,13 +12,13 @@
 namespace Claroline\CommunityBundle\Repository;
 
 use Claroline\CoreBundle\Entity\Group;
+use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -107,6 +107,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
         ');
 
         $query->setParameter('groupId', $group->getId());
+
+        return $query->getResult();
+    }
+
+    public function findByOrganization(Organization $organization): array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT u 
+            FROM Claroline\CoreBundle\Entity\User AS u
+            JOIN u.userOrganizationReferences AS uo
+            JOIN uo.organization AS o
+            WHERE o.id = :organizationId
+              AND u.isRemoved = false
+              AND u.disabled = false
+        ');
+
+        $query->setParameter('organizationId', $organization->getId());
 
         return $query->getResult();
     }
@@ -215,7 +232,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
             ->getResult();
     }
 
-    public function findInactiveSince($dateLastActivity)
+    public function findInactiveSince(\DateTimeInterface $dateLastActivity): array
     {
         return $this->createQueryBuilder('u')
             ->where('(u.lastActivity IS NULL OR u.lastActivity < :dateLastActivity)')

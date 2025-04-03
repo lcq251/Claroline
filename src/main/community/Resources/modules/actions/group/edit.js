@@ -1,17 +1,20 @@
 import get from 'lodash/get'
 
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
-import {route} from '#/main/community/group/routing'
+import {MODAL_GROUP_FORM} from '#/main/community/group/modals/form'
 
-export default (groups, refresher, path) => ({
+export default (groups, refresher) => ({
   name: 'edit',
-  type: LINK_BUTTON,
+  type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-pencil',
   label: trans('edit', {}, 'actions'),
-  target: route(groups[0], path) + '/edit',
+  modal: [MODAL_GROUP_FORM, {
+    group: groups[0],
+    onSave: refresher.update
+  }],
   displayed: hasPermission('edit', groups[0]),
   disabled: get(groups[0], 'meta.readOnly'),
   primary: true,

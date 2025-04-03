@@ -10,6 +10,8 @@
   "new_group": "Nouveau groupe",
   "group_name": "Groupe : %name%",
   "group_loading": "Nous chargeons le groupe...",
+  "group_everyone": "Tout le monde",
+  "group_everyone_help": "Tous les utilisateurs de l'organisation sont automatiquement ajouté à ce groupe.",
 
   "organization": "Organisation",
   "organizations": "Organisations",

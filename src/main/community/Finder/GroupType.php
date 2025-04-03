@@ -25,7 +25,7 @@ class GroupType extends AbstractType
             ->add('name', TextType::class)
             ->add('code', TextType::class)
             ->add('description', TextType::class)
-            ->add('organizations', OrganizationType::class)
+            ->add('organization', OrganizationType::class)
         ;
     }
 

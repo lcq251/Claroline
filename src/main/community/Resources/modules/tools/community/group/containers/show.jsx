@@ -21,9 +21,6 @@ const GroupShow = connect(
     },
     addRoles(groupId, selected) {
       dispatch(actions.addRoles(groupId, selected.map(row => row.id)))
-    },
-    addOrganizations(groupId, selected) {
-      dispatch(actions.addOrganizations(groupId, selected.map(row => row.id)))
     }
   })
 )(GroupShowComponent)

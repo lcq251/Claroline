@@ -35,7 +35,6 @@ const UserEditorPermissions = () => {
         {
           name: 'roles',
           title: trans('roles'),
-          description: trans('Choisissez les organisations auxquels l\'utilisateur a accès.'),
           primary: true,
           hideTitle: false,
           render: () => (

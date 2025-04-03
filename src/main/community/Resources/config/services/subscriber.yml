@@ -17,6 +17,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@event_dispatcher'
+            - '@messenger.default_bus'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
 

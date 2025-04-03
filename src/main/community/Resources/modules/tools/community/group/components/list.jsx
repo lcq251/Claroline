@@ -12,6 +12,7 @@ import {getPlatformRoles, getWorkspaceRoles} from '#/main/community/utils'
 import {GroupList as BaseGroupList} from '#/main/community/group/components/list'
 import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {MODAL_REGISTER} from '#/main/community/modals/register'
+import {MODAL_GROUP_FORM} from '#/main/community/group/modals/form'
 
 const GroupList = props =>
   <ToolPage
@@ -22,11 +23,13 @@ const GroupList = props =>
       addAction={'desktop' === props.contextType ?
         {
           name: 'add',
-          type: LINK_BUTTON,
+          type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-plus',
           label: trans('add_group', {}, 'actions'),
-          target: `${props.path}/groups/new`,
-          displayed: props.canEdit
+          displayed: props.canEdit,
+          modal: [MODAL_GROUP_FORM, {
+            onSave: props.invalidateList
+          }]
         } : {
           name: 'add',
           type: MODAL_BUTTON,
@@ -104,7 +107,8 @@ GroupList.propTypes = {
   canRegister: T.bool.isRequired,
   canEdit: T.bool.isRequired,
   unregisterGroups: T.func.isRequired,
-  registerGroups: T.func.isRequired
+  registerGroups: T.func.isRequired,
+  invalidateList: T.func.isRequired
 }
 
 export {

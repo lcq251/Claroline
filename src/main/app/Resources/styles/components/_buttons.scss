@@ -9,6 +9,10 @@
 
 .btn-sticky {
     overflow: hidden;
+    .fa {
+        line-height: calc($line-height-base * 1rem);
+    }
+
     .label {
         margin-left: map-get($spacers, 3);
         width: 100%;

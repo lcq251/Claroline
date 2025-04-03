@@ -5,8 +5,6 @@ import {Routes} from '#/main/app/router'
 
 import {GroupList} from '#/main/community/tools/community/group/containers/list'
 import {GroupShow} from '#/main/community/tools/community/group/containers/show'
-import {GroupCreate} from '#/main/community/tools/community/group/containers/create'
-import {GroupEdit} from '#/main/community/tools/community/group/containers/edit'
 
 const GroupMain = props =>
   <Routes
@@ -16,15 +14,6 @@ const GroupMain = props =>
         path: '',
         component: GroupList,
         exact: true
-      }, {
-        path: '/new',
-        component: GroupCreate,
-        onEnter: props.new,
-        disabled: 'desktop' !== props.contextType || !props.canEdit
-      }, {
-        path: '/:id/edit',
-        component: GroupEdit,
-        onEnter: (params) => props.open(params.id)
       }, {
         path: '/:id',
         component: GroupShow,
@@ -36,10 +25,7 @@ const GroupMain = props =>
 GroupMain.propTypes = {
   path: T.string.isRequired,
   contextType: T.string.isRequired,
-  canEdit: T.bool.isRequired,
-
-  open: T.func.isRequired,
-  new: T.func.isRequired
+  open: T.func.isRequired
 }
 
 export {

@@ -82,9 +82,7 @@ const GroupFormComponent = props => {
           ]
         }
       ]}
-    >
-      {props.children}
-    </FormData>
+    />
   )
 }
 
@@ -94,8 +92,7 @@ GroupFormComponent.propTypes = {
   name: T.string.isRequired,
   isNew: T.bool.isRequired,
   group: T.object.isRequired,
-  save: T.func.isRequired,
-  children: T.any
+  save: T.func.isRequired
 }
 
 const GroupForm = connect(
