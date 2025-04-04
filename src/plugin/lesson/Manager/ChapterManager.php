@@ -30,45 +30,8 @@ class ChapterManager
         $rootCopy->setTitle($rootOriginal->getTitle());
         $rootCopy->setText($rootOriginal->getText());
         $rootCopy->setInternalNote($rootOriginal->getInternalNote());
-        $this->copyChildren($rootOriginal, $rootCopy, true);
-    }
 
-    /**
-     * Copy chapter_org subchapters into provided chapter_copy.
-     */
-    public function copyChapter(Chapter $chapterOrg, Chapter $parent, $copyChildren, $copyName = null): Chapter
-    {
-        $chapterCopy = new Chapter();
-        if (!$copyName) {
-            $copyName = $chapterOrg->getTitle();
-        }
-        $chapterCopy->setTitle($copyName);
-        $chapterCopy->setText($chapterOrg->getText());
-        $chapterCopy->setInternalNote($chapterOrg->getInternalNote());
-        $chapterCopy->setLesson($parent->getLesson());
-        $this->insertChapter($chapterCopy, $parent);
-        if ($copyChildren) {
-            $this->copyChildren($chapterOrg, $chapterCopy, $copyChildren);
-        }
-
-        return $chapterCopy;
-    }
-
-    public function copyChildren(Chapter $chapterOrg, Chapter $chapterCopy, $copyChildren): void
-    {
-        $chapterRepository = $this->om->getRepository(Chapter::class);
-        $chapters = $chapterRepository->children($chapterOrg, true);
-        if (null !== $chapters && count($chapters) > 0) {
-            foreach ($chapters as $child) {
-                $this->copyChapter($child, $chapterCopy, $copyChildren);
-            }
-        }
-    }
-
-    public function insertChapter(Chapter $chapter, Chapter $parent): void
-    {
-        $this->om->getRepository(Chapter::class)->persistAsLastChildOf($chapter, $parent);
-        $this->om->flush();
+        $this->copyChildren($rootOriginal, $rootCopy);
     }
 
     public function serializeChapterTree(Lesson $lesson): array
@@ -88,7 +51,7 @@ class ChapterManager
 
         $this->crud->create($newChapter, $data, [Crud::NO_PERMISSIONS]);
 
-        $this->insertChapterInPlace($newChapter, $parent, $data);
+        $this->insertChapter($newChapter, $parent);
 
         return $newChapter;
     }
@@ -96,9 +59,9 @@ class ChapterManager
     /**
      * @throws InvalidDataException
      */
-    public function updateChapter(Lesson $lesson, Chapter $chapter, $data): void
+    public function updateChapter(Chapter $chapter, ?array $data = []): void
     {
-        $newParent = $this->chapterRepository->findOneBySlug($data['parentSlug']);
+        $newParent = $this->chapterRepository->findOneBy(['slug' => $data['parentSlug']]);
 
         $this->crud->update($chapter, $data);
 
@@ -111,18 +74,7 @@ class ChapterManager
         }
     }
 
-    public function deleteChapter(Lesson $lesson, Chapter $chapter, $withChildren = false): void
-    {
-        if ($withChildren) {
-            $this->crud->delete($chapter);
-        } else {
-            $this->chapterRepository->removeFromTree($chapter);
-        }
-
-        $this->om->flush();
-    }
-
-    private function insertChapterInPlace($chapter, $parent, $data): void
+    private function insertChapterInPlace(Chapter $chapter, ?Chapter $parent = null, ?array $data = []): void
     {
         $position = $data['position'];
         $sibling = $data['order']['sibling'];
@@ -160,6 +112,38 @@ class ChapterManager
         }
 
         $this->om->persist($chapter);
+        $this->om->flush();
+    }
+
+    /**
+     * Copy chapter_org subchapters into provided chapter_copy.
+     */
+    private function copyChapter(Chapter $chapterOrg, Chapter $parent): void
+    {
+        $chapterCopy = new Chapter();
+        $chapterCopy->setLesson($parent->getLesson());
+        $chapterCopy->setTitle($chapterOrg->getTitle());
+        $chapterCopy->setText($chapterOrg->getText());
+        $chapterCopy->setInternalNote($chapterOrg->getInternalNote());
+
+        $this->insertChapter($chapterCopy, $parent);
+
+        $this->copyChildren($chapterOrg, $chapterCopy);
+    }
+
+    private function copyChildren(Chapter $chapterOrg, Chapter $chapterCopy): void
+    {
+        $chapters = $this->chapterRepository->children($chapterOrg, true);
+        if (null !== $chapters && count($chapters) > 0) {
+            foreach ($chapters as $child) {
+                $this->copyChapter($child, $chapterCopy);
+            }
+        }
+    }
+
+    private function insertChapter(Chapter $chapter, Chapter $parent): void
+    {
+        $this->om->getRepository(Chapter::class)->persistAsLastChildOf($chapter, $parent);
         $this->om->flush();
     }
 }

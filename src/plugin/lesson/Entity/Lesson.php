@@ -16,7 +16,7 @@ class Lesson extends AbstractResource
      * Show overview to users or directly start the lesson.
      */
     #[ORM\Column(name: 'show_overview', type: Types::BOOLEAN, options: ['default' => 1])]
-    private bool $showOverview = true;
+    private bool $showOverview = false;
 
     /**
      * Show pages meta (creator, last edition date) to users.

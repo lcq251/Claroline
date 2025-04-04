@@ -84,7 +84,7 @@ class ResourceListener
     public function create(ResourceActionEvent $event): void
     {
         // forward to the resource type
-        $this->lifecycleManager->create($event->getResourceNode());
+        $this->lifecycleManager->create($event->getResourceNode(), $event->getData());
     }
 
     public function configure(ResourceActionEvent $event): void

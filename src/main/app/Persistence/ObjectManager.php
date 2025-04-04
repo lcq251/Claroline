@@ -22,10 +22,10 @@ class ObjectManager extends EntityManagerDecorator
      *
      * This operation has no effect if one or more flush suite is active.
      */
-    public function flush($entity = null): void
+    public function flush(): void
     {
         if (0 === $this->flushSuiteLevel) {
-            parent::flush($entity);
+            parent::flush();
         }
     }
 
@@ -63,7 +63,7 @@ class ObjectManager extends EntityManagerDecorator
         parent::flush();
     }
 
-    public function find($className, mixed $id, $lockMode = null, $lockVersion = null): ?object
+    public function find(string $className, mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         return $this->wrapped->getRepository($className)->findOneBy(
             !is_numeric($id) && property_exists($className, 'uuid') ?

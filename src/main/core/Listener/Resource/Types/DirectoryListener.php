@@ -216,7 +216,10 @@ class DirectoryListener extends ResourceComponent
 
         $this->om->endFlushSuite();
 
-        $this->lifecycleManager->create($resourceNode);
+        $this->lifecycleManager->create($resourceNode, [
+            'resourceNode' => $nodeData,
+            'resource' => $resourceData,
+        ]);
 
         // initialize resource rights
         if (!empty($nodeData['rights'])) {

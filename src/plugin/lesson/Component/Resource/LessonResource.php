@@ -7,14 +7,16 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
+use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Manager\Template\PlaceholderManager;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
+use Symfony\Component\HttpFoundation\File\File;
 
-class LessonResource extends ResourceComponent implements DownloadableResourceInterface
+class LessonResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly ObjectManager $om,
@@ -38,6 +40,24 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
             'tree' => $this->chapterManager->serializeChapterTree($resource),
             'placeholders' => $this->placeholderManager->getAvailablePlaceholders(),
         ];
+    }
+
+    /** @param Lesson $resource */
+    public function create(AbstractResource $resource, array $data): void
+    {
+        $this->om->startFlushSuite();
+
+        $resource->buildRoot();
+        if (!empty($data['resource']['chapters'])) {
+            foreach ($data['resource']['chapters'] as $chapterData) {
+                if (empty($chapterData['title'])) {
+                    $chapterData['title'] = $resource->getName();
+                }
+                $this->chapterManager->createChapter($resource, $chapterData, $resource->getRoot());
+            }
+        }
+
+        $this->om->endFlushSuite();
     }
 
     public function update(AbstractResource $resource, array $data): ?array
@@ -128,5 +148,25 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
         $this->om->persist($chapter);
 
         return $chapter;
+    }
+
+    public function supportsFile(File $file): int
+    {
+        if (in_array($file->getMimeType(), ['text/html', 'text/plain'])) {
+            return FileAdapterInterface::SUPPORTED;
+        }
+
+        return FileAdapterInterface::UNSUPPORTED;
+    }
+
+    public function fromFile(File $file): ?array
+    {
+        return [
+            'chapters' => [[
+                'contentRaw' => 'text/plain' === $file->getMimeType() ?
+                    nl2br($file->getContent()) :
+                    $file->getContent(),
+            ]],
+        ];
     }
 }

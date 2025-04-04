@@ -120,7 +120,7 @@ class ChapterController
     ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 
-        $this->chapterManager->updateChapter($lesson, $chapter, json_decode($request->getContent(), true));
+        $this->chapterManager->updateChapter($chapter, json_decode($request->getContent(), true));
         $internalNotes = $this->checkPermission('VIEW_INTERNAL_NOTES', $lesson->getResourceNode());
 
         return new JsonResponse($this->chapterSerializer->serialize($chapter, $internalNotes ? [ChapterSerializer::INCLUDE_INTERNAL_NOTES] : []));

@@ -34,9 +34,9 @@ class ResourceLifecycleManager
         return $event;
     }
 
-    public function create(ResourceNode $resourceNode): CreateResourceEvent
+    public function create(ResourceNode $resourceNode, array $data = []): CreateResourceEvent
     {
-        $event = new CreateResourceEvent($this->getResourceFromNode($resourceNode));
+        $event = new CreateResourceEvent($this->getResourceFromNode($resourceNode), $data);
         $this->eventDispatcher->dispatch($event, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
 
         return $event;
