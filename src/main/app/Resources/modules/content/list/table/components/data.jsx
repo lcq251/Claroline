@@ -34,6 +34,7 @@ const TableData = props => {
         sorting={props.sorting}
         actions={props.actions}
         disabled={!props.loaded || props.invalidated}
+        flush={props.flush}
       />
 
       <tbody>

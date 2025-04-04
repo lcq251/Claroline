@@ -1,22 +1,20 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {now, displayDate} from '#/main/app/intl/date'
 import {Alert} from '#/main/app/components/alert'
 import {Toolbar} from '#/main/app/action/components/toolbar'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {PageSimple} from '#/main/app/page'
 
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {selectors as configSelectors} from '#/main/app/config/store'
 
-import {actions, selectors} from '#/main/app/platform/store'
+import {selectors} from '#/main/app/platform/store'
 
 const PlatformForbidden = () => {
-  const dispatch = useDispatch()
-
   const authenticated = useSelector(securitySelectors.isAuthenticated)
   const disabled = useSelector(selectors.disabled)
   const restrictions = useSelector((state) => configSelectors.param(state, 'restrictions'))

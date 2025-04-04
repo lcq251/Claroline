@@ -8,6 +8,7 @@ import {BadgeList as BadgeListComponent} from '#/plugin/open-badge/tools/badges/
 const BadgeList = connect(
   (state) => ({
     path: toolSelectors.path(state),
+    poster: toolSelectors.poster(state),
     contextType: toolSelectors.contextType(state),
     contextId: toolSelectors.contextId(state),
     canEdit: hasPermission('edit', toolSelectors.toolData(state))

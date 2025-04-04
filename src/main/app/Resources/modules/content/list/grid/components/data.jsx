@@ -1,5 +1,6 @@
 import React from 'react'
 import fill from 'lodash/fill'
+import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
@@ -64,6 +65,7 @@ const GridData = props => {
 
       {0 !== bulkActions.length &&
         <ListBulkActions
+          className={classes(props.flush && 'sticky-md-top z-2')}
           count={props.selection.current.length}
           actions={getActions(
             props.selection.current.map(id => props.data.find(row => id === row.id) || {id: id}),

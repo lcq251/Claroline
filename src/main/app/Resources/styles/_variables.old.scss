@@ -84,7 +84,7 @@ $flying-alert-bg:             var(--#{$prefix}body-bg) !default;
 $flying-alert-width:          420px !default;
 $flying-alert-padding:        map-get($spacers, 2) !default;
 $flying-alert-border-radius:  0 !default;
-$flying-alert-box-shadow:     $box-shadow/*0 0 3px rgba(0,0,0,.5)*/ !default;
+$flying-alert-box-shadow:     $box-shadow !default;
 $flying-alert-margin-bottom:  map-get($spacers, 2) !default;
 $flying-alert-icon-size:      1.75rem !default;
 

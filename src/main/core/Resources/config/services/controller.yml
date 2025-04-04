@@ -58,13 +58,6 @@ services:
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceUserQueueManager'
             - '@security.token_storage'
 
-    Claroline\CoreBundle\Controller\Workspace\RoleController:
-        arguments:
-            - '@security.authorization_checker'
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
-
     Claroline\CoreBundle\Controller\Workspace\WorkspaceController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true

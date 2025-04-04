@@ -22,7 +22,7 @@
     background: white;
     border: 1px solid $primary;
 
-    @include box-shadow($box-shadow);
+    @include box-shadow($box-shadow-sm);
     @include transition(left .6s ease);
 }
 

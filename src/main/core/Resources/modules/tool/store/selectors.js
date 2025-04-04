@@ -34,6 +34,11 @@ const toolData = createSelector(
   (tools, name) => tools.find(tool => tool.name === name) || {}
 )
 
+const poster = createSelector(
+  [toolData],
+  (toolData) => toolData.poster
+)
+
 const permissions = createSelector(
   [toolData],
   (toolData) => toolData.permissions
@@ -83,6 +88,7 @@ export const selectors = {
   basePath,
   path,
   toolData,
+  poster,
   permissions,
   hasPermission,
   context,

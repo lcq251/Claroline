@@ -14,6 +14,7 @@ import {selectors} from '#/plugin/open-badge/tools/badges/store'
 const AssertionsList = (props) =>
   <ToolPage title={trans('my_badges', {}, 'badge')}>
     <PageListSection
+      poster={props.poster}
       title={trans('my_badges', {}, 'badge')}
     >
       <AssertionList
@@ -52,12 +53,14 @@ const AssertionsList = (props) =>
 
 AssertionsList.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   contextData: T.object
 }
 
 const Assertions = connect(
   (state) => ({
     path: toolSelectors.path(state),
+    poster: toolSelectors.poster(state),
     contextData: toolSelectors.contextData(state)
   })
 )(AssertionsList)

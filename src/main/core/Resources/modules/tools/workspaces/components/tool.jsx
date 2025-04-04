@@ -62,6 +62,7 @@ const WorkspacesTool = (props) => {
           render: () => (
             <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
               <PageListSection
+                poster={props.poster}
                 title={trans('my_workspaces', {}, 'workspace')}
               >
                 <WorkspaceList
@@ -82,6 +83,7 @@ const WorkspacesTool = (props) => {
           render: () => (
             <ToolPage title={trans('all_workspaces', {}, 'workspace')}>
               <PageListSection
+                poster={props.poster}
                 title={trans('all_workspaces', {}, 'workspace')}
                 addAction={{
                   name: 'add',
@@ -113,6 +115,7 @@ const WorkspacesTool = (props) => {
 
 WorkspacesTool.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   canCreate: T.bool.isRequired,
   contextType: T.string,
   invalidateList: T.func.isRequired

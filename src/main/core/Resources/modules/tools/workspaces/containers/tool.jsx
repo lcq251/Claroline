@@ -11,6 +11,7 @@ const WorkspacesTool = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     (state) => ({
       path: toolSelectors.path(state),
+      poster: toolSelectors.poster(state),
       canCreate: selectors.creatable(state),
       contextType: toolSelectors.contextType(state),
     }),

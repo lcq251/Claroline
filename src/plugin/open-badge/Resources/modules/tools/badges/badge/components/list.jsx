@@ -14,6 +14,7 @@ const BadgeList = props =>
     title={trans('all_badges', {}, 'badge')}
   >
     <PageListSection
+      poster={props.poster}
       title={trans('all_badges', {}, 'badge')}
       addAction={{
         name: 'add',
@@ -49,6 +50,7 @@ const BadgeList = props =>
 
 BadgeList.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   canEdit: T.bool.isRequired,
   contextType: T.string.isRequired,
   contextId: T.string

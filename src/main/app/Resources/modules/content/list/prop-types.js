@@ -185,6 +185,7 @@ const DataListView = {
     loading: T.bool.isRequired,
     loaded: T.bool.isRequired,
     invalidated: T.bool.isRequired,
+    flush: T.bool.isRequired,
 
     /**
      * Data primary action (aka open/edit action for rows in most cases).

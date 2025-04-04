@@ -168,7 +168,8 @@ class ListData extends Component {
               actions:       this.props.actions,
               card:          this.props.card,
               loaded: this.props.loaded,
-              invalidated: this.props.invalidated
+              invalidated: this.props.invalidated,
+              flush: this.props.flush
             }
           ))
         }

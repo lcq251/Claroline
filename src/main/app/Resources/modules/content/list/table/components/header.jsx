@@ -100,7 +100,7 @@ const TableHeader = props => {
       </tr>
 
       {0 !== bulkActions.length &&
-        <tr className="table-selected">
+        <tr className={classes('table-selected', props.flush && 'sticky-md-top z-2')}>
           <td className="p-0" colSpan={props.displayedColumns.length + (props.selection ? 1:0) + (props.actions || !isEmpty(displayableColumns) ? 1:0) }>
             <ListBulkActions
               className="px-2"
@@ -131,7 +131,8 @@ TableHeader.propTypes = {
   ),
   disabled: T.bool.isRequired,
   changeColumns: T.func.isRequired,
-  actions: T.func
+  actions: T.func,
+  flush: T.bool
 }
 
 export {
