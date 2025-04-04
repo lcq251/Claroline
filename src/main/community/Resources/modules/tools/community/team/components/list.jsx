@@ -14,6 +14,7 @@ const TeamList = props =>
     title={trans('teams', {}, 'community')}
   >
     <PageListSection
+      poster={props.poster}
       title={trans('teams', {}, 'community')}
       addAction={{
         name: 'add',
@@ -36,6 +37,7 @@ const TeamList = props =>
 
 TeamList.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   contextData: T.object,
   canCreate: T.bool.isRequired
 }

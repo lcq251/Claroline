@@ -8,6 +8,7 @@ import {TeamList as TeamListComponent} from '#/main/community/tools/community/te
 const TeamList = connect(
   state => ({
     path: toolSelectors.path(state),
+    poster: toolSelectors.poster(state),
     contextData: toolSelectors.contextData(state),
     canCreate: hasPermission('edit', toolSelectors.toolData(state))
   })

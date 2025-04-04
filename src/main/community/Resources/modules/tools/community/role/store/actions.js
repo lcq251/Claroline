@@ -1,5 +1,4 @@
 import get from 'lodash/get'
-import merge from 'lodash/merge'
 import isEmpty from 'lodash/isEmpty'
 
 import {makeActionCreator} from '#/main/app/store/actions'
@@ -8,7 +7,6 @@ import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
 import {constants} from '#/main/community/constants'
-import {Role as RoleTypes} from '#/main/community/role/prop-types'
 
 import {selectors} from '#/main/community/tools/community/role/store/selectors'
 
@@ -19,8 +17,6 @@ export const actions = {}
 
 actions.loadWorkspaceRights = makeActionCreator(ROLE_WORKSPACE_RIGHTS_LOAD, 'rights')
 actions.loadDesktopRights = makeActionCreator(ROLE_DESKTOP_RIGHTS_LOAD, 'rights')
-
-actions.new = (defaultProps) => formActions.resetForm(selectors.FORM_NAME, merge({}, RoleTypes.defaultProps, defaultProps), true)
 
 actions.open = (id, contextData = null, reload = false) => (dispatch, getState) => {
   if (!reload) {

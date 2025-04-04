@@ -21,7 +21,6 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
 
   // invalidate embedded lists
   dispatch(listActions.invalidateData(selectors.FORM_NAME+'.users'))
-  dispatch(listActions.invalidateData(selectors.FORM_NAME+'.organizations'))
   dispatch(listActions.invalidateData(selectors.FORM_NAME+'.roles'))
 
   return dispatch({

@@ -68,13 +68,14 @@ const ButtonSticky = (props) => {
           }
         }}
       />
+
       <div className={classes('sticky-bottom ms-auto z-2', props.className)} role="presentation" ref={attachRef}>
         <Button
           id={buttonId}
-          className="btn btn-primary btn-sticky p-3 mb-5 d-flex align-items-center rounded-4"
+          className="btn btn-primary btn-sticky p-3 mb-5 d-flex align-items-center rounded-4 shadow"
           {...omit(props, 'label', 'icon', 'className')}
         >
-          <span className={classes(props.icon || 'fa fa-fw fa-plus', 'fs-lg')} aria-hidden={true} />
+          <span className={classes(props.icon || 'fa fa-plus', 'fa-fw fs-lg')} aria-hidden={true} />
           <span className={classes('label', !showLabel && 'label-hidden')} role="presentation">{props.label}</span>
         </Button>
       </div>

@@ -95,16 +95,6 @@ final class RoleSubscriber implements EventSubscriberInterface
             $this->conn
                 ->executeStatement('
                     INSERT INTO claro_tool_rights (role_id, mask, ordered_tool_id)
-                        SELECT :roleId, 0, ot.id 
-                        FROM claro_ordered_tool AS ot
-                        WHERE ot.context_id IS NULL
-                ', [
-                    'roleId' => $role->getId(),
-                ]);
-
-            $this->conn
-                ->executeStatement('
-                    INSERT INTO claro_tool_rights (role_id, mask, ordered_tool_id)
                     SELECT :roleId, 0, ot.id 
                     FROM claro_ordered_tool AS ot
                     WHERE ot.context_id IS NULL AND ot.context_name = :contextName

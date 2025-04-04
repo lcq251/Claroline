@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {PageListSection} from '#/main/app/page'
 
@@ -19,6 +19,7 @@ const GroupList = props =>
     title={trans('groups', {}, 'community')}
   >
     <PageListSection
+      poster={props.poster}
       title={trans('groups', {}, 'community')}
       addAction={'desktop' === props.contextType ?
         {
@@ -28,6 +29,7 @@ const GroupList = props =>
           label: trans('add_group', {}, 'actions'),
           displayed: props.canEdit,
           modal: [MODAL_GROUP_FORM, {
+            isNew: true,
             onSave: props.invalidateList
           }]
         } : {
@@ -102,6 +104,7 @@ const GroupList = props =>
 
 GroupList.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   contextType: T.string.isRequired,
   contextData: T.object,
   canRegister: T.bool.isRequired,

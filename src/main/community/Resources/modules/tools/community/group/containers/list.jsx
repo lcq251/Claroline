@@ -9,14 +9,15 @@ import {GroupList as GroupListComponent} from '#/main/community/tools/community/
 import {actions as listActions} from '#/main/app/content/list/store'
 
 const GroupList = connect(
-  state => ({
+  (state) => ({
     path: toolSelectors.path(state),
+    poster: toolSelectors.poster(state),
     contextType: toolSelectors.contextType(state),
     contextData: toolSelectors.contextData(state),
     canRegister: communitySelectors.canCreate(state),
     canEdit: hasPermission('edit', toolSelectors.toolData(state))
   }),
-  dispatch => ({
+  (dispatch) => ({
     invalidateList() {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
     },

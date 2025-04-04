@@ -19,6 +19,7 @@ const UserList = props =>
     title={trans('users')}
   >
     <PageListSection
+      poster={props.poster}
       title={trans('users', {}, 'community')}
       addAction={'workspace' === props.contextType ?
         {
@@ -139,6 +140,7 @@ const UserList = props =>
 
 UserList.propTypes = {
   path: T.string.isRequired,
+  poster: T.string,
   contextType: T.string.isRequired,
   contextData: T.object,
   canRegister: T.bool.isRequired,

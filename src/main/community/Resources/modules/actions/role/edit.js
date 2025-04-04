@@ -1,15 +1,18 @@
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
-import {route} from '#/main/community/role/routing'
+import {MODAL_ROLE_FORM} from '#/main/community/role/modals/form'
 
-export default (roles, refresher, path) => ({
+export default (roles, refresher) => ({
   name: 'edit',
-  type: LINK_BUTTON,
+  type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-pencil',
   label: trans('edit', {}, 'actions'),
-  target: route(roles[0], path) + '/edit',
+  modal: [MODAL_ROLE_FORM, {
+    role: roles[0],
+    onSave: refresher.update
+  }],
   displayed: hasPermission('edit', roles[0]),
   primary: true,
   group: trans('management'),

@@ -31,7 +31,6 @@ class GroupController extends AbstractCrudController
 {
     use HasUsersTrait;
     use HasRolesTrait;
-    use HasOrganizationsTrait;
     use PermissionCheckerTrait;
 
     private TokenStorageInterface $tokenStorage;

@@ -10,6 +10,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 const UserList = connect(
   state => ({
     path: toolSelectors.path(state),
+    poster: toolSelectors.poster(state),
     contextType: toolSelectors.contextType(state),
     contextData: toolSelectors.contextData(state),
     canRegister: communitySelectors.canCreate(state),

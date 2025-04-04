@@ -10,7 +10,6 @@ import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, CallbackButton} from '#/main/app/buttons'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {
-  FormData,
   makeFormReducer,
   actions as formActions,
   selectors as formSelectors, Form

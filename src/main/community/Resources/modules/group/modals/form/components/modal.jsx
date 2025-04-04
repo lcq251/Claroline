@@ -11,14 +11,14 @@ const GroupFormModal = (props) =>
   <FormModal
     {...omit(props, 'group')}
     name="groupForm"
-    title={!props.group ? trans('new_group', {}, 'community') : undefined}
-    target={!props.group ?
+    title={props.isNew ? trans('new_group', {}, 'community') : undefined}
+    subtitle={props.isNew ? trans('Créez des groupes pour simplifier la gestion de vos utilisateurs.') : undefined}
+    target={props.isNew ?
       ['apiv2_group_create'] :
       ['apiv2_group_update', {id: props.group.id}]
     }
-    isNew={!props.group}
     data={props.group}
-    saveLabel={trans(!props.group ? 'add_group' : 'save_group', {}, 'actions')}
+    saveLabel={trans(props.isNew ? 'add_group' : 'save_group', {}, 'actions')}
     definition={[
       {
         title: trans('general'),
@@ -75,6 +75,7 @@ const GroupFormModal = (props) =>
   />
 
 GroupFormModal.propTypes = {
+  isNew: T.bool,
   group: T.shape(GroupTypes.propTypes),
   onSave: T.func
 }
