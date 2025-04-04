@@ -57,10 +57,12 @@ const AccountAuthentication = props => {
 
       <hr className="my-5" aria-hidden="true" />
       <ContentTitle
+        className="mb-2"
+        level={3}
         displayLevel={5}
         title={trans('tokens', {}, 'security')}
       />
-      <p className="text-body-secondary">
+      <p className="text-body-secondary mb-5">
         {trans('tokens_help', {}, 'security')}
       </p>
 
@@ -103,10 +105,12 @@ const AccountAuthentication = props => {
 
       <hr className="my-5" aria-hidden="true" />
       <ContentTitle
+        className="mb-2"
+        level={3}
         displayLevel={5}
         title={trans('ips', {}, 'security')}
       />
-      <p className="text-body-secondary">
+      <p className="text-body-secondary mb-5">
         {trans('ips_help', {}, 'security')}
       </p>
 
@@ -133,10 +137,12 @@ const AccountAuthentication = props => {
 
       <hr className="my-5" aria-hidden="true" />
       <ContentTitle
+        className="mb-2"
+        level={3}
         displayLevel={5}
         title={trans('logs', {}, 'security')}
       />
-      <p className="text-body-secondary">
+      <p className="text-body-secondary mb-5">
         {trans('logs_help', {}, 'security')}
       </p>
 
