@@ -77,6 +77,7 @@ const ResourceEditor = (props) => {
           title: trans('Scénarisation'),
           help: trans('Retrouver tous les scénarios pédagogiques utilisant cette ressource.'),
           component: ResourceEditorSequences,
+          displayed: false,
           disabled: !supportEvaluation(editedNode),
           group: trans('evaluation')
         }

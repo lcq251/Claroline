@@ -89,17 +89,16 @@ registry.add('ClarolineCoreBundle', {
    */
   resources: {
     'directory': () => { return import(/* webpackChunkName: "core-resource-directory" */ '#/main/core/resources/directory') },
-    'file'     : () => { return import(/* webpackChunkName: "core-resource-file" */      '#/main/core/resources/file') },
-    'text'     : () => { return import(/* webpackChunkName: "core-resource-text" */      '#/main/core/resources/text') }
+    'file'     : () => { return import(/* webpackChunkName: "core-resource-file" */ '#/main/core/resources/file') }
   },
 
   /**
    * Provides Desktop and/or Workspace tools.
    */
   tools: {
-    'workspaces'     : () => { return import(/* webpackChunkName: "core-tool-workspaces" */ '#/main/core/tools/workspaces') },
-    'resources'      : () => { return import(/* webpackChunkName: "core-tool-resources" */  '#/main/core/tools/resources') },
-    'locations'      : () => { return import(/* webpackChunkName: "core-tool-locations" */  '#/main/core/tools/locations') }
+    'workspaces': () => { return import(/* webpackChunkName: "core-tool-workspaces" */ '#/main/core/tools/workspaces') },
+    'resources' : () => { return import(/* webpackChunkName: "core-tool-resources" */  '#/main/core/tools/resources') },
+    'locations' : () => { return import(/* webpackChunkName: "core-tool-locations" */  '#/main/core/tools/locations') }
   },
 
   /**

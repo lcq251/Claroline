@@ -124,11 +124,6 @@ plugin:
                 group: management
                 api: [POST]
 
-        - name: text
-          class: Claroline\CoreBundle\Entity\Resource\Text
-          tags: [content]
-          exportable: true
-
     tools:
         - name: workspaces
           icon: book

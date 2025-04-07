@@ -59,13 +59,6 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\CoreBundle\Manager\FileManager'
 
-    Claroline\CoreBundle\Listener\Resource\Types\TextListener:
-        tags: ['claroline.component.resource', 'kernel.event_subscriber']
-        arguments:
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\AppBundle\Manager\PdfManager'
-            - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
-
     Claroline\CoreBundle\Listener\Resource\ResourceListener:
         arguments:
             - '@security.token_storage'

@@ -100,12 +100,6 @@ services:
             - '@Claroline\CommunityBundle\Serializer\RoleSerializer'
             - '@Claroline\CoreBundle\Manager\Resource\MaskManager'
 
-    Claroline\CoreBundle\API\Serializer\Resource\Types\TextSerializer:
-        tags: [claroline.serializer]
-        arguments:
-            - '@security.token_storage'
-            - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
-
     Claroline\CoreBundle\API\Serializer\Resource\Types\FileSerializer:
         tags: [claroline.serializer]
         arguments:

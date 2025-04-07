@@ -23,7 +23,6 @@ const CreationType = props =>
             'icap_blog',
             'icap_wiki',
             'innova_path',
-            'text',
             'file',
             'hevinci_url',
             'shortcut',
