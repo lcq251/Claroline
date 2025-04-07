@@ -51,6 +51,8 @@ final class Version20241220071744 extends AbstractMigration
             FROM claro_resource_user_evaluation AS e
             LEFT JOIN claro_resource_node AS n ON e.resource_node = n.id
             LEFT JOIN innova_path AS p ON p.resourceNode_id = n.id
+            WHERE n.mime_type = "custom/innova_path" 
+              AND p.id IS NOT NULL
         ');
     }
 
