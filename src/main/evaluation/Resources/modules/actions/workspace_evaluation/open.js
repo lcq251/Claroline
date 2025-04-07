@@ -1,15 +1,17 @@
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
-
-import {route} from '#/main/evaluation/workspace/routing'
 import {hasPermission} from '#/main/app/security'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 
-export default (evaluations, refresher, path) => ({
+import {MODAL_USER_PROGRESSION} from '#/main/evaluation/workspace/modals/user-progression'
+
+export default (evaluations) => ({
   name: 'open',
-  type: LINK_BUTTON,
+  type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-eye',
-  label: trans('open_evaluation', {}, 'actions'),
-  target: route(evaluations[0], path),
+  label: trans('open', {}, 'actions'),
   displayed: hasPermission('open', evaluations[0]),
-  scope: ['object']
+  scope: ['object'],
+  modal: [MODAL_USER_PROGRESSION, {
+    evaluation: evaluations[0]
+  }]
 })

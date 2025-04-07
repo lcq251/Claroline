@@ -60,6 +60,7 @@ registry.add('ClarolineEvaluationBundle', {
       'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-show-profile" */ '#/main/evaluation/actions/workspace_evaluation/show-profile') },
       'download-certificate': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-certificate" */ '#/main/evaluation/actions/workspace_evaluation/download-certificate') },
       'regenerate-certificate': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-regenerate-certificate" */ '#/main/evaluation/actions/workspace_evaluation/regenerate-certificate') },
+      'recompute': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-recompute" */ '#/main/evaluation/actions/workspace_evaluation/recompute') }
     }
   }
 })

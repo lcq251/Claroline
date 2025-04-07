@@ -4,9 +4,7 @@ import {makeListReducer} from '#/main/app/content/list/store/reducer'
 import {TOOL_OPEN} from '#/main/core/tool/store'
 import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 
-import {USER_PROGRESSION_LOAD, USER_PROGRESSION_RESET} from '#/main/evaluation/tools/evaluation/dashboard/store/actions'
 import {selectors} from '#/main/evaluation/tools/evaluation/dashboard/store/selectors'
-
 
 const reducer = combineReducers({
   /**
@@ -21,25 +19,6 @@ const reducer = combineReducers({
     }),
     invalidated: makeReducer(false, {
       [TOOL_OPEN]: () => true
-    })
-  }),
-
-  /**
-   * The details information about one user evaluations.
-   */
-  user: combineReducers({
-    loaded: makeReducer(false, {
-      [TOOL_OPEN]: () => false,
-      [USER_PROGRESSION_LOAD]: () => true,
-      [USER_PROGRESSION_RESET]: () => false
-    }),
-    workspaceEvaluation: makeReducer(null, {
-      [TOOL_OPEN]: () => null,
-      [USER_PROGRESSION_LOAD]: (state, action) => action.workspaceEvaluation
-    }),
-    resourceEvaluations: makeReducer([], {
-      [TOOL_OPEN]: () => [],
-      [USER_PROGRESSION_LOAD]: (state, action) => action.resourceEvaluations
     })
   })
 })

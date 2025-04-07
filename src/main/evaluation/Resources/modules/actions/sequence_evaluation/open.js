@@ -1,8 +1,8 @@
 import {trans} from '#/main/app/intl/translation'
-
 import {hasPermission} from '#/main/app/security'
-import {MODAL_USER_PROGRESSION} from '#/main/evaluation/sequence/modals/user-progression'
 import {MODAL_BUTTON} from '#/main/app/buttons'
+
+import {MODAL_USER_PROGRESSION} from '#/main/evaluation/sequence/modals/user-progression'
 
 export default (evaluations) => ({
   name: 'open',

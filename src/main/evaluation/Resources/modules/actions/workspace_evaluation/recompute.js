@@ -14,7 +14,7 @@ export default(evaluations, refresher) => {
     type: ASYNC_BUTTON,
     displayed: 0 !== processable.length,
     request: {
-      url: ['apiv2_sequence_evaluation_recompute', {sequenceId: get(evaluations[0], 'sequence.id')}],
+      url: ['apiv2_workspace_evaluation_recompute', {workspaceId: get(evaluations[0], 'workspace.id')}],
       request: {
         method: 'PUT',
         body: JSON.stringify(processable.map(evaluation => evaluation.id))

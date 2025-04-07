@@ -7,25 +7,6 @@ const STORE_NAME = 'progression'
 
 const store = (state) => get(state, STORE_NAME)
 
-const user = createSelector(
-  [store],
-  (store) => store.user
-)
-
-const userLoaded = createSelector(
-  [user],
-  (user) => user.loaded
-)
-
-const userWorkspaceEvaluation = createSelector(
-  [user],
-  (user) => user.workspaceEvaluation
-)
-
-const userResourceEvaluations = createSelector(
-  [user],
-  (user) => user.resourceEvaluations
-)
 
 const assignedSequences = createSelector(
   [store],
@@ -58,9 +39,6 @@ export const selectors = {
   assignedSequences,
   currentWorkspaceEvaluation,
   currentResourceEvaluations,
-  userLoaded,
-  userWorkspaceEvaluation,
-  userResourceEvaluations,
   hasScore,
   totalScore,
 }

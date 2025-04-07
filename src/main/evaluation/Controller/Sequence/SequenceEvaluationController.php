@@ -16,15 +16,16 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceEvaluationManager;
-use Composer\DependencyResolver\Request;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,6 +46,7 @@ class SequenceEvaluationController
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
         private readonly SequenceEvaluationManager $evaluationManager
@@ -120,11 +122,29 @@ class SequenceEvaluationController
     #[Route(path: '/{sequenceId}/recompute', name: 'apiv2_sequence_evaluation_recompute', methods: ['PUT'])]
     public function recomputeAction(
         #[MapEntity(mapping: ['sequenceId' => 'uuid'])]
-        Sequence $sequence
+        Sequence $sequence,
+        Request $request
     ): JsonResponse {
-        $this->checkPermission('EDIT', $sequence, [], true);
+        $evaluationIds = $this->decodeRequest($request);
 
-        $this->evaluationManager->recomputeEvaluations($sequence);
+        // recompute all the sequence evaluations
+        if (empty($evaluationIds)) {
+            $this->checkPermission('EDIT', $sequence, [], true);
+            $this->evaluationManager->recomputeEvaluations($sequence);
+
+            return new JsonResponse(null, 204);
+        }
+
+        // recompute selected evaluations
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = $this->om->getRepository(SequenceEvaluation::class)->findOneBy([
+                'uuid' => $evaluationId,
+            ]);
+
+            if ($evaluation && $this->checkPermission('ADMINISTRATE', $evaluation)) {
+                $this->evaluationManager->refreshEvaluation($evaluation);
+            }
+        }
 
         return new JsonResponse(null, 204);
     }

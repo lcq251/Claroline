@@ -160,11 +160,29 @@ class WorkspaceEvaluationController
     #[Route(path: '/{workspaceId}/recompute', name: 'apiv2_workspace_evaluation_recompute', methods: ['PUT'])]
     public function recomputeAction(
         #[MapEntity(mapping: ['workspaceId' => 'uuid'])]
-        Workspace $workspace
+        Workspace $workspace,
+        Request $request
     ): JsonResponse {
-        $this->checkToolAccess('EDIT', $workspace);
+        $evaluationIds = $this->decodeRequest($request);
 
-        $this->manager->recomputeEvaluations($workspace);
+        // recompute all the sequence evaluations
+        if (empty($evaluationIds)) {
+            $this->checkToolAccess('EDIT', $workspace);
+            $this->manager->recomputeEvaluations($workspace);
+
+            return new JsonResponse(null, 204);
+        }
+
+        // recompute selected evaluations
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
+                'uuid' => $evaluationId,
+            ]);
+
+            if ($evaluation && $this->checkPermission('ADMINISTRATE', $evaluation)) {
+                $this->manager->refreshEvaluation($evaluation);
+            }
+        }
 
         return new JsonResponse(null, 204);
     }
