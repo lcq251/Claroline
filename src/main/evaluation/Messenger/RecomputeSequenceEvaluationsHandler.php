@@ -28,7 +28,7 @@ readonly class RecomputeSequenceEvaluationsHandler
             return;
         }
 
-        $evaluations = $this->om->getRepository(SequenceEvaluation::class)->findInProgress($sequence);
+        $evaluations = $this->om->getRepository(SequenceEvaluation::class)->findBy(['sequence' => $sequence]);
 
         $this->om->startFlushSuite();
 

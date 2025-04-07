@@ -8,9 +8,9 @@ use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 class MinSuccessChecker implements CheckerInterface
 {
-    private ?float $minSuccess = null;
+    private ?int $minSuccess = null;
 
-    public function __construct(?float $minSuccess)
+    public function __construct(?int $minSuccess)
     {
         $this->minSuccess = $minSuccess;
     }

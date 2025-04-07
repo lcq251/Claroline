@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 readonly class RecomputeWorkspaceEvaluationsHandler
 {
     public function __construct(
-        private ObjectManager              $om,
+        private ObjectManager $om,
         private WorkspaceEvaluationManager $evaluationManager
     ) {
     }
@@ -28,7 +28,7 @@ readonly class RecomputeWorkspaceEvaluationsHandler
             return;
         }
 
-        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findInProgress($workspace);
+        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy(['workspace' => $workspace]);
 
         $this->om->startFlushSuite();
 

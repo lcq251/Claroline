@@ -8,9 +8,9 @@ use Claroline\EvaluationBundle\Library\EvaluationStatus;
 
 class MaxFailedChecker implements CheckerInterface
 {
-    private ?float $maxFailed = null;
+    private ?int $maxFailed = null;
 
-    public function __construct(?float $maxFailed)
+    public function __construct(?int $maxFailed)
     {
         $this->maxFailed = $maxFailed;
     }
