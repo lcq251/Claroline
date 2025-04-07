@@ -101,8 +101,7 @@ const QuizEditorParameters = props => {
               name: 'parameters.showOverview',
               type: 'boolean',
               label: trans('enable_overview'),
-              displayed: false,
-              linked: [
+              /*linked: [
                 {
                   name: 'description',
                   type: 'html',
@@ -146,7 +145,7 @@ const QuizEditorParameters = props => {
                     }
                   ]
                 }
-              ]
+              ]*/
             }
           ]
         }, {

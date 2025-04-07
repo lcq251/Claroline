@@ -16,7 +16,7 @@ import {ResourceDashboard} from '#/main/core/resource/dashboard'
 
 import {ResourceProgression} from '#/main/evaluation/resource/progression'
 
-const ResourceMain = props => {
+const Resource = props => {
   const [loaded, setLoaded] = useState(false)
 
   const resourcePath = useSelector(selectors.path)
@@ -92,7 +92,9 @@ const ResourceMain = props => {
               {
                 path: '/',
                 disabled: !props.overviewPage,
-                component: props.overviewPage
+                component: props.overviewPage,
+                onEnter: () => console.log('coucou'),
+                exact: true
               }
             ])
           }
@@ -105,7 +107,7 @@ const ResourceMain = props => {
   )
 }
 
-ResourceMain.propTypes = {
+Resource.propTypes = {
   /**
    * The type of the tool.
    */
@@ -127,12 +129,7 @@ ResourceMain.propTypes = {
   dashboard: T.elementType
 }
 
-ResourceMain.defaultProps = {
-  styles: [],
-  // actions: [],
-  // overviewPage: ResourceOverview
-}
 
 export {
-  ResourceMain
+  Resource
 }

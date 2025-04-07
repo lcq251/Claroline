@@ -22,13 +22,13 @@ const QuizResource = props =>
   <Resource
     {...omit(props)}
     styles={['claroline-distribution-plugin-exo-quiz-resource']}
-    overviewPage={QuizOverview}
     actions={[
-      /*{
+      {
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-play',
         label: trans('start', {}, 'actions'),
         disabled: props.empty,
+        displayed: props.editable,
         target: `${props.path}/play`
       }, {
         type: LINK_BUTTON,
@@ -38,7 +38,7 @@ const QuizResource = props =>
         disabled: props.empty,
         target: `${props.path}/test`,
         group: trans('management')
-      }, */{
+      }, {
         name: 'results',
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-tasks',
@@ -84,6 +84,7 @@ const QuizResource = props =>
       }
     ]}
 
+    overviewPage={props.hasOverview && QuizOverview}
     editor={QuizEditor}
     pages={[
       {
