@@ -83,13 +83,10 @@ PlaceholderText.propTypes = {
 
 PlaceholderText.defaultProps = {
   level: 2,
-  paragraphs: 2,
-  //align: 'justified'
+  paragraphs: 2
 }
 
 export {
   TextSkeleton,
-  PlaceholderTitle,
-  PlaceholderText,
-  PlaceholderParagraph
+  PlaceholderText
 }

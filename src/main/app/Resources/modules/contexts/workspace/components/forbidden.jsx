@@ -11,15 +11,13 @@ import {Button} from '#/main/app/action'
 import {PasswordInput} from '#/main/app/data/types/password/components/input'
 import {FormGroup} from '#/main/app/content/form/components/group'
 import {ContentRestriction} from '#/main/app/content/components/restriction'
-import {ContentHtml} from '#/main/app/content/components/html'
 
 import {MODAL_SECURITY} from '#/main/app/security/modals/security'
 
 import {Workspace as WorkspaceType} from '#/main/core/workspace/prop-types'
 import {getRestrictions} from '#/main/core/workspace/utils'
-import {PageSection} from '#/main/app/page/components/section'
 import {ContextPage} from '#/main/app/context/components/page'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageHeading, PageSection} from '#/main/app/page'
 
 class StandardRestrictions extends Component {
   constructor(props) {
@@ -51,11 +49,11 @@ class StandardRestrictions extends Component {
 
     return (
       <>
-        {get(this.props.workspace, 'meta.description') &&
-          <PageSection size="md">
-            <ContentHtml className="lead mb-5 mt-4">{get(this.props.workspace, 'meta.description')}</ContentHtml>
-          </PageSection>
-        }
+        <PageHeading
+          title={get(this.props.workspace, 'name')}
+          description={get(this.props.workspace, 'meta.description')}
+          size="md"
+        />
 
         <PageSection size="md" className="py-4 bg-body-tertiary">
           <h2 className="h3 text-center">{trans('restricted_access')}</h2>
@@ -261,7 +259,7 @@ const WorkspaceForbidden = (props) => {
 
   return (
     <ContextPage>
-      <PageContent>
+      <PageContent poster={get(props.workspace, 'poster')}>
         {!isUndefined(restrictions) && 0 !== restrictions.length &&
           createElement(restrictions[0].component, {
             workspace: props.workspace,
