@@ -1,5 +1,6 @@
 
 @mixin line-clamp($nb-lines, $line-height: $line-height-base) {
+  overflow: hidden;
   height: $line-height * 1em * $nb-lines;
   // display the '...' if the text is truncated on browsers which support it
   display: -webkit-box;

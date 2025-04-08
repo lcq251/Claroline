@@ -18,7 +18,7 @@ import {Badge} from '#/main/app/components/badge'
 import {ToolPage} from '#/main/core/tool'
 import {Html} from '#/main/app/components/html'
 import {Text} from '#/main/app/components/text'
-import {PlaceholderParagraph} from '#/main/app/components/placeholder'
+import {TextSkeleton} from '#/main/app/components/placeholder'
 import {DataMicro} from '#/main/app/data/components/micro'
 import {selectors as contextSelectors} from '#/main/app/context'
 import {selectors as toolSelectors} from '#/main/core/tool'
@@ -30,7 +30,7 @@ import {EmptyState} from '#/main/app/components/empty-state'
 
 const Announce = (props) =>
   <Fade key={props.key} in={true} appear={true}>
-    <li className="announce-post">
+    <li className="d-flex flex-row gap-4 w-100 py-5">
       {(!props.loaded || props.announcement.poster) &&
         <Thumbnail
           className={classes('rounded-4', {
@@ -72,11 +72,11 @@ const Announce = (props) =>
           {props.loaded && get(props.announcement, 'content') ?
             <>
               {props.preview ?
-                <Text className="text-body-secondary mb-0 mt-4 announce-content announce-content-preview">{getPlainText(props.announcement.content)}</Text> :
+                <Text className="text-body-secondary mb-0 mt-4 announce-content line-clamp-3">{getPlainText(props.announcement.content)}</Text> :
                 <Html className="text-body-secondary mb-0 mt-4 announce-content">{props.announcement.content}</Html>
               }
             </> :
-            <PlaceholderParagraph className="text-body-secondary mb-0 mt-4 announce-content" rows={3} />
+            <TextSkeleton className="text-body-secondary mb-0 mt-4 announce-content" rows={3} />
           }
         </LinkButton>
 
@@ -115,18 +115,19 @@ const AnnouncementList = () => {
   const toolPath = useSelector(toolSelectors.path)
   const loaded = useSelector(toolSelectors.loaded)
   const tool = useSelector(toolSelectors.toolData)
+  const poster = useSelector(toolSelectors.poster)
 
   const posts = useSelector(selectors.sortedPosts)
   const listFullContent = useSelector(selectors.listFullContent)
 
   return (
     <ToolPage>
-      <PageContent poster={get(tool, 'poster')} className="d-flex flex-column">
+      <PageContent poster={poster} className="d-flex flex-column">
         {(loaded && 0 === posts.length) &&
           <EmptyState
             icon="fa fa-bullhorn"
-            title={trans('Aucune annonce', {}, 'announcement')}
-            description={trans('Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.', {}, 'announcement')}
+            title={trans('no_announcement', {}, 'announcement')}
+            description={trans('no_announcement_help', {}, 'announcement')}
             primaryAction={{
               type: LINK_BUTTON,
               label: trans('add_announcement', {}, 'actions'),
@@ -144,7 +145,7 @@ const AnnouncementList = () => {
 
         <PageSection size="lg">
           {!loaded &&
-            <ul className="announcements-list list-unstyled my-5 placeholder-glow">
+            <ul className="list-unstyled placeholder-glow">
               <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />
               <Announce key={2} path={toolPath} announcement={{}} preview={!listFullContent} />
               <Announce key={3} path={toolPath} announcement={{}} preview={!listFullContent} />
@@ -154,7 +155,7 @@ const AnnouncementList = () => {
           }
 
           {(loaded && 0 !== posts.length) &&
-            <ul className="announcements-list list-unstyled my-5">
+            <ul className="list-unstyled">
               {posts.map((post, index) =>
                 <Announce
                   key={index}

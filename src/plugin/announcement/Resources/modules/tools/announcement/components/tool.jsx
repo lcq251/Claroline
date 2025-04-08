@@ -10,22 +10,11 @@ import {AnnouncementEditor} from '#/plugin/announcement/tools/announcement/compo
 import {AnnouncementList} from '#/plugin/announcement/tools/announcement/components/list'
 import {AnnounceForm} from '#/plugin/announcement/tools/announcement/components/announce-form'
 import {AnnouncementPost} from '#/plugin/announcement/tools/announcement/containers/post'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
 
 const AnnouncementTool = (props) =>
   <Tool
     {...props}
-    styles={['claroline-distribution-plugin-announcement-announcement-tool']}
     editor={AnnouncementEditor}
-    menu={[
-      /*{
-        name: 'announcements',
-        type: LINK_BUTTON,
-        label: trans('announcements', {}, 'announcement'),
-        target: props.path
-      }*/
-    ]}
     pages={[
       {
         path: '/',

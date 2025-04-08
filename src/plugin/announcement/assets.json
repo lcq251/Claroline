@@ -1,7 +1,2 @@
 {
-  "styles": {
-    "entry": {
-      "announcement-tool": "tools/announcement.scss"
-    }
-  }
 }
