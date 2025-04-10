@@ -15,6 +15,7 @@ import {PlatformNewPassword} from '#/main/app/platform/components/new-password'
 import {PlatformLogin} from '#/main/app/platform/components/login'
 import {PlatformMenu} from '#/main/app/platform/menu'
 import {selectors} from '#/main/app/platform/store'
+import {UserEditor} from '#/main/community/user/editor'
 
 const Platform = () => {
   const history = useHistory()
@@ -22,6 +23,7 @@ const Platform = () => {
   const availableContexts = useSelector(selectors.availableContexts)
   const unavailable = useSelector(selectors.unavailable)
   const authenticated = useSelector(securitySelectors.isAuthenticated)
+  const currentUser = useSelector(securitySelectors.currentUser)
   const selfRegistration = useSelector(selectors.selfRegistration)
   const changePassword = useSelector((state) => configSelectors.param(state, 'authentication.login.changePassword'))
 
@@ -103,6 +105,15 @@ const Platform = () => {
           }
         })), [
           {
+            path: '/account',
+            disabled: !authenticated,
+            render: () => (
+              <UserEditor
+                username={currentUser.username}
+                path="/account"
+              />
+            )
+          }, {
             path: '/unavailable',
             disabled: !unavailable,
             component: PlatformForbidden

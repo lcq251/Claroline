@@ -22,7 +22,7 @@ const AssertionsList = (props) =>
         flush={true}
         path={props.path}
         name={selectors.STORE_NAME + '.mine'}
-        url={['apiv2_badge_assertion_current_user_list', {workspace: props.contextData ? props.contextData.id : null}]}
+        url={['apiv2_badge_assertion_current_user_list', {workspaceId: props.contextData ? props.contextData.id : null}]}
         customDefinition={[
           {
             name: 'badge.name',

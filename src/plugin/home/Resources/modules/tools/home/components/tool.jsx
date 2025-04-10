@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 
 import {Tool, ToolPage} from '#/main/core/tool'
 
@@ -44,7 +43,7 @@ const HomeTool = props => {
       ]}
     >
       {!props.loaded &&
-        <ToolPage /*root={true}*/ />
+        <ToolPage />
       }
     </Tool>
   )

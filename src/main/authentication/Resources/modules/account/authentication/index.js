@@ -5,6 +5,5 @@ import {AccountAuthentication} from '#/main/authentication/account/authenticatio
 
 export default declareAccount(AccountAuthentication, {
   name: 'authentication',
-  title: trans('authentication', {}, 'tools'),
-  help: trans('Ajoutez des champs personnalisés pour enrichir le profil de vos utilisateurs.')
+  title: trans('authentication', {}, 'tools')
 })

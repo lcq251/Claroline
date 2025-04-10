@@ -22,12 +22,12 @@ const LogsFunctional = () =>
             name: 'workspace',
             type: 'workspace',
             label: trans('workspace'),
-            displayed: true
+            displayed: false
           }, {
             name: 'resource',
             type: 'resource',
             label: trans('resource'),
-            displayed: true
+            displayed: false
           }
         ]}
       />

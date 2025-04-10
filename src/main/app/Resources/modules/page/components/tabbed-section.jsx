@@ -21,7 +21,7 @@ const PageTabbedSection = (props) =>
       items={(props.tabs || []).map(tab => ({
         name: tab.path,
         type: LINK_BUTTON,
-        icon: tab.icon,
+        // icon: tab.icon,
         label: tab.title,
         badge: tab.badge,
         target: `${props.path}${tab.path}`,

@@ -14,7 +14,6 @@ import {TermsOfService} from '#/main/privacy/components/terms-of-service'
 const TosMain = (props) =>
   <EditorPage
     title={trans('terms_of_service', {}, 'privacy')}
-    help={trans('Lorem ipsum dolor sit amet.')}
   >
     <Alert
       className="mb-4"
@@ -33,7 +32,7 @@ const TosMain = (props) =>
         className="btn btn-primary mt-4 ms-auto"
         type={CALLBACK_BUTTON}
         label={trans('terms_of_service_accept', {}, 'privacy')}
-        callback={() => props.acceptTerms()}
+        callback={props.acceptTerms}
       />
     }
   </EditorPage>
@@ -42,29 +41,7 @@ TosMain.propTypes = {
   currentUser: T.shape(
     UserTypes.propTypes
   ).isRequired,
-  privacy: T.shape({
-    countryStorage: T.string,
-    dpo: T.shape({
-      name: T.string,
-      email: T.string,
-      address: T.shape({
-        street1: T.string,
-        street2: T.string,
-        postalCode: T.string,
-        city: T.string,
-        state: T.string,
-        country: T.string
-      }),
-      phone: T.string
-    })
-  }).isRequired,
-  exportAccount: T.func.isRequired,
-  acceptTerms: T.func.isRequired,
-  messages: T.shape({
-    pending: T.object,
-    success: T.object,
-    error: T.object
-  })
+  acceptTerms: T.func.isRequired
 }
 
 export {

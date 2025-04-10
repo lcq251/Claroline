@@ -37,7 +37,6 @@ export default (workspaces, refresher, path, currentUser) => {
       success: (response) => refresher.update(response)
     },
     dangerous: true,
-    group: trans('registration'),
     scope: ['object', 'collection']
   })
 }

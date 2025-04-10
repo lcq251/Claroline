@@ -20,7 +20,7 @@ export default (teams, refresher) => {
       success: () => refresher.update(processable)
     },
     dangerous: true,
-    group: trans('registration'),
+    group: trans('management'),
     scope: ['object', 'collection']
   }
 }

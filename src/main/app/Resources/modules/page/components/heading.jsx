@@ -4,12 +4,13 @@ import classes from 'classnames'
 
 import {Await} from '#/main/app/components/await'
 import {Action as ActionTypes, PromisedAction as PromisedActionTypes} from '#/main/app/action/prop-types'
-import {PageActions} from '#/main/app/page/components/actions'
-import {PagePoster} from '#/main/app/page/components/poster'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {TextSkeleton} from '#/main/app/components/placeholder'
 import {ThumbnailSkeleton} from '#/main/app/components/thumbnail'
+
+import {PageActions} from '#/main/app/page/components/actions'
+import {PagePoster} from '#/main/app/page/components/poster'
 
 const PageHeadingSkeleton = ({
   className,

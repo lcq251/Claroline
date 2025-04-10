@@ -18,7 +18,7 @@ const UserMain = props =>
       }, {
         path: '/:username/edit',
         render: (routerProps) => (
-          <UserEditor username={routerProps.match.params.username} path={`${props.path}/users/${routerProps.match.params.username}/edit`}/>
+          <UserEditor username={routerProps.match.params.username} path={`${props.path}/users/${routerProps.match.params.username}/edit`} />
         )
       }, {
         path: '/:username',

@@ -881,5 +881,6 @@
     "dashboard": "Tableau de bord",
     "zoom_in": "Zoom avant",
     "zoom_out": "Zoom arrière",
-    "workspace": "Espace d'activités"
+    "workspace": "Espace d'activités",
+    "registration_date": "Date d'inscription"
 }

@@ -5,9 +5,7 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {ContextPage} from '#/main/app/context/components/page'
-import {UserAvatar} from '#/main/app/user/components/avatar'
-import {PageHeading} from '#/main/app/page/components/heading'
-import {PageContent} from '#/main/app/page'
+import {UserProfile} from '#/main/community/user/components/profile'
 
 const ContextProfile = (props) => {
   return (
@@ -21,27 +19,23 @@ const ContextProfile = (props) => {
           target: `${props.path}/profile`
         }
       ]}
+      menu={{
+        nav: [
+          {
+            name: 'parameters',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-sliders',
+            label: trans('parameters'),
+            target: `/account`,
+            tooltip: 'bottom'
+          }
+        ]
+      }}
     >
-      <PageContent>
-        <PageHeading
-          size="md"
-          poster={props.currentUser.poster}
-          title={props.currentUser.name}
-          icon={<UserAvatar user={props.currentUser} size="lg" border={true} />}
-          primaryAction="edit"
-          actions={[
-            {
-              name: 'edit',
-              type: LINK_BUTTON,
-              icon: 'fa fa-fw fa-pencil',
-              label: trans('edit', {}, 'actions'),
-              target: `${props.path}/profile/edit`,
-              primary: true
-            }
-          ]}
-        />
-
-      </PageContent>
+      <UserProfile
+        path={props.path+'/profile'}
+        user={props.currentUser}
+      />
     </ContextPage>
   )
 }

@@ -29,13 +29,13 @@ const UserMenu = (props) => {
       icon: 'fa fa-fw fa-user',
       label: trans('my_profile'),
       target: props.path+'/profile'
-    }/*, {
+    }, {
       name: 'parameters',
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-sliders',
       label: trans('parameters'),
       target: '/account'
-    }, {
+    }/*, {
       name: 'appearance',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-swatchbook',

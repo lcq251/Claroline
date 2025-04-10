@@ -9,8 +9,10 @@ use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
+use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Entity\Team;
+use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -40,12 +42,17 @@ class UserType extends AbstractType
             ->add('createdAt', DateType::class)
             ->add('updatedAt', DateType::class)
             ->add('disabled', BooleanType::class, ['default' => $options['disabled']])
-            // ->add('groups', GroupType::class) // breaks functional logs
-            /*->add('roles', RoleType::class, [
+            ->add('groups', RelatedEntityType::class)
+            ->add('roles', RelatedEntityType::class, [
                 'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    $alias = $finder->getAlias();
+                    if (!$finder->isRoot()) {
+                        $alias = $finder->getParent()->getAlias();
+                    }
+
                     $queryBuilder->leftJoin(Role::class, $finder->getAlias(), Join::WITH, "$alias MEMBER OF {$finder->getAlias()}.users");
                 },
-            ])*/
+            ])
             ->add('workspace', ClosureType::class, [
                 'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder, array $options) {
                     if (null !== $finder->getFilterValue()) {

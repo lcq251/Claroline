@@ -858,5 +858,6 @@
     "warning": "Warning",
     "legal_information": "Legal information",
     "logs": "Logs",
-    "dashboard": "Tableau de bord"
+    "dashboard": "Tableau de bord",
+    "registration_date": "Registration date"
 }

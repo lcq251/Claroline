@@ -12,6 +12,7 @@ export default (roles, refresher) => ({
   modal: [MODAL_USERS, {
     selectAction: (users) => ({
       type: ASYNC_BUTTON,
+      label: trans('add', {}, 'actions'),
       request: {
         url: url(['apiv2_role_add_users', {id: roles[0].id}], {ids: users.map(user => user.id)}),
         request: {
@@ -21,6 +22,6 @@ export default (roles, refresher) => ({
       }
     })
   }],
-  group: trans('registration'),
+  group: trans('management'),
   scope: ['object']
 })

@@ -34,17 +34,17 @@ registry.add('ClarolineCommunityBundle', {
     workspace: {
       //'register': () => { return import(/* webpackChunkName: "community-action-workspace-register" */ '#/main/community/actions/workspace/register') },
       //'register-self'  : () => { return import(/* webpackChunkName: "community-action-workspace-register-self" */   '#/main/community/actions/workspace/register-self') },
-      //'unregister-self': () => { return import(/* webpackChunkName: "community-action-workspace-unregister-self" */ '#/main/community/actions/workspace/unregister-self') },
-      //'view-as'        : () => { return import(/* webpackChunkName: "community-action-workspace-view-as" */         '#/main/community/actions/workspace/view-as') }
+      //'unregister-self': () => { return import(/* webpackChunkName: "community-action-workspace-unregister-self" */ '#/main/community/actions/workspace/unregister-self') }
     },
 
     user: {
-      'open'           : () => { return import(/* webpackChunkName: "community-action-user-open" */            '#/main/community/actions/user/open') },
-      'edit'           : () => { return import(/* webpackChunkName: "community-action-user-edit" */            '#/main/community/actions/user/edit') },
-      'disable'        : () => { return import(/* webpackChunkName: "community-action-user-disable" */         '#/main/community/actions/user/disable') },
-      'enable'         : () => { return import(/* webpackChunkName: "community-action-user-enable" */          '#/main/community/actions/user/enable') },
-      'view-as'        : () => { return import(/* webpackChunkName: "community-action-user-view-as" */         '#/main/community/actions/user/view-as') },
-      'delete'         : () => { return import(/* webpackChunkName: "community-action-user-delete" */          '#/main/community/actions/user/delete') }
+      'open'      : () => { return import(/* webpackChunkName: "community-action-user-open" */    '#/main/community/actions/user/open') },
+      'edit'      : () => { return import(/* webpackChunkName: "community-action-user-edit" */    '#/main/community/actions/user/edit') },
+      'disable'   : () => { return import(/* webpackChunkName: "community-action-user-disable" */ '#/main/community/actions/user/disable') },
+      'enable'    : () => { return import(/* webpackChunkName: "community-action-user-enable" */  '#/main/community/actions/user/enable') },
+      'view-as'   : () => { return import(/* webpackChunkName: "community-action-user-view-as" */ '#/main/community/actions/user/view-as') },
+      'delete'    : () => { return import(/* webpackChunkName: "community-action-user-delete" */  '#/main/community/actions/user/delete') },
+      'add-groups': () => { return import(/* webpackChunkName: "core-action-user-add-groups" */   '#/main/community/actions/user/add-groups') }
     },
 
     group: {

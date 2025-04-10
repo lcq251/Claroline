@@ -89,7 +89,7 @@ const UserList = props =>
         }] : []}
         customDefinition={[
           {
-            name: 'group',
+            name: 'groups',
             label: trans('groups', {}, 'community'),
             type: 'group',
             options: {

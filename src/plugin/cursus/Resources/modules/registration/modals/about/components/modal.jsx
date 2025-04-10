@@ -41,7 +41,7 @@ const AboutModal = props => {
               }, {
                 name: 'date',
                 type: 'date',
-                label: trans('registration_date', {}, 'cursus'),
+                label: trans('registration_date'),
                 options: {time: true}
               }
             ]

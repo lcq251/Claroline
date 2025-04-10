@@ -66,11 +66,11 @@ class AssertionController extends AbstractCrudController
         return ['create', 'update', 'list', 'deleteBulk'];
     }
 
-    #[Route(path: '/current-user/{workspace}', name: 'current_user_list', methods: ['GET'])]
+    #[Route(path: '/current-user/{workspaceId}', name: 'current_user_list', methods: ['GET'])]
     public function listMyAssertionsAction(
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery(),
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
+        #[MapEntity(mapping: ['workspaceId' => 'uuid'])]
         ?Workspace $workspace = null
     ): StreamedJsonResponse {
         if (!$this->authorization->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -78,6 +78,27 @@ class AssertionController extends AbstractCrudController
         }
 
         $user = $this->tokenStorage->getToken()?->getUser();
+
+        $finderQuery->addFilter('recipient', $user->getUuid());
+        if ($workspace) {
+            $finderQuery->addFilter('badge.workspace', $workspace->getUuid());
+        }
+
+        $assertions = $this->crud->search(Assertion::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $assertions->toResponse();
+    }
+
+    #[Route(path: '/user/{userId}/{workspaceId}', name: 'user_list', methods: ['GET'])]
+    public function listByUserAction(
+        #[MapEntity(mapping: ['userId' => 'uuid'])]
+        User $user,
+        #[MapEntity(mapping: ['workspaceId' => 'uuid'])]
+        ?Workspace $workspace = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        $this->checkPermission('OPEN', $user, [], true);
 
         $finderQuery->addFilter('recipient', $user->getUuid());
         if ($workspace) {
@@ -108,7 +129,7 @@ class AssertionController extends AbstractCrudController
     /**
      * Downloads pdf version of assertion.
      */
-    #[Route(path: '/{assertion}/pdf/download', name: 'pdf_download', methods: ['GET'])]
+    #[Route(path: '/{assertion}/pdf', name: 'pdf_download', methods: ['GET'])]
     public function downloadPdfAction(
         #[MapEntity(mapping: ['assertion' => 'uuid'])]
         Assertion $assertion

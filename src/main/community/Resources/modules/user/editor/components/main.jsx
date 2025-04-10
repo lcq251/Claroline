@@ -84,10 +84,6 @@ UserEditor.propTypes = {
   open: T.func.isRequired
 }
 
-UserEditor.defaultProps = {
-
-}
-
 export {
   UserEditor
 }

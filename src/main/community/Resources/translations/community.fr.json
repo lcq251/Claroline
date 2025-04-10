@@ -59,6 +59,7 @@
 
   "user": "Utilisateur",
   "users": "Utilisateurs",
+  "user_name": "Utilisateur : %name%",
   "user_delete_confirm_title": "{1} Suppression d'un utilisateur | [2,Inf[ Suppression de plusieurs utilisateurs",
   "user_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% utilisateurs ?",
   "user_disable_confirm_title": "{1} Désactivation d'un utilisateur | [2,Inf[ Désactivation de plusieurs utilisateurs",

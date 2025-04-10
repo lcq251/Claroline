@@ -21,8 +21,18 @@ registry.add('ClarolineCoreBundle', {
     'workspace': () => { return import(/* webpackChunkName: "core-search-workspace" */ '#/main/core/search/workspace')}
   },
 
+  /**
+   * Provides pages for the user editor.
+   */
   account: {
     'history': () => { return import(/* webpackChunkName: "core-account-history" */ '#/main/core/account/history')}
+  },
+
+  /**
+   * Provides tabs for the user profile.
+   */
+  profile: {
+    'workspaces': () => { return import(/* webpackChunkName: "core-profile-workspaces" */ '#/main/core/profile/workspaces')}
   },
 
   /**

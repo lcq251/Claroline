@@ -35,6 +35,13 @@ registry.add('ClarolineOpenBadgeBundle', {
    * Provides Administration tools.
    */
   tools: {
-    'badges': () => { return import(/* webpackChunkName: "plugin-open-badge-tool-badges" */ '#/plugin/open-badge/tools/badges') },
+    'badges': () => { return import(/* webpackChunkName: "plugin-open-badge-tool-badges" */ '#/plugin/open-badge/tools/badges') }
+  },
+
+  /**
+   * Provides tabs for the user profile.
+   */
+  profile: {
+    'badges': () => { return import(/* webpackChunkName: "plugin-open-badge-profile-badges" */ '#/plugin/open-badge/profile/badges') }
   }
 })

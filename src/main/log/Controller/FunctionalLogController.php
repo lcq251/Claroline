@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractSecurityController;
+use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\PlatformRoles;
@@ -67,6 +68,22 @@ class FunctionalLogController extends AbstractSecurityController
         $this->checkPermission('OPEN', $user, [], true);
 
         $finderQuery->addFilter('doer', $user->getUuid());
+
+        $logs = $this->crud->search(FunctionalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $logs->toResponse();
+    }
+
+    #[Route(path: '/group/{groupId}', name: 'apiv2_logs_functional_list_group', methods: ['GET'])]
+    public function listByGroupAction(
+        #[MapEntity(mapping: ['groupId' => 'uuid'])]
+        Group $group,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        $this->checkPermission('OPEN', $group, [], true);
+
+        $finderQuery->addFilter('doer.groups', $group->getUuid());
 
         $logs = $this->crud->search(FunctionalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 

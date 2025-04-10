@@ -20,6 +20,7 @@ import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {GroupPage} from '#/main/community/group/components/page'
 import {route} from '#/main/community/group/routing'
 import {Button} from '#/main/app/action'
+import {GroupActivity} from '#/main/community/group/components/activity'
 
 const GroupShow = (props) =>
   <GroupPage
@@ -56,8 +57,14 @@ const GroupShow = (props) =>
       path={route(props.group, props.path)}
       tabs={[
         {
-          path: '',
+          path: '/',
           exact: true,
+          title: trans('activity'),
+          render: () => (
+            <GroupActivity group={props.group} />
+          )
+        }, {
+          path: '/users',
           icon: 'fa fa-user',
           title: trans('users', {}, 'community'),
           render: () => (

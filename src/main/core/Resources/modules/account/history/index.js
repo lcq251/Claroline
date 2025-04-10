@@ -6,6 +6,5 @@ import {AccountHistory} from '#/main/core/account/history/components/main'
 export default declareAccount(AccountHistory, {
   name: 'my-history', // ATTENTION : UserEditor contains a history page for operational logs
   title: trans('history', {}, 'history'),
-  help: trans('history_desc', {}, 'history'),
   group: trans('preferences')
 })
