@@ -118,7 +118,8 @@ const Chapter = props => {
             label: trans('show_history', {}, 'actions'),
             modal: [MODAL_PAGE_HISTORY, {
               pageId: props.chapter.id
-            }]
+            }],
+            displayed: canEdit
           }, {
             name: 'delete',
             type: CALLBACK_BUTTON,
