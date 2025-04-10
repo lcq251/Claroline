@@ -99,7 +99,7 @@ final class UserSubscriber implements EventSubscriberInterface
 
         $everyoneGroups = $this->om->getRepository(Group::class)->findBy([
             'everyone' => true,
-            'organizations' => $user->getOrganizations(),
+            'organization' => $user->getOrganizations(),
         ]);
 
         if (!empty($everyoneGroups)) {
