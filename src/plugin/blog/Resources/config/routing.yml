@@ -1,5 +1,0 @@
-icap_blog_api:
-    resource: "@IcapBlogBundle/Controller"
-    type: attribute
-    options:
-        expose: true

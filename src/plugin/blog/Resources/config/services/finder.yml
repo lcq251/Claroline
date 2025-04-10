@@ -1,8 +1,0 @@
-services:
-    Icap\BlogBundle\Finder\CommentFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]
-
-    Icap\BlogBundle\Finder\PostFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]

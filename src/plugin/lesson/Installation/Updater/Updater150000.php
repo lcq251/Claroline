@@ -6,6 +6,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\InstallationBundle\Updater\Helper\RemovePluginTrait;
 use Claroline\InstallationBundle\Updater\Helper\RemoveResourceTrait;
 use Claroline\InstallationBundle\Updater\NonReplayableUpdaterInterface;
 use Claroline\InstallationBundle\Updater\Updater;
@@ -16,6 +17,7 @@ use Icap\LessonBundle\Entity\Lesson;
 class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 {
     use RemoveResourceTrait;
+    use RemovePluginTrait;
 
     public function __construct(
         private readonly Connection $connection,
@@ -25,27 +27,33 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
     public function postUpdate(): void
     {
-        $this->migrateTexts();
-        $this->removeResource('text');
-    }
-
-    private function migrateTexts(): void
-    {
-        $textType = $this->om->getRepository(ResourceType::class)->findOneBy([
+        $lessonType = $this->om->getRepository(ResourceType::class)->findOneBy([
             'name' => 'icap_lesson',
         ]);
 
-        if (empty($textType)) {
+        if (empty($lessonType)) {
             return;
         }
 
+        $this->migrateTexts($lessonType);
+        $this->migrateBlogs($lessonType);
+        // $this->migrateWikis($lessonType);
+
+        $this->removeResource('text');
+        $this->removePlugin('Icap', 'BlogBundle');
+        // $this->removeResource('icap_wiki');
+    }
+
+    private function migrateTexts(ResourceType $resourceType): void
+    {
+        // change node type to the lesson one
         $updateNode = $this->connection->prepare('
             UPDATE claro_resource_node 
             SET mime_type = "custom/icap_lesson", resource_type_id = :resourceType
             WHERE mime_type = "custom/text"
         ');
 
-        $updateNode->bindValue('resourceType', $textType->getId());
+        $updateNode->bindValue('resourceType', $resourceType->getId());
         $updateNode->executeQuery();
 
         $selectText = $this->connection->prepare('
@@ -98,5 +106,90 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
         $this->om->flush();
         $this->om->clear();
+    }
+
+    private function migrateBlogs(ResourceType $resourceType): void
+    {
+        // change node type to the lesson one
+        $updateNode = $this->connection->prepare('
+            UPDATE claro_resource_node 
+            SET mime_type = "custom/icap_lesson", resource_type_id = :resourceType
+            WHERE mime_type = "custom/icap_blog"
+        ');
+
+        $updateNode->bindValue('resourceType', $resourceType->getId());
+        $updateNode->executeQuery();
+
+        $selectBlog = $this->connection->prepare('
+            SELECT n.uuid, p.creator_id, p.title, p.content, p.creation_date, p.modification_date, p.poster
+            FROM icap__blog_post AS p
+            LEFT JOIN icap__blog AS b ON p.blog_id = b.id 
+            LEFT JOIN claro_resource_node AS n ON b.resourceNode_id = n.id
+        ');
+
+        $results = $selectBlog->executeQuery();
+
+        foreach ($results->iterateAssociative() as $i => $result) {
+            $resourceNode = $this->om->getRepository(ResourceNode::class)->findOneBy([
+                'uuid' => $result['uuid'],
+            ]);
+
+            if (empty($resourceNode)) {
+                continue;
+            }
+
+            $creator = null;
+            if ($result['creator_id']) {
+                $creator = $this->om->getRepository(User::class)->find($result['creator_id']);
+            }
+
+            $lesson = $this->om->getRepository(Lesson::class)->findOneBy(['resourceNode' => $resourceNode]);
+            if (empty($lesson)) {
+                $lesson = new Lesson();
+                $lesson->setResourceNode($resourceNode);
+            }
+
+            $lesson->setShowMeta(true);
+            $lesson->setNavigation(true);
+            $lesson->buildRoot();
+            $this->om->persist($lesson);
+
+            $chapter = new Chapter();
+            $chapter->setCreator($creator);
+            $chapter->setTitle($result['title']);
+            $chapter->setText($result['content']);
+            $chapter->setPoster($result['poster']);
+            if (!empty($result['modification_date'])) {
+                $chapter->setUpdatedAt(new \DateTime($result['modification_date']));
+            }
+            if (!empty($result['creation_date'])) {
+                $chapter->setCreatedAt(new \DateTime($result['creation_date']));
+            }
+
+            $chapter->setLesson($lesson);
+            $this->om->persist($chapter);
+
+            $this->om->getRepository(Chapter::class)->persistAsLastChildOf($chapter, $lesson->getRoot());
+
+            if (0 === $i % 100) {
+                $this->om->flush();
+            }
+        }
+
+        $this->om->flush();
+        $this->om->clear();
+    }
+
+    private function migrateWikis(ResourceType $resourceType): void
+    {
+        // change node type to the lesson one
+        $updateNode = $this->connection->prepare('
+            UPDATE claro_resource_node 
+            SET mime_type = "custom/icap_lesson", resource_type_id = :resourceType
+            WHERE mime_type = "custom/icap_wiki"
+        ');
+
+        $updateNode->bindValue('resourceType', $resourceType->getId());
+        $updateNode->executeQuery();
     }
 }

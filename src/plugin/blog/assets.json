@@ -1,8 +1,0 @@
-{
-  "styles": {
-    "entry": {
-      "blog-resource": "resources/blog.scss",
-      "blog-pdf": "pdf.scss"
-    }
-  }
-}
