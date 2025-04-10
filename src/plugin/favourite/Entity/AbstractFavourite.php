@@ -11,23 +11,16 @@ abstract class AbstractFavourite
 {
     use Id;
 
-    /**
-     *
-     * @var User
-     */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }

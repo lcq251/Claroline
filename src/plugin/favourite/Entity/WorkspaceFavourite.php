@@ -19,28 +19,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class WorkspaceFavourite extends AbstractFavourite
 {
-    /**
-     *
-     * @var Workspace
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Workspace::class)]
     private ?Workspace $workspace = null;
 
-    /**
-     * Get workspace.
-     *
-     * @return Workspace
-     */
-    public function getWorkspace()
+    public function getWorkspace(): ?Workspace
     {
         return $this->workspace;
     }
 
-    /**
-     * Set workspace.
-     */
-    public function setWorkspace(Workspace $workspace)
+    public function setWorkspace(Workspace $workspace): void
     {
         $this->workspace = $workspace;
     }

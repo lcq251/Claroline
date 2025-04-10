@@ -11,23 +11,17 @@ use HeVinci\FavouriteBundle\Entity\WorkspaceFavourite;
 
 class FavouriteManager
 {
-    /** @var ObjectManager */
-    private $om;
-
-    /**
-     * FavouriteManager constructor.
-     */
-    public function __construct(ObjectManager $om)
-    {
-        $this->om = $om;
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
     }
 
     /**
-     * Get the list of favorited workspaces for a user.
+     * Get the list of favorite workspaces for a user.
      *
      * @return Workspace[]
      */
-    public function getWorkspaces(User $user)
+    public function getWorkspaces(User $user): array
     {
         $workspaces = $this->om
             ->getRepository(WorkspaceFavourite::class)
@@ -39,11 +33,11 @@ class FavouriteManager
     }
 
     /**
-     * Get the list of favorited resources for a user.
+     * Get the list of favorite resources for a user.
      *
      * @return ResourceNode[]
      */
-    public function getResources(User $user)
+    public function getResources(User $user): array
     {
         $resources = $this->om
             ->getRepository(ResourceFavourite::class)
@@ -59,7 +53,7 @@ class FavouriteManager
      *
      * @param ResourceNode[] $resourceNodes
      */
-    public function toggleResourceFavourites(User $user, array $resourceNodes)
+    public function toggleResourceFavourites(User $user, array $resourceNodes): void
     {
         if (!empty($resourceNodes)) {
             $firstFavourite = $this->om
@@ -89,7 +83,7 @@ class FavouriteManager
      *
      * @param Workspace[] $workspaces
      */
-    public function toggleWorkspaceFavourites(User $user, array $workspaces)
+    public function toggleWorkspaceFavourites(User $user, array $workspaces): void
     {
         if (!empty($workspaces)) {
             $firstFavourite = $this->om
@@ -117,7 +111,7 @@ class FavouriteManager
     /**
      * Creates a favourite for given user and resource.
      */
-    public function createResourceFavourite(User $user, ResourceNode $resourceNode)
+    public function createResourceFavourite(User $user, ResourceNode $resourceNode): void
     {
         $favourite = $this->om->getRepository(ResourceFavourite::class)->findOneBy([
             'user' => $user,
@@ -137,7 +131,7 @@ class FavouriteManager
     /**
      * Deletes favourite for given user and resource.
      */
-    public function deleteResourceFavourite(User $user, ResourceNode $resourceNode)
+    public function deleteResourceFavourite(User $user, ResourceNode $resourceNode): void
     {
         $favourite = $this->om->getRepository(ResourceFavourite::class)->findOneBy([
             'user' => $user,
@@ -153,7 +147,7 @@ class FavouriteManager
     /**
      * Creates a favourite for given user and workspace.
      */
-    public function createWorkspaceFavourite(User $user, Workspace $workspace)
+    public function createWorkspaceFavourite(User $user, Workspace $workspace): void
     {
         $favourite = $this->om->getRepository(WorkspaceFavourite::class)->findOneBy([
             'user' => $user,
@@ -173,7 +167,7 @@ class FavouriteManager
     /**
      * Deletes favourite for given user and workspace.
      */
-    public function deleteWorkspaceFavourite(User $user, Workspace $workspace)
+    public function deleteWorkspaceFavourite(User $user, Workspace $workspace): void
     {
         $favourite = $this->om->getRepository(WorkspaceFavourite::class)->findOneBy([
             'user' => $user,
