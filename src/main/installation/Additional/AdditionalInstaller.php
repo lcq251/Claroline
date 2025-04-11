@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareTrait;
 abstract class AdditionalInstaller implements AdditionalInstallerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
     protected ?ContainerInterface $container;
 
     /**

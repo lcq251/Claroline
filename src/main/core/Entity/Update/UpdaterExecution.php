@@ -11,9 +11,9 @@
 
 namespace Claroline\CoreBundle\Entity\Update;
 
+use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\InstallationBundle\Repository\UpdaterExecutionRepository;
 use Doctrine\DBAL\Types\Types;
-use Claroline\AppBundle\Entity\Identifier\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +27,7 @@ class UpdaterExecution
     use Id;
 
     /**
-     * The FQCN of the executed updater
+     * The FQCN of the executed updater.
      */
     #[ORM\Column(name: 'updater_class', type: Types::STRING, unique: true)]
     private ?string $updaterClass = null;

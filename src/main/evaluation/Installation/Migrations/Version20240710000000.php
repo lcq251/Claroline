@@ -2,7 +2,7 @@
 
 namespace Claroline\EvaluationBundle\Installation\Migrations;
 
-use Claroline\MigrationBundle\Migrations\ConditionalMigrationTrait;
+use Claroline\InstallationBundle\Migrations\Helper\ConditionalMigrationTrait;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

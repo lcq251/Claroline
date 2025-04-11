@@ -1,5 +1,4 @@
 Claroline\InstallationBundle\ClarolineInstallationBundle = true
-Claroline\MigrationBundle\ClarolineMigrationBundle = true
 Claroline\TemplateBundle\ClarolineTemplateBundle = true
 Claroline\CoreBundle\ClarolineCoreBundle = true
 Claroline\NotificationBundle\ClarolineNotificationBundle = true
@@ -24,7 +23,6 @@ Claroline\WebResourceBundle\ClarolineWebResourceBundle = true
 Claroline\TextPlayerBundle\ClarolineTextPlayerBundle = true
 HeVinci\FavouriteBundle\HeVinciFavouriteBundle = true
 HeVinci\UrlBundle\HeVinciUrlBundle = true
-Icap\BlogBundle\IcapBlogBundle = true
 Icap\WikiBundle\IcapWikiBundle = true
 Innova\PathBundle\InnovaPathBundle = true
 Claroline\DevBundle\ClarolineDevBundle = true

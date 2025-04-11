@@ -18,12 +18,12 @@ use Claroline\InstallationBundle\Bundle\InstallableInterface;
 use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -37,7 +37,7 @@ class PlatformManager implements LoggerAwareInterface
     private OutputInterface $output;
 
     public function __construct(
-        private readonly ContainerInterface $container,
+        private readonly ManagerRegistry $doctrine,
         private readonly KernelInterface $kernel,
         private readonly ObjectManager $om,
         private readonly PlatformConfigurationHandler $config,
@@ -139,13 +139,13 @@ class PlatformManager implements LoggerAwareInterface
             $this->logger->info('Checking database connection...');
 
             /** @var Connection $cn */
-            $cn = $this->container->get('doctrine.dbal.default_connection');
+            $cn = $this->doctrine->getConnection();
             // see http://stackoverflow.com/questions/3668506/efficient-sql-test-query-or-validation-query-that-will-work-across-all-or-most
             $cn->executeQuery('SELECT 1');
         } catch (\Exception $ex) {
             $this->logger->notice('Unable to connect to database: trying to create database...');
 
-            $command = new CreateDatabaseDoctrineCommand($this->container->get('doctrine'));
+            $command = new CreateDatabaseDoctrineCommand($this->doctrine);
             $code = $command->run(new ArrayInput([]), $this->output ?: new NullOutput());
 
             if (0 !== $code) {

@@ -19,9 +19,8 @@ use Claroline\InstallationBundle\Fixtures\PostInstallInterface;
 use Claroline\InstallationBundle\Fixtures\PostUpdateInterface;
 use Claroline\InstallationBundle\Fixtures\PreInstallInterface;
 use Claroline\InstallationBundle\Fixtures\PreUpdateInterface;
+use Claroline\InstallationBundle\Migrations\Migrator;
 use Claroline\KernelBundle\Bundle\PluginBundleInterface;
-use Claroline\MigrationBundle\Manager\Manager;
-use Claroline\MigrationBundle\Migrator\Migrator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -40,7 +39,7 @@ class BundleManager implements LoggerAwareInterface
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Manager $migrationManager,
+        private readonly MigrationsManager $migrationManager,
         private readonly FixtureLoader $fixtureLoader,
         private readonly Recorder $recorder
     ) {

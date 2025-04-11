@@ -1,10 +1,4 @@
 services:
-    Claroline\InstallationBundle\Command\RefreshCommand:
-        arguments:
-            - '@Claroline\InstallationBundle\Manager\RefreshManager'
-        tags:
-            - { name: 'console.command', command: 'claroline:refresh' }
-
     Claroline\InstallationBundle\Command\PlatformInstallCommand:
         tags:
             - { name: 'console.command', command: 'claroline:install' }
@@ -17,10 +11,34 @@ services:
         tags:
             - { name: 'console.command', command: 'claroline:update' }
 
-    Claroline\InstallationBundle\Command\ExecuteUpdaterCommand:
+    Claroline\InstallationBundle\Command\Updater\ExecuteCommand:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - !tagged_locator
                   tag: 'claroline.platform.updater'
         tags:
             - { name: 'console.command', command: 'claroline:updater:execute' }
+
+    # Migrations
+    _instanceof:
+        Claroline\InstallationBundle\Command\Migrations\AbstractCommand:
+            calls:
+                - [ setManager, [ '@claroline.migration.manager' ] ]
+
+    Claroline\InstallationBundle\Command\Migrations\DowngradeCommand:
+        tags:
+            - { name: 'console.command', command: 'claroline:migration:downgrade' }
+
+    Claroline\InstallationBundle\Command\Migrations\GenerateCommand:
+        tags:
+            - { name: 'console.command', command: 'claroline:migration:generate' }
+
+    Claroline\InstallationBundle\Command\Migrations\UpgradeCommand:
+        tags:
+            - { name: 'console.command', command: 'claroline:migration:upgrade' }
+
+    Claroline\InstallationBundle\Command\Migrations\VersionCommand:
+        arguments:
+            - '@claroline.migration.migrator'
+        tags:
+            - { name: 'console.command', command: 'claroline:migration:version' }

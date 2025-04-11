@@ -63,7 +63,7 @@ class VersionManager implements LoggerAwareInterface
     }
 
     /**
-     * Get the full version of the platform (eg. 13.1.2, 13.0.46).
+     * Get the full version of the platform (e.g. 13.1.2, 13.0.46).
      */
     public function getCurrent(): string
     {
@@ -71,7 +71,7 @@ class VersionManager implements LoggerAwareInterface
     }
 
     /**
-     * Get the minor version of the platform (eg. 13.1, 12.5).
+     * Get the minor version of the platform (e.g. 13.1, 12.5).
      */
     public function getCurrentMinor(): string
     {

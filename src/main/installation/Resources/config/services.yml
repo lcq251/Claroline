@@ -1,6 +1,8 @@
 imports:
     - { resource: services/command.yml }
     - { resource: services/manager.yml }
+    - { resource: services/migrations.yml }
+    - { resource: services/twig.yml }
 
 services:
     claroline.installation.fixture_loader:

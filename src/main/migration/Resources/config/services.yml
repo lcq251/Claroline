@@ -1,5 +1,0 @@
-imports:
-    - { resource: services/command.yml }
-    - { resource: services/manager.yml }
-    - { resource: services/migration.yml }
-    - { resource: services/twig.yml }

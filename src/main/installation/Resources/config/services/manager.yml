@@ -21,7 +21,7 @@ services:
 
     Claroline\InstallationBundle\Manager\PlatformManager:
         arguments:
-            - '@service_container'
+            - '@doctrine'
             - '@kernel'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
@@ -39,3 +39,13 @@ services:
             - '%claroline.param.public_directory%'
             - '%claroline.param.data_web_dir%'
             - '%claroline.param.public_files_directory%'
+
+    claroline.migration.manager:
+        class: Claroline\InstallationBundle\Manager\MigrationsManager
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@claroline.migration.generator'
+            - '@claroline.migration.writer'
+            - '@claroline.migration.migrator'
+        calls:
+            - [ setLogger, [ '@logger' ] ]

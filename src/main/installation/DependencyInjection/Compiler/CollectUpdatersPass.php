@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CollectUpdatersPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $updaterRefs = [];
         foreach (array_keys($container->findTaggedServiceIds('claroline.platform.updater')) as $id) {

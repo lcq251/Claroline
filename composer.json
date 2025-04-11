@@ -105,7 +105,6 @@
             "Claroline\\LinkBundle\\": "src/plugin/link",
             "Claroline\\LogBundle\\": "src/main/log",
             "Claroline\\MessageBundle\\": "src/plugin/message",
-            "Claroline\\MigrationBundle\\": "src/main/migration",
             "Claroline\\NotificationBundle\\": "src/main/notification",
             "Claroline\\OpenBadgeBundle\\": "src/plugin/open-badge",
             "Claroline\\PdfPlayerBundle\\": "src/plugin/pdf-player",

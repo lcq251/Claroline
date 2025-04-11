@@ -1,7 +1,0 @@
-services:
-    Claroline\MigrationBundle\Twig\SqlFormatterExtension:
-        tags: [twig.extension]
-        arguments:
-            - '@twig.extension.assets'
-            - '%kernel.environment%'
-            - '%kernel.project_dir%'

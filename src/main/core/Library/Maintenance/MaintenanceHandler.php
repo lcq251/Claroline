@@ -13,7 +13,7 @@ namespace Claroline\CoreBundle\Library\Maintenance;
 
 class MaintenanceHandler
 {
-    public static function enableMaintenance()
+    public static function enableMaintenance(): void
     {
         $file = self::getFlagPath();
 
@@ -22,7 +22,7 @@ class MaintenanceHandler
         }
     }
 
-    public static function disableMaintenance()
+    public static function disableMaintenance(): void
     {
         $file = self::getFlagPath();
 
@@ -31,12 +31,12 @@ class MaintenanceHandler
         }
     }
 
-    public static function isMaintenanceEnabled()
+    public static function isMaintenanceEnabled(): bool
     {
         return file_exists(self::getFlagPath());
     }
 
-    private static function getFlagPath()
+    private static function getFlagPath(): string
     {
         return __DIR__.'/../../../../../files/config/.update';
     }

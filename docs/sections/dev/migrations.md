@@ -39,7 +39,7 @@ using the `--target` option:
 ```sh
 php bin/console claroline:migration:downgrade AcmeFooBundle --target=20130101124512
 php bin/console claroline:migration:upgrade AcmeFooBundle --target=nearest
-php bin/console claroline:migration:upgrade AcmeFooBundle --target=farthest
+php bin/console claroline:migration:upgrade AcmeFooBundle --target=latest
 ```
 
 where *farthest* means a full upgrade/downgrade.
@@ -49,25 +49,6 @@ highlights the current/installed one:
 
 ```sh
 php bin/console claroline:migration:version AcmeFooBundle
-```
-
-Finally, you can delete generated migration classes which are above the current version
-of a bundle using:
-
-```sh
-php bin/console claroline:migration:discard AcmeFooBundle
-```
-This last command is useful if you intend to "merge" several migration classes generated
-during development into a single migration class. In such a case, the steps to follow
-would be:
-
-```sh
-# downgrading to the newest version you want to keep
-php bin/console claroline:migration:downgrade AcmeFooBundle --target=20130101124512
-# deleting everything above that version
-php bin/console claroline:migration:discard AcmeFooBundle
-# generating a new migration class
-php bin/console claroline:migration:generate AcmeFooBundle
 ```
 
 
