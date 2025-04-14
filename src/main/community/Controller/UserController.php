@@ -223,7 +223,7 @@ class UserController extends AbstractCrudController
         return new JsonResponse(null, 204);
     }
 
-    private function checkToolAccess(string $rights = 'OPEN', string $contextId = null): bool
+    private function checkToolAccess(string $permission = 'OPEN', string $contextId = null): bool
     {
         if ($contextId) {
             $communityTool = $this->toolManager->getOrderedTool('community', WorkspaceContext::getName(), $contextId);
@@ -231,8 +231,8 @@ class UserController extends AbstractCrudController
             $communityTool = $this->toolManager->getOrderedTool('community', DesktopContext::getName());
         }
 
-        if (is_null($communityTool) || !$this->authorization->isGranted($rights, $communityTool)) {
-            return false;
+        if (is_null($communityTool) || !$this->authorization->isGranted($permission, $communityTool)) {
+            throw new AccessDeniedException(sprintf('Operation "%s" cannot be done on object %s', $permission, get_class($communityTool)));
         }
 
         return true;
