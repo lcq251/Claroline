@@ -6,9 +6,9 @@ use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
+use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Finder\OrganizationType;
-use Claroline\CoreBundle\Finder\WorkspaceType;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,7 +29,7 @@ class BadgeType extends AbstractType
             ->add('description', TextType::class)
             ->add('archived', BooleanType::class, ['default' => false])
             ->add('issuer', OrganizationType::class)
-            ->add('workspace', WorkspaceType::class)
+            ->add('workspace', RelatedEntityType::class)
         ;
     }
 
