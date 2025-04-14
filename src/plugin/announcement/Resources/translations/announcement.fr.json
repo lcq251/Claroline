@@ -19,5 +19,5 @@
     "no_announcement": "Aucune annonce",
     "no_announcement_help": "Vous pourrez retrouver ici les dernières nouvelles de votre espace plus tard.",
     "back_to_announcements": "Retour aux annonces",
-    "announcement_name": "Annonce: %name%"
+    "announcement_name": "Annonce : %name%"
 }

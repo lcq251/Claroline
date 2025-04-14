@@ -12,7 +12,15 @@
 namespace Claroline\OpenBadgeBundle;
 
 use Claroline\KernelBundle\Bundle\DistributionPluginBundle;
+use Claroline\OpenBadgeBundle\DependencyInjection\Compiler\RegisterBadgeRuleSubscriberPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ClarolineOpenBadgeBundle extends DistributionPluginBundle
 {
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterBadgeRuleSubscriberPass());
+    }
 }

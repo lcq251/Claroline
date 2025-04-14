@@ -121,21 +121,21 @@ class AssertionManager
 
         $locale = $user->getLocale();
         $placeholders = array_merge([
-                // recipient
-                'first_name' => $user->getFirstName(),
-                'last_name' => $user->getLastName(),
-                'username' => $user->getUsername(),
-                // badge
-                'badge_name' => $badge->getName(),
-                'badge_description' => $badge->getDescription(),
-                'badge_image' => '<img src="'.$this->platformManager->getUrl().'/'.$badge->getImage().'" style="max-width: 100px; max-height: 50px;"/>',
-                'badge_image_url' => $this->platformManager->getUrl().'/'.$badge->getImage(),
-                'badge_duration' => $badge->getDurationValidation(),
-                // assertion
-                'assertion_url' => $this->routingHelper->desktopUrl('badges')."/badges/{$badge->getUuid()}/assertion/{$assertion->getUuid()}",
-                // issuer
-                'issuer_name' => $organization->getName(),
-            ],
+            // recipient
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'username' => $user->getUsername(),
+            // badge
+            'badge_name' => $badge->getName(),
+            'badge_description' => $badge->getDescription(),
+            'badge_image' => '<img src="'.$this->platformManager->getUrl().'/'.$badge->getImage().'" style="max-width: 100px; max-height: 50px;"/>',
+            'badge_image_url' => $this->platformManager->getUrl().'/'.$badge->getImage(),
+            'badge_duration' => $badge->getDurationValidation(),
+            // assertion
+            'assertion_url' => $this->routingHelper->desktopUrl('badges')."/badges/{$badge->getUuid()}/assertion/{$assertion->getUuid()}",
+            // issuer
+            'issuer_name' => $organization->getName(),
+        ],
             $this->templateManager->formatDatePlaceholder('issued_on', $assertion->getIssuedOn())
         );
 
@@ -149,7 +149,7 @@ class AssertionManager
         ), MessageEvents::MESSAGE_SENDING);
     }
 
-    public function transferBadgesAction(User $userFrom, User $userTo): void
+    public function transferBadges(User $userFrom, User $userTo): void
     {
         $assertions = $this->om->getRepository(Assertion::class)->findBy(['recipient' => $userFrom]);
 

@@ -1,30 +1,30 @@
 <?php
 
-namespace Claroline\CoreBundle\DependencyInjection\Compiler;
+namespace Claroline\OpenBadgeBundle\DependencyInjection\Compiler;
 
-use Claroline\CoreBundle\Component\Resource\ResourceProvider;
+use Claroline\LogBundle\Component\Log\LogProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Register service tagged with "claroline.component.resource" as EventSubscriber.
+ * Register service tagged with "claroline.component.badge_rule" as EventSubscriber.
  */
-final class RegisterResourceSubscriberPass implements CompilerPassInterface
+final class RegisterBadgeRuleSubscriberPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('event_dispatcher') || !$container->has('claroline.provider.resource')) {
+        if (!$container->has('event_dispatcher') || !$container->has('claroline.provider.badge_rule')) {
             return;
         }
 
         $eventDispatcherDefinition = $container->findDefinition('event_dispatcher');
 
-        // get all defined resources
-        $taggedServices = $container->findTaggedServiceIds(ResourceProvider::getServiceTag());
+        // Get all defined rules
+        $taggedServices = $container->findTaggedServiceIds(LogProvider::getServiceTag());
         $taggedServiceIds = array_keys($taggedServices);
         foreach ($taggedServiceIds as $id) {
-            // register resources as event subscriber
+            // register rules as event subscriber
             $eventDispatcherDefinition->addMethodCall('addSubscriber', [new Reference($id)]);
         }
     }

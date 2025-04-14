@@ -72,7 +72,7 @@ class TemplateManager
         return '';
     }
 
-    public function formatDatePlaceholder(string $placeholderPrefix, ?\DateTime $date): array
+    public function formatDatePlaceholder(string $placeholderPrefix, ?\DateTimeInterface $date): array
     {
         return $this->placeholderManager->formatDatePlaceholder($placeholderPrefix, $date);
     }

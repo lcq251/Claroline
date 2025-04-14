@@ -33,47 +33,4 @@ class RuleManager
     {
         $this->messageBus->dispatch(new GrantRule($rule->getId(), $user->getId()));
     }
-
-    public function grantAll(Rule $rule): array
-    {
-        $ruleDefinition = $this->getRule($rule->getAction());
-
-        // find all users which met the current rule
-        $users = $ruleDefinition->getQualifiedUsers($rule);
-
-        // find users which already have evidence for the rule
-        $evidences = $this->om->getRepository(Evidence::class)->findBy(['rule' => $rule]);
-        $owners = array_map(function (Evidence $evidence) {
-            return $evidence->getUser()->getUuid();
-        }, $evidences);
-
-        $recomputeUsers = [];
-        foreach ($users as $user) {
-            if (!$user->isDisabled() && !$user->isRemoved() && !in_array($user->getUuid(), $owners)) {
-                $this->createEvidence($rule, $user);
-
-                $recomputeUsers[$user->getUuid()] = $user; // using uuid as key will automatically deduplicate the array
-            }
-        }
-
-        return $recomputeUsers;
-    }
-
-    public function createEvidence(Rule $rule, User $user): Evidence
-    {
-        $ruleDefinition = $this->getRule($rule->getAction());
-
-        $evidence = new Evidence();
-
-        $evidence->setName($rule->getAction());
-        $evidence->setRule($rule);
-        $evidence->setUser($user);
-
-        $evidence->setDescription($ruleDefinition->getEvidenceMessage());
-
-        $this->om->persist($evidence);
-        $this->om->flush();
-
-        return $evidence;
-    }
 }

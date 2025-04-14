@@ -10,11 +10,6 @@ export default declareDataType({
     label: trans('rule'),
     description: trans('rule')
   },
-
-  validate: () => {
-    return true
-  },
-
   components: {
     input: RuleInput
   }

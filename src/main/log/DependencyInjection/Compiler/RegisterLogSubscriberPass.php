@@ -14,7 +14,7 @@ final class RegisterLogSubscriberPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('event_dispatcher') || !$container->has('claroline.log_provider')) {
+        if (!$container->has('event_dispatcher') || !$container->has('claroline.provider.log')) {
             return;
         }
 

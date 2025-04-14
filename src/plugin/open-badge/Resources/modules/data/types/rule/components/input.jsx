@@ -30,9 +30,6 @@ import {
 
 import {trans} from '#/main/app/intl/translation'
 
-// todo : fix responsive (incorrect margin bottom)
-// todo : manages errors
-
 const RuleDataInput = (props) => {
   switch (props.type) {
     case RESOURCE_STATUS:

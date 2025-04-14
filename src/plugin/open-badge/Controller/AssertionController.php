@@ -66,7 +66,7 @@ class AssertionController extends AbstractCrudController
         return ['create', 'update', 'list', 'deleteBulk'];
     }
 
-    #[Route(path: '/current-user/{workspaceId}', name: 'current_user_list', methods: ['GET'])]
+    #[Route(path: '/current-user/{workspaceId}', name: 'current_user_list', defaults: ['workspaceId' => null], methods: ['GET'])]
     public function listMyAssertionsAction(
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery(),
@@ -89,7 +89,7 @@ class AssertionController extends AbstractCrudController
         return $assertions->toResponse();
     }
 
-    #[Route(path: '/user/{userId}/{workspaceId}', name: 'user_list', methods: ['GET'])]
+    #[Route(path: '/user/{userId}/{workspaceId}', name: 'user_list', defaults: ['workspaceId' => null], methods: ['GET'])]
     public function listByUserAction(
         #[MapEntity(mapping: ['userId' => 'uuid'])]
         User $user,
@@ -163,7 +163,7 @@ class AssertionController extends AbstractCrudController
     ): JsonResponse {
         $this->canAdministrate();
 
-        $this->assertionManager->transferBadgesAction($userFrom, $userTo);
+        $this->assertionManager->transferBadges($userFrom, $userTo);
 
         return new JsonResponse(null, 204);
     }

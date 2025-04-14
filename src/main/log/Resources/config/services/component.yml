@@ -4,7 +4,7 @@ services:
         arguments:
             - !tagged_iterator claroline.component.log
 
-    claroline.log_provider:
+    claroline.provider.log:
         alias: Claroline\LogBundle\Component\Log\LogProvider
         public: true
 

@@ -22,7 +22,7 @@ const AssertionsList = (props) =>
         flush={true}
         path={props.path}
         name={selectors.STORE_NAME + '.mine'}
-        url={['apiv2_badge_assertion_current_user_list', {workspaceId: props.contextData ? props.contextData.id : null}]}
+        url={['apiv2_badge_assertion_current_user_list', {workspaceId: 'workspace' === props.contextType ? props.contextData.id : null}]}
         customDefinition={[
           {
             name: 'badge.name',
@@ -54,6 +54,7 @@ const AssertionsList = (props) =>
 AssertionsList.propTypes = {
   path: T.string.isRequired,
   poster: T.string,
+  contextType: T.string.isRequired,
   contextData: T.object
 }
 
@@ -61,6 +62,7 @@ const Assertions = connect(
   (state) => ({
     path: toolSelectors.path(state),
     poster: toolSelectors.poster(state),
+    contextType: toolSelectors.contextType(state),
     contextData: toolSelectors.contextData(state)
   })
 )(AssertionsList)

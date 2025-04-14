@@ -1,4 +1,4 @@
-# Declares all services required for the management of Claroline Components (eg. resources).
+# Declares all services required for the management of Claroline Components (e.g. resources).
 services:
     # Resources
     Claroline\CoreBundle\Component\Resource\ResourceProvider:
@@ -6,6 +6,6 @@ services:
             - !tagged_iterator claroline.component.resource
             - '@Claroline\AppBundle\Manager\File\TempFileManager'
 
-    claroline.resource_provider:
+    claroline.provider.resource:
         alias: Claroline\CoreBundle\Component\Resource\ResourceProvider
         public: true

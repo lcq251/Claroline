@@ -19,6 +19,10 @@ import {selectors}  from '#/plugin/open-badge/tools/badges/store'
 const BadgeDetails = (props) => {
   return (
     <>
+      <PageSection size="md" className="mb-5">
+        <BadgeMyAssertion assertion={props.assertion} />
+      </PageSection>
+
       {(get(props.badge, 'meta.descriptionHtml') || !isEmpty(get(props.badge, 'tags'))) &&
         <PageSection size="md" className="pb-5">
           <Content
@@ -28,10 +32,6 @@ const BadgeDetails = (props) => {
           </Content>
         </PageSection>
       }
-
-      <PageSection size="md" className="mb-5">
-        <BadgeMyAssertion assertion={props.assertion} />
-      </PageSection>
 
       <PageSection
         size="md"

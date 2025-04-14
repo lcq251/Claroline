@@ -7,7 +7,7 @@ import {registry} from '#/main/app/plugins/registry'
  */
 registry.add('ClarolineAppBundle', {
   context: {
-    'public'        : () => { return import(/* webpackChunkName: "app-context-public" */        '#/main/app/contexts/public') },
+    'public'        : () => { return import(/* webpackChunkName: "app-context-public" */         '#/main/app/contexts/public') },
     'desktop'       : () => { return import(/* webpackChunkName: "app-context-desktop" */        '#/main/app/contexts/desktop') },
     'administration': () => { return import(/* webpackChunkName: "app-context-administration" */ '#/main/app/contexts/administration') },
     'workspace'     : () => { return import(/* webpackChunkName: "app-context-workspace" */      '#/main/app/contexts/workspace') }

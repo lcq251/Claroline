@@ -1,6 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import get from 'lodash/get'
 import omit from 'lodash/omit'
 
 import {selectors as securitySelectors} from '#/main/app/security/store'

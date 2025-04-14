@@ -21,7 +21,7 @@ function parse(display, options = {}) {
  * @return {string}
  */
 function render(raw, options = {}) {
-  return raw ? displayDate(raw, false, options.time) : null
+  return raw ? displayDate(raw, options.long || false, options.time) : null
 }
 
 export {

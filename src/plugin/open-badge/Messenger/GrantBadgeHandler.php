@@ -3,9 +3,9 @@
 namespace Claroline\OpenBadgeBundle\Messenger;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
 use Claroline\OpenBadgeBundle\Manager\AssertionManager;
-use Claroline\OpenBadgeBundle\Manager\RuleManager;
 use Claroline\OpenBadgeBundle\Messenger\Message\GrantBadge;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -17,7 +17,7 @@ class GrantBadgeHandler
 {
     public function __construct(
         private readonly ObjectManager $om,
-        private readonly RuleManager $ruleManager,
+        private readonly RuleProvider $ruleProvider,
         private readonly AssertionManager $assertionManager
     ) {
     }
@@ -29,7 +29,7 @@ class GrantBadgeHandler
         if ($badge) {
             $recomputeUsers = [];
             foreach ($badge->getRules() as $rule) {
-                $recomputeUsers = array_merge($recomputeUsers, $this->ruleManager->grantAll($rule));
+                $recomputeUsers = array_merge($recomputeUsers, $this->ruleProvider->grantRule($rule));
             }
 
             // checks if users are granted the badge

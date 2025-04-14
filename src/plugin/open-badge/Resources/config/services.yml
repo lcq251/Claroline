@@ -1,8 +1,8 @@
 imports:
+    - { resource: services/component.yml }
     - { resource: services/controller.yml }
     - { resource: services/exporter.yml }
     - { resource: services/finder.yml }
-    - { resource: services/library.yml }
     - { resource: services/listener.yml }
     - { resource: services/manager.yml }
     - { resource: services/messenger.yml }

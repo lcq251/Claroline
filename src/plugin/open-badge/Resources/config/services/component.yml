@@ -1,0 +1,17 @@
+services:
+    Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider:
+        lazy: true
+        arguments:
+            - !tagged_iterator claroline.component.badge_rule
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+    
+    claroline.provider.badge_rule:
+        alias: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider
+        public: true
+
+    Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent:
+        abstract: true
+        calls:
+            - method: setMessageBus
+              arguments:
+                  - '@messenger.default_bus'

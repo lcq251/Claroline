@@ -1,4 +1,4 @@
-# Declares all services required for the management of Claroline Components (eg. tools, resources, widgets).
+# Declares all services required for the management of Claroline Components (e.g. tools, resources, widgets).
 services:
     # Contexts
     Claroline\AppBundle\Component\Context\ContextProvider:

@@ -20,10 +20,12 @@ import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 
 import {selectors} from '#/main/evaluation/sequence/store'
 import {constants} from '#/main/evaluation/constants'
+import {Content} from '#/main/app/components/content'
 
 const SequenceOverviewContent = (props) => {
   const description = get(props.sequence, 'meta.descriptionHtml', null)
   const overviewResource = get(props.sequence, 'overview.resource')
+  const tags = get(props.sequence, 'tags')
 
   return (
     <>
@@ -68,19 +70,22 @@ const SequenceOverviewContent = (props) => {
         </PageSection>
       }
 
-      {(description || overviewResource) &&
+      {(description || tags || overviewResource) &&
         <PageSection
           size="md"
           title={trans('about')}
           showTitle={false}
+          className="mb-5"
         >
-          {description &&
-            <Html className="content-text mb-5">{description}</Html>
-          }
+          <Content
+            tags={tags}
+          >
+            {description}
+          </Content>
 
           {overviewResource &&
             <ResourceEmbedded
-              className="mb-5"
+              className={tags || description ? 'mt-5' : undefined}
               resourceNode={overviewResource}
               showHeader={false}
             />

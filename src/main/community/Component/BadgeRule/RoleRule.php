@@ -1,33 +1,35 @@
 <?php
 
-/*
- * This file is part of the Claroline Connect package.
- *
- * (c) Claroline Consortium <consortium@claroline.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Claroline\OpenBadgeBundle\Subscriber\Rules;
+namespace Claroline\CommunityBundle\Component\BadgeRule;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Event\Crud\PatchEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CommunityBundle\Repository\UserRepository;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent;
 use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
-use Claroline\OpenBadgeBundle\Manager\RuleManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RoleSubscriber implements EventSubscriberInterface
+class RoleRule extends RuleComponent
 {
+    private UserRepository $userRepo;
+
     public function __construct(
-        private readonly ObjectManager $om,
-        private readonly RuleManager $manager
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly TranslatorInterface $translator,
+        private readonly ObjectManager $om
     ) {
+        $this->userRepo = $om->getRepository(User::class);
+    }
+
+    public static function getName(): string
+    {
+        return 'in_role';
     }
 
     public static function getSubscribedEvents(): array
@@ -37,6 +39,21 @@ class RoleSubscriber implements EventSubscriberInterface
             CrudEvents::getEventName(CrudEvents::POST_PATCH, Group::class) => 'onGroupPatch',
             CrudEvents::getEventName(CrudEvents::POST_PATCH, Role::class) => 'onRolePatch',
         ];
+    }
+
+    public function getQualifiedUsers(Rule $rule): iterable
+    {
+        return $this->userRepo->findByRoles([$rule->getRole()]);
+    }
+
+    public function getEvidenceMessage(): string
+    {
+        $now = new \DateTime();
+
+        return $this->translator->trans('evidence_narrative_add_role', [
+            '%doer%' => $this->tokenStorage->getToken()?->getUser()->getUsername(),
+            '%date%' => $now->format('Y-m-d H:i:s'),
+        ], 'badge');
     }
 
     public function onUserPatch(PatchEvent $event): void
@@ -61,7 +78,7 @@ class RoleSubscriber implements EventSubscriberInterface
                 $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
 
                 foreach ($rules as $rule) {
-                    $this->manager->grant($rule, $user);
+                    $this->grant($rule, $user);
                 }
             }
         }
@@ -89,7 +106,7 @@ class RoleSubscriber implements EventSubscriberInterface
 
                 foreach ($rules as $rule) {
                     foreach ($users as $user) {
-                        $this->manager->grant($rule, $user);
+                        $this->grant($rule, $user);
                     }
                 }
             }
@@ -115,7 +132,7 @@ class RoleSubscriber implements EventSubscriberInterface
                     /** @var Rule[] $rules */
                     $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
                     foreach ($rules as $rule) {
-                        $this->manager->grant($rule, $user);
+                        $this->grant($rule, $user);
                     }
                 }
             } elseif ($event->getValue() instanceof Role) {
@@ -133,7 +150,7 @@ class RoleSubscriber implements EventSubscriberInterface
                 $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
                 foreach ($rules as $rule) {
                     foreach ($users as $user) {
-                        $this->manager->grant($rule, $user);
+                        $this->grant($rule, $user);
                     }
                 }
             }

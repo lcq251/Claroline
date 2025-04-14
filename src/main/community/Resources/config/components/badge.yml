@@ -1,0 +1,16 @@
+services:
+    Claroline\CommunityBundle\Component\BadgeRule\GroupRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+    
+    Claroline\CommunityBundle\Component\BadgeRule\RoleRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

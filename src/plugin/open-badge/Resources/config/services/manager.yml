@@ -1,8 +1,4 @@
 services:
-    _defaults:
-        autoconfigure: false
-        public: false
-
     Claroline\OpenBadgeBundle\Manager\BadgeManager:
         arguments:
             - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
@@ -23,4 +19,4 @@ services:
         arguments:
           - '@Claroline\AppBundle\Persistence\ObjectManager'
           - '@messenger.default_bus'
-          - !tagged_iterator { tag: 'claroline.badge.rule', default_index_method: 'getType' }
+          - !tagged_iterator { tag: 'component.badge_rule', default_index_method: 'getType' }

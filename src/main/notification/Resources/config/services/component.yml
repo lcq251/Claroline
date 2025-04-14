@@ -3,7 +3,7 @@ services:
         arguments:
             - !tagged_iterator claroline.component.notification
 
-    claroline.notification_provider:
+    claroline.provider.notification:
         alias: Claroline\NotificationBundle\Component\Notification\NotificationProvider
         public: true
 

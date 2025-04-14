@@ -9,7 +9,7 @@ import {hasPermission} from '#/main/app/security'
 export default (badges, refresher) => ({
   name: 'recalculate',
   type: ASYNC_BUTTON,
-  icon: 'fa fa-fw fa-circle-check',
+  icon: 'fa fa-fw fa-refresh',
   label: trans('recalculate', {}, 'actions'),
   displayed: hasPermission('grant', badges[0]) && !isEmpty(get(badges[0], 'rules')) && !get(badges[0], 'meta.archived', false),
   request: {

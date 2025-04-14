@@ -14,7 +14,7 @@ final class RegisterNotificationSubscriberPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('event_dispatcher') || !$container->has('claroline.notification_provider')) {
+        if (!$container->has('event_dispatcher') || !$container->has('claroline.provider.notification')) {
             return;
         }
 
