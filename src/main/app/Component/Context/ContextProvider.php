@@ -7,7 +7,7 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\AbstractComponentProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
-use HeVinci\FavouriteBundle\Entity\WorkspaceFavourite;
+use Claroline\CoreBundle\Entity\Workspace\WorkspaceFavourite;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

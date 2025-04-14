@@ -3,13 +3,12 @@ import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
 
-import {selectors as contextSelectors} from '#/main/app/context/store'
-import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
+import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
-
+import {selectors as contextSelectors} from '#/main/app/context/store'
 import {selectors as securitySelectors} from '#/main/app/security/store'
+import {actions as platformActions, selectors as platformSelectors} from '#/main/app/platform/store'
 
 const ContextFavourite = ({
   className
@@ -35,7 +34,10 @@ const ContextFavourite = ({
         'fa-star text-warning': favourite,
         'far fa-star': !favourite
       })}
-      callback={() => dispatch(platformActions.saveFavorite(contextData))}
+      callback={() => favourite ?
+        dispatch(platformActions.deleteFavorite(contextData)) :
+        dispatch(platformActions.addFavorite(contextData))
+      }
       size="sm"
     />
   )

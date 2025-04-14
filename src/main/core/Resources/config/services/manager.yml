@@ -123,6 +123,10 @@ services:
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceUserQueueManager'
 
+    Claroline\CoreBundle\Manager\Workspace\FavouriteManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
     Claroline\CoreBundle\Manager\Workspace\WorkspaceManager:
         public: true
         arguments:

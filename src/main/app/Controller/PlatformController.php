@@ -65,15 +65,6 @@ class PlatformController
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
                 'currentOrganization' => $currentUser ? $this->serializer->serialize($currentUser->getMainOrganization()/* , [Options::SERIALIZE_MINIMAL] */) : null,
-                /*'footer' => [
-                    'content' => $this->config->getParameter('footer.content'),
-                    'display' => [
-                        'show' => $this->config->getParameter('footer.show'),
-                        'locale' => $this->config->getParameter('footer.show_locale'),
-                        'help' => $this->config->getParameter('footer.show_help'),
-                        // 'termsOfService' => $this->privacyManager->getTosEnabled($request->getLocale()),
-                    ],
-                ],*/
 
                 // assets injected from plugins
                 'javascripts' => $this->clientManager->getJavascripts(),
@@ -104,7 +95,7 @@ class PlatformController
     /**
      * Change current organization.
      */
-    #[Route(path: '/o/{organization}', name: 'claro_organization_change', methods: ['GET', 'PUT'])]
+    #[Route(path: '/o/{organization}', name: 'claro_organization_change', methods: ['PUT'])]
     public function changeOrganizationAction(
         #[MapEntity(mapping: ['organization' => 'uuid'])]
         Organization $organization

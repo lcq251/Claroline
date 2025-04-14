@@ -24,7 +24,6 @@ use Claroline\CoreBundle\Controller\Model\HasGroupsTrait;
 use Claroline\CoreBundle\Controller\Model\HasOrganizationsTrait;
 use Claroline\CoreBundle\Controller\Model\HasRolesTrait;
 use Claroline\CoreBundle\Entity\Organization\Organization;
-use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Finder\WorkspaceType;
@@ -314,12 +313,7 @@ class WorkspaceController extends AbstractCrudController
     ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $workspace, [], true);
 
-        // $workspaceRoles = $this->roleManager->getWorkspaceRoles($workspace);
         $finderQuery->addFilter('workspace', $workspace);
-        /*$finderQuery->addFilter('roles', array_map(function (Role $role) {
-            return $role->getName();
-        }, $workspaceRoles));*/
-
         $users = $this->crud->search(User::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
         return $users->toResponse();

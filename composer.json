@@ -119,7 +119,6 @@
             "Claroline\\VideoPlayerBundle\\": "src/plugin/video-player",
             "Claroline\\WebResourceBundle\\": "src/plugin/web-resource",
             "Claroline\\YouTubeBundle\\": "src/integration/youtube",
-            "HeVinci\\FavouriteBundle\\": "src/plugin/favourite",
             "HeVinci\\UrlBundle\\": "src/plugin/url",
             "Icap\\LessonBundle\\": "src/plugin/lesson",
             "Icap\\WikiBundle\\": "src/plugin/wiki",

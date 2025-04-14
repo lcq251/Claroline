@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route(path: '/workspace/archives')]
@@ -35,7 +34,6 @@ class ArchiveController
     use RequestDecoderTrait;
 
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
@@ -62,13 +60,9 @@ class ArchiveController
     ): StreamedJsonResponse {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        $finderQuery->addFilters([
+        $archives = $this->crud->search(Workspace::class, $finderQuery->addFilters([
             'archived' => true,
-            /*'roles' => $this->tokenStorage->getToken()->getRoleNames(),
-            'administrated' => true,*/
-        ]);
-
-        $archives = $this->crud->search(Workspace::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+        ]), [SerializerInterface::SERIALIZE_LIST]);
 
         return $archives->toResponse();
     }
