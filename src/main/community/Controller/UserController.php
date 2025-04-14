@@ -12,22 +12,26 @@
 namespace Claroline\CommunityBundle\Controller;
 
 use Claroline\AppBundle\Annotations\ApiDoc;
+use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AuthenticationBundle\Manager\MailManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
+use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Controller\Model\HasGroupsTrait;
 use Claroline\CoreBundle\Controller\Model\HasOrganizationsTrait;
 use Claroline\CoreBundle\Controller\Model\HasRolesTrait;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Manager\Tool\ToolManager;
 use Claroline\CoreBundle\Manager\UserManager;
-use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -46,8 +50,7 @@ class UserController extends AbstractCrudController
         AuthorizationCheckerInterface $authorization,
         private readonly UserManager $manager,
         private readonly MailManager $mailManager,
-        private readonly ToolManager $toolManager,
-        private readonly WorkspaceManager $workspaceManager
+        private readonly ToolManager $toolManager
     ) {
         $this->authorization = $authorization;
     }
@@ -60,6 +63,22 @@ class UserController extends AbstractCrudController
     public static function getClass(): string
     {
         return User::class;
+    }
+
+    #[Route(path: '/{contextId}', name: 'list', methods: ['GET'])]
+    public function listAction(
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery(),
+        ?string $contextId = null
+    ): StreamedJsonResponse {
+        $this->checkToolAccess('OPEN', $contextId);
+
+        if ($contextId) {
+            $workspace = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $contextId]);
+            $finderQuery->addFilter('workspace', $workspace);
+        }
+
+        return parent::listAction($finderQuery);
     }
 
     /**
@@ -125,8 +144,7 @@ class UserController extends AbstractCrudController
     #[Route(path: '/disable_inactive', name: 'disable_inactive', methods: ['PUT'])]
     public function disableInactiveAction(Request $request): JsonResponse
     {
-        $tool = $this->toolManager->getOrderedTool('community', DesktopContext::getName());
-        $this->checkPermission('ADMINISTRATE', $tool, [], true);
+        $this->checkToolAccess('ADMINISTRATE');
 
         $data = $this->decodeRequest($request);
         if (empty($data['lastActivity'])) {
@@ -194,15 +212,29 @@ class UserController extends AbstractCrudController
         return [];
     }
 
-    /**
-     * @todo : to move in privacy plugin when available.
-     */
     #[Route(path: '/request-deletion', name: 'request_account_deletion', methods: ['POST'])]
     public function requestAccountDeletionAction(): JsonResponse
     {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
         $user = $this->tokenStorage->getToken()?->getUser();
         $this->mailManager->sendRequestToDPO($user);
 
         return new JsonResponse(null, 204);
+    }
+
+    private function checkToolAccess(string $rights = 'OPEN', string $contextId = null): bool
+    {
+        if ($contextId) {
+            $communityTool = $this->toolManager->getOrderedTool('community', WorkspaceContext::getName(), $contextId);
+        } else {
+            $communityTool = $this->toolManager->getOrderedTool('community', DesktopContext::getName());
+        }
+
+        if (is_null($communityTool) || !$this->authorization->isGranted($rights, $communityTool)) {
+            return false;
+        }
+
+        return true;
     }
 }

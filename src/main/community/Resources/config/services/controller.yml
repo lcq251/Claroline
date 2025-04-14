@@ -67,4 +67,3 @@ services:
             - '@Claroline\CoreBundle\Manager\UserManager'
             - '@Claroline\AuthenticationBundle\Manager\MailManager'
             - '@Claroline\CoreBundle\Manager\Tool\ToolManager'
-            - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'

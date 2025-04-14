@@ -304,21 +304,6 @@ class WorkspaceController extends AbstractCrudController
         return new JsonResponse(null, 204);
     }
 
-    #[Route(path: '/{id}/users', name: 'list_users', methods: ['GET'])]
-    public function listUsersAction(
-        #[MapEntity(mapping: ['id' => 'uuid'])]
-        Workspace $workspace,
-        #[MapQueryString]
-        ?FinderQuery $finderQuery = new FinderQuery()
-    ): StreamedJsonResponse {
-        $this->checkPermission('OPEN', $workspace, [], true);
-
-        $finderQuery->addFilter('workspace', $workspace);
-        $users = $this->crud->search(User::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
-
-        return $users->toResponse();
-    }
-
     protected function getDefaultHiddenFilters(): array
     {
         if (!$this->authorization->isGranted('ROLE_ADMIN')) {

@@ -14,7 +14,6 @@ namespace Claroline\CoreBundle\Manager\Workspace;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\UserRepository;
-use Claroline\CoreBundle\Entity\AbstractRoleSubject;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;

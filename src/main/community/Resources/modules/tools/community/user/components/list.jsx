@@ -63,7 +63,7 @@ const UserList = props =>
         path={props.path}
         name={selectors.LIST_NAME}
         url={'workspace' === props.contextType ?
-          ['apiv2_workspace_list_users', {id: get(props.contextData, 'id')}] :
+          ['apiv2_user_list', {contextId: get(props.contextData, 'id')}] :
           ['apiv2_user_list']
         }
 

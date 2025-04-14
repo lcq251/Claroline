@@ -108,7 +108,7 @@ const TeamShow = (props) => {
                       disabled: full,
                       displayed: hasPermission('edit', props.team),
                       modal: [MODAL_USERS, {
-                        url: ['apiv2_workspace_list_users', {id: props.contextData.id}],
+                        url: ['apiv2_user_list', {contextId: props.contextData.id}],
                         selectAction: (selected) => ({
                           type: CALLBACK_BUTTON,
                           label: trans('add', {}, 'actions'),
@@ -150,7 +150,7 @@ const TeamShow = (props) => {
                       label: trans('add_managers'),
                       displayed: hasPermission('edit', props.team),
                       modal: [MODAL_USERS, {
-                        url: ['apiv2_workspace_list_users', {id: props.contextData.id}],
+                        url: ['apiv2_user_list', {contextId: props.contextData.id}],
                         selectAction: (selected) => ({
                           type: CALLBACK_BUTTON,
                           label: trans('add', {}, 'actions'),
