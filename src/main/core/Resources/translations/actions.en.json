@@ -19,5 +19,7 @@
   "add_location": "Add a location",
   "add_locations": "Add locations",
   "add_resource": "Add a resource",
-  "add_resources": "Add resources"
+  "add_resources": "Add resources",
+  "add-favourite": "Add to favourite",
+  "remove-favourite": "Remove favourite"
 }

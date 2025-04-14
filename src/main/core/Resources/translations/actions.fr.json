@@ -19,5 +19,7 @@
   "add_location": "Ajouter un lieu",
   "add_locations": "Ajouter des lieux",
   "add_resource": "Ajouter une ressource",
-  "add_resources": "Ajouter des ressources"
+  "add_resources": "Ajouter des ressources",
+  "add-favourite": "Ajouter aux favoris",
+  "remove-favourite": "Retirer des favoris"
 }
