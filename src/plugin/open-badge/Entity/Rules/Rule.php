@@ -90,7 +90,7 @@ class Rule
         return $this->data;
     }
 
-    public function setBadge(BadgeClass $badge): void
+    public function setBadge(?BadgeClass $badge): void
     {
         $this->badge = $badge;
     }
