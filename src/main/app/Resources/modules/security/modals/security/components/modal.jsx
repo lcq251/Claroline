@@ -37,7 +37,6 @@ const SecurityModal = props => {
         props.hideModal()
       }}
       size="xl"
-      className="overflow-hidden"
     >
       <div className="modal-body d-flex flex-column flex-lg-row p-0 position-relative vh-lg-90">
         <CloseButton className="position-absolute top-0 end-0 m-4" onClick={props.fadeModal} />

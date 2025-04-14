@@ -23,6 +23,12 @@
   height: 100%;
 }
 
+.modal {
+  .auth-page-content {
+    scrollbar-width: thin;
+  }
+}
+
 @media (max-width: map-get($grid-breakpoints, 'lg')) {
   .auth-page {
     overflow: auto;
