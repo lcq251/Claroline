@@ -6,7 +6,8 @@ import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {Tool, selectors as toolSelectors} from '#/main/core/tool'
+import {selectors as contextSelectors} from '#/main/app/context'
+import {Tool, selectors as toolSelectors, route} from '#/main/core/tool'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/components/main'
@@ -23,11 +24,12 @@ const EvaluationTool = (props) => {
   }
 
   const loaded = useSelector(toolSelectors.loaded)
+  const contextPath = useSelector(contextSelectors.path)
   const history = useHistory()
 
   useEffect(() => {
     if (loaded && !props.canFollow && !isEmpty(currentSequence)) {
-      history.push(props.path+'/sequences/'+currentSequence.id)
+      history.push(route('progression', contextPath)+'/sequences/'+currentSequence.id)
     }
   }, [loaded])
 

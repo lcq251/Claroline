@@ -6,6 +6,7 @@ import {ToolOverview} from '#/main/core/tool/components/overview'
 import {constants} from '#/main/core/tool/constants'
 import {selectors} from '#/main/core/tool/store'
 import {CommandPalette} from '#/main/core/tool/command-palette'
+import {route} from '#/main/core/tool/routing'
 
 /**
  * Declare a new tool to the application.
@@ -30,5 +31,6 @@ export {
   constants,
   selectors,
   declareTool,
-  CommandPalette
+  CommandPalette,
+  route
 }
