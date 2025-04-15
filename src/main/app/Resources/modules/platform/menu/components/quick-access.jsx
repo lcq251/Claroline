@@ -22,7 +22,7 @@ const PlatformMenuQuickAccess = (props) => {
       <h2 id={quickAccessTitleId} className="visually-hidden">{trans('quick_access_links')}</h2>
       <p id={quickAccessDescId} className="visually-hidden">{trans('quick_access_links_help')}</p>
       <ul
-        className={classes('app-main-menu-group list-unstyled d-flex gap-2 mb-0', {
+        className={classes('app-main-menu-group list-unstyled d-flex gap-2', {
           'visually-hidden': !quickAccess
         })}
         aria-labelledby={quickAccessTitleId}

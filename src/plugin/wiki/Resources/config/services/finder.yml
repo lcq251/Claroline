@@ -1,8 +1,0 @@
-services:
-    Icap\WikiBundle\Finder\ContributionFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]
-
-    Icap\WikiBundle\Finder\SectionFinder:
-        parent: Claroline\AppBundle\API\Finder\AbstractFinder
-        tags: [ claroline.finder ]

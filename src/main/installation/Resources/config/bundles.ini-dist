@@ -22,7 +22,6 @@ Claroline\VideoPlayerBundle\ClarolineVideoPlayerBundle = true
 Claroline\WebResourceBundle\ClarolineWebResourceBundle = true
 Claroline\TextPlayerBundle\ClarolineTextPlayerBundle = true
 HeVinci\UrlBundle\HeVinciUrlBundle = true
-Icap\WikiBundle\IcapWikiBundle = true
 Innova\PathBundle\InnovaPathBundle = true
 Claroline\DevBundle\ClarolineDevBundle = true
 UJM\ExoBundle\UJMExoBundle = true

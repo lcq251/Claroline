@@ -75,7 +75,7 @@ class Lesson extends AbstractResource
         return $this->numbering;
     }
 
-    public function setNumbering($numbering): void
+    public function setNumbering(?string $numbering): void
     {
         $this->numbering = $numbering;
     }

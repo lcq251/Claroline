@@ -20,7 +20,7 @@ const PlatformMenuGlobal = (props) => {
       <h2 id={globalTitleId} className="visually-hidden">{trans('global_links')}</h2>
       <p id={globalDescId} className="visually-hidden">{trans('global_links_help')}</p>
       <ul
-        className="app-main-menu-group list-unstyled d-flex gap-2 mb-0"
+        className="app-main-menu-group list-unstyled d-flex gap-2"
         aria-labelledby={globalTitleId}
         aria-describedby={globalDescId}
       >

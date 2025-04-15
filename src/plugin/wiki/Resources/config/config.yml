@@ -1,9 +1,0 @@
-plugin:
-    resources:
-        - name: icap_wiki
-          class: Icap\WikiBundle\Entity\Wiki
-          tags: [content, community]
-          exportable: false
-          actions:
-              - name: add-section
-                decoder: add-section

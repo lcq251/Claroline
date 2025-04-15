@@ -8,6 +8,7 @@ use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Creator;
+use Claroline\AppBundle\Entity\Meta\Published;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +23,7 @@ class Chapter implements CrudEntityInterface
     use Id;
     use Uuid;
     use Poster;
+    use Published;
     use Creator;
     use CreatedAt;
     use UpdatedAt;
@@ -59,9 +61,9 @@ class Chapter implements CrudEntityInterface
     #[Gedmo\TreeRoot]
     private ?int $root;
 
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Chapter::class)]
     #[Gedmo\TreeParent]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Chapter $parent = null;
 
     /**

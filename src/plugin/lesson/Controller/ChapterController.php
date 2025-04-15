@@ -77,7 +77,10 @@ class ChapterController
     {
         $this->checkPermission('OPEN', $lesson->getResourceNode(), [], true);
 
-        $chapter = $this->chapterRepository->getChapterBySlug($slug, $lesson->getId());
+        $chapter = $this->chapterRepository->findOneBy([
+            'slug' => $slug,
+            'lesson' => $lesson,
+        ]);
 
         if (is_null($chapter)) {
             throw new NotFoundHttpException();

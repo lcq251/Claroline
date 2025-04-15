@@ -121,7 +121,6 @@
             "Claroline\\YouTubeBundle\\": "src/integration/youtube",
             "HeVinci\\UrlBundle\\": "src/plugin/url",
             "Icap\\LessonBundle\\": "src/plugin/lesson",
-            "Icap\\WikiBundle\\": "src/plugin/wiki",
             "Innova\\PathBundle\\": "src/plugin/path",
             "UJM\\ExoBundle\\": "src/plugin/exo"
         }

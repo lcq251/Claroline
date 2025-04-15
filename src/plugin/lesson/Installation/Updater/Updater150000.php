@@ -37,11 +37,11 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
         $this->migrateTexts($lessonType);
         $this->migrateBlogs($lessonType);
-        // $this->migrateWikis($lessonType);
+        $this->migrateWikis($lessonType);
 
         $this->removeResource('text');
         $this->removePlugin('Icap', 'BlogBundle');
-        // $this->removeResource('icap_wiki');
+        $this->removePlugin('Icap', 'WikiBundle');
     }
 
     private function migrateTexts(ResourceType $resourceType): void
@@ -79,7 +79,10 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
                 continue;
             }
 
-            $creator = $this->om->getRepository(User::class)->find($result['user_id']);
+            $creator = null;
+            if (!empty($result['user_id'])) {
+                $creator = $this->om->getRepository(User::class)->find($result['user_id']);
+            }
 
             $lesson = $this->om->getRepository(Lesson::class)->findOneBy(['resourceNode' => $resourceNode]);
             if (empty($lesson)) {
@@ -139,7 +142,7 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
             }
 
             $creator = null;
-            if ($result['creator_id']) {
+            if (!empty($result['creator_id'])) {
                 $creator = $this->om->getRepository(User::class)->find($result['creator_id']);
             }
 
@@ -191,5 +194,98 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
         $updateNode->bindValue('resourceType', $resourceType->getId());
         $updateNode->executeQuery();
+
+        $selectBlog = $this->connection->prepare('
+            SELECT n.uuid, w.displaySectionNumbers, w.id
+            FROM icap__wiki AS w 
+            LEFT JOIN claro_resource_node AS n ON w.resourceNode_id = n.id
+        ');
+
+        $results = $selectBlog->executeQuery();
+
+        foreach ($results->iterateAssociative() as $wiki) {
+            $resourceNode = $this->om->getRepository(ResourceNode::class)->findOneBy([
+                'uuid' => $wiki['uuid'],
+            ]);
+
+            if (empty($resourceNode)) {
+                continue;
+            }
+
+            $lesson = $this->om->getRepository(Lesson::class)->findOneBy(['resourceNode' => $resourceNode]);
+            if (empty($lesson)) {
+                $lesson = new Lesson();
+                $lesson->setResourceNode($resourceNode);
+            }
+
+            $lesson->setShowMeta(true);
+            $lesson->setNavigation(false);
+            $lesson->setNumbering($wiki['displaySectionNumbers'] ? 'numeric' : 'none');
+            $this->om->persist($lesson);
+
+            $selectSections = $this->connection->prepare('
+                SELECT s.id, s.root, s.parent_id, s.lft, s.lvl, s.rgt, s.root, c.title, c.text, c.creation_date, c.user_id
+                FROM icap__wiki_section AS s
+                JOIN icap__wiki_contribution AS c ON s.active_contribution_id = c.id
+                WHERE s.wiki_id = :wikiId
+                  AND s.deleted = 0
+                ORDER BY s.lft 
+            ');
+            $selectSections->bindValue('wikiId', $wiki['id']);
+            $selectSections->executeQuery();
+
+            $pages = [];
+            $sectionResults = $selectSections->executeQuery();
+            foreach ($sectionResults->iterateAssociative() as $section) {
+                $creator = null;
+                if (!empty($section['user_id'])) {
+                    $creator = $this->om->getRepository(User::class)->find($section['user_id']);
+                }
+
+                $chapter = new Chapter();
+                $chapter->setCreator($creator);
+                $chapter->setTitle($section['title'] ?: $lesson->getName());
+                $chapter->setText($section['text']);
+                $chapter->setLevel($section['lvl']);
+                if (!empty($section['creation_date'])) {
+                    $chapter->setCreatedAt(new \DateTime($section['creation_date']));
+                    $chapter->setUpdatedAt(new \DateTime($section['creation_date']));
+                }
+
+                $chapter->setLesson($lesson);
+                $this->om->persist($chapter);
+
+                if ($section['id'] === $section['root']) {
+                    $lesson->setRoot($chapter);
+                } else {
+                    $this->om->getRepository(Chapter::class)->persistAsLastChildOf($chapter, $lesson->getRoot());
+                }
+
+                $pages[$section['id']] = [
+                    'entity' => $chapter,
+                    'parent' => $section['parent_id'],
+                    'root' => $section['root'],
+                    'lft' => $section['lft'],
+                    'rgt' => $section['rgt'],
+                    'lvl' => $section['lvl'],
+                ];
+            }
+
+            $this->om->flush(); // we need to flush to get the auto id and rebuild the tree
+
+            // rebuild wiki tree
+            foreach ($pages as $page) {
+                if ($page['parent'] && !empty($pages[$page['parent']]) && $pages[$page['parent']]['entity']) {
+                    // $page['entity']->setParent($pages[$page['parent']]['entity']);
+                    $this->om->getRepository(Chapter::class)->persistAsLastChildOf($page['entity'], $pages[$page['parent']]['entity']);
+                }
+
+                $page['entity']->setLevel($page['lvl']);
+            }
+
+            $this->om->flush();
+        }
+
+        $this->om->clear();
     }
 }

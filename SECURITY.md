@@ -5,8 +5,8 @@
 Security updates are down on the following Claroline versions.
 
 | Version | Supported          |
-| ------- | ------------------ |
-| 13.x   | :white_check_mark: |
+|---------| ------------------ |
+| 15.x    | :white_check_mark: |
 
 ## Reporting a Vulnerability
 

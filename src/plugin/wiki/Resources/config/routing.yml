@@ -1,6 +1,0 @@
-# JSON API
-icap_wiki:
-    resource: "@IcapWikiBundle/Controller/"
-    type: attribute
-    options:
-        expose: true

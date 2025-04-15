@@ -88,7 +88,7 @@ const PlatformMenu = (props) => {
 
   return (
     <nav
-      className={classes('app-main-menu gap-3', {
+      className={classes('app-main-menu', {
         'app-main-menu-h': !vertical,
         'app-main-menu-v': vertical
       })}
@@ -104,7 +104,7 @@ const PlatformMenu = (props) => {
           <h2 id={workspaceTitleId} className="visually-hidden">{trans('my_workspaces')}</h2>
           <p id={workspaceDescId} className="visually-hidden">{trans('my_workspaces_help')}</p>
           <ul
-            className="app-main-menu-group list-unstyled d-flex gap-2 mb-0 flex-fill overflow-hidden"
+            className="app-main-menu-group list-unstyled d-flex gap-2 flex-fill overflow-hidden"
             aria-labelledby={workspaceTitleId}
             aria-describedby={workspaceDescId}
           >
@@ -152,7 +152,7 @@ const PlatformMenu = (props) => {
       <h2 id={accountTitleId} className="visually-hidden">{trans('account_links')}</h2>
       <p id={accountDescId} className="visually-hidden">{trans('account_links_help')}</p>
       <ul
-        className="app-main-menu-group list-unstyled d-flex gap-2 mb-0"
+        className="app-main-menu-group list-unstyled d-flex gap-2"
         aria-labelledby={accountTitleId}
         aria-describedby={accountDescId}
       >
