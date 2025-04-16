@@ -6,7 +6,7 @@ import {EditorPage} from '#/main/app/editor'
 const SequenceEditorHistory = () =>
   <EditorPage
     title={trans('history')}
-    help={trans('Retrouvez toutes les modifications effectuées sur votre ressource et son contenu.')}
+    help={trans('sequence_history_desc', {}, 'evaluation')}
   >
     <div className="p-4">
       <p>Cette page contiendra les logs opérationnels liés à la séquence</p>

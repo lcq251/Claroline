@@ -12,6 +12,5 @@
     "resource_trash": "Resources trash",
     "integration": "Integration",
     "workspaces": "Workspaces",
-    "locations": "Locations",
-    "show_icon": "Show tool icon in page header"
+    "locations": "Locations"
 }

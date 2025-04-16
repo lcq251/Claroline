@@ -14,5 +14,5 @@
     "integration": "Intégration",
     "workspaces": "Espaces d'activités",
     "locations": "Lieux",
-    "show_icon": "Afficher l'icône de l'outil dans l'entête de la page"
+    "tool_history_desc": "Retrouvez toutes les modifications effectuées sur l'outil et son contenu."
 }

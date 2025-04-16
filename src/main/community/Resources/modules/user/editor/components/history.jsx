@@ -13,7 +13,7 @@ const UserEditorHistory = () => {
   return (
     <EditorPage
       title={trans('history')}
-      help={trans('Retrouvez toutes les modifications effectuées sur l\'utilisateur.')}
+      help={trans('user_history_desc', {}, 'community')}
     >
       <LogOperationalList
         autoload={!!userId}

@@ -67,7 +67,7 @@ const UserEditor = (props) => {
           group: trans('preferences')
         }, {
           name: 'favourites',
-          title: trans('favourites', {}, 'favourite'),
+          title: trans('favourites', {}, 'workspace'),
           component: UserEditorFavourites,
           group: trans('preferences')
         }

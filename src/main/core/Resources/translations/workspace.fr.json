@@ -11,15 +11,12 @@
   "workspace_models": "Modèles d'espaces d'activités",
   "workspace_models_desc": "Lorsqu'un espace d'activités est créé à partir d'un modèle, le nouvel espace est prérempli avec les même contenus, rôles, permissions et paramètres que le modèle.",
   "workspace_archived": "Espaces d'activités archivés",
-
   "make_workspace_public": "Rendre l'espace d'activités public",
   "make_workspace_public_help": "Les espaces d'activités publics sont visibles par tous les utilisateurs de la plateforme.",
-
   "view_as_info": "Vous voyez actuellement ce que les utilisateurs avec ce rôle voient.",
   "copy_as_model": "Copier comme modèle",
   "copy_confirm_title": "{1} Copie d'un espace d'activités | [2,Inf[ Copie de plusieurs espaces d'activités",
   "copy_confirm_message": "{1} Êtes-vous sûr(e) de vouloir copier cet espace d'activités ? | [2,Inf[ Êtes-vous sûr(e) de vouloir copier ces %count% espaces d'activités ?",
-
   "archive_confirm_title": "{1} Archiver un espace d'activités | [2,Inf[ Archiver des espaces d'activités",
   "archive_confirm_message": "{1} Êtes-vous sûr(e) de vouloir archiver cet espace d'activités ? | [2,Inf[ Êtes-vous sûr(e) de vouloir archiver ces %count% espaces d'activités ?",
   "delete_confirm_title": "{1} Suppression d'un espace d'activités | [2,Inf[ Suppression de plusieurs espaces d'activités",
@@ -28,12 +25,10 @@
   "self_unregister_confirm_message": "{1} Êtes-vous sûr(e) de vouloir vous désinscrire de cet espace d'activités ?|[2,Inf[ Êtes-vous sûr(e) de vouloir vous  désinscrire de ces %count% espaces d'activités ?",
   "self_register_confirm_title": "{1} Inscription à un espace d'activités | [2,Inf[ Inscription à plusieurs espaces d'activités",
   "self_register_confirm_message": "{1} Êtes-vous sûr(e) de vouloir vous inscrire à cet espace d'activités ?|[2,Inf[ Êtes-vous sûr(e) de vouloir vous inscrire à ces %count% espaces d'activités ?",
-
   "is_archived": "Cet espace d'activité est archivé.",
   "not_found": "Espace d'activités non trouvé",
   "not_found_desc": "Nous sommes désolés, nous n'avons pas pu trouver votre espace d'activités. Il est possible qu'il n'existe pas (ou plus) ou que l'URL utilisée soit incorrecte.",
   "loading": "Nous chargeons votre espace d'activités...",
-
   "restricted_workspace": {
     "access_message": "Vous ne pouvez pas accéder à cet espace d'activités car toutes les conditions d'accès ne sont pas satisfaites.",
     "anonymous_can_access": "L'espace d'activités est public.",
@@ -72,5 +67,7 @@
   "my_workspaces_menu": "Mes espaces",
   "public_workspaces_menu": "Espaces publics",
   "managed_workspaces_menu": "Espaces gérés",
-  "workspace_user_register_validation_message": "Voulez-vous vraiment inscrire les utilisateurs suivants: [%users%] ?"
+  "workspace_user_register_validation_message": "Voulez-vous vraiment inscrire les utilisateurs suivants: [%users%] ?",
+  "favourites" : "Favoris",
+  "favourites_desc": "Retrouvez et gérez vos espaces favoris."
 }

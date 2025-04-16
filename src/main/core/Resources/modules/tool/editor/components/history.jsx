@@ -5,7 +5,7 @@ import {trans} from '#/main/app/intl'
 const ToolEditorHistory = () =>
   <EditorPage
     title={trans('history')}
-    help={trans('Retrouvez toutes les modifications effectuées sur vos contenus.')}
+    help={trans('tool_history_desc', {}, 'tools')}
   >
     <div className="p-4">
       <p>Cette page contiendra les logs opérationnels liés à l'outil</p>

@@ -12,7 +12,6 @@ const UserEditorNotifications = () => {
   return (
     <EditorPage
       title={trans('Notifications')}
-      help={trans('Lorem ipsum dolor sit amet.')}
       definition={[
         {
           title: trans('general'),

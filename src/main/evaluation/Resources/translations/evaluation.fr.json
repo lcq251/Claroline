@@ -38,7 +38,7 @@
   "public_sequence": "Séquence publique",
   "make_sequence_public": "Rendre la séquence publique",
   "make_sequence_public_help": "Les séquences publiques sont visibles par tous les utilisateurs de la plateforme.",
-
+  "sequence_history_desc": "Retrouvez toutes les modifications effectuées sur la séquence et son contenu.",
   "completion": "%current%% Terminé",
   "next_step": "Suivant : %title%",
   "previous_step": "Précédent : %title%",

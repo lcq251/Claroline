@@ -14,7 +14,7 @@ const ContextEditorHistory = () => {
   return (
     <EditorPage
       title={trans('history')}
-      help={trans('Retrouvez toutes les modifications effectuées sur vos contenus.')}
+      help={trans('context_history_desc', {}, 'context')}
     >
       <LogOperationalList
         autoload={!!contextName}

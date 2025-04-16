@@ -13,7 +13,7 @@ const ResourceEditorHistory = () => {
   return (
     <EditorPage
       title={trans('history')}
-      help={trans('Retrouvez toutes les modifications effectuées sur votre ressource et son contenu.')}
+      help={trans('resource_history_desc', {}, 'resource')}
     >
       <LogOperationalList
         autoload={!!resourceId}

@@ -2,5 +2,6 @@
   "public": "Accueil",
   "workspace": "Espace d'activités",
   "administration": "Administration",
-  "desktop": "Mon Bureau"
+  "desktop": "Mon Bureau",
+  "context_history_desc": "Retrouvez toutes les modifications effectuées sur l'espace."
 }

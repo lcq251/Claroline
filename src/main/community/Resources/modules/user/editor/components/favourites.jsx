@@ -6,8 +6,8 @@ import {EditorPage} from '#/main/app/editor'
 const UserEditorFavourites = () => {
   return (
     <EditorPage
-      title={trans('favourites', {}, 'favourite')}
-      help={trans('Retrouvez et gérez vos espaces favoris.')}
+      title={trans('favourites', {}, 'workspace')}
+      help={trans('favourites_desc', {}, 'workspace')}
     />
   )
 }
