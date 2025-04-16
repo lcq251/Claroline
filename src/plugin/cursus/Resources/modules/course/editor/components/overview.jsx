@@ -53,7 +53,6 @@ const CourseEditorOverview = () =>
           }, {
             name: 'meta.duration',
             type: 'number',
-            icon: 'fa fa-fw fa-clock',
             label: trans('duration'),
             required: true,
             options: {
@@ -63,7 +62,6 @@ const CourseEditorOverview = () =>
           }, {
             name: 'certification',
             type: 'string',
-            icon: 'fa fa-fw fa-graduation-cap',
             label: trans('Certification', {}, 'cursus'),
             options: {long: true, minRows: 2},
             help: trans('Définissez les titres et dipômes obtenus par les utilisateurs suivant cette formation.', {}, 'cursus')
@@ -71,7 +69,6 @@ const CourseEditorOverview = () =>
             name: 'pricing.price',
             label: trans('price'),
             type: 'currency',
-            icon: 'fa fa-fw fa-credit-card',
             linked: [
               {
                 name: 'pricing.description',
@@ -84,7 +81,6 @@ const CourseEditorOverview = () =>
             ]
           }, {
             name: 'tags',
-            icon: 'fa fa-fw fa-tags',
             label: trans('tags'),
             type: 'tag'
           }

@@ -1,0 +1,37 @@
+{
+  "training_course.create": "Création d'une formation",
+  "training_course.create_desc": "Lorsqu'un utilisateur crée une nouvelle formation.",
+  "training_course.create_message": "a <b>créé</b> la formation %object%.",
+
+  "training_course.update": "Mise à jour d'une formation",
+  "training_course.update_desc": "Lorsqu'un utilisateur met à jour une formation.",
+  "training_course.update_message": "a <b>modifié</b> la formation %object%.",
+
+  "training_course.delete": "Suppression d'une formation",
+  "training_course.delete_desc": "Lorsqu'un utilisateur supprime une formation.",
+  "training_course.delete_message": "a <b>supprimé</b> la formation %object%.",
+
+  "training_session.create": "Création d'une session de formation",
+  "training_session.create_desc": "Lorsqu'un utilisateur crée une nouvelle session de formation.",
+  "training_session.create_message": "a <b>créé</b> la session de formation %object%.",
+
+  "training_session.update": "Mise à jour d'une session de formation",
+  "training_session.update_desc": "Lorsqu'un utilisateur met à jour une session de formation.",
+  "training_session.update_message": "a <b>modifié</b> la session de formation %object%.",
+
+  "training_session.delete": "Suppression d'une session de formation",
+  "training_session.delete_desc": "Lorsqu'un utilisateur supprime une session de formation.",
+  "training_session.delete_message": "a <b>supprimé</b> la session de formation %object%.",
+
+  "training_event.create": "Création d'une séance de formation",
+  "training_event.create_desc": "Lorsqu'un utilisateur crée une nouvelle séance de formation.",
+  "training_event.create_message": "a <b>créé</b> la séance de formation %object%.",
+
+  "training_event.update": "Mise à jour d'une séance de formation",
+  "training_event.update_desc": "Lorsqu'un utilisateur met à jour une séance de formation.",
+  "training_event.update_message": "a <b>modifié</b> la séance de formation %object%.",
+
+  "training_event.delete": "Suppression d'une séance de formation",
+  "training_event.delete_desc": "Lorsqu'un utilisateur supprime une séance de formation.",
+  "training_event.delete_message": "a <b>supprimé</b> la séance de formation %object%."
+}

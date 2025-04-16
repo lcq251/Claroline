@@ -18,6 +18,7 @@ import {CourseEditorPermissions} from '#/plugin/cursus/course/editor/components/
 import {CourseEditorRegistration} from '#/plugin/cursus/course/editor/components/registration'
 
 import {selectors} from '#/plugin/cursus/course/store'
+import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const CourseEditor = (props) => {
   const history = useHistory()
@@ -36,6 +37,14 @@ const CourseEditor = (props) => {
       title={get(props.course, 'name', trans('new_course', {}, 'cursus'))}
       name={selectors.FORM_NAME}
       target={(course, isNew) => isNew ? ['apiv2_cursus_course_create'] : ['apiv2_cursus_course_update', {id: props.course.id}]}
+      thumbnail={
+        <Thumbnail
+          className="rounded-1"
+          thumbnail={props.course.thumbnail}
+          name={props.course.name}
+          size="sm"
+        />
+      }
       canAdministrate={props.canAdministrate}
       onSave={(course, isNew) => {
         const newSlug = course.slug
@@ -46,7 +55,6 @@ const CourseEditor = (props) => {
         }
       }}
       close={props.path}
-      defaultPage="overview"
       historyPage={!props.isNew ? CourseEditorHistory : undefined}
       actionsPage={!props.isNew ? CourseEditorActions : undefined}
       overviewPage={CourseEditorOverview}

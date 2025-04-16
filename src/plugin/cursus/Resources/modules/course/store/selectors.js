@@ -10,6 +10,11 @@ const course = createSelector(
   (store) => store.course
 )
 
+const id = createSelector(
+  [course],
+  (course) => course ? course.id : null
+)
+
 const sessionRegistrations = createSelector(
   [store],
   (store) => store.courseRegistrations
@@ -39,6 +44,7 @@ export const selectors = {
   STORE_NAME,
   FORM_NAME,
 
+  id,
   course,
   activeSession,
   defaultSession,
