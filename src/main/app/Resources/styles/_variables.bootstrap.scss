@@ -754,7 +754,7 @@ $table-striped-color:         var(--#{$prefix}striped-color) !default; // defaul
 $table-striped-bg-factor:     .0375; // replaced by $striped-bg-factor default: .05
 $table-striped-bg:            var(--#{$prefix}striped-bg) !default;
 
-$table-active-color:          $table-color !default;
+$table-active-color:          var(--#{$prefix}body-color) !default;
 $table-active-bg-factor:      .1 !default;
 $table-active-bg:             var(--#{$prefix}tertiary-bg); // rgba($black, $table-active-bg-factor) !default;
 

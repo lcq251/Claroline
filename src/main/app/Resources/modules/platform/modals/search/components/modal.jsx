@@ -6,12 +6,10 @@ import omit from 'lodash/omit'
 import {trans} from '#/main/app/intl'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 import {getApps} from '#/main/app/plugins'
 import {SearchResults} from '#/main/app/platform/modals/search/components/results'
-import {SearchRecent} from '#/main/app/platform/modals/search/components/recent'
-import {route} from '#/main/core/tool/routing'
 
 class SearchModal extends Component {
   constructor(props) {
@@ -58,7 +56,6 @@ class SearchModal extends Component {
     return (
       <Modal
         {...omit(this.props, 'fetching', 'results', 'empty', 'search')}
-        /*size="sm"*/
       >
         <div className="modal-body" role="presentation">
           <div className="app-search" role="search">
@@ -100,26 +97,7 @@ class SearchModal extends Component {
               fadeModal={this.props.fadeModal}
             />
           }
-
-          {false && !this.state.currentSearch &&
-            <SearchRecent
-              fadeModal={this.props.fadeModal}
-            />
-          }
         </div>
-
-        {/*<div className="modal-footer gap-2 flex-column flex-md-row">
-          Vous ne trouvez pas ce que vous cherchez ?
-
-          <Button
-            className="btn btn-primary"
-            type={LINK_BUTTON}
-            label={trans('Parcourir tous mes espaces', {}, 'history')}
-            size="sm"
-            target={route('workspaces')}
-            onClick={this.props.fadeModal}
-          />
-        </div>*/}
       </Modal>
     )
   }

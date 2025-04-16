@@ -12,6 +12,10 @@
         --#{$prefix}list-group-color: var(--#{$prefix}list-group-striped-color);
         --#{$prefix}list-group-bg: var(--#{$prefix}list-group-striped-bg);
     }
+
+    > .list-group-item:not(:nth-of-type(#{$striped-order})) {
+        --#{$prefix}list-group-color: var(--#{$prefix}secondary-color);
+    }
 }
 
 .list-group-values { // deprecated

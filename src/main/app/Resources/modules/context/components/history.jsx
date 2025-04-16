@@ -57,7 +57,7 @@ const ContextHistory = (props) => {
         />
       }
 
-      <div className={classes('list-group', {
+      <div className={classes('list-group list-group-striped', {
         'list-group-flush': props.flush
       })}>
         {history

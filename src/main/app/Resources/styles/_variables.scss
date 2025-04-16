@@ -36,7 +36,7 @@ $content-text-line-height: 1.75 !default;
 
 // normalize stripping and make it toggleable though user config
 $striped-order:     $table-striped-order;
-$striped-color:     $table-color !default;
+$striped-color:     var(--#{$prefix}body-color) !default;
 $striped-bg-factor: .0375 !default; // default : .05
 $striped-bg:        rgba($black, $striped-bg-factor) !default;
 
