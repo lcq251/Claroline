@@ -15,6 +15,10 @@
     "resource.publish_desc": "Lorsqu'un utilisateur publie une ressource.",
     "resource.publish_message": "a <b>publié</b> la ressource %resource%.",
 
+    "resource.delete": "Suppression d'une ressource",
+    "resource.delete_desc": "Lorsqu'un utilisateur supprime une ressource.",
+    "resource.delete_message": "a <b>supprimé</b> la ressource %object%.",
+
     "tool.create": "Activation d'un outil",
     "tool.create_desc": "Lorsqu'un utilisateur active un outil.",
     "tool.create_message": "a <b>activé</b> l'outil %object%.",
