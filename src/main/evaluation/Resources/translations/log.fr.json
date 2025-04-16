@@ -25,5 +25,17 @@
 
   "evaluation.workspace_start": "Début de l'évaluation d'un espace d'activités",
   "evaluation.workspace_start_desc": "Lorsqu'un utilisateur commence l'évaluation d'un espace d'activités.",
-  "evaluation.workspace_start_message": "a <b>commencé</b> l'évaluation de l'espace d'activités %workspace%."
+  "evaluation.workspace_start_message": "a <b>commencé</b> l'évaluation de l'espace d'activités %workspace%.",
+
+  "sequence.create": "Création d'une séquence",
+  "sequence.create_desc": "Lorsqu'un utilisateur crée une nouvelle séquence.",
+  "sequence.create_message": "a <b>créé</b> la séquence %object%.",
+
+  "sequence.update": "Mise à jour d'une séquence",
+  "sequence.update_desc": "Lorsqu'un utilisateur met à jour une séquence.",
+  "sequence.update_message": "a <b>modifié</b> la séquence %object%.",
+
+  "sequence.delete": "Suppression d'une séquence",
+  "sequence.delete_desc": "Lorsqu'un utilisateur supprime une séquence.",
+  "sequence.delete_message": "a <b>supprimé</b> la séquence %object%."
 }

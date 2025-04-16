@@ -26,3 +26,10 @@ services:
     Claroline\EvaluationBundle\Component\Log\Functional\LogWorkspaceEvaluationStart:
         parent: Claroline\LogBundle\Component\Log\AbstractFunctionalLog
         tags: [ 'claroline.component.log' ]
+
+    # Operational
+    Claroline\EvaluationBundle\Component\Log\Operational\LogSequence:
+        parent: Claroline\LogBundle\Component\Log\AbstractOperationalLog
+        tags: [ 'claroline.component.log' ]
+        arguments:
+            - '@Claroline\CoreBundle\Library\RoutingHelper'

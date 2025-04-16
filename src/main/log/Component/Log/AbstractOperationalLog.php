@@ -82,17 +82,15 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
     {
         $translationKey = static::getName().'.'.$action.'_message';
 
-        switch (get_class($event)) {
-            case CopyEvent::class:
-                return $this->getTranslator()->trans($translationKey, [
-                    '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
-                    '%copy%' => LinkHelper::link($this->getObjectName($event->getCopy()), $this->getObjectPath($event->getCopy())),
-                ], 'log');
-            default:
-                return $this->getTranslator()->trans($translationKey, [
-                    '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
-                ], 'log');
-        }
+        return match (get_class($event)) {
+            CopyEvent::class => $this->getTranslator()->trans($translationKey, [
+                '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
+                '%copy%' => LinkHelper::link($this->getObjectName($event->getCopy()), $this->getObjectPath($event->getCopy())),
+            ], 'log'),
+            default => $this->getTranslator()->trans($translationKey, [
+                '%object%' => LinkHelper::link($this->getObjectName($event->getObject()), $this->getObjectPath($event->getObject())),
+            ], 'log'),
+        };
     }
 
     protected function getContext(object $object): string
@@ -150,14 +148,6 @@ abstract class AbstractOperationalLog implements EventSubscriberInterface, Compo
     {
         $result = [];
         foreach ($old as $key => $val) {
-            /*if (array_key_exists($key, $new)) {
-                if (is_array($val)) {
-                    if (!array_is_list($new)) {
-                        $this->getUpdateDiff($val, $new[$key]);
-                    }
-                }
-            }*/
-
             if (isset($new[$key])) {
                 if (is_array($val) && $new[$key]) {
                     $result[$key] = $this->getUpdateDiff($val, $new[$key]);

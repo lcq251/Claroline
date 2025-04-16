@@ -66,7 +66,7 @@ class OperationalLogController
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
         try {
-            // FIXME : I can't find a way to get \ in the URL directly (route never matches)
+            // I can't find a way to get \ in the URL directly (route never matches)
             $objectName = str_replace('/', '\\', $objectName);
 
             $object = $this->om->getRepository($objectName)->findOneBy(['uuid' => $objectId]);
@@ -82,8 +82,7 @@ class OperationalLogController
         }
 
         $finderQuery
-            ->addFilter('objectId', $objectId)
-            /*->addFilter('objectClass', $objectName)*/;
+            ->addFilter('objectId', $objectId);
 
         $logs = $this->crud->search(OperationalLog::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 

@@ -7,6 +7,10 @@
     "resource.create_desc": "Lorsqu'un utilisateur crée une nouvelle ressource.",
     "resource.create_message": "a <b>créé</b> la ressource %object%.",
 
+    "resource.update": "Mise à jour d'une ressource",
+    "resource.update_desc": "Lorsqu'un utilisateur met à jour une ressource.",
+    "resource.update_message": "a <b>modifié</b> la ressource %object%.",
+
     "resource.publish": "Publication d'une ressource",
     "resource.publish_desc": "Lorsqu'un utilisateur publie une ressource.",
     "resource.publish_message": "a <b>publié</b> la ressource %resource%.",
