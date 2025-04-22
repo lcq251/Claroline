@@ -8,12 +8,12 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\OrganizationSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Organization\Organization;
-use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
+use Claroline\TemplateBundle\Entity\Template;
 use Claroline\TemplateBundle\Serializer\TemplateSerializer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -68,7 +68,6 @@ class BadgeClassSerializer
             'image' => $badge->getImage(),
             'poster' => $badge->getPoster(),
             'color' => $badge->getColor(),
-            'criteria' => $badge->getCriteria(),
             'duration' => $badge->getDurationValidation(),
             'tags' => $this->serializeTags($badge),
             'meta' => [
@@ -104,13 +103,12 @@ class BadgeClassSerializer
         return $data;
     }
 
-    public function deserialize(array $data, BadgeClass $badge = null, array $options = []): BadgeClass
+    public function deserialize(array $data, BadgeClass $badge, array $options = []): BadgeClass
     {
         $this->sipe('name', 'setName', $data, $badge);
         $this->sipe('image', 'setImage', $data, $badge);
         $this->sipe('color', 'setColor', $data, $badge);
         $this->sipe('poster', 'setPoster', $data, $badge);
-        $this->sipe('criteria', 'setCriteria', $data, $badge);
         $this->sipe('duration', 'setDurationValidation', $data, $badge);
         $this->sipe('issuingPeer', 'setIssuingPeer', $data, $badge);
         $this->sipe('notifyGrant', 'setNotifyGrant', $data, $badge);

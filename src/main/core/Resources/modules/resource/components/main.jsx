@@ -93,7 +93,6 @@ const Resource = props => {
                 path: '/',
                 disabled: !props.overviewPage,
                 component: props.overviewPage,
-                onEnter: () => console.log('coucou'),
                 exact: true
               }
             ])

@@ -3,6 +3,7 @@ services:
         lazy: true
         arguments:
             - !tagged_iterator claroline.component.badge_rule
+            - '@Claroline\AppBundle\Component\Context\ContextProvider'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
     
     claroline.provider.badge_rule:

@@ -13,10 +13,16 @@ const assertion = createSelector(
   (store) => get(store, 'current.myAssertion')
 )
 
+const evidences = createSelector(
+  [store],
+  (store) => get(store, 'current.myEvidences', [])
+)
+
 export const selectors = {
   STORE_NAME,
   FORM_NAME,
   LIST_NAME,
 
-  assertion
+  assertion,
+  evidences
 }

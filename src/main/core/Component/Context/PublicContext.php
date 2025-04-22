@@ -2,7 +2,7 @@
 
 namespace Claroline\CoreBundle\Component\Context;
 
-use Claroline\AppBundle\Component\Context\AbstractContext;
+use Claroline\AppBundle\Component\Context\ContextComponent;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * The Public context is an optional context (must be enabled by an admin) for anonymous users.
  */
-class PublicContext extends AbstractContext
+final class PublicContext extends ContextComponent
 {
     public function __construct(
         private readonly SecurityManager $securityManager,

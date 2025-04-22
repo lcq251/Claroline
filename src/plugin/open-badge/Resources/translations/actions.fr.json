@@ -3,5 +3,8 @@
   "transfer_badges": "Transférer des badges",
   "transfer": "Transférer",
   "add_badge": "Ajouter un badge",
-  "show_evidences": "Voir les preuves"
+  "show_evidences": "Voir les preuves",
+  "grant_users": "Attribuer à des utilisateurs",
+  "add_rule": "Ajouter une règle",
+  "save_rule": "Enregistrer la règle"
 }

@@ -34,23 +34,7 @@ class TeamRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function findByRole(string $roleName)
-    {
-        $dql = "
-            SELECT t
-            FROM Claroline\CommunityBundle\Entity\Team t
-            LEFT JOIN t.role r
-            LEFT JOIN t.managerRole mr
-            WHERE r.name = :role 
-               OR mr.name = :role
-        ";
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('role', $roleName);
-
-        return $query->getResult();
-    }
-
-    public function findTeamsByUserAndWorkspace(User $user, Workspace $workspace)
+    public function findTeamsByUserAndWorkspace(User $user, Workspace $workspace): array
     {
         $dql = '
             SELECT t
@@ -69,10 +53,8 @@ class TeamRepository extends EntityRepository
 
     /**
      * Gets the list of Workspace users which are not in a team excluding the managers of the workspace.
-     *
-     * @return array
      */
-    public function findUsersWithNoTeamByWorkspace(Workspace $workspace, array $teams)
+    public function findUsersWithNoTeamByWorkspace(Workspace $workspace, array $teams): array
     {
         $dql = "
             SELECT DISTINCT u

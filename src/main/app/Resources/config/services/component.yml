@@ -13,12 +13,8 @@ services:
         alias: Claroline\AppBundle\Component\Context\ContextProvider
         public: true
 
-    Claroline\AppBundle\Component\Context\AbstractContext:
+    Claroline\AppBundle\Component\Context\ContextComponent:
         abstract: true
-        calls:
-            - method: setToolProvider
-              arguments:
-                  - '@Claroline\AppBundle\Component\Tool\ToolProvider'
 
     # Tools
     Claroline\AppBundle\Component\Tool\ToolProvider:
@@ -46,5 +42,8 @@ services:
         alias: Claroline\AppBundle\Component\DataSource\DataSourceProvider
         public: true
 
-    Claroline\AppBundle\Component\DataSource\AbstractDataSource:
+    Claroline\AppBundle\Component\DataSource\DataSourceComponent:
+        abstract: true
+
+    Claroline\AppBundle\Component\DataSource\ListSourceComponent:
         abstract: true

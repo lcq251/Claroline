@@ -4,14 +4,13 @@ import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON, LINK_BUTTON, LinkButton} from '#/main/app/buttons'
-import {DataCard} from '#/main/app/data/components/card'
+import {CALLBACK_BUTTON, LinkButton} from '#/main/app/buttons'
 
 import {getRecent, removeRecent, parseRecent, hasRecent, emptyRecent} from '#/main/app/history'
-import {Datetime} from '#/main/app/components/date'
 import {Button} from '#/main/app/action'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {getPlainText} from '#/main/app/data/types/html/utils'
+import {EmptyState} from '#/main/app/components/empty-state'
 
 const test = () => ({
   name: 'delete',
@@ -31,15 +30,16 @@ const ContextHistory = (props) => {
 
   if (isEmpty(recent)) {
     return (
-      <div className={classes('text-center', props.className)} role="presentation">
-        <p className="lead mb-1">{trans('no_history_results', {}, 'history')}</p>
-        <p className="mb-0 text-secondary">{trans('no_history_results_help', {}, "history")}</p>
-      </div>
+      <EmptyState
+        icon="fa fa-history"
+        title={trans('no_history_results', {}, 'history')}
+        description={trans('no_history_results_help', {}, 'history')}
+      />
     )
   }
 
   return (
-    <div className={props.className} role="presentation">
+    <>
       {props.delete && hasRecent() &&
         <Button
           type={CALLBACK_BUTTON}
@@ -94,21 +94,15 @@ const ContextHistory = (props) => {
           })
         }
       </div>
-    </div>
+    </>
   )
 }
 
 ContextHistory.propTypes = {
   className: T.string,
-  size: T.string,
   delete: T.bool,
   flush: T.bool,
   onOpen: T.func
-}
-
-ContextHistory.defaultProps = {
-  size: 'xs',
-  delete: false
 }
 
 export {

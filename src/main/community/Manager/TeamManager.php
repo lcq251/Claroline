@@ -179,10 +179,8 @@ class TeamManager
 
     /**
      * Gets user teams in a workspace.
-     *
-     * @return array
      */
-    public function getTeamsByUserAndWorkspace(User $user, Workspace $workspace)
+    public function getTeamsByUserAndWorkspace(User $user, Workspace $workspace): array
     {
         return $this->teamRepo->findTeamsByUserAndWorkspace($user, $workspace);
     }
@@ -243,18 +241,10 @@ class TeamManager
     {
         $teamRole = $team->getRole();
 
-        $this->om->startFlushSuite();
-
-        foreach ($users as $user) {
-            $team->addUser($user);
-            if (!is_null($teamRole)) {
-                if (!$user->hasRole($teamRole->getName())) {
-                    $this->crud->patch($user, 'role', Crud::COLLECTION_ADD, [$teamRole], [Crud::NO_PERMISSIONS]);
-                }
-            }
+        $this->crud->patch($team, 'user', Crud::COLLECTION_ADD, $users, [Crud::NO_PERMISSIONS]);
+        if ($teamRole) {
+            $this->crud->patch($teamRole, 'user', Crud::COLLECTION_ADD, $users, [Crud::NO_PERMISSIONS]);
         }
-        $this->om->persist($team);
-        $this->om->endFlushSuite();
     }
 
     /**

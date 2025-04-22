@@ -7,11 +7,15 @@ const Badge = {
     id: T.string,
     name: T.string,
     image: T.string,
-    criteria: T.string,
-    description: T.string,
     color: T.string,
-    issuingMode: T.arrayOf(T.string),
+    issuingPeer: T.bool,
+    notifyGrant: T.bool,
+    duration: T.number,
     meta: T.shape({
+      description: T.string,
+      descriptionHtml: T.string,
+      createdAt: T.string,
+      updatedAt: T.string,
       archived: T.bool
     }),
     restrictions: T.shape({
@@ -20,7 +24,6 @@ const Badge = {
   },
   defaultProps: {
     issuingPeer: false,
-    description: '',
     meta: {
       archived: false
     },
@@ -45,7 +48,12 @@ const Assertion = {
 
 const Evidence = {
   propTypes: {
-    id: T.string
+    id: T.string,
+    name: T.string,
+    description: T.string,
+    rule: T.shape({
+      type: T.string.isRequired
+    })
   }
 }
 

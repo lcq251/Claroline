@@ -53,8 +53,6 @@ class ResourceEvaluationSerializer
             'scoreMax' => $evaluation->getScoreMax(),
             'progression' => $progression,
             'nbAttempts' => $evaluation->getNbAttempts(),
-            // 'nbOpenings' => $evaluation->getNbOpenings(),
-            // 'required' => $evaluation->isRequired(),
             'duration' => $evaluation->getDuration(),
             'estimatedDuration' => $evaluation->getEstimatedDuration(),
         ];

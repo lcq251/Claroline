@@ -47,7 +47,7 @@ const Fog = (props) =>
 
 const EmptyState = (props) => {
   return (
-    <div className="my-auto content-md p-4 text-center">
+    <div className={classes('my-auto content-md text-center', props.className)}>
       {props.icon &&
         <div className="mb-4 position-relative d-flex align-items-center justify-content-center mx-auto opacity-75" style={{width: '12rem', height: '8rem'}}>
           <span className={classes('text-primary border border-3 border-primary rounded-circle p-4 fs-1 bg-body z-1', props.icon)} aria-hidden={true} style={{fontSize: '3rem'}}/>
@@ -56,26 +56,31 @@ const EmptyState = (props) => {
         </div>
       }
 
-      <h2 className="h4 text-body-secondary mb-2">{props.title}</h2>
+      <h2 className="h4 text-body-secondary mb-0">{props.title}</h2>
       {props.description &&
-        <p className="text-body-tertiary">{props.description}</p>
+        <p className="text-body-tertiary mt-2 mb-0">{props.description}</p>
       }
 
-      <div className="mt-5 d-flex gap-2 justify-content-center">
-        {props.secondaryAction && get(props.secondaryAction, 'displayed', true) &&
-          <Button
-            {...props.secondaryAction}
-            className="btn btn-link"
-          />
-        }
+      {(
+        (props.primaryAction && get(props.secondaryAction, 'displayed', true)) ||
+        (props.primaryAction && get(props.primaryAction, 'displayed', true))
+      ) &&
+        <div className="mt-5 d-flex gap-2 justify-content-center">
+          {props.secondaryAction && get(props.secondaryAction, 'displayed', true) &&
+            <Button
+              {...props.secondaryAction}
+              className="btn btn-link"
+            />
+          }
 
-        {props.primaryAction && get(props.primaryAction, 'displayed', true) &&
-          <Button
-            {...props.primaryAction}
-            className="btn btn-primary btn-wave"
-          />
-        }
-      </div>
+          {props.primaryAction && get(props.primaryAction, 'displayed', true) &&
+            <Button
+              {...props.primaryAction}
+              className="btn btn-primary btn-wave"
+            />
+          }
+        </div>
+      }
     </div>
   )
 }
@@ -83,11 +88,12 @@ const EmptyState = (props) => {
 EmptyState.propTypes = {
   title: T.string.isRequired,
   description: T.string,
+  className: T.string,
   primaryAction: T.shape({
-
+    // action types
   }),
   secondaryAction: T.shape({
-
+    // action types
   })
 }
 

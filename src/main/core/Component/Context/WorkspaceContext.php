@@ -2,7 +2,7 @@
 
 namespace Claroline\CoreBundle\Component\Context;
 
-use Claroline\AppBundle\Component\Context\AbstractContext;
+use Claroline\AppBundle\Component\Context\ContextComponent;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class WorkspaceContext extends AbstractContext
+final class WorkspaceContext extends ContextComponent
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,

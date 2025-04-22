@@ -20,8 +20,6 @@ const CreationType = props =>
         items={props.types
           .filter(name => !isEmpty(getType({meta: {type: name}})))
           .filter(resourceType => ![
-            'icap_blog',
-            'icap_wiki',
             'innova_path',
             'file',
             'hevinci_url',

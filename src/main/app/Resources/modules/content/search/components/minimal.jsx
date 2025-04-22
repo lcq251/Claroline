@@ -11,10 +11,11 @@ const SearchMinimal = ({
   search,
   onSearch,
   placeholder = trans('search', {}, 'actions'),
-  autoFocus = false
+  autoFocus = false,
+  disabled = false
 }) =>
-  <div className={classes('d-flex flex-row align-items-center bg-body-secondary rounded-2 py-1', className)}>
-    <span className="fa fa-search text-body-tertiary ms-3" />
+  <div className={classes('d-flex flex-row align-items-center bg-secondary-subtle rounded-2 py-1', className)}>
+    <span className="fa fa-search text-secondary-emphasis ms-3" />
     <input
       className="form-control border-0 shadow-none bg-transparent"
       type="text"
@@ -22,9 +23,10 @@ const SearchMinimal = ({
       onChange={(e) => onSearch(e.target.value)}
       value={search}
       autoFocus={autoFocus}
+      disabled={disabled}
     />
 
-    {search &&
+    {(search && !disabled) &&
       <Button
         className="btn btn-text-body focus-ring rounded-2"
         type={CALLBACK_BUTTON}
@@ -40,7 +42,8 @@ SearchMinimal.propTypes = {
   search: T.string,
   placeholder: T.string,
   autoFocus: T.bool,
-  onSearch: T.func.isRequired
+  onSearch: T.func.isRequired,
+  disabled: T.bool
 }
 
 export {

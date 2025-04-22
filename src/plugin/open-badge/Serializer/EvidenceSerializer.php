@@ -14,7 +14,8 @@ class EvidenceSerializer
 
     public function __construct(
         private readonly ResourceNodeSerializer $resourceNodeSerializer,
-        private readonly WorkspaceSerializer $workspaceSerializer
+        private readonly WorkspaceSerializer $workspaceSerializer,
+        private readonly RuleSerializer $ruleSerializer
     ) {
     }
 
@@ -28,18 +29,19 @@ class EvidenceSerializer
         return Evidence::class;
     }
 
-    public function serialize(Evidence $evidence, array $options = []): array
+    public function serialize(Evidence $evidence, ?array $options = []): array
     {
         return [
             'id' => $evidence->getUuid(),
             'name' => $evidence->getName(),
             'description' => $evidence->getDescription(),
+            'rule' => $evidence->getRule() ? $this->ruleSerializer->serialize($evidence->getRule(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             'workspace' => $evidence->getWorkspaceEvidence() ? $this->workspaceSerializer->serialize($evidence->getWorkspaceEvidence()->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             'resource' => $evidence->getResourceEvidence() ? $this->resourceNodeSerializer->serialize($evidence->getResourceEvidence()->getResourceNode(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
         ];
     }
 
-    public function deserialize(array $data, Evidence $evidence = null, array $options = []): Evidence
+    public function deserialize(array $data, Evidence $evidence, ?array $options = []): Evidence
     {
         $this->sipe('id', 'setUuid', $data, $evidence);
         $this->sipe('name', 'setName', $data, $evidence);

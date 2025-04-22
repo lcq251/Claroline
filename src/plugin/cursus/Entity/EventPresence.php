@@ -2,14 +2,12 @@
 
 namespace Claroline\CursusBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use DateTimeInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_cursusbundle_presence_status')]
 #[ORM\Entity]
@@ -24,35 +22,25 @@ class EventPresence
     public const ABSENT_JUSTIFIED = 'absent_justified';
     public const ABSENT_UNJUSTIFIED = 'absent_unjustified';
 
-    /**
-     *
-     *
-     * @var Event
-     */
-    #[ORM\JoinColumn(name: 'event_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: 'event_id', nullable: false, onDelete: 'CASCADE')]
     private ?Event $event = null;
 
-    /**
-     *
-     *
-     * @var User
-     */
-    #[ORM\JoinColumn(name: 'user_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     /**
      * @var string
      */
     #[ORM\Column(name: 'presence_status', nullable: false)]
-    private $status = self::UNKNOWN;
+    private string $status = self::UNKNOWN;
 
     #[ORM\Column(name: 'presence_signature', nullable: true)]
     private ?string $signature = null;
 
     #[ORM\Column(name: 'presence_validation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $validationDate = null;
+    private ?\DateTimeInterface $validationDate = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $evidence = null;
@@ -113,12 +101,12 @@ class EventPresence
         $this->signature = $signature;
     }
 
-    public function getValidationDate(): ?DateTimeInterface
+    public function getValidationDate(): ?\DateTimeInterface
     {
         return $this->validationDate;
     }
 
-    public function setValidationDate(?DateTimeInterface $validationDate): void
+    public function setValidationDate(?\DateTimeInterface $validationDate): void
     {
         $this->validationDate = $validationDate;
     }

@@ -72,7 +72,7 @@ class ContextController
             $this->eventDispatcher->dispatch($openEvent, ContextEvents::OPEN);
 
             $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
-            $contextTools = $contextHandler->getTools($contextSubject);
+            $contextTools = $this->toolProvider->getEnabledTools($context, $contextSubject);
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
                 'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
@@ -130,7 +130,6 @@ class ContextController
         }
 
         $data = $this->decodeRequest($request);
-        $contextTools = $contextHandler->getTools($contextSubject);
 
         $this->om->startFlushSuite();
 
@@ -140,12 +139,13 @@ class ContextController
         }
 
         // update tools configuration if any
+        $contextTools = $this->toolProvider->getEnabledTools($context, $contextSubject);
         if (!empty($data['tools'])) {
             $updatedTools = [];
             foreach ($data['tools'] as $toolData) {
                 $updatedTool = new OrderedTool();
                 $updatedTool->setContextName($context);
-                $updatedTool->setContextId($contextSubject ? $contextSubject->getContextIdentifier() : null);
+                $updatedTool->setContextId($contextSubject?->getContextIdentifier());
 
                 $updatedTool = $this->crud->createOrUpdate($updatedTool, $toolData, [Crud::NO_PERMISSIONS]);
                 $updatedTools[$updatedTool->getName()] = $updatedTool;
@@ -188,7 +188,7 @@ class ContextController
             throw new AccessDeniedException();
         }
 
-        $tools = $contextHandler->getAvailableTools($contextSubject);
+        $tools = $this->toolProvider->getAvailableTools($context, $contextSubject);
 
         return new JsonResponse(array_map(function (ToolInterface $tool) use ($context, $contextSubject) {
             return [

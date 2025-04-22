@@ -2,20 +2,19 @@
 
 namespace Claroline\OpenBadgeBundle\Serializer;
 
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Group;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Role;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 
 class RuleSerializer
 {
     use SerializerTrait;
 
     public function __construct(
-        private readonly ObjectManager $om
+        private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer
     ) {
     }
 
@@ -29,35 +28,46 @@ class RuleSerializer
         return Rule::class;
     }
 
-    public function serialize(Rule $rule, array $options = []): array
+    public function serialize(Rule $rule, ?array $options = []): array
     {
-        return [
+        if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
+            return [
+                'id' => $rule->getUuid(),
+                'type' => $rule->getAction(),
+            ];
+        }
+
+        $serialized = [
             'id' => $rule->getUuid(),
-            'data' => $rule->getData(),
             'type' => $rule->getAction(),
         ];
+
+        if (!empty($rule->getData())) {
+            $serialized['data'] = $rule->getData();
+        }
+
+        if ($rule->getSubjectClass() && $rule->getSubjectId()) {
+            $subject = $this->om->getRepository($rule->getSubjectClass())->findOneBy([
+                'uuid' => $rule->getSubjectId(),
+            ]);
+
+            if ($subject) {
+                $serialized['subject'] = $this->serializer->serialize($subject, [SerializerInterface::SERIALIZE_MINIMAL]);
+            }
+        }
+
+        return $serialized;
     }
 
-    public function deserialize(array $data, Rule $rule = null, array $options = []): Rule
+    public function deserialize(array $data, Rule $rule, ?array $options = []): Rule
     {
-        $rule->setData($data['data']);
         $rule->setAction($data['type']);
 
-        if (isset($data['data']['workspace'])) {
-            $rule->setWorkspace($this->om->getObject($data['data']['workspace'], Workspace::class));
-        }
+        $this->sipe('data', 'setData', $data, $rule);
+        $this->sipe('subjectClass', 'setSubjectClass', $data, $rule);
 
-        if (isset($data['data']['resource'])) {
-            $rule->setResourceNode($this->om->getObject($data['data']['resource'], ResourceNode::class));
-        }
-
-        switch ($data['type']) {
-            case Rule::IN_GROUP:
-                $rule->setGroup($this->om->getObject($data['data'], Group::class));
-                break;
-            case Rule::IN_ROLE:
-                $rule->setRole($this->om->getObject($data['data'], Role::class));
-                break;
+        if (array_key_exists('subject', $data)) {
+            $this->sipe('subject.id', 'setSubjectId', $data, $rule);
         }
 
         return $rule;

@@ -284,8 +284,6 @@ class PdfPlayer extends Component {
     })
 
     eventBus.on('pagesinit', () => {
-      console.log('pagesinit')
-
       this.resize()
       this.renderPage(1)
     })
@@ -324,8 +322,6 @@ class PdfPlayer extends Component {
     if (!this.state.viewer) {
       return
     }
-
-    console.log(this.state.viewer)
 
     this.state.viewer.scrollMode = this.state.scrollMode
     this.state.viewer.currentScaleValue = this.state.scale

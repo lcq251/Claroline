@@ -54,7 +54,7 @@ class UserType extends AbstractType
                 },
             ])
             ->add('workspace', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder, array $options) {
+                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder) {
                     if (null !== $finder->getFilterValue()) {
                         $alias = $finder->getAlias();
                         if (!$finder->isRoot()) {
@@ -73,7 +73,7 @@ class UserType extends AbstractType
                     }
                 },
             ])
-            ->add('teams', TeamType::class, [
+            ->add('teams', RelatedEntityType::class, [
                 'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $alias = $finder->getAlias();
                     if (!$finder->isRoot()) {

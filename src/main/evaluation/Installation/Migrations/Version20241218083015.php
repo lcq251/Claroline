@@ -49,6 +49,7 @@ final class Version20241218083015 extends AbstractMigration
             UPDATE innova_path AS p 
             LEFT JOIN claro_resource_node AS n ON p.resourceNode_id = n.id
             SET 
+                p.uuid = n.uuid,
                 p.entity_name = n.name,
                 p.description = n.description,
                 p.code = n.code,
@@ -89,11 +90,6 @@ final class Version20241218083015 extends AbstractMigration
         $this->addSql('
             CREATE INDEX IDX_CE19F05482D40A1F ON innova_path (workspace_id)
         ');
-
-        /*$this->addSql('
-            ALTER TABLE innova_path
-            DROP resourceNode_id
-        ');*/
     }
 
     public function down(Schema $schema): void

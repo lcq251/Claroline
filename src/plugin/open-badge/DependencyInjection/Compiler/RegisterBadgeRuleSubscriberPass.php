@@ -2,7 +2,7 @@
 
 namespace Claroline\OpenBadgeBundle\DependencyInjection\Compiler;
 
-use Claroline\LogBundle\Component\Log\LogProvider;
+use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -21,7 +21,7 @@ final class RegisterBadgeRuleSubscriberPass implements CompilerPassInterface
         $eventDispatcherDefinition = $container->findDefinition('event_dispatcher');
 
         // Get all defined rules
-        $taggedServices = $container->findTaggedServiceIds(LogProvider::getServiceTag());
+        $taggedServices = $container->findTaggedServiceIds(RuleProvider::getServiceTag());
         $taggedServiceIds = array_keys($taggedServices);
         foreach ($taggedServiceIds as $id) {
             // register rules as event subscriber

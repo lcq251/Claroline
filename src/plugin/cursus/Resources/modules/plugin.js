@@ -56,5 +56,9 @@ registry.add('ClarolineCursusBundle', {
       'add-evidence'           : () => { return import(/* webpackChunkName: "training-action-presence-add-evidence" */ '#/plugin/cursus/actions/presence/add-evidence') },
       'delete-evidence'        : () => { return import(/* webpackChunkName: "training-action-presence-delete-evidence" */ '#/plugin/cursus/actions/presence/delete-evidence') }
     }
+  },
+
+  badge_rules: {
+    "training_event_presence": () => { return import(/* webpackChunkName: "training-badge_rule-event_presence" */ '#/plugin/cursus/badge_rules/event_presence') }
   }
 })

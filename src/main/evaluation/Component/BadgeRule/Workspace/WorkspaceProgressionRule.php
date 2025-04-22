@@ -7,7 +7,7 @@ use Claroline\EvaluationBundle\Component\BadgeRule\AbstractProgressionRule;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WorkspaceProgressionRule extends AbstractProgressionRule
@@ -20,24 +20,29 @@ class WorkspaceProgressionRule extends AbstractProgressionRule
 
     public static function getName(): string
     {
-        return 'workspace_completed_above';
+        return 'workspace_progression';
+    }
+
+    public function supportsContext(string $context): bool
+    {
+        return true;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            EvaluationEvents::WORKSPACE_EVALUATION => 'onWorkspaceEvaluation',
+            EvaluationEvents::WORKSPACE_EVALUATION => 'onEvaluation',
         ];
     }
 
-    public function onWorkspaceEvaluation(WorkspaceEvaluationEvent $event): void
+    public function onEvaluation(WorkspaceEvaluationEvent $event): void
     {
         $evaluation = $event->getEvaluation();
 
         /** @var Rule[] $rules */
         $rules = $this->om->getRepository(Rule::class)->findBy([
             'action' => static::getName(),
-            'workspace' => $evaluation->getWorkspace(),
+            'subjectId' => $evaluation->getWorkspace()->getUuid(),
         ]);
 
         foreach ($rules as $rule) {
@@ -45,10 +50,14 @@ class WorkspaceProgressionRule extends AbstractProgressionRule
         }
     }
 
-    public function getQualifiedUsers(Rule $rule): iterable
+    public function getQualifiedUsers(Rule $rule, ?object $subject = null): iterable
     {
+        if (empty($subject)) {
+            return [];
+        }
+
         $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy([
-            'workspace' => $rule->getWorkspace(),
+            'workspace' => $subject,
         ]);
 
         return $this->checkEvaluations($rule, $evaluations);

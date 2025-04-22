@@ -4,31 +4,8 @@
 
 .field-list-control {
     .field-item {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        background: var(--#{$prefix}secondary-bg);
-        border: var(--#{$prefix}border-width) solid transparent;
-        padding: map-get($spacers, 2);
-
-        @include border-radius($border-radius);
-
         .form-group {
-            flex: 1;
-            margin-bottom: 0 !important;;
-        }
-
-        .field-item-preview {
-            flex: 1;
-        }
-
-        .field-item-actions {
-            margin-left: ($grid-gutter-width * .5);
-
-            .btn {
-                padding-left: map-get($spacers, 1);
-                padding-right: map-get($spacers, 1);
-            }
+            margin-bottom: 0 !important;
         }
     }
 }

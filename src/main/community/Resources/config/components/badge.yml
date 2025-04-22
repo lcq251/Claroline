@@ -14,3 +14,11 @@ services:
             - '@security.token_storage'
             - '@translator'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CommunityBundle\Component\BadgeRule\TeamRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

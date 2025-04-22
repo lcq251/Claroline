@@ -24,7 +24,12 @@ function getTypes() {
       checkPropTypes(DataType.propTypes, defaultedType, 'prop', `DataType<${defaultedType.name}>`)
 
       return defaultedType
-    })
+    }),
+    (error) => {
+      /* eslint-disable no-console */
+      console.error(error)
+      /* eslint-enable no-console */
+    }
   )
 }
 
@@ -59,6 +64,10 @@ function getType(typeName) {
       checkPropTypes(DataType.propTypes, defaultedType, 'prop', `DataType<${defaultedType.name}>`)
 
       return defaultedType
+    }, (error) => {
+      /* eslint-disable no-console */
+      console.error(error)
+      /* eslint-enable no-console */
     })
 }
 

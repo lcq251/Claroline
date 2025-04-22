@@ -26,6 +26,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
+            - '@Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider'
             - '@Claroline\OpenBadgeBundle\Manager\BadgeManager'
             - '@Claroline\OpenBadgeBundle\Manager\AssertionManager'
 

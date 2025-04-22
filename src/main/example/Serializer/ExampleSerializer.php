@@ -37,7 +37,6 @@ class ExampleSerializer
 
         return [
             'id' => $example->getUuid(),
-            'autoId' => $example->getId(), // only exposed for debug purpose, should not be used (use id instead)
             'name' => $example->getName(),
             'thumbnail' => $example->getThumbnail(),
             'poster' => $example->getPoster(),

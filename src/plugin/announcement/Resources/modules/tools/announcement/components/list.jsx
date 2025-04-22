@@ -125,6 +125,7 @@ const AnnouncementList = () => {
       <PageContent poster={poster} className="d-flex flex-column">
         {(loaded && 0 === posts.length) &&
           <EmptyState
+            className="p-4"
             icon="fa fa-bullhorn"
             title={trans('no_announcement', {}, 'announcement')}
             description={trans('no_announcement_help', {}, 'announcement')}

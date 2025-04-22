@@ -10,7 +10,7 @@ export default (badges, refresher) => ({
   name: 'grant',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-user-plus',
-  label: trans('grant_users', {}, 'badge'),
+  label: trans('grant_users', {}, 'actions'),
   displayed: hasPermission('grant', badges[0]),
   disabled: get(badges[0], 'meta.archived', false),
 

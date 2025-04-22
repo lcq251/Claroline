@@ -17,6 +17,20 @@ const COLORS = [
   'var(--bs-indigo)'
 ]
 
+const ContentMenuSkeleton = ({
+  className,
+  search
+}) => {
+  return (
+    <div className={className} role="presentation">
+    </div>
+  )
+}
+
+ContentMenuSkeleton.propTypes = {
+  search: T.bool
+}
+
 const ContentMenuItem = (props) =>
   <div className={classes('list-group', props.className)} role="presentation">
     <Button
@@ -35,13 +49,15 @@ const ContentMenuItem = (props) =>
       label={
         <>
           <div className="flex-fill" role="presentation">
-            <b className="mb-2">
+            <b>
               {props.label}
               {props.advanced &&
                 <span className="badge bg-primary-subtle text-primary-emphasis ms-2">{trans('advanced')}</span>
               }
             </b>
-            <p className="mb-0 text-body-secondary fs-sm" dangerouslySetInnerHTML={{ __html: props.description }} />
+            {props.description &&
+              <p className="mb-0 text-body-secondary fs-sm" dangerouslySetInnerHTML={{ __html: props.description }} />
+            }
           </div>
 
           <span className="fa fa-chevron-right text-body-tertiary" aria-hidden={true} role="presentation" />
@@ -56,7 +72,7 @@ ContentMenuItem.propTypes = {
   icon: T.oneOfType([T.string, T.node]),
   color: T.string,
   label: T.string.isRequired,
-  description: T.string.isRequired,
+  description: T.string,
   advanced: T.bool,
   autoFocus: T.bool,
   action: T.shape({
@@ -67,6 +83,7 @@ ContentMenuItem.propTypes = {
 const ContentMenu = ({
   className,
   items,
+  searchPlaceholder,
   search = false,
   color = true,
   autoFocus = true
@@ -101,6 +118,7 @@ const ContentMenu = ({
           search={searchStr}
           onSearch={setSearch}
           autoFocus={autoFocus}
+          placeholder={searchPlaceholder}
         />
       }
 
@@ -133,6 +151,7 @@ ContentMenu.propTypes = {
   autoFocus: T.bool,
   className: T.string,
   search: T.bool,
+  searchPlaceholder: T.string,
   items: T.arrayOf(T.shape({
     id: T.string.isRequired,
     icon: T.oneOfType([T.string, T.node]),

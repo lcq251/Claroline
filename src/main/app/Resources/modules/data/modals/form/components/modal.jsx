@@ -89,7 +89,6 @@ const FormModal = (props) => {
             <Button
               className="btn btn-body"
               type={CALLBACK_BUTTON}
-              htmlType="submit"
               label={trans('cancel', {}, 'actions')}
               disabled={saving}
               callback={() => {

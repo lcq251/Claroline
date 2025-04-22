@@ -9,8 +9,11 @@ import {BadgeShow as BadgeShowComponent} from '#/plugin/open-badge/badge/compone
 const BadgeShow = connect(
   state => ({
     path: toolSelectors.path(state),
+    contextType: toolSelectors.contextType(state),
+    contextId: toolSelectors.contextId(state),
     badge: formSelectors.data(formSelectors.form(state, selectors.FORM_NAME)),
-    assertion: selectors.assertion(state)
+    assertion: selectors.assertion(state),
+    evidences: selectors.evidences(state)
   }),
   dispatch =>({
     reload(id) {

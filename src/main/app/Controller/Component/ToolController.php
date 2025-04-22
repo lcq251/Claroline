@@ -42,9 +42,6 @@ class ToolController
     ) {
     }
 
-    /**
-     * Opens a tool.
-     */
     #[Route(path: '/open/{name}/{context}/{contextId}', name: 'claro_tool_open', methods: ['GET'])]
     public function openAction(string $name, string $context, string $contextId = null): JsonResponse
     {

@@ -3,7 +3,7 @@
 namespace Claroline\CoreBundle\Component\Context;
 
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\Component\Context\AbstractContext;
+use Claroline\AppBundle\Component\Context\ContextComponent;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
 use Claroline\CoreBundle\Entity\Role;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * The Desktop context is the main context for all the authenticated users.
  */
-class DesktopContext extends AbstractContext
+final class DesktopContext extends ContextComponent
 {
     public function __construct(
         private readonly SecurityManager $securityManager,

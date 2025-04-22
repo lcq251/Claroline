@@ -25,7 +25,6 @@ use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
 use Claroline\OpenBadgeBundle\Finder\BadgeType;
 use Claroline\TemplateBundle\Model\HasTemplate;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +52,7 @@ class BadgeClass implements CrudEntityInterface
     use Archived;
     use Poster;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

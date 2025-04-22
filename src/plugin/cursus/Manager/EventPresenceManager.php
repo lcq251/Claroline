@@ -80,18 +80,6 @@ class EventPresenceManager
         }
     }
 
-    public function setStatus(array $presences, string $status): array
-    {
-        foreach ($presences as $presence) {
-            $presence->setStatus($status);
-            $this->om->persist($presence);
-        }
-
-        $this->om->flush();
-
-        return $presences;
-    }
-
     public function setValidationDate(array $presences, ?\DateTimeInterface $date): array
     {
         foreach ($presences as $presence) {

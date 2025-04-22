@@ -2,7 +2,7 @@
 
 namespace Claroline\CoreBundle\Component\Context;
 
-use Claroline\AppBundle\Component\Context\AbstractContext;
+use Claroline\AppBundle\Component\Context\ContextComponent;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Manager\SecurityManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  * parameters and features.
  * Therefore, only a limited number of users should have access to this part of the app.
  */
-class AdministrationContext extends AbstractContext
+final class AdministrationContext extends ContextComponent
 {
     public function __construct(
         private readonly SecurityManager $securityManager,

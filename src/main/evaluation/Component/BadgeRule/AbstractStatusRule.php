@@ -4,7 +4,7 @@ namespace Claroline\EvaluationBundle\Component\BadgeRule;
 
 use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractUserEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 
 abstract class AbstractStatusRule extends AbstractEvaluationRule
 {

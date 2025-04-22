@@ -17,7 +17,7 @@ class SerializerProvider
      *
      * @throws \Exception
      */
-    public function getSerializerHandledClass($serializer): string
+    public function getSerializerHandledClass(object $serializer): string
     {
         if (method_exists($serializer, 'getClass')) {
             // 1. the serializer implements the getClass method, so we just call it
@@ -133,7 +133,7 @@ class SerializerProvider
             $class = $meta->name;
         }
 
-        if ($class ?? false) {
+        if ($class) {
             $serializer = $this->get($class);
             if (method_exists($serializer, 'deserialize')) {
                 $serializer->deserialize($data, $object, $options);

@@ -9,7 +9,7 @@ import {ToolPage} from '#/main/core/tool'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
 import {getActions} from '#/plugin/open-badge/badge/utils'
-import {Assertion as AssertionTypes, Badge as BadgeTypes} from '#/plugin/open-badge/prop-types'
+import {Assertion as AssertionTypes, Badge as BadgeTypes, Evidence as EvidenceTypes} from '#/plugin/open-badge/prop-types'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageContent} from '#/main/app/page'
@@ -49,7 +49,10 @@ const Badge = (props) =>
         <BadgeDetails
           path={props.path}
           badge={props.badge}
+          contextType={props.contextType}
+          contextId={props.contextId}
           assertion={props.assertion}
+          evidences={props.evidences}
         />
       </PageContent>
     }
@@ -57,12 +60,17 @@ const Badge = (props) =>
 
 Badge.propTypes = {
   path: T.string,
+  contextType: T.string.isRequired,
+  contextId: T.string,
   badge: T.shape(
     BadgeTypes.propTypes
   ),
   assertion: T.shape(
     AssertionTypes.propTypes
   ),
+  evidences: T.arrayOf(T.shape(
+    EvidenceTypes.propTypes
+  )),
   currentUser: T.object,
   reload: T.func
 }

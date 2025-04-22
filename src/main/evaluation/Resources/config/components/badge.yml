@@ -21,6 +21,27 @@ services:
             - '@translator'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
+    # Sequence
+    Claroline\EvaluationBundle\Component\BadgeRule\Sequence\SequenceStatusRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\EvaluationBundle\Component\BadgeRule\Sequence\SequenceProgressionRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\EvaluationBundle\Component\BadgeRule\Sequence\SequenceScoreRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     # Resource
     Claroline\EvaluationBundle\Component\BadgeRule\Resource\ResourceStatusRule:

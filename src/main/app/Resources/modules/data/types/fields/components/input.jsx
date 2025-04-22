@@ -1,31 +1,26 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
 import classes from 'classnames'
 import get from 'lodash/get'
 import isNumber from 'lodash/isNumber'
-import merge from 'lodash/merge'
 
 import {implementPropTypes, PropTypes as T} from '#/main/app/prop-types'
-import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {Badge} from '#/main/app/components/badge'
-import {actions as modalActions} from '#/main/app/overlays/modal/store'
-import {MODAL_SELECTION} from '#/main/app/modals/selection'
 import {MODAL_FIELD_PARAMETERS} from '#/main/app/data/types/fields/modals/parameters'
 
 import {Button} from '#/main/app/action/components/button'
 import {Toolbar} from '#/main/app/action/components/toolbar'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
-import {getCreatableTypes} from '#/main/app/data/types'
 import {DataInput} from '#/main/app/data/components/input'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {Field as FieldTypes} from '#/main/app/data/types/fields/prop-types'
+import {MODAL_FIELD_CREATION} from '#/main/app/data/types/fields/modals/creation'
 
 const FieldPreview = props =>
   <DataInput
     {...props}
+    className="flex-fill mb-0"
     onChange={() => true}
   />
 
@@ -33,11 +28,7 @@ FieldPreview.propTypes = {
   name: T.string.isRequired
 }
 
-FieldPreview.defaultProps = {
-  options: {}
-}
-
-class FieldList extends Component {
+class FieldsInput extends Component {
   constructor(props) {
     super(props)
 
@@ -105,7 +96,7 @@ class FieldList extends Component {
         }
 
         {0 < this.props.value.length &&
-          <ul className="list-unstyled mb-0">
+          <ul className="list-unstyled mb-0 d-flex flex-column gap-2">
             {this.props.value
               .sort((a, b) => {
                 if (isNumber(get(a, 'display.order')) && !isNumber(get(b, 'display.order'))) {
@@ -121,8 +112,8 @@ class FieldList extends Component {
                 return 0
               })
               .map((field, fieldIndex) =>
-                <li key={fieldIndex} className={classes('field-item', 0 !== fieldIndex && 'mt-2')}>
-                  <div className="field-item-preview" role="presentation">
+                <li key={fieldIndex} className="field-item d-flex flex-row align-items-start py-2 px-3 gap-3 bg-secondary-subtle rounded-2 border border-transparent">
+                  <div className="field-item-preview flex-fill" role="presentation">
                     <FieldPreview {...this.formatField(field)} />
                     {get(field, 'restrictions.confidentiality') && 'none' !== get(field, 'restrictions.confidentiality') &&
                       <Badge variant="primary" className="mt-1">
@@ -134,13 +125,15 @@ class FieldList extends Component {
 
                   <Toolbar
                     id={`${this.props.id}-${fieldIndex}-actions`}
-                    className="field-item-actions"
-                    tooltip="top"
+                    className="my-n1 me-n2"
+                    tooltip="bottom"
+                    buttonName="btn p-1"
+                    defaultName="btn-text-body focus-ring focus-ring-secondary"
+                    dangerousName="btn-text-danger focus-ring focus-ring-danger"
                     actions={[
                       {
                         name: 'edit',
                         type: MODAL_BUTTON,
-                        className: 'btn btn-text-body',
                         icon: 'fa fa-fw fa-pencil',
                         label: trans('edit', {}, 'actions'),
                         modal: [MODAL_FIELD_PARAMETERS, {
@@ -152,13 +145,9 @@ class FieldList extends Component {
                       }, {
                         name: 'delete',
                         type: CALLBACK_BUTTON,
-                        className: 'btn btn-text-danger',
                         icon: 'fa fa-fw fa-trash',
                         label: trans('delete', {}, 'actions'),
-                        confirm: {
-                          title: trans('delete_field'),
-                          message: trans('delete_field_confirm')
-                        },
+                        confirm: trans('delete_field_confirm'),
                         callback: () => this.remove(fieldIndex),
                         dangerous: true
                       }
@@ -171,58 +160,33 @@ class FieldList extends Component {
         }
 
         <Button
-          type={CALLBACK_BUTTON}
+          type={MODAL_BUTTON}
           className="btn btn-body w-100 mt-3"
           icon="fa fa-fw fa-plus"
           label={trans('add_field')}
-          callback={() => getCreatableTypes().then(types => {
-            this.props.showModal(MODAL_SELECTION, {
-              icon: 'fa fa-fw fa-plus',
-              title: trans('new_field'),
-              subtitle: trans('new_field_select'),
-              items: types.map(type => Object.assign({}, type.meta, {name: type.name})),
-              selectAction: (type) => ({
-                type: MODAL_BUTTON,
-                modal: [MODAL_FIELD_PARAMETERS, {
-                  field: merge({}, FieldTypes.defaultProps, {
-                    id: makeId(),
-                    type: type.name
-                  }),
-                  isNew: true,
-                  fields: allFields,
-                  save: this.add
-                }]
-              })
-            })
-          })}
+          disabled={this.props.disabled}
+          modal={[MODAL_FIELD_CREATION, {
+            fields: allFields,
+            add: this.add
+          }]}
         />
       </div>
     )
   }
 }
 
-implementPropTypes(FieldList, DataInputTypes, {
+implementPropTypes(FieldsInput, DataInputTypes, {
   // more precise value type
   value: T.arrayOf(T.object),
 
   // a list of all fields for conditional rendering
   // it uses the current list of fields in `value` in missing
   // this is useful for profile where fields are propagated between multiple tabs/panels
-  fields: T.array,
-  showModal: T.func.isRequired
+  fields: T.array
 }, {
   placeholder: trans('empty_fields_list'),
   value: []
 })
-
-const FieldsInput = connect(
-  null,
-  (dispatch) => ({
-    showModal(modalType, modalProps) {
-      dispatch(modalActions.showModal(modalType, modalProps))
-    }
-  })
-)(FieldList)
 
 export {
   FieldsInput

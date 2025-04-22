@@ -79,7 +79,10 @@ class EventPresenceSerializer
         $this->sipe('id', 'setUuid', $data, $eventPresence);
         $this->sipe('status', 'setStatus', $data, $eventPresence);
         $this->sipe('signature', 'setSignature', $data, $eventPresence);
-        $eventPresence->setValidationDate(DateNormalizer::denormalize($data['validation_date']));
+
+        if (isset($data['validation_date'])) {
+            $eventPresence->setValidationDate(DateNormalizer::denormalize($data['validation_date']));
+        }
 
         if (isset($data['user'])) {
             $user = null;

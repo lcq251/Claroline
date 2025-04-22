@@ -8,7 +8,5 @@ use Claroline\AppBundle\Component\Context\ContextualInterface;
 
 interface DataSourceInterface extends ComponentInterface, ContextualInterface
 {
-    // public static function getIcon(): string;
-
     public function open(string $context, ContextSubjectInterface $contextSubject = null): ?array;
 }

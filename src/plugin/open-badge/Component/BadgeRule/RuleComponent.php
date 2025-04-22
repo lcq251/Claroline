@@ -2,8 +2,9 @@
 
 namespace Claroline\OpenBadgeBundle\Component\BadgeRule;
 
+use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 use Claroline\OpenBadgeBundle\Messenger\Message\GrantRule;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -17,6 +18,11 @@ abstract class RuleComponent implements RuleInterface
     public function setMessageBus(MessageBusInterface $messageBus): void
     {
         $this->messageBus = $messageBus;
+    }
+
+    public function supportsSubject(ContextSubjectInterface $subject): bool
+    {
+        return true;
     }
 
     public function grant(Rule $rule, User $user): void

@@ -16,8 +16,6 @@
     "default_display_mode": "Mode d'affichage par défaut",
     "delete_entry": "Supprimer la fiche",
     "delete_entry_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer cette fiche [%title%] ?",
-    "delete_field": "Supprimer le champ",
-    "delete_field_confirm_message": "Êtes-vous sûr(e) de vouloir retirer ce champ [%name%] ?",
     "delete_selected_entries": "{1} Supprimer la fiche sélectionnée|[2,Inf[ Supprimer les %count% fiches sélectionnées",
     "delete_selected_entries_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer la fiche sélectionnée ?|[2,Inf[ Êtes-vous sûr(e) de vouloir supprimer les %count% fiches sélectionnées ?",
     "display": "Afficher",

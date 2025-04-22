@@ -36,24 +36,26 @@ class DataSourceProvider extends AbstractComponentProvider
     /**
      * Get the list of all implemented sources for a context.
      * It contains the sources from all the enabled plugins.
+     *
+     * @return DataSourceInterface[]
      */
     public function getAvailableSources(string $context, ContextSubjectInterface $contextSubject = null): array
     {
         $available = [];
-        foreach ($this->getRegisteredComponents() as $toolComponent) {
-            if ($toolComponent->supportsContext($context) && (empty($contextSubject) || $toolComponent->supportsSubject($contextSubject))) {
-                $available[] = $toolComponent;
+        foreach ($this->getRegisteredComponents() as $sourceComponent) {
+            if ($sourceComponent->supportsContext($context) && (empty($contextSubject) || $sourceComponent->supportsSubject($contextSubject))) {
+                $available[] = $sourceComponent;
             }
         }
 
         return $available;
     }
 
-    public function getDataSource(string $name, string $context, ContextSubjectInterface $contextSubject = null)
+    public function getDataSource(string $name, string $context, ContextSubjectInterface $contextSubject = null): void
     {
     }
 
-    public function open(string $toolName, string $context, ContextSubjectInterface $contextSubject = null)
+    public function open(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): void
     {
 
     }

@@ -48,6 +48,8 @@
   "evaluation_help": "Activez le suivi pédagogique pour enregistrer et suivre la progression des utilisateurs.",
   "enable_evaluation": "Activer le suivi pédagogique",
   "score": "Score",
+  "score_max": "Score maximum",
+  "score_min": "Score minimum",
   "score_help": "Donnez un score à vos utilisateurs une fois qu'ils ont terminé l'activité.",
   "success_conditions": "Conditions de réussite",
   "success_conditions_help": "Donnez un statut de Réussite ou d'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n'est définie les utilisateurs obtiennent un statut Terminé une fois qu'ils ont terminé l'activité.",

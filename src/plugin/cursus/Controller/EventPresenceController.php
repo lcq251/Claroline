@@ -203,7 +203,7 @@ class EventPresenceController
         foreach ($presences as $presence) {
             $this->checkPermission('EDIT', $presence, [], true);
 
-            $this->manager->setStatus([$presence], $status);
+            $this->crud->update($presence, ['status' => $status], [Crud::NO_PERMISSIONS]);
 
             $presence->setUpdatedBy($this->tokenStorage->getToken()->getUser());
             $presence->setUpdatedAt(new \DateTime());

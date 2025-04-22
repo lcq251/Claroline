@@ -18,7 +18,6 @@ class ColorCollectionSerializer
     {
         return [
             'id' => $colorCollection->getUuid(),
-            'autoId' => $colorCollection->getId(),
             'name' => $colorCollection->getName(),
             'colors' => $colorCollection->getColors(),
         ];

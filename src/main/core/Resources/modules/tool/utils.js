@@ -1,9 +1,6 @@
-import identity from 'lodash/identity'
-
 import {getActions as getPluginsActions, getApp, getApps} from '#/main/app/plugins'
 
 import {constants} from '#/main/core/tool/constants'
-import merge from 'lodash/merge'
 
 function getTools(contextType) {
   if (constants.TOOL_ADMINISTRATION === contextType) {

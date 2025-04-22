@@ -15,7 +15,8 @@ registry.add('ClarolineEvaluationBundle', {
 
   data: {
     types: {
-      'score': () => { return import(/* webpackChunkName: "app-data-type-score" */ '#/main/evaluation/data/types/score') }
+      'score': () => { return import(/* webpackChunkName: "app-data-type-score" */ '#/main/evaluation/data/types/score') },
+      'sequence': () => { return import(/* webpackChunkName: "app-data-type-sequence" */ '#/main/evaluation/data/types/sequence') }
     },
     sources: {
       'resource_attempts'    : () => { return import(/* webpackChunkName: "evaluation-source-resource_attempts" */     '#/main/evaluation/data/sources/resource-attempts') },
@@ -62,5 +63,17 @@ registry.add('ClarolineEvaluationBundle', {
       'regenerate-certificate': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-regenerate-certificate" */ '#/main/evaluation/actions/workspace_evaluation/regenerate-certificate') },
       'recompute': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-recompute" */ '#/main/evaluation/actions/workspace_evaluation/recompute') }
     }
+  },
+
+  badge_rules: {
+    'resource_progression': () => { return import(/* webpackChunkName: "evaluation-badge-resource_progression" */ '#/main/evaluation//badge_rules/resource_progression') },
+    'resource_score': () => { return import(/* webpackChunkName: "evaluation-badge-resource_score" */ '#/main/evaluation//badge_rules/resource_score') },
+    'resource_status': () => { return import(/* webpackChunkName: "evaluation-badge-resource_status" */ '#/main/evaluation//badge_rules/resource_status') },
+    'sequence_progression': () => { return import(/* webpackChunkName: "evaluation-badge-sequence_progression" */ '#/main/evaluation//badge_rules/sequence_progression') },
+    'sequence_score': () => { return import(/* webpackChunkName: "evaluation-badge-sequence_score" */ '#/main/evaluation//badge_rules/sequence_score') },
+    'sequence_status': () => { return import(/* webpackChunkName: "evaluation-badge-sequence_status" */ '#/main/evaluation//badge_rules/sequence_status') },
+    'workspace_progression': () => { return import(/* webpackChunkName: "evaluation-badge-workspace_progression" */ '#/main/evaluation//badge_rules/workspace_progression') },
+    'workspace_score': () => { return import(/* webpackChunkName: "evaluation-badge-workspace_score" */ '#/main/evaluation//badge_rules/workspace_score') },
+    'workspace_status': () => { return import(/* webpackChunkName: "evaluation-badge-workspace_status" */ '#/main/evaluation//badge_rules/workspace_status') }
   }
 })

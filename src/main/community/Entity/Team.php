@@ -17,6 +17,7 @@ use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
+use Claroline\AppBundle\Entity\Meta\IsPublic;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\CommunityBundle\Finder\TeamType;
 use Claroline\CommunityBundle\Repository\TeamRepository;
@@ -40,24 +41,25 @@ class Team
     use Description;
     use Thumbnail;
     use Poster;
+    use IsPublic;
 
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Workspace::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Workspace $workspace = null;
 
     /**
      * @var Collection<int, User>
      */
+    #[ORM\ManyToMany(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(name: 'claro_team_users')]
-    #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $users;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Role::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Role $role = null;
 
-    #[ORM\JoinColumn(name: 'manager_role_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Role::class)]
+    #[ORM\JoinColumn(name: 'manager_role_id', nullable: true, onDelete: 'SET NULL')]
     private ?Role $managerRole = null;
 
     #[ORM\Column(name: 'max_users', type: Types::INTEGER, nullable: true)]
@@ -69,12 +71,9 @@ class Team
     #[ORM\Column(name: 'self_unregistration', type: Types::BOOLEAN)]
     private bool $selfUnregistration = false;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: ResourceNode::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?ResourceNode $directory = null;
-
-    #[ORM\Column(name: 'is_public', type: Types::BOOLEAN)]
-    private bool $isPublic = false;
 
     #[ORM\Column(name: 'dir_deletable', type: Types::BOOLEAN, options: ['default' => 0])]
     private bool $dirDeletable = false;
@@ -175,19 +174,9 @@ class Team
         return $this->directory;
     }
 
-    public function setDirectory(ResourceNode $directory = null)
+    public function setDirectory(ResourceNode $directory = null): void
     {
         $this->directory = $directory;
-    }
-
-    public function isPublic(): bool
-    {
-        return $this->isPublic;
-    }
-
-    public function setPublic(bool $isPublic): void
-    {
-        $this->isPublic = $isPublic;
     }
 
     public function isDirDeletable(): bool

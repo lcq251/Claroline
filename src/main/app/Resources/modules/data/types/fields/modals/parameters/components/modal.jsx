@@ -43,11 +43,10 @@ class ParametersModal extends Component {
     return (
       <Modal
         {...omit(this.props, 'field', 'fields', 'isNew', 'saveEnabled', 'formData', 'update', 'save', 'reset')}
-        icon={this.props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
         title={trans(this.props.isNew ? 'new_field' : 'parameters')}
         subtitle={this.props.isNew ? trans('new_field_configure') : this.props.formData.label}
-        size="lg"
         onEntering={() => this.props.reset(this.props.field, this.props.isNew)}
+        centered={true}
       >
         <FormData
           name={selectors.STORE_NAME}

@@ -33,27 +33,13 @@ class AssertionManager
     /**
      * Checks if a User meets a Badge requirements by checking Evidence for each rule and grants him if needed.
      */
-    public function grant(BadgeClass $badge, User $user): ?Assertion
+    public function grant(BadgeClass $badge, User $user, ?array $evidences = []): ?Assertion
     {
-        $isGranted = true;
-        $badgeRules = $badge->getRules();
-
-        // check if there are evidence for each badge rule
-        foreach ($badgeRules as $badgeRule) {
-            $evidences = $this->om->getRepository(Evidence::class)->findBy(['user' => $user, 'rule' => $badgeRule]);
-            if (0 === count($evidences)) {
-                $isGranted = false;
-                break; // no need to continue, user can not have the badge for now
-            }
+        if (empty($evidences)) {
+            $evidences = $this->om->getRepository(Evidence::class)->findByUserAndBadge($user, $badge);
         }
 
-        if ($isGranted) {
-            // link evidences to this assertion
-            $evidences = [];
-            foreach ($badgeRules as $badgeRule) {
-                $evidences = array_merge($evidences, $this->om->getRepository(Evidence::class)->findBy(['user' => $user, 'rule' => $badgeRule]));
-            }
-
+        if (count($evidences) === $badge->getRules()->count()) {
             return $this->create($badge, $user, $evidences);
         }
 
@@ -63,7 +49,11 @@ class AssertionManager
     public function create(BadgeClass $badge, User $user, array $evidences = []): Assertion
     {
         $newlyGranted = false;
-        $assertion = $this->om->getRepository(Assertion::class)->findOneBy(['badge' => $badge, 'recipient' => $user]);
+        $assertion = $this->om->getRepository(Assertion::class)->findOneBy([
+            'badge' => $badge,
+            'recipient' => $user,
+        ]);
+
         if (!$assertion) {
             $assertion = new Assertion();
             $assertion->setBadge($badge);

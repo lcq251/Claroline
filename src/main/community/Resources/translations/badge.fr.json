@@ -1,0 +1,11 @@
+{
+  "evidence_narrative_add_group": "Groupe assigné par %doer% le %date%",
+  "evidence_narrative_add_role": "Rôle assigné par %doer% le %date%",
+  "evidence_narrative_add_team": "Équipe assigné par %doer% le %date%",
+  "in_group": "Être membre d'un groupe",
+  "in_group_desc": "Être membre du groupe %group%",
+  "in_role": "Posséder un rôle",
+  "in_role_desc": "Posséder le rôle %role%",
+  "in_team": "Être membre d'une équipe",
+  "in_team_desc": "Être membre de l'équipe %team%"
+}

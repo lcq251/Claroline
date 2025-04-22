@@ -3,10 +3,11 @@
 namespace Claroline\OpenBadgeBundle\Component\BadgeRule;
 
 use Claroline\AppBundle\Component\AbstractComponentProvider;
+use Claroline\AppBundle\Component\Context\ContextProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\OpenBadgeBundle\Entity\Evidence;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 
 /**
  * Aggregates all the badge rules defined in the Claroline app.
@@ -19,6 +20,7 @@ class RuleProvider extends AbstractComponentProvider
 {
     public function __construct(
         private readonly iterable $registeredRules,
+        private readonly ContextProvider $contextProvider,
         private readonly ObjectManager $om
     ) {
     }
@@ -40,28 +42,45 @@ class RuleProvider extends AbstractComponentProvider
     /**
      * Get the list of all implemented rules.
      * It contains the rules from all the enabled plugins.
+     *
+     * @return RuleComponent[]
      */
-    public function getAvailableRules(): array
+    public function getAvailableRules(string $context, ?string $contextId = null): array
     {
+        $contextHandler = $this->contextProvider->getContext($context);
+        $contextSubject = $contextHandler->getObject($contextId);
+
         $available = [];
         foreach ($this->getRegisteredComponents() as $ruleComponent) {
-            $available[] = [
-                'name' => $ruleComponent->getName(),
-            ];
+            if ($ruleComponent->supportsContext($context) && (empty($contextSubject) || $ruleComponent->supportsSubject($contextSubject))) {
+                $available[] = $ruleComponent;
+            }
         }
 
         return $available;
     }
 
+    /**
+     * Create missing evidences for all the users who match the rule criteria.
+     *
+     * @return array - The list of all users who match the rule criteria
+     */
     public function grantRule(Rule $rule): array
     {
         /** @var RuleInterface $ruleDefinition */
         $ruleDefinition = $this->getComponent($rule->getAction());
 
-        // find all users which met the current rule
-        $users = $ruleDefinition->getQualifiedUsers($rule);
+        $subject = null;
+        if ($rule->getSubjectClass() && $rule->getSubjectId()) {
+            $subject = $this->om->getRepository($rule->getSubjectClass())->findOneBy([
+                'uuid' => $rule->getSubjectId(),
+            ]);
+        }
 
-        // find users which already have evidence for the rule
+        // find all users who match the current rule
+        $users = $ruleDefinition->getQualifiedUsers($rule, $subject);
+
+        // find users which already have evidence for the rule to exclude them
         $evidences = $this->om->getRepository(Evidence::class)->findBy(['rule' => $rule]);
         $owners = array_map(function (Evidence $evidence) {
             return $evidence->getUser()->getUuid();
@@ -69,8 +88,10 @@ class RuleProvider extends AbstractComponentProvider
 
         $recomputeUsers = [];
         foreach ($users as $user) {
-            if (!$user->isDisabled() && !$user->isRemoved() && !in_array($user->getUuid(), $owners)) {
-                $this->createEvidence($rule, $user);
+            if (!$user->isDisabled() && !$user->isRemoved()) {
+                if (!in_array($user->getUuid(), $owners)) {
+                    $this->createEvidence($rule, $user);
+                }
 
                 $recomputeUsers[$user->getUuid()] = $user; // using uuid as key will automatically deduplicate the array
             }

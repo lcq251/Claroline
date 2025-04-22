@@ -1,6 +1,6 @@
 services:
     Claroline\CoreBundle\Component\Context\WorkspaceContext:
-        parent: Claroline\AppBundle\Component\Context\AbstractContext
+        parent: Claroline\AppBundle\Component\Context\ContextComponent
         tags: [ 'claroline.component.context' ]
         arguments:
             - '@security.authorization_checker'
@@ -10,7 +10,7 @@ services:
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager'
 
     Claroline\CoreBundle\Component\Context\PublicContext:
-        parent: Claroline\AppBundle\Component\Context\AbstractContext
+        parent: Claroline\AppBundle\Component\Context\ContextComponent
         tags: [ 'claroline.component.context' ]
         arguments:
             - '@Claroline\AppBundle\Manager\SecurityManager'
@@ -18,7 +18,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
     Claroline\CoreBundle\Component\Context\DesktopContext:
-        parent: Claroline\AppBundle\Component\Context\AbstractContext
+        parent: Claroline\AppBundle\Component\Context\ContextComponent
         tags: [ 'claroline.component.context' ]
         arguments:
             - '@Claroline\AppBundle\Manager\SecurityManager'
@@ -26,7 +26,7 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
 
     Claroline\CoreBundle\Component\Context\AdministrationContext:
-        parent: Claroline\AppBundle\Component\Context\AbstractContext
+        parent: Claroline\AppBundle\Component\Context\ContextComponent
         tags: [ 'claroline.component.context' ]
         arguments:
             - '@Claroline\AppBundle\Manager\SecurityManager'

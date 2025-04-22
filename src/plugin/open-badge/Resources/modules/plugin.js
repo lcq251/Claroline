@@ -5,11 +5,11 @@ import {registry} from '#/main/app/plugins/registry'
 registry.add('ClarolineOpenBadgeBundle', {
   data: {
     types: {
-      'rule' : () => { return import(/* webpackChunkName: "plugin-open-badge-data-rule" */  '#/plugin/open-badge/data/types/rule') }
+      'badge-rules' : () => { return import(/* webpackChunkName: "badge-data-badge-rules" */  '#/plugin/open-badge/data/types/badge-rules') }
     },
     sources: {
-      'badges'   : () => { return import(/* webpackChunkName: "plugin-open-badge-source-badges" */    '#/plugin/open-badge/data/sources/badges') },
-      'my_badges': () => { return import(/* webpackChunkName: "plugin-open-badge-source-my-badges" */ '#/plugin/open-badge/data/sources/my-badges') }
+      'badges'   : () => { return import(/* webpackChunkName: "badge-source-badges" */    '#/plugin/open-badge/data/sources/badges') },
+      'my_badges': () => { return import(/* webpackChunkName: "badge-source-my-badges" */ '#/plugin/open-badge/data/sources/my-badges') }
     }
   },
 
@@ -35,13 +35,13 @@ registry.add('ClarolineOpenBadgeBundle', {
    * Provides Administration tools.
    */
   tools: {
-    'badges': () => { return import(/* webpackChunkName: "plugin-open-badge-tool-badges" */ '#/plugin/open-badge/tools/badges') }
+    'badges': () => { return import(/* webpackChunkName: "badge-tool-badges" */ '#/plugin/open-badge/tools/badges') }
   },
 
   /**
    * Provides tabs for the user profile.
    */
   profile: {
-    'badges': () => { return import(/* webpackChunkName: "plugin-open-badge-profile-badges" */ '#/plugin/open-badge/profile/badges') }
+    'badges': () => { return import(/* webpackChunkName: "open-badge-profile-badges" */ '#/plugin/open-badge/profile/badges') }
   }
 })

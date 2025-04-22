@@ -50,6 +50,10 @@ const reducer = combineReducers({
       [BADGE_LOAD_CURRENT_ASSERTION]: (state, action) => action.assertion
     }),
 
+    myEvidences: makeReducer([], {
+      [BADGE_LOAD_CURRENT_ASSERTION]: (state, action) => action.evidences
+    }),
+
     /**
      * The list of all users which own the badge.
      */

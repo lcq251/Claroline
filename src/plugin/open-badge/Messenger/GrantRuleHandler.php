@@ -5,7 +5,8 @@ namespace Claroline\OpenBadgeBundle\Messenger;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Evidence;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 use Claroline\OpenBadgeBundle\Manager\AssertionManager;
 use Claroline\OpenBadgeBundle\Messenger\Message\GrantRule;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -31,10 +32,11 @@ class GrantRuleHandler
         $user = $this->om->getRepository(User::class)->find($grantRule->getUserId());
 
         if (!empty($rule) && !empty($user)) {
-            $this->ruleProvider->createEvidence($rule, $user);
+            $evidences = $this->om->getRepository(Evidence::class)->findByUserAndBadge($user, $rule->getBadge());
+            $evidences[] = $this->ruleProvider->createEvidence($rule, $user);
 
             // checks if the user can be granted the badge now
-            $this->assertionManager->grant($rule->getBadge(), $user);
+            $this->assertionManager->grant($rule->getBadge(), $user, $evidences);
         }
     }
 }

@@ -82,12 +82,4 @@ class ContextProvider extends AbstractComponentProvider
 
         return $contextHandler;
     }
-
-    public function open()
-    {
-    }
-
-    public function configure(): ?array
-    {
-    }
 }

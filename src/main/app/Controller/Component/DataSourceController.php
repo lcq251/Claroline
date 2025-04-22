@@ -2,7 +2,6 @@
 
 namespace Claroline\AppBundle\Controller\Component;
 
-use Exception;
 use Claroline\AppBundle\Component\Context\ContextProvider;
 use Claroline\AppBundle\Component\DataSource\DataSourceProvider;
 use Claroline\CoreBundle\Manager\DataSourceManager;
@@ -35,7 +34,7 @@ class DataSourceController
             $contextSubject = $contextHandler->getObject($contextId);
 
             $this->dataSourceProvider->getDataSource($type, $context, $contextSubject);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 

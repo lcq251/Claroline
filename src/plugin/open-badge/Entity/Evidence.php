@@ -17,11 +17,11 @@ use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Repository\EvidenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro__open_badge_evidence')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: EvidenceRepository::class)]
 class Evidence
 {
     use Id;
@@ -41,7 +41,6 @@ class Evidence
     #[ORM\ManyToOne(targetEntity: WorkspaceEvaluation::class)]
     private ?WorkspaceEvaluation $workspaceEvidence = null;
 
-    
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Rule::class)]
     private ?Rule $rule = null;
@@ -80,7 +79,7 @@ class Evidence
         $this->resourceEvidence = $resourceEvidence;
     }
 
-    public function getResourceEvidence(): ResourceEvaluation
+    public function getResourceEvidence(): ?ResourceEvaluation
     {
         return $this->resourceEvidence;
     }
@@ -90,7 +89,7 @@ class Evidence
         $this->workspaceEvidence = $workspaceEvidence;
     }
 
-    public function getWorkspaceEvidence(): WorkspaceEvaluation
+    public function getWorkspaceEvidence(): ?WorkspaceEvaluation
     {
         return $this->workspaceEvidence;
     }

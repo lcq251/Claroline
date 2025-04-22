@@ -29,7 +29,7 @@ body {
 }
 
 .app-loader {
-    z-index: $zindex-modal + 1;
+    z-index: $zindex-modal + 2;
     width: 100%;
     height: $loader-height;
     flex-shrink: 0;

@@ -30,7 +30,7 @@ const BadgeFormComponent = (props) =>
       exact: true,
       target: props.new ? props.path : route(props.badge)
     }}
-    sections={[
+    definition={[
       {
         title: trans('general'),
         primary: true,
@@ -76,11 +76,6 @@ const BadgeFormComponent = (props) =>
             name: 'tags',
             label: trans('tags'),
             type: 'tag'
-          }, {
-            name: 'workspace',
-            type: 'workspace',
-            label: trans('workspace'),
-            displayed: 'workspace' !== props.currentContext.type
           }
         ]
       }, {
@@ -137,11 +132,11 @@ const BadgeFormComponent = (props) =>
         icon: 'fa fa-fw fa-certificate',
         title: trans('award_rules', {}, 'badge'),
         fields: [
-          {
+          /*{
             name: 'criteria',
             label: trans('criteria', {}, 'badge'),
             type: 'html'
-          }, {
+          }, */{
             name: 'issuingPeer',
             type: 'boolean',
             label: trans('enable_manual_issuing', {}, 'badge')
@@ -167,13 +162,12 @@ const BadgeFormComponent = (props) =>
               {
                 name: 'rules',
                 label: trans('rules', {}, 'badge'),
-                type: 'collection',
+                type: 'badge-rules',
                 displayed: isAutoIssuing,
                 required: true,
                 options: {
-                  type: 'rule',
-                  placeholder: trans('no_rule', {}, 'badge'),
-                  button: trans('add_rule', {}, 'badge')
+                  contextType: props.contextType,
+                  contextId: props.contextId
                 }
               }
             ]
@@ -186,7 +180,6 @@ const BadgeFormComponent = (props) =>
 BadgeFormComponent.propTypes = {
   path: T.string.isRequired,
   name: T.string.isRequired,
-  currentContext: T.object.isRequired,
   new: T.bool.isRequired,
   badge: T.shape(
     BadgeTypes.propTypes
@@ -197,7 +190,8 @@ BadgeFormComponent.propTypes = {
 const BadgeForm = connect(
   (state, ownProps) => ({
     path: toolSelectors.path(state),
-    currentContext: toolSelectors.context(state),
+    contextType: toolSelectors.contextType(state),
+    contextId: toolSelectors.contextId(state),
     new: formSelect.isNew(formSelect.form(state, ownProps.name)),
     badge: formSelect.data(formSelect.form(state, ownProps.name))
   }),

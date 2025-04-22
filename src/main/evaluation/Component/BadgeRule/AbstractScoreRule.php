@@ -3,7 +3,7 @@
 namespace Claroline\EvaluationBundle\Component\BadgeRule;
 
 use Claroline\EvaluationBundle\Entity\UserEvaluation\AbstractUserEvaluation;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 
 abstract class AbstractScoreRule extends AbstractEvaluationRule
 {
@@ -19,6 +19,13 @@ abstract class AbstractScoreRule extends AbstractEvaluationRule
             $scoreProgress = ($evaluation->getScore() ?? 0) / $evaluation->getScoreMax() * 100;
         }
 
-        return $scoreProgress >= $data['value'];
+        $comparator = $data['comparator'] ?? 'gte';
+
+        return match ($comparator) {
+            'equal' => $scoreProgress === $data['value'],
+            'between' => $scoreProgress >= $data['value'] && $scoreProgress <= $data['value'],
+            'lte' => $scoreProgress <= $data['value'],
+            default => $scoreProgress >= $data['value'],
+        };
     }
 }

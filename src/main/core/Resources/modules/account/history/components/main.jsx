@@ -42,7 +42,7 @@ const AccountHistory = () => {
       <hr className="mb-5 mt-4" aria-hidden="true" />
 
       {me &&
-        <ContextHistory className="mb-5" size="sm" delete={true} />
+        <ContextHistory size="sm" delete={true} />
       }
 
       {!isEmpty(user) && !me &&

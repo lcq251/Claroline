@@ -19,12 +19,8 @@ class DataSourceRepository extends EntityRepository
     /**
      * Finds all available data sources in the platform.
      * It only grabs sources from enabled plugins.
-     *
-     * @param string $context
-     *
-     * @return array
      */
-    public function findAllAvailable(array $enabledPlugins, $context = null)
+    public function findAllAvailable(array $enabledPlugins, ?string $context = null): array
     {
         $query = $this->createQueryBuilder('ds')
             ->leftJoin('ds.plugin', 'p')
@@ -42,7 +38,7 @@ class DataSourceRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByTypes(array $types, $context = null)
+    public function findByTypes(array $types, ?string $context = null): array
     {
         // I filter it afterward because the table will never be huge
         return array_filter($this->findAllAvailable($context), function (DataSource $dataSource) use ($types) {

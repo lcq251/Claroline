@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *   - be declared as a symfony service and tagged with "claroline.component.tool".
  *   - implement the ToolInterface interface (or the AbstractTool class in most cases).
  */
-final class ToolProvider extends AbstractComponentProvider
+class ToolProvider extends AbstractComponentProvider
 {
     private OrderedToolRepository $orderedToolRepo;
 
@@ -57,8 +57,10 @@ final class ToolProvider extends AbstractComponentProvider
     /**
      * Get the list of all implemented tools for a context.
      * It contains the tools from all the enabled plugins.
+     *
+     * @return ToolInterface[]
      */
-    public function getAvailableTools(string $context, ContextSubjectInterface $contextSubject = null): array
+    public function getAvailableTools(string $context, ?ContextSubjectInterface $contextSubject = null): array
     {
         $available = [];
         foreach ($this->getRegisteredComponents() as $toolComponent) {
@@ -70,17 +72,15 @@ final class ToolProvider extends AbstractComponentProvider
         return $available;
     }
 
-    public function getEnabledTools(string $context, ContextSubjectInterface $contextSubject = null): array
+    /**
+     * @return OrderedTool[]
+     */
+    public function getEnabledTools(string $context, ?ContextSubjectInterface $contextSubject = null): array
     {
-        return $this->orderedToolRepo->findByContext($context, $contextSubject ? $contextSubject->getContextIdentifier() : null);
+        return $this->orderedToolRepo->findByContext($context, $contextSubject?->getContextIdentifier());
     }
 
-    public function isEnabled(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): bool
-    {
-        return !empty($this->orderedToolRepo->findOneByNameAndContext($toolName, $context, $contextSubject ? $contextSubject->getContextIdentifier() : null));
-    }
-
-    public function getTool(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): ?OrderedTool
+    public function getTool(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null): ?OrderedTool
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -93,16 +93,16 @@ final class ToolProvider extends AbstractComponentProvider
             throw new \RuntimeException(sprintf('Tool "%s" does not support the context "%s(%s)". Check %s::supportsSubject() for more info.', $toolName, $context, $contextSubject->getContextIdentifier(), get_class($toolHandler)));
         }
 
-        $orderedTool = $this->orderedToolRepo->findOneByNameAndContext($toolName, $context, $contextSubject ? $contextSubject->getContextIdentifier() : null);
+        $orderedTool = $this->orderedToolRepo->findOneByNameAndContext($toolName, $context, $contextSubject?->getContextIdentifier());
         if (empty($orderedTool)) {
             // tool is not enabled in the context
-            throw new \RuntimeException(sprintf('Tool "%s" is not enabled for the context "%s(%s)".', $toolName, $context, $contextSubject ? $contextSubject->getContextIdentifier() : ''));
+            throw new \RuntimeException(sprintf('Tool "%s" is not enabled for the context "%s(%s)".', $toolName, $context, $contextSubject?->getContextIdentifier() ?? ''));
         }
 
         return $orderedTool;
     }
 
-    public function getStatus(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): mixed
+    public function getStatus(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null): mixed
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -110,7 +110,7 @@ final class ToolProvider extends AbstractComponentProvider
         return $toolHandler->getStatus($context, $contextSubject);
     }
 
-    public function open(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): ?array
+    public function open(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null): ?array
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -128,7 +128,7 @@ final class ToolProvider extends AbstractComponentProvider
         return array_merge([], $openEvent->getResponse(), $openResponse);
     }
 
-    public function configure(string $toolName, string $context, ContextSubjectInterface $contextSubject = null, array $data = []): ?array
+    public function configure(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null, ?array $data = []): ?array
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -143,7 +143,7 @@ final class ToolProvider extends AbstractComponentProvider
         return array_merge([], $configureEvent->getResponse(), $configureResponse);
     }
 
-    public function search(string $toolName, string $context, ContextSubjectInterface $contextSubject = null, string $search = ''): array
+    public function search(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null, ?string $search = ''): array
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -151,7 +151,7 @@ final class ToolProvider extends AbstractComponentProvider
         return $toolHandler->search($context, $contextSubject, $search);
     }
 
-    public function import(string $toolName, string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null, array $data = [], array $entities = []): array
+    public function import(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null, ?FileBag $fileBag = null, ?array $data = [], ?array $entities = []): array
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
@@ -192,7 +192,7 @@ final class ToolProvider extends AbstractComponentProvider
         return array_merge([], $entities, $toolEntities ?? [], $importEvent->getCreatedEntities());
     }
 
-    public function export(string $toolName, string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): array
+    public function export(string $toolName, string $context, ?ContextSubjectInterface $contextSubject = null, ?FileBag $fileBag = null): array
     {
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);

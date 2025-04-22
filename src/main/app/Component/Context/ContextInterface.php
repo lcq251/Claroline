@@ -33,15 +33,4 @@ interface ContextInterface extends ComponentInterface
      * Get additional data required by the context (ex. current user evaluation).
      */
     public function getAdditionalData(?ContextSubjectInterface $contextSubject): array;
-
-    /**
-     * Gets the list of tools available for the context.
-     * It contains all the tools implemented by enabled plugins.
-     */
-    public function getAvailableTools(?ContextSubjectInterface $contextSubject): array;
-
-    /**
-     * Gets the list of tools enabled for the context.
-     */
-    public function getTools(?ContextSubjectInterface $contextSubject): array;
 }

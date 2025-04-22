@@ -2,5 +2,7 @@
   "grant": "Assign badges",
   "transfer_badges": "Transfer badges",
   "transfer": "Transfer",
-  "add_badge": "Add badge"
+  "add_badge": "Add badge",
+  "show_evidences": "Show evidences",
+  "grant_users": "Grant to users"
 }

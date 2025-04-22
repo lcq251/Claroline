@@ -7,7 +7,7 @@ use Claroline\EvaluationBundle\Component\BadgeRule\AbstractProgressionRule;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\ResourceEvaluationEvent;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ResourceProgressionRule extends AbstractProgressionRule
@@ -20,24 +20,29 @@ class ResourceProgressionRule extends AbstractProgressionRule
 
     public static function getName(): string
     {
-        return 'resource_completed_above';
+        return 'resource_progression';
+    }
+
+    public function supportsContext(string $context): bool
+    {
+        return true;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            EvaluationEvents::RESOURCE_EVALUATION => 'onResourceEvaluation',
+            EvaluationEvents::RESOURCE_EVALUATION => 'onEvaluation',
         ];
     }
 
-    public function onResourceEvaluation(ResourceEvaluationEvent $event): void
+    public function onEvaluation(ResourceEvaluationEvent $event): void
     {
         $evaluation = $event->getEvaluation();
 
         /** @var Rule[] $rules */
         $rules = $this->om->getRepository(Rule::class)->findBy([
             'action' => static::getName(),
-            'node' => $evaluation->getResourceNode(),
+            'subjectId' => $evaluation->getResourceNode()->getUuid(),
         ]);
 
         foreach ($rules as $rule) {
@@ -45,10 +50,14 @@ class ResourceProgressionRule extends AbstractProgressionRule
         }
     }
 
-    public function getQualifiedUsers(Rule $rule): iterable
+    public function getQualifiedUsers(Rule $rule, ?object $subject = null): iterable
     {
+        if (empty($subject)) {
+            return [];
+        }
+
         $evaluations = $this->om->getRepository(ResourceEvaluation::class)->findBy([
-            'resourceNode' => $rule->getResourceNode(),
+            'resourceNode' => $subject,
         ]);
 
         return $this->checkEvaluations($rule, $evaluations);

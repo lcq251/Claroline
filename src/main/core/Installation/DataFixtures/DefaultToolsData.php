@@ -11,7 +11,7 @@
 
 namespace Claroline\CoreBundle\Installation\DataFixtures;
 
-use Claroline\AppBundle\Component\Context\ContextProvider;
+use Claroline\AppBundle\Component\Tool\ToolProvider;
 use Claroline\CoreBundle\Component\Context\AdministrationContext;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\PublicContext;
@@ -23,11 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefaultToolsData extends AbstractFixture implements PostInstallInterface
 {
-    private ContextProvider $contextProvider;
+    private ToolProvider $toolProvider;
 
     public function setContainer(ContainerInterface $container = null): void
     {
-        $this->contextProvider = $container->get('claroline.provider.context');
+        $this->toolProvider = $container->get('claroline.provider.tool');
     }
 
     public function getOrder(): int
@@ -46,11 +46,9 @@ class DefaultToolsData extends AbstractFixture implements PostInstallInterface
 
     private function loadContextTools(ObjectManager $manager, string $contextName): void
     {
-        $context = $this->contextProvider->getContext($contextName);
-        $tools = $context->getAvailableTools(null);
-
+        $tools = $this->toolProvider->getAvailableTools($contextName);
         foreach ($tools as $order => $tool) {
-            $orderedTool = $this->createContextTool($context::getName(), $tool::getName(), $order);
+            $orderedTool = $this->createContextTool($contextName, $tool::getName(), $order);
             $manager->persist($orderedTool);
         }
     }

@@ -51,7 +51,7 @@ registry.add('ClarolineCommunityBundle', {
       'open'     : () => { return import(/* webpackChunkName: "community-action-group-open" */   '#/main/community/actions/group/open') },
       'edit'     : () => { return import(/* webpackChunkName: "community-action-group-edit" */   '#/main/community/actions/group/edit') },
       'delete'   : () => { return import(/* webpackChunkName: "community-action-group-delete" */ '#/main/community/actions/group/delete') },
-      'add-users': () => { return import(/* webpackChunkName: "core-action-group-add-users" */   '#/main/community/actions/group/add-users') },
+      'add-users': () => { return import(/* webpackChunkName: "community-action-group-add-users" */   '#/main/community/actions/group/add-users') },
     },
 
     role: {
@@ -59,8 +59,8 @@ registry.add('ClarolineCommunityBundle', {
       'edit'   : () => { return import(/* webpackChunkName: "community-action-role-edit" */    '#/main/community/actions/role/edit') },
       'delete' : () => { return import(/* webpackChunkName: "community-action-role-delete" */  '#/main/community/actions/role/delete') },
       'view-as': () => { return import(/* webpackChunkName: "community-action-role-view-as" */ '#/main/community/actions/role/view-as') },
-      'add-users': () => { return import(/* webpackChunkName: "core-action-role-add-users" */ '#/main/community/actions/role/add-users') },
-      'add-groups': () => { return import(/* webpackChunkName: "core-action-role-add-groups" */ '#/main/community/actions/role/add-groups') }
+      'add-users': () => { return import(/* webpackChunkName: "community-action-role-add-users" */ '#/main/community/actions/role/add-users') },
+      'add-groups': () => { return import(/* webpackChunkName: "community-action-role-add-groups" */ '#/main/community/actions/role/add-groups') }
     },
 
     organization: {
@@ -81,23 +81,29 @@ registry.add('ClarolineCommunityBundle', {
 
   data: {
     types: {
-      'group'        : () => { return import(/* webpackChunkName: "core-data-type-group" */        '#/main/community/data/types/group') },
-      'organization' : () => { return import(/* webpackChunkName: "core-data-type-organization" */ '#/main/community/data/types/organization') },
-      'role'         : () => { return import(/* webpackChunkName: "core-data-type-role" */         '#/main/community/data/types/role') },
-      'user'         : () => { return import(/* webpackChunkName: "core-data-type-user" */         '#/main/community/data/types/user') },
-      'team'         : () => { return import(/* webpackChunkName: "core-data-type-team" */         '#/main/community/data/types/team') }
+      'group'        : () => { return import(/* webpackChunkName: "community-data-type-group" */        '#/main/community/data/types/group') },
+      'organization' : () => { return import(/* webpackChunkName: "community-data-type-organization" */ '#/main/community/data/types/organization') },
+      'role'         : () => { return import(/* webpackChunkName: "community-data-type-role" */         '#/main/community/data/types/role') },
+      'user'         : () => { return import(/* webpackChunkName: "community-data-type-user" */         '#/main/community/data/types/user') },
+      'team'         : () => { return import(/* webpackChunkName: "community-data-type-team" */         '#/main/community/data/types/team') }
     },
     sources: {
-      'users': () => { return import(/* webpackChunkName: "core-data-source-users" */ '#/main/community/data/sources/users') },
-      'teams': () => { return import(/* webpackChunkName: "core-data-source-teams" */ '#/main/community/data/sources/teams') },
-      'my-teams': () => { return import(/* webpackChunkName: "core-data-source-my-teams" */ '#/main/community/data/sources/my-teams') },
-      'groups': () => { return import(/* webpackChunkName: "core-data-source-groups" */ '#/main/community/data/sources/groups') },
-      'my-groups': () => { return import(/* webpackChunkName: "core-data-source-my-groups" */ '#/main/community/data/sources/my-groups') },
-      'roles': () => { return import(/* webpackChunkName: "core-data-source-roles" */ '#/main/community/data/sources/roles') },
-      'my-roles': () => { return import(/* webpackChunkName: "core-data-source-my-roles" */ '#/main/community/data/sources/my-roles') },
-      'teams-members': () => { return import(/* webpackChunkName: "core-data-source-teams-members" */ '#/main/community/data/sources/teams-members') },
-      'organizations': () => { return import(/* webpackChunkName: "core-data-source-organizations" */ '#/main/community/data/sources/organizations') },
-      'my-organizations': () => { return import(/* webpackChunkName: "core-data-source-my-organizations" */ '#/main/community/data/sources/my-organizations') }
+      'users': () => { return import(/* webpackChunkName: "community-data-source-users" */ '#/main/community/data/sources/users') },
+      'teams': () => { return import(/* webpackChunkName: "community-data-source-teams" */ '#/main/community/data/sources/teams') },
+      'my-teams': () => { return import(/* webpackChunkName: "community-data-source-my-teams" */ '#/main/community/data/sources/my-teams') },
+      'groups': () => { return import(/* webpackChunkName: "community-data-source-groups" */ '#/main/community/data/sources/groups') },
+      'my-groups': () => { return import(/* webpackChunkName: "community-data-source-my-groups" */ '#/main/community/data/sources/my-groups') },
+      'roles': () => { return import(/* webpackChunkName: "community-data-source-roles" */ '#/main/community/data/sources/roles') },
+      'my-roles': () => { return import(/* webpackChunkName: "community-data-source-my-roles" */ '#/main/community/data/sources/my-roles') },
+      'teams-members': () => { return import(/* webpackChunkName: "community-data-source-teams-members" */ '#/main/community/data/sources/teams-members') },
+      'organizations': () => { return import(/* webpackChunkName: "community-data-source-organizations" */ '#/main/community/data/sources/organizations') },
+      'my-organizations': () => { return import(/* webpackChunkName: "community-data-source-my-organizations" */ '#/main/community/data/sources/my-organizations') }
     }
+  },
+
+  badge_rules: {
+    'in_group': () => { return import(/* webpackChunkName: "community-badge-in_group" */ '#/main/community/badge_rules/in_group') },
+    'in_role': () => { return import(/* webpackChunkName: "community-badge-in_role" */ '#/main/community/badge_rules/in_role') },
+    'in_team': () => { return import(/* webpackChunkName: "community-badge-in_team" */ '#/main/community/badge_rules/in_team') }
   }
 })

@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {hasPermission} from '#/main/app/security'
@@ -22,9 +23,9 @@ export default (assertions, refresher) => {
       message: transChoice('delete_assertion_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'badge'),
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
-        id: item.id,
-        name: item.name
+        thumbnail: get(item, 'user.picture'),
+        id: get(item, 'user.id'),
+        name: get(item, 'user.name')
       }))
     },
     request: {

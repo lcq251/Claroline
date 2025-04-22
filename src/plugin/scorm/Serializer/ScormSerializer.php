@@ -60,7 +60,6 @@ class ScormSerializer
 
     public function deserialize(array $data, Scorm $scorm, array $options = []): Scorm
     {
-        // $this->sipe('hashName', 'setHashName', $data, $scorm);
         $this->sipe('url', 'setUrl', $data, $scorm);
         $this->sipe('version', 'setVersion', $data, $scorm);
         $this->sipe('ratio', 'setRatio', $data, $scorm);

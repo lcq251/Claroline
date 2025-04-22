@@ -276,7 +276,6 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
             // rebuild wiki tree
             foreach ($pages as $page) {
                 if ($page['parent'] && !empty($pages[$page['parent']]) && $pages[$page['parent']]['entity']) {
-                    // $page['entity']->setParent($pages[$page['parent']]['entity']);
                     $this->om->getRepository(Chapter::class)->persistAsLastChildOf($page['entity'], $pages[$page['parent']]['entity']);
                 }
 

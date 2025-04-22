@@ -2,12 +2,13 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 
 import {BadgeList as BaseBadgeList}  from '#/plugin/open-badge/badge/components/list'
 import {selectors} from '#/plugin/open-badge/tools/badges/store'
 import {PageListSection} from '#/main/app/page'
+import {MODAL_BADGE_CREATION} from '#/plugin/open-badge/badge/modals/creation'
 
 const BadgeList = props =>
   <ToolPage
@@ -23,7 +24,11 @@ const BadgeList = props =>
         label: trans('add_badge', {}, 'actions'),
         target: `${props.path}/new`,
         displayed: props.canEdit,
-        primary: true
+        primary: true,
+        modal: [MODAL_BADGE_CREATION, {
+          contextType: props.contextType,
+          contextId: props.contextId
+        }]
       }}
     >
       <BaseBadgeList

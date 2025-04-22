@@ -11,6 +11,7 @@
 
 namespace Claroline\CommunityBundle\Repository;
 
+use Claroline\CommunityBundle\Entity\Team;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Role;
@@ -111,6 +112,28 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
         return $query->getResult();
     }
 
+    /**
+     * Returns the users of a team.
+     *
+     * @return User[]
+     */
+    public function findByTeam(Team $team): array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT u 
+            FROM Claroline\CoreBundle\Entity\User u
+            LEFT JOIN Claroline\CommunityBundle\Entity\Team AS t WITH (u MEMBER OF t.users)
+            WHERE t.id = :teamId
+              AND u.isRemoved = false
+              AND u.disabled = false
+              AND u.technical = false
+        ');
+
+        $query->setParameter('teamId', $team->getId());
+
+        return $query->getResult();
+    }
+
     public function findByOrganization(Organization $organization): array
     {
         $query = $this->getEntityManager()->createQuery('
@@ -207,7 +230,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
             LEFT JOIN claro_user_role AS ur ON (u.id = ur.user_id)
             WHERE (ur.role_id IN (:roles)) 
               AND u.is_removed = false 
-              AND u.disabled = false
+              AND u.is_disabled = false
               AND u.technical = false
         ';
 
@@ -219,7 +242,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
                 LEFT JOIN claro_group_role AS gr ON (ug.group_id = gr.group_id)
                 WHERE (gr.role_id IN (:roles)) 
                 AND u.is_removed = false 
-                AND u.disabled = false
+                AND u.is_disabled = false
                 AND u.technical = false
             )";
         }

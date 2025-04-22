@@ -19,8 +19,11 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
+use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleInterface;
+use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider;
 use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Claroline\OpenBadgeBundle\Entity\BadgeClass;
+use Claroline\OpenBadgeBundle\Entity\Evidence;
 use Claroline\OpenBadgeBundle\Manager\AssertionManager;
 use Claroline\OpenBadgeBundle\Manager\BadgeManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -40,6 +43,7 @@ class BadgeClassController extends AbstractCrudController
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly RuleProvider $ruleProvider,
         private readonly BadgeManager $manager,
         private readonly AssertionManager $assertionManager
     ) {
@@ -104,9 +108,15 @@ class BadgeClassController extends AbstractCrudController
                 'badge' => $badge,
                 'recipient' => $this->tokenStorage->getToken()?->getUser(),
             ]);
+            $evidences = $this->om->getRepository(Evidence::class)->findByUserAndBadge($this->tokenStorage->getToken()?->getUser(), $badge);
 
-            if ($assertion) {
-                return new JsonResponse($this->serializer->serialize($assertion));
+            if ($assertion || !empty($evidences)) {
+                return new JsonResponse([
+                    'assertion' => $assertion ? $this->serializer->serialize($assertion) : null,
+                    'evidences' => array_map(function (Evidence $evidence) {
+                        return $this->serializer->serialize($evidence, [SerializerInterface::SERIALIZE_MINIMAL]);
+                    }, $evidences),
+                ]);
             }
         }
 
@@ -169,6 +179,21 @@ class BadgeClassController extends AbstractCrudController
         $this->manager->grantAll($badge);
 
         return new JsonResponse();
+    }
+
+    /**
+     * Gets the list of available tools (all tools implemented, not only the enabled ones in the context).
+     */
+    #[Route(path: '/rules/{context}/{contextId}', name: 'available_rules', methods: ['GET'])]
+    public function getAvailableToolsAction(string $context, ?string $contextId = null): JsonResponse
+    {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $rules = $this->ruleProvider->getAvailableRules($context, $contextId);
+
+        return new JsonResponse(array_map(function (RuleInterface $rule) {
+            return $rule::getName();
+        }, $rules));
     }
 
     protected function getDefaultHiddenFilters(): array

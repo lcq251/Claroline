@@ -13,7 +13,7 @@ export const BADGE_LOAD_CURRENT_ASSERTION = 'BADGE_LOAD_CURRENT_ASSERTION'
 
 export const actions = {}
 
-actions.loadCurrentAssertion = makeActionCreator(BADGE_LOAD_CURRENT_ASSERTION, 'assertion')
+actions.loadCurrentAssertion = makeActionCreator(BADGE_LOAD_CURRENT_ASSERTION, 'assertion', 'evidences')
 
 actions.openBadge = (formName, id = null, workspace = null) => {
   if (id) {
@@ -23,8 +23,8 @@ actions.openBadge = (formName, id = null, workspace = null) => {
         url: ['apiv2_badge_get', {id: id}],
         before: (dispatch) => {
           dispatch(formActions.resetForm(formName, {}, false))
-          dispatch(actions.loadCurrentAssertion(null))
-          dispatch(listActions.invalidateData(selectors.STORE_NAME + '.badges.current.assertions'))
+          dispatch(actions.loadCurrentAssertion(null, []))
+          dispatch(listActions.invalidateData(selectors.FORM_NAME + '.assertions'))
         },
         success: (response, dispatch) => {
           dispatch(formActions.resetForm(formName, response, false))
@@ -40,6 +40,6 @@ actions.openAssertion = (id) => (dispatch) => dispatch({
   [API_REQUEST]: {
     silent: true,
     url: ['apiv2_badge_current_user', {badge: id}],
-    success: (response) => dispatch(actions.loadCurrentAssertion(response))
+    success: (response) => dispatch(actions.loadCurrentAssertion(response.assertion, response.evidences))
   }
 })

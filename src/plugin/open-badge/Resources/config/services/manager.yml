@@ -14,9 +14,3 @@ services:
             - '@Claroline\CoreBundle\Library\RoutingHelper'
             - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
             - '@translator'
-
-    Claroline\OpenBadgeBundle\Manager\RuleManager:
-        arguments:
-          - '@Claroline\AppBundle\Persistence\ObjectManager'
-          - '@messenger.default_bus'
-          - !tagged_iterator { tag: 'component.badge_rule', default_index_method: 'getType' }

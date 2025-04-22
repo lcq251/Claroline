@@ -22,7 +22,9 @@ services:
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
+            - '@Claroline\OpenBadgeBundle\Serializer\RuleSerializer'
 
     Claroline\OpenBadgeBundle\Serializer\RuleSerializer:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'

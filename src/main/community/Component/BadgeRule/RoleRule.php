@@ -11,7 +11,7 @@ use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent;
-use Claroline\OpenBadgeBundle\Entity\Rules\Rule;
+use Claroline\OpenBadgeBundle\Entity\Rule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -32,6 +32,11 @@ class RoleRule extends RuleComponent
         return 'in_role';
     }
 
+    public function supportsContext(string $context): bool
+    {
+        return true;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -41,9 +46,13 @@ class RoleRule extends RuleComponent
         ];
     }
 
-    public function getQualifiedUsers(Rule $rule): iterable
+    public function getQualifiedUsers(Rule $rule, ?object $subject = null): iterable
     {
-        return $this->userRepo->findByRoles([$rule->getRole()]);
+        if (empty($subject)) {
+            return [];
+        }
+
+        return $this->userRepo->findByRoles([$subject]);
     }
 
     public function getEvidenceMessage(): string
@@ -75,7 +84,7 @@ class RoleRule extends RuleComponent
 
             foreach ($roles as $role) {
                 /** @var Rule[] $rules */
-                $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
+                $rules = $this->om->getRepository(Rule::class)->findBy(['subjectId' => $role->getUuid()]);
 
                 foreach ($rules as $rule) {
                     $this->grant($rule, $user);
@@ -90,7 +99,7 @@ class RoleRule extends RuleComponent
             $role = $event->getObject();
 
             /** @var Rule[] $rules */
-            $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
+            $rules = $this->om->getRepository(Rule::class)->findBy(['subjectId' => $role->getUuid()]);
             if (!empty($rules)) {
                 $users = [];
                 if ($event->getValue() instanceof User) {
@@ -130,7 +139,7 @@ class RoleRule extends RuleComponent
 
                 foreach ($roles as $role) {
                     /** @var Rule[] $rules */
-                    $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
+                    $rules = $this->om->getRepository(Rule::class)->findBy(['subjectId' => $role->getUuid()]);
                     foreach ($rules as $rule) {
                         $this->grant($rule, $user);
                     }
@@ -147,7 +156,7 @@ class RoleRule extends RuleComponent
                 }
 
                 /** @var Rule[] $rules */
-                $rules = $this->om->getRepository(Rule::class)->findBy(['role' => $role]);
+                $rules = $this->om->getRepository(Rule::class)->findBy(['subjectId' => $role->getUuid()]);
                 foreach ($rules as $rule) {
                     foreach ($users as $user) {
                         $this->grant($rule, $user);
