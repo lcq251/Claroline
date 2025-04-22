@@ -55,6 +55,9 @@ class BadgeClass implements CrudEntityInterface
     #[ORM\Column(nullable: true)]
     private ?string $image = null;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $criteria = null;
 

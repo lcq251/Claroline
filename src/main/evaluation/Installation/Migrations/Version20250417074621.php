@@ -1,6 +1,6 @@
 <?php
 
-namespace Claroline\CursusBundle\Installation\Migrations;
+namespace Claroline\EvaluationBundle\Installation\Migrations;
 
 use Claroline\InstallationBundle\Migrations\Helper\ConditionalMigrationTrait;
 use Doctrine\DBAL\Schema\Schema;

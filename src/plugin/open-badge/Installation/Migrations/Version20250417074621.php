@@ -41,21 +41,21 @@ final class Version20250417074621 extends AbstractMigration
         $this->addSql('
             UPDATE claro__open_badge_rule AS r 
             LEFT JOIN claro_workspace AS w ON (r.workspace_id = w.id)
-            SET r.subjectId = w.uuid, r.subjectClass = "Claroline\\CoreBundle\\Entity\\Workspace\\Workspace" 
+            SET r.subjectId = w.uuid, r.subjectClass = "Claroline\\\CoreBundle\\\Entity\\\Workspace\\\Workspace" 
             WHERE r.workspace_id IS NOT NULL
               AND w.id IS NOT NULL
         ');
         $this->addSql('
             UPDATE claro__open_badge_rule AS br 
             LEFT JOIN claro_role AS r ON (br.role_id = r.id)
-            SET br.subjectId = r.uuid, br.subjectClass="Claroline\\CoreBundle\\Entity\\Role" 
+            SET br.subjectId = r.uuid, br.subjectClass="Claroline\\\CoreBundle\\\Entity\\\Role" 
             WHERE br.role_id IS NOT NULL
               AND r.id IS NOT NULL
         ');
         $this->addSql('
             UPDATE claro__open_badge_rule AS r 
             LEFT JOIN claro_group AS g ON (r.group_id = g.id)
-            SET r.subjectId = g.uuid, r.subjectClass="Claroline\\CoreBundle\\Entity\\Group" 
+            SET r.subjectId = g.uuid, r.subjectClass="Claroline\\\CoreBundle\\\Entity\\\Group" 
             WHERE r.group_id IS NOT NULL
               AND g.id IS NOT NULL
         ');
