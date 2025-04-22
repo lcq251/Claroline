@@ -32,20 +32,18 @@ class Recorder
 
     /**
      * Registers a plugin.
-     *
-     * @return Plugin
      */
-    public function register(PluginBundleInterface $plugin)
+    public function register(PluginBundleInterface $plugin): void
     {
         $this->validate($plugin, false);
 
-        return $this->dbWriter->insert($plugin, $this->validator->getPluginConfiguration());
+        $this->dbWriter->insert($plugin, $this->validator->getPluginConfiguration());
     }
 
     /**
      * Update configuration for a plugin.
      */
-    public function update(PluginBundleInterface $plugin)
+    public function update(PluginBundleInterface $plugin): void
     {
         $this->validate($plugin, true);
 
@@ -55,7 +53,7 @@ class Recorder
     /**
      * Unregisters a plugin.
      */
-    public function unregister(PluginBundleInterface $plugin)
+    public function unregister(PluginBundleInterface $plugin): void
     {
         $pluginFqcn = get_class($plugin);
         $this->dbWriter->delete($pluginFqcn);
@@ -63,15 +61,13 @@ class Recorder
 
     /**
      * Checks if a plugin is registered.
-     *
-     * @return bool
      */
-    public function isRegistered(PluginBundleInterface $plugin)
+    public function isRegistered(PluginBundleInterface $plugin): bool
     {
         return $this->dbWriter->isSaved($plugin);
     }
 
-    public function validate(PluginBundleInterface $plugin, $update = false)
+    public function validate(PluginBundleInterface $plugin, ?bool $update = false): void
     {
         if ($update) {
             $this->validator->activeUpdateMode();

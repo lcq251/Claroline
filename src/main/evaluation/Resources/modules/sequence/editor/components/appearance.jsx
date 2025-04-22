@@ -77,7 +77,7 @@ const SequenceEditorAppearance = () => {
           ]
         }, */{
           title: trans('Bouton "Quitter"'),
-          description: trans('Personnalizez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
+          description: trans('Personnalisez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
           primary: true,
           enabled: (sequence) => !!get(sequence, 'end.back.type') || get(sequence, 'end.back._enabled'),
           onToggle: (enabled) => {

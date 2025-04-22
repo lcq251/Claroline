@@ -39,7 +39,7 @@ abstract class RepositoryTestCase extends WebTestCase
     public static $client;
     private static $references;
     private static $time;
-    private static $persister;
+    private static Persister $persister;
 
     public static function setUpBeforeClass(): void
     {
@@ -48,15 +48,14 @@ abstract class RepositoryTestCase extends WebTestCase
         self::$om = self::$client->getContainer()->get('Claroline\AppBundle\Persistence\ObjectManager');
         self::$persister = self::$client->getContainer()->get('claroline.library.testing.persister');
         self::$references = [];
-        self::$time = new \DateTime();
         self::$om->beginTransaction();
         self::disableTimestampableListener();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        // we don't want to tear down between each tests because we lose the container otherwise
-        // and can't shut down everything properly afterwards
+        // we don't want to tear down between each test because we lose the container otherwise
+        // and can't shut down everything properly afterward
     }
 
     public static function tearDownAfterClass(): void
@@ -81,7 +80,7 @@ abstract class RepositoryTestCase extends WebTestCase
      *
      * @throws \InvalidArgumentException if the reference is not present in the collection
      */
-    protected static function get($reference)
+    protected static function get(string $reference): object
     {
         if (isset(self::$references[$reference])) {
             return self::$references[$reference];
@@ -90,35 +89,7 @@ abstract class RepositoryTestCase extends WebTestCase
         throw new \InvalidArgumentException("Unknown fixture reference '{$reference}'");
     }
 
-    /**
-     * Returns the internal time of the test case. All the fixture methods dealing
-     * with dates refer to that time. Default time is the set up time but it may be
-     * changed with calls to the "sleep" method.
-     *
-     * @param string $format
-     *
-     * @return string|DateTime
-     */
-    protected static function getTime($format = 'Y-m-d H:i:s')
-    {
-        if ($format) {
-            return self::$time->format($format);
-        }
-
-        return self::$time;
-    }
-
-    /**
-     * Increases the test case internal time by a number of seconds.
-     *
-     * @param int $seconds
-     */
-    protected static function sleep($seconds): void
-    {
-        self::$time->add(new \DateInterval("PT{$seconds}S"));
-    }
-
-    protected static function createUser($name, array $roles = [], Workspace $personalWorkspace = null): void
+    protected static function createUser(string $name, array $roles = [], Workspace $personalWorkspace = null): void
     {
         $user = self::$persister->user($name);
 
@@ -178,7 +149,7 @@ abstract class RepositoryTestCase extends WebTestCase
         self::create($name, $workspace);
     }
 
-    protected static function createDisplayableWorkspace($name, $selfRegistration): void
+    protected static function createDisplayableWorkspace(string $name, bool $selfRegistration): void
     {
         $workspace = new Workspace();
         $workspace->setName($name);
@@ -189,7 +160,7 @@ abstract class RepositoryTestCase extends WebTestCase
         self::create($name, $workspace);
     }
 
-    protected static function createResourceType($name, $class, $isExportable = true, Plugin $plugin = null): void
+    protected static function createResourceType(string $name, string $class, ?bool $isExportable = true, Plugin $plugin = null): void
     {
         $type = new ResourceType();
         $type->setName($name);
@@ -204,7 +175,7 @@ abstract class RepositoryTestCase extends WebTestCase
     }
 
     protected static function createDirectory(
-        $name,
+        string $name,
         ResourceType $type,
         User $creator,
         Workspace $workspace,
@@ -226,7 +197,7 @@ abstract class RepositoryTestCase extends WebTestCase
         self::create($name, $directory);
     }
 
-    protected static function createFile($name, ResourceType $type, User $creator, Directory $parent): void
+    protected static function createFile(string $name, ResourceType $type, User $creator, Directory $parent): void
     {
         $file = self::prepareResource(
             new File(),
@@ -299,15 +270,15 @@ abstract class RepositoryTestCase extends WebTestCase
         ResourceType $type,
         User $creator,
         Workspace $workspace,
-        $name,
-        $mimeType,
-        $parent = null
+        string $name,
+        string $mimeType,
+        ?ResourceNode $parent = null
     ): AbstractResource {
         $node = new ResourceNode();
         $node->setResourceType($type);
         $node->setCreator($creator);
         $node->setWorkspace($workspace);
-        $node->setCreationDate(self::$time);
+        $node->setCreationDate(new \DateTime());
         $node->setName($name);
         $node->setCode($name);
         $node->setMimeType($mimeType);
@@ -348,7 +319,7 @@ abstract class RepositoryTestCase extends WebTestCase
      *
      * @throws \InvalidArgumentException if the reference is already set
      */
-    private static function set($reference, $entity): void
+    private static function set(string $reference, object $entity): void
     {
         if (isset(self::$references[$reference])) {
             throw new \InvalidArgumentException("Fixture reference '{$reference}' is already set");
@@ -363,7 +334,7 @@ abstract class RepositoryTestCase extends WebTestCase
      * @param string $reference
      * @param object $entity
      */
-    private static function create($reference, $entity): void
+    private static function create(string $reference, object $entity): void
     {
         self::$om->persist($entity);
         self::$om->flush();

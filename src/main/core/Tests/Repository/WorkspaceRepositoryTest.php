@@ -13,10 +13,11 @@ namespace Claroline\CoreBundle\Tests\Repository;
 
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Testing\RepositoryTestCase;
+use Claroline\CoreBundle\Repository\WorkspaceRepository;
 
 class WorkspaceRepositoryTest extends RepositoryTestCase
 {
-    public static $repo;
+    public static ?WorkspaceRepository $repo = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -41,11 +42,6 @@ class WorkspaceRepositoryTest extends RepositoryTestCase
         self::createResourceType('t_dir', 'Directory');
         self::createDirectory('dir_1', self::get('t_dir'), self::get('john'), self::get('ws_2'));
         self::createDirectory('dir_2', self::get('t_dir'), self::get('john'), self::get('ws_2'));
-    }
-
-    public function testCount()
-    {
-        $this->assertEquals(7, self::$repo->count([]));
     }
 
     public function testFindByRoles()

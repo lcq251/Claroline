@@ -15,6 +15,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\History;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -36,22 +37,22 @@ class TransactionalTestClient extends KernelBrowser
         $this->connection = $this->getContainer()->get('doctrine.dbal.default_connection');
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->connection->beginTransaction();
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         $this->connection->rollback();
     }
 
-    public function getConnection()
+    public function getConnection(): Connection
     {
         return $this->connection;
     }
 
-    public function shutdown()
+    public function shutdown(): void
     {
         if ($this->connection->isTransactionActive()) {
             $this->rollback();
@@ -60,14 +61,14 @@ class TransactionalTestClient extends KernelBrowser
         $this->connection->close();
     }
 
-    protected function doRequest($request)
+    protected function doRequest($request): Response
     {
         $this->injectConnection();
 
         return $this->kernel->handle($request);
     }
 
-    protected function injectConnection()
+    protected function injectConnection(): void
     {
         $this->getContainer()->set('doctrine.dbal.default_connection', $this->connection);
     }

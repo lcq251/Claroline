@@ -1,5 +1,0 @@
-roles:
-    - role:
-        name: 'WEIRDONE'
-        translation: 'totottoo'
-        is_base_role: true

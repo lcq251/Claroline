@@ -10,7 +10,6 @@ services:
 
     Claroline\InstallationBundle\Manager\PluginManager:
         arguments:
-            - '@claroline.plugin.validator'
             - '@Claroline\CoreBundle\Library\Installation\Plugin\Recorder'
             - '@Claroline\InstallationBundle\Manager\BundleManager'
             - '@Claroline\AppBundle\Persistence\ObjectManager'

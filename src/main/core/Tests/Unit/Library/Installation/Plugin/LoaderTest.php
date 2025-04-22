@@ -19,21 +19,21 @@ class LoaderTest extends TestCase
 {
     use StubPluginTrait;
 
-    private $loader;
+    private Loader $loader;
 
     public function setUp(): void
     {
         $this->loader = new Loader();
     }
 
-    public function testLoaderCanReturnAnInstanceOfALoadablePluginBundleClass()
+    public function testLoaderCanReturnAnInstanceOfALoadablePluginBundleClass(): void
     {
         $path = $this->getPluginClassPath('Valid\Simple\ValidSimple');
         $plugin = $this->loader->load('Valid\Simple\ValidSimple', $path);
         $this->assertInstanceOf('Valid\Simple\ValidSimple', $plugin);
     }
 
-    public function testLoaderThrowsAnExceptionIfExpectedBundleClassFileDoesntExist()
+    public function testLoaderThrowsAnExceptionIfExpectedBundleClassFileDoesntExist(): void
     {
         try {
             $path = $this->getPluginClassPath('Invalid\NoBundleClassFile\InvalidNoBundleClassFile');
@@ -47,7 +47,7 @@ class LoaderTest extends TestCase
     /**
      * @dataProvider nonExistentBundleClassProvider
      */
-    public function testLoaderThrowsAnExceptionIfExpectedBundleClassDoesntExist($fqcn)
+    public function testLoaderThrowsAnExceptionIfExpectedBundleClassDoesntExist($fqcn): void
     {
         try {
             $path = $this->getPluginClassPath($fqcn);
@@ -61,7 +61,7 @@ class LoaderTest extends TestCase
     /**
      * @dataProvider nonInstantiableBundleClassProvider
      */
-    public function testLoaderThrowsAnExceptionIfBundleClassIsNotInstantiable($fqcn)
+    public function testLoaderThrowsAnExceptionIfBundleClassIsNotInstantiable($fqcn): void
     {
         try {
             $path = $this->getPluginClassPath($fqcn);
@@ -75,7 +75,7 @@ class LoaderTest extends TestCase
     /**
      * @dataProvider unexpectedBundleTypeProvider
      */
-    public function testLoaderThrowsAnExceptionIfBundleClassDoesntExtendPluginBundle($fqcn)
+    public function testLoaderThrowsAnExceptionIfBundleClassDoesntExtendPluginBundle($fqcn): void
     {
         try {
             $path = $this->getPluginClassPath($fqcn);
@@ -86,7 +86,7 @@ class LoaderTest extends TestCase
         }
     }
 
-    public function nonExistentBundleClassProvider()
+    public function nonExistentBundleClassProvider(): array
     {
         return [
             ['Invalid\UnloadableBundleClass1\InvalidUnloadableBundleClass1'],
@@ -96,7 +96,7 @@ class LoaderTest extends TestCase
         ];
     }
 
-    public function nonInstantiableBundleClassProvider()
+    public function nonInstantiableBundleClassProvider(): array
     {
         return [
             ['Invalid\UnloadableBundleClass5\InvalidUnloadableBundleClass5'],
@@ -104,7 +104,7 @@ class LoaderTest extends TestCase
         ];
     }
 
-    public function unexpectedBundleTypeProvider()
+    public function unexpectedBundleTypeProvider(): array
     {
         return [
             ['Invalid\UnexpectedBundleType\InvalidUnexpectedBundleType'],

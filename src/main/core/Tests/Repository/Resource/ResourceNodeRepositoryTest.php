@@ -17,10 +17,8 @@ use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
 
 class ResourceNodeRepositoryTest extends RepositoryTestCase
 {
-    /** @var ResourceNodeRepository */
-    private static $repo;
-    private static $time;
-    private static $roleManagerName;
+    private static ?ResourceNodeRepository $repo = null;
+    private static ?string $roleManagerName = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -58,9 +56,6 @@ class ResourceNodeRepositoryTest extends RepositoryTestCase
          */
         self::createDirectory('dir_1', self::get('t_dir'), self::get('john'), self::get('ws_1'));
         self::createDirectory('dir_2', self::get('t_dir'), self::get('john'), self::get('ws_1'), self::get('dir_1'));
-        self::sleep(1); // dates involved
-        self::$time = self::getTime();
-        self::sleep(1);
         self::createDirectory('dir_3', self::get('t_dir'), self::get('john'), self::get('ws_1'), self::get('dir_1'));
         self::createDirectory('dir_4', self::get('t_dir'), self::get('john'), self::get('ws_1'), self::get('dir_3'));
         self::createDirectory('dir_5', self::get('t_dir'), self::get('jane'), self::get('ws_2'));
@@ -73,13 +68,13 @@ class ResourceNodeRepositoryTest extends RepositoryTestCase
         // add the role manager to~
     }
 
-    public function testFindWorkspaceRoot()
+    public function testFindWorkspaceRoot(): void
     {
         $root = self::$repo->findWorkspaceRoot(self::get('ws_1'));
         $this->assertEquals(self::get('dir_1')->getResourceNode(), $root);
     }
 
-    public function testFindDescendants()
+    public function testFindDescendants(): void
     {
         $this->assertEquals(0, count(self::$repo->findDescendants(self::get('dir_2')->getResourceNode())));
         $this->assertEquals(4, count(self::$repo->findDescendants(self::get('dir_1')->getResourceNode())));

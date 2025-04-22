@@ -11,12 +11,13 @@
 
 namespace Claroline\CommunityBundle\Tests\Repository;
 
+use Claroline\CommunityBundle\Repository\RoleRepository;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Library\Testing\RepositoryTestCase;
 
 class RoleRepositoryTest extends RepositoryTestCase
 {
-    private static $repo;
+    private static ?RoleRepository $repo = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -36,20 +37,15 @@ class RoleRepositoryTest extends RepositoryTestCase
         self::createGroup('group_1', [], [self::get('ROLE_WS_CUSTOM_2')]);
     }
 
-    public function testFindCollaboratorRole()
+    public function testFindCollaboratorRole(): void
     {
         $role = self::$repo->findCollaboratorRole(self::get('ws_1'));
         $this->assertEquals('ROLE_WS_COLLABORATOR_'.self::get('ws_1')->getUuid(), $role->getName());
     }
 
-    public function testFindManagerRole()
+    public function testFindManagerRole(): void
     {
         $role = self::$repo->findManagerRole(self::get('ws_1'));
         $this->assertEquals('ROLE_WS_MANAGER_'.self::get('ws_1')->getUuid(), $role->getName());
-    }
-
-    public function testFindByWorkspaceCodeTag()
-    {
-        $this->markTestSkipped('This method must be tested');
     }
 }

@@ -11,12 +11,13 @@
 
 namespace Claroline\CommunityBundle\Tests\Repository;
 
+use Claroline\CommunityBundle\Repository\GroupRepository;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Library\Testing\RepositoryTestCase;
 
 class GroupRepositoryTest extends RepositoryTestCase
 {
-    private static $repo;
+    private static ?GroupRepository $repo = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -30,7 +31,7 @@ class GroupRepositoryTest extends RepositoryTestCase
         self::createGroup('group_4');
     }
 
-    public function testFindByWorkspace()
+    public function testFindByWorkspace(): void
     {
         $groups = self::$repo->findByWorkspace(self::get('ws_1'));
         $this->assertEquals(2, count($groups));

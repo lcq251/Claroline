@@ -11,11 +11,7 @@
 
 namespace Claroline\CoreBundle\Library\Testing;
 
-use Claroline\CoreBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class TransactionalTestCase extends WebTestCase
 {
@@ -54,33 +50,5 @@ abstract class TransactionalTestCase extends WebTestCase
         }
 
         parent::tearDown();
-    }
-
-    protected function logIn(User $user, $firewall = 'main')
-    {
-        $this->logClient($user, $this->client, $firewall);
-    }
-
-    private function logClient(User $user, KernelBrowser $client, $firewall = 'main')
-    {
-        $tokenStorage = $client->getContainer()->get('security.token_storage');
-        $token = new UsernamePasswordToken($user, $user->getPlainPassword(), $firewall, $user->getRoles());
-        $tokenStorage->setToken($token);
-
-        //now we generate the cookie !
-        //@see http://symfony.com/doc/current/cookbook/testing/simulating_authentication.html
-        $session = $client->getContainer()->get('session');
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $client->getCookieJar()->set($cookie);
-
-        return $client;
-    }
-
-    public function setPlatformOption($parameter, $value)
-    {
-        $ch = $this->client->getContainer()->get('Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler');
-        $ch->setParameter($parameter, $value);
     }
 }

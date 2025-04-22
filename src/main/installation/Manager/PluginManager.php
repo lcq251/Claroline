@@ -13,7 +13,6 @@ namespace Claroline\InstallationBundle\Manager;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Library\Installation\Plugin\Recorder;
-use Claroline\CoreBundle\Library\Installation\Plugin\Validator;
 use Claroline\CoreBundle\Manager\PluginManager as BasePluginManager;
 use Claroline\CoreBundle\Manager\VersionManager;
 use Claroline\KernelBundle\Bundle\PluginBundleInterface;
@@ -28,7 +27,6 @@ class PluginManager implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly Validator $validator,
         private readonly Recorder $recorder,
         private readonly BundleManager $baseInstaller,
         private readonly ObjectManager $om,

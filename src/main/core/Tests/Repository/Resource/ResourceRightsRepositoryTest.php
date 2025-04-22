@@ -13,10 +13,11 @@ namespace Claroline\CoreBundle\Tests\Repository\Resource;
 
 use Claroline\CoreBundle\Entity\Resource\ResourceRights;
 use Claroline\CoreBundle\Library\Testing\RepositoryTestCase;
+use Claroline\CoreBundle\Repository\Resource\ResourceRightsRepository;
 
 class ResourceRightsRepositoryTest extends RepositoryTestCase
 {
-    private static $repo;
+    private static ?ResourceRightsRepository $repo = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -36,7 +37,7 @@ class ResourceRightsRepositoryTest extends RepositoryTestCase
         self::createResourceRights(self::get('ROLE_2'), self::get('dir_1'), 33, [self::get('t_dir')]);
     }
 
-    public function testFindMaximumRights()
+    public function testFindMaximumRights(): void
     {
         $mask = self::$repo->findMaximumRights(['ROLE_1'], self::get('dir_1')->getResourceNode());
         $this->assertTrue(0 !== (1 & $mask));
@@ -47,7 +48,7 @@ class ResourceRightsRepositoryTest extends RepositoryTestCase
         $this->assertTrue(0 !== (2 & $mask));
     }
 
-    public function testFindCreationRights()
+    public function testFindCreationRights(): void
     {
         $creationRights = self::$repo->findCreationRights(['ROLE_1'], self::get('dir_1')->getResourceNode());
         $this->assertEquals(0, count($creationRights));

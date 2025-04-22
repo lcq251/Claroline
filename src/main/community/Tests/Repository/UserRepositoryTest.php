@@ -95,11 +95,6 @@ class UserRepositoryTest extends RepositoryTestCase
         $this->assertEquals(2, count($users));
     }
 
-    public function testFindUsersOwnersOfMostWorkspaces(): void
-    {
-        $this->markTestSkipped('A slight modification of workspace fixture is needed to test this method');
-    }
-
     public function testFindByRoles(): void
     {
         $users = self::$repo->findByRoles([self::get('ROLE_1')]);

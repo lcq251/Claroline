@@ -14,13 +14,10 @@ namespace Claroline\CoreBundle\Tests\Unit\Library\Installation\Plugin;
 use Claroline\CoreBundle\Library\Installation\Plugin\ValidationError;
 use Claroline\CoreBundle\Library\Installation\Plugin\Validator;
 use Claroline\CoreBundle\Library\Testing\MockeryTestCase;
-use Claroline\CoreBundle\Library\Testing\StubPluginTrait;
 
 class ValidatorTest extends MockeryTestCase
 {
-    use StubPluginTrait;
-
-    public function testValidatorAcceptsOnlyInstancesOfCheckerInterface()
+    public function testValidatorAcceptsOnlyInstancesOfCheckerInterface(): void
     {
         $this->expectException('InvalidArgumentException');
         $checkers = [
@@ -31,7 +28,7 @@ class ValidatorTest extends MockeryTestCase
         new Validator($checkers);
     }
 
-    public function testValidatorCollectsValidationErrorsFromCheckers()
+    public function testValidatorCollectsValidationErrorsFromCheckers(): void
     {
         $firstChecker = $this->mock('Claroline\CoreBundle\Library\Installation\Plugin\CheckerInterface');
         $secondChecker = $this->mock('Claroline\CoreBundle\Library\Installation\Plugin\CheckerInterface');

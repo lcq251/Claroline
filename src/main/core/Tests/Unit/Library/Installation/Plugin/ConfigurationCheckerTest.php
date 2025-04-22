@@ -25,7 +25,7 @@ class ConfigurationCheckerTest extends MockeryTestCase
 {
     use StubPluginTrait;
 
-    private $checker;
+    private ConfigurationChecker $checker;
 
     protected function setUp(): void
     {

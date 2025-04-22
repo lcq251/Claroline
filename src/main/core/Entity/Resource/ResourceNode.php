@@ -100,7 +100,7 @@ class ResourceNode implements CrudEntityInterface
     /**
      * @var Collection<int, ResourceNode>
      */
-    #[ORM\OneToMany(targetEntity: ResourceNode::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: ResourceNode::class, mappedBy: 'parent', fetch: 'EXTRA_LAZY')]
     private Collection $children;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
