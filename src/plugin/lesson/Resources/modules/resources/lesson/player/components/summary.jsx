@@ -33,12 +33,14 @@ const PlayerSummary = (props) => {
           label={trans('resource_overview', {}, 'resource')}
           target={`${props.path}/`}
           exact={true}
+          onClick={props.autoClose}
         />
       }
 
       <Tree
         className="mx-n1"
         items={props.summary}
+        onClick={props.autoClose}
       />
 
       {canAdd &&
@@ -48,6 +50,7 @@ const PlayerSummary = (props) => {
           icon="fa fa-fw fa-plus"
           label={trans('add_page', {}, 'actions')}
           target={`${props.path}/new`}
+          onClick={props.autoClose}
         />
       }
     </div>
@@ -58,7 +61,9 @@ PlayerSummary.propTypes = {
   path: T.string.isRequired,
   title: T.string.isRequired,
   summary: T.array,
-  showOverview: T.bool.isRequired
+  showOverview: T.bool.isRequired,
+  // from aside
+  autoClose: T.func
 }
 
 export {

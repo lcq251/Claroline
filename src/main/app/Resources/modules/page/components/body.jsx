@@ -1,4 +1,4 @@
-import React, {useId, useState} from 'react'
+import React, {cloneElement, useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Poster} from '#/main/app/components/poster'
-import {Collapse} from 'react-bootstrap'
+import {CloseButton, Collapse} from 'react-bootstrap'
 import {constants, useSize} from '#/main/app/dom/size'
 
 const PageAside = ({
@@ -15,28 +15,56 @@ const PageAside = ({
   show = true
 }) => {
   const asideId = useId()
+  const toggleId = useId()
   const size = useSize()
 
   const [opened, setOpened] = useState(show && ![constants.SIZE_XS, constants.SIZE_SM, constants.SIZE_MD].includes(size))
 
   return (
     <div className="app-page-aside" role="presentation">
-      {closable &&
+      {(closable && !opened) &&
         <Button
-          className="position-absolute top-0 start-100 z-2 mt-4 p-3 bg-body-tertiary rounded-end-3 focus-ring"
+          id={toggleId}
+          className="position-absolute top-0 start-100 z-2 m-3 p-2 btn btn-text-body border-0 bg-body focus-ring lh-1 rounded-2 fs-sm text-uppercase"
           type={CALLBACK_BUTTON}
-          icon="fa fa-fw fa-list"
-          label={trans(opened ? 'hide-menu':'show-menu', {}, 'actions')}
-          tooltip={opened ? 'left' : 'right'}
-          callback={() => setOpened(!opened)}
+          icon="fa fa-list fs-base"
+          label={trans('summary')}
+          callback={() => {
+            setOpened(!opened)
+            setTimeout(() => {
+              document.getElementById(toggleId).focus()
+            }, 0)
+          }}
           aria-expanded={opened}
           aria-controls={asideId}
         />
       }
 
       <Collapse in={opened} dimension="width">
-        <div id={asideId} className="app-page-aside-content h-100 bg-body-tertiary p-4 scroller-y scroller-thin" role="presentation">
-          {children}
+        <div id={asideId} className="app-page-aside-content position-relative h-100 bg-body-tertiary p-4 scroller-y scroller-thin" role="presentation">
+          {(closable && opened) &&
+            <CloseButton
+              id={toggleId}
+              className="position-absolute top-0 end-0 z-2 p-2 m-3"
+              aria-label={trans('hide-menu', {}, 'actions')}
+              onClick={() => {
+                setOpened(!opened)
+                setTimeout(() => {
+                  document.getElementById(toggleId).focus()
+                }, 0)
+              }}
+              aria-expanded={opened}
+              aria-controls={asideId}
+            />
+          }
+
+          {cloneElement(children, {
+            autoClose: () => {
+              if ([constants.SIZE_XS, constants.SIZE_SM, constants.SIZE_MD].includes(size)) {
+                setOpened(!opened)
+              }
+            }
+          })}
         </div>
       </Collapse>
     </div>

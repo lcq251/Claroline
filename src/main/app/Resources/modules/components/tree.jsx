@@ -10,7 +10,8 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const TreeItem = ({
   item,
-  size
+  size,
+  onClick
 }) => {
   const [expanded, setExpanded] = useState(true)
 
@@ -42,6 +43,7 @@ const TreeItem = ({
           })}
           {...omit(item, 'className', 'children', 'actions')}
           size={size}
+          onClick={onClick}
         />
 
         {!isEmpty(item.actions) &&
@@ -66,6 +68,7 @@ const TreeItem = ({
               key={child.id}
               item={child}
               size={size}
+              onClick={onClick}
             />
           )}
         </ul>
@@ -76,6 +79,7 @@ const TreeItem = ({
 
 const Tree = ({
   size,
+  onClick,
   items = [],
   className = null
 }) => {
@@ -90,6 +94,7 @@ const Tree = ({
           key={item.id}
           item={item}
           size={size}
+          onClick={onClick}
         />
       )}
     </ul>
@@ -103,7 +108,8 @@ Tree.propTypes = {
     id: T.string.isRequired,
     label: T.string.isRequired,
     children: T.array
-  }))
+  })),
+  onClick: T.func
 }
 
 export {

@@ -90,7 +90,7 @@
 }
 
 .app-page-aside-content {
-    width: $toolbar-size;
+    width: min($toolbar-size, 100vw);
 }
 
 .app-page-aside-title {
@@ -125,5 +125,9 @@
         z-index: 2;
         top: 0;
         bottom: 0;
+    }
+
+    .app-page-aside-content {
+        box-shadow: 1px 0 3px 0 rgba(0,0,0,.125), 1px 0 0 0 rgba(0,0,0,.05);
     }
 }
