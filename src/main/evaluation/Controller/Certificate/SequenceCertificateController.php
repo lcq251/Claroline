@@ -13,7 +13,6 @@ namespace Claroline\EvaluationBundle\Controller\Certificate;
 
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
@@ -21,6 +20,7 @@ use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Manager\SequenceCertificateManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,7 +41,7 @@ class SequenceCertificateController
     }
 
     #[Route(path: '/', name: 'apiv2_sequence_download_certificate', methods: ['POST'])]
-    public function downloadCertificateAction(Request $request): BinaryFileResponse
+    public function downloadAction(Request $request): BinaryFileResponse
     {
         $sequenceEvaluationIds = $this->decodeRequest($request);
 
@@ -58,7 +58,7 @@ class SequenceCertificateController
     }
 
     #[Route(path: '/{sequence}/all', name: 'apiv2_sequence_download_all_certificates', methods: ['GET'])]
-    public function downloadAllCertificatesAction(
+    public function downloadAllAction(
         #[MapEntity(mapping: ['sequence' => 'uuid'])]
         Sequence $sequence
     ): BinaryFileResponse {
@@ -69,33 +69,8 @@ class SequenceCertificateController
         return $this->downloadCertificates($sequence, $sequenceEvaluations);
     }
 
-    #[Route(path: '/{sequence}/user/{user}', name: 'apiv2_sequence_download_user_certificate', methods: ['GET'])]
-    public function downloadUserCertificateAction(
-        #[MapEntity(mapping: ['sequence' => 'uuid'])]
-        Sequence $sequence,
-        #[MapEntity(mapping: ['user' => 'uuid'])]
-        User $user
-    ): BinaryFileResponse {
-        $sequenceEvaluations = $this->om->getRepository(SequenceEvaluation::class)->findBy([
-            'sequence' => $sequence,
-            'user' => $user,
-        ]);
-
-        return $this->downloadCertificates($sequence, $sequenceEvaluations);
-    }
-
-    #[Route(path: '/{evaluation}/generate', name: 'apiv2_sequence_generate_user_certificate', methods: ['GET'])]
-    public function regenerateUserCertificateAction(
-        #[MapEntity(mapping: ['evaluation' => 'uuid'])]
-        SequenceEvaluation $evaluation
-    ): BinaryFileResponse {
-        $this->checkPermission('OPEN', $evaluation, [], true);
-
-        return $this->downloadCertificates($evaluation->getSequence(), [$evaluation], true);
-    }
-
     #[Route(path: '/regenerate', name: 'apiv2_sequence_regenerate_certificate', methods: ['POST'])]
-    public function regenerateCertificateAction(Request $request): BinaryFileResponse
+    public function regenerateAction(Request $request): BinaryFileResponse
     {
         $sequenceEvaluationIds = $this->decodeRequest($request);
 
@@ -109,7 +84,22 @@ class SequenceCertificateController
         throw new NotFoundHttpException('No sequence evaluation found.');
     }
 
-    private function downloadCertificates(Sequence $sequence, array $sequenceEvaluations, bool $regenerate = false): BinaryFileResponse
+    #[Route(path: '/{sequence}/regenerate', name: 'apiv2_sequence_regenerate_all_certificates', methods: ['PUT'])]
+    public function regenerateAllAction(
+        #[MapEntity(mapping: ['sequence' => 'uuid'])]
+        Sequence $sequence
+    ): JsonResponse {
+        $this->checkPermission('EDIT', $sequence, [], true);
+
+        $sequenceEvaluations = $this->om->getRepository(SequenceEvaluation::class)->findBy(['sequence' => $sequence]);
+        foreach ($sequenceEvaluations as $sequenceEvaluation) {
+            $this->certificateManager->getCertificate($sequenceEvaluation, true);
+        }
+
+        return new JsonResponse(null, 204);
+    }
+
+    private function downloadCertificates(Sequence $sequence, array $sequenceEvaluations, ?bool $regenerate = false): BinaryFileResponse
     {
         if (empty($sequenceEvaluations)) {
             throw new NotFoundHttpException('No sequence evaluation found.');

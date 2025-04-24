@@ -31,7 +31,7 @@ abstract class AbstractEvaluation implements EvaluationInterface
     protected ?\DateTimeInterface $endedAt = null;
 
     #[ORM\Column(name: 'evaluation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $date = null;
+    protected ?\DateTimeInterface $lastActivityAt = null;
 
     #[ORM\Column(name: 'evaluation_status')]
     protected string $status = EvaluationStatus::NOT_ATTEMPTED;
@@ -78,12 +78,12 @@ abstract class AbstractEvaluation implements EvaluationInterface
 
     public function getLastActivityAt(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->lastActivityAt;
     }
 
     public function setLastActivityAt(?\DateTimeInterface $lastActivityAt = null): void
     {
-        $this->date = $lastActivityAt;
+        $this->lastActivityAt = $lastActivityAt;
     }
 
     public function getStatus(): ?string
@@ -158,21 +158,5 @@ abstract class AbstractEvaluation implements EvaluationInterface
     public function isTerminated(): bool
     {
         return EvaluationStatus::isTerminated($this->status);
-    }
-
-    /**
-     * @deprecated use getLastActivity()
-     */
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->getLastActivityAt();
-    }
-
-    /**
-     * @deprecated use setLastActivity()
-     */
-    public function setDate(\DateTimeInterface $date = null): void
-    {
-        $this->setLastActivityAt($date);
     }
 }

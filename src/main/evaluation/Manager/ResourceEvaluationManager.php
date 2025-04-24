@@ -95,7 +95,7 @@ class ResourceEvaluationManager extends AbstractEvaluationManager
         }
 
         // update the parent evaluation
-        $evaluationUpdated = $this->updateEvaluation($attempt->getResourceUserEvaluation(), $data, $attempt->getDate());
+        $evaluationUpdated = $this->updateEvaluation($attempt->getResourceUserEvaluation(), $data, $attempt->getLastActivityAt());
 
         $this->om->flush();
 

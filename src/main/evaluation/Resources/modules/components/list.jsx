@@ -60,6 +60,7 @@ const EvaluationList = (props) => {
             choices: constants.EVALUATION_STATUSES_SHORT
           },
           displayed: true,
+          sortable: false,
           render: (row) => <EvaluationStatus status={row.status} />
         }, {
           name: 'displayScore',

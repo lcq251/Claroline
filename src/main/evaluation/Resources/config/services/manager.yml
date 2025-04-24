@@ -24,8 +24,6 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
 
-    Claroline\EvaluationBundle\Manager\SequenceManager: ~
-
     Claroline\EvaluationBundle\Manager\SequenceCertificateManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'

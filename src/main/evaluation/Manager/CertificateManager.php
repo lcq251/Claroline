@@ -126,6 +126,6 @@ class CertificateManager
             'evaluation_score_max' => 100,
             'evaluation_duration' => round($evaluation->getDuration() / 60, 2), // in minutes
             'evaluation_status' => $this->translator->trans('evaluation_'.$evaluation->getStatus().'_status', [], 'workspace'),
-        ], $this->templateManager->formatDatePlaceholder('evaluation', $evaluation->getDate()));
+        ], $this->templateManager->formatDatePlaceholder('evaluation', $evaluation->getLastActivityAt()));
     }
 }

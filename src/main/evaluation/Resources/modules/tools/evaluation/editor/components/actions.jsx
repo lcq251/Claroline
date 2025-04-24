@@ -45,10 +45,10 @@ const EvaluationEditorActions = () => {
             }
           }
         }, {
-          title: trans('download_all_certificates', {}, 'actions'),
-          help: trans('download_all_workspace_certificates_help', {}, 'actions'),
+          title: trans('download_certificates', {}, 'actions'),
+          help: trans('download_workspace_certificates_help', {}, 'actions'),
           action: {
-            name: 'download_all_certificates',
+            name: 'download_certificates',
             type: ASYNC_BUTTON,
             label: trans('download', {}, 'actions'),
             request: {

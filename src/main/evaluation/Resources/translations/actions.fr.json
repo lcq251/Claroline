@@ -5,11 +5,10 @@
   "download_certificate": "Télécharger le certificat",
   "download_certificates": "Télécharger les certificats",
   "give_attempt": "Donner une tentative supplémentaire",
-  "regenerate_certificate": "Regénérer le certificat",
-  "regenerate_certificates": "Regénérer les certificats",
-  "download_all_certificates": "Télécharger tous les certificats",
-  "download_all_workspace_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi l'espace d'activités.",
-  "download_all_sequence_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi la séquence.",
+  "regenerate_certificate": "Régénérer le certificat",
+  "regenerate_certificates": "Régénérer les certificats",
+  "download_workspace_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi l'espace d'activités.",
+  "download_sequence_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi la séquence.",
   "add_sequence": "Ajouter une séquence",
   "add_sequences": "Ajouter des séquences",
   "finish_sequence": "Terminer la séquence",
@@ -25,5 +24,6 @@
   "purge_sequence_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé la séquence. La progression de l'espace d'activités n'est pas recalculée.",
   "purge_sequence_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la séquence ?",
   "purge_resource_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé la ressource. La progression des séquences et de l'espace d'activités n'est pas recalculée.",
-  "purge_resource_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la ressource ?"
+  "purge_resource_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la ressource ?",
+  "regenerate_sequence_certificates_help": "Générez les certificats manquants et régénérez les certificats existants pour tous les utilisateurs ayant terminé/réussi la séquence."
 }

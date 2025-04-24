@@ -36,6 +36,9 @@ class ResourceAttemptRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @deprecated
+     */
     public function findLast(ResourceNode $node, User $user): ?ResourceAttempt
     {
         return $this->createQueryBuilder('re')

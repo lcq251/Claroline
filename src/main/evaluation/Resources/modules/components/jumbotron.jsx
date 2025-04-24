@@ -37,7 +37,7 @@ const EvaluationJumbotron = (props) =>
             }, {
               //icon: 'fa fa-fw fa-history',
               label: trans('last_activity'),
-              value: get(props.evaluation, 'date') ? displayDate(props.evaluation.date, false, true) : null
+              value: get(props.evaluation, 'lastActivityAt') ? displayDate(props.evaluation.lastActivityAt, false, true) : null
             }
           ]}
         />

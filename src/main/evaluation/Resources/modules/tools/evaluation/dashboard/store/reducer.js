@@ -12,7 +12,7 @@ const reducer = combineReducers({
    * It is filtered by workspace for the ws tool.
    */
   workspaceEvaluations: makeListReducer(selectors.STORE_NAME+'.workspaceEvaluations', {
-    sortBy: { property: 'date', direction: -1 }
+    sortBy: { property: 'lastActivityAt', direction: -1 }
   }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false

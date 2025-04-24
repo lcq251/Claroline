@@ -38,16 +38,30 @@ const SequenceEditorActions = () => {
             }
           }
         }, {
-          title: trans('download_all_certificates', {}, 'actions'),
-          help: trans('download_all_sequence_certificates_help', {}, 'actions'),
+          title: trans('download_certificates', {}, 'actions'),
+          help: trans('download_sequence_certificates_help', {}, 'actions'),
           action: {
-            name: 'download_all_certificates',
+            name: 'download_certificates',
             type: ASYNC_BUTTON,
             label: trans('download', {}, 'actions'),
             request: {
               url: ['apiv2_sequence_download_all_certificates', {sequence: sequence.id}],
               request: {
                 method: 'GET'
+              }
+            }
+          }
+        }, {
+          title: trans('regenerate_certificates', {}, 'actions'),
+          help: trans('regenerate_sequence_certificates_help', {}, 'actions'),
+          action: {
+            name: 'regenerate_all_certificates',
+            type: ASYNC_BUTTON,
+            label: trans('regenerate', {}, 'actions'),
+            request: {
+              url: ['apiv2_sequence_regenerate_all_certificates', {sequence: sequence.id}],
+              request: {
+                method: 'PUT'
               }
             }
           }

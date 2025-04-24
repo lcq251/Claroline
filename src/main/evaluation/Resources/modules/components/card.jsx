@@ -65,8 +65,8 @@ const EvaluationContentCard = (props) => {
 
           {'row' !== props.orientation &&
             <>
-              {props.data.date ?
-                (<>{trans('last_activity_at')} <Datetime value={props.data.date} long={true} /></>)
+              {props.data.lastActivityAt ?
+                (<>{trans('last_activity_at')} <Datetime value={props.data.lastActivityAt} long={true} /></>)
                 : trans('no_user_activity', {}, 'evaluation')
               }
             </>
@@ -86,7 +86,7 @@ EvaluationContentCard.propTypes = {
   }),
   data: T.shape({
     id: T.string,
-    date: T.string,
+    lastActivityAt: T.string,
     status: T.string,
     duration: T.number,
     displayScore: T.shape({

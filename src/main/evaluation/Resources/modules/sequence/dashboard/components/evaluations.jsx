@@ -12,7 +12,6 @@ import {getEvaluationActions, getEvaluationDefaultAction} from '#/main/evaluatio
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
-import {SequenceDashboardActivity} from '#/main/evaluation/sequence/dashboard/components/activity'
 
 const SequenceDashboardEvaluations = () => {
   const dispatch = useDispatch()

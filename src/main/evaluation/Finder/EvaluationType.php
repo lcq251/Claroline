@@ -21,7 +21,9 @@ class EvaluationType extends AbstractType
             ])
             ->add('score', NumericType::class)
             ->add('progression', NumericType::class)
-            ->add('date', DateType::class)
+            ->add('startedAt', DateType::class)
+            ->add('endedAt', DateType::class)
+            ->add('lastActivityAt', DateType::class)
             ->add('user', UserType::class)
         ;
     }
