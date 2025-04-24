@@ -44,8 +44,8 @@ class Updater150000 extends Updater
     private function linkUsersToOrganizations(Organization $defaultOrganization): void
     {
         $updateQuery = $this->connection->prepare('
-            INSERT INTO user_organization (user_id, organization_id, is_main)
-            SELECT u.id AS user_id, :default_organization_id AS organization_id, 1 AS is_main
+            INSERT INTO user_organization (user_id, organization_id, is_main, is_manager)
+            SELECT u.id AS user_id, :default_organization_id AS organization_id, 1 AS is_main, 0 AS is_manager
             FROM claro_user AS u 
             LEFT JOIN user_organization AS uo ON u.id = uo.user_id 
             WHERE uo.organization_id IS NULL

@@ -67,6 +67,7 @@ final class Version20241218083015 extends AbstractMigration
                 p.accessible_until = n.accessible_until
             WHERE p.resourceNode_id IS NOT NULL
               AND n.id IS NOT NULL
+              AND n.active = 1
         ');
 
         $this->addSql('

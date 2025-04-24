@@ -174,12 +174,9 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
             $this->om->getRepository(Chapter::class)->persistAsLastChildOf($chapter, $lesson->getRoot());
 
-            if (0 === $i % 100) {
-                $this->om->flush();
-            }
+            $this->om->flush();
         }
 
-        $this->om->flush();
         $this->om->clear();
     }
 
