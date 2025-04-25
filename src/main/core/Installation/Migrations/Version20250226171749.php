@@ -18,6 +18,12 @@ final class Version20250226171749 extends AbstractMigration
             ALTER TABLE claro_resource_node 
             ADD downloadable TINYINT(1) DEFAULT 0 NOT NULL
         ');
+
+        // there is no cascade on slides, and it will break on the plugin removal
+        // if the table is not empty
+        $this->addSql('
+            DELETE FROM claro_slide
+        ');
     }
 
     public function down(Schema $schema): void
