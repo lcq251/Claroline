@@ -6,11 +6,11 @@ import get from 'lodash/get'
 import {url} from '#/main/app/api'
 import {PageContent, PageSection} from '#/main/app/page'
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
+import {MediaInfo} from '#/main/app/components/media-info'
 
 import {trans, transChoice} from '#/main/app/intl'
 import {CALLBACK_BUTTON, ModalButton} from '#/main/app/buttons'
 import {MODAL_IMAGE_FULLSCREEN} from '#/plugin/image-player/resources/image/modals/fullscreen'
-import {MediaInfo} from '#/main/app/media'
 
 const ImagePlayer = () => {
   const embedded = useSelector(resourceSelectors.embedded)

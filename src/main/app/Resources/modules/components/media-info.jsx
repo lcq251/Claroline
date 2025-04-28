@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Collapse} from 'react-bootstrap'
 import {Html} from '#/main/app/components/html'
 
 const MediaInfo = ({
@@ -15,8 +13,6 @@ const MediaInfo = ({
   embedded = false,
   downloadAction = null
 }) => {
-  const [showDescription, setShowDescription] = useState(!embedded)
-
   return (
     <>
       {!embedded &&
@@ -43,22 +39,9 @@ const MediaInfo = ({
       }
 
       {description &&
-        <>
-          {embedded &&
-            <Button
-              className="btn btn-link mt-3 text-start ms-n3 me-auto"
-              type={CALLBACK_BUTTON}
-              label={trans(showDescription ? 'hide_description':'show_description', {}, 'actions')}
-              callback={() => setShowDescription(!showDescription)}
-            />
-          }
-
-          <Collapse in={showDescription}>
-            <Html className={classes('content-text', !embedded && 'mt-3')}>
-              {description}
-            </Html>
-          </Collapse>
-        </>
+        <Html className={classes('content-text', !embedded && 'mt-3')}>
+          {description}
+        </Html>
       }
     </>
   )

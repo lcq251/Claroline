@@ -9,7 +9,7 @@ import {asset} from '#/main/app/config'
 import {trans, transChoice} from '#/main/app/intl'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {PageContent, PageSection} from '#/main/app/page'
-import {MediaInfo} from '#/main/app/media'
+import {MediaInfo} from '#/main/app/components/media-info'
 
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 

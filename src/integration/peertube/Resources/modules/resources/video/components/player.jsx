@@ -1,16 +1,17 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
+import classes from 'classnames'
+import get from 'lodash/get'
+
+import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
+import {PageContent, PageSection} from '#/main/app/page'
+import {trans, transChoice} from '#/main/app/intl'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {MediaInfo} from '#/main/app/components/media-info'
 
 import {Video as VideoTypes} from '#/integration/peertube/prop-types'
 import {PeerTubePlayer} from '#/integration/peertube/components/player'
-import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
-import {PageContent, PageSection} from '#/main/app/page'
-import get from 'lodash/get'
-import {trans, transChoice} from '#/main/app/intl'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {MediaInfo} from '#/main/app/media'
-import classes from 'classnames'
-import {useSelector} from 'react-redux'
 
 const VideoPlayer = props => {
   let lastSaved = 0

@@ -5,7 +5,7 @@ import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans, transChoice} from '#/main/app/intl'
-import {MediaInfo} from '#/main/app/media'
+import {MediaInfo} from '#/main/app/components/media-info'
 import {PageContent, PageSection} from '#/main/app/page'
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 
