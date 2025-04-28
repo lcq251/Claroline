@@ -37,7 +37,7 @@ class CertificateManager
         $certificate = $this->om->getRepository(WorkspaceCertificate::class)->findOneBy([
             'evaluation' => $evaluation,
             'user' => $evaluation->getUser(),
-        ]);
+        ], ['issueDate' => 'DESC']);
 
         if ($certificate && !$regenerate) {
             if (file_exists($this->getCertificateFilepath($certificate))) {
@@ -67,6 +67,7 @@ class CertificateManager
         $certificate->setLanguage($locale);
         $certificate->setStatus($evaluation->getStatus());
         $certificate->setContent($html);
+
         $this->om->persist($certificate);
         $this->om->flush();
 

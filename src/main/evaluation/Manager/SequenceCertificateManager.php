@@ -39,7 +39,7 @@ class SequenceCertificateManager
         $certificate = $this->om->getRepository(SequenceCertificate::class)->findOneBy([
             'evaluation' => $evaluation,
             'user' => $evaluation->getUser(),
-        ]);
+        ], ['issueDate' => 'DESC']);
 
         if ($certificate && !$regenerate) {
             if (file_exists($this->getCertificateFilepath($certificate))) {

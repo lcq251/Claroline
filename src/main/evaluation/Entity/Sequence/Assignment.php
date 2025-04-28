@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssignmentRepository::class)]
 #[ORM\Table(name: 'claro_evaluation_sequence_assignment')]
+#[ORM\UniqueConstraint(name: 'unique_sequence_assignment', columns: ['sequence_id', 'role_id'])]
 class Assignment
 {
     use Id;

@@ -35,6 +35,13 @@ const Assignments = () => {
     dispatch(actions.update(newAssignments, 'assignments'))
   }, [assignments.map(a => a.role.id).join('-')])
 
+  const deleteAssignment = useCallback((assignmentIndex) => {
+    const newAssignments = [].concat(assignments)
+    newAssignments.splice(assignmentIndex, 1)
+
+    dispatch(actions.update(newAssignments, 'assignments'))
+  }, [assignments.map(a => a.role.id).join('-')])
+
   return (
     <>
       <dl className="p-3 mb-4 bg-body-tertiary rounded-3">
@@ -167,7 +174,7 @@ const Assignments = () => {
                 className="btn btn-link me-n2"
                 type={CALLBACK_BUTTON}
                 label={trans('remove', {}, 'actions')}
-                callback={() => true}
+                callback={() => deleteAssignment(index)}
                 size="sm"
               />
             </li>
