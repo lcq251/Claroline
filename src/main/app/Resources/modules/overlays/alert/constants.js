@@ -3,7 +3,7 @@ import {trans} from '#/main/app/intl/translation'
 import {constants as actionConstants} from '#/main/app/action/constants'
 
 const ALERT_DISPLAY_MAX     = 5
-const ALERT_DISPLAY_TIMEOUT = 2000
+const ALERT_DISPLAY_TIMEOUT = 5000
 
 const ALERT_STATUS_SUCCESS      = 'success'
 const ALERT_STATUS_WARNING      = 'warning'
@@ -17,41 +17,48 @@ const ALERT_STATUS = {
   [ALERT_STATUS_FORBIDDEN]: {
     order: 2,
     icon: 'fa-lock',
-    removable: true
+    removable: true,
+    variant: 'warning'
   },
   [ALERT_STATUS_ERROR]: {
     order: 3,
-    icon: 'fa-times',
-    removable: true
+    icon: 'fa-times-circle',
+    removable: true,
+    variant: 'danger'
   },
   [ALERT_STATUS_UNAUTHORIZED]: {
     order: 4,
     icon: 'fa-lock-alt',
-    removable: true
+    removable: true,
+    variant: 'warning'
   },
   [ALERT_STATUS_UNAVAILABLE]: {
     order: 5,
     icon: 'fa-power-off',
     removable: true,
-    timeout: ALERT_DISPLAY_TIMEOUT
+    timeout: ALERT_DISPLAY_TIMEOUT,
+    variant: 'warning'
   },
   [ALERT_STATUS_WARNING]: {
     order: 6,
-    icon: 'fa-exclamation',
+    icon: 'fa-warning',
     removable: true,
-    timeout: ALERT_DISPLAY_TIMEOUT
+    timeout: ALERT_DISPLAY_TIMEOUT,
+    variant: 'warning'
   },
   [ALERT_STATUS_SUCCESS]: {
     order: 7,
-    icon: 'fa-check',
+    icon: 'fa-check-circle',
     removable: true,
-    timeout: ALERT_DISPLAY_TIMEOUT
+    timeout: ALERT_DISPLAY_TIMEOUT,
+    variant: 'success'
   },
   [ALERT_STATUS_INFO]: {
     order: 8,
-    icon: 'fa-lightbulb',
+    icon: 'fa-info-circle',
     removable: true,
-    timeout: ALERT_DISPLAY_TIMEOUT * 3 // increase display time to let users read the message
+    timeout: ALERT_DISPLAY_TIMEOUT * 3, // increase display time to let users read the message
+    variant: 'info'
   }
 }
 

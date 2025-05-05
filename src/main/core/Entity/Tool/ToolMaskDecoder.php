@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_tool_mask_decoder')]
 #[ORM\UniqueConstraint(name: 'tool_mask_decoder_unique_tool_and_name', columns: ['tool_name', 'name'])]
-#[ORM\Entity]
+#[ORM\Entity(readOnly: true)]
 class ToolMaskDecoder
 {
     use Id;

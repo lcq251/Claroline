@@ -55,6 +55,7 @@
   "general_parameters": "Paramètres généraux",
   "numbering_none": "Aucune",
   "numbering_numeric": "Numérique",
+  "numbering_numeric_help": "La numérotation utilise des chiffres : 1., 2., 2.1., 3. etc.",
   "numbering_literal": "Littérale",
-  "numbering_custom": "Customisée"
+  "numbering_literal_help": "La numérotation utilise des lettres : A., B., B.A., C. etc."
 }

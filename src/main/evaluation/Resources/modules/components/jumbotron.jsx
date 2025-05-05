@@ -12,7 +12,6 @@ import {PageSection} from '#/main/app/page'
 
 const EvaluationJumbotron = (props) =>
   <PageSection
-    size="md"
     className={classes('evaluation-jumbotron py-4', props.className, `bg-${baseConstants.EVALUATION_STATUS_COLOR[get(props.evaluation, 'status')]}-subtle`)}
   >
     <div className="d-flex flex-row gap-4" role="presentation">

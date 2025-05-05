@@ -71,5 +71,15 @@
   "success_message": "Message de réussite",
   "add_failure_message": "Ajouter un message d'échec",
   "add_failure_message_help": "Le message d'échec remplace le message de fin et est affiché à partir du moment où les utilisateurs ont atteint le statut \"Echoué\" à leur activité.",
-  "failure_message": "Message d'échec"
+  "failure_message": "Message d'échec",
+  "sequence_appearance_help": "Personnalisez les paramètres d'affichage avancés de votre séquence et de ses contenus.",
+  "sequence_numbering": "Numérotation des étapes",
+  "sequence_pagination": "Pagination",
+  "sequence_pagination_none": "Aucune",
+  "sequence_pagination_none_help": "Toutes les étapes sont affichées les une à la suite des autres sur une seule page.",
+  "sequence_pagination_step": "Une page par étape et ses sous-étapes",
+  "sequence_pagination_step_help": "Chaque étape principale ainsi que toutes ses sous-étapes est affichée sur une page différente.",
+  "sequence_pagination_all": "Une page par étape",
+  "sequence_pagination_all_help": "Chaque étape est affichée sur une page différente.",
+  "objective": "Objectif d'apprentissage"
 }

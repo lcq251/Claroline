@@ -1,19 +1,20 @@
 import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import classes from 'classnames'
 import get from 'lodash/get'
 
 import {Routes} from '#/main/app/router'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {PageAside, PageContent} from '#/main/app/page'
+import {PageAside} from '#/main/app/page'
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 
-import {Chapter} from '#/plugin/lesson/resources/lesson/player/containers/chapter'
 import {ChapterForm} from '#/plugin/lesson/resources/lesson/player/components/chapter-form'
 import {PlayerSummary} from '#/plugin/lesson/resources/lesson/player/components/summary'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {LessonPlayerOverview} from '#/plugin/lesson/resources/lesson/player/components/overview'
+import {PlayerModeSimple} from '#/plugin/lesson/resources/lesson/player/components/mode-simple'
+import {PlayerModeInline} from '#/plugin/lesson/resources/lesson/player/components/mode-inline'
+import {PlayerModePage} from '#/plugin/lesson/resources/lesson/player/components/mode-page'
 
 const LessonPlayer = () => {
   const dispatch = useDispatch()
@@ -24,11 +25,13 @@ const LessonPlayer = () => {
 
   const lesson = useSelector(selectors.lesson)
   const root = useSelector(selectors.root)
-  const tree = useSelector(selectors.treeData)
+  const pages = useSelector(selectors.pages)
+  const tree = useSelector(selectors.tree)
+  const lessonNumbering = useSelector(selectors.numbering)
   const showOverview = useSelector(selectors.showOverview)
 
-  const loadChapter = useCallback((chapterSlug) => {
-    dispatch(actions.loadChapter(lesson.id, chapterSlug))
+  const loadChapter = useCallback((chapter) => {
+    dispatch(actions.loadChapter(chapter))
   }, [lesson.id])
 
   const createChapter = useCallback((parentSlug) => {
@@ -40,7 +43,7 @@ const LessonPlayer = () => {
   }, [lesson.id])
 
   function getPageSummary(page) {
-    const numbering = getNumbering(lesson.display.numbering, tree.children, page)
+    const numbering = getNumbering(lessonNumbering, tree.children, page)
 
     return {
       id: page.id,
@@ -55,8 +58,8 @@ const LessonPlayer = () => {
 
   return (
     <ResourcePage>
-      {!embedded &&
-        <PageAside closable={true} show={!embedded}>
+      {!embedded && 1 < pages.length &&
+        <PageAside closable={true} show={false}>
           <PlayerSummary
             path={resourcePath}
             title={resourceName}
@@ -66,10 +69,14 @@ const LessonPlayer = () => {
         </PageAside>
       }
 
+      {'none' === get(lesson, 'display.pagination', 'all') ?
+        <PlayerModeInline
+          path={resourcePath}
+        /> :
         <Routes
           path={resourcePath}
           redirect={[
-            {from: '/', exact: true, to: '/'+get(tree, 'children[0].slug', null), disabled: showOverview || !get(tree, 'children[0]', null)}
+            {from: '/', exact: true, to: '/'+get(pages, '[0].slug', null), disabled: showOverview || !get(pages, '[0]', null)}
           ]}
           routes={[
             {
@@ -84,9 +91,37 @@ const LessonPlayer = () => {
               component: ChapterForm
             }, {
               path: '/:slug',
-              onEnter: (params) => loadChapter(params.slug),
-              component: Chapter,
-              exact: true
+              onEnter: (params) => {
+                const page = pages.find(page => params.slug === page.slug)
+                if (page) {
+                  loadChapter(page)
+                }
+              },
+              exact: true,
+              render: () => {
+                if (1 === pages.length) {
+                  return (
+                    <PlayerModeSimple path={resourcePath} />
+                  )
+                }
+
+                switch (get(lesson, 'display.pagination', 'all') ) {
+                  case 'none':
+                    return (
+                      <PlayerModeInline
+                        path={resourcePath}
+                      />
+                    )
+                  case 'page':
+                  case 'all':
+                  default:
+                    return (
+                      <PlayerModePage
+                        path={resourcePath}
+                      />
+                    )
+                }
+              }
             }, {
               path: '/:slug/edit',
               onEnter: (params) => editChapter(params.slug),
@@ -94,6 +129,7 @@ const LessonPlayer = () => {
             }
           ]}
         />
+      }
     </ResourcePage>
   )
 }

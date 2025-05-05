@@ -46,12 +46,6 @@ const SequencePage = (props) => {
         ),
         nav: [
           {
-            name: 'overview',
-            type: LINK_BUTTON,
-            label: trans('about'),
-            target: sequencePath,
-            exact: true
-          }, {
             name: 'dashboard',
             type: LINK_BUTTON,
             icon: 'fa fa-fw fa-gauge',

@@ -4,13 +4,10 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {toKey} from '#/main/app/utils/text'
 import {Toolbar} from '#/main/app/action'
 import {ASYNC_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {Html} from '#/main/app/components/html'
-import {Alert} from '#/main/app/components/alert'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageSection, PageTabbedSection} from '#/main/app/page'
+import {EmptyState} from '#/main/app/components/empty-state'
 import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 
 import {SequenceSummary} from '#/main/evaluation/sequence/components/summary'
@@ -21,17 +18,19 @@ import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
 import {selectors} from '#/main/evaluation/sequence/store'
 import {constants} from '#/main/evaluation/constants'
 import {Content} from '#/main/app/components/content'
+import {SequenceResources} from '#/main/evaluation/sequence/components/resources'
+import {SequenceObjective} from '#/main/evaluation/sequence/components/objective'
 
 const SequenceOverviewContent = (props) => {
   const description = get(props.sequence, 'meta.descriptionHtml', null)
   const overviewResource = get(props.sequence, 'overview.resource')
+  const objective = get(props.sequence, 'objective')
   const tags = get(props.sequence, 'tags')
 
   return (
     <>
       {props.userEvaluation &&
         <PageSection
-          size="md"
           className="pt-5 mb-5"
           title={trans('my_progression')}
           showTitle={false}
@@ -49,12 +48,6 @@ const SequenceOverviewContent = (props) => {
                   {...props.feedbacks}
                 />
               }
-
-              {!isEmpty(get(props.feedbacks, 'closed')) && props.feedbacks.closed.map(closedMessage =>
-                <Alert key={toKey(closedMessage[0])} type="warning" title={closedMessage[0]}>
-                  <Html>{closedMessage[1]}</Html>
-                </Alert>
-              )}
             </div>
           }
 
@@ -70,9 +63,8 @@ const SequenceOverviewContent = (props) => {
         </PageSection>
       }
 
-      {(description || tags || overviewResource) &&
+      {(description || !isEmpty(tags) || overviewResource || objective) &&
         <PageSection
-          size="md"
           title={trans('about')}
           showTitle={false}
           className="mb-5"
@@ -85,15 +77,17 @@ const SequenceOverviewContent = (props) => {
 
           {overviewResource &&
             <ResourceEmbedded
-              className={tags || description ? 'mt-5' : undefined}
+              className={!isEmpty(tags) || description ? 'mt-5' : undefined}
               resourceNode={overviewResource}
               showHeader={false}
             />
           }
+
+          {objective &&
+            <SequenceObjective className="mt-5" objective={objective} />
+          }
         </PageSection>
       }
-
-      {props.children}
     </>
   )
 }
@@ -103,6 +97,7 @@ const SequenceOverview = () => {
   const sequencePath = useSelector(selectors.path)
   const userEvaluation = useSelector(selectors.evaluation)
   const progression = useSelector(selectors.progression)
+  const allSecondaryResources = useSelector(selectors.allSecondaryResources)
 
   const actions = [
     {
@@ -161,25 +156,46 @@ const SequenceOverview = () => {
             success: get(sequence, 'evaluation.successMessage'),
             failure: get(sequence, 'evaluation.failureMessage')
           }}
-        >
-          <PageSection
-            size="md"
+        />
+
+        {isEmpty(sequence.steps) &&
+          <EmptyState
+            size="lg"
+            icon="fa fa-route"
+            title={trans('no_step', {}, 'path')}
+          />
+        }
+
+        {!isEmpty(sequence.steps) &&
+          <PageTabbedSection
             className="mb-5"
-            title={trans('content')}
-          >
-            {!isEmpty(sequence.steps) ?
-              <SequenceSummary
-                path={sequencePath}
-                sequence={sequence}
-                progression={progression}
-              /> :
-              <ContentPlaceholder
-                size="lg"
-                title={trans('no_step', {}, 'path')}
-              />
-            }
-          </PageSection>
-        </SequenceOverviewContent>
+            defaultTab="content"
+            tabs={[
+              {
+                name: 'content',
+                title: trans('content'),
+                render: () =>
+                  <SequenceSummary
+                    className="mt-4"
+                    path={sequencePath}
+                    sequence={sequence}
+                    progression={progression}
+                  />
+              }, {
+                name: 'links',
+                title: trans('useful_links'),
+                displayed: !isEmpty(allSecondaryResources),
+                render: () =>
+                  <>
+                  <p className="mt-4 text-body-secondary fs-sm">Retrouvez toutes les ressources complémentaires proposées au cours de la séquence.</p>
+                    <SequenceResources
+                      resources={allSecondaryResources}
+                    />
+                  </>
+              }
+            ]}
+          />
+        }
       </PageContent>
     </SequencePage>
   )

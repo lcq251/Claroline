@@ -63,7 +63,6 @@ const Plugin = (props) => {
     >
       <PageContent>
         <PageHeading
-          size="md"
           title={trans(props.plugin.name, {}, 'plugin')}
           description={trans(props.plugin.name+'_desc', {}, 'plugin')}
           actions={[
@@ -84,7 +83,7 @@ const Plugin = (props) => {
           ]}
         />
 
-        <PageSection size="md">
+        <PageSection>
           <PluginMeta plugin={props.plugin} />
         </PageSection>
       </PageContent>

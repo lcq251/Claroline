@@ -112,8 +112,8 @@ class FieldsInput extends Component {
                 return 0
               })
               .map((field, fieldIndex) =>
-                <li key={fieldIndex} className="field-item d-flex flex-row align-items-start py-2 px-3 gap-3 bg-secondary-subtle rounded-2 border border-transparent">
-                  <div className="field-item-preview flex-fill" role="presentation">
+                <li key={fieldIndex} className="field-item list-group-item d-flex flex-row align-items-start py-3 px-3 gap-3 border rounded-2">
+                  <div className="flex-fill" role="presentation">
                     <FieldPreview {...this.formatField(field)} />
                     {get(field, 'restrictions.confidentiality') && 'none' !== get(field, 'restrictions.confidentiality') &&
                       <Badge variant="primary" className="mt-1">
@@ -125,11 +125,11 @@ class FieldsInput extends Component {
 
                   <Toolbar
                     id={`${this.props.id}-${fieldIndex}-actions`}
-                    className="my-n1 me-n2"
+                    className="my-n2 me-n2"
                     tooltip="bottom"
-                    buttonName="btn p-1"
+                    buttonName="btn p-2"
                     defaultName="btn-text-body focus-ring focus-ring-secondary"
-                    dangerousName="btn-text-danger focus-ring focus-ring-danger"
+                    size="sm"
                     actions={[
                       {
                         name: 'edit',
@@ -148,8 +148,7 @@ class FieldsInput extends Component {
                         icon: 'fa fa-fw fa-trash',
                         label: trans('delete', {}, 'actions'),
                         confirm: trans('delete_field_confirm'),
-                        callback: () => this.remove(fieldIndex),
-                        dangerous: true
+                        callback: () => this.remove(fieldIndex)
                       }
                     ]}
                   />

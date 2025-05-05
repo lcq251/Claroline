@@ -16,15 +16,14 @@ const BooleanDisplay = (props) =>
       className="form-check-label"
       htmlFor={props.id}
     >
-      {(props.value && props.labelChecked) ? props.labelChecked : props.label}
+      {props.label}
     </label>
   </>
 
 BooleanDisplay.propTypes = {
   id: T.string.isRequired,
   value: T.bool,
-  label: T.string.isRequired,
-  labelChecked: T.string
+  label: T.string.isRequired
 }
 
 BooleanDisplay.defaultProps = {

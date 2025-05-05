@@ -26,7 +26,7 @@ const ResourceOverview = props => {
 
   const userEvaluation = useSelector(selectors.userEvaluation)
   const description = get(resourceNode, 'meta.descriptionHtml', null)
-  const estimatedDuration = get(resourceNode, 'evaluation.estimatedDuration')
+  const estimatedDuration = get(resourceNode, 'estimatedDuration')
 
   return (
     <ResourcePage>
@@ -34,7 +34,7 @@ const ResourceOverview = props => {
         'mx-n4': embedded
       })}>
         {(userEvaluation || description || estimatedDuration) &&
-          <PageSection size="md" className={classes({
+          <PageSection className={classes({
             'pt-5': !embedded || showHeader
           })}>
             {userEvaluation &&
@@ -64,7 +64,7 @@ const ResourceOverview = props => {
         {userEvaluation &&
           <>
             {((!isEmpty(userEvaluation) && get(props, 'display.feedback', false)) || !isEmpty(get(props.feedbacks, 'closed'))) &&
-              <PageSection size="md" className="resource-feedbacks py-3">
+              <PageSection className="resource-feedbacks py-3">
                 {!isEmpty(userEvaluation) && get(props, 'display.feedback', false) &&
                   <EvaluationFeedback
                     status={userEvaluation.status}

@@ -11,7 +11,7 @@ import {PageContent} from '#/main/app/page'
 const EmptyCourse = (props) =>
   <ToolPage>
     <PageContent>
-      <ContentSizing size="md">
+      <ContentSizing size="lg">
         <p className="text-center my-5">
           <span className="h1 fa fa-graduation-cap mb-3 text-body-tertiary"/>
           <b className="h5 d-block">{trans('no_course', {}, 'cursus')}</b>

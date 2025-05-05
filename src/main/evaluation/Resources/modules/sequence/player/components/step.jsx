@@ -1,42 +1,31 @@
 import React from 'react'
+import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 import classes from 'classnames'
+import Waypoint, {Position} from '@restart/ui/Waypoint'
 
 import {trans} from '#/main/app/intl/translation'
-import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {URL_BUTTON} from '#/main/app/buttons'
-import {Html} from '#/main/app/components/html'
+import {Content} from '#/main/app/components/content'
 import {PageHeading, PageSection} from '#/main/app/page'
-import {ResourceCard} from '#/main/core/resource/components/card'
 import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
-import {route as resourceRoute} from '#/main/core/resource/routing'
 
 import {Step as StepTypes} from '#/main/evaluation/sequence/prop-types'
+import {SequenceResources} from '#/main/evaluation/sequence/components/resources'
+import {SequenceObjective} from '#/main/evaluation/sequence/components/objective'
+import {selectors} from '#/main/evaluation/sequence/store'
 
 const SecondaryResources = props =>
   <PageSection
-    size="md"
-    className={classes('mb-5', props.className)}
+    className="mb-5"
     title={trans('useful_links')}
   >
-    {props.resources.map(resource =>
-      <ResourceCard
-        key={resource.id}
-        size="sm"
-        orientation="row"
-        primaryAction={{
-          type: URL_BUTTON,
-          label: trans('open', {}, 'actions'),
-          target: '#'+resourceRoute(resource),
-          open: props.target
-        }}
-        data={resource}
-      />
-    )}
+    <SequenceResources
+      className="mb-0"
+      resources={props.resources}
+    />
   </PageSection>
 
 SecondaryResources.propTypes = {
-  className: T.string,
-  target: T.oneOf(['_self', '_blank']),
   resources: T.arrayOf(T.shape({
     // resource node type
   })).isRequired
@@ -45,66 +34,91 @@ SecondaryResources.propTypes = {
 /**
  * Renders step content.
  */
-const Step = props =>
-  <>
-    <PageHeading
-      size="md"
-      poster={props.poster}
-      title={props.numbering ?
-        props.numbering + ' ' + props.title :
-        props.title
-      }
-      subtitle={props.subtitle}
-    />
+const Step = props => {
+  const stepNumbering = useSelector(state => selectors.stepNumbering(state, props.step))
 
-    {props.description &&
-      <PageSection size="md">
-        {props.description &&
-          <Html className="content-text mb-5">{props.description}</Html>
-        }
-
-        {(props.description && props.primaryResource) &&
-          <hr className="content-md mt-0 mb-5" aria-hidden={true} />
-        }
-      </PageSection>
-    }
-
-    {props.primaryResource &&
-      <PageSection size="md" className="mb-5 flex-fill d-flex flex-column">
-        <ResourceEmbedded
-          resourceNode={props.primaryResource}
-          showHeader={props.showResourceHeader}
-          lifecycle={{
-            play: props.disableNavigation,
-            end: () => {
-              props.enableNavigation()
-              // get updated path progression
-              props.updateProgression(props.id)
-            }
-          }}
+  return (
+    <>
+      {props.title &&
+        <PageHeading
+          level={props.level ? props.level + 1 : 1}
+          poster={props.poster ? props.step.poster : undefined}
+          title={stepNumbering ?
+            stepNumbering + ' ' + props.step.title :
+            props.step.title
+          }
         />
-      </PageSection>
-    }
+      }
 
-    {0 !== props.secondaryResources.length &&
-      <SecondaryResources
-        className="mb-5"
-        resources={props.secondaryResources}
-        target={props.secondaryResourcesTarget}
+      {(props.step.description || props.step.estimatedDuration || props.step.objective) &&
+        <PageSection className="mb-5">
+          <Content
+            meta={props.step.estimatedDuration &&
+              <div role="presentation" aria-label={trans('estimated_duration')}>
+                <span className="fa far fa-clock me-2" aria-hidden={true} />
+                {props.step.estimatedDuration + ' ' + trans('minutes')}
+              </div>
+            }
+          >
+            {props.step.description}
+          </Content>
+
+          {props.step.objective &&
+            <SequenceObjective className={classes({
+              'mt-4': !props.step.description && props.step.estimatedDuration,
+              'mt-5': props.step.description
+            })} objective={props.step.objective} />
+          }
+
+          {((props.step.description || props.step.objective) && props.step.primaryResource) &&
+            <hr className="mt-5 mb-0" aria-hidden={true} />
+          }
+        </PageSection>
+      }
+
+      {props.step.primaryResource &&
+        <PageSection className="mb-5 flex-fill d-flex flex-column">
+          <ResourceEmbedded
+            resourceNode={props.step.primaryResource}
+            showHeader={false}
+            lifecycle={{
+              play: props.disableNavigation,
+              end: () => {
+                props.enableNavigation()
+                // get updated path progression
+                props.updateProgression(props.step.id, true)
+              }
+            }}
+          />
+        </PageSection>
+      }
+
+      {0 !== props.step.secondaryResources.length &&
+        <SecondaryResources
+          resources={props.step.secondaryResources}
+        />
+      }
+
+      <Waypoint
+        onPositionChange={(details) => {
+          if (Position.INSIDE === details.position || Position.BEFORE === details.position) {
+            props.updateProgression(props.step.id)
+          }
+        }}
       />
-    }
-  </>
+    </>
+  )
+}
 
-implementPropTypes(Step, StepTypes, {
-  subtitle: T.string,
-  currentUser: T.object,
-  numbering: T.string,
-  showResourceHeader: T.bool.isRequired,
-  secondaryResourcesTarget: T.oneOf(['_self', '_blank']),
+Step.propTypes = {
+  level: T.number,
+  poster: T.bool,
+  title: T.bool,
+  step: T.shape(StepTypes.propTypes),
   updateProgression: T.func.isRequired,
   enableNavigation: T.func.isRequired,
   disableNavigation: T.func.isRequired
-})
+}
 
 export {
   Step

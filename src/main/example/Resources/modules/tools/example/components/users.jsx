@@ -15,7 +15,7 @@ const ExampleUsers = () => {
   const currentUser = useSelector(securitySelectors.currentUser)
 
   return (
-    <PageSection size="lg">
+    <PageSection size="xl">
       <ContentTitle level={2} title="Avatars" />
 
       <div className="mb-5 d-flex gap-5 align-items-end">

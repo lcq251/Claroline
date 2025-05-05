@@ -14,7 +14,6 @@ import {Button} from '#/main/app/action'
 const EventParticipants = (props) =>
   <PageSection
     title={trans('participants')}
-    size="md"
   >
     {props.canEdit &&
       <Button

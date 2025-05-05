@@ -8,7 +8,7 @@ import {Alert} from '#/main/app/overlays/alert/components/alert'
 const AlertOverlay = props => {
   if (props.alerts && 0 < props.alerts.length) {
     return (
-      <ul className="flying-alerts">
+      <ul className="flying-alerts list-unstyled mb-0 d-flex flex-column gap-2">
         {props.alerts.map((alert, alertIndex) =>
           <Alert
             {...alert}

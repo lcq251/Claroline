@@ -1,11 +1,9 @@
 import React, {cloneElement, useId, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Poster} from '#/main/app/components/poster'
 import {CloseButton, Collapse} from 'react-bootstrap'
 import {constants, useSize} from '#/main/app/dom/size'
 
@@ -89,27 +87,7 @@ PageBody.propTypes = {
   children: T.any
 }
 
-const PageContent = ({
-  className,
-  poster,
-  children
-}) =>
-  <div className={classes('app-page-content', className)} role="presentation">
-    {poster &&
-      <Poster url={poster} className="app-page-poster" />
-    }
-
-    {children}
-  </div>
-
-PageContent.propTypes = {
-  className: T.string,
-  poster: T.string,
-  children: T.any
-}
-
 export {
   PageAside,
-  PageBody,
-  PageContent
+  PageBody
 }

@@ -49,7 +49,7 @@ const ImageEditorModal = (props) => {
       scrollable={true}
     >
       <div className="modal-header">
-        <CloseButton onClick={props.fadeModal} />
+        <CloseButton onClick={props.fadeModal} aria-label={trans('close', {}, 'actions')} />
       </div>
 
       <div className="modal-body pt-0">

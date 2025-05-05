@@ -26,7 +26,6 @@ const MySessionsSection = (props) => {
 
   return (
     <PageSection
-      size="md"
       className="mt-5"
     >
       <div className="d-flex flex-row align-items-baseline mb-3 gap-3">
@@ -102,7 +101,6 @@ const TrainingsOverview = () => {
       <MySessionsSection contextType={contextType} path={toolPath} />
 
       <PageSection
-        size="md"
         className="mt-5"
         title={trans('Mes inscriptions en attente', {}, 'cursus')}
       >
@@ -114,7 +112,6 @@ const TrainingsOverview = () => {
       </PageSection>
 
       <PageSection
-        size="md"
         className="mt-5 mb-5"
         title={trans('Mes présences', {}, 'cursus')}
       >

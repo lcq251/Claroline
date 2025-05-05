@@ -39,11 +39,11 @@
   gap: map-get($spacers, 1);
 
   &.flyout-menu-items-2 {
-    grid-template-columns: repeat(2, minmax(10rem, 1fr));
+    grid-template-columns: repeat(2, minmax($content-xs*.5, 1fr));
   }
 
   &.flyout-menu-items-4 {
-    grid-template-columns: repeat(4, minmax(10rem, 1fr));
+    grid-template-columns: repeat(4, minmax($content-xs*.5, 1fr));
   }
 }
 

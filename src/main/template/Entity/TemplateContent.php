@@ -11,14 +11,15 @@
 
 namespace Claroline\TemplateBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
+use Claroline\TemplateBundle\Model\TemplateContentInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'claro_template_content')]
 #[ORM\UniqueConstraint(name: 'template_unique_lang', columns: ['template_id', 'lang'])]
-class TemplateContent
+class TemplateContent implements TemplateContentInterface
 {
     use Id;
 

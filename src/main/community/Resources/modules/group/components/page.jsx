@@ -22,7 +22,6 @@ const Group = (props) =>
     {isEmpty(props.group) &&
       <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
-          size="md"
           icon={true}
           description={true}
         />
@@ -30,10 +29,8 @@ const Group = (props) =>
     }
 
     {!isEmpty(props.group) &&
-      <PageContent>
+      <PageContent poster={get(props.group, 'poster')}>
         <PageHeading
-          size="md"
-          poster={get(props.group, 'poster')}
           icon={
             <Thumbnail
               size="lg"

@@ -31,28 +31,18 @@ actions.search = (searchStr, internalNotes = false) => (dispatch) => {
   dispatch(listActions.invalidateData(selectors.LIST_NAME))
 }
 
-actions.loadChapter = (lessonId, chapterSlug) => dispatch => {
-  dispatch(actions.chapterReset())
+actions.loadChapter = (chapter) => dispatch => {
+  dispatch(actions.chapterLoad(chapter))
 
-  return dispatch({
-    [API_REQUEST]: {
-      url:['apiv2_lesson_chapter_get', {lessonId: lessonId, slug: chapterSlug}],
-      silent: true,
-      success: (response) => {
-        dispatch(actions.chapterLoad(response))
+  if (!chapter.previousSlug) {
+    // first chapter
+    dispatch(resourceActions.triggerLifecycleAction('play'))
+  }
 
-        if (!response.previousSlug) {
-          // first chapter
-          dispatch(resourceActions.triggerLifecycleAction('play'))
-        }
-
-        if (!response.nextSlug) {
-          // last chapter
-          dispatch(resourceActions.triggerLifecycleAction('end'))
-        }
-      }
-    }
-  })
+  if (!chapter.nextSlug) {
+    // last chapter
+    dispatch(resourceActions.triggerLifecycleAction('end'))
+  }
 }
 
 actions.editChapter = (lessonId, chapterSlug) => dispatch => {
@@ -92,7 +82,7 @@ actions.fetchChapterTree = (lessonId) => (dispatch) => {
 }
 
 actions.positionChange = value => (dispatch, getState) => {
-  dispatch(actions.positionSelected(value === selectors.treeData(getState()).slug))
+  dispatch(actions.positionSelected(value === selectors.tree(getState()).slug))
 }
 
 actions.downloadLessonPdf = (lessonId) => ({

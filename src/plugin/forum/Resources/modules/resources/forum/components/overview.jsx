@@ -29,7 +29,6 @@ const ForumOverview = () => {
   return (
     <ResourceOverview>
       <PageSection
-        size="md"
         flush={false}
         className={classes({
           'pt-5': (!embedded || showHeader) && !get(resourceNode, 'meta.description')

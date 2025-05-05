@@ -6,6 +6,9 @@ import {Alert as AlertTypes} from '#/main/app/overlays/alert/prop-types'
 import {Expire} from '#/main/app/components/expire'
 
 import {constants} from '#/main/app/overlays/alert/constants'
+import {Button} from '#/main/app/action'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {trans} from '#/main/app/intl'
 
 const FlyingAlertContent = props => {
   const status = constants.ALERT_STATUS[props.status]
@@ -16,29 +19,35 @@ const FlyingAlertContent = props => {
     constants.ALERT_STATUS_ERROR,
     constants.ALERT_STATUS_UNAUTHORIZED,
     constants.ALERT_STATUS_FORBIDDEN
-  ].includes(status)) {
+  ].includes(props.status)) {
     role = 'alert'
   }
 
   return (
     <li
-      className={classes('flying-alert mb-2', `flying-alert-${props.status}`, `flying-alert-${props.action}`, {
-        removable: status.removable
-      })}
-      onClick={() => status.removable && props.removeAlert(props.id)}
+      className={classes('flying-alert d-flex flex-row align-items-baseline gap-3 p-3 rounded-2 bg-body w-100', `border border-${status.variant}`)}
       role={role}
     >
-      <span className="flying-alert-icon">
-        <span className={classes('fa fa-fw', status.icon)} />
-      </span>
+      <span className={classes('flying-alert-icon fa fa-fw fs-lg', `text-${status.variant}`, status.icon)} aria-hidden={true} />
 
-      <span className="flying-alert-message">
-        <b className="flying-alert-title">
+      <span className="flex-fill text-body-secondary fs-sm" role="presentation">
+        <b className="d-block text-body fs-base mb-1">
           {props.title}
         </b>
 
         {props.message}
       </span>
+      {status.removable &&
+        <Button
+          className="btn btn-text-body m-n2"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-times"
+          label={trans('close', {}, 'actions')}
+          callback={() => props.removeAlert(props.id)}
+          //size="sm"
+          tooltip="bottom"
+        />
+      }
     </li>
   )
 }

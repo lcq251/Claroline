@@ -46,16 +46,14 @@ class SubjectComponent extends Component {
       <ResourcePage
         title={get(this.props.subject, 'title', trans('loading'))}
       >
-        <PageContent>
+        <PageContent poster={get(this.props.subject, 'poster')}>
           <PageHeading
-            size="md"
             backAction={{
               type: LINK_BUTTON,
               target: this.props.path,
               label: trans('Retour aux sujets', {}, 'forum'),
               exact: true
             }}
-            poster={get(this.props.subject, 'poster')}
             title={get(this.props.subject, 'title', trans('loading'))}
             actions={[
               {
@@ -131,7 +129,7 @@ class SubjectComponent extends Component {
             ]}
           />
 
-          <PageSection size="md" className="mb-5">
+          <PageSection className="mb-5">
             <Content
               meta={
                 <ContentPublication
@@ -157,7 +155,7 @@ class SubjectComponent extends Component {
             </div>
           </PageSection>
 
-          <PageSection size="md" className="mb-5">
+          <PageSection className="mb-5">
             <hr className="mb-4 mt-0" />
             <ForumMessages
               root={true}

@@ -14,7 +14,7 @@ const SearchMinimal = ({
   autoFocus = false,
   disabled = false
 }) =>
-  <div className={classes('d-flex flex-row align-items-center bg-secondary-subtle rounded-2 py-1', className)}>
+  <div className={classes('d-flex flex-row align-items-center bg-secondary-subtle rounded-2', className)}>
     <span className="fa fa-search text-secondary-emphasis ms-3" />
     <input
       className="form-control border-0 shadow-none bg-transparent"

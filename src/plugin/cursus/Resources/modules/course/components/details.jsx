@@ -93,7 +93,6 @@ const CourseDetails = (props) => {
       }
     >
       <PageHeading
-        size="md"
         title={get(props.course, 'name', trans('loading'))}
         description={get(props.course, 'plainDescription')}
         primaryAction="edit"
@@ -104,7 +103,7 @@ const CourseDetails = (props) => {
         }, props.basePath, props.currentUser) : []}
       />
 
-      <PageSection size="md" className="mb-5">
+      <PageSection className="mb-5">
         <div className="bg-body-tertiary rounded-3 p-3 mb-4 w-100 text-body-secondary d-flex flex-row align-items-stretch gap-4 fs-sm">
           <div className="d-flex align-items-baseline flex-fill">
             <span className="fa fa-clock me-3 fs-sm" aria-hidden={true} />
@@ -139,13 +138,10 @@ const CourseDetails = (props) => {
 
       <PageTabbedSection
         className="mb-5"
-        path={props.path}
-        size="md"
         tabs={[
           {
-            path: '',
+            name: 'about',
             title: trans('about'),
-            exact: true,
             render: () => (
               <div className="mt-3" role="presentation">
                 <Content
@@ -157,7 +153,7 @@ const CourseDetails = (props) => {
               </div>
             )
           }, {
-            path: '/sessions',
+            name: 'sessions',
             title: trans('available_sessions', {}, 'cursus'),
             displayed: (!get(props.course, 'display.hideSessions') && 0 !== props.availableSessions.length) || hasPermission('edit', props.course),
             badge: props.availableSessions.length,
@@ -171,7 +167,7 @@ const CourseDetails = (props) => {
               />
             )
           }, {
-            path: '/participants',
+            name: 'participants',
             title: trans('participants'),
             displayed: hasPermission('register', props.course),
             render: () => {
@@ -183,7 +179,7 @@ const CourseDetails = (props) => {
               )
             }
           }, {
-            path: '/stats',
+            name: 'stats',
             title: trans('Suivi'),
             onEnter: () => props.loadStats(props.course.id),
             displayed: !isEmpty(get(props.course, 'registration.form')) && hasPermission('register', props.course),

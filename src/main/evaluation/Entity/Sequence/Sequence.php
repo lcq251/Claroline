@@ -71,12 +71,26 @@ class Sequence implements CrudEntityInterface
     #[ORM\Column]
     private string $numbering = 'none';
 
+    /**
+     * Pagination of the sequence.
+     *   - none : All the steps are displayed in the same page, one after another.
+     *   - step : One page per step + all of its sub steps.
+     *   - all  : One page per step.
+     */
+    #[ORM\Column]
+    private string $pagination = 'all';
+
     #[ORM\JoinColumn(name: 'resource_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     private ?ResourceNode $overviewResource = null;
 
+    #[ORM\Column(name: 'objective', type: Types::TEXT, nullable: true)]
+    private ?string $objective = null;
+
     /**
      * Force the opening of secondary resources.
+     *
+     * @deprecated
      */
     #[ORM\Column(options: ['default' => '_self'])]
     private string $secondaryResourcesTarget = '_self';
@@ -104,9 +118,15 @@ class Sequence implements CrudEntityInterface
     #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $steps;
 
+    /**
+     * Who see the sequence and should do it ?
+     */
     #[ORM\OneToMany(targetEntity: Assignment::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $assignments;
 
+    /**
+     * Which sequences must be done before unlocking this one.
+     */
     #[ORM\OneToMany(targetEntity: Requirement::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $requirements;
 
@@ -168,6 +188,16 @@ class Sequence implements CrudEntityInterface
         $this->numbering = $numbering;
     }
 
+    public function getPagination(): string
+    {
+        return $this->pagination;
+    }
+
+    public function setPagination(string $pagination): void
+    {
+        $this->pagination = $pagination;
+    }
+
     /**
      * Get root step of the sequence.
      *
@@ -197,6 +227,16 @@ class Sequence implements CrudEntityInterface
     public function setOverviewResource(?ResourceNode $overviewResource = null): void
     {
         $this->overviewResource = $overviewResource;
+    }
+
+    public function getObjective(): ?string
+    {
+        return $this->objective;
+    }
+
+    public function setObjective(?string $objective): void
+    {
+        $this->objective = $objective;
     }
 
     /**
@@ -281,9 +321,26 @@ class Sequence implements CrudEntityInterface
         }
     }
 
+    /**
+     * @return Collection|Assignment[]
+     */
     public function getAssignments(): Collection
     {
         return $this->assignments;
+    }
+
+    public function getAssignment(string $assignmentUuid): ?Assignment
+    {
+        $found = null;
+
+        foreach ($this->assignments as $assignment) {
+            if ($assignment->getUuid() === $assignmentUuid) {
+                $found = $assignment;
+                break;
+            }
+        }
+
+        return $found;
     }
 
     public function addAssignment(Assignment $assignment): void

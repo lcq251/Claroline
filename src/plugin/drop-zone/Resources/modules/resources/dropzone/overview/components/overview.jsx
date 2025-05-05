@@ -68,7 +68,6 @@ const Overview = props =>
     ]}
   >
     <PageSection
-      size="md"
       title={trans('evaluation_configuration', {}, 'dropzone')}
       className="py-3"
     >

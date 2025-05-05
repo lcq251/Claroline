@@ -11,6 +11,7 @@
   "download_sequence_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi la séquence.",
   "add_sequence": "Ajouter une séquence",
   "add_sequences": "Ajouter des séquences",
+  "add_sequence_step": "Ajouter une étape",
   "finish_sequence": "Terminer la séquence",
   "initialize_evaluations": "Initialiser les évaluations",
   "initialize_evaluations_help": "Générez les évaluations pour tous les utilisateurs n'ayant pas encore commencé l'espace d'activités.",

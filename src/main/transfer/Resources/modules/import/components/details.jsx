@@ -9,18 +9,15 @@ import {ImportFile} from '#/main/transfer/import/components/file'
 
 const ImportDetails = (props) =>
   <PageTabbedSection
-    size="md"
-    path={props.path}
     tabs={[
       {
-        path: '',
-        exact: true,
+        name: 'file',
         title: trans('file'),
         render: () => (
           <ImportFile importFile={props.importFile} />
         )
       }, {
-        path: '/log',
+        name: 'log',
         title: trans('log', {}, 'transfer'),
         render: () => (
           <ImportLog

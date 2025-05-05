@@ -1,40 +1,52 @@
-import React from 'react'
+import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 const parseValue = (value) => !isNaN(value) ? parseFloat(value) : value
 
-const Radio = props =>
-  <div
-    className={classes('form-check', props.className, {
-      'form-check-inline': props.inline
-    })}
-    role="presentation"
-  >
-    <input
-      id={props.id}
-      className="form-check-input"
-      type="radio"
-      value={props.value}
-      checked={props.checked}
-      disabled={props.disabled}
-      onChange={() => props.onChange(parseValue(props.value))}
-    />
+const Radio = props => {
+  const radioId = useId()
 
-    <label htmlFor={props.id} className="form-check-label d-block">
-      {props.label}
-    </label>
-  </div>
+  return (
+    <div
+      className={classes('form-check', props.className, {
+        'form-check-inline': props.inline
+      })}
+      role="presentation"
+    >
+      <input
+        id={radioId}
+        className="form-check-input"
+        type="radio"
+        value={props.value}
+        checked={props.checked}
+        disabled={props.disabled}
+        onChange={() => props.onChange(parseValue(props.value))}
+        tabIndex={props.tabIndex}
+        name={props.name}
+      />
+
+      <label htmlFor={radioId} className="form-check-label d-block">
+        {props.label}
+        {props.description &&
+          <p className="text-body-secondary fs-sm mb-0">{props.description}</p>
+        }
+      </label>
+    </div>
+  )
+}
 
 Radio.propTypes = {
-  id: T.oneOfType([T.string, T.number]).isRequired,
   className: T.string,
+  name: T.string.isRequired,
   label: T.node.isRequired,
+  description: T.string,
   value: T.oneOfType([T.string, T.number]),
   inline: T.bool,
   checked: T.bool,
   disabled: T.bool,
-  onChange: T.func.isRequired
+  onChange: T.func.isRequired,
+  tabIndex: T.number
 }
 
 Radio.defaultProps = {

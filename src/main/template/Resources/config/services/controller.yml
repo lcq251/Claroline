@@ -2,11 +2,3 @@ services:
     Claroline\TemplateBundle\Controller\TemplateController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true
-
-    Claroline\TemplateBundle\Controller\TemplateTypeController:
-        public: true
-        arguments:
-            - '@security.authorization_checker'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\TemplateBundle\Component\Template\TemplateProvider'

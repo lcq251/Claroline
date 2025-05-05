@@ -100,7 +100,8 @@ class SequenceSerializer
             ],
             'workspace' => $serializedWorkspace,
             'display' => [
-                'numbering' => $sequence->getNumbering() ?: 'none',
+                'numbering' => $sequence->getNumbering(),
+                'pagination' => $sequence->getPagination(),
                 'showScore' => $sequence->getShowScore(),
             ],
             'opening' => [
@@ -109,12 +110,14 @@ class SequenceSerializer
             'steps' => array_values(array_map(function (Step $step) use ($options) {
                 return $this->stepSerializer->serialize($step, $options);
             }, $sequence->getRootSteps())),
+            'estimatedDuration' => $sequence->getEstimatedDuration(),
+            'objective' => $sequence->getObjective(),
             'evaluation' => [
                 'certified' => $sequence->isCertified(),
                 'certificateTemplate' => $sequence->getCertificateTemplate() ?
                     $this->templateSerializer->serialize($sequence->getCertificateTemplate(), [SerializerInterface::SERIALIZE_MINIMAL]) :
                     null,
-                'estimatedDuration' => $sequence->getEstimatedDuration(),
+                'estimatedDuration' => $sequence->getEstimatedDuration(), // deprecated
                 'scoreTotal' => $sequence->getScoreTotal(),
                 'successCondition' => $sequence->getSuccessCondition(),
                 'endMessage' => $sequence->getEndMessage(),
@@ -176,16 +179,18 @@ class SequenceSerializer
         $this->sipe('meta.public', 'setPublic', $data, $sequence);
 
         $this->sipe('display.numbering', 'setNumbering', $data, $sequence);
+        $this->sipe('display.pagination', 'setPagination', $data, $sequence);
         $this->sipe('display.showScore', 'setShowScore', $data, $sequence);
 
         $this->sipe('opening.secondaryResources', 'setSecondaryResourcesTarget', $data, $sequence);
+        $this->sipe('estimatedDuration', 'setEstimatedDuration', $data, $sequence);
+        $this->sipe('objective', 'setObjective', $data, $sequence);
 
         if (isset($data['evaluation'])) {
             $this->sipe('evaluation.scoreTotal', 'setScoreTotal', $data, $sequence);
             $this->sipe('evaluation.endMessage', 'setEndMessage', $data, $sequence);
             $this->sipe('evaluation.successMessage', 'setSuccessMessage', $data, $sequence);
             $this->sipe('evaluation.failureMessage', 'setFailureMessage', $data, $sequence);
-            $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $sequence);
             $this->sipe('evaluation.successCondition', 'setSuccessCondition', $data, $sequence);
             $this->sipe('evaluation.certified', 'setCertified', $data, $sequence);
 
@@ -260,8 +265,6 @@ class SequenceSerializer
     private function deserializeSteps(array $stepsData, Sequence $sequence, array $options = []): void
     {
         $ids = [];
-
-        // updates steps
         foreach ($stepsData as $stepIndex => $stepData) {
             if ($stepData['id']) {
                 $step = $sequence->getStep($stepData['id']);
@@ -289,13 +292,28 @@ class SequenceSerializer
 
     private function deserializeAssignments(array $assignmentsData, Sequence $sequence, array $options = []): void
     {
-        // empty and recreate all assignments (not optimal)
-        $sequence->getAssignments()->clear();
+        $ids = [];
         foreach ($assignmentsData as $assignmentData) {
-            $assignment = new Assignment();
-            $sequence->addAssignment($assignment);
+            if ($assignmentData['id']) {
+                $assignment = $sequence->getAssignment($assignmentData['id']);
+            }
 
+            if (empty($assignment)) {
+                $assignment = new Assignment();
+            }
+
+            $sequence->addAssignment($assignment);
             $this->assignmentSerializer->deserialize($assignmentData, $assignment, $options);
+
+            $ids[] = $assignment->getUuid();
+        }
+
+        // removes steps which no longer exists
+        $currentAssignments = $sequence->getAssignments();
+        foreach ($currentAssignments as $currentAssignment) {
+            if (!in_array($currentAssignment->getUuid(), $ids)) {
+                $sequence->removeAssignment($currentAssignment);
+            }
         }
     }
 

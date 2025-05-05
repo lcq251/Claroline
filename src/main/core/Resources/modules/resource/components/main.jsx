@@ -19,6 +19,7 @@ import {ResourceProgression} from '#/main/evaluation/resource/progression'
 const Resource = props => {
   const [loaded, setLoaded] = useState(false)
 
+  const embedded = useSelector(selectors.embedded)
   const resourcePath = useSelector(selectors.path)
   const accessErrors = useSelector(selectors.accessErrors)
   const canEdit = useSelector((state) => hasPermission('edit', selectors.resourceNode(state)))
@@ -33,6 +34,7 @@ const Resource = props => {
   return (
     <PageContext.Provider
       value={{
+        embedded: embedded,
         menu: [
           {
             name: 'overview',

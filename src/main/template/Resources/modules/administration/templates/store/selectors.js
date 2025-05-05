@@ -12,26 +12,48 @@ const templateTypes = createSelector(
   (store) => store.templateTypes
 )
 
-const currentTemplate = createSelector(
+const current = createSelector(
   [store],
-  (store) => store.current || {}
+  (store) => store.current
 )
 
 const templateType = createSelector(
-  [currentTemplate],
-  (currentTemplate) => currentTemplate.type
+  [current, templateTypes],
+  (current, templateTypes) => {
+    let found
+    for (let key in templateTypes) {
+      found = templateTypes[key].find(t => t.name === current)
+      if (found) {
+        break;
+      }
+    }
+
+    return found
+  }
 )
 
 const template = (state) => formSelectors.data(formSelectors.form(state, STORE_NAME+'.template'))
 
 const templates = createSelector(
-  [currentTemplate],
-  (currentTemplate) => currentTemplate && currentTemplate.templates ? currentTemplate.templates : []
+  [store],
+  (store) => store.templates || []
 )
 
-const locales = (state) => configSelectors.param(state, 'locale.available')
+const locales = (state) => {
+  const current = currentLocale(state)
+  return []
+    .concat(configSelectors.param(state, 'locale.available'))
+    .sort((a, b) => {
+      if (a === current) {
+        return -1
+      } else if (b === current) {
+        return 1
+      }
+      return 0
+    })
+}
 
-const defaultLocale = (state) => configSelectors.param(state, 'locale.current')
+const currentLocale = (state) => configSelectors.param(state, 'locale.current')
 
 export const selectors = {
   STORE_NAME,
@@ -42,5 +64,5 @@ export const selectors = {
   template,
   templates,
   locales,
-  defaultLocale
+  currentLocale
 }

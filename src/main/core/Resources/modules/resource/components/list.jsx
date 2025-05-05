@@ -84,13 +84,12 @@ const Resources = props => {
           label: trans('creator'),
           displayed: true
         }, {
-          name: 'evaluation.estimatedDuration',
+          name: 'estimatedDuration',
           label: trans('estimated_duration'),
           type: 'number',
           options: {
             unit: trans('minutes')
-          },
-          alias: 'estimatedDuration'
+          }
         }, {
           name: 'evaluation.required',
           label: trans('required_resource', {}, 'resource'),

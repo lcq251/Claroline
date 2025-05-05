@@ -39,7 +39,7 @@ const SecurityModal = props => {
       size="xl"
     >
       <div className="modal-body d-flex flex-column flex-lg-row p-0 position-relative vh-lg-90">
-        <CloseButton className="position-absolute top-0 end-0 m-4" onClick={props.fadeModal} />
+        <CloseButton className="position-absolute top-0 end-0 m-4" onClick={props.fadeModal} aria-label={trans('close', {}, 'actions')} />
         <SecurityLayout className="rounded-start-3">
           <Router embedded={true}>
             <Routes
@@ -50,7 +50,7 @@ const SecurityModal = props => {
                 {
                   path: '/login',
                   render: () =>
-                    <div className="content-sm px-4 py-5 my-auto" role="presentation">
+                    <div className="content-md px-4 py-5 my-auto" role="presentation">
                       <h2 className="text-center">{trans('login')}</h2>
                       <p className="lead text-center text-body-secondary mb-5">{trans('login_auth_account', {platform: name})}</p>
                       <LoginMain
@@ -69,7 +69,7 @@ const SecurityModal = props => {
                   path: '/registration',
                   disabled: !selfRegistration,
                   render: () =>
-                    <div className="content-sm px-4 py-5 my-auto" role="presentation">
+                    <div className="content-md px-4 py-5 my-auto" role="presentation">
                       <h2 className="text-center">{trans('registration')}</h2>
                       <p className="lead text-center text-body-secondary mb-5">{trans('registration_help', {platform: name})}</p>
 
@@ -88,7 +88,7 @@ const SecurityModal = props => {
                   path: '/reset_password',
                   disabled: !changePassword,
                   render: () =>
-                    <div className="content-sm px-4 py-5 my-auto" role="presentation">
+                    <div className="content-md px-4 py-5 my-auto" role="presentation">
                       <h2 className="text-center">{trans('forgot_password')}</h2>
                       <p className="lead text-center text-body-secondary mb-5">{trans('send_password_help')}</p>
 

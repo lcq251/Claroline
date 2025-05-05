@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {Editor} from '@tinymce/tinymce-react'
 import merge from 'lodash/merge'
@@ -9,11 +9,11 @@ import omit from 'lodash/omit'
  */
 const TinymceInline = (props) =>
   <div className="tinymce-inline" style={{
-    minHeight: `${props.minRows * 34}px`,
-    maxHeight: 500
+    minHeight: `${props.minRows * 1.5}rem`,
+    maxHeight: `${(props.maxRows || 15) * 1.5}rem`
   }}>
     <Editor
-      {...omit(props, 'minRows', 'init')}
+      {...omit(props, 'minRows', 'maxRows', 'init')}
       inline={true}
       init={merge({}, props.init, {
         toolbar: false,
@@ -27,7 +27,8 @@ const TinymceInline = (props) =>
 
 TinymceInline.propTypes = {
   init: T.object,
-  minRows: T.number
+  minRows: T.number,
+  maxRows: T.number
 }
 
 export {

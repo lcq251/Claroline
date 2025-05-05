@@ -22,7 +22,7 @@ const ExampleComponents = (props) =>
       <Nav
         orientation="horizontal"
         variant="underline"
-        className="mb-3 content-lg px-4"
+        className="mb-3 content-xl px-4"
         items={[
           {
             name: 'alerts',

@@ -5,7 +5,7 @@ import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {constants} from '#/main/evaluation/constants'
 import {route} from '#/main/evaluation/sequence'
-import {selectors as contextSelectors} from '#/main/app/context'
+import {flattenSteps, getNumbering} from '#/main/evaluation/sequence/utils'
 
 const STORE_NAME = 'evaluationSequence'
 
@@ -48,7 +48,64 @@ const empty = createSelector(
   (steps) => 0 === steps.length
 )
 
-// is step navigation enabled ?
+const orderedSteps = createSelector(
+  [steps],
+  (steps) => flattenSteps(steps)
+)
+
+const totalSteps = createSelector(
+  [orderedSteps],
+  (orderedSteps) => orderedSteps.length
+)
+
+const currentStepSlug = createSelector(
+  [store],
+  (store) => store.currentStep
+)
+
+const currentStepIndex = createSelector(
+  [currentStepSlug, orderedSteps],
+  (currentStepSlug, orderedSteps) => orderedSteps.findIndex(step => step.slug === currentStepSlug)
+)
+
+const currentStep = createSelector(
+  [currentStepIndex, orderedSteps],
+  (currentStepIndex, orderedSteps) => orderedSteps[currentStepIndex]
+)
+
+// get the current step with its children
+/*const currentStep = createSelector(
+  [currentStepSlug, steps],
+  (currentStepSlug, stepsTree) => {
+    function searchStep(stepSlug, steps) {
+      for (let i = 0; i < steps.length; i++) {
+        let found
+        if (steps[i].slug === stepSlug) {
+          found = steps[i]
+        } else if (steps[i].children) {
+          found = searchStep(stepSlug, steps[i].children)
+        }
+
+        if (found) {
+          return found
+        }
+      }
+
+      return null
+    }
+
+    return searchStep(currentStepSlug, stepsTree)
+  }
+)*/
+
+const allSecondaryResources = createSelector(
+  [orderedSteps],
+  (orderedSteps) => orderedSteps.reduce((secondaryResources, current) => current.secondaryResources ?
+    secondaryResources.concat(current.secondaryResources) :
+    secondaryResources
+  , [])
+)
+
 const navigationEnabled = createSelector(
   [store],
   (store) => store.navigationEnabled
@@ -90,6 +147,16 @@ const hasScore = createSelector(
   (totalScore) => !!totalScore
 )
 
+const sequenceNumbering = createSelector(
+  [sequence],
+  (sequence) => get(sequence, 'display.numbering', 'none')
+)
+
+const stepNumbering = createSelector(
+  [steps, sequenceNumbering, (state, currentStep) => currentStep],
+  (steps, sequenceNumbering, currentStep) => getNumbering(sequenceNumbering, steps, currentStep)
+)
+
 export const selectors = {
   STORE_NAME,
 
@@ -98,11 +165,19 @@ export const selectors = {
   path,
   id,
   steps,
+  totalSteps,
+  orderedSteps,
   empty,
+  currentStep,
+  currentStepSlug,
+  currentStepIndex,
+  allSecondaryResources,
   navigationEnabled,
   evaluation,
   progression,
   userFeedback,
   hasScore,
-  totalScore
+  totalScore,
+  sequenceNumbering,
+  stepNumbering
 }

@@ -4,7 +4,6 @@ import get from 'lodash/get'
 import {selectors as formSelectors} from '#/main/app/content/form'
 
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
-import {constants} from '#/main/evaluation/sequence/constants'
 
 const STORE_NAME = 'sequenceEditor'
 
@@ -50,11 +49,6 @@ const numbering = createSelector(
   (data) => get(data, 'display.numbering')
 )
 
-const hasCustomNumbering = createSelector(
-  [numbering],
-  (numbering) => numbering === constants.NUMBERING_CUSTOM
-)
-
 export const selectors = {
   STORE_NAME,
   path,
@@ -65,6 +59,5 @@ export const selectors = {
   steps,
   assignments,
   requirements,
-  numbering,
-  hasCustomNumbering
+  numbering
 }

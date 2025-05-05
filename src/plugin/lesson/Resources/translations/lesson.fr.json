@@ -17,5 +17,6 @@
     "show_navigation": "Afficher la navigation",
     "show_navigation_help": "Affichez des boutons \"Précédent\" et \"Suivant\" pour naviguer facilement entre les pages.",
     "show_metadata": "Afficher les meta-données des pages",
-    "show_metadata_help": "Affichez le créateur et la date de dernière modification des pages de la Connaissance."
+    "show_metadata_help": "Affichez le créateur et la date de dernière modification des pages de la Connaissance.",
+    "new_page": "Nouvelle page"
 }

@@ -23,7 +23,6 @@ const Badge = (props) =>
     {isEmpty(props.badge) &&
       <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
-          size="md"
           icon={true}
           description={true}
         />
@@ -31,10 +30,8 @@ const Badge = (props) =>
     }
 
     {!isEmpty(props.badge) &&
-      <PageContent>
+      <PageContent poster={get(props.badge, 'poster')}>
         <PageHeading
-          size="md"
-          poster={get(props.badge, 'poster')}
           icon={<BadgeImage badge={props.badge} size="lg" border={true} />}
           title={get(props.badge, 'name')}
           description={get(props.badge, 'meta.description')}

@@ -6,6 +6,7 @@ import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {EditorPage} from '#/main/app/editor'
 import {ChoiceInput} from '#/main/app/data/types/choice/components/input'
 import {NumberInput} from '#/main/app/data/types/number/components/input'
 
@@ -15,9 +16,7 @@ import {QUIZ_TYPES, configureTypeEditor, setTypePresets} from '#/plugin/exo/reso
 
 import ScoreNone from '#/plugin/exo/scores/none'
 import ScoreSum from '#/plugin/exo/scores/sum'
-import {EditorPage} from '#/main/app/editor'
 
-const hasOverview = (quiz) => get(quiz, 'parameters.showOverview')
 const hasEnd = (quiz) => get(quiz, 'parameters.showEndPage')
 
 const supportedScores = [
@@ -94,61 +93,6 @@ const QuizEditorParameters = props => {
             }
           ]
         }, {
-          icon: 'fa fa-fw fa-home',
-          title: trans('overview'),
-          fields: [
-            {
-              name: 'parameters.showOverview',
-              type: 'boolean',
-              label: trans('enable_overview'),
-              /*linked: [
-                {
-                  name: 'description',
-                  type: 'html',
-                  label: trans('overview_message'),
-                  displayed: hasOverview,
-                  options: {
-                    workspace: props.workspace
-                  }
-                }, {
-                  name: 'parameters.showMetadata',
-                  type: 'boolean',
-                  label: trans('metadata_visible', {}, 'quiz'),
-                  displayed: hasOverview
-                }, {
-                  name: 'parameters._showOverviewStats',
-                  type: 'boolean',
-                  label: trans('show_attempts_stats', {}, 'quiz'),
-                  displayed: (quiz) => get(quiz, 'parameters.hasExpectedAnswers') && hasOverview(quiz),
-                  calculated: (quiz) => 'none' !== get(quiz, 'parameters.overviewStats'),
-                  onChange: (checked) => {
-                    if (checked) {
-                      props.update('parameters.overviewStats', 'user')
-                    } else {
-                      props.update('parameters.overviewStats', 'none')
-                    }
-                  },
-                  linked: [
-                    {
-                      name: 'parameters.overviewStats',
-                      type: 'choice',
-                      label: trans('calculation_mode', {}, 'quiz'),
-                      hideLabel: true,
-                      displayed: (quiz) => 'none' !== get(quiz, 'parameters.overviewStats'),
-                      options: {
-                        choices: {
-                          user: trans('user'),
-                          all: trans('all'),
-                          both: trans('both')
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]*/
-            }
-          ]
-        }, {
           icon: 'fa fa-fw fa-dice',
           title: trans('attempts_pick', {}, 'quiz'),
           fields: [
@@ -156,7 +100,6 @@ const QuizEditorParameters = props => {
               name: 'parameters.mandatoryQuestions',
               label: trans('make_questions_mandatory', {}, 'quiz'),
               type: 'boolean'
-              // TODO : add help text
             }, {
               name: 'picking.type',
               label: trans('quiz_picking_type', {}, 'quiz'),

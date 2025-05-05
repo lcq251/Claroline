@@ -1,10 +1,11 @@
 import differenceBy from 'lodash/differenceBy'
 
 import {trans} from '#/main/app/intl/translation'
+import {declareDataType} from '#/main/app/data/types'
 
 import {ChoiceInput} from '#/main/app/data/types/choice/components/input'
 import {ChoiceSearch} from '#/main/app/data/types/choice/components/search'
-import {declareDataType} from '#/main/app/data/types'
+import {ChoiceGroup} from '#/main/app/data/types/choice/components/group'
 
 export default declareDataType({
   name: 'choice',
@@ -73,6 +74,7 @@ export default declareDataType({
   },
   components: {
     filter: ChoiceSearch,
-    input: ChoiceInput
+    input: ChoiceInput,
+    group: ChoiceGroup
   }
 })

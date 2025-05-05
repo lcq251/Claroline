@@ -52,10 +52,9 @@ class StandardRestrictions extends Component {
         <PageHeading
           title={get(this.props.workspace, 'name')}
           description={get(this.props.workspace, 'meta.description')}
-          size="md"
         />
 
-        <PageSection size="md" className="py-4 bg-body-tertiary">
+        <PageSection className="py-4 bg-body-tertiary">
           <h2 className="h3 text-center">{trans('restricted_access')}</h2>
           <p className="lead text-body-secondary text-center">{trans('restricted_workspace.access_message', {}, 'workspace')}</p>
 

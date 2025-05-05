@@ -13,7 +13,7 @@ const TagsModal = props =>
     {...props}
     icon="fa fa-fw fa-tags"
     name="tagsPicker"
-    size="md"
+    size="lg"
     definition={[
       {
         name: 'name',

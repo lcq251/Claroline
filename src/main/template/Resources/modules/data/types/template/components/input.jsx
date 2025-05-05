@@ -4,7 +4,7 @@ import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {EntityInput} from '#/main/app/data/types/entity'
 
-import {Template as TemplateTypes} from '#/main/template/data/types/template/prop-types'
+import {Template as TemplateTypes} from '#/main/template/prop-types'
 import {MODAL_TEMPLATES} from '#/main/template/modals/templates'
 import {trans} from '#/main/app/intl'
 

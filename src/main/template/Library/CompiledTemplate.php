@@ -1,11 +1,13 @@
 <?php
 
-namespace Claroline\TempalteBundle\Library\Template;
+namespace Claroline\TemplateBundle\Library;
 
-final readonly class CompiledTemplate
+use Claroline\TemplateBundle\Model\TemplateContentInterface;
+
+final readonly class CompiledTemplate implements TemplateContentInterface
 {
     public function __construct(
-        private string $lang = '',
+        private string $lang,
         private ?string $title = '',
         private ?string $content = '',
     ) {

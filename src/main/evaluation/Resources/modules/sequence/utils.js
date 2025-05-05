@@ -1,6 +1,5 @@
 import {getActions as getPluginsActions, getDefaultAction as getPluginsDefaultAction} from '#/main/app/plugins'
-
-import {constants} from '#/main/evaluation/sequence/constants'
+import {NUMBERING_LITERAL, NUMBERING_NONE, NUMBERING_NUMERIC} from '#/main/app/utils/numbering'
 
 function getActions(sequences, refresher = {}, path, currentUser = null, withDefault = false) {
   return Promise.all([
@@ -28,8 +27,8 @@ function getEvaluationDefaultAction(evaluation, refresher, path, currentUser = n
  *
  * @param {Array}  steps
  */
-function flattenSteps(steps) {
-  function flatten(step, parent = null) {
+function flattenSteps(steps = []) {
+  function flatten(step, level = 0, parent = null) {
     const children = step.children
     const flatStep = Object.assign({}, step)
 
@@ -40,12 +39,13 @@ function flattenSteps(steps) {
         title: parent.title
       }
     }
+    flatStep.level = level
 
     let flattened = [flatStep]
 
     if (children) {
       children.map((child) => {
-        flattened = flattened.concat(flatten(child, flatStep))
+        flattened = flattened.concat(flatten(child, level + 1, flatStep))
       })
     }
 
@@ -86,7 +86,7 @@ function getNumbering(type, steps, step) {
     /**
      * The numbering label is a number.
      */
-    case constants.NUMBERING_NUMERIC:
+    case NUMBERING_NUMERIC:
       return '' + buildPath(steps, step)
         // make numbering start to 1 for users
         .map(i => i + 1)
@@ -95,22 +95,16 @@ function getNumbering(type, steps, step) {
     /**
      * The numbering label is a letter.
      */
-    case constants.NUMBERING_LITERAL:
+    case NUMBERING_LITERAL:
       return buildPath(steps, step)
         // get correct letter
         .map(i => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])
         .join('.') + '.'
 
     /**
-     * The numbering label is specified by each step.
-     */
-    case constants.NUMBERING_CUSTOM:
-      return step.display.numbering || ''
-
-    /**
      * The numbering feature is disabled.
      */
-    case constants.NUMBERING_NONE:
+    case NUMBERING_NONE:
     default:
       return ''
   }

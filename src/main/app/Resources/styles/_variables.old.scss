@@ -35,7 +35,7 @@ $login-bg-image:  "#{$images-path}login.jpg" !default; // will fallback on $body
 // By default it reuses some of the styles from the app header.
 // ---
 
-$toolbar-size:           24rem;
+// $toolbar-size:           $content-xs;
 $toolbar-bg:             var(--#{$prefix}body-bg) !default; // var(--#{$prefix}secondary-bg) !default;
 $toolbar-bg-subtle:      var(--#{$prefix}tertiary-bg) !default;
 $toolbar-color:          null !default; //color-contrast($toolbar-bg-subtle) !default;
@@ -79,35 +79,8 @@ $loader-bg:        transparent !default;
 // Flying alerts
 // ---
 
-$flying-alert-color:          var(--#{$prefix}body-color) !default;
-$flying-alert-bg:             var(--#{$prefix}body-bg) !default;
-$flying-alert-width:          420px !default;
-$flying-alert-padding:        map-get($spacers, 2) !default;
-$flying-alert-border-radius:  0 !default;
-$flying-alert-box-shadow:     $box-shadow !default;
-$flying-alert-margin-bottom:  map-get($spacers, 2) !default;
-$flying-alert-icon-size:      1.75rem !default;
-
-// variants
-$flying-alert-primary-color:  white;
-$flying-alert-primary-bg:     $primary;
-$flying-alert-primary-border: $flying-alert-primary-bg;
-
-$flying-alert-success-color:  white;
-$flying-alert-success-bg:     $success;
-$flying-alert-success-border: $flying-alert-success-bg;
-
-$flying-alert-warning-color:  white;
-$flying-alert-warning-bg:     $warning;
-$flying-alert-warning-border: $flying-alert-warning-bg;
-
-$flying-alert-error-color:    white;
-$flying-alert-error-bg:       $danger;
-$flying-alert-error-border:   $flying-alert-error-bg;
-
-$flying-alert-info-color:     white;
-$flying-alert-info-bg:        $info;
-$flying-alert-info-border:    $flying-alert-info-bg;
+$flying-alert-width:          34rem !default;
+$flying-alert-box-shadow:     $box-shadow, 0 0 1px rgba(0, 0, 0, .25) !default;
 
 
 // -

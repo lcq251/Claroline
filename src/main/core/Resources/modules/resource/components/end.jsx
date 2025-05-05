@@ -78,7 +78,7 @@ const ResourceEnd = (props) => {
   return (
     <ResourcePage>
       <PageContent  poster={get(resourceNode, 'poster')}>
-        <section className="resource-end content-lg mt-3">
+        <section className="resource-end content-xl mt-3">
           <h2 className="sr-only">{trans('resource_end', {}, 'resource')}</h2>
 
           <div className="row">

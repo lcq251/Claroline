@@ -9,7 +9,7 @@ import {ContentTitle} from '#/main/app/content/components/title'
 import {PageSection} from '#/main/app/page'
 
 const ExampleButtons = () =>
-  <PageSection size="lg">
+  <PageSection size="xl">
     <ContentTitle level={2} title="Button variants" />
     <ContentTitle level={3} title="btn" />
 

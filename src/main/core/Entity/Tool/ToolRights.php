@@ -11,12 +11,11 @@
 
 namespace Claroline\CoreBundle\Entity\Tool;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Repository\Tool\ToolRightsRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Repository\Tool\ToolRightsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_tool_rights')]
 #[ORM\UniqueConstraint(name: 'tool_rights_unique_ordered_tool_role', columns: ['ordered_tool_id', 'role_id'])]
@@ -28,15 +27,12 @@ class ToolRights
     #[ORM\Column(type: Types::INTEGER)]
     private int $mask = 0;
 
-    
     #[ORM\JoinColumn(name: 'role_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Role::class)]
     private Role $role;
 
     /**
      * should be unidirectional imo.
-     *
-     *
      */
     #[ORM\JoinColumn(name: 'ordered_tool_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: OrderedTool::class, inversedBy: 'rights')]

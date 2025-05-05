@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {Html} from '#/main/app/components/html'
@@ -27,7 +28,9 @@ ContentSkeleton.propTypes = {
 const Content = (props) =>
   <>
     {props.meta &&
-      <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4" role="presentation">
+      <div className={classes('text-body-tertiary d-flex align-items-center gap-3', {
+        'mb-4': !!props.children || !!props.placeholder
+      })} role="presentation">
         {props.meta}
       </div>
     }

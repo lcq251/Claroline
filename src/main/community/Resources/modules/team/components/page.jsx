@@ -21,17 +21,14 @@ const Team = (props) =>
     {isEmpty(props.team) &&
       <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
-          size="md"
           description={true}
         />
       </PageContent>
     }
 
     {!isEmpty(props.team) &&
-      <PageContent>
+      <PageContent poster={get(props.team, 'poster')}>
         <PageHeading
-          size="md"
-          poster={get(props.team, 'poster')}
           title={get(props.team, 'name', trans('loading'))}
           description={get(props.team, 'meta.description')}
           primaryAction="edit"

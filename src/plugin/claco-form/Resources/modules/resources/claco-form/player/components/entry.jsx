@@ -82,7 +82,6 @@ class Entry extends Component {
         <PageContent>
           <PageHeading
             title={this.props.entry.title}
-            size="md"
             primaryAction="edit"
             actions={[
               {
@@ -155,7 +154,7 @@ class Entry extends Component {
             ]}
           />
 
-          <PageSection size="md" className="mb-5">
+          <PageSection className="mb-5">
             {this.canViewMetadata() &&
               <ContentPublication
                 className="mb-4"

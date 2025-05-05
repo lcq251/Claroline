@@ -9,16 +9,14 @@ const Step = {
     title: T.string,
     description: T.string,
     poster: T.string,
-    display: T.shape({
-      numbering: T.string
-    }).isRequired,
+    objective: T.string,
+    estimatedDuration: T.number,
     primaryResource: T.shape({
       id: T.string.isRequired,
       meta: T.shape({
         type: T.string.isRequired
       })
     }),
-    showResourceHeader: T.bool,
     secondaryResources: T.arrayOf(T.shape({
       // minimal resource
     }))
@@ -29,19 +27,20 @@ const Sequence = {
   propTypes: {
     id: T.string.isRequired,
     name: T.string,
+    poster: T.string,
+    objective: T.string,
     meta: T.shape({
-      published: T.bool
+      published: T.bool,
+      description: T.string,
+      descriptionHtml: T.string
     }),
     display: T.shape({
-      numbering: T.oneOf(['none', 'numeric', 'literal', 'custom']),
+      numbering: T.oneOf(['none', 'numeric', 'literal']),
       showScore: T.bool
     }).isRequired,
     score: T.shape({
       success: T.number,
       total: T.number
-    }),
-    opening: T.shape({
-      secondaryResources: T.oneOf(['_self', '_blank'])
     }),
     steps: T.arrayOf(T.shape(
       Step.propTypes
@@ -67,9 +66,6 @@ const Sequence = {
     },
     display: {
       numbering: 'none'
-    },
-    opening: {
-      secondaryResources: '_self'
     },
     steps: []
   }

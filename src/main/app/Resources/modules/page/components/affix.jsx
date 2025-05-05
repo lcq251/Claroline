@@ -7,7 +7,7 @@ import {toKey} from '#/main/app/utils/text'
 import isEmpty from 'lodash/isEmpty'
 
 const PageAffixCard = (props) =>
-  <div className={classes('card shadow m-4', props.className)} style={{width: '24rem'}}>
+  <div className={classes('card shadow m-4 content-xs', props.className)}>
     <div className="p-4" role="presentation">
       {props.children}
 

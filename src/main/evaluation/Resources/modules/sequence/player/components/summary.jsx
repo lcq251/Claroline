@@ -27,9 +27,9 @@ const PlayerSummary = (props) => {
         {trans('back_home', {}, 'actions')}
       </LinkButton>
 
-      <h2 className="app-page-aside-title">
+      <span className="h4 app-page-aside-title">
         {props.sequence.name}
-      </h2>
+      </span>
 
       {props.userEvaluation &&
         <>

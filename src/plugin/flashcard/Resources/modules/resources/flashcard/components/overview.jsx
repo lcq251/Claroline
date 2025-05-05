@@ -61,7 +61,7 @@ const Overview = (props) => {
       ]}
     >
 
-      <PageSection size="md" className="py-3">
+      <PageSection className="py-3">
         {isEmpty(props.cards) &&
           <ContentPlaceholder
             size="lg"

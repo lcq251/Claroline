@@ -11,12 +11,12 @@
 
 namespace Claroline\CoreBundle\Entity\Resource;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Repository\Resource\ResourceRightsRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Repository\Resource\ResourceRightsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_resource_rights')]
@@ -28,32 +28,23 @@ class ResourceRights
     use Id;
 
     #[ORM\Column(type: Types::INTEGER)]
-    private $mask = 0;
+    private int $mask = 0;
 
-    /**
-     *
-     * @var Role
-     */
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Role $role = null;
 
-    /**
-     *
-     * @var ResourceNode
-     */
+    #[ORM\ManyToOne(targetEntity: ResourceNode::class, cascade: ['persist'], inversedBy: 'rights')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: ResourceNode::class, inversedBy: 'rights', cascade: ['persist'])]
     private ?ResourceNode $resourceNode = null;
 
     /**
-     *
      * @var Collection<int, ResourceType>
      */
+    #[ORM\ManyToMany(targetEntity: ResourceType::class, inversedBy: 'rights')]
     #[ORM\JoinTable(name: 'claro_list_type_creation')]
     #[ORM\JoinColumn(name: 'resource_rights_id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'resource_type_id', onDelete: 'CASCADE')]
-    #[ORM\ManyToMany(targetEntity: ResourceType::class, inversedBy: 'rights')]
     private Collection $resourceTypes;
 
     public function __construct()
@@ -91,7 +82,7 @@ class ResourceRights
         $this->mask = $mask;
     }
 
-    public function getCreatableResourceTypes()
+    public function getCreatableResourceTypes(): Collection
     {
         return $this->resourceTypes;
     }

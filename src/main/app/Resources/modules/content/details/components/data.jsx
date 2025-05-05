@@ -33,7 +33,7 @@ const DetailsData = props => {
   const openedSection = otherSections.find(section => section.defaultOpened)
 
   return (
-    <div className={classes('data-details', props.className, props.flush && 'data-details-flush', !props.flush && 'content-md')}>
+    <div className={classes('data-details', props.className, props.flush && 'data-details-flush', !props.flush && 'content-lg')}>
       {props.title &&
         <ContentTitle
           level={props.level}

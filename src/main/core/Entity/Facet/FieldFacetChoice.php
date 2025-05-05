@@ -11,13 +11,12 @@
 
 namespace Claroline\CoreBundle\Entity\Facet;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'claro_field_facet_choice')]
 #[ORM\Entity]
@@ -26,126 +25,86 @@ class FieldFacetChoice
     use Id;
     use Uuid;
 
-    /**
-     * @var string
-     */
     #[ORM\Column]
-    private $name;
+    private ?string $name = null;
 
-    /**
-     *
-     *
-     * @var FieldFacet
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: FieldFacet::class, inversedBy: 'fieldFacetChoices')]
     private ?FieldFacet $fieldFacet = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: Types::INTEGER)]
-    protected $position;
+    private int $position = 0;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: FieldFacetChoice::class, inversedBy: 'children')]
-    protected ?FieldFacetChoice $parent = null;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    private ?FieldFacetChoice $parent = null;
 
     /**
      * @var Collection<int, FieldFacetChoice>
      */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: FieldFacetChoice::class, cascade: ['persist', 'remove'])]
-    protected Collection $children;
+    #[ORM\OneToMany(targetEntity: FieldFacetChoice::class, mappedBy: 'parent', cascade: ['persist', 'remove'])]
+    private Collection $children;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->refreshUuid();
     }
 
-    /**
-     * @param string $label
-     */
-    public function setLabel($label)
+    public function setLabel(string $label): void
     {
         $this->name = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): ?string
     {
         return $this->name;
     }
 
-    public function setFieldFacet(FieldFacet $ff)
+    public function setFieldFacet(FieldFacet $ff): void
     {
         $this->fieldFacet = $ff;
         $ff->addFieldChoice($this);
     }
 
-    /**
-     * @return FieldFacet
-     */
-    public function getFieldFacet()
+    public function getFieldFacet(): ?FieldFacet
     {
         return $this->fieldFacet;
     }
 
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }
 
-    /**
-     * @return int
-     */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
-    /**
-     * @return FieldFacetChoice|null
-     */
-    public function getParent()
+    public function getParent(): ?FieldFacetChoice
     {
         return $this->parent;
     }
 
-    public function setParent(self $parent = null)
+    public function setParent(self $parent = null): void
     {
         $this->parent = $parent;
     }
 
-    /**
-     * @return array
-     */
-    public function getChildren()
+    public function getChildren(): array
     {
         return $this->children->toArray();
     }
 
-    public function emptyChildren()
-    {
-        $this->children->clear();
-    }
-
-    public function addChild(FieldFacetChoice $child)
+    public function addChild(FieldFacetChoice $child): void
     {
         if (!$this->children->contains($child)) {
             $this->children->add($child);
         }
     }
 
-    public function removeChild(FieldFacetChoice $child)
+    public function removeChild(FieldFacetChoice $child): void
     {
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
@@ -157,17 +116,17 @@ class FieldFacetChoice
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->name;
     }
 
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

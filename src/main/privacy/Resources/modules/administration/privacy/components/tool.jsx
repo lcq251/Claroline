@@ -30,7 +30,7 @@ const PrivacyTool = (props) => {
     >
       <ToolPage>
         <PageContent>
-          <ContentSizing size="md">
+          <ContentSizing size="lg">
             <PrivacySummary
               dpo={props.parameters.dpo || {}}
               countryStorage={props.parameters.countryStorage}

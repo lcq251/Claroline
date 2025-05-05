@@ -18,7 +18,7 @@ import {ResourceOverview} from '#/main/core/resource'
 const OverviewComponent = props =>
   <ResourceOverview>
     {(props.canAddEntry || props.canSearchEntry || props.randomEnabled) &&
-      <PageSection size="md" className="py-3">
+      <PageSection className="py-3">
         <ContentMenu
           items={[
             {

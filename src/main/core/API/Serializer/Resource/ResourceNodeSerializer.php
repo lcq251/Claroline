@@ -83,6 +83,7 @@ class ResourceNodeSerializer
             'code' => $resourceNode->getCode(),
             'thumbnail' => $resourceNode->getThumbnail(),
             'poster' => $resourceNode->getPoster(),
+            'estimatedDuration' => $resourceNode->getEstimatedDuration(),
             'meta' => [
                 'type' => $resourceNode->getType(), // try to remove. use mimeType instead
                 'mimeType' => $resourceNode->getMimeType(),
@@ -102,7 +103,6 @@ class ResourceNodeSerializer
             'evaluation' => [
                 'evaluated' => $resourceNode->isEvaluated(),
                 'required' => $resourceNode->isRequired(),
-                'estimatedDuration' => $resourceNode->getEstimatedDuration(),
             ],
             'restrictions' => [
                 'hidden' => $resourceNode->isHidden(),
@@ -147,6 +147,7 @@ class ResourceNodeSerializer
         $this->sipe('code', 'setCode', $data, $resourceNode);
         $this->sipe('poster', 'setPoster', $data, $resourceNode);
         $this->sipe('thumbnail', 'setThumbnail', $data, $resourceNode);
+        $this->sipe('estimatedDuration', 'setEstimatedDuration', $data, $resourceNode);
 
         if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
             $this->sipe('id', 'setUuid', $data, $resourceNode);
@@ -200,7 +201,6 @@ class ResourceNodeSerializer
         if (isset($data['evaluation'])) {
             $this->sipe('evaluation.evaluated', 'setEvaluated', $data, $resourceNode);
             $this->sipe('evaluation.required', 'setRequired', $data, $resourceNode);
-            $this->sipe('evaluation.estimatedDuration', 'setEstimatedDuration', $data, $resourceNode);
         }
 
         if (!in_array(Options::NO_RIGHTS, $options) && isset($data['rights'])) {

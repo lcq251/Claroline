@@ -12,12 +12,12 @@ import {Location as LocationTypes} from '#/main/core/tools/locations/prop-types'
 const LocationAbout = (props) =>
   <>
     {get(props.location, 'meta.description') &&
-      <PageSection size="md">
+      <PageSection>
         <Html className="lead mb-5 mt-4">{get(props.location, 'meta.description')}</Html>
       </PageSection>
     }
 
-    <PageSection size="md" className="mb-5">
+    <PageSection className="mb-5">
       <DetailsData
         data={props.location}
         definition={[

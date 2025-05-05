@@ -3,7 +3,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 import {makeFormReducer} from '#/main/app/content/form/store/reducer'
-import {makeListReducer} from '#/main/app/content/list/store/reducer'
 import {FORM_SUBMIT_SUCCESS, FORM_RESET} from '#/main/app/content/form/store/actions'
 
 import {RESOURCE_LOAD} from '#/main/core/resource/store/actions'
@@ -20,12 +19,14 @@ const reducer = combineReducers({
   resource: makeReducer({}, {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.resource
   }),
-  chapter: makeReducer({}, {
+  chapter: makeReducer(null, {
     [CHAPTER_LOAD]: (state, action) => action.chapter,
     [CHAPTER_RESET]: () => ({}),
     [CHAPTER_DELETED]: () => null
   }),
-  chapters: makeListReducer(selectors.LIST_NAME),
+  chapters: makeReducer([], {
+    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.chapters
+  }),
   placeholders: makeReducer([], {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.placeholders
   }),

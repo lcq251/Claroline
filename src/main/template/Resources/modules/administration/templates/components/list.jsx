@@ -16,21 +16,21 @@ const TemplateList = (props) => {
     >
       <PageContent>
         <PageSection size="md">
-          <p className="mt-5 mb-4 text-center lead">
+          <p className="my-5 text-center lead">
             {trans('configure_'+props.type+'_help', {}, 'template')}
           </p>
 
           <ContentMenu
             className="mb-5"
             autoFocus={false}
+            search={true}
             items={types
               .map(type => ({
-                id: type,
-                label: trans(type, {}, 'template'),
-                description: trans(type+'_desc', {}, 'template'),
+                id: type.name,
+                label: trans(type.name, {}, 'template'),
                 action: {
                   type: LINK_BUTTON,
-                  target: `${props.path}/${props.type}/${type}`
+                  target: `${props.path}/${props.type}/${type.name}`
                 }
               }))
               .sort((a, b) => {

@@ -22,9 +22,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 
-/**
- * @todo refactor using AbstractCrudController
- */
 #[Route(path: '/lesson/{lessonId}/chapters')]
 class ChapterController
 {
@@ -100,7 +97,7 @@ class ChapterController
         #[MapEntity(mapping: ['lessonId' => 'uuid'])]
         Lesson $lesson,
         #[MapEntity(mapping: ['slug' => 'slug'])]
-        Chapter $parent
+        ?Chapter $parent = null
     ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 

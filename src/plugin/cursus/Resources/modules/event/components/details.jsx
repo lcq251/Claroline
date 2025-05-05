@@ -10,13 +10,9 @@ import {PageTabbedSection} from '#/main/app/page'
 
 const EventDetails = (props) =>
   <PageTabbedSection
-    path={`${props.path}/${props.event.id}`}
-    size="md"
     tabs={[
       {
-        path: '',
-        exact: true,
-        //icon: 'fa fa-user',
+        name: 'about',
         title: trans('about'),
         render: () => (
           <EventAbout
@@ -27,7 +23,7 @@ const EventDetails = (props) =>
           />
         )
       }, {
-        path: '/participants',
+        name: 'participants',
         title: trans('participants'),
         displayed: props.isAuthenticated,
         render: () => (

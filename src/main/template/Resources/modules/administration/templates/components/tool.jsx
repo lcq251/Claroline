@@ -18,13 +18,11 @@ const TemplateTool = (props) =>
       {
         name: 'email',
         type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-at',
         label: trans('email'),
         target: `${props.path}/email`
       }, {
         name: 'pdf',
         type: LINK_BUTTON,
-        icon: 'fa fa-fw fa-file-pdf',
         label: trans('pdf'),
         target: `${props.path}/pdf`
       }, {
@@ -38,7 +36,6 @@ const TemplateTool = (props) =>
       {
         path: '/:type',
         exact: true,
-        onEnter: () => props.invalidateList(),
         render: (routerProps) => (
           <TemplateList
             type={routerProps.match.params.type}
@@ -54,8 +51,7 @@ const TemplateTool = (props) =>
 
 TemplateTool.propTypes = {
   path: T.string.isRequired,
-  open: T.func.isRequired,
-  invalidateList: T.func.isRequired
+  open: T.func.isRequired
 }
 
 export {

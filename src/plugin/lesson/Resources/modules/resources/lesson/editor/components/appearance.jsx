@@ -1,9 +1,11 @@
 import React from 'react'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
 
-import {constants} from '#/plugin/lesson/resources/lesson/constants'
+import {NUMBERINGS} from '#/main/app/utils/numbering'
+import {constants} from '#/main/evaluation/sequence/constants'
 
 const LessonEditorAppearance = () =>
   <ResourceEditorAppearance
@@ -21,10 +23,21 @@ const LessonEditorAppearance = () =>
             label: trans('show_overview', {}, 'lesson'),
             help: trans('show_overview_help', {}, 'lesson')
           }, {
+            name: 'resource.display.pagination',
+            type: 'choice',
+            label: trans('sequence_pagination', {}, 'evaluation'),
+            required: true,
+            options: {
+              noEmpty: true,
+              condensed: false,
+              choices: constants.PAGINATIONS
+            }
+          }, {
             name: 'resource.display.navigation',
             type: 'boolean',
             label: trans('show_navigation', {}, 'lesson'),
-            help: trans('show_navigation_help', {}, 'lesson')
+            help: trans('show_navigation_help', {}, 'lesson'),
+            displayed: (formData) => 'none' !== get(formData, 'resource.display.pagination')
           }, {
             name: 'resource.display.showMeta',
             type: 'boolean',
@@ -38,7 +51,7 @@ const LessonEditorAppearance = () =>
             options: {
               noEmpty: true,
               condensed: false,
-              choices: constants.LESSON_NUMBERINGS
+              choices: NUMBERINGS
             }
           }
         ]

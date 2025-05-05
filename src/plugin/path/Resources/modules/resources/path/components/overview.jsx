@@ -62,7 +62,7 @@ const PathOverview = (props) =>
     }
   >
     {!isEmpty(get(props.path, 'overview.resource')) &&
-      <PageSection size="md">
+      <PageSection>
         <ResourceEmbedded
           className="step-primary-resource"
           resourceNode={get(props.path, 'overview.resource')}
@@ -72,7 +72,6 @@ const PathOverview = (props) =>
     }
 
     <PageSection
-      size="md"
       className="mb-5"
       title={trans('summary')}
     >

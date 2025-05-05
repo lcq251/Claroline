@@ -98,7 +98,7 @@ const Courses = (props) => {
       }}
       card={CourseCard}
     >
-      <ContentSizing size="md" className="mt-4">
+      <ContentSizing size="lg" className="mt-4">
         {props.children}
       </ContentSizing>
     </ListData>

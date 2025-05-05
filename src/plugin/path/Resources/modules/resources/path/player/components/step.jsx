@@ -48,7 +48,6 @@ ManualProgression.propTypes = {
 
 const SecondaryResources = props =>
   <PageSection
-    size="md"
     className={classes('mb-5', props.className)}
     title={trans('useful_links')}
   >
@@ -82,7 +81,6 @@ SecondaryResources.propTypes = {
 const Step = props =>
   <>
     <PageHeading
-      size="md"
       title={
         <>
           {props.numbering &&
@@ -103,7 +101,7 @@ const Step = props =>
     {props.children}
 
     {((props.manualProgressionAllowed && props.currentUser) || props.description) &&
-      <PageSection size="md">
+      <PageSection>
         {props.manualProgressionAllowed && props.currentUser &&
           <ManualProgression
             status={props.progression}

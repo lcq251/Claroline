@@ -29,10 +29,10 @@ const ResourceCard = props =>
       <>
         <Badge variant="secondary" subtle={true}>{trans(get(props.data, 'meta.type'), {}, 'resource')}</Badge>
         <Badge variant="secondary" subtle={true}>{transChoice('display_views', get(props.data, 'meta.views') || 0, {count: get(props.data, 'meta.views') || 0})}</Badge>
-        {get(props.data, 'evaluation.estimatedDuration') &&
+        {get(props.data, 'estimatedDuration') &&
           <Badge variant="secondary" subtle={true}>
             <span className="fa far fa-clock me-1" aria-hidden={true} />
-            {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
+            {get(props.data, 'estimatedDuration') + ' ' + trans('minutes_short')}
           </Badge>
         }
 

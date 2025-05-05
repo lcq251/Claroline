@@ -67,7 +67,7 @@ const SequenceEditorSummary = () => {
         status: 'danger',
         value: <span className="fa fa-fw fa-exclamation-circle" role="alert" />
       } : undefined,
-      additional: getStepActions(
+      actions: getStepActions(
         steps,
         step,
         update,
@@ -96,14 +96,18 @@ const SequenceEditorSummary = () => {
                   contextId: get(workspace, 'id')
                 }
               }
-            }
+            }, {
+              name: 'objective',
+              label: trans('objective', {}, 'evaluation'),
+              type: 'html'
+            },
           ]
         }
       ]}
     >
       <ContentSummary
+        toolbar="add more"
         links={steps.map(getStepSummary)}
-        noCollapse={true}
       />
 
       <Button
@@ -111,7 +115,7 @@ const SequenceEditorSummary = () => {
         className={classes('btn btn-primary w-100 mt-3 mb-5', {
           'btn-wave': isEmpty(steps)
         })}
-        label={trans('step_add', {}, 'path')}
+        label={trans('add_sequence_step', {}, 'actions')}
         size="lg"
         callback={() => {
           const newStepId = makeId()

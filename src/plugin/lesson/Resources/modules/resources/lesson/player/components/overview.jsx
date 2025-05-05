@@ -25,7 +25,7 @@ const LessonPlayerOverview = () => {
   const description = get(resourceNode, 'meta.descriptionHtml', null)
 
   const numbering = useSelector(selectors.numbering)
-  const tree = useSelector(selectors.treeData)
+  const tree = useSelector(selectors.tree)
   const chapters = get(tree, 'children', [])
 
   function getChapterSummary(chapter) {
@@ -42,13 +42,9 @@ const LessonPlayerOverview = () => {
   return (
     <PageContent className={classes('d-flex flex-column', {
       'mx-n4': embedded
-    })}>
-      {showHeader && get(resourceNode, 'poster') &&
-        <Poster url={get(resourceNode, 'poster')} className="app-page-poster" />
-      }
-
+    })} poster={get(resourceNode, 'poster')}>
       {description &&
-        <PageSection size="md" className={classes({
+        <PageSection className={classes({
           'pt-5': !embedded || showHeader
         })}>
           <Html className="content-text mb-5">{description}</Html>
@@ -56,7 +52,6 @@ const LessonPlayerOverview = () => {
       }
 
       <PageSection
-        size="md"
         title={trans('summary')}
         className={classes({
           'mt-5': !description && (!embedded || showHeader)
@@ -71,7 +66,6 @@ const LessonPlayerOverview = () => {
           <ContentSummary
             className="mb-5"
             links={chapters.map(getChapterSummary)}
-            noCollapse={true}
           />
         }
       </PageSection>

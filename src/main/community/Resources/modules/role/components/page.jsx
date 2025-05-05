@@ -21,7 +21,6 @@ const Role = (props) =>
     {isEmpty(props.role) &&
       <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
-          size="md"
           description={true}
         />
       </PageContent>
@@ -30,7 +29,6 @@ const Role = (props) =>
     {!isEmpty(props.role) &&
       <PageContent>
         <PageHeading
-          size="md"
           title={trans(get(props.role, 'translationKey', 'loading'))}
           description={get(props.role, 'meta.description')}
           primaryAction="edit"

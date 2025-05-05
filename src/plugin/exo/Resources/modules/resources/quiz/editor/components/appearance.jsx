@@ -4,17 +4,24 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
 
-import {constants} from '#/plugin/exo/resources/quiz/constants'
+import {NUMBERINGS} from '#/main/app/utils/numbering'
 
 const QuizEditorAppearance = () =>
   <ResourceEditorAppearance
     definition={[
       {
-        name: 'numbering',
-        title: trans('Titres et numérotation'),
+        name: 'quiz-display',
+        icon: 'fa fa-fw fa-desktop',
+        title: trans('display_parameters'),
         primary: true,
+        hideTitle: true,
         fields: [
           {
+            name: 'resource.display.showOverview',
+            type: 'boolean',
+            label: trans('show_overview', {}, 'quiz'),
+            help: trans('show_overview_help', {}, 'quiz')
+          }, {
             name: 'resource.parameters.showTitles',
             type: 'boolean',
             label: trans('show_step_titles', {}, 'quiz'),
@@ -28,7 +35,7 @@ const QuizEditorAppearance = () =>
                 options: {
                   noEmpty: true,
                   condensed: false,
-                  choices: constants.QUIZ_NUMBERINGS
+                  choices: NUMBERINGS
                 }
               }
             ]
@@ -46,7 +53,7 @@ const QuizEditorAppearance = () =>
                 options: {
                   noEmpty: true,
                   condensed: false,
-                  choices: constants.QUIZ_NUMBERINGS
+                  choices: NUMBERINGS
                 }
               }
             ]

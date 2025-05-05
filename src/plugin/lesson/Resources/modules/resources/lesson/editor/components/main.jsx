@@ -10,7 +10,7 @@ import {LessonEditorAppearance} from '#/plugin/lesson/resources/lesson/editor/co
 
 const LessonEditor = () => {
   const lesson = useSelector(selectors.lesson)
-  const chapters = useSelector(selectors.treeData)
+  const chapters = useSelector(selectors.tree)
 
   return (
     <ResourceEditor

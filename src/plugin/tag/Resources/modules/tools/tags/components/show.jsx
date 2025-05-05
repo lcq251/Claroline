@@ -31,7 +31,6 @@ const TagShow = (props) => {
       {tag &&
         <PageContent>
           <PageHeading
-            size="md"
             icon={
               <Thumbnail
                 color={tag.color}
@@ -44,7 +43,7 @@ const TagShow = (props) => {
             description={get(tag, 'meta.description')}
           />
 
-          <PageSection size="md">
+          <PageSection>
             <ListData
               className="mb-5"
               name={selectors.STORE_NAME + '.tag.objects'}

@@ -26,7 +26,7 @@ const LessonEditorSummary = () => {
       numbering: getNumbering(baseNumbering, editedChapters, chapter),
       label: chapter.title,
       target: `${resourceEditorPath}/${chapter.slug}`,
-      additional: [
+      actions: [
         {
           name: 'add',
           type: LINK_BUTTON,
@@ -53,7 +53,6 @@ const LessonEditorSummary = () => {
     >
       <ContentSummary
         links={editedChapters.map(getChapterSummary)}
-        noCollapse={true}
       />
 
       <Button

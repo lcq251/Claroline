@@ -39,7 +39,7 @@ const MediaInfo = ({
       }
 
       {description &&
-        <Html className={classes('content-text', !embedded && 'mt-3')}>
+        <Html className={classes('content-text', !embedded ? 'mt-3' : 'mt-4')}>
           {description}
         </Html>
       }

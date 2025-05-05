@@ -66,13 +66,13 @@ class Player extends Component {
           }
 
           {this.isClosed() &&
-            <Alert type="danger" title={trans('meeting_is_closed', {}, 'bbb')} className="component-container">
+            <Alert type="danger" title={trans('meeting_is_closed', {}, 'bbb')}>
               {trans(!get(this.props.bbb, 'restrictions.disabled', true) ? 'meetings_limit_reached':'meeting_disabled', {}, 'bbb')}
             </Alert>
           }
 
           {!this.isClosed() && !isEmpty(this.props.joinStatus) &&
-            <Alert type="warning" title={trans('meeting_cannot_join', {}, 'bbb')} className="component-container">
+            <Alert type="warning" title={trans('meeting_cannot_join', {}, 'bbb')}>
               {trans(this.props.joinStatus, {}, 'bbb')}
             </Alert>
           }
@@ -91,13 +91,13 @@ class Player extends Component {
               }
 
               {this.props.allowRecords && this.props.bbb.record &&
-                <Alert type="warning" title={trans('meeting_recorded', {}, 'bbb')} className="component-container">
+                <Alert type="warning" title={trans('meeting_recorded', {}, 'bbb')}>
                   {trans('meeting_recorded_help', {}, 'bbb')}
                 </Alert>
               }
 
               {this.props.bbb.moderatorRequired &&
-                <Alert type="info" title={trans('moderator_help_title', {}, 'bbb')} className="component-container">
+                <Alert type="info" title={trans('moderator_help_title', {}, 'bbb')}>
                   {trans('moderator_help_message', {}, 'bbb')}
                 </Alert>
               }

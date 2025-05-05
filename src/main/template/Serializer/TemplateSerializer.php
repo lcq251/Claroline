@@ -41,10 +41,11 @@ class TemplateSerializer
             'system' => $template->isSystem(),
         ];
 
-        if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options) && !in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
+        if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
             $contents = [];
             foreach ($template->getTemplateContents() as $content) {
                 $contents[$content->getLang()] = [
+                    'lang' => $content->getLang(),
                     'title' => $content->getTitle(),
                     'content' => $content->getContent(),
                 ];

@@ -1,31 +1,38 @@
-import React from 'react'
+import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
-const Checkbox = props =>
-  <div className={classes('form-check', {
-    'form-check-inline': props.inline,
-    'form-switch': props.switch
-  }, props.className)} role="presentation">
-    <input
-      id={props.id}
-      className="form-check-input"
-      type="checkbox"
-      checked={props.checked}
-      disabled={props.disabled}
-      onChange={e => props.onChange(e.target.checked)}
-    />
+const Checkbox = props => {
+  const checkId = useId()
 
-    <label htmlFor={props.id} className="form-check-label d-block">
-      {props.checked && props.labelChecked ? props.labelChecked : props.label}
-    </label>
-  </div>
+  return (
+    <div className={classes('form-check', {
+      'form-check-inline': props.inline,
+      'form-switch': props.switch
+    }, props.className)} role="presentation">
+      <input
+        id={checkId}
+        className="form-check-input"
+        type="checkbox"
+        checked={props.checked}
+        disabled={props.disabled}
+        onChange={e => props.onChange(e.target.checked)}
+      />
+
+      <label htmlFor={checkId} className="form-check-label d-block">
+        {props.label}
+        {props.description &&
+          <p className="text-body-secondary fs-sm">{props.description}</p>
+        }
+      </label>
+    </div>
+  )
+}
 
 Checkbox.propTypes = {
-  id: T.string.isRequired,
   className: T.string,
   label: T.node.isRequired,
-  labelChecked: T.node,
+  description: T.string,
   checked: T.bool.isRequired,
   disabled: T.bool,
   inline: T.bool,

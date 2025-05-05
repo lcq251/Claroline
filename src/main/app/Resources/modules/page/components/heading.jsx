@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
@@ -11,28 +11,30 @@ import {ThumbnailSkeleton} from '#/main/app/components/thumbnail'
 
 import {PageActions} from '#/main/app/page/components/actions'
 import {PagePoster} from '#/main/app/page/components/poster'
+import {Heading} from '#/main/app/components/heading'
+import {PageContext} from '#/main/app/page/context'
 
 const PageHeadingSkeleton = ({
   className,
-  size,
+  size = 'lg',
+  level = 1,
   icon = false,
   eyebrow = false,
   backAction = false,
   description = false
 }) => {
+  const pageDef = useContext(PageContext)
+
   return (
-    <header className={classes('app-page-heading px-4 mb-5', className, size && `content-${size}`)}>
+    <header className={classes('app-page-heading px-4 mb-5', !pageDef.embedded && 'mt-5', className, size && `content-${size}`)}>
       {icon &&
-        <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
+        <div className="app-page-icon d-inline-block mb-2" role="presentation" aria-hidden={true}>
           <ThumbnailSkeleton size="lg" square={true} />
         </div>
       }
 
       {backAction &&
-        <div className={classes({
-          'mt-5': !icon,
-          'mt-2': !!icon
-        })} role="presentation">
+        <div className="mb-2" role="presentation">
           <span
             className="placeholder bg-primary rounded-1 my-2"
             role="presentation"
@@ -43,16 +45,16 @@ const PageHeadingSkeleton = ({
         </div>
       }
 
-      <h1 className={classes('h1 app-page-title mb-0', {
-        'mt-5': !icon && !backAction,
-        'mt-2': !!icon || !!backAction
-      })}>
+      <Heading
+        className="app-page-title m-0"
+        level={level}
+      >
         {eyebrow &&
           <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2 w-25 placeholder rounded-1" role="presentation">&nbsp;</span>
         }
 
         <span className="placeholder rounded-1 w-75" role="presentation">&nbsp;</span>
-      </h1>
+      </Heading>
 
       {description &&
         <TextSkeleton className="lead text-body-secondary mt-3 mb-0" rows={3} />
@@ -63,6 +65,7 @@ const PageHeadingSkeleton = ({
 
 PageHeadingSkeleton.propTypes = {
   className: T.string,
+  level: T.number,
   size: T.oneOf(['sm', 'md', 'lg', 'full']),
   icon: T.bool,
   eyebrow: T.bool,
@@ -70,42 +73,41 @@ PageHeadingSkeleton.propTypes = {
   backAction: T.string
 }
 
-const PageHeading = props =>
-  <>
-    {props.poster &&
-      <PagePoster poster={props.poster} />
-    }
+const PageHeading = props => {
+  const pageDef = useContext(PageContext)
 
-    <header className={classes('app-page-heading px-4 mb-5', props.className, props.size && `content-${props.size}`)}>
+  return (
+    <header id={props.id} className={classes('app-page-heading px-4 mb-5', !pageDef.embedded && 'pt-5', props.className, `content-${props.size || 'lg'}`)}>
+      {props.poster &&
+        <PagePoster poster={props.poster} className="rounded-4 mb-4" />
+      }
+
       {props.icon &&
-        <div className="app-page-icon d-inline-block" role="presentation" aria-hidden={true}>
+        <div className="app-page-icon d-inline-block mb-2" role="presentation" aria-hidden={true}>
           {props.icon}
         </div>
       }
 
       {props.backAction &&
         <Button
-          className={classes('btn btn-link ms-n3 mt-5 focus-ring', {
-            'mt-5': !props.icon,
-            'mt-2': !!props.icon
-          })}
+          className="btn btn-link ms-n3 mt-n2 mb-2 focus-ring"
           icon="fa fa-arrow-left"
           label={trans('back')}
           {...props.backAction}
         />
       }
 
-      <div className={classes('d-flex gap-3 align-items-end flex-wrap flex-md-nowrap', {
-        'mt-5': !props.icon && !props.backAction,
-        'mt-2': !!props.icon || !!props.backAction
-      })} role="presentation">
-        <h1 className="h1 app-page-title m-0">
+      <div className="d-flex gap-3 align-items-end flex-wrap flex-md-nowrap" role="presentation">
+        <Heading
+          className="app-page-title m-0"
+          level={props.level || 1}
+        >
           {(props.subtitle || props.eyebrow) &&
             <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2" role="presentation">{props.subtitle || props.eyebrow}</span>
           }
 
           {props.title}
-        </h1>
+        </Heading>
 
         {props.actions instanceof Promise ?
           <Await for={props.actions} then={(resolvedActions) => (
@@ -131,12 +133,15 @@ const PageHeading = props =>
         <p className="lead text-body-secondary mt-3 mb-0">{props.description}</p>
       }
     </header>
-  </>
+  )
+}
 
 PageHeading.propTypes = {
+  id: T.string,
   className: T.string,
-  size: T.oneOf(['sm', 'md', 'lg', 'full']),
+  size: T.oneOf(['sm', 'md', 'lg', 'xl', 'full']),
   poster: T.string,
+  level: T.number,
   /**
    * An optional icon for the page.
    * NB. we also use it to display a progression gauge.

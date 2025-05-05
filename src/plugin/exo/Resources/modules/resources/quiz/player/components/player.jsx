@@ -8,7 +8,6 @@ import {MODAL_CONFIRM} from '#/main/app/modals/confirm'
 import {MODAL_ALERT} from '#/main/app/modals/alert'
 import {actions as modalActions} from '#/main/app/overlays/modal/store'
 
-import {ContentHtml} from '#/main/app/content/components/html'
 import {Timer} from '#/main/core/layout/gauge/components/timer'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ProgressBar} from '#/main/app/components/progress-bar'
@@ -18,7 +17,6 @@ import {selectors as resourceSelect} from '#/main/core/resource/store'
 import {getDefinition, isQuestionType} from '#/plugin/exo/items/item-types'
 import {getContentDefinition} from '#/plugin/exo/contents/utils'
 import {getNumbering} from '#/plugin/exo/resources/quiz/utils'
-import {constants} from '#/plugin/exo/resources/quiz/constants'
 import {select} from '#/plugin/exo/quiz/player/selectors'
 import {actions} from '#/plugin/exo/quiz/player/actions'
 import {ItemPlayer} from '#/plugin/exo/items/components/item-player'
@@ -33,6 +31,7 @@ import {Alert} from '#/main/app/components/alert'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {PageContent} from '#/main/app/page'
 import {Html} from '#/main/app/components/html'
+import {NUMBERING_NONE} from '#/main/app/utils/numbering'
 
 const CurrentStep = props => {
   const numbering = getNumbering(props.numbering, props.number - 1)
@@ -83,7 +82,7 @@ const CurrentStep = props => {
                   item={item}
                   usedHints={props.answers[item.id] ? props.answers[item.id].usedHints : []}
                   showTitle={props.showQuestionTitles}
-                  numbering={props.questionNumbering !== constants.NUMBERING_NONE ? props.number + '.' + getNumbering(props.questionNumbering, index): null}
+                  numbering={props.questionNumbering !== NUMBERING_NONE ? props.number + '.' + getNumbering(props.questionNumbering, index): null}
                 >
                   {React.createElement(getDefinition(item.type).feedback, {
                     item: item,
@@ -150,7 +149,7 @@ class PlayerComponent extends Component {
       <ResourcePage>
         <PageContent>
           <DragDropProvider>
-            <div className="quiz-player content-md">
+            <div className="quiz-player content-lg">
               {this.props.progression &&
                 <ProgressBar
                   className="progress-minimal"

@@ -14,7 +14,6 @@ const LogsTypes = () => {
     <ToolPage title={trans('parameters')}>
       <PageContent>
         <PageSection
-          size="md"
           title={trans('functional', {}, 'log')}
         >
           <ul className="list-group list-group-striped mb-3">
@@ -29,7 +28,6 @@ const LogsTypes = () => {
         </PageSection>
 
         <PageSection
-          size="md"
           title={trans('operational', {}, 'log')}
         >
           <ul className="list-group list-group-striped mb-3">
@@ -43,7 +41,6 @@ const LogsTypes = () => {
         </PageSection>
 
         <PageSection
-          size="md"
           title={trans('security', {}, 'log')}
         >
           <ul className="list-group list-group-striped mb-3">
@@ -58,7 +55,6 @@ const LogsTypes = () => {
         </PageSection>
 
         <PageSection
-          size="md"
           title={trans('message', {}, 'log')}
         >
           <ul className="list-group list-group-striped mb-3">

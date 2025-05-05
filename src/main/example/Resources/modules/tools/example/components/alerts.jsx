@@ -14,7 +14,7 @@ const ExampleAlerts = () => {
   const dispatch = useDispatch()
 
   return (
-    <PageSection size="lg">
+    <PageSection size="xl">
       <ContentTitle title="Flying alerts" />
 
       <div className="btn-toolbar gap-1 mb-3">

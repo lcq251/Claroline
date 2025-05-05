@@ -21,7 +21,7 @@ const PlatformRegistration = () => {
       description={trans('registration_help', {platform: platformName})}
     >
       <RegistrationMain
-        className="content-sm"
+        className="content-md"
         path="/registration"
         onRegister={(response) => {
           if (get(response, 'user')) {

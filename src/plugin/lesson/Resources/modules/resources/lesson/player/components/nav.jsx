@@ -9,7 +9,7 @@ import {selectors} from '#/plugin/lesson/resources/lesson/store'
 
 const LessonPlayerNavSkeleton = () => {
   return (
-    <nav className="d-flex flex-row content-md px-2 mt-auto pb-5">
+    <nav className="d-flex flex-row content-lg px-2 mt-auto pb-5">
       <span
         className="btn btn-text-body focus-ring w-50 text-start d-flex flex-row align-items-center gap-4 justify-content-start"
       >
@@ -40,7 +40,7 @@ const LessonPlayerNav = (props) => {
 
   if (previousPath || nextPath) {
     return (
-      <nav className="d-flex flex-row content-md px-2 mt-auto pb-5">
+      <nav className="d-flex flex-row content-lg px-2 mt-auto pb-5">
         {previousPath &&
           <LinkButton
             className="btn btn-text-body focus-ring w-50 text-start d-flex flex-row align-items-center gap-4 justify-content-start"

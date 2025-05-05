@@ -1,8 +1,27 @@
 services:
     Claroline\TemplateBundle\Component\Template\TemplateProvider:
+        lazy: true
         arguments:
             - !tagged_iterator claroline.component.template
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Manager\LocaleManager'
+            - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
 
     claroline.provider.template:
         alias: Claroline\TemplateBundle\Component\Template\TemplateProvider
         public: true
+
+    Claroline\TemplateBundle\Component\Template\EmailComponent:
+        abstract: true
+        calls:
+            - setTwig: [ '@twig' ]
+
+    Claroline\TemplateBundle\Component\Template\PdfComponent:
+        abstract: true
+        calls:
+            - setTwig: [ '@twig' ]
+
+    Claroline\TemplateBundle\Component\Template\TemplateComponent:
+        abstract: true
+        calls:
+            - setTwig: [ '@twig' ]

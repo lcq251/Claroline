@@ -2,8 +2,9 @@ import {combineReducers, makeReducer} from '#/main/app/store/reducer'
 
 import {
   SEQUENCE_RELOAD,
-  STEP_ENABLE_NAVIGATION,
-  STEP_DISABLE_NAVIGATION,
+  SEQUENCE_SET_CURRENT_STEP,
+  SEQUENCE_ENABLE_NAVIGATION,
+  SEQUENCE_DISABLE_NAVIGATION,
   SEQUENCE_EVALUATION_UPDATE
 } from '#/main/evaluation/sequence/store/actions'
 import {makeFetchReducer} from '#/main/app/api/fetch/store'
@@ -28,9 +29,12 @@ const reducer = makeFetchReducer(selectors.STORE_NAME, {
       [SEQUENCE_EVALUATION_UPDATE]: (state, action) => action.progression || state,
     })
   }),
+  currentStep: makeReducer(null, {
+    [SEQUENCE_SET_CURRENT_STEP]: (state, action) => action.stepSlug
+  }),
   navigationEnabled: makeReducer(true, {
-    [STEP_ENABLE_NAVIGATION]: () => true,
-    [STEP_DISABLE_NAVIGATION]: () => false
+    [SEQUENCE_ENABLE_NAVIGATION]: () => true,
+    [SEQUENCE_DISABLE_NAVIGATION]: () => false
   }),
 })
 

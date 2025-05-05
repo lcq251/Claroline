@@ -51,6 +51,12 @@ class Step
     #[ORM\Column(nullable: true)]
     private ?string $numbering = null;
 
+    #[ORM\Column(name: 'objective', type: Types::TEXT, nullable: true)]
+    private ?string $objective = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $estimatedDuration = null;
+
     #[ORM\JoinColumn(name: 'resource_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ResourceNode::class)]
     private ?ResourceNode $resource = null;
@@ -184,6 +190,26 @@ class Step
     public function setNumbering(string $numbering = null): void
     {
         $this->numbering = $numbering;
+    }
+
+    public function getObjective(): ?string
+    {
+        return $this->objective;
+    }
+
+    public function setObjective(?string $objective): void
+    {
+        $this->objective = $objective;
+    }
+
+    public function getEstimatedDuration(): ?int
+    {
+        return $this->estimatedDuration;
+    }
+
+    public function setEstimatedDuration(int $estimatedDuration = null): void
+    {
+        $this->estimatedDuration = $estimatedDuration;
     }
 
     public function getResource(): ?ResourceNode

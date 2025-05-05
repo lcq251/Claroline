@@ -38,6 +38,5 @@
   "recent_activity": "Recent activity",
   "numbering_none": "None",
   "numbering_numeric": "Numeric",
-  "numbering_literal": "Literal",
-  "numbering_custom": "Custom"
+  "numbering_literal": "Literal"
 }

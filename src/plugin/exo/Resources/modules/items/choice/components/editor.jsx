@@ -13,8 +13,6 @@ import {FormData} from '#/main/app/content/form/containers/data'
 import {HtmlInput} from '#/main/app/data/types/html/components/input'
 import {NumberInput} from '#/main/app/data/types/number/components/input'
 
-import {constants as quizConstants} from '#/plugin/exo/resources/quiz/constants'
-
 import {ItemEditor as ItemEditorTypes} from '#/plugin/exo/items/prop-types'
 import {ChoiceItem as ChoiceItemTypes} from '#/plugin/exo/items/choice/prop-types'
 import {constants} from '#/plugin/exo/items/choice/constants'
@@ -23,6 +21,7 @@ import {utils} from '#/plugin/exo/items/choice/utils'
 import ScoreRules from '#/plugin/exo/scores/rules'
 import ScoreSum from '#/plugin/exo/scores/sum'
 import {FeedbackEditorButton} from '#/plugin/exo/buttons/feedback/components/button'
+import {NUMBERINGS} from '#/main/app/utils/numbering'
 
 class Choice extends Component {
   constructor(props) {
@@ -339,7 +338,7 @@ const ChoiceEditor = props => {
               options: {
                 noEmpty: true,
                 condensed: true,
-                choices: quizConstants.QUIZ_NUMBERINGS
+                choices: NUMBERINGS
               }
             }, {
               name: 'random',

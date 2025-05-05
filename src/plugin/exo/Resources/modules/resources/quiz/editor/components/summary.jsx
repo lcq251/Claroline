@@ -17,7 +17,6 @@ const QuizEditorSummary = props => {
       title={trans('steps', {}, 'quiz')}
     >
       <ContentSummary
-        noCollapse={true}
         links={props.steps.map((step, index) => ({
           id: step.id,
           type: LINK_BUTTON,
@@ -29,7 +28,7 @@ const QuizEditorSummary = props => {
             status: 'danger',
             value: <span className="fa fa-fw fa-exclamation-circle" />
           } : undefined,
-          additional: props.getStepActions(step, index),
+          actions: props.getStepActions(step, index),
           children: (step.items || []).map((item, itemIndex) => ({
             id: item.id,
             type: LINK_BUTTON,
@@ -41,7 +40,7 @@ const QuizEditorSummary = props => {
               status: 'danger',
               value: <span className="fa fa-fw fa-exclamation-circle" />
             } : undefined,
-            additional: props.getItemActions(step, index, item, itemIndex),
+            actions: props.getItemActions(step, index, item, itemIndex),
           }))
         }))}
       />

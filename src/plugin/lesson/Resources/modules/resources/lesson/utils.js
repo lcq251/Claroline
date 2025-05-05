@@ -1,67 +1,4 @@
-import {trans} from '#/main/app/intl/translation'
-import {constants as LESSON_NUMBERINGS} from '#/plugin/lesson/resources/lesson/constants'
-
-const buildParentChapterChoices = (tree, chapter) => {
-  let chapterSlug = chapter ? chapter.slug : null
-
-  let flattenedChapters = {}
-  flattenedChapters[tree['slug']] = trans('Root', {}, 'lesson')
-
-  if (tree['children'] && Array.isArray(tree['children']) && tree['children'].length > 0) {
-    flattenedChapters = Object.assign(flattenedChapters, buildFlattenedChapterChoices(tree['children'], chapterSlug))
-  }
-
-  return flattenedChapters
-}
-
-const buildFlattenedChapterChoices = (items, chapterSlug) => {
-
-  let flattenedChapters = {}
-
-  items.forEach(item => {
-    if (item['slug'] !== chapterSlug) {
-      flattenedChapters[item['slug']] = item['title']
-      if (item['children'] && Array.isArray(item['children']) && item['children'].length > 0) {
-        flattenedChapters = Object.assign(flattenedChapters, buildFlattenedChapterChoices(item['children']))
-      }
-    }
-  })
-
-  return flattenedChapters
-}
-
-/**
- * Flattens a tree of chapters into a one-level array.
- *
- * @param {Array}  chapters
- * @param {Boolean}  keepChapters
- */
-function flattenPages(chapters, keepChapters = false) {
-  function flatten(chapter, parent = null) {
-    const children = chapter.children
-    const flatChapter = Object.assign({}, chapter)
-
-    delete flatChapter.children
-    if (parent) {
-      flatChapter.parent = {
-        id: parent.id,
-        title: parent.title
-      }
-    }
-
-    let flattened = [flatChapter]
-
-    if (children) {
-      children.map((child) => {
-        flattened = flattened.concat(flatten(child, flatChapter))
-      })
-    }
-
-    return flattened
-  }
-
-  return chapters.reduce((acc, chapter) => acc.concat(flatten(chapter)), [])
-}
+import {NUMBERING_LITERAL, NUMBERING_NUMERIC} from '#/main/app/utils/numbering'
 
 /**
  * Get the display numbering of a chapter.
@@ -91,27 +28,21 @@ function getNumbering(type, chapters, chapter) {
   }
 
   switch (type) {
-    case LESSON_NUMBERINGS.NUMBERING_NUMERIC:
+    case NUMBERING_NUMERIC:
       return '' + buildPath(chapters, chapter)
         .map(i => i + 1)
         .join('.') + '.'
 
-    case LESSON_NUMBERINGS.NUMBERING_LITERAL:
+    case NUMBERING_LITERAL:
       return buildPath(chapters, chapter)
         .map(i => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])
         .join('.') + '.'
 
-    case LESSON_NUMBERINGS.NUMBERING_CUSTOM:
-      return chapter.customNumbering || ''
-
-    case LESSON_NUMBERINGS.NUMBERING_NONE:
     default:
       return ''
   }
 }
 
 export {
-  flattenPages,
-  getNumbering,
-  buildParentChapterChoices
+  getNumbering
 }

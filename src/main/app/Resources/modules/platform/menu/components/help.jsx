@@ -68,7 +68,7 @@ const HelpMenu = (props) => {
     <Menu id={props.id} className="app-user-menu flyout-menu p-0 position-fixed">
       <div className="flyout-menu-content d-flex flex-column flex-fill p-3" role="presentation">
         <div className="flyout-menu-close fs-sm rounded-pill bg-body position-absolute end-0 top-0" role="presentation">
-          <CloseButton onClick={props.closeMenu} className="rounded-pill" />
+          <CloseButton onClick={props.closeMenu} className="rounded-pill" aria-label={trans('close', {}, 'actions')} />
         </div>
 
         <Thumbnail

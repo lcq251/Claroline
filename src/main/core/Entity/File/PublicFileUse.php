@@ -14,9 +14,8 @@ namespace Claroline\CoreBundle\Entity\File;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Doctrine\ORM\Mapping as ORM;
 
-
-#[ORM\Table(name: 'claro_public_file_use')]
 #[ORM\Entity]
+#[ORM\Table(name: 'claro_public_file_use')]
 class PublicFileUse
 {
     use Id;
@@ -26,50 +25,50 @@ class PublicFileUse
     protected ?PublicFile $publicFile = null;
 
     #[ORM\Column(name: 'object_uuid')]
-    protected $objectUuid;
+    protected ?string $objectUuid = null;
 
     #[ORM\Column(name: 'object_class')]
-    protected $objectClass;
+    protected ?string $objectClass = null;
 
     #[ORM\Column(name: 'object_name', nullable: true)]
-    protected $objectName;
+    protected ?string $objectName = null;
 
-    public function getPublicFile()
+    public function getPublicFile(): ?PublicFile
     {
         return $this->publicFile;
     }
 
-    public function setPublicFile(PublicFile $publicFile)
+    public function setPublicFile(PublicFile $publicFile): void
     {
         $this->publicFile = $publicFile;
     }
 
-    public function getObjectUuid()
+    public function getObjectUuid(): ?string
     {
         return $this->objectUuid;
     }
 
-    public function setObjectUuid($objectUuid)
+    public function setObjectUuid(string $objectUuid): void
     {
         $this->objectUuid = $objectUuid;
     }
 
-    public function getObjectClass()
+    public function getObjectClass(): ?string
     {
         return $this->objectClass;
     }
 
-    public function setObjectClass($objectClass)
+    public function setObjectClass(string $objectClass): void
     {
         $this->objectClass = $objectClass;
     }
 
-    public function getObjectName()
+    public function getObjectName(): ?string
     {
         return $this->objectName;
     }
 
-    public function setObjectName($objectName)
+    public function setObjectName(?string $objectName): void
     {
         $this->objectName = $objectName;
     }

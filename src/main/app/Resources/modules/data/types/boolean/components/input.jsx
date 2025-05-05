@@ -17,7 +17,7 @@ class BooleanInput extends PureComponent {
 
   render() {
     return (
-      <div className="form-check form-switch form-check-reverse fw-medium fs-4 d-flex flex-row flex-nowrap align-items-center" role="presentation">
+      <div className="form-check form-switch form-check-reverse fw-medium fs-4 d-flex flex-row flex-nowrap align-items-center mb-0" role="presentation">
         <label
           className={classes('form-check-label flex-fill fs-base text-start', {
             'text-body-secondary': !this.props.value

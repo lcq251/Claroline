@@ -6,11 +6,11 @@ import {ContentTitle} from '#/main/app/content/components/title'
 
 import {getDefinition, isQuestionType} from '#/plugin/exo/items/item-types'
 import {Metadata as ItemMetadata} from '#/plugin/exo/items/components/metadata'
-import {constants} from '#/plugin/exo/resources/quiz/constants'
 import {getNumbering} from '#/plugin/exo/resources/quiz/utils'
+import {NUMBERING_NONE} from '#/main/app/utils/numbering'
 
 const AnswersStats = props =>
-  <div className="quiz-statistics content-md">
+  <div className="quiz-statistics content-lg">
     {props.quiz.steps
       .filter(step => step.items && 0 < step.items.length)
       .map((step, idx) => {
@@ -33,7 +33,7 @@ const AnswersStats = props =>
                   <div className="card-body">
                     <ItemMetadata
                       item={item}
-                      numbering={props.numbering !== constants.NUMBERING_NONE ? (idx + 1) + '.' + getNumbering(props.numbering, idxItem): null}
+                      numbering={props.numbering !== NUMBERING_NONE ? (idx + 1) + '.' + getNumbering(props.numbering, idxItem): null}
                     />
 
                     {React.createElement(getDefinition(item.type).paper, {

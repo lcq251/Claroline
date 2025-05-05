@@ -6,10 +6,10 @@ import {ContentSizing} from '#/main/app/content/components/sizing'
 
 const PageSection = ({
   className,
-  size,
   title,
   description,
   children,
+  size = 'lg',
   showTitle = true,
   flush = false
 }) => {
@@ -37,7 +37,7 @@ const PageSection = ({
 
 PageSection.propTypes = {
   className: T.string,
-  size: T.oneOf(['sm', 'md', 'lg', 'full']).isRequired,
+  size: T.oneOf(['sm', 'md', 'lg', 'full']),
   title: T.string,
   showTitle: T.bool,
   description: T.string,

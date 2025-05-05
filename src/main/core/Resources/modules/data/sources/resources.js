@@ -70,13 +70,12 @@ export default (contextType, contextData, refresher, currentUser) => ({
       label: trans('creator'),
       displayed: true
     }, {
-      name: 'evaluation.estimatedDuration',
+      name: 'estimatedDuration',
       label: trans('estimated_duration'),
       type: 'number',
       options: {
         unit: trans('minutes')
-      },
-      alias: 'estimatedDuration'
+      }
     }, {
       name: 'restrictions.hidden',
       label: trans('hidden'),

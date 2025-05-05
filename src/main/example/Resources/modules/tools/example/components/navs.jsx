@@ -32,7 +32,7 @@ const SampleData = [
 ]
 
 const ExampleNavs = (props) =>
-  <PageSection size="lg">
+  <PageSection size="xl">
     <ContentTitle title="Vertical nav" />
 
     <div className="row">

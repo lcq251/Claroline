@@ -28,10 +28,10 @@ const SequenceShow = props => {
             component: SequenceOverview
           }, {
             path: '/play',
-            component: SequencePlayer,
+            component: SequencePlayer/*,
             onEnter: () => {
               scrollTo('.app-page-heading')
-            }
+            }*/
           }, {
             path: '/edit',
             component: SequenceEditor,

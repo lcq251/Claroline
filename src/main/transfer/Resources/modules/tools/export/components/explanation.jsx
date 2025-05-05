@@ -94,8 +94,7 @@ const ExportExplanation = (props) => {
         <Checkbox
           id="export-column-select"
           className="transfer-schema-select"
-          label={trans('list_select_all')}
-          labelChecked={trans('list_deselect_all')}
+          label={trans(0 < props.columns.length ? 'list_deselect_all' : 'list_select_all')}
           checked={0 < props.columns.length}
           onChange={() => {
             if (0 === props.columns.length) {

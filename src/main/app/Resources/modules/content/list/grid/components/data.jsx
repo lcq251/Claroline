@@ -19,8 +19,10 @@ import {GridItem} from '#/main/app/content/list/grid/components/item'
 import {GridSort} from '#/main/app/content/list/grid/components/sort'
 
 const GridData = props => {
+  const hasSelection = 0 < props.selection.current.length
+
   let bulkActions = []
-  if (props.selection && 0 < props.selection.current.length) {
+  if (props.selection && hasSelection) {
     bulkActions = getActions(
       props.selection.current.map(id => props.data.find(row => id === row.id) || {id: id}),
       props.actions
@@ -40,11 +42,10 @@ const GridData = props => {
             <Checkbox
               id="data-grid-select"
               className="py-2 m-0"
-              label={<span className="d-none d-sm-block ms-2">{trans('list_select_all')}</span>}
-              labelChecked={<span className="d-none d-sm-block ms-2">{trans('list_deselect_all')}</span>}
-              checked={0 < props.selection.current.length}
+              label={<span className="d-none d-sm-block ms-2">{trans(!hasSelection ? 'list_select_all':'list_deselect_all')}</span>}
+              checked={hasSelection}
               onChange={() => {
-                if (0 === props.selection.current.length) {
+                if (hasSelection) {
                   props.selection.toggleAll(props.data)
                 } else {
                   props.selection.toggleAll([])

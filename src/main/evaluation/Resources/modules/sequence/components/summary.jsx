@@ -13,7 +13,7 @@ const SequenceSummary = (props) => {
   const steps = flattenSteps(props.sequence.steps)
 
   return (
-    <ul className="list-unstyled d-flex flex-column gap-1 mb-0">
+    <ul className={classes('list-unstyled d-flex flex-column gap-1 mb-0', props.className)}>
       {steps.map((step, index) => {
         const numbering = getNumbering(props.sequence.display.numbering, props.sequence.steps, step)
         const stepProgression = props.progression[step.id] || {}
@@ -44,6 +44,7 @@ const SequenceSummary = (props) => {
 }
 
 SequenceSummary.propTypes = {
+  className: T.string,
   path: T.string.isRequired,
   sequence: T.shape(
     SequenceTypes.propTypes

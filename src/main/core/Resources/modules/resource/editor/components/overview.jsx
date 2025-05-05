@@ -64,6 +64,14 @@ const ResourceEditorOverview = (props) =>
               minRows: 2
             }
           }, {
+            name: 'resourceNode.estimatedDuration',
+            label: trans('estimated_duration'),
+            type: 'number',
+            options: {
+              unit: trans('minutes')
+            },
+            help: trans('Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de l\'activité.')
+          }, {
             name: 'resourceNode.meta.descriptionHtml',
             label: trans('description_long'),
             type: 'html',

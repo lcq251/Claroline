@@ -12,7 +12,7 @@ const ResourceDashboardActivity = () => {
 
   return (
     <PageContent>
-      <PageSection size="md" className="mx-auto">
+      <PageSection className="mx-auto">
         <Activity
           name={selectors.STORE_NAME + '.logs'}
           url={['apiv2_resource_functional_logs', {id: resourceId}]}

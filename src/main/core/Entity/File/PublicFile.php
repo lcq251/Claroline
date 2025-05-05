@@ -11,9 +11,9 @@
 
 namespace Claroline\CoreBundle\Entity\File;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_public_file')]
@@ -23,29 +23,17 @@ class PublicFile
     use Id;
     use Uuid;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(name: 'file_size', type: Types::INTEGER, nullable: true)]
-    private $size;
+    private ?int $size = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'filename')]
-    private $filename;
+    private ?string $filename = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'hash_name')]
-    private $url;
+    private ?string $url = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'mime_type', nullable: true)]
-    private $mimeType;
+    private ?string $mimeType = null;
 
     public function __construct()
     {

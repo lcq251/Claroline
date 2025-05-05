@@ -22,7 +22,6 @@ const Organization = (props) =>
     {isEmpty(props.organization) &&
       <PageContent className="placeholder-glow">
         <PageHeadingSkeleton
-          size="md"
           icon={true}
           description={true}
         />
@@ -30,10 +29,8 @@ const Organization = (props) =>
     }
 
     {!isEmpty(props.organization) &&
-      <PageContent>
+      <PageContent poster={get(props.organization, 'poster')}>
         <PageHeading
-          poster={get(props.organization, 'poster')}
-          size="md"
           icon={get(props.organization, 'thumbnail') ?
             <Thumbnail
               size="lg"

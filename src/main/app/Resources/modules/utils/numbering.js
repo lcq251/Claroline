@@ -6,8 +6,14 @@ const NUMBERING_LITERAL = 'literal'
 
 const NUMBERINGS = {
   [NUMBERING_NONE]: trans('numbering_none'),
-  [NUMBERING_NUMERIC]: trans('numbering_numeric'),
-  [NUMBERING_LITERAL]: trans('numbering_literal')
+  [NUMBERING_NUMERIC]: {
+    label: trans('numbering_numeric'),
+    description: trans('numbering_numeric_help')
+  },
+  [NUMBERING_LITERAL]: {
+    label: trans('numbering_literal'),
+    description: trans('numbering_literal_help')
+  }
 }
 
 export {

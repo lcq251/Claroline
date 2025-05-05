@@ -5,7 +5,7 @@ import shuffle from 'lodash/shuffle'
 
 import {ContentHtml} from '#/main/app/content/components/html'
 import {getNumbering} from '#/plugin/exo/resources/quiz/utils'
-import {constants} from '#/plugin/exo/resources/quiz/constants'
+import {NUMBERING_NONE} from '#/main/app/utils/numbering'
 
 class ChoicePlayer extends Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class ChoicePlayer extends Component {
                 this.isChecked(choice.id, this.props.answer) ? 'selected-answer' : null
               )}
             >
-              {this.props.item.numbering !== constants.NUMBERING_NONE &&
+              {this.props.item.numbering !== NUMBERING_NONE &&
                 <span>
                   {getNumbering(this.props.item.numbering, idx)}) {'\u00a0'} {/*non breaking whitespace */}
                 </span>

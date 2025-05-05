@@ -37,14 +37,6 @@ const ResourceEditorEvaluation = (props) => {
           primary: true,
           fields: [
             {
-              name: 'resourceNode.evaluation.estimatedDuration',
-              label: trans('estimated_duration'),
-              type: 'number',
-              options: {
-                unit: trans('minutes')
-              },
-              help: trans('Estimez le temps nécessaire à la consultation du contenu ou à la réalisation de l\'activité.')
-            }, {
               name: 'resourceNode.evaluation._enable',
               type: 'boolean',
               label: trans('Activer le suivi pédagogique', {}, 'evaluation'),

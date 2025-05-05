@@ -12,6 +12,7 @@ import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
 import {TinymceEditor} from '#/main/app/input/tinymce/components/editor'
 import {getValidationClassName} from '#/main/app/content/form/validator'
+import {CloseButton} from 'react-bootstrap'
 
 class HtmlInput extends Component {
   constructor(props) {
@@ -78,12 +79,10 @@ class HtmlInput extends Component {
         }
 
         {this.state.fullscreen &&
-          <Button
-            className="position-absolute top-0 end-0 m-1 btn btn-secondary z-3"
-            type={CALLBACK_BUTTON}
-            label={trans('close', {}, 'actions')}
-            size="sm"
-            callback={() => this.toggleEditor(this.state.minimal, !this.state.fullscreen)}
+          <CloseButton
+            className="position-absolute top-0 end-0 m-2 p-2 z-3"
+            aria-label={trans('close', {}, 'actions')}
+            onClick={() => this.toggleEditor(this.state.minimal, !this.state.fullscreen)}
           />
         }
 

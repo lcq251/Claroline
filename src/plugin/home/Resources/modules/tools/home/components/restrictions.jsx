@@ -33,7 +33,7 @@ class HomeRestrictions extends Component {
 
   render() {
     return (
-      <div className="content-md mt-3">
+      <div className="content-lg mt-3">
         <h2 className="h3 text-center">{trans('restricted_access')}</h2>
         <p className="lead text-center">{trans('restricted_access_message', {}, 'home')}</p>
 

@@ -24,7 +24,7 @@ const PlatformForbidden = () => {
 
   return (
     <PageSimple>
-      <div className="content-md mt-3">
+      <div className="content-lg mt-3">
         <h2 className="h3 text-center">{trans('platform_unavailable_title', {}, 'administration')}</h2>
         <p className="lead text-center">{trans('platform_unavailable_help', {}, 'administration')}</p>
 

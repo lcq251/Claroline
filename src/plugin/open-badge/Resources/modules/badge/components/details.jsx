@@ -70,12 +70,12 @@ BadgeRules.propTypes = {
 const BadgeDetails = (props) => {
   return (
     <>
-      <PageSection size="md" className="mb-5">
+      <PageSection className="mb-5">
         <BadgeMyAssertion assertion={props.assertion} />
       </PageSection>
 
       {(get(props.badge, 'meta.descriptionHtml') || !isEmpty(get(props.badge, 'tags'))) &&
-        <PageSection size="md" className="pb-5">
+        <PageSection className="pb-5">
           <Content
             tags={get(props.badge, 'tags')}
           >
@@ -85,7 +85,6 @@ const BadgeDetails = (props) => {
       }
 
       <PageSection
-        size="md"
         title={trans('Comment obtenir ce badge ?', {}, 'badge')}
       >
         {get(props.badge, 'meta.archived', false) &&
@@ -106,7 +105,6 @@ const BadgeDetails = (props) => {
 
       {(hasPermission('grant', props.badge) || !get(props.badge, 'restrictions.hideRecipients')) &&
         <PageSection
-          size="md"
           className="py-4"
           title={trans('Utilisateurs ayant obtenu ce badge', {}, 'badges')}
         >

@@ -52,7 +52,7 @@ const UserMenu = (props) => {
     <Menu className="app-user-menu flyout-menu p-0 position-fixed">
       <div className="flyout-menu-content d-flex flex-column flex-fill" role="presentation">
         <div className="flyout-menu-close fs-sm rounded-pill bg-body position-absolute end-0 top-0 z-1" role="presentation">
-          <CloseButton onClick={props.closeMenu} className="rounded-circle" />
+          <CloseButton onClick={props.closeMenu} className="rounded-circle" aria-label={trans('close', {}, 'actions')} />
         </div>
 
         {get(props.user, 'poster') &&

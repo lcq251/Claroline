@@ -15,8 +15,16 @@
   z-index: $zindex-offcanvas;
 }
 
+.tox-edit-area__iframe {
+  html {
+    height: 100%;
+  }
+}
+
 .mce-content-body {
   padding: $input-padding-y $input-padding-x !important;
+  max-width: $content-lg;
+  margin: 0 auto;
 
   .btn, .btn-link {
     user-select: auto;

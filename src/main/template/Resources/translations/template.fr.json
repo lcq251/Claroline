@@ -6,5 +6,7 @@
     "no_template": "Aucun template",
     "configure_email_help": "Configurez l'apparence et le contenu des messages envoyés par la plateforme.",
     "configure_pdf_help": "Configurez l'apparence et le contenu des impressions PDF de la plateforme.",
-    "configure_other_help": "Configurez l'apparence et le contenu de divers éléments de la plateforme."
+    "configure_other_help": "Configurez l'apparence et le contenu de divers éléments de la plateforme.",
+    "template_name": "Template : %name%",
+    "available_templates": "Templates disponibles"
 }

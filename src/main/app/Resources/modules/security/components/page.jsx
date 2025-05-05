@@ -24,7 +24,7 @@ const SecurityPage = (props) => {
       title={props.title + ' | ' + name}
     >
       <SecurityLayout>
-        <div className="content-sm px-4 py-5 my-auto" role="presentation">
+        <div className="content-md px-4 py-5 my-auto" role="presentation">
           <h2 className="text-center">{props.title}</h2>
           {props.description &&
             <p className="lead text-center text-body-secondary mb-5">{props.description}</p>
@@ -33,7 +33,7 @@ const SecurityPage = (props) => {
           {props.children}
         </div>
 
-        <footer className="content-sm px-4 pb-5 d-flex flex-wrap align-items-center justify-content-center gap-2">
+        <footer className="content-md px-4 pb-5 d-flex flex-wrap align-items-center justify-content-center gap-2">
           <Button
             className="btn btn-link text-body-secondary"
             type={MODAL_BUTTON}

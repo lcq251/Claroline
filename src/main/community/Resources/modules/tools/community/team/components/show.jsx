@@ -18,7 +18,6 @@ import {Team as TeamTypes} from '#/main/community/team/prop-types'
 import {TeamPage} from '#/main/community/team/components/page'
 import {selectors} from '#/main/community/tools/community/team/store/selectors'
 import {PageSection} from '#/main/app/page/components/section'
-import {route} from '#/main/community/team/routing'
 
 const TeamShow = (props) => {
   const full = !!get(props.team, 'restrictions.users') && props.team.users >= get(props.team, 'restrictions.users')
@@ -29,7 +28,7 @@ const TeamShow = (props) => {
       team={props.team}
       reload={props.reload}
     >
-      <PageSection size="md" className="mb-5">
+      <PageSection className="mb-5">
         {!full && get(props.team, 'registration.selfRegistration') &&
           <Alert type="info" className="mb-3">
             {trans('team_self_registration_enabled', {}, 'community')}
@@ -61,7 +60,7 @@ const TeamShow = (props) => {
         />
       </PageSection>
 
-      <PageSection size="md">
+      <PageSection>
         {!props.hasTeam && !full && get(props.team, 'registration.selfRegistration') &&
           <Button
             className="btn btn-outline-primary w-100 mb-3"
@@ -86,14 +85,10 @@ const TeamShow = (props) => {
       </PageSection>
 
       <PageTabbedSection
-        size="md"
         className="embedded-list-section"
-        path={route(props.team, props.path)}
         tabs={[
           {
-            path: '',
-            exact: true,
-            icon: 'fa fa-user',
+            name: 'users',
             title: trans('users', {}, 'community'),
             render: () => (
               <>
@@ -135,8 +130,7 @@ const TeamShow = (props) => {
               </>
             )
           }, {
-            path: '/managers',
-            icon: 'fa fa-user-tie',
+            name: 'managers',
             title: trans('managers', {}, 'community'),
             render: () => (
               <>

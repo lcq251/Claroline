@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import classes from 'classnames'
 
 import {ButtonSticky} from '#/main/app/button'
-import {PageContent} from '#/main/app/page/components/body'
+import {PageContent} from '#/main/app/page/components/content'
 
 const PageListSection = ({
   className,

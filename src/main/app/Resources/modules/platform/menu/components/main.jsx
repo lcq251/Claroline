@@ -51,7 +51,7 @@ const AllContexts = () => {
         </ul>
 
         <div className="flyout-menu-close fs-sm rounded-pill bg-body my-0" role="presentation">
-          <CloseButton onClick={() => true} className="rounded-pill" />
+          <CloseButton onClick={() => true} className="rounded-pill" aria-label={trans('close', {}, 'actions')} />
         </div>
       </nav>
 

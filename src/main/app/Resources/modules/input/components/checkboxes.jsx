@@ -1,8 +1,8 @@
 import React from 'react'
+import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {toKey} from '#/main/app/utils/text'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
 import {Checkbox} from '#/main/app/input/components/checkbox'
@@ -16,34 +16,37 @@ const Checkboxes = props => {
   const choiceValues = Object.keys(props.choices)
   if (0 === choiceValues.length) {
     return (
-      <span className="text-secondary d-block">{trans('no_choice')}</span>
+      <em className="text-body-tertiary d-block">{trans('no_choice')}</em>
     )
   }
 
   return (
-    <div id={props.id} className={props.className}>
+    <ul className={classes('list-unstyled mb-0', {
+      'd-flex flex-row': props.inline
+    })}>
       {choiceValues.map(choiceValue =>
-        <Checkbox
-          key={choiceValue}
-          id={`${props.id}-${toKey(choiceValue)}`}
-          label={props.choices[choiceValue]}
-          checked={props.value ? -1 !== props.value.indexOf(parseValue(choiceValue)) : false}
-          disabled={props.disabled || -1 !== props.disabledChoices.indexOf(choiceValue)}
-          inline={props.inline}
-          onChange={(checked) => {
-            let value = [].concat(props.value || [])
+        <li key={choiceValue}>
+          <Checkbox
+            label={props.choices[choiceValue]}
+            {...(typeof props.choices[choiceValue] === 'string' ? {label: props.choices[choiceValue]} : props.choices[choiceValue])}
+            checked={props.value ? -1 !== props.value.indexOf(parseValue(choiceValue)) : false}
+            disabled={props.disabled || -1 !== props.disabledChoices.indexOf(choiceValue)}
+            inline={props.inline}
+            onChange={(checked) => {
+              let value = [].concat(props.value || [])
 
-            if (checked) {
-              value.push(parseValue(choiceValue))
-            } else {
-              value.splice(value.indexOf(parseValue(choiceValue)), 1)
-            }
+              if (checked) {
+                value.push(parseValue(choiceValue))
+              } else {
+                value.splice(value.indexOf(parseValue(choiceValue)), 1)
+              }
 
-            props.onChange(value)
-          }}
-        />
+              props.onChange(value)
+            }}
+          />
+        </li>
       )}
-    </div>
+    </ul>
   )
 }
 

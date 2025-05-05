@@ -7,7 +7,7 @@ import {PageHeading, PageSection} from '#/main/app/page'
 import {PageHeadingSkeleton} from '#/main/app/page/components/heading'
 
 const ExampleContent = () =>
-  <PageSection size="lg" className="pb-5">
+  <PageSection size="xl" className="pb-5">
     <ContentTitle title="Titles" />
 
     <ContentTitle title="Title 1" level={1} numbering={1} />

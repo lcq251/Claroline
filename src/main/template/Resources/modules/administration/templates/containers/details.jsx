@@ -1,34 +1,22 @@
-import cloneDeep from 'lodash/cloneDeep'
 import {connect} from 'react-redux'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 
 import {TemplateDetails as TemplateDetailsComponent} from '#/main/template/administration/templates/components/details'
 import {actions, selectors} from '#/main/template/administration/templates/store'
-import {makeId} from '#/main/app/utils/id'
 
 const TemplateDetails = connect(
   (state) => ({
     path: toolSelectors.path(state),
     templateType: selectors.templateType(state),
-    templates: selectors.templates(state),
-    defaultLocale: selectors.defaultLocale(state)
+    currentTemplate: selectors.template(state),
+    templates: selectors.templates(state)
   }),
   (dispatch) => ({
-    openForm(templateType, defaultLocale, id = null) {
-      const defaultData = {
-        lang: defaultLocale,
-        type: templateType.name
-      }
-      dispatch(actions.openForm(selectors.STORE_NAME + '.template', defaultData, id))
-    },
-    resetForm(templateType, defaultLocale) {
-      const defaultData = {
-        id: makeId(),
-        lang: defaultLocale,
-        type: templateType.name
-      }
-      dispatch(actions.resetForm(selectors.STORE_NAME + '.template', defaultData))
+    newTemplate() {
+      dispatch(actions.newTemplate())
+    },loadTemplate(template) {
+      dispatch(actions.loadTemplate(template))
     },
     deleteTemplate(templateTypeId, templateId) {
       return dispatch(actions.deleteTemplate(templateTypeId, templateId))

@@ -2,19 +2,17 @@
 
 namespace Claroline\CoreBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Repository\DataSourceRepository;
 use Claroline\AppBundle\Entity\FromPlugin;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\CoreBundle\Repository\DataSourceRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * DataSource entity.
  *
  * Describes a DataSource provided by a plugin.
- *
- *
  */
 #[ORM\Table(name: 'claro_data_source')]
 #[ORM\Entity(repositoryClass: DataSourceRepository::class)]

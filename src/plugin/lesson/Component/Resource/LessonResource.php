@@ -14,11 +14,14 @@ use Claroline\CoreBundle\Manager\Template\PlaceholderManager;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
+use Icap\LessonBundle\Serializer\ChapterSerializer;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LessonResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
 {
     public function __construct(
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
@@ -35,10 +38,16 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
     /** @param Lesson $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
+        $internalNotes = $this->authorization->isGranted('VIEW_INTERNAL_NOTES', $resource->getResourceNode());
+        $chapters = $this->om->getRepository(Chapter::class)->getChildren($resource->getRoot(), false, null, 'ASC', true);
+
         return [
             'resource' => $this->serializer->serialize($resource),
             'tree' => $this->chapterManager->serializeChapterTree($resource),
             'placeholders' => $this->placeholderManager->getAvailablePlaceholders(),
+            'chapters' => array_map(function (Chapter $chapter) use ($internalNotes) {
+                return $this->serializer->serialize($chapter, $internalNotes ? [ChapterSerializer::INCLUDE_INTERNAL_NOTES] : []);
+            }, $chapters),
         ];
     }
 

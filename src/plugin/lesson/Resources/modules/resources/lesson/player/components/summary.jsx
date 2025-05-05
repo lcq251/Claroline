@@ -16,9 +16,9 @@ const PlayerSummary = (props) => {
 
   return (
     <div className="d-flex flex-column h-100" role="presentation">
-      <h2 className="app-page-aside-title">
+      <span className="h4 app-page-aside-title">
         {props.title}
-      </h2>
+      </span>
 
       <SearchMinimal
         className="mb-3"

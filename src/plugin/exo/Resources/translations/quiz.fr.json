@@ -516,5 +516,7 @@
     "attempts_chart_all": "Evolution de toutes les tentatives",
     "attempts_chart_user": "Evolution de mes tentatives",
     "allow_multiple_responses": "Autoriser les réponses multiples",
-    "steps": "Questions et Étapes"
+    "steps": "Questions et Étapes",
+    "show_overview": "Afficher la vue \"A propos\"",
+    "show_overview_help": "La vue \"A propos\" contient l'image de converture de la ressource, sa description longue ainsi que les informations sur le questionnaire."
 }

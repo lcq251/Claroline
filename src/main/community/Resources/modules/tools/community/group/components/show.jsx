@@ -4,6 +4,7 @@ import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
+import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {DetailsData} from '#/main/app/content/details'
 import {Alert} from '#/main/app/components/alert'
@@ -18,8 +19,6 @@ import {RoleList} from '#/main/community/role/components/list'
 import {Group as GroupTypes} from '#/main/community/group/prop-types'
 import {selectors} from '#/main/community/tools/community/group/store/selectors'
 import {GroupPage} from '#/main/community/group/components/page'
-import {route} from '#/main/community/group/routing'
-import {Button} from '#/main/app/action'
 import {GroupActivity} from '#/main/community/group/components/activity'
 
 const GroupShow = (props) =>
@@ -28,7 +27,7 @@ const GroupShow = (props) =>
     group={props.group}
     reload={props.reload}
   >
-    <PageSection size="md" className="mb-5">
+    <PageSection className="mb-5">
       {hasPermission('administrate', props.group) && get(props.group, 'meta.readOnly') &&
         <Alert type="info" className="my-3">{trans('group_locked', {}, 'community')}</Alert>
       }
@@ -52,20 +51,16 @@ const GroupShow = (props) =>
     </PageSection>
 
     <PageTabbedSection
-      size="md"
       className="embedded-list-section"
-      path={route(props.group, props.path)}
       tabs={[
         {
-          path: '/',
-          exact: true,
+          name: 'activity',
           title: trans('activity'),
           render: () => (
             <GroupActivity group={props.group} />
           )
         }, {
-          path: '/users',
-          icon: 'fa fa-user',
+          name: 'users',
           title: trans('users', {}, 'community'),
           render: () => (
             <>
@@ -109,8 +104,7 @@ const GroupShow = (props) =>
             </>
           )
         }, {
-          path: '/roles',
-          icon: 'fa fa-id-badge',
+          name: 'roles',
           title: trans('roles', {}, 'community'),
           displayed: hasPermission('administrate', props.group),
           render: () => (

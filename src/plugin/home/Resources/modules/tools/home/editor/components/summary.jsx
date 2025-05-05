@@ -59,7 +59,7 @@ const HomeEditorSummary = (props) => {
         status: 'danger',
         value: <span className="fa fa-fw fa-exclamation-circle" role="alert" />
       } : undefined,
-      additional: [
+      actions: [
         {
           name: 'add-sub',
           type: MODAL_BUTTON,
@@ -125,7 +125,6 @@ const HomeEditorSummary = (props) => {
     >
       <ContentSummary
         links={tabs.map(getTabSummary)}
-        noCollapse={true}
       />
 
       <Button

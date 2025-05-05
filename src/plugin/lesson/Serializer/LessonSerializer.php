@@ -33,6 +33,7 @@ class LessonSerializer
                 'showOverview' => $lesson->getShowOverview(),
                 'showMeta' => $lesson->getShowMeta(),
                 'numbering' => $lesson->getNumbering(),
+                'pagination' => $lesson->getPagination(),
                 'navigation' => $lesson->hasNavigation(),
             ],
         ];
@@ -46,10 +47,10 @@ class LessonSerializer
             $lesson->refreshUuid();
         }
 
-        $this->sipe('display.description', 'setDescription', $data, $lesson);
         $this->sipe('display.showOverview', 'setShowOverview', $data, $lesson);
         $this->sipe('display.showMeta', 'setShowMeta', $data, $lesson);
         $this->sipe('display.numbering', 'setNumbering', $data, $lesson);
+        $this->sipe('display.pagination', 'setPagination', $data, $lesson);
         $this->sipe('display.navigation', 'setNavigation', $data, $lesson);
 
         return $lesson;

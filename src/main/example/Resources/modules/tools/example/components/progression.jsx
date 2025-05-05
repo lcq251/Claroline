@@ -9,7 +9,7 @@ import {constants} from '#/main/evaluation/constants'
 import {PageSection} from '#/main/app/page'
 
 const ExampleProgression = () =>
-  <PageSection size="lg">
+  <PageSection size="xl">
     <ContentTitle title="Progress bars" />
 
     <div className="mb-3">

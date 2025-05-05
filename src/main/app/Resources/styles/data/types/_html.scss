@@ -30,13 +30,9 @@
     }
 
     .tinymce-inline .mce-content-body {
-        // @extend .form-control;
-
-
         &.mce-content-readonly {
             color: $input-disabled-color;
             background-color: $input-disabled-bg;
-            // border-color: $input-disabled-border-color;
             // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
             opacity: 1;
         }
@@ -44,8 +40,6 @@
         &.mce-edit-focus {
             outline: 0;
         }
-
-
     }
 
     &.fullscreen {

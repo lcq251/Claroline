@@ -46,10 +46,10 @@ const SequenceCard = props =>
     } : undefined}
     meta={
       <>
-        {get(props.data, 'evaluation.estimatedDuration') &&
+        {get(props.data, 'estimatedDuration') &&
           <Badge variant="secondary" subtle={true}>
             <span className="fa far fa-clock me-1" />
-            {get(props.data, 'evaluation.estimatedDuration') + ' ' + trans('minutes_short')}
+            {get(props.data, 'estimatedDuration') + ' ' + trans('minutes_short')}
           </Badge>
         }
       </>

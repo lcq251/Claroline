@@ -7,6 +7,7 @@
   "regenerate_certificate": "Regenerate certificate",
   "regenerate_certificates": "Regenerate certificates",
   "add_sequence": "Add sequence",
+  "add_sequence_step": "Add step",
   "finish_sequence": "Finish sequence",
   "initialize_evaluations": "Initialize evaluations",
   "recompute_evaluations": "Recompute evaluations"

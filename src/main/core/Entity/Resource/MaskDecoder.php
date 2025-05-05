@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\Index;
 #[ORM\Table(name: 'claro_resource_mask_decoder')]
 #[Index(name: 'value', columns: ['value'])]
 #[Index(name: 'name', columns: ['name'])]
-#[ORM\Entity(repositoryClass: ResourceMaskDecoderRepository::class)]
+#[ORM\Entity(repositoryClass: ResourceMaskDecoderRepository::class, readOnly: true)]
 class MaskDecoder
 {
     use Id;

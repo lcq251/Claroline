@@ -61,7 +61,7 @@
 
 .app-contexts-menu,
 .app-user-menu {
-  width: min(24rem, 100vw);
+  width: min($content-xs, 100vw);
   transform: none !important;
 }
 

@@ -13,14 +13,18 @@ $icon-primary-color: var(--#{$prefix}primary) !default;
 $icon-secondary-color: $gray-900 !default;
 
 // content sizing
-$content-sm: 42rem !default;
-$content-md: 56rem !default;
-$content-lg: 72rem !default;
+$content-xs: 24rem !default;
+$content-sm: 32rem !default; // confirm modal
+$content-md: 42rem !default;
+$content-lg: 56rem !default; // standard page content size
+$content-xl: 80rem !default; // modal picker
 
 $content-sizes: (
+    xs: $content-xs,
     sm: $content-sm,
     md: $content-md,
-    lg: $content-lg
+    lg: $content-lg,
+    xl: $content-xl
 ) !default;
 
 $icon-sizes: (
@@ -43,6 +47,6 @@ $striped-bg:        rgba($black, $striped-bg-factor) !default;
 // customize labels (form input, details, groups in actions menu, etc.)
 $label-text-transform: uppercase !default;
 $label-font-size:      $form-label-font-size !default;
-$label-color:          $form-label-color !default;
+$label-color:          var(--#{$prefix}secondary-color) !default;
 
 $form-group-spacer: 2rem !default;

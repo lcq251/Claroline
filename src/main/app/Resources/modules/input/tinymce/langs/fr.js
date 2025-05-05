@@ -412,5 +412,10 @@ window.tinymce.addI18n('fr_FR',{
   'Dynamic value...': 'Valeur dynamique...',
   'Insert dynamic value': 'Insérer une valeur dynamique',
   'Equation...': 'Equation...',
-  'Insert/Edit equation': 'Ins\xe9rer/modifier une équation'
+  'Insert/Edit equation': 'Ins\xe9rer/modifier une équation',
+  'Buttons': "Boutons",
+  'Alerts': "Alertes",
+  'Emphasis': "Emphase",
+  'Card': "Carte",
+  'Box': "Boîte"
 })

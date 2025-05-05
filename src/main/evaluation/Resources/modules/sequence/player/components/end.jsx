@@ -27,7 +27,7 @@ const PlayerEnd = () => {
   return (
     <PageContent className="py-4 d-flex flex-column justify-content-center">
       {userEvaluation &&
-        <PageSection size="md" className="py-4">
+        <PageSection className="py-4">
           <h2 className="visually-hidden">{trans('results')}</h2>
           <EvaluationGauge
             size="xl"
@@ -37,7 +37,7 @@ const PlayerEnd = () => {
         </PageSection>
       }
 
-      <PageSection size="md" className="py-4 text-center">
+      <PageSection className="py-4 text-center">
         <h2 className="visually-hidden">{trans('messages')}</h2>
         <p className="h4 mb-0">Félicitations vous avez terminé la séquence.</p>
         {!isHtmlEmpty(userFeedback) &&
@@ -47,7 +47,7 @@ const PlayerEnd = () => {
         }
       </PageSection>
 
-      <PageSection size="md" className="py-4">
+      <PageSection className="py-4">
         <h2 className="visually-hidden">{trans('navigation')}</h2>
 
         <Toolbar

@@ -15,11 +15,11 @@ import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {Chapter as ChapterTypes} from '#/plugin/lesson/resources/lesson/prop-types'
-import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {actions, selectors} from '#/plugin/lesson/resources/lesson/store'
 import {MODAL_PAGE_HISTORY} from '#/plugin/lesson/resources/lesson/modals/history'
-import {LessonPlayerNav, LessonPlayerNavSkeleton} from '#/plugin/lesson/resources/lesson/player/components/nav'
+import {LessonPlayerNavSkeleton} from '#/plugin/lesson/resources/lesson/player/components/nav'
 import {ContentPublication} from '#/main/app/content/components/publication'
+import {PageToolbar} from '#/main/app/page/components/toolbar'
 
 const Chapter = props => {
   const history = useHistory()
@@ -33,8 +33,6 @@ const Chapter = props => {
   const lesson = useSelector(selectors.lesson)
   const showNavigation = useSelector(selectors.showNavigation)
   const showMeta = useSelector(selectors.showMeta)
-  const numbering = useSelector(selectors.numbering)
-  const chapterNumbering = getNumbering(numbering, props.treeData.children, props.chapter)
 
   const downloadChapter = useCallback(() => {
     dispatch(actions.downloadChapterPdf(lesson.id, props.chapter.id))
@@ -51,11 +49,11 @@ const Chapter = props => {
       <PageContent  className={classes('placeholder-glow d-flex flex-column', {
         'mx-n4': embedded
       })}>
-        <PageHeadingSkeleton
-          size="md"
-        />
+        {props.title &&
+          <PageHeadingSkeleton />
+        }
 
-        <PageSection size="md" className="mb-5">
+        <PageSection className="mb-5">
           <ContentSkeleton meta={showMeta} />
         </PageSection>
 
@@ -67,17 +65,9 @@ const Chapter = props => {
   }
 
   return (
-    <PageContent className={classes('d-flex flex-column w-100', {
-      'mx-n4': embedded
-    })}>
-      <PageHeading
-        size="md"
-        poster={props.chapter.poster}
-        title={chapterNumbering ?
-          chapterNumbering + ' ' + props.chapter.title :
-          props.chapter.title
-        }
-        primaryAction="edit"
+    <>
+      <PageToolbar
+        toolbar="download edit more"
         actions={[
           {
             name: 'download',
@@ -86,14 +76,7 @@ const Chapter = props => {
             label: trans('download', {}, 'actions'),
             displayed: downloadable,
             callback: downloadChapter,
-          }, {
-            name: 'add-subpage',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-plus',
-            label: trans('add_subpage', {}, 'actions'),
-            target: `${props.path}/new/${props.chapter.slug}`,
-            group: trans('management'),
-            displayed: canEdit
+            primary: true
           }, {
             name: 'edit',
             type: LINK_BUTTON,
@@ -102,6 +85,14 @@ const Chapter = props => {
             target: `${props.path}/${props.chapter.slug}/edit`,
             group: trans('management'),
             exact: true,
+            displayed: canEdit
+          }, {
+            name: 'add-subpage',
+            type: LINK_BUTTON,
+            icon: 'fa fa-fw fa-plus',
+            label: trans('add_subpage', {}, 'actions'),
+            target: `${props.path}/new/${props.chapter.slug}`,
+            group: trans('management'),
             displayed: canEdit
           }, {
             name: 'move',
@@ -137,7 +128,18 @@ const Chapter = props => {
         ]}
       />
 
-      <PageSection size="md" className="pb-5">
+      {props.title &&
+        <PageHeading
+          title={props.numbering ?
+            props.numbering + ' ' + props.chapter.title :
+            props.chapter.title
+          }
+          level={props.level}
+          poster={props.poster}
+        />
+      }
+
+      <PageSection className={classes('pb-5', !props.title && !embedded && 'mt-5')}>
         <Content
           placeholder={trans('no_content')}
           meta={showMeta ?
@@ -152,9 +154,8 @@ const Chapter = props => {
         </Content>
       </PageSection>
 
-      {props.internalNotes && props.chapter.internalNote &&
+      {props.chapter.internalNote &&
         <PageSection
-          size="md"
           className="pb-5"
         >
           <div className="bg-body-tertiary rounded-3 p-4" role="presentation">
@@ -165,23 +166,19 @@ const Chapter = props => {
           </div>
         </PageSection>
       }
-
-      {showNavigation &&
-        <LessonPlayerNav
-          path={props.path}
-        />
-      }
-    </PageContent>
+    </>
   )
 }
 
 Chapter.propTypes = {
   path: T.string.isRequired,
+  level: T.number,
+  title: T.bool,
+  poster: T.string,
   chapter: T.shape(
     ChapterTypes.propTypes
   ),
-  treeData: T.object,
-  internalNotes: T.bool
+  numbering: T.string
 }
 
 export {

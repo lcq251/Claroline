@@ -11,12 +11,6 @@ abstract class AbstractEvaluationParameters
 {
     use Id;
 
-    #[ORM\Column(name: 'objective', type: Types::TEXT, nullable: true)]
-    private ?string $objective = null;
-
-    #[ORM\Column(name: 'target_audience', type: Types::TEXT, nullable: true)]
-    private ?string $targetAudience = null;
-
     /**
      * A score will be produced at the end of the evaluation.
      */
@@ -50,26 +44,6 @@ abstract class AbstractEvaluationParameters
 
     #[ORM\Column(name: 'failure_message', type: Types::TEXT, nullable: true)]
     private ?string $failureMessage = null;
-
-    public function getObjective(): ?string
-    {
-        return $this->objective;
-    }
-
-    public function setObjective(?string $objective): void
-    {
-        $this->objective = $objective;
-    }
-
-    public function getTargetAudience(): ?string
-    {
-        return $this->targetAudience;
-    }
-
-    public function setTargetAudience(?string $targetAudience): void
-    {
-        $this->targetAudience = $targetAudience;
-    }
 
     public function isScored(): bool
     {

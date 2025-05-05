@@ -47,19 +47,6 @@ const QUIZ_SCORE_AVAILABILITY = {
   [QUIZ_SCORE_AT_NEVER]      : trans('never', {}, 'quiz')
 }
 
-
-// Quiz numbering
-// TODO : maybe merge with path numbering
-const NUMBERING_NONE    = 'none'
-const NUMBERING_LITERAL = 'litteral'
-const NUMBERING_NUMERIC = 'numeric'
-
-const QUIZ_NUMBERINGS = {
-  [NUMBERING_NONE]   : trans('numbering_none'),
-  [NUMBERING_NUMERIC]: trans('numbering_numeric'),
-  [NUMBERING_LITERAL]: trans('numbering_literal')
-}
-
 export const constants = {
   // shuffle
   SHUFFLE_NEVER,
@@ -83,11 +70,5 @@ export const constants = {
   QUIZ_SCORE_AT_CORRECTION,
   QUIZ_SCORE_AT_VALIDATION,
   QUIZ_SCORE_AT_NEVER,
-  QUIZ_SCORE_AVAILABILITY,
-
-  // numbering
-  NUMBERING_NONE,
-  NUMBERING_LITERAL,
-  NUMBERING_NUMERIC,
-  QUIZ_NUMBERINGS
+  QUIZ_SCORE_AVAILABILITY
 }

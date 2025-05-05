@@ -29,7 +29,7 @@ const RoleShow = (props) =>
     role={props.role}
     reload={(role) => props.reload(role, props.contextData)}
   >
-    <PageSection size="md" className="mb-5">
+    <PageSection className="mb-5">
       <DetailsData
         data={props.role}
         definition={[
@@ -71,14 +71,10 @@ const RoleShow = (props) =>
 
     {'ROLE_ANONYMOUS' !== props.role.name &&
       <PageTabbedSection
-        size="md"
         className="embedded-list-section"
-        path={route(props.role, props.path)}
         tabs={[
           {
-            path: '',
-            exact: true,
-            icon: 'fa fa-key',
+            name: 'permissions',
             title: trans('permissions'),
             render: () => (
               <>
@@ -109,9 +105,7 @@ const RoleShow = (props) =>
               </>
             )
           }, {
-            path: '/users',
-            exact: true,
-            icon: 'fa fa-user',
+            name: 'users',
             title: trans('users', {}, 'community'),
             render: () => (
               <>
@@ -152,8 +146,7 @@ const RoleShow = (props) =>
               </>
             )
           }, {
-            path: '/groups',
-            icon: 'fa fa-users',
+            name: 'groups',
             title: trans('groups', {}, 'community'),
             render: () => (
               <>

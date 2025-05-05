@@ -21,7 +21,7 @@ const OrganizationShow = props =>
     organization={props.organization}
     reload={props.reload}
   >
-    <PageSection size="md" className="mb-5">
+    <PageSection className="mb-5">
       <DetailsData
         data={props.organization}
         definition={[
@@ -52,7 +52,7 @@ const OrganizationShow = props =>
       />
     </PageSection>
 
-    <PageSection size="md" title={trans('managers', {}, 'community')}>
+    <PageSection title={trans('managers', {}, 'community')}>
       {hasPermission('edit', props.organization) &&
         <Button
           className="btn btn-primary mt-3 me-auto"

@@ -1,7 +1,9 @@
-import {constants} from '#/plugin/exo/resources/quiz/constants'
-import {getItem} from '#/plugin/exo/items'
 import cloneDeep from 'lodash/cloneDeep'
+
 import {makeId} from '#/main/app/utils/id'
+import {NUMBERING_LITERAL, NUMBERING_NUMERIC} from '#/main/app/utils/numbering'
+
+import {getItem} from '#/plugin/exo/items'
 
 function refreshIdentifiers(item) {
   const copy = cloneDeep(item)
@@ -29,7 +31,7 @@ function getNumbering(type, stepIndex, itemIndex) {
     /**
      * The numbering label is a number.
      */
-    case constants.NUMBERING_NUMERIC:
+    case NUMBERING_NUMERIC:
       return numbering
         .map(idx => idx + 1)
         .join('.') + '.'
@@ -37,7 +39,7 @@ function getNumbering(type, stepIndex, itemIndex) {
     /**
      * The numbering label is a letter.
      */
-    case constants.NUMBERING_LITERAL:
+    case NUMBERING_LITERAL:
       return numbering
         .map(idx => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[idx])
         .join('.') + '.'

@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {scrollTo} from '#/main/app/dom/scroll'
@@ -22,7 +21,6 @@ const SequenceEditorStep = props => {
   }
 
   const workspace = useSelector(selectors.workspace)
-  const hasCustomNumbering = useSelector(selectors.hasCustomNumbering)
   const numbering = useSelector(selectors.numbering)
   const stepNumbering = getNumbering(numbering, steps, step)
 
@@ -56,7 +54,7 @@ const SequenceEditorStep = props => {
           name: 'next',
           type: LINK_BUTTON,
           icon: 'fa fa-fw fa-chevron-down',
-          label: next ? trans('next_step', {title: next.title}, 'evaluation') : null,
+          label: trans('next_step', {title: next ? next.title : trans('none')}, 'evaluation'),
           target: editorPath+'/steps/' + (next ? next.slug : ''),
           disabled: !next,
           onClick: () => scrollTo('.app-editor-body')
@@ -94,15 +92,7 @@ const SequenceEditorStep = props => {
                 picker: {
                   contextId: workspace.id
                 }
-              }/*,
-              linked: [
-                {
-                  name: 'showResourceHeader',
-                  type: 'boolean',
-                  label: trans('show_resource_header', {}, 'resource'),
-                  displayed: (step) => !isEmpty(step.primaryResource)
-                }
-              ]*/
+              }
             }, {
               name: 'evaluation.required',
               type: 'boolean',
@@ -121,11 +111,6 @@ const SequenceEditorStep = props => {
           primary: true,
           fields: [
             {
-              name: 'display.numbering',
-              type: 'string',
-              label: trans('step_numbering', {}, 'path'),
-              displayed: hasCustomNumbering
-            }, {
               name: 'description',
               type: 'html',
               label: trans('description'),
@@ -135,19 +120,21 @@ const SequenceEditorStep = props => {
                 workspace: workspace
               }
             }, {
-              name: 'evaluation.estimatedDuration',
+              name: 'estimatedDuration',
               label: trans('estimated_duration'),
               type: 'number',
               options: {
                 unit: trans('minutes')
               }
             }, {
+              name: 'objective',
+              label: trans('objective', {}, 'evaluation'),
+              type: 'html'
+            }, {
               name: 'secondaryResources',
               type: 'resource',
               label: trans('secondary_resources', {}, 'path'),
               help: trans('Ajoutez des liens vers les ressources qui peuvent être utiles à la réalisation de l\'activité.', {}, 'path'),
-              // displayed: (step) => step._enableSecondaryResources || !isEmpty(step.secondaryResources),
-              //required: true,
               options: {
                 multiple: true,
                 picker: {

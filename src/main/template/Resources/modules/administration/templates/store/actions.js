@@ -2,44 +2,36 @@ import {makeActionCreator} from '#/main/app/store/actions'
 
 import {API_REQUEST, url} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'
+import {selectors} from '#/main/template/administration/templates/store/selectors'
 
 export const TEMPLATE_TYPE_LOAD = 'TEMPLATE_TYPE_LOAD'
 
 const actions = {}
 
-actions.loadTemplateType = makeActionCreator(TEMPLATE_TYPE_LOAD, 'templateType')
+actions.loadTemplateType = makeActionCreator(TEMPLATE_TYPE_LOAD, 'templateType', 'templates')
+actions.loadTemplate = (template) => formActions.resetForm(selectors.STORE_NAME + '.template', template, false)
+actions.newTemplate = () => formActions.resetForm(selectors.STORE_NAME + '.template', {}, true)
 
 actions.open = (type = null) => (dispatch) => {
   if (type) {
     return dispatch({
       [API_REQUEST]: {
-        url: ['apiv2_template_type_get', {type: type}],
-        silent: true,
-        success: (response) => dispatch(actions.loadTemplateType(response))
-      }
-    })
-  }
+        url: ['apiv2_template_type_list', {type: type}],
+        success: (response) => {
+          dispatch(actions.loadTemplateType(type, response.data))
 
-  return dispatch(actions.loadTemplateType(null))
-}
+          let defaultTemplate = response.data.find(template => template.default)
+          if (!defaultTemplate) {
+            defaultTemplate = response.data.find(template => template.system)
+          }
 
-actions.openForm = (formName, defaultData = {}, id = null) => (dispatch) => {
-  if (id) {
-    dispatch({
-      [API_REQUEST]: {
-        url: ['apiv2_template_get', {id}],
-        success: (response, dispatch) => {
-          dispatch(formActions.resetForm(formName, response, false))
+          dispatch(actions.loadTemplate(defaultTemplate))
         }
       }
     })
-  } else {
-    dispatch(actions.resetForm(formName, defaultData))
   }
-}
 
-actions.resetForm = (formName, defaultData = {}) => (dispatch) => {
-  dispatch(formActions.resetForm(formName, defaultData, true))
+  return dispatch(actions.loadTemplateType(null, []))
 }
 
 actions.deleteTemplate = (templateTypeId, templateId) => (dispatch) => dispatch({

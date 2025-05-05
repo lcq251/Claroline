@@ -34,7 +34,7 @@ const ImportOverview = () => {
   return (
     <ToolPage>
       <PageContent>
-        <PageSection size="md" className="mb-5">
+        <PageSection className="mb-5">
           <ContentMenu
             items={links}
           />

@@ -36,6 +36,15 @@ class Lesson extends AbstractResource
     #[ORM\Column]
     private string $numbering = 'none';
 
+    /**
+     * Pagination of the lesson.
+     *   - none : All the chapters are displayed in the same page, one after another.
+     *   - step : One page per chapter + all of its subchapters.
+     *   - all  : One page per chapter.
+     */
+    #[ORM\Column]
+    private string $pagination = 'all';
+
     #[ORM\OneToOne(targetEntity: Chapter::class, cascade: ['all'])]
     #[ORM\JoinColumn(name: 'root_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Chapter $root = null;
@@ -78,6 +87,16 @@ class Lesson extends AbstractResource
     public function setNumbering(?string $numbering): void
     {
         $this->numbering = $numbering;
+    }
+
+    public function getPagination(): string
+    {
+        return $this->pagination;
+    }
+
+    public function setPagination(string $pagination): void
+    {
+        $this->pagination = $pagination;
     }
 
     public function setRoot(?Chapter $root): void

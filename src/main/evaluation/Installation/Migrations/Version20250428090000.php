@@ -5,11 +5,6 @@ namespace Claroline\EvaluationBundle\Installation\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated migration based on mapping information: modify it with caution.
- *
- * Generation date: 2025/04/17 07:46:22
- */
 final class Version20250428090000 extends AbstractMigration
 {
     public function up(Schema $schema): void

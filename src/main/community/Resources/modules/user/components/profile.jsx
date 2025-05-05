@@ -28,7 +28,6 @@ const UserProfile = (props) => {
       {isEmpty(props.user) &&
         <PageContent className="placeholder-glow">
           <PageHeadingSkeleton
-            size="md"
             icon={true}
             description={true}
           />
@@ -36,10 +35,8 @@ const UserProfile = (props) => {
       }
 
       {!isEmpty(props.user) &&
-        <PageContent>
+        <PageContent poster={get(props.user, 'poster')}>
           <PageHeading
-            size="md"
-            poster={get(props.user, 'poster')}
             icon={
               <UserAvatar user={props.user} size="lg" border={true} />
             }
@@ -49,7 +46,7 @@ const UserProfile = (props) => {
             actions={props.actions}
           />
 
-          <PageSection size="md" className="mb-5">
+          <PageSection className="mb-5">
             <DetailsData
               data={props.user}
               definition={[
@@ -93,33 +90,29 @@ const UserProfile = (props) => {
           </PageSection>
 
           <PageTabbedSection
-            size="md"
             className="mt-3"
-            path={props.path}
             tabs={[
               {
-                path: '',
-                exact: true,
+                name: 'activity',
                 title: trans('activity'),
                 render: () => (
                   <UserActivity path={props.path} user={props.user} />
                 )
               }, {
-                path: '/profile',
+                name: 'about',
                 title: trans('about'),
                 render: () => (
                   <UserAbout path={props.path} user={props.user} />
                 )
               }, {
-                path: '/groups',
+                name: 'groups',
                 title: trans('groups', {}, 'community'),
                 render: () => (
                   <UserGroups path={props.path} user={props.user} addGroups={props.addGroups} />
                 )
               }
             ].concat(profilePages.map(profilePage => ({
-              ...omit(profilePage, 'name', 'component'),
-              path: '/' + profilePage.name,
+              ...omit(profilePage, 'component'),
               render: () => {
                 return createElement(profilePage.component, {
                   path: props.path,

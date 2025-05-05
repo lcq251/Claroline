@@ -47,7 +47,7 @@ const Fog = (props) =>
 
 const EmptyState = (props) => {
   return (
-    <div className={classes('my-auto content-md text-center', props.className)}>
+    <div className={classes('my-auto content-lg text-center', props.className)}>
       {props.icon &&
         <div className="mb-4 position-relative d-flex align-items-center justify-content-center mx-auto opacity-75" style={{width: '12rem', height: '8rem'}}>
           <span className={classes('text-primary border border-3 border-primary rounded-circle p-4 fs-1 bg-body z-1', props.icon)} aria-hidden={true} style={{fontSize: '3rem'}}/>

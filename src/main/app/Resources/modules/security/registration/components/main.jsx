@@ -18,7 +18,7 @@ class RegistrationMain extends Component {
     return (
       <FormData
         level={2}
-        className="content-sm"
+        className="content-md"
         name={selectors.FORM_NAME}
         definition={[
           {

@@ -1,118 +1,108 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
-import {Routes} from '#/main/app/router/components/routes'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
-import {ContentLoader} from '#/main/app/content/components/loader'
-import {Toolbar} from '#/main/app/action'
+import {CALLBACK_BUTTON, MenuButton} from '#/main/app/buttons'
+import {PageContent, PageHeading, PageHeadingSkeleton, PageSection} from '#/main/app/page'
+import {ToolPage} from '#/main/core/tool'
 
-import {TemplatePage} from '#/main/template/administration/templates/containers/page'
-import {TemplateForm} from '#/main/template/administration/templates/containers/form'
-import {selectors} from '#/main/template/administration/templates/store'
-import {ContentNav} from '#/main/app/content/components/nav'
+import {TemplateShow} from '#/main/template/template/components/show'
+import {Template, TemplateType} from '#/main/template/prop-types'
+import {Badge} from '#/main/app/components/badge'
 
 const TemplateDetails = (props) => {
-  if (isEmpty(props.templateType)) {
-    return (
-      <ContentLoader
-        size="lg"
-        description={trans('loading', {}, 'template')}
-      />
-    )
-  }
-
-  let currentTemplate = useSelector(selectors.template)
-
   return (
-    <TemplatePage
-      templateType={props.templateType}
+    <ToolPage
+      title={trans('template_name', {
+        name: props.templateType ? trans(get(props.templateType, 'name'), {}, 'template') : trans('loading')
+      }, 'template')}
+      description={props.templateType ?
+        trans(get(props.templateType, 'name')+'_desc', {}, 'template') : undefined
+      }
     >
-      <div className="row">
-        <div className="col-md-3">
-          <ContentNav
-            path={props.path + '/' + props.templateType.type + '/' + props.templateType.name}
-            type="vertical"
-            sections={[].concat(props.templates.map(template => ({
-              id: template.id,
-              title: (
-                <>
-                  {template.name}
-                  {template.default &&
-                    <small>
-                      &nbsp;({trans('default')})
-                    </small>
-                  }
-                </>
-              ),
-              path: `/${template.id}`,
-              actions: [
-                {
-                  name: 'delete',
-                  type: CALLBACK_BUTTON,
-                  icon: 'fa fa-fw fa-trash',
-                  label: trans('delete', {}, 'actions'),
-                  displayed: !template.system,
-                  callback: () => props.deleteTemplate(props.templateType.id, template.id),
-                  confirm: {
-                    title: trans('template_delete_confirm', {}, 'template'),
-                    message: trans('template_delete_confirm_message', {}, 'template')
-                  },
-                  dangerous: true
-                }
-              ]
-            })), [
-              {
-                name: 'add',
-                type: LINK_BUTTON,
-                icon: 'fa fa-fw fa-plus',
-                title: trans('add_template'),
-                path: `${props.path}/${props.templateType.type}/form`,
-                exact: true
-              },
-            ])}
+      {isEmpty(props.templateType) &&
+        <PageContent className="placeholder-glow">
+          <PageHeadingSkeleton
+            description={true}
           />
-        </div>
+        </PageContent>
+      }
 
-        <div className="col-md-9">
-          <Routes
-            path={props.path + '/' + props.templateType.type + '/' + props.templateType.name}
-            redirect={[
-              {from: '/', exact: true, to: '/'+props.templates[0].id, disabled: isEmpty(props.templates)}
-            ]}
-            routes={[
-              {
-                path: '/form',
-                component: TemplateForm,
-                onEnter: () => props.openForm(props.templateType, props.defaultLocale),
-                onLeave: () => props.resetForm(props.templateType, props.defaultLocale)
-              }, {
-                path: '/:id',
-                component: TemplateForm,
-                onEnter: (params) => props.openForm(props.templateType, props.defaultLocale, params.id || null),
-                onLeave: () => props.resetForm(props.templateType, props.defaultLocale)
-              }
-            ]}
+      {!isEmpty(props.templateType) &&
+        <PageContent className="d-flex flex-column">
+          <PageHeading
+            title={trans(get(props.templateType, 'name'), {}, 'template')}
+            description={trans(get(props.templateType, 'name')+'_desc', {}, 'template')}
           />
-        </div>
-      </div>
-    </TemplatePage>
+
+          <PageSection className="flex-fill d-flex flex-column">
+            <div className="d-flex flex-column align-items-stretch align-content-stretch">
+              <span className="mb-2 text-body-secondary text-uppercase fw-semibold fs-sm d-inline-block">{trans('available_templates', {}, 'template')}</span>
+              <MenuButton
+                className="px-3 py-2 border rounded-2 bg-body text-start fw-light flex-fill mb-5 focus-ring d-flex gap-3 align-items-center"
+                menu={{
+                  className: 'w-100',
+                  items: props.templates.map(template => ({
+                    name: template.name,
+                    type: CALLBACK_BUTTON,
+                    label: (
+                      <div className="d-flex gap-2 align-items-baseline" role="presentation">
+                        {template.name}
+                        {template.default &&
+                          <Badge variant="primary">{trans('default')}</Badge>
+                        }
+                      </div>
+                    ),
+                    callback: () => props.loadTemplate(template),
+                    active: props.currentTemplate.name === template.name,
+                    children: template.description ?
+                      <p className={classes('mb-0 fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{template.description}</p> :
+                      <em className={classes('d-block fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{trans('no_description')}</em>
+                  }))
+                }}
+              >
+                <div role="presentation">
+                  <div className="d-flex gap-2 align-items-baseline" role="presentation">
+                    <b>{props.currentTemplate.name}</b>
+                    {props.currentTemplate.default &&
+                      <Badge variant="primary">{trans('default')}</Badge>
+                    }
+                  </div>
+
+                  {props.currentTemplate.description ?
+                    <p className="text-body-secondary mb-0 fs-sm">{props.currentTemplate.description}</p> :
+                    <em className="text-body-tertiary d-block fs-sm">{trans('no_description')}</em>
+                  }
+                </div>
+                <span className="fa fa-fw fa-chevron-down text-body-tertiary ms-auto" aria-hidden={true} />
+              </MenuButton>
+            </div>
+
+            <TemplateShow
+              template={props.currentTemplate}
+              placeholders={props.templateType.placeholders}
+            />
+          </PageSection>
+        </PageContent>
+      }
+    </ToolPage>
   )
 }
 
 TemplateDetails.propTypes = {
   path: T.string.isRequired,
-  templateType: T.shape({
-    // TemplateTypeTypes.propTypes
-  }),
+  templateType: T.shape(
+    TemplateType.propTypes
+  ),
+  currentTemplate: T.shape(
+    Template.propTypes
+  ),
   templates: T.array,
-
-  defaultLocale: T.string.isRequired,
-  openForm: T.func.isRequired,
-  resetForm: T.func.isRequired,
-  deleteTemplate: T.func.isRequired
+  newTemplate: T.func.isRequired,
+  loadTemplate: T.func.isRequired
 }
 
 export {

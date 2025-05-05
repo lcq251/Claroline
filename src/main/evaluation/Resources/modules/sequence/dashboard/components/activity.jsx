@@ -12,7 +12,7 @@ const SequenceDashboardActivity = () => {
 
   return (
     <PageContent className="d-flex">
-      <PageSection size="md" className="mx-auto">
+      <PageSection className="mx-auto">
         <Activity
           name={selectors.STORE_NAME + '.logs'}
           url={['apiv2_sequence_functional_logs', {id: sequenceId}]}

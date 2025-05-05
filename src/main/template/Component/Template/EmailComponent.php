@@ -2,11 +2,24 @@
 
 namespace Claroline\TemplateBundle\Component\Template;
 
-abstract class EmailComponent implements TemplateInterface
+use Claroline\TemplateBundle\Model\TemplateInterface;
+use Twig\Environment;
+
+abstract class EmailComponent implements TemplateTypeInterface
 {
+    protected Environment $twig;
+
+    /**
+     * @internal used by DI
+     */
+    public function setTwig(Environment $twig): void
+    {
+        $this->twig = $twig;
+    }
+
     public static function getType(): string
     {
-        return TemplateInterface::EMAIL;
+        return TemplateTypeInterface::EMAIL;
     }
 
     public function getPlaceholders(): array
@@ -15,6 +28,11 @@ abstract class EmailComponent implements TemplateInterface
     }
 
     public function getSamples(): array
+    {
+        return [];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
     {
         return [];
     }

@@ -1,11 +1,12 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {EditorPage} from '#/main/app/editor'
+import {NUMBERINGS} from '#/main/app/utils/numbering'
 
 import {constants} from '#/main/evaluation/sequence/constants'
-import get from 'lodash/get'
-import {useDispatch} from 'react-redux'
 import {actions} from '#/main/evaluation/sequence/editor/store'
 
 const SequenceEditorAppearance = () => {
@@ -15,7 +16,7 @@ const SequenceEditorAppearance = () => {
   return (
     <EditorPage
       title={trans('appearance')}
-      help={trans('Personnalisez les paramètres d\'affichage avancés de votre séquence et de ses contenus.')}
+      help={trans('sequence_appearance_help', {}, 'evaluation')}
       definition={[
         {
           name: 'images',
@@ -44,38 +45,26 @@ const SequenceEditorAppearance = () => {
             {
               name: 'display.numbering',
               type: 'choice',
-              label: trans('path_numbering', {}, 'path'),
+              label: trans('sequence_numbering', {}, 'evaluation'),
               required: true,
               options: {
                 noEmpty: true,
                 condensed: false,
-                choices: constants.PATH_NUMBERINGS
+                choices: NUMBERINGS
               }
-            }
-          ]
-        }, /*{
-          name: 'opening',
-          icon: 'fa fa-fw fa-sign-in',
-          title: trans('opening_parameters'),
-          description: trans('Configurez la façon dont les contenus de votre parcours vont s\'ouvrir.'),
-          primary: true,
-          fields: [
-            {
-              name: 'opening.secondaryResources',
-              label: trans('secondary_resources_open_target', {}, 'path'),
+            }, {
+              name: 'display.pagination',
               type: 'choice',
-              // required: true,
+              label: trans('sequence_pagination', {}, 'evaluation'),
+              required: true,
               options: {
                 noEmpty: true,
                 condensed: false,
-                choices: {
-                  _self: trans('same_window'),
-                  _blank: trans('new_window')
-                }
+                choices: constants.PAGINATIONS
               }
             }
           ]
-        }, */{
+        }, {
           title: trans('Bouton "Quitter"'),
           description: trans('Personnalisez le comportement et l\'affichage du bouton "Quitter" affiché à la fin de la séquence.'),
           primary: true,

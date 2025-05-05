@@ -110,8 +110,7 @@ const ExportEditorFormat = (props) => {
                   <Checkbox
                     id="export-column-select"
                     className="transfer-schema-select"
-                    label={trans('list_select_all')}
-                    labelChecked={trans('list_deselect_all')}
+                    label={trans(0 < selectedColumns.length ? 'list_deselect_all' : 'list_select_all')}
                     checked={0 < selectedColumns.length}
                     onChange={() => {
                       if (0 === selectedColumns.length){

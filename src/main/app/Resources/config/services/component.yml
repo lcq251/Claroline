@@ -18,6 +18,7 @@ services:
 
     # Tools
     Claroline\AppBundle\Component\Tool\ToolProvider:
+        lazy: true
         arguments:
             - !tagged_iterator claroline.component.tool
             - '@event_dispatcher'

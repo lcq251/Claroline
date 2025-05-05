@@ -47,7 +47,7 @@ class LocaleInput extends PureComponent {
           })} role="presentation">
             <Radio
               className="mb-0"
-              id={locale}
+              name={this.props.id}
               label={
                 <div className="d-flex flex-row justify-content-between gap-2" role="presentation">
                   {trans(locale)}

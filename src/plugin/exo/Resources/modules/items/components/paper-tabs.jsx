@@ -1,11 +1,8 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-// TODO : use custom components instead
-import Tab from 'react-bootstrap/Tab'
-import Tabs from 'react-bootstrap/Tabs'
-
 import {trans} from '#/main/app/intl/translation'
+import {Tab, Tabs} from '#/main/app/components/tabs'
 
 const PaperTabs = (props) =>
   <Tabs

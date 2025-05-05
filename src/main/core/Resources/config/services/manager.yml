@@ -174,7 +174,7 @@ services:
             - '@Claroline\CoreBundle\Manager\Resource\MaskManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
 
-    claroline.manager.rights_manager:
+    claroline.manager.rights_manager: # used for tests only
         alias: Claroline\CoreBundle\Manager\Resource\RightsManager
         public: true
 

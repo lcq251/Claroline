@@ -30,7 +30,6 @@ const TransferPage = props =>
     {!isEmpty(props.transferFile) &&
       <PageContent>
         <PageHeading
-          size="md"
           title={props.transferFile.name || transAction(props.transferFile.action)}
           primaryAction="edit"
           actions={[
@@ -48,7 +47,7 @@ const TransferPage = props =>
           ].concat(props.actions)}
         />
 
-        <PageSection size="md">
+        <PageSection>
           <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4 text-wrap" role="presentation">
             <UserMicro
               {...get(props.transferFile, 'meta.creator', {})}

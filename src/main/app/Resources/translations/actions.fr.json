@@ -117,5 +117,7 @@
   "show_context_menu": "Ouvrir le menu de l'espace",
   "close_context_menu": "Fermer le menu de l'espace",
   "change_owner": "Changer le propriétaire",
-  "remove_filters": "Retirer les filtres"
+  "remove_filters": "Retirer les filtres",
+  "transfer": "Transférer",
+  "regenerate": "Régénérer"
 }

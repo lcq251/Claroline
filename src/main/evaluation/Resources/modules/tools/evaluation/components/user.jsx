@@ -30,7 +30,6 @@ const EvaluationUser = (props) =>
     {props.loaded &&
       <PageContent>
         <PageHeading
-          size="md"
           title={
             <div className="d-flex align-items-center gap-4">
               <UserAvatar user={get(props.workspaceEvaluation, 'user')} size="lg" />

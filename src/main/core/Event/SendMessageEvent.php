@@ -17,26 +17,19 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class SendMessageEvent extends Event
 {
-    /** @var string */
-    private $content;
-    /** @var string */
-    private $object;
+    private ?string $content = null;
+    private ?string $object = null;
     /** @var AbstractRoleSubject[] */
-    private $receivers;
-    /** @var User|null */
-    private $sender;
-    /** @var array */
-    private $attachments;
+    private array $receivers;
+    private ?User $sender = null;
+    private array $attachments = [];
 
-    /**
-     * @param AbstractRoleSubject[] $receivers
-     */
     public function __construct(
-        $content,
-        $object,
-        array $receivers,
-        User $sender = null,
-        array $attachments = []
+        ?string $content = null,
+        ?string $object = null,
+        ?array $receivers = [],
+        ?User $sender = null,
+        ?array $attachments = []
     ) {
         $this->content = $content;
         $this->object = $object;
@@ -50,7 +43,7 @@ class SendMessageEvent extends Event
         return $this->content;
     }
 
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
@@ -60,7 +53,7 @@ class SendMessageEvent extends Event
         return $this->object;
     }
 
-    public function setObject($object)
+    public function setObject($object): void
     {
         $this->object = $object;
     }
@@ -70,7 +63,7 @@ class SendMessageEvent extends Event
         return $this->receivers;
     }
 
-    public function setReceivers(array $receivers)
+    public function setReceivers(array $receivers): void
     {
         $this->receivers = $receivers;
     }
@@ -80,7 +73,7 @@ class SendMessageEvent extends Event
         return $this->sender;
     }
 
-    public function setSender(User $sender)
+    public function setSender(User $sender): void
     {
         $this->sender = $sender;
     }
@@ -90,7 +83,7 @@ class SendMessageEvent extends Event
         return $this->attachments;
     }
 
-    public function addAttachment($attachment)
+    public function addAttachment($attachment): void
     {
         $this->attachments[] = $attachment;
     }

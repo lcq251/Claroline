@@ -2,7 +2,6 @@ import React from 'react'
 
 import {trans} from '#/main/app/intl/translation'
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
-import {toKey} from '#/main/app/utils/text'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
 import {Radio} from '#/main/app/input/components/radio'
@@ -17,16 +16,16 @@ const Radios = props => {
 
   if (0 === choiceValues.length) {
     return (
-      <span className="text-secondary d-block">{trans('no_choice')}</span>
+      <em className="text-body-tertiary d-block">{trans('no_choice')}</em>
     )
   }
 
   return (
-    <div id={props.id} className={props.className} role="radiogroup">
+    <>
       {!props.noEmpty &&
         <Radio
           key="empty-value"
-          id={`${props.id}-empty`}
+          name={props.id}
           label={props.placeholder || trans('none')}
           value=""
           inline={props.inline}
@@ -39,8 +38,8 @@ const Radios = props => {
       {choiceValues.map((choiceValue, choiceIndex) =>
         <Radio
           key={choiceValue}
-          id={`${props.id}-${toKey(choiceValue)}`}
-          label={props.choices[choiceValue]}
+          {...(typeof props.choices[choiceValue] === 'string' ? {label: props.choices[choiceValue]} : props.choices[choiceValue])}
+          name={props.id}
           value={choiceValue}
           inline={props.inline}
           checked={parseValue(choiceValue) === props.value}
@@ -49,7 +48,7 @@ const Radios = props => {
           tabIndex={props.noEmpty && 0 === choiceIndex ? 0 : -1}
         />
       )}
-    </div>
+    </>
   )
 }
 

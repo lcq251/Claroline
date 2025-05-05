@@ -76,7 +76,7 @@ const Player = props => {
           />
         }
 
-        <div className="flashcard-player content-sm mt-5">
+        <div className="flashcard-player content-md mt-5">
           {props.flashcardDeck.showProgression &&
             <div className="flashcard-counter mb-1">
               <div>

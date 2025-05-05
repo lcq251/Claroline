@@ -124,7 +124,7 @@ const QuizOverview = props => {
       ]}
     >
       {props.quiz.parameters.showMetadata &&
-        <PageSection size="md" className="py-3">
+        <PageSection className="py-3">
           <h3 className="h2">{trans('configuration')}</h3>
 
           <Parameters
@@ -141,7 +141,7 @@ const QuizOverview = props => {
 
 
       {props.showStats && ['user', 'both'].includes(get(props.quiz, 'parameters.overviewStats')) &&
-        <PageSection size="md" className="py-3">
+        <PageSection className="py-3">
           <AttemptsChart
             quizId={props.quiz.id}
             userId={props.currentUserId}
@@ -152,7 +152,7 @@ const QuizOverview = props => {
       }
 
       {props.showStats && ['all', 'both'].includes(get(props.quiz, 'parameters.overviewStats')) &&
-        <PageSection size="md" className="py-3">
+        <PageSection className="py-3">
           <AttemptsChart
             quizId={props.quiz.id}
             steps={props.quiz.steps}

@@ -16,7 +16,7 @@ const DashboardActions = ({
 
   return (
     <PageContent>
-      <PageSection size="md" className="my-4">
+      <PageSection className="my-4">
         {displayedActions.map(action =>
           <ActionCard
             {...action}

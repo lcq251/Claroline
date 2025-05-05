@@ -71,12 +71,12 @@ class ChapterSerializer
             'poster' => $chapter->getPoster(),
             'contentRaw' => $chapter->getText(),
             'content' => $this->placeholderManager->replacePlaceholders($chapter->getText() ?? ''),
+            'level' => $chapter->getLevel(),
             'meta' => [
                 'createdAt' => DateNormalizer::normalize($chapter->getCreatedAt()),
                 'updatedAt' => DateNormalizer::normalize($chapter->getUpdatedAt()),
                 'creator' => $chapter->getCreator() ? $this->userSerializer->serialize($chapter->getCreator(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             ],
-            'customNumbering' => $chapter->getCustomNumbering(),
             'parentSlug' => $chapter->getParent()?->getSlug(),
             'previousSlug' => $previousChapter?->getSlug(),
             'nextSlug' => $nextChapter?->getSlug(),
@@ -91,8 +91,6 @@ class ChapterSerializer
 
     /**
      * Serializes a chapter tree, returned from Gedmo tree extension.
-     *
-     * @return array
      */
     public function serializeChapterTree($tree): array
     {
@@ -107,7 +105,6 @@ class ChapterSerializer
 
         $this->sipe('title', 'setTitle', $data, $chapter);
         $this->sipe('contentRaw', 'setText', $data, $chapter);
-        $this->sipe('customNumbering', 'setCustomNumbering', $data, $chapter);
         $this->sipe('poster', 'setPoster', $data, $chapter);
         $this->sipe('internalNote', 'setInternalNote', $data, $chapter);
 

@@ -18,7 +18,7 @@ const FormWrapper = props => props.embedded ?
   :
   <form
     {...omit(props, 'embedded', 'flush', 'children')}
-    className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-md')}
+    className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-lg')}
     onSubmit={(e) => e.preventDefault()}
   >
     {props.children}

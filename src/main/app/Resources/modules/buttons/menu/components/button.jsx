@@ -48,7 +48,7 @@ const StandardMenu = (props) => {
   return (
     <Menu
       {...omit(props, 'menu')}
-      className={props.className}
+      className={props.menu.className}
     >
       {(props.menu.label && 0 !== actions.unclassified.length) &&
         <MenuHeader>{props.menu.label}</MenuHeader>
@@ -97,7 +97,6 @@ const StandardMenu = (props) => {
 }
 
 StandardMenu.propTypes = {
-  className: T.string,
   menu: T.shape({
     label: T.string,
     position: T.oneOf(['top', 'bottom']),

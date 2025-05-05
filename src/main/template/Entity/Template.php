@@ -16,7 +16,9 @@ use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Name;
-use Claroline\TemplateBundle\Finder\TemplateType as TemplateFinder;
+use Claroline\TemplateBundle\Finder\TemplateType;
+use Claroline\TemplateBundle\Model\TemplateContentInterface;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -24,8 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'claro_template')]
-#[CrudEntity(finderClass: TemplateFinder::class)]
-class Template
+#[CrudEntity(finderClass: TemplateType::class)]
+class Template implements TemplateInterface
 {
     use Id;
     use Uuid;
@@ -93,7 +95,7 @@ class Template
         return $this->contents;
     }
 
-    public function getTemplateContent(string $lang): ?TemplateContent
+    public function getTemplateContent(string $lang): ?TemplateContentInterface
     {
         foreach ($this->contents as $content) {
             if ($content->getLang() === $lang) {

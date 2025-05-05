@@ -27,7 +27,7 @@ const SecurityLayout = ({
         <h1 className="text-center mb-0">{name}</h1>
 
         {description &&
-          <p className="content-sm text-center mt-4 mt-lg-5 lead mb-0">{description}</p>
+          <p className="content-md text-center mt-4 mt-lg-5 lead mb-0">{description}</p>
         }
       </div>
 

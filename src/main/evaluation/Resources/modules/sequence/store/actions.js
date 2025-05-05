@@ -3,14 +3,16 @@ import {API_REQUEST} from '#/main/app/api'
 
 export const SEQUENCE_RELOAD = 'SEQUENCE_RELOAD'
 export const SEQUENCE_EVALUATION_UPDATE    = 'SEQUENCE_EVALUATION_UPDATE'
-export const STEP_ENABLE_NAVIGATION = 'STEP_ENABLE_NAVIGATION'
-export const STEP_DISABLE_NAVIGATION = 'STEP_DISABLE_NAVIGATION'
+export const SEQUENCE_SET_CURRENT_STEP = 'SEQUENCE_SET_CURRENT_STEP'
+export const SEQUENCE_ENABLE_NAVIGATION = 'SEQUENCE_ENABLE_NAVIGATION'
+export const SEQUENCE_DISABLE_NAVIGATION = 'STEP_DISABLE_NAVIGATION'
 
 export const actions = {}
 
 actions.updateUserEvaluation = makeActionCreator(SEQUENCE_EVALUATION_UPDATE, 'userEvaluation', 'progression')
-actions.enableNavigation = makeActionCreator(STEP_ENABLE_NAVIGATION)
-actions.disableNavigation = makeActionCreator(STEP_DISABLE_NAVIGATION)
+actions.setCurrentStep = makeActionCreator(SEQUENCE_SET_CURRENT_STEP, 'stepSlug')
+actions.enableNavigation = makeActionCreator(SEQUENCE_ENABLE_NAVIGATION)
+actions.disableNavigation = makeActionCreator(SEQUENCE_DISABLE_NAVIGATION)
 
 actions.reload = makeActionCreator(SEQUENCE_RELOAD, 'sequence')
 

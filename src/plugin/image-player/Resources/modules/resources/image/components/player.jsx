@@ -49,11 +49,11 @@ const ImagePlayer = () => {
             embedded={embedded}
             meta={(
               <>
-                {get(resourceNode, 'evaluation.estimatedDuration') &&
+                {get(resourceNode, 'estimatedDuration') &&
                   <>
                     <div role="presentation" aria-label={trans('estimated_duration')}>
                       <span className="fa far fa-clock me-2" aria-hidden={true} />
-                      {get(resourceNode, 'evaluation.estimatedDuration') + ' ' + trans('minutes')}
+                      {get(resourceNode, 'estimatedDuration') + ' ' + trans('minutes')}
                     </div>
                     <span role="presentation">-</span>
                   </>

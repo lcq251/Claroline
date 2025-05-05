@@ -26,14 +26,19 @@ class PlaceholderManager
             'platform_url',
             'platform_logo',
 
-            'date',
-            'datetime',
             'current_user_id',
             'current_user_username',
             'current_user_first_name',
             'current_user_last_name',
             'current_user_email',
             'current_user_avatar',
+
+            'current_datetime_utc',
+            'current_date_utc',
+            'current_time_utc',
+            'current_datetime',
+            'current_date',
+            'current_time',
         ];
     }
 
@@ -51,21 +56,19 @@ class PlaceholderManager
             $currentUser = $this->tokenStorage->getToken()?->getUser();
         }
 
-        $placeholders = [
+        $placeholders = array_merge([
             '%platform_name%' => $this->config->getParameter('display.name'),
             '%platform_secondary_name%' => $this->config->getParameter('secondary_name'),
             '%platform_url%' => $this->platformManager->getUrl(),
             '%platform_logo%' => $this->config->getParameter('logo'),
 
-            '%date%' => $now->format('Y-m-d'), // should be in locale format
-            '%datetime%' => $now->format('Y-m-d H:i:s'), // should be in locale format
             '%current_user_id%' => $currentUser?->getUuid(),
             '%current_user_username%' => $currentUser?->getUsername(),
             '%current_user_first_name%' => $currentUser?->getFirstName(),
             '%current_user_last_name%' => $currentUser?->getLastName(),
             '%current_user_email%' => $currentUser?->getEmail(),
             '%current_user_avatar%' => $currentUser?->getPicture(),
-        ];
+        ], $this->formatDatePlaceholder('current', $now));
 
         foreach ($customPlaceholders as $key => $value) {
             $placeholders['%'.$key.'%'] = $value;

@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 import get from 'lodash/get'
 
-import {flattenPages, getNumbering} from '#/plugin/lesson/resources/lesson/utils'
+import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
 import {trans} from '#/main/app/intl'
 
 const STORE_NAME = 'icap_lesson'
@@ -21,29 +21,52 @@ const placeholders = createSelector(
   (store) => store.placeholders
 )
 
+const chapters = createSelector(
+  [store],
+  (store) => store.chapters
+)
+
 const chapter = createSelector(
   [store],
   (store) => store.chapter
 )
 
 const tree = createSelector(
-  [store],
-  (store) => store.tree
-)
+  [chapters],
+  (chapters) => {
+    function buildTree(source, currentChildren, currentSlug) {
+      const elements = source.filter(elem => elem.parentSlug === currentSlug)
+      elements.forEach(elem => {
+        // build a tree node for this element
+        const treeNode = {
+          id: elem.id,
+          level: elem.level,
+          slug: elem.slug,
+          title: elem.title,
+          children: []
+        }
+        // add it to the parent children array
+        currentChildren.push(treeNode)
+        // continue recursively, it will stop when no element with the specified parentUUID can be found
+        buildTree(source, treeNode.children, elem.slug)
+      })
+    }
 
-const treeData = createSelector(
-  [tree],
-  (tree) => tree.data
+    const result = []
+    buildTree(chapters, result, null)
+
+    return result[0]
+  }
 )
 
 const root = createSelector(
-  [treeData],
-  (treeData) => treeData
+  [chapters],
+  (chapters) => chapters.find(chapter => null === chapter.parentSlug)
 )
 
 const pages = createSelector(
-  [treeData],
-  (treeData) => flattenPages(get(treeData, 'children', []))
+  [chapters],
+  (chapters) => chapters.filter(chapter => null !== chapter.parentSlug)
 )
 
 const showOverview = createSelector(
@@ -83,7 +106,7 @@ const nextPath = createSelector(
 )
 
 const nextTitle = createSelector(
-  [nextPage, numbering, treeData],
+  [nextPage, numbering, tree],
   (nextPage, numbering, treeData) => {
     if (nextPage) {
       const nextNumbering = getNumbering(numbering, treeData.children, nextPage)
@@ -122,10 +145,10 @@ const previousPath = createSelector(
 )
 
 const previousTitle = createSelector(
-  [previousPage, numbering, showOverview, treeData],
-  (previousPage, numbering, showOverview, treeData) => {
+  [previousPage, numbering, showOverview, tree],
+  (previousPage, numbering, showOverview, tree) => {
     if (previousPage) {
-      const previousNumbering = getNumbering(numbering, treeData.children, previousPage)
+      const previousNumbering = getNumbering(numbering, tree.children, previousPage)
 
       return previousNumbering ?
         previousNumbering + ' ' + previousPage.title :
@@ -145,9 +168,11 @@ export const selectors = {
 
   lesson,
   placeholders,
+  chapters,
   chapter,
   root,
-  treeData,
+  tree,
+  pages,
   showOverview,
   showMeta,
   showNavigation,

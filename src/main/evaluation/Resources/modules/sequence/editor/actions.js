@@ -8,7 +8,6 @@ import {toKey} from '#/main/app/utils/text'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_STEP_POSITION} from '#/main/evaluation/sequence/editor/modals/position'
-import {Step} from '#/main/evaluation/sequence/prop-types'
 import {
   getStepPath,
   getStepSlug,
@@ -29,7 +28,7 @@ function replaceStepIds(step, all) {
   return step
 }
 
-function pushStep(step, steps, position) {
+function insertStep(step, steps, position) {
   const newSteps = cloneDeep(steps)
 
   switch (position.order) {
@@ -71,7 +70,7 @@ function addStep(steps, step, parentId = null) {
     id: makeId(),
     title: title,
     slug: slug
-  }, Step.defaultProps, step || {})
+  }, step || {})
 
   if (!parent) {
     newState.push(newStep)
@@ -100,9 +99,9 @@ function copyStep(steps, stepId, position) {
   if (position.parent) {
     const parent = get(newState, getFormDataPart(position.parent, newState, false))
 
-    parent.children = pushStep(copy, parent.children, position)
+    parent.children = insertStep(copy, parent.children, position)
   } else {
-    newState = pushStep(copy, newState, position)
+    newState = insertStep(copy, newState, position)
   }
 
   return newState
@@ -131,9 +130,9 @@ function moveStep(steps, stepId, position) {
   if (position.parent) {
     const parent = get(newState, getFormDataPart(position.parent, newState, false))
 
-    parent.children = pushStep(original, parent.children, position)
+    parent.children = insertStep(original, parent.children, position)
   } else {
-    newState = pushStep(original, newState, position)
+    newState = insertStep(original, newState, position)
   }
 
   return newState
@@ -236,5 +235,6 @@ export {
   copyStep,
   moveStep,
   removeStep,
+  insertStep,
   getStepActions
 }

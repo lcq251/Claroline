@@ -1,126 +1,71 @@
-import React, {Component} from 'react'
+import React from 'react'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
-import {trans} from '#/main/app/intl/translation'
 import {toKey} from '#/main/app/utils/text'
 
 import {PropTypes as T, implementPropTypes} from '#/main/app/prop-types'
 import {Button} from '#/main/app/action/components/button'
 import {Toolbar} from '#/main/app/action/components/toolbar'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 
-class SummaryLink extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      collapsed: this.props.noCollapse ? false : (this.props.collapsed || false)
-    }
-
-    this.toggleCollapse = this.toggleCollapse.bind(this)
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.collapsed !== this.props.collapsed) {
-      this.setState({collapsed: this.props.collapsed || false})
-    }
-  }
-
-  toggleCollapse() {
-    if (this.props.toggleCollapse) {
-      this.props.toggleCollapse(!this.state.collapsed)
-    }
-
-    this.setState({collapsed: !this.state.collapsed})
-  }
-
-  render() {
-    const collapsible = !this.props.noCollapse && (this.props.collapsible || (this.props.children && 0 !== this.props.children.length))
-
-    return (
-      <li className="summary-link-container">
-        <div className={classes('summary-link', {
-          active: this.props.active
-        })} role="presentation">
-          <Button
-            className="btn btn-text-body btn-summary-primary align-items-baseline focus-ring"
-            {...omit(this.props, 'children', 'additional', 'collapsible', 'collapsed', 'toggleCollapse', 'noCollapse')}
-            label={this.props.numbering ?
-              <>
-                {this.props.numbering &&
-                  <span className="text-body-tertiary fw-bold me-2" role="presentation">{this.props.numbering}</span>
-                }
-                {this.props.label}
-              </> :
-              this.props.label
+const SummaryLink = (props) =>
+  <li className="summary-link-container">
+    <div className={classes('summary-link', {
+      active: props.active
+    })} role="presentation">
+      <Button
+        className="btn btn-text-body btn-summary-primary align-items-baseline focus-ring"
+        {...omit(props, 'children', 'actions', 'toolbar')}
+        label={props.numbering ?
+          <>
+            {props.numbering &&
+              <span className="text-body-tertiary fw-bold me-2" role="presentation">{props.numbering}</span>
             }
-          />
-
-          {(collapsible || 0 !== this.props.additional.length) &&
-            <Toolbar
-              name="summary-link-actions"
-              buttonName="btn btn-text-secondary btn-summary focus-ring"
-              tooltip="left"
-              toolbar="collapse more"
-              actions={(this.props.additional || []).concat([
-                {
-                  name: 'collapse',
-                  type: CALLBACK_BUTTON,
-                  icon: classes('fa fa-fw', {
-                    'fa-caret-right': this.state.collapsed,
-                    'fa-caret-down': !this.state.collapsed
-                  }),
-                  displayed: collapsible,
-                  label: trans(this.state.collapsed ? 'expand': 'collapse', {}, 'actions'),
-                  callback: this.toggleCollapse
-                }
-              ])}
-            />
-          }
-        </div>
-
-        {!this.state.collapsed && this.props.children.length > 0 &&
-          <ul className="step-children">
-            {this.props.children
-              .filter(child => undefined === child.displayed || child.displayed)
-              .map((child, index) =>
-                <SummaryLink
-                  {...child}
-                  key={toKey(child.id || child.label) + index}
-                  noCollapse={this.props.noCollapse}
-                />
-              )
-            }
-          </ul>
+            {props.label}
+          </> :
+          props.label
         }
-      </li>
-    )
-  }
-}
+      />
+
+      {!isEmpty(props.actions) &&
+        <Toolbar
+          name="summary-link-actions"
+          buttonName="btn btn-text-secondary btn-summary focus-ring"
+          tooltip="bottom"
+          toolbar={props.toolbar || 'more'}
+          actions={props.actions}
+        />
+      }
+    </div>
+
+    {!isEmpty(props.children) &&
+      <ul className="step-children">
+        {props.children
+          .filter(child => undefined === child.displayed || child.displayed)
+          .map((child, index) =>
+            <SummaryLink
+              {...child}
+              key={toKey(child.id || child.label) + index}
+              toolbar={props.toolbar}
+            />
+          )
+        }
+      </ul>
+    }
+  </li>
 
 implementPropTypes(SummaryLink, ActionTypes, {
   numbering: T.string,
-  noCollapse: T.bool,
-  additional: T.arrayOf(T.shape(
+  actions: T.arrayOf(T.shape(
     ActionTypes.propTypes
   )),
   children: T.arrayOf(T.shape(
     ActionTypes.propTypes
   )),
-  toggleCollapse: T.func,
-  collapsed: T.bool,
-  // It forces the display of the collapse button even if children is empty
-  // It permits to dynamic load the children
-  collapsible: T.bool
-}, {
-  additional: [],
-  children: [],
-  collapsed: false,
-  collapsible: false,
-  noCollapse: false
+  toolbar: T.string,
 })
 
 const ContentSummary = props => {
@@ -132,7 +77,7 @@ const ContentSummary = props => {
           .map((link, index) =>
             <SummaryLink
               {...link}
-              noCollapse={props.noCollapse}
+              toolbar={props.toolbar}
               key={toKey(link.id || link.label) + index}
             />
           )
@@ -146,22 +91,16 @@ const ContentSummary = props => {
 
 ContentSummary.propTypes = {
   className: T.string,
-  noCollapse: T.bool,
   links: T.arrayOf(T.shape(merge({}, ActionTypes.propTypes, {
     numbering: T.string,
-    collapsed: T.bool,
-    // It forces the display of the collapse button even if children is empty
-    // It permits to dynamic load the children
-    collapsible: T.bool,
-    toggleCollapse: T.func,
-    additional: T.arrayOf(T.shape(
+    actions: T.arrayOf(T.shape(
       ActionTypes.propTypes
     )),
-    // TODO : find a way to document more nesting
     children: T.arrayOf(T.shape(
       ActionTypes.propTypes
     ))
-  })))
+  }))),
+  toolbar: T.string
 }
 
 export {

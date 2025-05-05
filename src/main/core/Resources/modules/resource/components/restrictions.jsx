@@ -41,7 +41,7 @@ class ResourceRestrictions extends Component {
     return (
       <ResourcePage>
         <PageContent poster={get(this.props.resourceNode, 'poster')}>
-          <div className="content-md mt-3">
+          <div className="content-lg mt-3">
             {get(this.props.resourceNode, 'meta.description') &&
               <div className="card mb-3">
                 <ContentHtml className="card-body">{get(this.props.resourceNode, 'meta.description')}</ContentHtml>

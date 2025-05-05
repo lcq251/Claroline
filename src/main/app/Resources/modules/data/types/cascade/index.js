@@ -32,7 +32,7 @@ export default declareDataType({
   parse: (display, options) => Object.keys(options.choices).find(enumValue => display === options.choices[enumValue]),
   render: (raw) => {
     if (Array.isArray(raw)) {
-      return raw.join(' > ')
+      return raw.join(' / ')
     } else {
       return raw
     }
