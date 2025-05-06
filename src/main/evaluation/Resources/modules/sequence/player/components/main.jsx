@@ -44,7 +44,7 @@ const SequencePlayer = props => {
       <Routes
         path={props.path+'/play'}
         redirect={[
-          {from: '/', to: `/${props.steps[0].slug}`}
+          {from: '/', to: `/${props.steps[0].slug}`, exact: true}
         ]}
         routes={[
           {

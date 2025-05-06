@@ -19,7 +19,7 @@ import {GridItem} from '#/main/app/content/list/grid/components/item'
 import {GridSort} from '#/main/app/content/list/grid/components/sort'
 
 const GridData = props => {
-  const hasSelection = 0 < props.selection.current.length
+  const hasSelection = !!props.selection && 0 < props.selection.current.length
 
   let bulkActions = []
   if (props.selection && hasSelection) {

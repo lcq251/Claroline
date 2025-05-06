@@ -37,7 +37,7 @@ const Sequence = {
     display: T.shape({
       numbering: T.oneOf(['none', 'numeric', 'literal']),
       showScore: T.bool
-    }).isRequired,
+    }),
     score: T.shape({
       success: T.number,
       total: T.number

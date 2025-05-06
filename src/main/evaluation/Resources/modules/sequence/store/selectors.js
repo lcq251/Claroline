@@ -65,7 +65,13 @@ const currentStepSlug = createSelector(
 
 const currentStepIndex = createSelector(
   [currentStepSlug, orderedSteps],
-  (currentStepSlug, orderedSteps) => orderedSteps.findIndex(step => step.slug === currentStepSlug)
+  (currentStepSlug, orderedSteps) => {
+    if (!currentStepSlug) {
+      return 0
+    }
+
+    return orderedSteps.findIndex(step => step.slug === currentStepSlug)
+  }
 )
 
 const currentStep = createSelector(
@@ -73,30 +79,6 @@ const currentStep = createSelector(
   (currentStepIndex, orderedSteps) => orderedSteps[currentStepIndex]
 )
 
-// get the current step with its children
-/*const currentStep = createSelector(
-  [currentStepSlug, steps],
-  (currentStepSlug, stepsTree) => {
-    function searchStep(stepSlug, steps) {
-      for (let i = 0; i < steps.length; i++) {
-        let found
-        if (steps[i].slug === stepSlug) {
-          found = steps[i]
-        } else if (steps[i].children) {
-          found = searchStep(stepSlug, steps[i].children)
-        }
-
-        if (found) {
-          return found
-        }
-      }
-
-      return null
-    }
-
-    return searchStep(currentStepSlug, stepsTree)
-  }
-)*/
 
 const allSecondaryResources = createSelector(
   [orderedSteps],
