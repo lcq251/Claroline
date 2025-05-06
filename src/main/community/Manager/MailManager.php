@@ -32,17 +32,16 @@ class MailManager
     public function sendCreationMessage(User $user): bool
     {
         $locale = $this->localeManager->getLocale($user);
-        $url = $this->router->generate(
-            'claro_security_validate_email',
-            ['hash' => $user->getEmailValidationHash()],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+
         $placeholders = [
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'username' => $user->getUsername(),
             'password' => $user->getPlainPassword(),
-            'validation_mail' => $url,
+            'email' => $user->getEmail(),
+            'validation_mail' => $this->router->generate('claro_security_validate_email', [
+                'hash' => $user->getEmailValidationHash(),
+            ]),
         ];
         $subject = $this->templateManager->getTemplate('user_registration', $placeholders, $locale, 'title');
         $body = $this->templateManager->getTemplate('user_registration', $placeholders, $locale);
@@ -55,18 +54,16 @@ class MailManager
      */
     public function sendEnableAccountMessage(User $user): bool
     {
-        $hash = $user->getResetPasswordHash();
-        $link = $this->router->generate(
-            'claro_security_activate_user',
-            ['hash' => $hash],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
         $locale = $this->localeManager->getLocale($user);
+
         $placeholders = [
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'username' => $user->getUsername(),
-            'user_activation_link' => $link,
+            'email' => $user->getEmail(),
+            'user_activation_link' => $this->router->generate('claro_security_activate_user', [
+                'hash' => $user->getResetPasswordHash(),
+            ]),
         ];
         $subject = $this->templateManager->getTemplate('user_activation', $placeholders, $locale, 'title');
         $body = $this->templateManager->getTemplate('user_activation', $placeholders, $locale);

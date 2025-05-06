@@ -17,6 +17,7 @@ class ResetPasswordEmail extends EmailComponent
             'first_name',
             'last_name',
             'username',
+            'email',
             'password_initialization_link',
         ];
     }

@@ -17,6 +17,7 @@ class ForgottenPasswordEmail extends EmailComponent
             'first_name',
             'last_name',
             'username',
+            'email',
             'password_reset_link',
         ];
     }

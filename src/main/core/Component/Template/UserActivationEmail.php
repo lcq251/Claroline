@@ -17,6 +17,7 @@ class UserActivationEmail extends EmailComponent
             'first_name',
             'last_name',
             'username',
+            'email',
             'user_activation_link',
         ];
     }

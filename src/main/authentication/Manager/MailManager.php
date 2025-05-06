@@ -59,11 +59,7 @@ class MailManager
 
         $this->userManager->initializePassword($user); // should not be done here (only manage email sending here)
 
-        $placeholders['password_reset_link'] = $this->router->generate(
-            'claro_index',
-            [],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )."#/newpassword/{$user->getResetPasswordHash()}";
+        $placeholders['password_reset_link'] = "#/newpassword/{$user->getResetPasswordHash()}";
 
         $subject = $this->templateManager->getTemplate('forgotten_password', $placeholders, $locale, 'title');
         $body = $this->templateManager->getTemplate('forgotten_password', $placeholders, $locale);
@@ -75,17 +71,13 @@ class MailManager
     {
         $this->userManager->initializePassword($user); // should not be done here (only manage email sending here)
 
-        $link = $this->router->generate(
-            'claro_index',
-            [],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )."#/newpassword/{$user->getResetPasswordHash()}";
         $locale = $this->localeManager->getLocale($user);
         $placeholders = [
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'username' => $user->getUsername(),
-            'password_initialization_link' => $link,
+            'email' => $user->getEmail(),
+            'password_initialization_link' => "#/newpassword/{$user->getResetPasswordHash()}",
         ];
         $subject = $this->templateManager->getTemplate('password_initialization', $placeholders, $locale, 'title');
         $body = $this->templateManager->getTemplate('password_initialization', $placeholders, $locale);
@@ -102,8 +94,7 @@ class MailManager
             'username' => $user->getUsername(),
             'validation_mail' => $this->router->generate(
                 'claro_security_validate_email',
-                ['hash' => $user->getEmailValidationHash()],
-                UrlGeneratorInterface::ABSOLUTE_URL
+                ['hash' => $user->getEmailValidationHash()]
             ),
         ];
 
