@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Controller;
 
+use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Manager\MailManager;
@@ -38,6 +39,7 @@ class AuthenticationController
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Crud $crud,
         private readonly UserManager $userManager,
         private readonly ObjectManager $om,
         private readonly MailManager $mailManager,
@@ -120,11 +122,12 @@ class AuthenticationController
             ], 400);
         }
 
-        $user->setPlainPassword($data['password']);
+        $this->om->startFlushSuite();
+
+        $this->crud->update($user, ['plainPassword' => $data['password']], [Crud::NO_PERMISSIONS]);
         $this->userManager->activateUser($user);
 
-        $this->om->persist($user);
-        $this->om->flush();
+        $this->om->endFlushSuite();
 
         return new JsonResponse(null, 201);
     }
