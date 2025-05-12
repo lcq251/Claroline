@@ -88,7 +88,7 @@ class Choice extends Component {
 
           <Button
             id={`choice-${this.props.id}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             disabled={!this.props.deletable}
             icon="fa fa-fw fa-trash"

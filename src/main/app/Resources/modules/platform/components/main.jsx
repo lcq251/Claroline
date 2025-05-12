@@ -54,88 +54,90 @@ const Platform = () => {
   }, [loaded])
 
   return (
-    <>
-      {authenticated &&
-        <PlatformMenu />
-      }
+    <Routes
+      redirect={[
+        {from: '/', exact: true, to: '/unavailable', disabled: !unavailable},
 
-      <Routes
-        redirect={[
-          {from: '/', exact: true, to: '/unavailable', disabled: !unavailable},
+        // disable registration and redirect user if no self registration or the user is already authenticated
+        {from: '/registration', to: '/', disabled: selfRegistration || !authenticated},
+        {from: '/login', exact: true, to: '/', disabled: !authenticated},
 
-          // disable registration and redirect user if no self registration or the user is already authenticated
-          {from: '/registration', to: '/', disabled: selfRegistration || !authenticated},
-          {from: '/login', exact: true, to: '/', disabled: !authenticated},
+        {from: '/', exact: true, to: '/login', disabled: -1 !== availableContexts.findIndex(c => 'public' === c.name) || authenticated},
+        {from: '/', exact: true, to: '/public', disabled: -1 === availableContexts.findIndex(c => 'public' === c.name) || authenticated},
+        {from: '/', exact: true, to: '/desktop', disabled: !authenticated},
 
-          {from: '/', exact: true, to: '/login', disabled: -1 !== availableContexts.findIndex(c => 'public' === c.name) || authenticated},
-          {from: '/', exact: true, to: '/public', disabled: -1 === availableContexts.findIndex(c => 'public' === c.name) || authenticated},
-          {from: '/', exact: true, to: '/desktop', disabled: !authenticated},
-
-          // for retro-compatibility. DO NOT REMOVE !
-          {from: '/home', to: '/public'}
-        ]}
-        routes={[
-          // for retro-compatibility. DO NOT REMOVE !
-          // NB. I don't use the standard `redirect` prop, because we can not catch params.
-          // We use location pathname to keep params not handled by this route (ex. tool path)
-          {
-            path: '/desktop/workspaces/open/:slug',
-            render: (routerProps) => (
-              <Redirect to={routerProps.location.pathname.replace(
-                `/desktop/workspaces/open/${routerProps.match.params.slug}`,
-                `/workspace/${routerProps.match.params.slug}`
-              )} />
-            )
+        // for retro-compatibility. DO NOT REMOVE !
+        {from: '/home', to: '/public'}
+      ]}
+      routes={[
+        // for retro-compatibility. DO NOT REMOVE !
+        // NB. I don't use the standard `redirect` prop, because we can not catch params.
+        // We use location pathname to keep params not handled by this route (ex. tool path)
+        {
+          path: '/desktop/workspaces/open/:slug',
+          render: (routerProps) => (
+            <Redirect to={routerProps.location.pathname.replace(
+              `/desktop/workspaces/open/${routerProps.match.params.slug}`,
+              `/workspace/${routerProps.match.params.slug}`
+            )} />
+          )
+        }
+      ].concat(appContexts.map(appContext => ({
+        path: appContext.path,
+        onEnter: () => {
+          if (-1 === availableContexts.findIndex(availableContext => appContext.name === availableContext.name)) {
+            // context is not enabled
+            history.replace('/')
           }
-        ].concat(appContexts.map(appContext => ({
-          path: appContext.path,
-          onEnter: () => {
-            if (-1 === availableContexts.findIndex(availableContext => appContext.name === availableContext.name)) {
-              // context is not enabled
-              history.replace('/')
-            }
-          },
-          render: (routerProps) => {
-            const params = routerProps.match.params
+        },
+        render: (routerProps) => {
+          const params = routerProps.match.params
 
-            return createElement(appContext.component, {
-              name: appContext.name,
-              id: params.contextId
-            })
-          }
-        })), [
-          {
-            path: '/account',
-            disabled: !authenticated,
-            render: () => (
-              <UserEditor
-                username={currentUser.username}
-                path="/account"
-              />
-            )
-          }, {
-            path: '/unavailable',
-            disabled: !unavailable,
-            component: PlatformForbidden
-          }, {
-            path: '/reset_password',
-            disabled: authenticated || !changePassword,
-            component: PlatformSendPassword
-          }, {
-            path: '/newpassword/:hash',
-            component: PlatformNewPassword
-          }, {
-            path: '/login/:forceInternalAccount(account)?',
-            disabled: authenticated,
-            component: PlatformLogin
-          }, {
-            path: '/registration',
-            disabled: unavailable || !selfRegistration || authenticated,
-            component: PlatformRegistration
-          }
-        ])}
-      />
-    </>
+          return (
+            <>
+              {authenticated &&
+                <PlatformMenu />
+              }
+
+              {createElement(appContext.component, {
+                name: appContext.name,
+                id: params.contextId
+              })}
+            </>
+          )
+        }
+      })), [
+        {
+          path: '/account',
+          disabled: !authenticated,
+          render: () => (
+            <UserEditor
+              username={currentUser.username}
+              path="/account"
+            />
+          )
+        }, {
+          path: '/unavailable',
+          disabled: !unavailable,
+          component: PlatformForbidden
+        }, {
+          path: '/reset_password',
+          disabled: authenticated || !changePassword,
+          component: PlatformSendPassword
+        }, {
+          path: '/newpassword/:hash',
+          component: PlatformNewPassword
+        }, {
+          path: '/login/:forceInternalAccount(account)?',
+          disabled: authenticated,
+          component: PlatformLogin
+        }, {
+          path: '/registration',
+          disabled: unavailable || !selfRegistration || authenticated,
+          component: PlatformRegistration
+        }
+      ])}
+    />
   )
 }
 

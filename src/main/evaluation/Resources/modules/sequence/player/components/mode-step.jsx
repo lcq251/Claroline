@@ -28,7 +28,7 @@ const PlayerModeStep = (props) => {
   return (
     <PageContent className="d-flex flex-column">
       <PlayerPrevious
-        className="rounded-0 px-0 shadow-none"
+        className="rounded-0 px-0 shadow-none fs-lg"
         path={props.path}
         previous={previous}
       />
@@ -50,7 +50,7 @@ const PlayerModeStep = (props) => {
 
         {navigationEnabled &&
           <PlayerNext
-            className="rounded-0 px-0 shadow-none"
+            className="rounded-0 px-0 shadow-none fs-lg"
             path={props.path}
             next={next}
           />

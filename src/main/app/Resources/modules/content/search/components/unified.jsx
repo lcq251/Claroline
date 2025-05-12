@@ -173,7 +173,7 @@ const SearchUnified = (props) => {
 
         {(currentText !== props.currentText) &&
           <Button
-            className="btn btn-text-secondary px-2 focus-ring focus-ring-secondary"
+            className="btn btn-text-body px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
             label={trans('search', {},'actions')}
             htmlType="submit"
@@ -186,7 +186,7 @@ const SearchUnified = (props) => {
 
         {((!isEmpty(props.current) || props.currentText) && props.currentText === currentText) &&
           <Button
-            className="btn btn-text-secondary position-relative px-2 focus-ring focus-ring-secondary"
+            className="btn btn-text-body position-relative px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-delete-left"
             label={trans('remove_filters', {}, 'actions')}

@@ -9,8 +9,7 @@ import {CALLBACK_BUTTON, LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 import {Badge} from '#/main/app/components/badge'
 import {Contact} from '#/main/app/components/contact'
-import {PageContent, PageSection} from '#/main/app/page'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageContent, PageHeading, PageSection, PageToolbar} from '#/main/app/page'
 
 import {Event as EventTypes} from '#/plugin/agenda/prop-types'
 import {route} from '#/plugin/agenda/tools/agenda/routing'
@@ -27,11 +26,8 @@ const EventPage = (props) => {
     >
       {!isEmpty(props.event) &&
         <PageContent poster={get(props.event, 'thumbnail')}>
-          <PageHeading
-            icon={
-              <CalendarIcon size="lg" date={props.event.start} />
-            }
-            title={get(props.event, 'name', trans('loading'))}
+          <PageToolbar
+            tootlbar="edit show-calendar more"
             actions={[
               {
                 name: 'show-calendar',
@@ -62,6 +58,12 @@ const EventPage = (props) => {
                 displayed: hasPermission('delete', props.event)
               }
             ].concat(props.actions)}
+          />
+          <PageHeading
+            icon={
+              <CalendarIcon size="lg" date={props.event.start} />
+            }
+            title={get(props.event, 'name', trans('loading'))}
           />
 
           <PageSection className="mb-5">

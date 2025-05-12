@@ -5,6 +5,7 @@ import {PageSimple} from '#/main/app/page/components/simple'
 import {PageAside, PageBody} from '#/main/app/page/components/body'
 import {PageContent} from '#/main/app/page/components/content'
 import {PagePoster} from '#/main/app/page/components/poster'
+import {PageToolbar, PageToolbarSkeleton} from '#/main/app/page/components/toolbar'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {PageSection} from '#/main/app/page/components/section'
 import {PageListSection} from '#/main/app/page/components/list-section'
@@ -16,6 +17,8 @@ export {
   PageSimple,
   PageAside,
   PageBody,
+  PageToolbar,
+  PageToolbarSkeleton,
   PageContent,
   PageContentList,
   PagePoster,

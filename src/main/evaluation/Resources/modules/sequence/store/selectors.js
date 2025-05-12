@@ -29,7 +29,11 @@ const workspace = createSelector(
 const path = createSelector(
   [toolSelectors.path, sequence],
   (basePath, sequence) => {
-    return route(sequence, null, basePath)
+    if (sequence) {
+      return route(sequence, null, basePath)
+    }
+
+    return basePath
   }
 )
 

@@ -326,7 +326,7 @@ const KeywordsPopover = props =>
             displayed: !!props.remove
           }, {
             name: 'close',
-            className: 'btn btn-text-secondary',
+            className: 'btn btn-text-body',
             type: CALLBACK_BUTTON,
             icon: 'fa fa-fw fa-times',
             label: trans('close', {}, 'actions'),

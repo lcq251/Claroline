@@ -46,8 +46,6 @@ const TrainingsDashboardOverview = () => {
       <PageSection
         size="full"
         className="mt-5"
-        //flush={true}
-        /*title={trans('Formations indisponibles')}*/
       >
         <div className="card">
           <div className="d-flex align-items-baseline p-4 pt-3">

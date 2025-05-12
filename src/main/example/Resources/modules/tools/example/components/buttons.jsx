@@ -85,18 +85,17 @@ const ExampleButtons = () =>
 
     <ContentTitle level={2} title="Button sizes" />
 
-    <div className="mb-3">
+    <div className="d-flex flex-row gap-2 mb-3 align-items-end">
       {['sm', undefined, 'lg'].map(size =>
-        <div className="mb-1" key={size || 'md'}>
-          <Button
-            variant="btn"
-            primary={true}
-            type={CALLBACK_BUTTON}
-            label={(size || 'md').charAt(0).toUpperCase() + (size || 'md').slice(1) + ' button'}
-            callback={() => true}
-            size={size}
-          />
-        </div>
+        <Button
+          variant="btn"
+          key={size || 'md'}
+          primary={true}
+          type={CALLBACK_BUTTON}
+          label={(size || 'md').charAt(0).toUpperCase() + (size || 'md').slice(1) + ' button'}
+          callback={() => true}
+          size={size}
+        />
       )}
     </div>
 

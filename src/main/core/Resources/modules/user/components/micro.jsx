@@ -18,7 +18,7 @@ const UserMicro = props => {
   if (props.link && props.name) {
     return (
       <LinkButton className={classes('user-micro text-reset', props.className)} target={route(props)}>
-        <UserAvatar user={props} size="xs" noStatus={props.noStatus} />
+        <UserAvatar user={props} size="xs" />
 
         {props.name}
       </LinkButton>
@@ -27,7 +27,7 @@ const UserMicro = props => {
 
   return (
     <div className={classes('user-micro', props.className)}>
-      <UserAvatar user={props} size="xs" noStatus={props.noStatus} />
+      <UserAvatar user={props} size="xs" />
 
       {props.name || trans('unknown')}
     </div>
@@ -41,8 +41,7 @@ UserMicro.propTypes = {
   username: T.string,
   className: T.string,
   picture: T.string,
-  link: T.bool,
-  noStatus: T.bool
+  link: T.bool
 }
 
 UserMicro.defaultProps = {

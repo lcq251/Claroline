@@ -9,7 +9,7 @@ import {getNextView} from '#/main/core/layout/calendar/utils'
 const CalendarNav = props =>
   <div className="calendar-nav">
     <CallbackButton
-      className="btn btn-text-secondary calendar-previous focus-ring focus-ring-secondary"
+      className="btn btn-text-body calendar-previous focus-ring focus-ring-secondary"
       disabled={props.previousRange[1].isSameOrBefore(props.calendarRange[0])}
       callback={() => props.changeView(props.view, props.previousRange)}
     >
@@ -17,14 +17,14 @@ const CalendarNav = props =>
     </CallbackButton>
 
     <CallbackButton
-      className="btn btn-text-secondary calendar-current focus-ring focus-ring-secondary"
+      className="btn btn-text-body calendar-current focus-ring focus-ring-secondary"
       callback={() => props.changeView(getNextView(props.view))}
     >
       {props.title}
     </CallbackButton>
 
     <CallbackButton
-      className="btn btn-text-secondary calendar-next focus-ring focus-ring-secondary"
+      className="btn btn-text-body calendar-next focus-ring focus-ring-secondary"
       disabled={props.nextRange[0].isSameOrAfter(props.calendarRange[1])}
       callback={() => props.changeView(props.view, props.nextRange)}
     >

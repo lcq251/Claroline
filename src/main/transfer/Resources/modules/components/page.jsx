@@ -7,31 +7,29 @@ import get from 'lodash/get'
 import {displayDate, trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {UserMicro} from '#/main/core/user/components/micro'
 import {ToolPage} from '#/main/core/tool'
 
 import {transAction} from '#/main/transfer/utils'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {Datetime} from '#/main/app/components/date'
 import {ContentHtml} from '#/main/app/content/components/html'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageSection, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 import {Badge} from '#/main/app/components/badge'
 
 const TransferPage = props =>
   <ToolPage title={props.transferFile ? props.transferFile.name || transAction(props.transferFile.action) : null}>
     {isEmpty(props.transferFile) &&
-      <ContentLoader
-        size="lg"
-        description={trans('loading', {}, 'transfer')}
-      />
+      <PageContent className="placeholder-glow">
+        <PageToolbarSkeleton toolbar="edit more" />
+        <PageHeadingSkeleton />
+      </PageContent>
     }
 
     {!isEmpty(props.transferFile) &&
       <PageContent>
-        <PageHeading
-          title={props.transferFile.name || transAction(props.transferFile.action)}
-          primaryAction="edit"
+        <PageToolbar
+          toolbar="edit more"
           actions={[
             {
               name: 'edit',
@@ -46,12 +44,14 @@ const TransferPage = props =>
             }
           ].concat(props.actions)}
         />
+        <PageHeading
+          title={props.transferFile.name || transAction(props.transferFile.action)}
+        />
 
         <PageSection>
           <div className="text-body-tertiary d-flex align-items-center gap-3 mb-4 text-wrap" role="presentation">
             <UserMicro
               {...get(props.transferFile, 'meta.creator', {})}
-              noStatus={true}
               link={true}
             />
 

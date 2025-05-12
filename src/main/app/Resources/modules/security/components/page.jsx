@@ -1,6 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import classes from 'classnames'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
@@ -25,7 +26,7 @@ const SecurityPage = (props) => {
     >
       <SecurityLayout>
         <div className="content-md px-4 py-5 my-auto" role="presentation">
-          <h2 className="text-center">{props.title}</h2>
+          <h2 className={classes('text-center', !props.description && 'mb-5')}>{props.title}</h2>
           {props.description &&
             <p className="lead text-center text-body-secondary mb-5">{props.description}</p>
           }

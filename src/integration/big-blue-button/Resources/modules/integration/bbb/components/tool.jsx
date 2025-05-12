@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {Routes} from '#/main/app/router'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {ContentNav} from '#/main/app/content/components/nav'
 import {PageContent, PageSection} from '#/main/app/page'

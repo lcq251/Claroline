@@ -11,7 +11,7 @@ import {selectors as securitySelectors} from '#/main/app/security/store'
 import {getActions} from '#/main/community/team/utils'
 import {Team as TeamTypes} from '#/main/community/team/prop-types'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 
 const Team = (props) =>
   <ToolPage
@@ -20,6 +20,7 @@ const Team = (props) =>
   >
     {isEmpty(props.team) &&
       <PageContent className="placeholder-glow">
+        <PageToolbarSkeleton toolbar="edit more" />
         <PageHeadingSkeleton
           description={true}
         />
@@ -28,15 +29,18 @@ const Team = (props) =>
 
     {!isEmpty(props.team) &&
       <PageContent poster={get(props.team, 'poster')}>
-        <PageHeading
-          title={get(props.team, 'name', trans('loading'))}
-          description={get(props.team, 'meta.description')}
-          primaryAction="edit"
+        <PageToolbar
+          toolbar="edit more"
           actions={!isEmpty(props.team) ? getActions([props.team], {
             add: () => props.reload(props.team.id),
             update: () => props.reload(props.team.id),
             delete: () => props.reload(props.team.id)
           }, props.path, props.currentUser) : []}
+        />
+
+        <PageHeading
+          title={get(props.team, 'name', trans('loading'))}
+          description={get(props.team, 'meta.description')}
         />
 
         {props.children}

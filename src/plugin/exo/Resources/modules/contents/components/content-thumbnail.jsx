@@ -44,7 +44,7 @@ const Actions = props =>
       <span
         role="button"
         title={trans('move', {}, 'actions')}
-        className="action-button fa fa-arrows drag-handle"
+        className="action-button fa fa-arrows cursor-move"
         draggable="true"
       />
     )}

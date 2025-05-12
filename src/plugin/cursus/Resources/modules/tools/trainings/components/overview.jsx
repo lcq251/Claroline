@@ -75,7 +75,7 @@ const MySessionsSection = (props) => {
 
       {'desktop' === props.contextType &&
         <Button
-          className="btn btn-link mt-2 ms-auto"
+          className="btn btn-link mt-3 ms-auto me-n3"
           type={LINK_BUTTON}
           label={trans('browse_trainings_catalog', {}, 'actions')}
           target={`${props.path}/course`}

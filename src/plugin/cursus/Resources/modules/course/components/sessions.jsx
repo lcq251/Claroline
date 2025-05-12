@@ -22,13 +22,13 @@ const CourseSessions = (props) => {
     <>
       {isEmpty(props.availableSessions) &&
         <ContentPlaceholder
-          className="mt-3"
+          className="mt-4"
           title={trans('Aucune session n\'est disponible pour cette formation pour le moment.', {}, 'cursus')}
           help={trans('Lorem ipsum dolor sit amet', {}, 'cursus')}
         />
       }
 
-      <div className="mt-3" role="presentation">
+      <div className="mt-4" role="presentation">
         {!isEmpty(props.availableSessions) && props.availableSessions.map(session => (
           <SessionDateCard
             key={session.id}
@@ -63,7 +63,7 @@ const CourseSessions = (props) => {
           />
 
           <Button
-            className="btn btn-link ms-auto"
+            className="btn btn-link ms-auto me-n3 me-n3"
             type={LINK_BUTTON}
             label={trans('Voir toutes les sessions')}
             target={props.path+'/sessions'}

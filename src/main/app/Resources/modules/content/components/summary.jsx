@@ -33,7 +33,7 @@ const SummaryLink = (props) =>
       {!isEmpty(props.actions) &&
         <Toolbar
           name="summary-link-actions"
-          buttonName="btn btn-text-secondary btn-summary focus-ring"
+          buttonName="btn btn-text-body btn-summary focus-ring"
           tooltip="bottom"
           toolbar={props.toolbar || 'more'}
           actions={props.actions}

@@ -6,42 +6,36 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {MODAL_BUTTON, URL_BUTTON, ASYNC_BUTTON} from '#/main/app/buttons'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {ToolPage} from '#/main/core/tool'
 
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {MODAL_TRAINING_EVENT_PARAMETERS} from '#/plugin/cursus/event/modals/parameters'
-import {PageHeading} from '#/main/app/page/components/heading'
+import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {displayDateRange} from '#/main/app/intl'
 import {Contact} from '#/main/app/components/contact'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageSection, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 import {EventStatus} from '#/plugin/cursus/components/event-status'
 import {CalendarIcon} from '#/main/app/calendar/components/icon'
 import {Content} from '#/main/app/components/content'
 
 const EventPage = (props) => {
-  if (isEmpty(props.event)) {
-    return (
-      <ContentLoader
-        size="lg"
-        description={trans('event_loading', {}, 'cursus')}
-      />
-    )
-  }
-
   return (
     <ToolPage
       className="event-page"
       title={get(props.event, 'name')}
       description={props.event.description}
     >
+      {isEmpty(props.event) &&
+        <PageContent className="placeholder-glow">
+          <PageToolbarSkeleton toolbar="edit more" />
+          <PageHeadingSkeleton icon={true} />
+        </PageContent>
+      }
+
       {!isEmpty(props.event) &&
         <PageContent poster={get(props.event, 'poster')}>
-          <PageHeading
-            icon={
-              <CalendarIcon square={true} size="lg" date={props.event.date} />
-            }
-            title={get(props.event, 'name', trans('loading'))}
+          <PageToolbar
+            toolbar="edit more"
             actions={[
               {
                 name: 'edit',
@@ -102,6 +96,12 @@ const EventPage = (props) => {
                 }
               }
             ]}
+          />
+          <PageHeading
+            icon={
+              <CalendarIcon square={true} size="lg" date={props.event.date} />
+            }
+            title={get(props.event, 'name', trans('loading'))}
           />
 
           <PageSection className="mb-5">

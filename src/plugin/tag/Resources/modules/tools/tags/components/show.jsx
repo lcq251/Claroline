@@ -4,17 +4,15 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {useFetch} from '#/main/app/api/fetch'
 import {ToolPage} from '#/main/core/tool'
-import {PageHeading} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {ListData} from '#/main/app/content/list'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageHeading, PageHeadingSkeleton, PageSection, PageToolbarSkeleton} from '#/main/app/page'
 
 import {selectors} from '#/plugin/tag/tools/tags/store'
 import {TaggedObjectCard} from '#/plugin/tag/card/components/tagged-object'
-import {ContentLoader} from '#/main/app/content/components/loader'
 
 const TagShow = (props) => {
-  const [tag, status, error, errorCode] = useFetch('tag', ['apiv2_tag_get', {id: props.id}])
+  const [tag] = useFetch('tag', ['apiv2_tag_get', {id: props.id}])
 
   return (
     <ToolPage
@@ -22,10 +20,13 @@ const TagShow = (props) => {
       description={get(tag, 'meta.description')}
     >
       {!tag &&
-        <ContentLoader
-          size="lg"
-          description={trans('tag_loading', {}, 'tag')}
-        />
+        <PageContent className="placeholder-glow">
+          <PageToolbarSkeleton toolbar="edit more" />
+          <PageHeadingSkeleton
+            icon={true}
+            description={true}
+          />
+        </PageContent>
       }
 
       {tag &&

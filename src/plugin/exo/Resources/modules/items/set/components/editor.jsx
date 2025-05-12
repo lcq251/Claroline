@@ -270,7 +270,7 @@ class Association extends Component {
 
           <Button
             id={`ass-${this.props.association.itemId}-${this.props.association.setId}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -308,7 +308,7 @@ const Set = (props) =>
       <div className="right-controls" role="presentation">
         <Button
           id={`set-${props.set.id}-delete`}
-          className="btn btn-text-secondary"
+          className="btn btn-text-body"
           type={CALLBACK_BUTTON}
           icon="fa fa-fw fa-trash"
           label={trans('delete', {}, 'actions')}
@@ -407,7 +407,7 @@ let Item = (props) =>
     <div className="right-controls" role="presentation">
       <Button
         id={`set-item-${props.item.id}-delete`}
-        className="btn btn-text-secondary"
+        className="btn btn-text-body"
         type={CALLBACK_BUTTON}
         icon="fa fa-fw fa-trash"
         label={trans('delete', {}, 'actions')}
@@ -424,7 +424,7 @@ let Item = (props) =>
       >
         {props.connectDragSource(
           <span
-            className="btn btn-text-secondary drag-handle"
+            className="btn btn-text-body cursor-move"
             role="button"
             aria-labelledby={`set-item-${props.item.id}-drag`}
             draggable={true}
@@ -542,7 +542,7 @@ class Odd extends Component {
 
           <Button
             id={`odd-${this.props.odd.id}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}

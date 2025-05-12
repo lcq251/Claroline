@@ -1,7 +1,6 @@
 import React, {createElement, useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch} from 'react-redux'
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {makeCancelable} from '#/main/app/api'

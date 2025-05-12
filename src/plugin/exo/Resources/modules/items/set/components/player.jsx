@@ -36,7 +36,7 @@ const Association = props =>
     {props.removable &&
       <Button
         id={`ass-${props.association.itemId}-${props.association.setId}-delete`}
-        className="btn btn-text-secondary"
+        className="btn btn-text-body"
         type={CALLBACK_BUTTON}
         icon="fa fa-fw fa-trash"
         label={trans('delete', {}, 'actions')}
@@ -105,14 +105,14 @@ SetList.propTypes = {
 
 let Item = props => {
   const element =
-    <div className={classes('set-answer-item answer-item', {'drag-handle': props.draggable})}>
+    <div className={classes('set-answer-item answer-item', {'drag-cursor-move': props.draggable})}>
       <ContentHtml className="item-content">
         {props.item.data}
       </ContentHtml>
 
       {props.draggable &&
         <div className="item-actions" role="presentation">
-          <span className="drag-handle fa fa-arrows text-secondary" aria-hidden={true} />
+          <span className="cursor-move fa fa-arrows text-secondary" aria-hidden={true} />
         </div>
       }
     </div>

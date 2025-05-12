@@ -76,6 +76,11 @@ PageHeadingSkeleton.propTypes = {
 const PageHeading = props => {
   const pageDef = useContext(PageContext)
 
+  let level = props.level || 1
+  if (pageDef.embedded) {
+    level = level + 1
+  }
+
   return (
     <header id={props.id} className={classes('app-page-heading px-4 mb-5', !pageDef.embedded && 'pt-5', props.className, `content-${props.size || 'lg'}`)}>
       {props.poster &&
@@ -100,7 +105,7 @@ const PageHeading = props => {
       <div className="d-flex gap-3 align-items-end flex-wrap flex-md-nowrap" role="presentation">
         <Heading
           className="app-page-title m-0"
-          level={props.level || 1}
+          level={level}
         >
           {(props.subtitle || props.eyebrow) &&
             <span className="text-primary d-block fs-base text-uppercase fw-semibold mb-2" role="presentation">{props.subtitle || props.eyebrow}</span>

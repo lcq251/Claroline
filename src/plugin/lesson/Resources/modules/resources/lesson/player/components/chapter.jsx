@@ -67,7 +67,7 @@ const Chapter = props => {
   return (
     <>
       <PageToolbar
-        toolbar="download edit more"
+        toolbar="edit download more"
         actions={[
           {
             name: 'download',

@@ -1,11 +1,24 @@
 
 // scope
-const ACTION_SCOPE_OBJECT     = 'object' // action is available only for single object
+const ACTION_SCOPE_OBJECT     = 'object' // action is only available for single object
 const ACTION_SCOPE_COLLECTION = 'collection' // action is available for list of objects
 
 const ACTION_SCOPES = [
   ACTION_SCOPE_OBJECT,
   ACTION_SCOPE_COLLECTION
+]
+
+// sets
+const ACTION_SET_LIST = 'list'
+const ACTION_SET_DETAILS = 'details'
+const ACTION_SET_DASHBOARD = 'dashboard'
+const ACTION_SET_ADVANCED = 'advanced'
+
+const ACTION_SETS = [
+  ACTION_SET_LIST,
+  ACTION_SET_DETAILS,
+  ACTION_SET_DASHBOARD,
+  ACTION_SET_ADVANCED
 ]
 
 // types
@@ -69,6 +82,13 @@ export const constants = {
   ACTION_SCOPES,
   ACTION_SCOPE_OBJECT,
   ACTION_SCOPE_COLLECTION,
+
+  // sets
+  ACTION_SETS,
+  ACTION_SET_LIST,
+  ACTION_SET_DETAILS,
+  ACTION_SET_DASHBOARD,
+  ACTION_SET_ADVANCED,
 
   // types
   ACTIONS,

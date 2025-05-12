@@ -38,7 +38,7 @@ const EvaluationDashboardOverview = () => {
       </PageSection>
 
       <PageSection
-        size="lg"
+        size="xl"
         title={trans('Répartition de la progression des utilisateurs', {}, 'evaluation')}
         className="pb-5"
       >
@@ -46,7 +46,7 @@ const EvaluationDashboardOverview = () => {
       </PageSection>
 
       <PageSection
-        size="lg"
+        size="xl"
         title={trans('Répartition des scores des utilisateurs', {}, 'evaluation')}
         className="pb-5"
       >

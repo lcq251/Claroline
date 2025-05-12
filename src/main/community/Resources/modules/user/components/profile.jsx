@@ -5,7 +5,14 @@ import get from 'lodash/get'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {PageContent, PageHeading, PageHeadingSkeleton, PageSection, PageTabbedSection} from '#/main/app/page'
+import {
+  PageContent,
+  PageHeading,
+  PageHeadingSkeleton,
+  PageSection,
+  PageTabbedSection, PageToolbar,
+  PageToolbarSkeleton
+} from '#/main/app/page'
 import {Action as ActionTypes, PromisedAction as PromisedActionTypes} from '#/main/app/action/prop-types'
 import {DetailsData} from '#/main/app/content/details'
 import {getProfile} from '#/main/community/user/utils'
@@ -27,6 +34,7 @@ const UserProfile = (props) => {
     <>
       {isEmpty(props.user) &&
         <PageContent className="placeholder-glow">
+          <PageToolbarSkeleton toolbar="edit send-message more" />
           <PageHeadingSkeleton
             icon={true}
             description={true}
@@ -36,14 +44,16 @@ const UserProfile = (props) => {
 
       {!isEmpty(props.user) &&
         <PageContent poster={get(props.user, 'poster')}>
+          <PageToolbar
+            toolbar="edit send-message more"
+            actions={props.actions}
+          />
           <PageHeading
             icon={
               <UserAvatar user={props.user} size="lg" border={true} />
             }
             title={get(props.user, 'name')}
             description={get(props.user, 'meta.description')}
-            primaryAction={props.primaryAction}
-            actions={props.actions}
           />
 
           <PageSection className="mb-5">

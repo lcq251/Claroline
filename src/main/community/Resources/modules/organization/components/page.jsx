@@ -12,7 +12,7 @@ import {getActions} from '#/main/community/organization/utils'
 import {Organization as OrganizationTypes} from '#/main/community/organization/prop-types'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 
 const Organization = (props) =>
   <ToolPage
@@ -21,6 +21,7 @@ const Organization = (props) =>
   >
     {isEmpty(props.organization) &&
       <PageContent className="placeholder-glow">
+        <PageToolbarSkeleton toolbar="edit more" />
         <PageHeadingSkeleton
           icon={true}
           description={true}
@@ -30,27 +31,27 @@ const Organization = (props) =>
 
     {!isEmpty(props.organization) &&
       <PageContent poster={get(props.organization, 'poster')}>
+        <PageToolbar
+          toolbar="edit more"
+          actions={!isEmpty(props.organization) ? getActions([props.organization], {
+            add: () => props.reload(props.organization.id),
+            update: () => props.reload(props.organization.id),
+            delete: () => props.reload(props.organization.id)
+          }, props.path, props.currentUser) : []}
+        />
+
         <PageHeading
-          icon={get(props.organization, 'thumbnail') ?
+          icon={
             <Thumbnail
               size="lg"
               thumbnail={get(props.organization, 'thumbnail')}
               name={get(props.organization, 'name')}
               square={true}
               border={true}
-            >
-              <span className="fa fa-building" aria-hidden={true} />
-            </Thumbnail> :
-            undefined
+            />
           }
           title={get(props.organization, 'name', trans('loading'))}
           description={get(props.organization, 'meta.description')}
-          primaryAction="edit"
-          actions={!isEmpty(props.organization) ? getActions([props.organization], {
-            add: () => props.reload(props.organization.id),
-            update: () => props.reload(props.organization.id),
-            delete: () => props.reload(props.organization.id)
-          }, props.path, props.currentUser) : []}
         />
         {props.children}
       </PageContent>

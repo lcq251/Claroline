@@ -12,7 +12,7 @@ import {getActions} from '#/main/community/group/utils'
 import {Group as GroupTypes} from '#/main/community/group/prop-types'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {Thumbnail} from '#/main/app/components/thumbnail'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 
 const Group = (props) =>
   <ToolPage
@@ -21,6 +21,7 @@ const Group = (props) =>
   >
     {isEmpty(props.group) &&
       <PageContent className="placeholder-glow">
+        <PageToolbarSkeleton toolbar="edit more" />
         <PageHeadingSkeleton
           icon={true}
           description={true}
@@ -30,6 +31,14 @@ const Group = (props) =>
 
     {!isEmpty(props.group) &&
       <PageContent poster={get(props.group, 'poster')}>
+        <PageToolbar
+          toolbar="edit send-message more"
+          actions={getActions([props.group], {
+            add: () => props.reload(props.group.id),
+            update: () => props.reload(props.group.id),
+            delete: () => props.reload(props.group.id)
+          }, props.path, props.currentUser)}
+        />
         <PageHeading
           icon={
             <Thumbnail
@@ -38,19 +47,12 @@ const Group = (props) =>
               name={get(props.group, 'name')}
               square={true}
               border={true}
-            >
-              <span className="fa fa-users" aria-hidden={true} />
-            </Thumbnail>
+            />
           }
           title={get(props.group, 'name', trans('loading'))}
           description={get(props.group, 'meta.description')}
-          primaryAction="edit"
-          actions={!isEmpty(props.group) ? getActions([props.group], {
-            add: () => props.reload(props.group.id),
-            update: () => props.reload(props.group.id),
-            delete: () => props.reload(props.group.id)
-          }, props.path, props.currentUser) : []}
         />
+
         {props.children}
       </PageContent>
     }

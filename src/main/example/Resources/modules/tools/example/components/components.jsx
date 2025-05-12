@@ -18,7 +18,7 @@ const ExampleComponents = (props) =>
   <ToolPage
     title="Components"
   >
-    <PageContent>
+    <PageContent className="pb-5">
       <Nav
         orientation="horizontal"
         variant="underline"

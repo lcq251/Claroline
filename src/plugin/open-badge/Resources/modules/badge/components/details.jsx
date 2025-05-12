@@ -86,6 +86,7 @@ const BadgeDetails = (props) => {
 
       <PageSection
         title={trans('Comment obtenir ce badge ?', {}, 'badge')}
+        className="mb-5"
       >
         {get(props.badge, 'meta.archived', false) &&
           <Alert type="info">
@@ -105,11 +106,10 @@ const BadgeDetails = (props) => {
 
       {(hasPermission('grant', props.badge) || !get(props.badge, 'restrictions.hideRecipients')) &&
         <PageSection
-          className="py-4"
           title={trans('Utilisateurs ayant obtenu ce badge', {}, 'badges')}
+          className="mb-5"
         >
           <AssertionList
-            className="mb-4"
             path={props.path}
             name={selectors.FORM_NAME + '.assertions'}
             url={['apiv2_badge_list_assertions', {badge: props.badge.id}]}

@@ -38,7 +38,7 @@ const CommandPaletteSearch = (props) => {
 
       {(!isEmpty(props.currentTool) || !isEmpty(props.search)) &&
         <Button
-          className="command-palette-clear btn btn-text-secondary py-3 me-n3"
+          className="command-palette-clear btn btn-text-body py-3 me-n3"
           type={CALLBACK_BUTTON}
           icon="fa fa-times"
           label={trans('delete', {}, 'actions')}

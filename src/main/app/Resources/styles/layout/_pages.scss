@@ -36,7 +36,8 @@
     }
 }
 
-.app-page-poster + .app-page-heading .app-page-icon {
+.app-page-poster + .app-page-heading .app-page-icon,
+.app-page-poster + .app-page-toolbar + .app-page-heading .app-page-icon {
     margin-top: -8rem;
 }
 
@@ -49,10 +50,24 @@
 }
 
 .app-page-toolbar {
-    margin-left: 100%;
+    > div {
+        margin-left: 100%;
+    }
+
     .btn {
         padding: .75rem;
         border: 1px solid currentColor;
+        // background: var(--#{$prefix}body-bg);
+
+        &:hover,
+        &:focus {
+            background: fade-out($primary, .85);
+        }
+        &:active {
+            background-color: $primary;
+            border-color: $primary;
+            color: color-contrast($primary);
+        }
     }
 }
 

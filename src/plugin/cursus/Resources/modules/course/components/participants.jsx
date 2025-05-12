@@ -16,7 +16,7 @@ import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 const CourseParticipants = (props) =>
   <>
     <SessionUsers
-      className="mt-3"
+      className="mt-4"
       course={props.course}
       name={selectors.STORE_NAME+'.sessionUsers'}
       customDefinition={[

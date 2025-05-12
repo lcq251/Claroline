@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {Routes} from '#/main/app/router'
 import {useFetch} from '#/main/app/api/fetch'
-import {ContentLoader} from '#/main/app/content/components/loader'
 import {hasPermission} from '#/main/app/security'
 
 import {selectors} from '#/main/evaluation/sequence/store'
@@ -12,7 +11,8 @@ import {SequenceEditor} from '#/main/evaluation/sequence/editor'
 import {SequencePlayer} from '#/main/evaluation/sequence/player'
 import {SequenceDashboard} from '#/main/evaluation/sequence/dashboard'
 import {SequenceProgression} from '#/main/evaluation/sequence/components/progression'
-import {scrollTo} from '#/main/app/dom/scroll'
+import {PageContent, PageHeadingSkeleton} from '#/main/app/page'
+import {SequencePage} from '#/main/evaluation/sequence/components/page'
 
 const SequenceShow = props => {
   const [sequence, status, error, errorCode] = useFetch(selectors.STORE_NAME, ['apiv2_evaluation_sequence_open', {id: props.id}])
@@ -28,10 +28,7 @@ const SequenceShow = props => {
             component: SequenceOverview
           }, {
             path: '/play',
-            component: SequencePlayer/*,
-            onEnter: () => {
-              scrollTo('.app-page-heading')
-            }*/
+            component: SequencePlayer
           }, {
             path: '/edit',
             component: SequenceEditor,
@@ -56,7 +53,13 @@ const SequenceShow = props => {
   }
 
   return (
-    <ContentLoader size="lg"/>
+    <SequencePage>
+      <PageContent className="placeholder-glow">
+        <PageHeadingSkeleton
+          description={true}
+        />
+      </PageContent>
+    </SequencePage>
   )
 }
 

@@ -43,9 +43,9 @@ const SequencePlayer = props => {
 
       <Routes
         path={props.path+'/play'}
-        redirect={[
+        /*redirect={[
           {from: '/', to: `/${props.steps[0].slug}`, exact: true}
-        ]}
+        ]}*/
         routes={[
           {
             path: '/end',
@@ -53,16 +53,20 @@ const SequencePlayer = props => {
           }, {
             path: '/:slug?',
             onEnter: (params) => {
+              let step
               if (params.slug) {
-                const step = props.steps.find(step => params.slug === step.slug)
-                if (step) {
-                  props.setCurrentStep(step.slug)
-                  setTimeout(() => {
-                    scrollTo('#step-'+step.id)
-                  }, 0)
-                } else {
-                  history.replace(basePath)
-                }
+                step = props.steps.find(step => params.slug === step.slug)
+              } else {
+                step = props.steps[0]
+              }
+
+              if (step) {
+                props.setCurrentStep(step.slug)
+                setTimeout(() => {
+                  scrollTo('#step-'+step.id)
+                }, 0)
+              } else {
+                history.replace(basePath)
               }
             },
             // force navigation in case the user as navigated with the summary without finishing an opened resource

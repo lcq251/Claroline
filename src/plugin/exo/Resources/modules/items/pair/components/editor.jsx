@@ -352,7 +352,7 @@ class Pair extends Component {
 
           <Button
             id={`ass-${this.props.pair.itemIds[0]}-${this.props.pair.itemIds[1]}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -500,7 +500,7 @@ class Odd extends Component {
 
           <Button
             id={`odd-${this.props.odd.id}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -589,7 +589,7 @@ let Item = props =>
     <div className="right-controls">
       <Button
         id={`set-item-${props.item.id}-delete`}
-        className="btn btn-text-secondary"
+        className="btn btn-text-body"
         type={CALLBACK_BUTTON}
         icon="fa fa-fw fa-trash"
         label={trans('delete', {}, 'actions')}
@@ -606,7 +606,7 @@ let Item = props =>
       >
         {props.connectDragSource(
           <span
-            className="btn btn-text-secondary drag-handle"
+            className="btn btn-text-body cursor-move"
             role="button"
             draggable={true}
             aria-labelledby={`pair-item-${props.item.id}-drag`}

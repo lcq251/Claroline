@@ -52,7 +52,7 @@ const SequencePage = (props) => {
             label: trans('dashboard'),
             tooltip: 'bottom',
             target: sequencePath+'/dashboard',
-            displayed: hasPermission('edit', sequence)
+            displayed: sequence && hasPermission('edit', sequence)
           }, {
             name: 'parameters',
             type: LINK_BUTTON,
@@ -60,7 +60,7 @@ const SequencePage = (props) => {
             label: trans('parameters'),
             tooltip: 'bottom',
             target: sequencePath+'/edit',
-            displayed: hasPermission('edit', sequence)
+            displayed: sequence && hasPermission('edit', sequence)
           }
         ],
         toolbar: 'more',
@@ -72,7 +72,7 @@ const SequencePage = (props) => {
       }}
       {...omit(props, 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}
     >
-      {!isEmpty(sequence) && props.children}
+      {props.children}
     </ToolPage>
   )
 }

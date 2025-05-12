@@ -25,10 +25,15 @@ const FlyingAlertContent = props => {
 
   return (
     <li
-      className={classes('flying-alert d-flex flex-row align-items-baseline gap-3 p-3 rounded-2 bg-body w-100', `border border-${status.variant}`)}
+      className={classes('flying-alert d-flex flex-row align-items-baseline gap-3 rounded-2 bg-body w-100', `border border-${status.variant}`, status.removable && 'cursor-pointer')}
       role={role}
+      onClick={() => {
+        if (status.removable) {
+          props.removeAlert(props.id)
+        }
+      }}
     >
-      <span className={classes('flying-alert-icon fa fa-fw fs-lg', `text-${status.variant}`, status.icon)} aria-hidden={true} />
+      <span className={classes('flying-alert-icon fa fa-fw fs-lg flex-shrink-0', `text-${status.variant}`, status.icon)} aria-hidden={true} />
 
       <span className="flex-fill text-body-secondary fs-sm" role="presentation">
         <b className="d-block text-body fs-base mb-1">

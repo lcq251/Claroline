@@ -20,7 +20,7 @@ import {generateFromTemplate} from '#/plugin/claco-form/resources/claco-form/tem
 import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
 
 import {ResourcePage} from '#/main/core/resource'
-import {PageContent, PageHeading, PageSection} from '#/main/app/page'
+import {PageContent, PageHeading, PageSection, PageToolbar} from '#/main/app/page'
 import {Html} from '#/main/app/components/html'
 import {ContentPublication} from '#/main/app/content/components/publication'
 import {Tags} from '#/main/app/components/tags'
@@ -80,9 +80,8 @@ class Entry extends Component {
     return (
       <ResourcePage>
         <PageContent>
-          <PageHeading
-            title={this.props.entry.title}
-            primaryAction="edit"
+          <PageToolbar
+            toolbar="edit more"
             actions={[
               {
                 name: 'edit',
@@ -152,6 +151,10 @@ class Entry extends Component {
                 group: trans('management')
               }
             ]}
+          />
+
+          <PageHeading
+            title={this.props.entry.title}
           />
 
           <PageSection className="mb-5">

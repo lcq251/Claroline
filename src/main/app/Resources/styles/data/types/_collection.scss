@@ -34,12 +34,4 @@
             padding-right: map-get($spacers, 1);
         }
     }
-
-    // moves remove all btn on the same line than the label
-    // code is not really aesthetic
-    .btn-delete-all {
-        position: absolute;
-        bottom: 100%;
-        right: 0;
-    }
 }

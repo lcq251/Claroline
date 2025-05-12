@@ -69,67 +69,62 @@ const LessonPlayer = () => {
         </PageAside>
       }
 
-      {'none' === get(lesson, 'display.pagination', 'all') ?
-        <PlayerModeInline
-          path={resourcePath}
-        /> :
-        <Routes
-          path={resourcePath}
-          redirect={[
-            {from: '/', exact: true, to: '/'+get(pages, '[0].slug', null), disabled: showOverview || !get(pages, '[0]', null)}
-          ]}
-          routes={[
-            {
-              path: '/',
-              component: LessonPlayerOverview,
-              disabled: !showOverview,
-              exact: true
-            }, {
-              path: '/new/:parentSlug?',
-              exact: true,
-              onEnter: (params) => createChapter(params.parentSlug),
-              component: ChapterForm
-            }, {
-              path: '/:slug',
-              onEnter: (params) => {
-                const page = pages.find(page => params.slug === page.slug)
-                if (page) {
-                  loadChapter(page)
-                }
-              },
-              exact: true,
-              render: () => {
-                if (1 === pages.length) {
-                  return (
-                    <PlayerModeSimple path={resourcePath} />
-                  )
-                }
-
-                switch (get(lesson, 'display.pagination', 'all') ) {
-                  case 'none':
-                    return (
-                      <PlayerModeInline
-                        path={resourcePath}
-                      />
-                    )
-                  case 'page':
-                  case 'all':
-                  default:
-                    return (
-                      <PlayerModePage
-                        path={resourcePath}
-                      />
-                    )
-                }
+      <Routes
+        path={resourcePath}
+        redirect={[
+          {from: '/', exact: true, to: '/'+get(pages, '[0].slug', null), disabled: showOverview || !get(pages, '[0]', null)}
+        ]}
+        routes={[
+          {
+            path: '/',
+            component: LessonPlayerOverview,
+            disabled: !showOverview,
+            exact: true
+          }, {
+            path: '/new/:parentSlug?',
+            exact: true,
+            onEnter: (params) => createChapter(params.parentSlug),
+            component: ChapterForm
+          }, {
+            path: '/:slug',
+            onEnter: (params) => {
+              const page = pages.find(page => params.slug === page.slug)
+              if (page) {
+                loadChapter(page)
               }
-            }, {
-              path: '/:slug/edit',
-              onEnter: (params) => editChapter(params.slug),
-              component: ChapterForm
+            },
+            exact: true,
+            render: () => {
+              if (1 === pages.length) {
+                return (
+                  <PlayerModeSimple path={resourcePath} />
+                )
+              }
+
+              switch (get(lesson, 'display.pagination', 'all') ) {
+                case 'none':
+                  return (
+                    <PlayerModeInline
+                      path={resourcePath}
+                    />
+                  )
+                case 'page':
+                case 'all':
+                default:
+                  return (
+                    <PlayerModePage
+                      path={resourcePath}
+                    />
+                  )
+              }
             }
-          ]}
-        />
-      }
+          }, {
+            path: '/:slug/edit',
+            onEnter: (params) => editChapter(params.slug),
+            component: ChapterForm
+          }
+        ]}
+      />
     </ResourcePage>
   )
 }

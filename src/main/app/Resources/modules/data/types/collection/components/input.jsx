@@ -20,18 +20,6 @@ const CollectionInput = props =>
     }
 
     {!isEmpty(props.value) &&
-      <Button
-        className="btn btn-text-danger btn-delete-all"
-        type={CALLBACK_BUTTON}
-        label={trans('delete_all')}
-        disabled={props.disabled}
-        size="sm"
-        dangerous={true}
-        callback={() => props.onChange([])}
-      />
-    }
-
-    {!isEmpty(props.value) &&
       <ul className="mb-0">
         {props.value.map((value, index) => {
           let customInput

@@ -78,7 +78,7 @@ class SearchModal extends Component {
 
             {!this.props.fetching && !isEmpty(this.state.currentSearch) &&
               <Button
-                className="app-search-clear btn btn-text-secondary"
+                className="app-search-clear btn btn-text-body"
                 type={CALLBACK_BUTTON}
                 icon="fa fa-delete-left"
                 label={trans('close', {}, 'actions')}

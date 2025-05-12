@@ -24,7 +24,7 @@ const VideoPlayer = props => {
   return (
     <ResourcePage>
       <PageContent>
-        <PageSection size="lg" flush={embedded} className={classes({
+        <PageSection size="xl" flush={embedded} className={classes({
           'mt-4': showHeader,
           'mb-5': !embedded
         })}>

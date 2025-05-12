@@ -49,7 +49,8 @@ const EvaluationTool = (props) => {
           type: LINK_BUTTON,
           label: trans('sequences', {}, 'evaluation'),
           target: props.path/*+'/sequences'*/,
-          displayed: 'workspace' === props.contextType
+          displayed: 'workspace' === props.contextType,
+          exact: true
         }, {
           name: 'activities',
           type: LINK_BUTTON,

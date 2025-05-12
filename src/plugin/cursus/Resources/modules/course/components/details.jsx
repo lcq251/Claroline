@@ -133,6 +133,7 @@ const CourseDetails = (props) => {
           primaryName="btn-primary"
           defaultName="btn-link"
           actions={actions}
+          size="lg"
         />
       </PageSection>
 
@@ -143,7 +144,7 @@ const CourseDetails = (props) => {
             name: 'about',
             title: trans('about'),
             render: () => (
-              <div className="mt-3" role="presentation">
+              <div className="mt-4" role="presentation">
                 <Content
                   placeholder={trans('no_description')}
                   tags={get(props.course, 'tags')}
@@ -159,7 +160,6 @@ const CourseDetails = (props) => {
             badge: props.availableSessions.length,
             render: () => (
               <CourseSessions
-                className="mt-3"
                 path={props.basePath}
                 course={props.course}
                 availableSessions={props.availableSessions}
@@ -185,7 +185,6 @@ const CourseDetails = (props) => {
             displayed: !isEmpty(get(props.course, 'registration.form')) && hasPermission('register', props.course),
             render: () => (
               <CourseStats
-                className="mt-3"
                 course={props.course}
                 stats={props.stats}
               />

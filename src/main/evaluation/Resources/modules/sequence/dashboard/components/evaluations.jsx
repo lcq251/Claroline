@@ -33,8 +33,8 @@ const SequenceDashboardEvaluations = () => {
   }
 
   return (
-    <PageContent className="d-flex">
-      <PageSection size="full" className="d-flex flex-fill mt-4">
+    <PageContent className="py-4">
+      <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
           name={selectors.STORE_NAME+'.evaluations'}
           url={['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}]}

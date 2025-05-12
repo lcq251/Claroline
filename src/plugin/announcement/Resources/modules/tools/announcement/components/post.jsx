@@ -12,7 +12,7 @@ import {ToolPage} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
-import {PageToolbar} from '#/main/app/page/components/toolbar'
+import {PageToolbar, PageToolbarSkeleton} from '#/main/app/page/components/toolbar'
 
 const AnnouncementPost = (props) => {
   const history = useHistory()
@@ -23,10 +23,10 @@ const AnnouncementPost = (props) => {
     >
       {!props.announcement &&
         <PageContent className="placeholder-glow">
+          <PageToolbarSkeleton toolbar="edit more" />
           <PageHeadingSkeleton
             backAction={trans('back_to_announcements', {}, 'announcement')}
           />
-
           <PageSection className="mb-5">
             <ContentSkeleton meta={true} />
           </PageSection>
@@ -38,18 +38,18 @@ const AnnouncementPost = (props) => {
           <PageToolbar
             actions={[
               {
-                name: 'download',
-                type: CALLBACK_BUTTON,
-                icon: 'fa fa-fw fa-download',
-                label: trans('export-pdf',{}, 'actions'),
-                callback: () => props.exportPDF(props.announcement)
-              }, {
                 name: 'edit',
                 type: LINK_BUTTON,
                 icon: 'fa fa-fw fa-pencil',
                 label: trans('edit', {}, 'actions'),
                 target: `${props.path}/${props.announcement.id}/edit`,
                 displayed: props.editable
+              }, {
+                name: 'download',
+                type: CALLBACK_BUTTON,
+                icon: 'fa fa-fw fa-download',
+                label: trans('export-pdf',{}, 'actions'),
+                callback: () => props.exportPDF(props.announcement)
               }, {
                 name: 'send',
                 type: MODAL_BUTTON,

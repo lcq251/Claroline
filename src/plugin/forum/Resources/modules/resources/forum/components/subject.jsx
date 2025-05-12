@@ -16,7 +16,7 @@ import {selectors} from '#/plugin/forum/resources/forum/store'
 import {actions} from '#/plugin/forum/resources/forum/store'
 import {PageHeading} from '#/main/app/page/components/heading'
 import {Content} from '#/main/app/components/content'
-import {PageContent, PageSection} from '#/main/app/page'
+import {PageContent, PageSection, PageToolbar} from '#/main/app/page'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 import {ForumMessages} from '#/plugin/forum/resources/forum/components/messages'
 import {ContentPublication} from '#/main/app/content/components/publication'
@@ -47,14 +47,8 @@ class SubjectComponent extends Component {
         title={get(this.props.subject, 'title', trans('loading'))}
       >
         <PageContent poster={get(this.props.subject, 'poster')}>
-          <PageHeading
-            backAction={{
-              type: LINK_BUTTON,
-              target: this.props.path,
-              label: trans('Retour aux sujets', {}, 'forum'),
-              exact: true
-            }}
-            title={get(this.props.subject, 'title', trans('loading'))}
+          <PageToolbar
+            toolbar="edit more"
             actions={[
               {
                 name: 'edit',
@@ -127,6 +121,16 @@ class SubjectComponent extends Component {
                 dangerous: true
               }
             ]}
+          />
+
+          <PageHeading
+            backAction={{
+              type: LINK_BUTTON,
+              target: this.props.path,
+              label: trans('Retour aux sujets', {}, 'forum'),
+              exact: true
+            }}
+            title={get(this.props.subject, 'title', trans('loading'))}
           />
 
           <PageSection className="mb-5">

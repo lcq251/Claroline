@@ -89,7 +89,7 @@ class MatchLinkPopover extends Component {
                 displayed: !this.props.deletable
               }, {
                 name: 'close',
-                className: 'btn btn-text-secondary',
+                className: 'btn btn-text-body',
                 type: CALLBACK_BUTTON,
                 icon: 'fa fa-fw fa-times',
                 label: trans('close', {}, 'actions'),

@@ -159,7 +159,7 @@ class Item extends Component {
 
           <Button
             id={`item-${this.props.id}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -177,7 +177,7 @@ class Item extends Component {
             >
               {this.props.connectDragSource(
                 <span
-                  className="btn btn-text-secondary drag-handle"
+                  className="btn btn-text-body cursor-move"
                   aria-labelledby={`ordering-item-${this.props.id}-drag`}
                   draggable={true}
                   role="button"

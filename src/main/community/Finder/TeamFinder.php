@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CommunityBundle\Entity\Team;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class TeamFinder extends AbstractFinder
 {
     public static function getClass(): string

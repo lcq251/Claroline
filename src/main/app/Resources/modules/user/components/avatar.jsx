@@ -15,7 +15,6 @@ const UserAvatar = ({
   user,
   size = 'md',
   noStatus = false,
-  noStatusTooltip = false,
   border = false
 }) =>
   <span className={classes('position-relative user-avatar', size && `user-avatar-${size}`, className)} role="presentation">
@@ -31,10 +30,7 @@ const UserAvatar = ({
       <UserStatus
         className="position-absolute top-100 start-100 translate-middle"
         user={user}
-        variant={classes({
-          tooltip: !noStatusTooltip,
-          bullet: noStatusTooltip
-        })}
+        variant="bullet"
       />
     }
   </span>
@@ -48,8 +44,7 @@ UserAvatar.propTypes = {
     lastActivity: T.string
   }),
   size: T.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  noStatus: T.bool,
-  noStatusTooltip: T.bool
+  noStatus: T.bool
 }
 
 export {

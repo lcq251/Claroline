@@ -12,7 +12,7 @@ import {getActions} from '#/plugin/open-badge/badge/utils'
 import {Assertion as AssertionTypes, Badge as BadgeTypes, Evidence as EvidenceTypes} from '#/plugin/open-badge/prop-types'
 import {BadgeImage} from '#/plugin/open-badge/badge/components/image'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
 import {BadgeDetails} from '#/plugin/open-badge/badge/components/details'
 
 const Badge = (props) =>
@@ -22,6 +22,7 @@ const Badge = (props) =>
   >
     {isEmpty(props.badge) &&
       <PageContent className="placeholder-glow">
+        <PageToolbarSkeleton toolbar="edit more" />
         <PageHeadingSkeleton
           icon={true}
           description={true}
@@ -31,16 +32,19 @@ const Badge = (props) =>
 
     {!isEmpty(props.badge) &&
       <PageContent poster={get(props.badge, 'poster')}>
+        <PageToolbar
+          toolbar="edit more"
+          actions={getActions([props.badge], {
+            add: () => props.reload(props.badge.id),
+            update: () => props.reload(props.badge.id),
+            delete: () => props.reload(props.badge.id)
+          }, props.path, props.currentUser)}
+        />
+
         <PageHeading
           icon={<BadgeImage badge={props.badge} size="lg" border={true} />}
           title={get(props.badge, 'name')}
           description={get(props.badge, 'meta.description')}
-          primaryAction="edit"
-          actions={!isEmpty(props.badge) ? getActions([props.badge], {
-            add: () => props.reload(props.badge.id),
-            update: () => props.reload(props.badge.id),
-            delete: () => props.reload(props.badge.id)
-          }, props.path, props.currentUser) : []}
         />
 
         <BadgeDetails

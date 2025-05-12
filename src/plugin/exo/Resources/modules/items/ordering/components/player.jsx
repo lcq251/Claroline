@@ -32,13 +32,13 @@ DropBox = makeDroppable(DropBox, 'ITEM')
 
 let SortableItem = forwardRef((props, ref) => {
   const element =
-    <div className={classes('ordering-answer-item answer-item', {'drag-handle': props.sortable})} ref={ref}>
+    <div className={classes('ordering-answer-item answer-item', {'cursor-move': props.sortable})} ref={ref}>
       <ContentHtml className="ordering-item-content">{props.data}</ContentHtml>
       <div className="item-actions" role="presentation">
         {props.canDelete &&
           <Button
             id={`answer-${props.index}-delete`}
-            className="btn btn-text-secondary"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -49,7 +49,7 @@ let SortableItem = forwardRef((props, ref) => {
         }
 
         {props.sortable &&
-          <span className="drag-handle fa fa-arrows text-secondary" />
+          <span className="cursor-move fa fa-arrows text-secondary" />
         }
       </div>
     </div>
@@ -78,14 +78,14 @@ SortableItem = makeSortable(
 
 let DraggableItem = props => {
   const element =
-    <div className={classes('ordering-answer-item answer-item', {'drag-handle': props.draggable})}>
+    <div className={classes('ordering-answer-item answer-item', {'cursor-move': props.draggable})}>
       <ContentHtml className="ordering-item-content">
         {props.item.data}
       </ContentHtml>
 
       {props.draggable &&
         <div className="item-actions" role="presentation">
-          <span className="drag-handle fa fa-arrows text-secondary" aria-hidden={true} />
+          <span className="cursor-move fa fa-arrows text-secondary" aria-hidden={true} />
         </div>
       }
     </div>

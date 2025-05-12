@@ -39,7 +39,7 @@ class Lesson extends AbstractResource
     /**
      * Pagination of the lesson.
      *   - none : All the chapters are displayed in the same page, one after another.
-     *   - step : One page per chapter + all of its subchapters.
+     *   - page : One page per chapter + all of its subchapters.
      *   - all  : One page per chapter.
      */
     #[ORM\Column]

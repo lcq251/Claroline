@@ -22,9 +22,11 @@ final class Version20250428090000 extends AbstractMigration
            WHERE n.id IS NOT NULL
              AND n.mime_type = "custom/innova_path"
              AND n.active = 1
+             AND w.id IS NOT NULL
              AND r.id IS NOT NULL
              AND rr.mask & 1 = 1
              AND ot.tool_name = "progression"
+             AND ot.context_name = "workspace"
              AND NOT EXISTS (SELECT a.id FROM claro_tool_rights AS a WHERE a.role_id = r.id AND a.ordered_tool_id = ot.id)
            GROUP BY role_id, ordered_tool_id
         ');

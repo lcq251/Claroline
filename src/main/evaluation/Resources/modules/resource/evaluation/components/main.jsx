@@ -30,10 +30,9 @@ const ResourceDashboardEvaluations = () => {
   }
 
   return (
-    <PageContent className="d-flex">
-      <PageSection size="full" className="d-flex flex-fill mt-4">
+    <PageContent className="py-4">
+      <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
-          className="mb-5"
           name={selectors.STORE_NAME}
           url={['apiv2_resource_evaluation_list', {nodeId: resourceId}]}
           primaryAction={(row) => getDefaultAction(row, evaluationsRefresher, resourcePath, currentUser)}

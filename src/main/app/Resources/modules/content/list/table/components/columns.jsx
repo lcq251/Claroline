@@ -41,7 +41,7 @@ ColumnsMenu.propTypes = {
 const TableColumns = props =>
   <Button
     id="list-columns"
-    className="btn btn-text-secondary p-0 focus-ring focus-ring-secondary"
+    className="btn btn-text-body p-0 focus-ring focus-ring-secondary"
     type={MENU_BUTTON}
     icon="fa fa-fw fa-columns"
     label={trans('list_columns_title')}

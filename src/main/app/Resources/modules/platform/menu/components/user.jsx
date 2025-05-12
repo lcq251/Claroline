@@ -174,7 +174,7 @@ const PlatformMenuUser = (props) => {
         )
       }}
     >
-      <UserAvatar user={currentUser} noStatusTooltip={true} size="sm" />
+      <UserAvatar user={currentUser} size="sm" />
     </Button>
   )
 }

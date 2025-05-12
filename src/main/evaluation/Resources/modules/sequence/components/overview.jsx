@@ -58,6 +58,7 @@ const SequenceOverviewContent = (props) => {
               primaryName="btn-primary"
               defaultName="btn-link"
               actions={props.actions}
+              size="lg"
             />
           }
         </PageSection>

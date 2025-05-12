@@ -17,7 +17,7 @@ const FeedbackEditorButton = (props) =>
   <Button
     {...omit(props, 'feedback', 'toggle')}
     id={`feedback-${props.id}`}
-    className={classes('btn btn-text-secondary', props.className)}
+    className={classes('btn btn-text-body', props.className)}
     type={CALLBACK_BUTTON}
     icon={classes('fa fa-fw fa-comments', {
       'fa-regular': isHtmlEmpty(props.feedback)

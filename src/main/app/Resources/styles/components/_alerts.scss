@@ -63,6 +63,6 @@
 }
 
 .flying-alert {
-
+    padding: .75rem;
     @include box-shadow($flying-alert-box-shadow);
 }

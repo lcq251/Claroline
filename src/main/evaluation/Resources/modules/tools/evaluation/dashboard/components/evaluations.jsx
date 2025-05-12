@@ -18,13 +18,9 @@ const EvaluationDashboardEvaluations = (props) => {
   }
 
   return (
-    <PageContent
-      className="d-flex"
-      title={trans('evaluation')}
-    >
+    <PageContent className="py-4">
       <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
-          className="mb-5"
           name={selectors.STORE_NAME + '.workspaceEvaluations'}
           url={['apiv2_workspace_evaluation_list', {workspace: props.contextId}]}
           primaryAction={(row) => getDefaultAction(row, evaluationsRefresher, props.path, props.currentUser)}

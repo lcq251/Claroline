@@ -7,7 +7,7 @@ import {FormStats} from '#/main/app/content/form/stats/components/main'
 
 const CourseStats = (props) =>
   <>
-    <Alert type="info">
+    <Alert type="info" className="mt-4">
       {trans('course_stats_help', {}, 'cursus')}
     </Alert>
 

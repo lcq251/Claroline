@@ -144,7 +144,7 @@ const AnnouncementList = () => {
           />
         }
 
-        <PageSection size="lg">
+        <PageSection size="xl">
           {!loaded &&
             <ul className="list-unstyled placeholder-glow">
               <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />

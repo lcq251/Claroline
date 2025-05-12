@@ -8,6 +8,8 @@
 }
 
 .btn-sticky {
+    @include box-shadow($box-shadow);
+
     overflow: hidden;
     .fa {
         line-height: calc($line-height-base * 1rem);
@@ -67,6 +69,10 @@
     --#{$prefix}btn-active-shadow: #{$btn-active-box-shadow};
     --#{$prefix}btn-focus-shadow-rgb: var(--#{$prefix}secondary-rgb);
 }
+
+/*.btn:active {
+    transform: scale(0.97);
+}*/
 
 //-
 // Button effects
