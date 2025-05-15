@@ -1,11 +1,12 @@
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {DOWNLOAD_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Export presence into PDF file.
  */
-export default (presences) => ({
+export default declareAction((presences) => ({
   name: 'export-pdf',
   type: DOWNLOAD_BUTTON,
   icon: 'fa fa-fw fa-file-pdf',
@@ -16,4 +17,4 @@ export default (presences) => ({
   displayed: hasPermission('open', presences[0]),
   group: trans('transfer'),
   scope: ['object']
-})
+}))

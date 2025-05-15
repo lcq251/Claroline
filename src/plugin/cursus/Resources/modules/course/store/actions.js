@@ -5,7 +5,6 @@ import {API_REQUEST, url} from '#/main/app/api'
 import {makeActionCreator} from '#/main/app/store/actions'
 import {constants as actionConstants} from '#/main/app/action/constants'
 import {actions as listActions} from '#/main/app/content/list/store/actions'
-import {actions as formActions} from '#/main/app/content/form/store/actions'
 
 import {selectors} from '#/plugin/cursus/course/store/selectors'
 
@@ -28,34 +27,10 @@ actions.open = (courseSlug, force = false) => (dispatch, getState) => {
       [API_REQUEST]: {
         url: ['apiv2_cursus_course_open', {slug: courseSlug}],
         silent: true,
-        before: () => dispatch(actions.loadCourse(null, null, [], {})),
+        before: () => dispatch(actions.loadCourse(null, null, [], [])),
         success: (data) => dispatch(actions.loadCourse(data.course, data.defaultSession, data.availableSessions, data.registrations))
       }
     })
-  }
-}
-
-actions.openForm = (courseSlug = null, defaultProps = {}, workspace = null) => (dispatch) => {
-  if(workspace) {
-    defaultProps = {
-      ...defaultProps,
-      _workspaceType: workspace.meta.model ? 'model' : 'workspace',
-      workspace: workspace
-    }
-    return dispatch(formActions.resetForm(selectors.FORM_NAME, defaultProps, true))
-  }
-
-  if (courseSlug) {
-    return dispatch({
-      [API_REQUEST]: {
-        url: ['apiv2_cursus_course_get', {field: 'slug', id: courseSlug}],
-        silent: true,
-        before: () => dispatch(formActions.resetForm(selectors.FORM_NAME, null, true)),
-        success: (data) => dispatch(formActions.resetForm(selectors.FORM_NAME, data))
-      }
-    })
-  } else {
-    return dispatch(formActions.resetForm(selectors.FORM_NAME, defaultProps, true))
   }
 }
 
@@ -66,7 +41,6 @@ actions.openSession = (sessionId = null, force = false) => (dispatch, getState) 
       return dispatch({
         [API_REQUEST]: {
           url: ['apiv2_cursus_session_get', {id: sessionId}],
-          silent: true,
           success: (data) => {
             dispatch(actions.loadSession(data))
           }
@@ -78,61 +52,6 @@ actions.openSession = (sessionId = null, force = false) => (dispatch, getState) 
   }
 }
 
-actions.addCourseUsers = (courseId, users) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_cursus_course_add_pending', {id: courseId}], {ids: users.map(user => user.id)}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.STORE_NAME+'.coursePending'))
-    }
-  }
-})
-
-actions.updateCourseUser = (courseUser) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_training_course_user_update', {id: courseUser.id}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify(courseUser)
-    },
-    success: (data, dispatch) => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.coursePending'))
-  }
-})
-
-actions.moveCourseUsers = (courseId, targetId, courseUsers) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_cursus_course_move_pending', {id: courseId}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify({
-        target: targetId,
-        courseUsers: courseUsers.map(courseUser => courseUser.id)
-      })
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.STORE_NAME+'.coursePending'))
-    }
-  }
-})
-
-actions.movePending = (courseId, sessionUsers) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_cursus_course_move_to_pending', {id: courseId}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify({
-        sessionUsers: sessionUsers.map(sessionUser => sessionUser.id)
-      })
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData(selectors.STORE_NAME+'.coursePending'))
-      dispatch(actions.openSession(sessionUsers[0].session.id, true))
-    }
-  }
-})
-
 // Sessions registration management
 
 actions.addUsers = (sessionId, users, type) => ({
@@ -140,8 +59,7 @@ actions.addUsers = (sessionId, users, type) => ({
     url: url(['apiv2_cursus_session_add_users', {id: sessionId, type: type}], {ids: users.map(user => user.id)}),
     request: {
       method: 'PATCH'
-    },
-    success: (data, dispatch) => dispatch(actions.openSession(sessionId, true))
+    }
   }
 })
 
@@ -152,33 +70,6 @@ actions.inviteUsers = (sessionUsers) => ({
     request: {
       method: 'PUT'
     }
-  }
-})
-
-actions.moveUsers = (targetId, sessionUsers, type) => (dispatch, getState) => dispatch({
-  [API_REQUEST]: {
-    url: ['apiv2_training_session_user_move', {targetId: targetId, type: type}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify({
-        sessionUsers: sessionUsers.map(sessionUser => sessionUser.id)
-      })
-    },
-    success: () => {
-      const currentSession = selectors.activeSession(getState())
-      dispatch(actions.openSession(currentSession ? currentSession.id : null, true))
-    }
-  }
-})
-
-actions.updateUser = (sessionUser) => ({
-  [API_REQUEST]: {
-    url: ['apiv2_training_session_user_update', {id: sessionUser.id}],
-    request: {
-      method: 'PUT',
-      body: JSON.stringify(sessionUser)
-    },
-    success: (data, dispatch) => dispatch(actions.openSession(get(sessionUser, 'session.id'), true))
   }
 })
 

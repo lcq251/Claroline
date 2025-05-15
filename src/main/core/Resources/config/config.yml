@@ -72,7 +72,6 @@ plugin:
           class: Claroline\CoreBundle\Entity\Resource\File
           tags: [content]
           exportable: true
-          actions:
 
         - name: directory
           class: Claroline\CoreBundle\Entity\Resource\Directory

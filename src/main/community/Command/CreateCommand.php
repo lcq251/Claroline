@@ -27,18 +27,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateCommand extends Command
 {
-    private $om;
-    private $crud;
-
-    public function __construct(ObjectManager $om, Crud $crud)
-    {
-        $this->om = $om;
-        $this->crud = $crud;
-
+    public function __construct(
+        private readonly ObjectManager $om,
+        private readonly Crud $crud
+    ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Creates a new user.');
         $this->setDefinition(

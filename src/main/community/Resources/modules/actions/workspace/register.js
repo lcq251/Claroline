@@ -5,11 +5,12 @@ import {hasPermission} from '#/main/app/security'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_REGISTER} from '#/main/community/modals/register'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Registers selected users groups to some workspaces.
  */
-export default (workspaces, refresher) => ({
+export default declareAction((workspaces, refresher) => ({
   name: 'register-users-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-user-plus',
@@ -22,4 +23,4 @@ export default (workspaces, refresher) => ({
   }],
   group: trans('community'),
   scope: ['object', 'collection']
-})
+}))

@@ -13,7 +13,9 @@
   "add_training_event": "Ajouter une séance",
 
   "plan_training_session": "Planifier une session",
+  "save_training_session": "Enregistrer la session",
   "plan_training_event": "Planifier une séance",
+  "save_training_event": "Enregistrer la séance",
   "archive_training": "Archiver la formation",
   "archive_training_help": "Permet de masquer la formation de la liste des formations actives.",
   "archive_training_confirm_title": "{1} Archivage d'une formation | [2,Inf[ Archivage de plusieurs formations",

@@ -1,21 +1,28 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch, useSelector} from 'react-redux'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
+import merge from 'lodash/merge'
 
 import {trans} from '#/main/app/intl'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {formatListField} from '#/main/app/content/form/parameters/utils'
+import {selectors as securitySelectors} from '#/main/app/security'
+import {actions as listActions} from '#/main/app/content/list'
 
-import {isFull} from '#/plugin/cursus/utils'
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
-
 import {RegistrationUsers} from '#/plugin/cursus/registration/components/users'
-import {MODAL_REGISTRATION_PARAMETERS} from '#/plugin/cursus/registration/modals/parameters'
-import {MODAL_REGISTRATION_ABOUT} from '#/plugin/cursus/registration/modals/about'
-import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
+import {getRegistrationActions, getRegistrationDefaultAction} from '#/plugin/cursus/session/utils'
 
 const SessionUsers = (props) => {
+  const dispatch = useDispatch()
+  const currentUser = useSelector(securitySelectors.currentUser)
+
+  const refresher = useMemo(() => merge({
+    add:    () => dispatch(listActions.invalidateData(props.name)),
+    update: () => dispatch(listActions.invalidateData(props.name)),
+    delete: () => dispatch(listActions.invalidateData(props.name))
+  }, props.refresher || {}), [props.path])
+
   let customDefinition = [].concat(props.customDefinition || [])
   if (props.course && get(props.course, 'registration.form')) {
     get(props.course, 'registration.form').map(formSection => {
@@ -28,14 +35,18 @@ const SessionUsers = (props) => {
       name: 'confirmed',
       type: 'boolean',
       label: trans('confirmed'),
-      displayable: true,
-      displayed: false
+      displayable: get(props.session, 'registration.userValidation', false),
+      displayed: get(props.session, 'registration.userValidation', false),
+      filterable: get(props.session, 'registration.userValidation', false),
+      sortable: get(props.session, 'registration.userValidation', false)
     }, {
       name: 'validated',
       type: 'boolean',
       label: trans('validated'),
-      displayable: true,
-      displayed: false
+      displayable: get(props.session, 'registration.validation', false),
+      displayed: get(props.session, 'registration.validation', false),
+      filterable: get(props.session, 'registration.validation', false),
+      sortable: get(props.session, 'registration.validation', false)
     }
   ])
 
@@ -46,106 +57,25 @@ const SessionUsers = (props) => {
         ['apiv2_training_session_user_course_list', {id: props.course.id, sessionId: props.session.id}] :
         ['apiv2_training_session_user_course_list', {id: props.course.id}]
       }
-      unregisterUrl={['apiv2_training_session_user_delete']}
-      session={props.session || props.course}
+      primaryAction={(row) => getRegistrationDefaultAction(row, refresher, props.path, currentUser)}
+      actions={(rows) => getRegistrationActions(rows, refresher, props.path, currentUser)/*.then((actions) => [].concat(actions, props.customActions(rows)))*/}
       customDefinition={customDefinition}
-      actions={(rows) => [
-        {
-          name: 'about',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-circle-info',
-          label: trans('show-info', {}, 'actions'),
-          displayed: !isEmpty(get(props.course, 'registration.form')),
-          modal: [MODAL_REGISTRATION_ABOUT, {
-            course: props.course,
-            registration: rows[0]
-          }],
-          scope: ['object']
-        }, {
-          name: 'edit',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-pencil',
-          label: trans('edit', {}, 'actions'),
-          displayed: !isEmpty(get(props.course, 'registration.form')),
-          modal: [MODAL_REGISTRATION_PARAMETERS, {
-            course: props.course,
-            session: rows[0] ? rows[0].session : null,
-            registration: rows[0],
-            onSave: (registrationData) => props.updateUser(registrationData)
-          }],
-          group: trans('management'),
-          scope: ['object'],
-          primary: true
-        }, {
-          name: 'invite',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-envelope',
-          label: trans('send_invitation', {}, 'actions'),
-          callback: () => props.inviteUsers(rows)
-        }, {
-          name: 'confirm',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-user-check',
-          label: trans('confirm_registration', {}, 'actions'),
-          callback: () => props.confirmPending(rows.filter(row => !row.confirmed)),
-          disabled: props.session ? isFull(props.session) : false,
-          displayed: -1 !== rows.findIndex(row => !row.confirmed),
-          group: trans('management')
-        }, {
-          name: 'validate',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-check',
-          label: trans('validate_registration', {}, 'actions'),
-          callback: () => props.validatePending(rows.filter(row => !row.validated)),
-          disabled: props.session ? isFull(props.session) : false,
-          displayed: -1 !== rows.findIndex(row => !row.validated),
-          group: trans('management')
-        }, {
-          name: 'move',
-          type: MODAL_BUTTON,
-          icon: 'fa fa-fw fa-arrows',
-          label: trans('move', {}, 'actions'),
-          group: trans('management'),
-          modal: [MODAL_TRAINING_SESSIONS, {
-            url: ['apiv2_cursus_course_list_sessions', {id: get(props.course, 'id')}],
-            filters: [{property: 'status', value: 'not_ended'}],
-            selectAction: (selected) => ({
-              type: CALLBACK_BUTTON,
-              callback: () => props.moveUsers(selected[0].id, rows)
-            })
-          }]
-        }, {
-          name: 'move-pending',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-hourglass-half',
-          label: trans('move-pending', {}, 'actions'),
-          displayed: get(props.course, 'registration.pendingRegistrations', false),
-          group: trans('management'),
-          callback: () => props.movePending(props.course.id, rows)
-        }
-      ]}
     />
   )
 }
 
 SessionUsers.propTypes = {
+  path: T.string.isRequired,
+  name: T.string.isRequired,
   course: T.shape(
     CourseTypes.propTypes
   ).isRequired,
   session: T.shape(
     SessionTypes.propTypes
   ),
-  name: T.string.isRequired,
   customDefinition: T.arrayOf(T.shape({
     // data list prop types
-  })),
-
-  updateUser: T.func.isRequired,
-  inviteUsers: T.func.isRequired,
-  confirmPending: T.func.isRequired,
-  validatePending: T.func.isRequired,
-  moveUsers: T.func.isRequired,
-  movePending: T.func.isRequired
+  }))
 }
 
 export {

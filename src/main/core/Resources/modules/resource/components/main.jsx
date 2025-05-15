@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Routes} from '#/main/app/router'
-import {hasPermission} from '#/main/app/security'
 
 import {PageContext} from '#/main/app/page/context'
 import {selectors} from '#/main/core/resource/store'
@@ -22,8 +21,8 @@ const Resource = props => {
   const embedded = useSelector(selectors.embedded)
   const resourcePath = useSelector(selectors.path)
   const accessErrors = useSelector(selectors.accessErrors)
-  const canEdit = useSelector((state) => hasPermission('edit', selectors.resourceNode(state)))
-  const canFollow = useSelector((state) => hasPermission('edit', selectors.resourceNode(state)))
+  const canEdit = useSelector(selectors.canEdit)
+  const canFollow = useSelector(selectors.canFollow)
   const hasEvaluation = useSelector(selectors.hasEvaluation)
 
   useEffect(() => {
@@ -44,25 +43,7 @@ const Resource = props => {
             displayed: !!props.overviewPage,
             exact: true
           }
-        ].concat(props.menu || [], [
-          {
-            name: 'dashboard',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-gauge',
-            label: trans('dashboard'),
-            tooltip: 'bottom',
-            target: resourcePath+'/dashboard',
-            displayed: canFollow
-          }, {
-            name: 'parameters',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-sliders',
-            label: trans('parameters'),
-            tooltip: 'bottom',
-            target: resourcePath+'/edit',
-            displayed: canEdit
-          }
-        ]),
+        ].concat(props.menu || []),
         actions: props.actions,
         styles: props.styles
       }}
@@ -127,6 +108,10 @@ Resource.propTypes = {
    * NB. This SHOULD extend the base <ResourceEditor /> component.
    */
   editor: T.elementType,
+  /**
+   * The resource editor component
+   * NB. This SHOULD extend the base <ResourceDashboard /> component.
+   */
   dashboard: T.elementType
 }
 

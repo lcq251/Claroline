@@ -2,6 +2,7 @@
 
 namespace Claroline\CursusBundle\Controller\Registration;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
@@ -14,6 +15,8 @@ use Claroline\CursusBundle\Manager\SessionManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -41,38 +44,30 @@ class SessionUserController extends AbstractCrudController
         return SessionUser::class;
     }
 
-    public function getIgnore(): array
-    {
-        return ['list'];
-    }
-
     /**
      * List registered users to sessions.
      */
     #[Route(path: '/{id}', name: 'list', methods: ['GET'])]
     #[Route(path: '/{id}/{sessionId}', name: 'course_list', methods: ['GET'])]
     public function listByCourseAction(
-        Request $request,
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Course $course,
-        string $sessionId = null
-    ): JsonResponse {
+        string $sessionId = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('REGISTER', $course, [], true);
 
-        $params = $request->query->all();
-        $params['hiddenFilters'] = $this->getDefaultHiddenFilters();
-
-        $params['hiddenFilters']['course'] = $course->getUuid();
-
-        /*if (!empty($sessionId)) {
-            $params['hiddenFilters']['session'] = $sessionId;
+        if (!empty($sessionId)) {
+            $finderQuery->addFilter('session', $sessionId);
         } else {
-            $params['hiddenFilters']['course'] = $course->getUuid();
-        }*/
+            $finderQuery->addFilter('session.course', $course->getUuid());
+        }
 
-        return new JsonResponse(
-            $this->crud->list(SessionUser::class, $params)
-        );
+        $options = static::getOptions();
+        $results = $this->crud->search(SessionUser::class, $finderQuery, $options['list'] ?? []);
+
+        return $results->toResponse();
     }
 
     /**
@@ -80,13 +75,11 @@ class SessionUserController extends AbstractCrudController
      */
     #[Route(path: '/move/{type}/{targetId}', name: 'move', methods: ['PUT'])]
     public function moveAction(
-        #[MapEntity(mapping: ['targetId' => 'uuid'])]
-        Session $session,
+        Request $request,
         string $type,
-        Request $request
+        #[MapEntity(mapping: ['targetId' => 'uuid'])]
+        ?Session $session = null
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
-
         $data = $this->decodeRequest($request);
         if (empty($data['sessionUsers'])) {
             throw new InvalidDataException('Missing user registrations to move.');
@@ -98,7 +91,7 @@ class SessionUserController extends AbstractCrudController
                 'uuid' => $sessionUserId,
             ]);
 
-            if (!empty($sessionUser)) {
+            if (!empty($sessionUser) && $this->authorization->isGranted('ADMINISTRATE', $sessionUser)) {
                 $sessionUsers[] = $sessionUser;
             }
         }

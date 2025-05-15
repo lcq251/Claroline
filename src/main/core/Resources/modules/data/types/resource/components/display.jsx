@@ -8,8 +8,8 @@ import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types
 
 const ResourceDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_resource', {}, 'resource')}
+    {...props}
   />
 
 ResourceDisplay.propTypes = {

@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {DataMicro} from '#/main/app/data/components/micro'
 
 const EntityDisplay = (props) => {
@@ -25,10 +24,7 @@ const EntityDisplay = (props) => {
   }
 
   return (
-    <ContentPlaceholder
-      icon={props.icon}
-      title={props.placeholder}
-    />
+    <em role="presentation" className="text-body-tertiary">{props.placeholder || trans('empty_value')}</em>
   )
 }
 
@@ -45,7 +41,6 @@ EntityDisplay.propTypes = {
 
 EntityDisplay.defaultProps = {
   multiple: false,
-  placeholder: trans('no_value'),
   card: DataMicro
 }
 

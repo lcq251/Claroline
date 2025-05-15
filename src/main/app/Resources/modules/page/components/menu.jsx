@@ -78,29 +78,30 @@ const PageMenu = (props) => {
           aria-labelledby={toolMenuTitleId}
         >
           <h2 id={toolMenuTitleId} className="visually-hidden">{trans('tool_menu')}</h2>
-          <ul className="nav nav-underline flex-nowrap">
-            {!isEmpty(displayedNav) && displayedNav.map((nav) =>
-              <li className="nav-item" key={nav.name || nav.label}>
-                <Button
-                  {...nav}
-                  icon={nav.icon ? classes(nav.icon, 'lh-base') : undefined}
-                  className="nav-link text-nowrap"
-                />
-              </li>
-            )}
+          {!isEmpty(displayedNav) &&
+            <ul className="nav nav-underline flex-nowrap">
+              {displayedNav.map((nav) =>
+                <li className="nav-item" key={nav.name || nav.label}>
+                  <Button
+                    {...nav}
+                    icon={nav.icon ? classes(nav.icon, 'lh-base') : undefined}
+                    className="nav-link text-nowrap"
+                  />
+                </li>
+              )}
+            </ul>
+          }
 
-            {props.actions &&
-              <li className="nav-item">
-                <Toolbar
-                  className="d-flex"
-                  buttonName="nav-link"
-                  toolbar="more"
-                  tooltip="bottom"
-                  actions={props.actions}
-                />
-              </li>
-            }
-          </ul>
+          {props.actions &&
+            <Toolbar
+              className="d-flex gap-1 mx-n2 my-2"
+              buttonName="btn btn-text-body focus-ring py-1 px-2 rounded-1 border-0 fs-sm"
+              toolbar={props.toolbar || 'more'}
+              tooltip="bottom"
+              actions={props.actions}
+              moreIcon="fa-ellipsis-h"
+            />
+          }
         </nav>
       }
 

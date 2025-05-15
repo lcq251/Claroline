@@ -165,5 +165,6 @@
     "tutor_role_help": "If no role is defined, users registered as Tutors will be granted the role \"Manager\" of the selected workspace.",
     "learner_role_help": "If no role is defined, users registered as Learners will be granted the role \"Collaborator\" of the selected workspace.",
     "course_stats_help": "Statistics are not available for pending registrations.",
-    "count_registered_users": "Number of registered users"
+    "count_registered_users": "Number of registered users",
+    "session_name": "Session: %name%"
 }

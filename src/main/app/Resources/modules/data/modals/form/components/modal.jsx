@@ -54,7 +54,7 @@ const FormModal = (props) => {
       onEnter={() => reset(props.data, props.isNew)}
       scrollable={true}
       centered={true}
-      closeButton={false}
+      // closeButton={false}
       backdrop={hasPendingChanges ? 'static' : true}
     >
       <Form

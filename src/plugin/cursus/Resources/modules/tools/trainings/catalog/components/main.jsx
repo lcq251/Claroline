@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 
 import {Routes} from '#/main/app/router'
 
-import {route} from '#/plugin/cursus/course/routing'
 import {Course} from '#/plugin/cursus/course/containers/main'
 import {CourseEditor} from '#/plugin/cursus/course/editor/containers/main'
 import {CatalogList} from '#/plugin/cursus/tools/trainings/catalog/components/list'
@@ -40,8 +39,6 @@ const CatalogMain = (props) =>
         onEnter: (params = {}) => props.open(params.slug),
         render: (params = {}) => (
           <Course
-            path={props.course ? route(props.course, null, props.path) : ''}
-            slug={params.slug}
             history={params.history}
           />
         )
@@ -52,8 +49,7 @@ const CatalogMain = (props) =>
 CatalogMain.propTypes = {
   path: T.string.isRequired,
   canEdit: T.bool.isRequired,
-  open: T.func.isRequired,
-  openForm: T.func.isRequired
+  open: T.func.isRequired
 }
 
 export {

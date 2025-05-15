@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {MODAL_ROLE_FORM} from '#/main/community/role/modals/form'
+import {declareAction} from '#/main/app/action'
 
-export default (roles, refresher) => ({
+export default declareAction((roles, refresher) => ({
   name: 'edit',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-pencil',
@@ -17,4 +18,4 @@ export default (roles, refresher) => ({
   primary: true,
   group: trans('management'),
   scope: ['object']
-})
+}))

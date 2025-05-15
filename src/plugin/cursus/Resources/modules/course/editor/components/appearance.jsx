@@ -22,7 +22,7 @@ const CourseEditorAppearance = (props) =>
             label: trans('thumbnail'),
             recommended: true,
             type: 'image'
-          },{
+          }/*, {
             name: 'display.order',
             type: 'number',
             label: trans('order'),
@@ -30,7 +30,7 @@ const CourseEditorAppearance = (props) =>
             options: {
               min: 0
             }
-          }
+          }*/
         ]
       }, {
         title: trans('advanced'),

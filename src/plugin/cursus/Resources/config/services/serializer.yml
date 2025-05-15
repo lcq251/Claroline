@@ -23,6 +23,7 @@ services:
             - '@Claroline\CoreBundle\API\Serializer\LocationSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
             - '@Claroline\TemplateBundle\Serializer\TemplateSerializer'
+            - '@Claroline\CursusBundle\Serializer\CourseSerializer'
 
     Claroline\CursusBundle\Serializer\EventSerializer:
         arguments:
@@ -44,6 +45,7 @@ services:
     # Registrations
     Claroline\CursusBundle\Serializer\Registration\SessionUserSerializer:
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CursusBundle\Serializer\CourseSerializer'
             - '@Claroline\CursusBundle\Serializer\SessionSerializer'
@@ -53,5 +55,8 @@ services:
 
     Claroline\CursusBundle\Serializer\Registration\EventUserSerializer:
         arguments:
+            - '@security.authorization_checker'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CursusBundle\Serializer\EventSerializer'
+            - '@Claroline\CursusBundle\Serializer\EventPresenceSerializer'

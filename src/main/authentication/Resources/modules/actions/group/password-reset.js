@@ -2,8 +2,9 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl'
 import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
+import {declareAction} from '#/main/app/action'
 
-export default (groups) => {
+export default declareAction((groups) => {
   const processable = groups.filter(group => hasPermission('administrate', group))
 
   return {
@@ -32,4 +33,4 @@ export default (groups) => {
     scope: ['object', 'collection'],
     group: trans('management')
   }
-}
+})

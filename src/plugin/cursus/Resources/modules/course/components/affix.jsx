@@ -19,7 +19,7 @@ const CourseAffix = (props) => {
     info.push({
       icon: 'fa fa-calendar-week',
       label: trans('training_period', {}, 'cursus'),
-      value: displayDateRange(get(props.activeSession, 'restrictions.dates[0]'), get(props.activeSession, 'restrictions.dates[1]')),
+      value: displayDateRange(get(props.activeSession, 'dates[0]'), get(props.activeSession, 'dates[1]')),
       order: 1
     })
     info.push({

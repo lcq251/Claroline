@@ -12,7 +12,6 @@
 namespace Claroline\CursusBundle\Repository;
 
 use Claroline\AppBundle\Repository\UniqueValueFinder;
-use Claroline\CoreBundle\Entity\User;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Doctrine\ORM\EntityRepository;
@@ -36,37 +35,20 @@ class EventRepository extends EntityRepository
 
     public function countLearners(Event $event): int
     {
-        $count = $this->countUsers($event, AbstractRegistration::LEARNER);
-
-        // add groups count
-        $eventGroups = $this->getEntityManager()
-            ->createQuery('
-                SELECT sg FROM Claroline\CursusBundle\Entity\Registration\EventGroup AS sg
-                WHERE sg.type = :registrationType
-                  AND sg.event = :event
-            ')
-            ->setParameters([
-                'registrationType' => AbstractRegistration::LEARNER,
-                'event' => $event,
-            ])
-            ->getResult();
-
-        foreach ($eventGroups as $eventGroup) {
-            $groupUsers = $this->getEntityManager()->getRepository(User::class)->findByGroup($eventGroup->getGroup());
-            $count += count($groupUsers);
-        }
-
-        return $count;
+        return $this->countUsers($event, AbstractRegistration::LEARNER);
     }
 
     private function countUsers(Event $event, string $type): int
     {
         return (int) $this->getEntityManager()
             ->createQuery('
-                SELECT COUNT(su) FROM Claroline\CursusBundle\Entity\Registration\EventUser AS su
+                SELECT COUNT(su) 
+                FROM Claroline\CursusBundle\Entity\Registration\EventUser AS su
+                LEFT JOIN su.user AS u
                 WHERE su.type = :registrationType
                   AND su.event = :event
                   AND (su.confirmed = 1 AND su.validated = 1)
+                  AND u.disabled = false AND u.isRemoved = false AND u.technical = false
             ')
             ->setParameters([
                 'registrationType' => $type,

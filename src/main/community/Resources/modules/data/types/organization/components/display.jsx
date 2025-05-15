@@ -8,8 +8,8 @@ import {Organization as OrganizationTypes} from '#/main/community/prop-types'
 
 const OrganizationDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_organization', {}, 'community')}
+    {...props}
   />
 
 OrganizationDisplay.propTypes = {

@@ -13,6 +13,7 @@ const TrainingsTool = withReducer(selectors.STORE_NAME, reducer)(
   withReducer(courseSelectors.STORE_NAME, courseReducer)(
     connect(
       (state) => ({
+        contextType: toolSelectors.contextType(state),
         authenticated: securitySelectors.isAuthenticated(state),
         canEdit: hasPermission('edit', toolSelectors.toolData(state)),
         canRegister: hasPermission('register', toolSelectors.toolData(state))

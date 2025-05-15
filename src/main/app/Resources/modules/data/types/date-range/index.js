@@ -1,12 +1,14 @@
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {chain, date, string} from '#/main/app/data/types/validators'
 
-import {render, parse} from '#/main/app/data/types/date-range/utils'
 import {DateRangeInput} from '#/main/app/data/types/date-range/components/input'
 import {DateRangeGroup} from '#/main/app/data/types/date-range/components/group'
 import {declareDataType} from '#/main/app/data/types'
+import {displayDateRange} from '#/main/app/intl'
+import {parse as parseDate} from '#/main/app/data/types/date/utils'
 
 export default declareDataType({
   name: 'date-range',
@@ -16,9 +18,22 @@ export default declareDataType({
     description: trans('date_range_desc', {}, 'actions')
   },
 
-  parse: parse,
+  parse: (display, options = {}) => {
+    let parsed = [null, null]
+    if (display) {
+      if (display[0]) {
+        parsed[0] = parseDate(display[0], options)
+      }
 
-  render: render,
+      if (display[1]) {
+        parsed[1] = parseDate(display[1], options)
+      }
+    }
+
+    return parsed
+  },
+
+  render: (raw, options = {}) => displayDateRange(get(raw, '[0]'), get(raw, '[1]'), options.time),
 
   /**
    * Validates input value for a date range.

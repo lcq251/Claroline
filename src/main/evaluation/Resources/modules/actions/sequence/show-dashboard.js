@@ -3,8 +3,9 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/evaluation/sequence/routing'
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
-export default (sequences, refresher, path) => ({
+export default declareAction((sequences, refresher, path) => ({
   name: 'show-dashboard',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-gauge',
@@ -12,5 +13,5 @@ export default (sequences, refresher, path) => ({
   target: route(sequences[0], null, path) + '/dashboard',
   displayed: -1 !== sequences.findIndex(sequence => hasPermission('edit', sequence)),
   scope: ['object'],
-  group: trans('management')
-})
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
+}))

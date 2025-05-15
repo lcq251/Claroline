@@ -2,12 +2,10 @@ import {connect} from 'react-redux'
 
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions as listActions} from '#/main/app/content/list/store'
-import {selectors as resourcesToolSelectors} from '#/main/core/tools/resources/store'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {DirectoryPlayer as DirectoryPlayerComponent} from '#/main/core/resources/directory/components/player'
 import {selectors} from '#/main/core/resources/directory/store'
-import {actions} from '#/main/core/resource/modals/files/store'
 
 const DirectoryPlayer = connect(
   (state) => ({
@@ -21,9 +19,6 @@ const DirectoryPlayer = connect(
     isRoot: resourceSelectors.isRoot(state)
   }),
   (dispatch) => ({
-    createFiles(parent, files) {
-      return dispatch(actions.createFiles(parent, files))
-    },
     updateNodes() {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
     },

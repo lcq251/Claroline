@@ -7,7 +7,7 @@ import {CountryFlag} from '#/main/app/components/country-flag'
 const Address = (props) =>
   <>
     {props.name &&
-      <p className="mb-0">
+      <p className="fw-bolder mb-0">
         {props.name}
       </p>
     }

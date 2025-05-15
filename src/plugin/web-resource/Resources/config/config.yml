@@ -3,10 +3,3 @@ plugin:
     - name: claroline_web_resource
       class: Claroline\CoreBundle\Entity\Resource\File
       tags: [content]
-      exportable: false
-      actions:
-          # Edits the underlying resource file
-          - name: change_file
-            decoder: edit
-            group: management
-            api: [POST, PUT]

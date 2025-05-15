@@ -4,7 +4,6 @@ import omit from 'lodash/omit'
 import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
-import {ContentTitle} from '#/main/app/content/components/title'
 
 import {FormSave} from '#/main/app/content/form/components/save'
 
@@ -70,14 +69,6 @@ class Form extends Component {
       <FormWrapper
         {...omit(this.props, 'new', 'name', 'dataPart', 'buttons', 'data', 'level', 'displayLevel', 'title', 'errors', 'pendingChanges', 'alertExit', 'children', 'save', 'cancel', 'onSave', 'target', 'saveForm', 'cancelForm')}
       >
-        {this.props.title &&
-          <ContentTitle
-            level={this.props.level}
-            displayLevel={this.props.displayLevel}
-            title={this.props.title}
-          />
-        }
-
         {this.props.children}
 
         {(this.props.save || this.props.cancel) &&
@@ -106,7 +97,6 @@ Form.propTypes = {
   disabled: T.bool,
   level: T.number,
   displayLevel: T.number,
-  title: T.string,
   errors: T.bool,
   pendingChanges: T.bool,
   /**

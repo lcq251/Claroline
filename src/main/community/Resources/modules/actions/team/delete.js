@@ -2,11 +2,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete teams action.
  */
-export default (teams, refresher) => {
+export default declareAction((teams, refresher) => {
   const processable = teams.filter(team => hasPermission('delete', team))
 
   return {
@@ -35,4 +36,4 @@ export default (teams, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

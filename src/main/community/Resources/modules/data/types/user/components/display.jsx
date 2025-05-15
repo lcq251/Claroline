@@ -9,8 +9,8 @@ import {User as UserTypes} from '#/main/community/prop-types'
 
 const UserDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_user', {}, 'community')}
+    {...props}
     card={(cardProps) => <DataMicro {...cardProps} object={{thumbnail: cardProps.object.picture, name: cardProps.object.name}} />}
   />
 

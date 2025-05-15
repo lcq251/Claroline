@@ -13,8 +13,6 @@ import {EmptyCourse} from '#/plugin/cursus/course/components/empty'
 import {Events} from '#/plugin/cursus/tools/events/components/events'
 import {EventsDetails} from '#/plugin/cursus/tools/events/containers/details'
 import {EventsPresences} from '#/plugin/cursus/tools/events/containers/presences'
-import {EventsOverview} from '#/plugin/cursus/tools/events/components/overview'
-import {EventsFollow} from '#/plugin/cursus/tools/events/components/follow'
 
 const EventsTool = (props) =>
   <Tool
@@ -53,14 +51,6 @@ const EventsTool = (props) =>
     ]}
     pages={[
       {
-        path: '/',
-        component: EventsOverview,
-        exact: true
-      }, {
-        path: '/follow',
-        component: EventsFollow,
-        disabled: !props.canRegister
-      }, {
         path: '/new',
         onEnter: () => props.openForm(null, CourseTypes.defaultProps, props.currentContext.data),
         disabled: !props.canEdit,
@@ -85,7 +75,6 @@ const EventsTool = (props) =>
           if (props.course && props.course.slug) {
             return (
               <Course
-                path={props.path + '/course'}
                 slug={props.course.slug}
                 history={params.history}
               />

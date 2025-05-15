@@ -89,7 +89,7 @@ class Button extends Component {
           disabled={actionDef.disabled}
         >
           <ButtonComponent
-            {...omit(actionDef, 'tooltip', 'group', 'context', 'scope', 'default')}
+            {...omit(actionDef, 'tooltip', 'group', 'context', 'scope', 'set', 'default')}
             hideLabel={true}
           >
             {this.props.children}
@@ -100,7 +100,7 @@ class Button extends Component {
 
     return (
       <ButtonComponent
-        {...omit(actionDef, 'tooltip', 'group', 'context', 'scope', 'default')}
+        {...omit(actionDef, 'tooltip', 'group', 'context', 'scope', 'set', 'default')}
       >
         {this.props.children}
       </ButtonComponent>

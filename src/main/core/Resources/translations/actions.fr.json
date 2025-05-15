@@ -21,5 +21,6 @@
   "add_resource": "Ajouter une ressource",
   "add_resources": "Ajouter des ressources",
   "add-favourite": "Ajouter aux favoris",
-  "remove-favourite": "Retirer des favoris"
+  "remove-favourite": "Retirer des favoris",
+  "open-directory": "Ouvrir le dossier"
 }

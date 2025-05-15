@@ -19,7 +19,7 @@ const SessionCancelModal = props =>
     question={transChoice('cancel_session_message', props.sessions.length, {count: props.sessions.length}, 'actions')}
     dangerous={true}
     items={props.sessions.map(session => ({
-      name: displayDateRange(get(session, 'restrictions.dates[0]'), get(session, 'restrictions.dates[1]')),
+      name: displayDateRange(get(session, 'dates[0]'), get(session, 'dates[1]')),
       thumbnail: session.thumbnail
     }))}
     confirmAction={{
@@ -34,12 +34,13 @@ const SessionCancelModal = props =>
             cancelReason: get(props.formData, 'meta.cancelReason'),
             canceledTemplate: get(props.formData, 'canceledTemplate')
           })
-        }
+        },
+        success: props.onCancel
       }
     }}
   >
     <FormData
-      className="mt-4"
+      className="mt-5 mb-n4"
       name={selectors.STORE_NAME}
       definition={[
         {
@@ -76,7 +77,8 @@ SessionCancelModal.propTypes = {
   formData: T.object.isRequired,
   sessions:  T.arrayOf(T.shape(
     SessionTypes.propTypes
-  ))
+  )),
+  onCancel: T.func
 }
 
 export {

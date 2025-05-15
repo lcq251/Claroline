@@ -16,6 +16,9 @@ use Claroline\CommunityBundle\Finder\Filter\UserFilter;
 use Claroline\CursusBundle\Entity\Registration\EventUser;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class EventUserFinder extends AbstractFinder
 {
     public static function getClass(): string

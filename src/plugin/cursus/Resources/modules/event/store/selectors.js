@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 import isEmpty from 'lodash/isEmpty'
 
-const STORE_NAME = 'trainingEventCurrent'
+const STORE_NAME = 'trainingEvent'
 
 const store = (state) => state[STORE_NAME] || {}
 

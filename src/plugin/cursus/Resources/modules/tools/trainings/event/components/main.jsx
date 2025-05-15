@@ -1,59 +1,67 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {trans} from '#/main/app/intl'
 import {Routes} from '#/main/app/router'
 
 import {EventsList} from '#/plugin/cursus/tools/trainings/event/components/list'
-import {EventsDetails} from '#/plugin/cursus/tools/events/containers/details'
-import {EventMain as Event} from '#/plugin/cursus/events/event/containers/main'
+import {EventShow} from '#/plugin/cursus/event/containers/show'
+import {trans} from '#/main/app/intl'
+import {constants} from '#/plugin/cursus/constants'
+import {selectors} from '#/plugin/cursus/tools/trainings/event/store'
+import {TrainingsEventUsers} from '#/plugin/cursus/tools/trainings/event/components/users'
 
 const EventMain = (props) =>
   <Routes
     path={props.path+'/events'}
-    /*redirect={[
-      {from: '/', exact: true, to: '/all'}
-    ]}*/
     routes={[
-      /*{
-        path: '/registered',
-        onEnter: props.invalidateList,
-        disabled: !props.authenticated,
-        render: () => (
-          <EventsList
-            path={props.path+'/events'}
-            title={trans('my_events', {}, 'cursus')}
-            url={['apiv2_cursus_my_events'/!*, {workspace: props.contextId}*!/]}
-          />
-        )
-      }, */{
+      {
         path: '/',
-        onEnter: props.invalidateList,
         exact: true,
-        render: () => (
+        render: useCallback(() => (
           <EventsList
-            path={props.path+'/events'}
-            title={trans('all_events', {}, 'cursus')}
+            path={props.path}
             url={props.authenticated && (props.canEdit || props.canRegister) ?
-              ['apiv2_cursus_event_list'/*, {workspace: props.contextId}*/] :
-              ['apiv2_cursus_event_public'/*, {workspace: props.contextId}*/]
+              ['apiv2_cursus_event_list', {workspace: props.contextId}] :
+              ['apiv2_cursus_event_public', {workspace: props.contextId}]
             }
+            canEdit={props.canEdit}
           />
-        ),
-        disabled: !props.authenticated || !props.canEdit || !props.canRegister
+        ),[props.path, props.authenticated, props.canEdit, props.canRegister]),
+      }, {
+        path: '/participants',
+        render: useCallback(() => (
+          <TrainingsEventUsers
+            path={props.path}
+            title={trans('participants')}
+            type={constants.LEARNER_TYPE}
+            name={selectors.STORE_NAME+'.participants'}
+            canRegister={props.canRegister}
+          />
+        ), [props.path])
+      }, {
+        path: '/tutors',
+        render: useCallback(() => (
+          <TrainingsEventUsers
+            path={props.path}
+            title={trans('tutors', {}, 'cursus')}
+            type={constants.TEACHER_TYPE}
+            name={selectors.STORE_NAME+'.tutors'}
+            canRegister={props.canRegister}
+          />
+        ), [props.path])
       }, {
         path: '/:id',
-        render: (routerProps) => (
-          <Event eventId={routerProps.match.params.id}>
-            <EventsDetails path={props.path+'/events'} />
-          </Event>
-        )
+        render: useCallback((routerProps) => (
+          <EventShow path={props.path} id={routerProps.match.params.id} />
+        ), [props.path])
       }
     ]}
   />
 
 EventMain.propTypes = {
   path: T.string.isRequired,
+  contextType: T.string.isRequired,
+  contextId: T.string,
   authenticated: T.bool.isRequired,
   canEdit: T.bool.isRequired,
   canRegister: T.bool.isRequired,

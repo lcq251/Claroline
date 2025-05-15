@@ -3,6 +3,7 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Creates a copy of sequences chosen by the user.
@@ -10,7 +11,7 @@ import {hasPermission} from '#/main/app/security'
  * @param {Array}  sequences  - the list of sequences on which we want to execute the action.
  * @param {object} refresher - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (sequences, refresher) => {
+export default declareAction((sequences, refresher) => {
   const processable = sequences.filter(sequence => hasPermission('edit', sequence))
 
   return ({
@@ -35,6 +36,7 @@ export default (sequences, refresher) => {
       success: refresher.update
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   })
-}
+})

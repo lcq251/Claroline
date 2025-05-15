@@ -50,6 +50,14 @@ services:
             - '@Claroline\AppBundle\API\Crud'
 
     # Registrations
+    Claroline\CursusBundle\Controller\Registration\EventUserController:
+        parent: Claroline\AppBundle\Controller\AbstractCrudController
+        public: true
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@Claroline\CursusBundle\Manager\EventManager'
+
     Claroline\CursusBundle\Controller\Registration\SessionUserController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true

@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {MODAL_EVIDENCE} from '#/plugin/cursus/presence/modals/evidences'
 import {constants} from '#/plugin/cursus/constants'
+import {declareAction} from '#/main/app/action'
 
-export default (presences, refresher) => {
+export default declareAction((presences, refresher) => {
   const processable = presences.filter(presence => hasPermission('edit', presence))
 
   return {
@@ -23,4 +24,4 @@ export default (presences, refresher) => {
     group: trans('management'),
     scope: ['object']
   }
-}
+})

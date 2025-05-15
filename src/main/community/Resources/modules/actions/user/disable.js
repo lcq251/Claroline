@@ -4,8 +4,9 @@ import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
-export default (users, refresher) => {
+export default declareAction((users, refresher) => {
   const processable = users.filter(user => hasPermission('administrate', user) && !get(user, 'restrictions.disabled', false))
 
   return {
@@ -33,4 +34,4 @@ export default (users, refresher) => {
     scope: ['object', 'collection'],
     group: trans('management')
   }
-}
+})

@@ -3,8 +3,9 @@ import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_WORKSPACES} from '#/main/core/modals/workspaces'
+import {declareAction} from '#/main/app/action'
 
-export default (users, refresher) => {
+export default declareAction((users, refresher) => {
   const processable = users.filter(user => hasPermission('administrate', user))
 
   return {
@@ -33,4 +34,4 @@ export default (users, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

@@ -11,7 +11,7 @@ const SubjectModal = (props) =>
   <FormModal
     {...omit(props, 'forumId', 'subject')}
     name="forumSubjectForm"
-    title={!props.subject ? trans('new_subject', {}, 'forum') : undefined}
+    title={trans(!props.subject ? 'new_subject' : 'subject', {}, 'forum')}
     target={!props.subject ?
       ['apiv2_forum_create_subject', {id: props.forumId}] :
       ['apiv2_forum_subject_update', {id: props.subject.id}]

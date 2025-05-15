@@ -16,7 +16,6 @@ import {getInfo, isFull} from '#/plugin/cursus/utils'
 
 import {selectors} from '#/plugin/cursus/registration/modals/parameters/store/selectors'
 
-
 const ParametersModal = props => {
   const isManager = hasPermission('edit', props.course)
   let allFields = []
@@ -25,17 +24,17 @@ const ParametersModal = props => {
   })
 
   const sections = formatSections(get(props.course, 'registration.form', []), allFields, 'data', true, isManager, isManager)
-  sections[0].defaultOpened = true
+  // sections[0].defaultOpened = true
 
   return (
     <Modal
       {...omit(props, 'course', 'session', 'registration', 'formData', 'isNew', 'save', 'reset', 'onSave')}
-      icon="fa fa-fw fa-user-plus"
+      //icon="fa fa-fw fa-user-plus"
       title={trans('registration')}
       subtitle={getInfo(props.course, props.session, 'name')}
-      poster={getInfo(props.course, props.session, 'poster')}
+      //poster={getInfo(props.course, props.session, 'poster')}
       onEntering={() => props.reset(props.registration)}
-      size="lg"
+      //size="lg"
     >
       <FormData
         flush={true}

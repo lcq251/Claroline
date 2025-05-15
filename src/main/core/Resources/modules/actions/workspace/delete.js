@@ -2,11 +2,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete workspaces action.
  */
-export default (workspaces, refresher) => {
+export default declareAction((workspaces, refresher) => {
   const processable = workspaces
     .filter(w => hasPermission('delete', w) && w.code !== 'default_personal' && w.code !== 'default_workspace' && w.meta.archived)
 
@@ -36,4 +37,4 @@ export default (workspaces, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

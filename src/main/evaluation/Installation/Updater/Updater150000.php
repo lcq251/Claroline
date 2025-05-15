@@ -20,5 +20,12 @@ class Updater150000 extends Updater
     public function postUpdate(): void
     {
         $this->removeTool('evaluation');
+
+        $this->createMissingSequences();
+    }
+
+    private function createMissingSequences(): void
+    {
+
     }
 }

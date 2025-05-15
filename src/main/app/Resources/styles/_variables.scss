@@ -13,7 +13,7 @@ $icon-primary-color: var(--#{$prefix}primary) !default;
 $icon-secondary-color: $gray-900 !default;
 
 // content sizing
-$content-xs: 24rem !default;
+$content-xs: 24rem !default; // page affix, page aside
 $content-sm: 32rem !default; // confirm modal, flying alerts
 $content-md: 42rem !default;
 $content-lg: 56rem !default; // standard page content size
@@ -30,9 +30,9 @@ $content-sizes: (
 $icon-sizes: (
     xs: 2rem, // tables, data micro
     sm: 3rem, // context menu, current user, lists, creation menu, organizations modal
-    md: 6rem, // 4rem, // cards
-    lg: 8rem, // 5rem, // pages
-    xl: 14rem // 8rem,
+    md: 6rem, // cards
+    lg: 8rem, // pages
+    xl: 14rem // content cards (announces)
 ) !default;
 
 // allows to customize content line height to increase readability in large texts set by users

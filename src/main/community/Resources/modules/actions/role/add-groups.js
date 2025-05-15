@@ -3,8 +3,9 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
+import {declareAction} from '#/main/app/action'
 
-export default (roles, refresher) => ({
+export default declareAction((roles, refresher) => ({
   name: 'add-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-users',
@@ -24,4 +25,4 @@ export default (roles, refresher) => ({
   }],
   group: trans('management'),
   scope: ['object']
-})
+}))

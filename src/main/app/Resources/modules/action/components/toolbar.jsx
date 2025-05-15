@@ -18,7 +18,7 @@ import {buildToolbar} from '#/main/app/action/utils'
  * Creates a toolbar of actions.
  */
 const StaticToolbar = (props) => {
-  const toolbar = buildToolbar(props.toolbar, props.actions, props.scope)
+  const toolbar = buildToolbar(props.toolbar, props.actions, props.scope, props.moreIcon)
 
   return (0 !== toolbar.length &&
     <div role={props.role} className={classes(props.className, props.name)} style={props.style}>

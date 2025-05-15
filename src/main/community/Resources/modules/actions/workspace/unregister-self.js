@@ -1,15 +1,15 @@
-import {createElement} from 'react'
 import get from 'lodash/get'
 
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {isAdmin} from '#/main/app/security/permissions'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Let the current user unregister himself from some workspaces.
  */
-export default (workspaces, refresher, path, currentUser) => {
+export default declareAction((workspaces, refresher, path, currentUser) => {
   const processable = workspaces.filter(workspace => !!currentUser &&
     workspace.registered && (get(workspace, 'registration.selfUnregistration') || isAdmin(currentUser)))
 
@@ -39,4 +39,4 @@ export default (workspaces, refresher, path, currentUser) => {
     dangerous: true,
     scope: ['object', 'collection']
   })
-}
+})

@@ -6,6 +6,7 @@ import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Deletes some resource nodes.
@@ -13,7 +14,7 @@ import {hasPermission} from '#/main/app/security'
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
  * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (resourceNodes, nodesRefresher) => {
+export default declareAction((resourceNodes, nodesRefresher) => {
   const processable = resourceNodes.filter(node => !isEmpty(node.parent) && hasPermission('administrate', node))
 
   return {
@@ -45,6 +46,8 @@ export default (resourceNodes, nodesRefresher) => {
         method: 'DELETE'
       },
       success: () => nodesRefresher.delete(processable)
-    }
+    },
+    group: trans('management'),
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
-}
+})

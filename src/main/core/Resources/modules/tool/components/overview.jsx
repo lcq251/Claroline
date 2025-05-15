@@ -6,13 +6,17 @@ import get from 'lodash/get'
 import {selectors} from '#/main/core/tool/store'
 import {ToolPage} from '#/main/core/tool/components/page'
 import {PageContent} from '#/main/app/page'
+import {trans} from '#/main/app/intl'
 
 const ToolOverview = props => {
   const tool = useSelector(selectors.toolData)
 
   return (
-    <ToolPage>
-      <PageContent poster={get(tool, 'poster')}>
+    <ToolPage title={trans(tool.name, {}, 'tools')}>
+      <PageContent
+        poster={get(tool, 'poster')}
+        title={trans(tool.name, {}, 'tools')}
+      >
         {props.children}
       </PageContent>
     </ToolPage>

@@ -31,8 +31,8 @@ const DataDetailsSection = {
     fields: T.arrayOf(T.shape(
       DataDetailsProperty.propTypes
     )),
-    component: T.node,
-    render: T.func
+    /*component: T.node,
+    render: T.func*/
   },
   defaultProps: {
     primary: false,

@@ -11,6 +11,8 @@
 
 namespace Claroline\CursusBundle\Entity\Registration;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\CursusBundle\Finder\Registration\EventUserType;
 use Claroline\CursusBundle\Repository\Registration\EventUserRepository;
 use Claroline\CursusBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_cursusbundle_session_event_user')]
 #[ORM\UniqueConstraint(name: 'training_event_unique_user', columns: ['event_id', 'user_id'])]
 #[ORM\Entity(repositoryClass: EventUserRepository::class)]
+#[CrudEntity(finderClass: EventUserType::class)]
 class EventUser extends AbstractUserRegistration
 {
     #[ORM\JoinColumn(name: 'event_id', nullable: false, onDelete: 'CASCADE')]

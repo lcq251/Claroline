@@ -26,28 +26,30 @@ const AboutModal = props => {
       icon="fa fa-fw fa-circle-info"
       title={trans('about')}
     >
-      <DetailsData
-        flush={true}
-        data={props.registration}
-        definition={[
-          {
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'user',
-                type: 'user',
-                label: trans('user')
-              }, {
-                name: 'date',
-                type: 'date',
-                label: trans('registration_date'),
-                options: {time: true}
-              }
-            ]
-          }
-        ].concat(sections)}
-      />
+      <div className="modal-body" role="presentation">
+        <DetailsData
+          flush={true}
+          data={props.registration}
+          definition={[
+            {
+              title: trans('general'),
+              primary: true,
+              fields: [
+                {
+                  name: 'user',
+                  type: 'user',
+                  label: trans('user')
+                }, {
+                  name: 'date',
+                  type: 'date',
+                  label: trans('registration_date'),
+                  options: {time: true}
+                }
+              ]
+            }
+          ].concat(sections)}
+        />
+      </div>
     </Modal>
   )
 }

@@ -2,8 +2,9 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
-export default (courses, refresher) => {
+export default declareAction((courses, refresher) => {
   const processable = courses.filter(course => hasPermission('administrate', course))
 
   return {
@@ -28,9 +29,9 @@ export default (courses, refresher) => {
           ids: processable.map(course => course.id)
         })
       },
-      success: (response) => refresher.update(response)
+      success: (response) => refresher.add(response)
     },
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

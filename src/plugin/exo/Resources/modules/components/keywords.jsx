@@ -124,7 +124,7 @@ class KeywordItem extends Component {
 
           <Button
             id={`keyword-${this.props.keyword._id}-delete`}
-            className="btn btn-text-danger"
+            className="btn btn-text-body"
             type={CALLBACK_BUTTON}
             icon="fa fa-fw fa-trash"
             label={trans('delete', {}, 'actions')}
@@ -319,7 +319,7 @@ const KeywordsPopover = props =>
           {
             name: 'delete',
             type: CALLBACK_BUTTON,
-            className: 'btn btn-text-danger',
+            className: 'btn btn-text-body',
             icon: 'fa fa-fw fa-trash',
             label: trans('delete', {}, 'actions'),
             callback: props.remove,

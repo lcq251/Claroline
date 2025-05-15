@@ -1,14 +1,5 @@
-import identity from 'lodash/identity'
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
-import uniq from 'lodash/uniq'
-import uniqBy from 'lodash/uniqBy'
-
 import {param} from '#/main/app/config'
-import {getApps} from '#/main/app/plugins'
-import {trans} from '#/main/app/intl/translation'
-
-import {hasPermission} from '#/main/app/security'
+import {getActions as getPluginsActions} from '#/main/app/plugins'
 
 function getTypes() {
   return param('resources.types')
@@ -39,50 +30,6 @@ function supportDownload(resourceNode) {
 }
 
 /**
- * Loads the available actions apps from configuration.
- *
- * @param {Array}  resourceNodes  - the current resource node(s)
- * @param {Array}  actions        - the list of actions to load
- * @param {object} nodesRefresher - an object containing methods to update the node context
- * @param {string} path           - the UI path where the resource is opened
- * @param {object} currentUser    - the authenticated user
- *
- * @return {Promise.<Array>}
- */
-function loadActions(resourceNodes, actions, nodesRefresher, path, currentUser) {
-  // adds default refresher actions
-  const refresher = Object.assign({
-    add: identity,
-    update: identity,
-    delete: identity
-  }, nodesRefresher)
-
-  // get all actions declared
-  const asyncActions = getApps('actions.resource')
-
-  // only get implemented actions
-  const implementedActions = actions.filter(action => undefined !== asyncActions[action.name])
-
-  return Promise.all(
-    // boot actions applications
-    Object.keys(asyncActions).map(action => asyncActions[action]())
-  ).then((loadedActions) => {
-    // generates action from loaded modules
-    const realActions = {}
-    loadedActions.map(actionModule => {
-      const generated = actionModule.default(resourceNodes, refresher, path, currentUser)
-
-      realActions[generated.name] = generated
-    })
-
-    // merge server action with ui implementation
-    return implementedActions.map(action => merge({}, omit(action, 'permission'), realActions[action.name], {
-      group: trans(action.group)
-    }))
-  })
-}
-
-/**
  * Gets the list of available actions for a resource.
  *
  * @param {Array}   resourceNodes   - the current resource node(s)
@@ -94,28 +41,10 @@ function loadActions(resourceNodes, actions, nodesRefresher, path, currentUser) 
  * @return {Promise.<Array>}
  */
 function getActions(resourceNodes, nodesRefresher, path, currentUser = null, withDefault = false) {
-  /** @var {Array} */
-  const resourceTypes = uniq(resourceNodes.map(resourceNode => resourceNode.meta.type))
-
-  const collectionActions = resourceTypes
-    .reduce((accumulator, resourceType) => {
-      const type = getType({meta: {type: resourceType}})
-
-      if (type) {
-        let typeActions = type.actions
-          .filter(action =>
-            // filter default if needed
-            (withDefault || undefined === action.default || !action.default)
-            // filter by permissions (the user must have perms on AT LEAST ONE node in the collection)
-            && !!resourceNodes.find(resourceNode => hasPermission(action.permission, resourceNode))
-          )
-
-        return uniqBy(accumulator.concat(typeActions), 'name')
-      }
-      return accumulator
-    }, [])
-
-  return loadActions(resourceNodes, collectionActions, nodesRefresher, path, currentUser)
+  return Promise.all([
+    getPluginsActions('resource', resourceNodes, nodesRefresher, path, currentUser, withDefault),
+    // getPluginsActions(contextName, resourceNodes, nodesRefresher, path, currentUser, withDefault)
+  ]).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
 }
 
 /**
@@ -129,20 +58,9 @@ function getActions(resourceNodes, nodesRefresher, path, currentUser = null, wit
  * @return {Promise.<object>}
  */
 function getDefaultAction(resourceNode, nodesRefresher, path, currentUser = null) {
-  const type = getType(resourceNode)
-
-  if (type) {
-    const defaultAction = getType(resourceNode).actions
-      .find(action => action.default)
-
-
-    if (hasPermission(defaultAction.permission, resourceNode)) {
-      return loadActions([resourceNode], [defaultAction], nodesRefresher, path, currentUser)
-        .then(loadActions => loadActions[0] || null)
-    }
-  }
-
-  return Promise.resolve(null)
+  return getActions([resourceNode], resourceNode, path, currentUser, true)
+    // only get the default one
+    .then(actions => actions.find(action => action.default))
 }
 
 export {

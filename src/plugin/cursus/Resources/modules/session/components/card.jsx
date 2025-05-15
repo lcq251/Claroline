@@ -1,12 +1,13 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 import get from 'lodash/get'
 
 import {trans, displayDateRange} from '#/main/app/intl'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {Session as SessionTypes} from '#/plugin/cursus/prop-types'
-import {AvailableSeats} from '#/plugin/cursus/session/components/available-seats'
+import {AvailableSeats} from '#/plugin/cursus/components/available-seats'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 import {getAddressString} from '#/main/app/data/types/address/utils'
 
@@ -20,7 +21,7 @@ const SessionCourseCard = props =>
     icon="fa fa-graduation-cap"
     name={props.data.name}
     title={props.data.name}
-    contentText={displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
+    contentText={displayDateRange(get(props.data, 'dates[0]'), get(props.data, 'dates[1]'))}
   />
 
 /**
@@ -34,7 +35,7 @@ const SessionDateCard = (props) =>
     name={props.data.name}
     title={
       <div className="d-flex flex-row gap-2 align-items-baseline" role="presentation">
-        {displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
+        {displayDateRange(get(props.data, 'dates[0]'), get(props.data, 'dates[1]'))}
 
         {'row' === props.orientation &&
           <AvailableSeats session={props.data} className="ms-auto" />
@@ -43,7 +44,7 @@ const SessionDateCard = (props) =>
     }
     contentText={
       <>
-        <span className="fa fa-fw fa-map-marker-alt me-2" aria-hidden={true} />
+        <span className="fa fa-map-marker-alt me-2" aria-hidden={true} />
         {props.data.location ?
           (getAddressString(get(props.data, 'location.address'), true) || get(props.data, 'location.name')) :
           trans('online_session', {}, 'cursus')
@@ -83,14 +84,33 @@ const SessionCard = props =>
         }
       </div>
     }
-    contentText={displayDateRange(get(props.data, 'restrictions.dates[0]'), get(props.data, 'restrictions.dates[1]'))}
+    contentText={(
+      <div className={classes('d-flex gap-2', 'col' === props.orientation && 'flex-column h-100 justify-content-center')} role="presentation">
+        <div role="presentation">
+          <span className="fa fa-calendar me-2" aria-hidden={true} />
+          {displayDateRange(get(props.data, 'dates[0]'), get(props.data, 'dates[1]'))}
+        </div>
+
+        {'row' === props.orientation &&
+          <span aria-hidden={true}>-</span>
+        }
+
+        <div role="presentation">
+          <span className="fa fa-map-marker-alt me-2" aria-hidden={true} />
+          {props.data.location ?
+            (getAddressString(get(props.data, 'location.address'), true) || get(props.data, 'location.name')) :
+            trans('online_session', {}, 'cursus')
+          }
+        </div>
+      </div>
+    )}
     meta={
       <AvailableSeats session={props.data} />
     }
   />
 
 SessionCard.propTypes = {
-  className: T.string,
+  orientation: T.string.isRequired,
   data: T.shape(
     SessionTypes.propTypes
   ).isRequired

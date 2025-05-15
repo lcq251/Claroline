@@ -17,6 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ */
 #[ORM\Table(name: 'claro_cursusbundle_course_course_user')]
 #[ORM\UniqueConstraint(name: 'training_session_unique_user', columns: ['course_id', 'user_id'])]
 #[ORM\Entity]

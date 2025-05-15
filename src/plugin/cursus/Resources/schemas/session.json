@@ -20,6 +20,12 @@
       "type": ["string", "null"],
       "description": "The session description"
     },
+    "dates": {
+      "type": "array",
+      "items": {
+        "type": ["string", "null"]
+      }
+    },
     "meta": {
       "type": ["object"],
       "properties": {
@@ -44,15 +50,9 @@
         "maxUsers": {
           "type": ["integer", "null"],
           "description": "The maximum amount of users the session can have"
-        },
-        "dates": {
-          "type": "array",
-          "items": {
-            "type": ["string", "null"]
-          }
         }
-      },
-      "required": ["dates"]
+
+      }
     },
     "registration": {
       "type": "object",
@@ -78,7 +78,7 @@
       }
     }
   },
-  "required": ["code"],
+  "required": ["code", "dates"],
   "claroline": {
     "requiredAtCreation": ["code"],
     "ids": ["id"]

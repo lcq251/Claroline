@@ -12,12 +12,14 @@ const ACTION_SCOPES = [
 const ACTION_SET_LIST = 'list'
 const ACTION_SET_DETAILS = 'details'
 const ACTION_SET_DASHBOARD = 'dashboard'
+const ACTION_SET_COMMAND = 'command'
 const ACTION_SET_ADVANCED = 'advanced'
 
 const ACTION_SETS = [
   ACTION_SET_LIST,
   ACTION_SET_DETAILS,
   ACTION_SET_DASHBOARD,
+  ACTION_SET_COMMAND,
   ACTION_SET_ADVANCED
 ]
 
@@ -88,6 +90,7 @@ export const constants = {
   ACTION_SET_LIST,
   ACTION_SET_DETAILS,
   ACTION_SET_DASHBOARD,
+  ACTION_SET_COMMAND,
   ACTION_SET_ADVANCED,
 
   // types

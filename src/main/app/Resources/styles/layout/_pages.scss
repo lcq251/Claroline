@@ -23,7 +23,7 @@
 }
 
 .app-page-menu {
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.125), 0 1px 0 0 rgba(0,0,0,.05);
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.125), 0 1px 1px rgba($black, .075);
 
     .nav-item {
         display: flex;
@@ -124,6 +124,7 @@
 
 .app-page-menu {
     .breadcrumb-item a,
+    .btn,
     .app-context-menu-toggle {
         text-decoration: none;
 
@@ -132,6 +133,7 @@
         }
     }
 
+    .btn,
     .breadcrumb-item a {
         line-height: $line-height-base * $font-size-base;
     }
@@ -146,6 +148,6 @@
     }
 
     .app-page-aside-content {
-        box-shadow: 1px 0 3px 0 rgba(0,0,0,.125), 1px 0 0 0 rgba(0,0,0,.05);
+        box-shadow: 1px 0 3px 0 rgba(0,0,0,.125), 1px 0 1px 0 rgba(0,0,0,.075);
     }
 }

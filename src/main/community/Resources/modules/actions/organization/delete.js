@@ -4,11 +4,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete organizations action.
  */
-export default (organizations, refresher) => {
+export default declareAction((organizations, refresher) => {
   const processable = organizations.filter(organization => !get(organization, 'meta.default') && hasPermission('delete', organization))
 
   return {
@@ -38,4 +39,4 @@ export default (organizations, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

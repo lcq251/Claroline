@@ -63,10 +63,7 @@ function canSelfRegister(course, session, registrations = []) {
 function getAvailableSeats(session) {
   let availableSeats = null
   if (get(session, 'restrictions.users')) {
-    availableSeats = (get(session, 'restrictions.users') - get(session, 'participants.learners', 0))
-    if (0 > availableSeats) {
-      availableSeats = 0
-    }
+    return get(session, 'restrictions.users') - get(session, 'participants.learners', 0)
   }
 
   return availableSeats

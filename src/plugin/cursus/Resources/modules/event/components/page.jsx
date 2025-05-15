@@ -9,7 +9,7 @@ import {MODAL_BUTTON, URL_BUTTON, ASYNC_BUTTON} from '#/main/app/buttons'
 import {ToolPage} from '#/main/core/tool'
 
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
-import {MODAL_TRAINING_EVENT_PARAMETERS} from '#/plugin/cursus/event/modals/parameters'
+import {MODAL_TRAINING_EVENT_FORM} from '#/plugin/cursus/event/modals/form'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
 import {displayDateRange} from '#/main/app/intl'
 import {Contact} from '#/main/app/components/contact'
@@ -42,7 +42,7 @@ const EventPage = (props) => {
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-pencil',
                 label: trans('edit', {}, 'actions'),
-                modal: [MODAL_TRAINING_EVENT_PARAMETERS, {
+                modal: [MODAL_TRAINING_EVENT_FORM, {
                   event: props.event,
                   onSave: () => props.reload(props.event.id)
                 }],

@@ -4,11 +4,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete roles action.
  */
-export default (roles, refresher) => {
+export default declareAction((roles, refresher) => {
   const processable = roles.filter(role => !get(role, 'meta.readOnly') && -1 === role.name.indexOf('ROLE_WS_COLLABORATOR_') && -1 === role.name.indexOf('ROLE_WS_MANAGER_') && hasPermission('delete', role))
 
   return {
@@ -38,4 +39,4 @@ export default (roles, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

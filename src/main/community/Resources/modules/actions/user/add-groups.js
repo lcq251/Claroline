@@ -4,8 +4,9 @@ import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
+import {declareAction} from '#/main/app/action'
 
-export default (users, refresher) => ({
+export default declareAction((users, refresher) => ({
   name: 'add-groups',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-users',
@@ -26,4 +27,4 @@ export default (users, refresher) => ({
   }],
   group: trans('management'),
   scope: ['object']
-})
+}))

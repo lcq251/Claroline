@@ -8,8 +8,8 @@ import {Team as TeamTypes} from '#/main/community/prop-types'
 
 const TeamDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_team', {}, 'community')}
+    {...props}
   />
 
 TeamDisplay.propTypes = {

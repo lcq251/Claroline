@@ -4,8 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
-import {Tool, constants as toolConstants, ToolOverview} from '#/main/core/tool'
-import {ToolPage} from '#/main/core/tool'
+import {Tool, ToolPage, constants as toolConstants} from '#/main/core/tool'
 import {PageListSection} from '#/main/app/page'
 
 import {WorkspaceList} from '#/main/core/workspace/components/list'
@@ -60,7 +59,7 @@ const WorkspacesTool = (props) => {
           exact: true,
           disabled: props.contextType !== toolConstants.TOOL_DESKTOP,
           render: () => (
-            <ToolOverview title={trans('my_workspaces', {}, 'workspace')}>
+            <ToolPage title={trans('my_workspaces', {}, 'workspace')}>
               <PageListSection
                 poster={props.poster}
                 title={trans('my_workspaces', {}, 'workspace')}
@@ -76,7 +75,7 @@ const WorkspacesTool = (props) => {
                   }}
                 />
               </PageListSection>
-            </ToolOverview>
+            </ToolPage>
           )
         }, {
           path: '/all',

@@ -4,7 +4,7 @@ import {PropTypes as T} from 'prop-types'
 import {trans} from '#/main/app/intl'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
 
-import {TrainingsEditorArchive} from '#/plugin/cursus/tools/trainings/editor/components/list'
+import {TrainingsEditorArchives} from '#/plugin/cursus/tools/trainings/editor/components/archives'
 
 const TrainingsEditor = (props) =>
   <ToolEditor
@@ -14,7 +14,7 @@ const TrainingsEditor = (props) =>
         title: trans('archives'),
         help: trans('archived_trainings_help', {}, 'cursus'),
         render: () => (
-          <TrainingsEditorArchive
+          <TrainingsEditorArchives
             path={props.path}
           />
         )

@@ -5,13 +5,11 @@ import {trans} from '#/main/app/intl/translation'
 import {EntityDisplay} from '#/main/app/data/types/entity'
 
 import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
-import {CourseCard} from '#/plugin/cursus/course/components/card'
 
 const CourseDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_course', {}, 'cursus')}
-    card={CourseCard}
+    {...props}
   />
 
 CourseDisplay.propTypes = {

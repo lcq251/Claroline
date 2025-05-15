@@ -12,7 +12,7 @@ const RoleFormModal = (props) =>
   <FormModal
     {...omit(props, 'role')}
     name="roleForm"
-    title={props.isNew ? trans('new_role', {}, 'community') : undefined}
+    title={trans(props.isNew ? 'new_role' : 'role', {}, 'community')}
     subtitle={props.isNew ? trans('Créez des rôles pour gérer les permissions de vos utilisateurs.') : undefined}
     target={props.isNew ?
       ['apiv2_role_create'] :

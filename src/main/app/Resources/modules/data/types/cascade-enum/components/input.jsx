@@ -69,13 +69,12 @@ const EnumItem = (props) => {
         <Toolbar
           id={`${props.item.id}-actions`}
           className="right-controls"
-          buttonName="btn"
+          buttonName="btn btn-text-body"
           tooltip="top"
           actions={[
             {
               name: 'toggle',
               type: CALLBACK_BUTTON,
-              className: 'btn-text-body',
               icon: classes('fa fa-fw', {
                 'fa-caret-right': collapsed,
                 'fa-caret-down': !collapsed
@@ -86,7 +85,6 @@ const EnumItem = (props) => {
             }, {
               name: 'add',
               type: CALLBACK_BUTTON,
-              className: 'btn-text-body',
               icon: 'fa fa-fw fa-plus',
               label: props.addChildButtonLabel,
               callback: () => {
@@ -106,7 +104,6 @@ const EnumItem = (props) => {
             }, {
               name: 'delete',
               type: CALLBACK_BUTTON,
-              className: 'btn-text-danger',
               icon: 'fa fa-fw fa-trash',
               label: props.deleteButtonLabel,
               callback: () => props.onDelete(props.indexes),

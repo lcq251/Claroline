@@ -12,27 +12,26 @@ import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/pr
 
 const Course = (props) =>
   <CoursePage
-    path={props.basePath}
+    path={props.path}
     course={props.course}
     activeSession={props.activeSession}
   >
     <Routes
-      path={props.path}
+      path={props.course ? route(props.course, null, props.path) : props.path}
       routes={[
         {
           path: '/:id?',
           onEnter: (params = {}) => {
-            if (params.id && !['sessions', 'participants', 'stats'].includes(params.id)) {
+            if (params.id) {
               props.openSession(params.id)
             } else {
               props.openSession(get(props.defaultSession, 'id') || null)
             }
           },
-          render: (routerProps) => (
+          render: () => (
             <CourseDetails
               contextType={props.contextType}
-              basePath={props.basePath}
-              path={props.path + (routerProps.match.params.id && !['sessions', 'participants', 'stats'].includes(routerProps.match.params.id) ? '/' + routerProps.match.params.id : '')}
+              path={props.path}
               history={props.history}
               course={props.course}
               activeSession={props.activeSession}
@@ -80,8 +79,7 @@ Course.propTypes = {
   contextType: T.string.isRequired,
   openSession: T.func.isRequired,
   reload: T.func.isRequired,
-  register: T.func.isRequired,
-  basePath: T.string.isRequired
+  register: T.func.isRequired
 }
 
 export {

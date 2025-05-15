@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
-import {Button, Toolbar} from '#/main/app/action'
+import {Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentTitle} from '#/main/app/content/components/title'
 import {EditorPage} from '#/main/app/editor'
@@ -33,7 +33,7 @@ const AccountAuthentication = props => {
         Nom du compte : <b className="fw-bold">{currentUser.username}</b>
       </div>
       <Toolbar
-        className="me-auto"
+        className="me-auto d-flex gap-1"
         buttonName="btn"
         primaryName="btn-primary"
         defaultName="btn-link"

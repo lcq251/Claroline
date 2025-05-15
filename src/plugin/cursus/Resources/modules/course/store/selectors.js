@@ -1,7 +1,6 @@
 import {createSelector} from 'reselect'
 
 const STORE_NAME = 'course'
-const FORM_NAME = STORE_NAME + '.courseForm'
 
 const store = (state) => state[STORE_NAME] || {}
 
@@ -17,32 +16,31 @@ const id = createSelector(
 
 const sessionRegistrations = createSelector(
   [store],
-  (store) => store.courseRegistrations
+  (store) => store.registrations
 )
 
 const availableSessions = createSelector(
   [store],
-  (store) => store.courseAvailableSessions
+  (store) => store.availableSessions
 )
 
 const defaultSession = createSelector(
   [store],
-  (store) => store.courseDefaultSession
+  (store) => store.defaultSession
 )
 
 const activeSession = createSelector(
   [store],
-  (store) => store.courseActiveSession
+  (store) => store.activeSession
 )
 
 const courseStats = createSelector(
   [store],
-  (store) => store.courseStats
+  (store) => store.stats
 )
 
 export const selectors = {
   STORE_NAME,
-  FORM_NAME,
 
   id,
   course,

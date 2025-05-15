@@ -32,7 +32,7 @@ const AppearanceColorCharts = (props) => {
                 },
                 {
                   name: 'delete',
-                  className: 'btn-text-danger',
+                  className: 'btn-text-body',
                   type: ASYNC_BUTTON,
                   icon: 'fa fa-fw fa-trash',
                   label: trans('delete', {}, 'actions'),

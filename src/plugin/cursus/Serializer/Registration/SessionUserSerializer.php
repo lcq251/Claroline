@@ -14,12 +14,14 @@ use Claroline\CursusBundle\Entity\Registration\AbstractUserRegistration;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Serializer\CourseSerializer;
 use Claroline\CursusBundle\Serializer\SessionSerializer;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SessionUserSerializer extends AbstractUserSerializer
 {
     use SerializerTrait;
 
     public function __construct(
+        AuthorizationCheckerInterface $authorization,
         UserSerializer $userSerializer,
         private readonly CourseSerializer $courseSerializer,
         private readonly SessionSerializer $sessionSerializer,
@@ -27,7 +29,7 @@ class SessionUserSerializer extends AbstractUserSerializer
         private readonly FacetManager $facetManager,
         private readonly WorkspaceSerializer $workspaceSerializer
     ) {
-        parent::__construct($userSerializer);
+        parent::__construct($authorization, $userSerializer);
     }
 
     public function getClass(): string

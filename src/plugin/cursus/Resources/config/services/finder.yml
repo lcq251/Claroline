@@ -8,6 +8,12 @@ services:
     Claroline\CursusBundle\Finder\SessionType:
         tags: [ claroline.finder.type ]
 
+    Claroline\CursusBundle\Finder\Registration\SessionUserType:
+        tags: [ claroline.finder.type ]
+
+    Claroline\CursusBundle\Finder\Registration\EventUserType:
+        tags: [ claroline.finder.type ]
+
     # Trainings
     Claroline\CursusBundle\Finder\CourseFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder

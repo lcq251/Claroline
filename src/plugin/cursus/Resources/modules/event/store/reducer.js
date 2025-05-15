@@ -1,38 +1,19 @@
-import {combineReducers, makeReducer} from '#/main/app/store/reducer'
+import {makeReducer} from '#/main/app/store/reducer'
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {makeListReducer} from '#/main/app/content/list/store/reducer'
-import {LIST_DATA_DELETE} from '#/main/app/content/list/store/actions'
 
-import {LOAD_EVENT, EVENT_SET_LOADED} from '#/plugin/cursus/event/store/actions'
 import {selectors} from '#/plugin/cursus/event/store/selectors'
+import {makeFetchReducer} from '#/main/app/api/fetch/store'
+import {constants} from '#/plugin/cursus/constants'
+import {API_FETCH_INVALIDATE} from '#/main/app/api/fetch/store/actions'
 
-export const reducer = combineReducers({
-  loaded: makeReducer(false, {
-    [EVENT_SET_LOADED]: (state, action) => action.loaded
-  }),
-  event: makeReducer(null, {
-    [LOAD_EVENT]: (state, action) => action.event
-  }),
-  registration: makeReducer(null, {
-    [LOAD_EVENT]: (state, action) => action.registration
-  }),
-  // participants
-  tutors: makeListReducer(selectors.STORE_NAME+'.tutors', {}, {
-    invalidated: makeReducer(false, {
-      [LOAD_EVENT]: () => true
-    })
-  }),
-  users: makeListReducer(selectors.STORE_NAME+'.users', {}, {
-    invalidated: makeReducer(false, {
-      [LOAD_EVENT]: () => true
-    })
-  }),
-  presences: makeListReducer(selectors.STORE_NAME+'.presences', {
-    sortBy: {property: 'user', direction: 1}
+export const reducer = makeFetchReducer(selectors.STORE_NAME, {}, {
+  users: makeListReducer(selectors.STORE_NAME+'.users', {
+    sortBy: {property: 'date', direction: -1},
+    filters: {filters: [{property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true}]}
   }, {
     invalidated: makeReducer(false, {
-      [LOAD_EVENT]: () => true,
-      [makeInstanceAction(LIST_DATA_DELETE, selectors.STORE_NAME+'.users')]: () => true
+      [makeInstanceAction(API_FETCH_INVALIDATE, selectors.STORE_NAME)]: () => true
     })
   })
 })

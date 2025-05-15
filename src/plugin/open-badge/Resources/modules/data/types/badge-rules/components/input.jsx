@@ -37,7 +37,7 @@ const BadgeRulesInput = (props) => {
                 tooltip="bottom"
                 buttonName="btn p-1"
                 defaultName="btn-text-body focus-ring focus-ring-secondary"
-                dangerousName="btn-text-danger focus-ring focus-ring-danger"
+                dangerousName="btn-text-body focus-ring"
                 actions={[
                   {
                     name: 'edit',

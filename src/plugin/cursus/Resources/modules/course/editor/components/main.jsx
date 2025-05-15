@@ -17,7 +17,7 @@ import {CourseEditorCanceledSessions} from '#/plugin/cursus/course/editor/compon
 import {CourseEditorPermissions} from '#/plugin/cursus/course/editor/components/permissions'
 import {CourseEditorRegistration} from '#/plugin/cursus/course/editor/components/registration'
 
-import {selectors} from '#/plugin/cursus/course/store'
+import {selectors} from '#/plugin/cursus/course/editor/store'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
 const CourseEditor = (props) => {

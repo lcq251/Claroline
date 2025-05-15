@@ -4,13 +4,31 @@
   font-weight: var(--#{$prefix}body-font-weight);
 }
 
-/*.dropdown-menu-full {
-  width: 100% !important; // to be sure to override other dropdown sizing
-}*/
+.dropdown-divider {
+  margin-left: $dropdown-item-padding-x;
+  margin-right: $dropdown-item-padding-x;
+}
 
 .dropdown-item {
+  .form-check-input,
+  .action-icon {
+    margin-right: map-get($spacers, 3);
+  }
+
+  .action-icon {
+    opacity: .25;
+  }
+
+  &:hover,
+  &:focus,
+  &.active {
+    .action-icon {
+      opacity: 1;
+    }
+  }
+
   .action-subscript {
-    float: right; // todo : find a better approach
+    float: right;
 
     .fa {
       margin: 0;
@@ -19,7 +37,6 @@
 }
 
 .dropdown-menu {
-  //opacity: 0;
   &.show {
     animation-name: zoomIn;
     animation-duration: .12s;
@@ -27,7 +44,6 @@
     animation-fill-mode: both;
 
     transition: opacity .12s ease-out;
-    //opacity: 1;
   }
 }
 

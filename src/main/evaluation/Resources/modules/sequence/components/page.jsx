@@ -2,12 +2,9 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {hasPermission} from '#/main/app/security'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
 import {EvaluationShortcut} from '#/main/evaluation/components/shortcut'
@@ -44,30 +41,10 @@ const SequencePage = (props) => {
             target={sequencePath+'/progression'}
           />
         ),
-        nav: [
-          {
-            name: 'dashboard',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-gauge',
-            label: trans('dashboard'),
-            tooltip: 'bottom',
-            target: sequencePath+'/dashboard',
-            displayed: sequence && hasPermission('edit', sequence)
-          }, {
-            name: 'parameters',
-            type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-sliders',
-            label: trans('parameters'),
-            tooltip: 'bottom',
-            target: sequencePath+'/edit',
-            displayed: sequence && hasPermission('edit', sequence)
-          }
-        ],
-        toolbar: 'more',
+        toolbar: 'show-dashboard configure more',
         // get actions injected through plugins and the ones defined by the current tool
         actions: sequence ?
           getActions([sequence], {}, toolPath, currentUser, false)
-            .then(loadedActions => loadedActions.filter(action => 'configure' !== action.name && 'show-dashboard' !== action.name))
           : []
       }}
       {...omit(props, 'breadcrumb', 'styles', 'embedded', 'showHeader', 'title', 'description')}

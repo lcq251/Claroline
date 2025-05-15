@@ -47,6 +47,7 @@ registry.add('ClarolineCoreBundle', {
 
     resource: {
       // all resources
+      'open-parent'   : () => { return import(/* webpackChunkName: "core-action-resource-open-parent" */ '#/main/core/actions/resource/open-parent') },
       'configure'     : () => { return import(/* webpackChunkName: "core-action-resource-configure" */ '#/main/core/actions/resource/configure') },
       'copy'          : () => { return import(/* webpackChunkName: "core-action-resource-copy" */      '#/main/core/actions/resource/copy') },
       'delete'        : () => { return import(/* webpackChunkName: "core-action-resource-delete" */    '#/main/core/actions/resource/delete') },
@@ -59,12 +60,7 @@ registry.add('ClarolineCoreBundle', {
       'show-dashboard': () => { return import(/* webpackChunkName: "core-action-resource-dashboard" */ '#/main/core/actions/resource/show-dashboard') },
 
       // directory resource
-      'add'       : () => { return import(/* webpackChunkName: "core-action-resource-add" */       '#/main/core/resources/directory/actions/add') },
-      'add_files' : () => { return import(/* webpackChunkName: "core-action-resource-add-files" */ '#/main/core/resources/directory/actions/add-files') },
-
-      // file resource
-      //'download'   : () => { return import(/* webpackChunkName: "core-action-resource-download" */    '#/main/core/resources/file/actions/download') },
-      //'change_file': () => { return import(/* webpackChunkName: "core-action-resource-change-file" */ '#/main/core/resources/file/actions/change-file') }
+      'add'       : () => { return import(/* webpackChunkName: "core-action-resource-add" */ '#/main/core/resources/directory/actions/add') }
     },
 
     workspace: {
@@ -88,10 +84,6 @@ registry.add('ClarolineCoreBundle', {
     context: {
       'open'     : () => { return import(/* webpackChunkName: "core-action-context-open" */      '#/main/core/actions/context/open') },
       'configure': () => { return import(/* webpackChunkName: "core-action-context-configure" */ '#/main/core/actions/context/configure') },
-    },
-    desktop: {
-      'open-public'     : () => { return import(/* webpackChunkName: "core-action-desktop-public" */      '#/main/core/actions/desktop/open-public') },
-      'open-administration': () => { return import(/* webpackChunkName: "core-action-desktop-administration" */ '#/main/core/actions/desktop/open-administration') },
     }
   },
 

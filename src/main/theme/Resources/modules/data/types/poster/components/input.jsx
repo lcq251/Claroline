@@ -34,7 +34,7 @@ const PosterInput = (props) => {
       size="sm"
     >
       <ModalButton
-        className="rounded-3 focus-ring"
+        className="rounded-3 focus-ring z-0"
         disabled={props.disabled}
         modal={[MODAL_IMAGE_EDITOR, {
           uploadUrl: props.uploadUrl,

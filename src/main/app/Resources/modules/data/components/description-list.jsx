@@ -57,7 +57,7 @@ const DescriptionList = ({
           <div key={field.name} className={classes('border-bottom py-3', {
             'd-flex flex-row align-items-start gap-3': inline
           })} role="presentation">
-            <dt className={classes('form-label', {
+            <dt className={classes('form-label text-body-secondary', {
               'w-25 mb-0': inline
             })}>
               <span className={classes({'placeholder rounded-1': !loaded})} role="presentation">
@@ -67,20 +67,21 @@ const DescriptionList = ({
                 {field.label}
               </span>
             </dt>
+
             <dd className={classes('mb-0', {
               'w-75': inline,
               'placeholder rounded-1': !loaded
             })}>
-                <DataDisplay
-                  key={field.name}
-                  type={field.type}
-                  options={field.options}
-                  placeholder={field.placeholder}
-                  size={size}
-                  value={value}
-                >
-                  {customInput}
-                </DataDisplay>
+              <DataDisplay
+                key={field.name}
+                type={field.type}
+                options={field.options}
+                placeholder={field.placeholder}
+                size={size}
+                value={value}
+              >
+                {customInput}
+              </DataDisplay>
             </dd>
           </div>
         )

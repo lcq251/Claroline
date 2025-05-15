@@ -5,6 +5,7 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Publishes some resource nodes.
@@ -12,12 +13,12 @@ import {hasPermission} from '#/main/app/security'
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
  * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (resourceNodes, nodesRefresher) => ({
+export default declareAction((resourceNodes, nodesRefresher) => ({
   name: 'publish',
   type: ASYNC_BUTTON,
   icon: 'fa fa-fw fa-eye',
   label: trans('publish', {}, 'actions'),
-  displayed: -1 !== resourceNodes.findIndex(node => !get(node, 'meta.published') && hasPermission('edit', node)),
+  displayed: -1 !== resourceNodes.findIndex(node => !!node.parent && !get(node, 'meta.published') && hasPermission('edit', node)),
   request: {
     type: 'publish',
     url: url(
@@ -28,5 +29,7 @@ export default (resourceNodes, nodesRefresher) => ({
       method: 'PUT'
     },
     success: (response) => nodesRefresher.update(response)
-  }
-})
+  },
+  group: trans('management'),
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+}))

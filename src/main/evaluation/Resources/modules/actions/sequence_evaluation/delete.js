@@ -2,8 +2,9 @@ import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {hasPermission} from '#/main/app/security'
+import {declareAction} from '#/main/app/action'
 
-export default (evaluations, refresher) => {
+export default declareAction((evaluations, refresher) => {
   const processable = evaluations.filter(evaluation => hasPermission('administrate', evaluation))
 
   return {
@@ -32,4 +33,4 @@ export default (evaluations, refresher) => {
     },
     group: trans('management')
   }
-}
+})

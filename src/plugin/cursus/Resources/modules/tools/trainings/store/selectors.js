@@ -28,9 +28,9 @@ const mySessions = createSelector(
         workspace: sessionRegistration.workspace
       }, sessionRegistration.session))
       .sort((a, b) => {
-        if (get(a, 'restrictions.dates[0]') > get(b, 'restrictions.dates[0]')) {
+        if (get(a, 'dates[0]') > get(b, 'dates[0]')) {
           return 1
-        } else if (get(a, 'restrictions.dates[0]') < get(b, 'restrictions.dates[0]')) {
+        } else if (get(a, 'dates[0]') < get(b, 'dates[0]')) {
           return -1
         }
 

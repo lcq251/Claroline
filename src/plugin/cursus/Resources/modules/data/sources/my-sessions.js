@@ -34,8 +34,8 @@ export default {
         },
         render: (row) =>
           <EventStatus
-            startDate={get(row, 'restrictions.dates[0]')}
-            endDate={get(row, 'restrictions.dates[1]')}
+            startDate={get(row, 'dates[0]')}
+            endDate={get(row, 'dates[1]')}
           />
       }, {
         name: 'name',
@@ -61,13 +61,13 @@ export default {
         displayed: true,
         options: {multiple: false}
       }, {
-        name: 'restrictions.dates[0]',
+        name: 'dates[0]',
         alias: 'startDate',
         type: 'date',
         label: trans('start_date'),
         displayed: true
       }, {
-        name: 'restrictions.dates[1]',
+        name: 'dates[1]',
         alias: 'endDate',
         type: 'date',
         label: trans('end_date'),

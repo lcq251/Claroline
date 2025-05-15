@@ -6,7 +6,7 @@ import {hasPermission} from '#/main/app/security'
 import {selectors as toolSelectors} from '#/main/core/tool'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
-import {actions as courseActions, reducer, selectors} from '#/plugin/cursus/course/store'
+import {actions, reducer, selectors} from '#/plugin/cursus/course/editor/store'
 import {CourseEditor as CourseEditorComponent} from '#/plugin/cursus/course/editor/components/main'
 
 const CourseEditor = withReducer(selectors.STORE_NAME, reducer)(
@@ -19,7 +19,7 @@ const CourseEditor = withReducer(selectors.STORE_NAME, reducer)(
     }),
     (dispatch) => ({
       openForm(slug, defaultProps, workspace = null) {
-        dispatch(courseActions.openForm(slug, defaultProps, workspace))
+        dispatch(actions.openForm(slug, defaultProps, workspace))
       },
       update(name, prop, value) {
         dispatch(formActions.updateProp(name, prop, value))

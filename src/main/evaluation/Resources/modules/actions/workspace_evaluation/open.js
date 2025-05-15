@@ -3,8 +3,9 @@ import {hasPermission} from '#/main/app/security'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_USER_PROGRESSION} from '#/main/evaluation/workspace/modals/user-progression'
+import {declareAction} from '#/main/app/action'
 
-export default (evaluations) => ({
+export default declareAction((evaluations) => ({
   name: 'open',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-eye',
@@ -14,4 +15,4 @@ export default (evaluations) => ({
   modal: [MODAL_USER_PROGRESSION, {
     evaluation: evaluations[0]
   }]
-})
+}))

@@ -3,8 +3,9 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 import isEmpty from 'lodash/isEmpty'
 import {hasPermission} from '#/main/app/security'
 import {constants} from '#/main/evaluation/constants'
+import {declareAction} from '#/main/app/action'
 
-export default (evaluations) => {
+export default declareAction((evaluations) => {
   const processable = evaluations.filter(evaluation =>
     !!evaluation.certified
     && hasPermission('administrate', evaluation)
@@ -29,4 +30,4 @@ export default (evaluations) => {
     scope: ['object', 'collection'],
     group: trans('management')
   })
-}
+})

@@ -12,8 +12,8 @@ import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 
 const CoursePage = (props) =>
   <ToolPage
-    title={get(props.course, 'name', trans('loading'))}
-    description={get(props.course, 'description')}
+    title={trans('course_name', {name: get(props.course, 'name', trans('loading'))}, 'cursus')}
+    description={get(props.course, 'plainDescription')}
   >
     {isEmpty(props.course) &&
       <ContentLoader

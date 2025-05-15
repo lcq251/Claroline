@@ -4,11 +4,12 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Archive action.
  */
-export default (courses, refresher) => {
+export default declareAction((courses, refresher) => {
   const processable = courses.filter(course => hasPermission('administrate', course) && !get(course, 'meta.archived'))
 
   return {
@@ -39,4 +40,4 @@ export default (courses, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

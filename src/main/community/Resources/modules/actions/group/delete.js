@@ -4,11 +4,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete groups action.
  */
-export default (groups, refresher) => {
+export default declareAction((groups, refresher) => {
   const processable = groups.filter(group => !get(group, 'meta.readOnly') && hasPermission('delete', group))
 
   return {
@@ -38,4 +39,4 @@ export default (groups, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

@@ -1,8 +1,9 @@
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
-export default (workspaces) => ({ // TODO : collection
+export default declareAction((workspaces) => ({
   name: 'export',
   type: URL_BUTTON,
   icon: 'fa fa-fw fa-download',
@@ -11,4 +12,4 @@ export default (workspaces) => ({ // TODO : collection
   target: ['apiv2_workspace_export', {id: workspaces[0].id}],
   group: trans('transfer'),
   scope: ['object']
-})
+}))

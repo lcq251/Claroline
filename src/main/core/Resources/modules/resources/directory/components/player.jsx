@@ -132,7 +132,6 @@ DirectoryPlayer.propTypes = {
   isRoot: T.bool,
   storageLock: T.bool.isRequired,
 
-  createFiles: T.func.isRequired,
   updateNodes: T.func.isRequired,
   deleteNodes: T.func.isRequired
 }

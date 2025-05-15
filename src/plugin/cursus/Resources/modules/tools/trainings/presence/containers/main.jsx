@@ -4,9 +4,9 @@ import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {withReducer} from '#/main/app/store/components/withReducer'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {actions, reducer, selectors} from '#/plugin/cursus/tools/trainings/presence/store'
-import {PresenceMain as PresenceMainComponent} from '#/plugin/cursus/tools/trainings/presence/components/main'
+import {TrainingsPresence as TrainingsPresenceComponent} from '#/plugin/cursus/tools/trainings/presence/components/main'
 
-const PresenceMain = withReducer(selectors.STORE_NAME, reducer)(
+const TrainingsPresence = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     (state) => ({
       path: toolSelectors.path(state),
@@ -22,9 +22,9 @@ const PresenceMain = withReducer(selectors.STORE_NAME, reducer)(
         dispatch(actions.setEventLoaded(false))
       }
     })
-  )(PresenceMainComponent)
+  )(TrainingsPresenceComponent)
 )
 
 export {
-  PresenceMain
+  TrainingsPresence
 }

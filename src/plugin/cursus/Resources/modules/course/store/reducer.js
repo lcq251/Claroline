@@ -1,36 +1,29 @@
-import {makeFormReducer} from '#/main/app/content/form/store'
 import {makeListReducer} from '#/main/app/content/list/store'
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 
 import {
   LOAD_COURSE,
   LOAD_COURSE_SESSION,
-  LOAD_COURSE_STATS,
-  SWITCH_PARTICIPANTS_VIEW
+  LOAD_COURSE_STATS
 } from '#/plugin/cursus/course/store/actions'
 import {constants} from '#/plugin/cursus/constants'
 import {selectors} from '#/plugin/cursus/course/store/selectors'
 
 const reducer = combineReducers({
-  courseForm: makeFormReducer(selectors.FORM_NAME),
   course: makeReducer(null, {
     [LOAD_COURSE]: (state, action) => action.course
   }),
-  courseDefaultSession: makeReducer(null, {
+  defaultSession: makeReducer(null, {
     [LOAD_COURSE]: (state, action) => action.defaultSession || null
   }),
-  courseActiveSession: makeReducer(null, {
+  activeSession: makeReducer(null, {
     [LOAD_COURSE_SESSION]: (state, action) => action.session
   }),
-  courseAvailableSessions: makeReducer([], {
+  availableSessions: makeReducer([], {
     [LOAD_COURSE]: (state, action) => action.availableSessions
   }),
-  courseSessionsCanceled: makeListReducer(selectors.STORE_NAME+'.courseSessionsCanceled', {
-    sortBy: {property: 'order', direction: 1},
-    filters: {filters: [{property: 'status', value: 'not_ended'}]}
-  }),
   // current user registrations to course sessions
-  courseRegistrations: makeReducer([], {
+  registrations: makeReducer([], {
     [LOAD_COURSE]: (state, action) => action.registrations
   }),
 
@@ -45,14 +38,12 @@ const reducer = combineReducers({
   }, {
     invalidated: makeReducer(false, {
       [LOAD_COURSE]: () => true,
-      [LOAD_COURSE_SESSION]: () => true,
-      [SWITCH_PARTICIPANTS_VIEW]: () => true
+      [LOAD_COURSE_SESSION]: () => true
     })
   }),
 
-  courseStats: makeReducer(null, {
-    [LOAD_COURSE_STATS]: (state, action) => action.stats,
-    [SWITCH_PARTICIPANTS_VIEW]: () => null
+  stats: makeReducer(null, {
+    [LOAD_COURSE_STATS]: (state, action) => action.stats
   })
 })
 

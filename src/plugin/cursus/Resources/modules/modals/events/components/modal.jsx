@@ -10,7 +10,6 @@ import {EventStatus} from '#/plugin/cursus/components/event-status'
 const EventsModal = (props) =>
   <PickerModal
     {...props}
-    icon="fa fa-fw fa-calendar-day"
     name="trainingEventsPicker"
     definition={[
       {

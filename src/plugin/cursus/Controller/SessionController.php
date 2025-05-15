@@ -88,34 +88,6 @@ class SessionController extends AbstractCrudController
         return $assertions->toResponse();
     }
 
-    protected function getDefaultHiddenFilters(): array
-    {
-        $filters = [];
-        if (!$this->authorization->isGranted('ROLE_ADMIN')) {
-            /** @var User $user */
-            $user = $this->tokenStorage->getToken()?->getUser();
-
-            // filter by organization
-            $organizations = [];
-            if ($user instanceof User) {
-                $organizations = $user->getOrganizations();
-            }
-
-            $filters['organizations'] = array_map(function (Organization $organization) {
-                return $organization->getUuid();
-            }, $organizations);
-
-            // hide hidden sessions for non admin
-            if (!$this->checkToolAccess('EDIT')) {
-                $filters['hidden'] = false;
-            }
-        }
-
-        $filters['canceled'] = false;
-
-        return $filters;
-    }
-
     #[Route(path: '/copy', name: 'copy', methods: ['POST'])]
     public function copyAction(Request $request): JsonResponse
     {
@@ -339,5 +311,33 @@ class SessionController extends AbstractCrudController
         }
 
         return true;
+    }
+
+    protected function getDefaultHiddenFilters(): array
+    {
+        $filters = [];
+        if (!$this->authorization->isGranted('ROLE_ADMIN')) {
+            /** @var User $user */
+            $user = $this->tokenStorage->getToken()?->getUser();
+
+            // filter by organization
+            $organizations = [];
+            if ($user instanceof User) {
+                $organizations = $user->getOrganizations();
+            }
+
+            $filters['organizations'] = array_map(function (Organization $organization) {
+                return $organization->getUuid();
+            }, $organizations);
+
+            // hide hidden sessions for non admin
+            if (!$this->checkToolAccess('EDIT')) {
+                $filters['hidden'] = false;
+            }
+        }
+
+        $filters['canceled'] = false;
+
+        return $filters;
     }
 }

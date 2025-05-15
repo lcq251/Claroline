@@ -5,12 +5,13 @@ import {URL_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/core/workspace/routing'
 import {constants} from '#/main/community/constants'
+import {declareAction} from '#/main/app/action'
 
 /**
  * View as the Role.
  * It's only available for Workspace roles.
  */
-export default (roles) => ({
+export default declareAction((roles) => ({
   name: 'view-as',
   type: URL_BUTTON,
   icon: 'fa fa-fw fa-mask',
@@ -19,4 +20,4 @@ export default (roles) => ({
   target: url(['claro_index', {}], {view_as: roles[0].name}) + '#' + (roles[0].workspace ? route(roles[0].workspace) : ''),
   group: trans('management'),
   scope: ['object']
-})
+}))

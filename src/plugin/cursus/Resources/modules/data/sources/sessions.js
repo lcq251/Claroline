@@ -35,13 +35,13 @@ export default {
         label: trans('course', {}, 'cursus'),
         displayed: true
       }, {
-        name: 'restrictions.dates[0]',
+        name: 'dates[0]',
         alias: 'startDate',
         type: 'date',
         label: trans('start_date'),
         displayed: true
       }, {
-        name: 'restrictions.dates[1]',
+        name: 'dates[1]',
         alias: 'endDate',
         type: 'date',
         label: trans('end_date'),

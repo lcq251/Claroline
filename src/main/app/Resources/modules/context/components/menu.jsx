@@ -155,7 +155,7 @@ const ContextMenu = () => {
       <Button
         id="toggle-menu"
         type={MENU_BUTTON}
-        className="app-context-menu-toggle btn btn-text-body focus-ring py-1 px-2 mx-n2 my-2 rounded-1"
+        className="app-context-menu-toggle btn btn-text-body focus-ring py-1 px-2 mx-n2 my-2 rounded-1 border-0"
         icon="fa fa-bars"
         label={trans(menuOpened ? 'close_context_menu': 'show_context_menu', {}, 'actions')}
         tooltip="bottom"

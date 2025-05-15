@@ -72,8 +72,8 @@ const StandardMenu = (props) => {
         />
       )}
 
-      {Object.keys(actions.groups).map((group) => [
-        <MenuHeader key={toKey(group)}>{group}</MenuHeader>,
+      {Object.keys(actions.groups).map((group, i) => [
+        (0 !== i || 0 !== actions.primary.length || 0 !== actions.unclassified.length) && <MenuDivider />,
         ...actions.groups[group].map((action) =>
           <MenuAction
             {...action}
@@ -146,11 +146,15 @@ const MenuButton = forwardRef((props, ref) => {
       ref={ref}
     >
       <MenuToggle
-        {...omit(props, 'menu', 'containerClassName', 'onToggle', 'opened', 'onClick')}
+        {...omit(props, 'menu', 'containerClassName', 'onToggle', 'opened', 'onClick', 'indicator')}
         as={CallbackButton}
         callback={props.onClick ? props.onClick : identity}
       >
         {props.children}
+
+        {props.indicator &&
+          <small className="fa fa-fw fa-chevron-down opacity-50 ms-2" aria-hidden={true} />
+        }
       </MenuToggle>
 
       {isStandard ?
@@ -166,7 +170,8 @@ const MenuButton = forwardRef((props, ref) => {
 implementPropTypes(MenuButton, ButtonTypes, {
   opened: T.bool,
   onToggle: T.func,
-  containerClassName: T.string, // permits to add a custom class to the wrapping .dropdown element
+  containerClassName: T.string, // permits to add a custom class to the wrapping .dropdown element,
+  indicator: T.bool,
   menu: T.oneOfType([
     // a custom menu component
     T.element,

@@ -2,7 +2,6 @@ import React, {createElement, Fragment} from 'react'
 import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
-import {toKey} from '#/main/app/utils/text'
 import {FormFieldset} from '#/main/app/content/form/components/fieldset'
 import {
   FormSections,
@@ -30,7 +29,7 @@ const FormContent = (props) => {
   return (
     <>
       {primarySections.map((primarySection, index) =>
-        <Fragment key={primarySection.id || toKey(primarySection.title)}>
+        <Fragment key={primarySection.title}>
           {0 !== index &&
             <hr className="mb-5 mt-4" aria-hidden={true} />
           }

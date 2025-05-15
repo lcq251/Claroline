@@ -50,8 +50,8 @@ class PlannedObjectSerializer
             'end' => $plannedObject->getEndDate() ? DateNormalizer::normalize($plannedObject->getEndDate()) : null,
             'thumbnail' => $plannedObject->getThumbnail(),
             'poster' => $plannedObject->getPoster(),
-            'description' => $plannedObject->getDescription(),
             'meta' => [
+                'description' => $plannedObject->getDescription(),
                 'type' => $plannedObject->getType(),
                 'creator' => $plannedObject->getCreator() ? $this->userSerializer->serialize($plannedObject->getCreator(), [Options::SERIALIZE_MINIMAL]) : null,
                 'created' => DateNormalizer::normalize($plannedObject->getCreatedAt()),

@@ -1,34 +1,6 @@
-import get from 'lodash/get'
 
-const store = (name, state) => state[name]
-
-const status = (name, state) => {
-  const viewState = store(name, state)
-
-  return viewState.status
-}
-
-const error = (name, state) => {
-  const viewState = store(name, state)
-
-  return viewState.error
-}
-
-const errorStatus = (name, state) => {
-  const viewState = store(name, state)
-
-  return viewState.errorStatus
-}
-
-const data = (name, state) => {
-  const viewState = store(state)
-
-  return viewState.data
-}
+const STORE_NAME = 'trainingSession'
 
 export const selectors = {
-  status,
-  errorStatus,
-  error,
-  data
+  STORE_NAME
 }

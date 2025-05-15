@@ -2,6 +2,7 @@ import {createSelector} from 'reselect'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
+import {hasPermission} from '#/main/app/security'
 import {selectors as toolSelectors} from '#/main/core/tool/store/selectors'
 
 import {constants as baseConstants} from '#/main/evaluation/constants'
@@ -117,6 +118,16 @@ const mimeType = createSelector(
   (meta) => meta.mimeType
 )
 
+const canEdit = createSelector(
+  [resourceNode],
+  (resourceNode) => hasPermission('edit', resourceNode)
+)
+
+const canFollow = createSelector(
+  [resourceNode],
+  (resourceNode) => hasPermission('edit', resourceNode)
+)
+
 // access restrictions selectors
 const accessErrors = createSelector(
   [store],
@@ -170,6 +181,8 @@ export const selectors = {
   managed,
   loaded,
   notFound,
+  canEdit,
+  canFollow,
   // lifecycle
   resourceLifecycle,
   // access restrictions

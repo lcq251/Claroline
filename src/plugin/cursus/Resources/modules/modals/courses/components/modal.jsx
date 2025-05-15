@@ -11,7 +11,6 @@ import {DataMicro} from '#/main/app/data/components/micro'
 const CoursesModal = (props) =>
   <PickerModal
     {...props}
-    icon="fa fa-fw fa-graduation-cap"
     name="trainingCoursesPicker"
     definition={[
       {

@@ -26,7 +26,7 @@ const EnumItem = props =>
       <Button
         id={`enum-item-${props.item.id}-delete`}
         type={CALLBACK_BUTTON}
-        className="btn btn-text-danger"
+        className="btn btn-text-body"
         icon="fa fa-fw fa-trash"
         label={props.deleteButtonLabel}
         tooltip="left"

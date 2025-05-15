@@ -6,7 +6,7 @@ import {asset} from '#/main/app/config'
 
 const Poster = (props) =>
   <div
-    className={classes('poster ratio ratio-poster z-0', props.className)}
+    className={classes('poster ratio ratio-poster z-n1', props.className)}
     role="presentation"
     style={props.url ? {
       backgroundImage: `url("${asset(props.url)}")`

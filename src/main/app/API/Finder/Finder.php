@@ -105,7 +105,7 @@ class Finder implements FinderInterface
         return $this;
     }
 
-    public function getResult(?callable $rowTransformer = null): FinderResultInterface
+    public function getResult(?callable $rowTransformer = null, bool $readonly = true): FinderResultInterface
     {
         if (!$this->isRoot()) {
             throw new \RuntimeException('Method can only be called on root finder.');
@@ -117,7 +117,7 @@ class Finder implements FinderInterface
             $queryBuilder->setMaxResults($this->query->getPageSize());
         }
 
-        return new FinderResult($this->getAlias(), $this->query, $queryBuilder, $rowTransformer);
+        return new FinderResult($this->getAlias(), $this->query, $queryBuilder, $rowTransformer, $readonly);
     }
 
     public function getSearchValue(): ?string

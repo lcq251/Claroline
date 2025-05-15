@@ -68,13 +68,7 @@ function parseToolbar(toolbarConfig) {
   return []
 }
 
-/**
- *
- * @param {string} toolbarConfig
- * @param {Array}  actions
- * @param {string} scope
- */
-function buildToolbar(toolbarConfig, actions = [], scope) {
+function buildToolbar(toolbarConfig, actions = [], scope, moreIcon = 'fa-ellipsis-v') {
   let toolbar = []
 
   // filters toolbar actions
@@ -120,7 +114,7 @@ function buildToolbar(toolbarConfig, actions = [], scope) {
             return {
               name: 'more',
               type: MENU_BUTTON,
-              icon: 'fa fa-fw fa-ellipsis-v',
+              icon: 'fa fa-fw ' + moreIcon,
               label: trans('show-more-actions', {}, 'actions'),
               menu: {
                 align: 'end'

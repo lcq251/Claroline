@@ -1,6 +1,8 @@
 import {connect as baseConnect} from 'react-redux'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
+import omit from 'lodash/omit'
+import merge from 'lodash/merge'
 
 import {toKey} from '#/main/app/utils/text'
 import {trans, transChoice} from '#/main/app/intl/translation'
@@ -190,21 +192,17 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     }
 
     if (ownProps.delete) {
-      const deleteAction = {
+      const deleteAction = merge({
         name: 'delete',
         type: CALLBACK_BUTTON,
-        icon: ownProps.delete.icon || 'fa fa-fw fa-trash',
-        label: ownProps.delete.label || trans('delete', {}, 'actions'),
+        icon: 'fa fa-fw fa-trash',
+        label: trans('delete', {}, 'actions'),
         dangerous: true,
-        confirm: {
-          title: trans('objects_delete_title'),
-          message: transChoice('objects_delete_question', rows.length, {count: rows.length}),
-          button: trans('delete', {}, 'actions')
-        },
+        confirm: transChoice('objects_delete_question', rows.length, {count: rows.length}),
         disabled: undefined !== ownProps.delete.disabled && ownProps.delete.disabled(rows),
         displayed: undefined === ownProps.delete.displayed || ownProps.delete.displayed(rows),
         callback: () => dispatchProps.deleteItems(rows)
-      }
+      }, omit(ownProps.delete, 'disabled', 'displayed'))
 
       if (actions instanceof Promise) {
         if (actions) {

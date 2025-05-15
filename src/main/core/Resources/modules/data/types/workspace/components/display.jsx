@@ -8,8 +8,8 @@ import {Workspace as WorkspaceTypes} from '#/main/core/workspace/prop-types'
 
 const WorkspaceDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_workspace', {}, 'workspace')}
+    {...props}
   />
 
 WorkspaceDisplay.propTypes = {

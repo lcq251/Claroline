@@ -178,19 +178,13 @@ final class SessionSubscriber implements EventSubscriberInterface
 
     public function preCopy(CopyEvent $event): void
     {
-        /** @var Course $course */
-        $course = $event->getExtra()['parent'];
-
         /** @var Session $copy */
         $copy = $event->getCopy();
 
-        $copy->setCourse($course);
         $copy->setCreatedAt(new \DateTime());
         $copy->setUpdatedAt(new \DateTime());
 
-        $copyName = $this->om->getRepository(Session::class)->findNextUnique('name', $copy->getName());
         $copyCode = $this->om->getRepository(Session::class)->findNextUnique('code', $copy->getCode());
-        $copy->setName($copyName);
         $copy->setCode($copyCode);
     }
 

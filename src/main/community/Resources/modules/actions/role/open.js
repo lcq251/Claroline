@@ -3,11 +3,12 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/community/role/routing'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Open role action.
  */
-export default (roles, refresher, path) => ({
+export default declareAction((roles, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-arrow-circle-right',
@@ -16,4 +17,4 @@ export default (roles, refresher, path) => ({
   target: route(roles[0], path),
   scope: ['object'],
   default: true
-})
+}))

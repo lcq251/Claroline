@@ -15,7 +15,7 @@ const TrainingsDashboardOverview = () => {
   const toolPath = useSelector(toolSelectors.path)
 
   return (
-    <PageContent>
+    <PageContent className="d-flex flex-column py-4 gap-5">
       <PageSection size="full">
         <ContentInfoBlocks
           size="lg"
@@ -41,12 +41,9 @@ const TrainingsDashboardOverview = () => {
         />
       </PageSection>
 
-      <TrainingsDashboardCapacity className="mt-5" />
+      <TrainingsDashboardCapacity />
 
-      <PageSection
-        size="full"
-        className="mt-5"
-      >
+      <PageSection size="full">
         <div className="card">
           <div className="d-flex align-items-baseline p-4 pt-3">
             <h2 className="page-section-title h6 mb-0">{trans('Formations indisponibles')}</h2>
@@ -78,26 +75,20 @@ const TrainingsDashboardOverview = () => {
           <li>Toutes les sessions en cours ou à venir sont complètes</li>
           <li>Pas de formateur</li>
         </ul>*/}
-
-        {/*<hr className="my-5" aria-hidden={true} />*/}
       </PageSection>
 
       <PageSection
         size="full"
-        className="mt-5"
         title={trans('Inscriptions en attente')}
       >
         <ul>
           <li>En attente de validation par un gestionnaire</li>
           <li>En attente de l'ouverture d'une nouvelle session</li>
         </ul>
-
-        {/*<hr className="my-5" aria-hidden={true} />*/}
       </PageSection>
 
       <PageSection
         size="full"
-        className="mt-5"
         title={trans('Présences')}
       >
         <ul>

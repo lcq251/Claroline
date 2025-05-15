@@ -41,7 +41,8 @@ class SessionSerializer
         private readonly RoleSerializer $roleSerializer,
         private readonly LocationSerializer $locationSerializer,
         private readonly WorkspaceSerializer $workspaceSerializer,
-        private readonly TemplateSerializer $templateSerializer
+        private readonly TemplateSerializer $templateSerializer,
+        private readonly CourseSerializer $courseSerializer
     ) {
         $this->courseRepo = $om->getRepository(Course::class);
         $this->sessionRepo = $om->getRepository(Session::class);
@@ -67,10 +68,7 @@ class SessionSerializer
                 'name' => $session->getName(),
                 'thumbnail' => $session->getThumbnail(),
                 'plainDescription' => $session->getPlainDescription(),
-                // 'course' => $this->courseSerializer->serialize($session->getCourse(), [SerializerInterface::SERIALIZE_MINIMAL]), // it is required to generate the link to the session
-                'restrictions' => [
-                    'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
-                ],
+                'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
             ];
         }
 
@@ -90,12 +88,10 @@ class SessionSerializer
             'poster' => $session->getPoster(),
             'description' => $session->getDescription(),
             'plainDescription' => $session->getPlainDescription(),
-            // 'course' => $this->courseSerializer->serialize($session->getCourse(), [SerializerInterface::SERIALIZE_MINIMAL]), // it is required to generate the link to the session
-
+            'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
             'restrictions' => [
                 'hidden' => $session->isHidden(),
                 'users' => $session->getMaxUsers(),
-                'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
             ],
             'workspace' => $session->getWorkspace() ?
                 $this->workspaceSerializer->serialize($session->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]) :
@@ -141,12 +137,14 @@ class SessionSerializer
             $serialized['permissions'] = [
                 'open' => $this->authorization->isGranted('OPEN', $session),
                 'edit' => $this->authorization->isGranted('EDIT', $session),
-                'delete' => $this->authorization->isGranted('DELETE', $session),
+                'administrate' => $this->authorization->isGranted('ADMINISTRATE', $session),
                 'register' => $this->authorization->isGranted('REGISTER', $session),
             ];
         }
 
         if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
+            $serialized['course'] = $this->courseSerializer->serialize($session->getCourse(), [SerializerInterface::SERIALIZE_MINIMAL]);
+
             $serialized['registration']['learnerRole'] = $session->getLearnerRole() ?
                 $this->roleSerializer->serialize($session->getLearnerRole(), [SerializerInterface::SERIALIZE_MINIMAL]) :
                 null;
@@ -175,6 +173,13 @@ class SessionSerializer
 
         $this->sipe('code', 'setCode', $data, $session);
         $this->sipe('description', 'setDescription', $data, $session);
+
+        if (isset($data['dates'])) {
+            $dates = DateRangeNormalizer::denormalize($data['dates']);
+
+            $session->setStartDate($dates[0]);
+            $session->setEndDate($dates[1]);
+        }
 
         if (isset($data['registration'])) {
             $this->sipe('registration.selfRegistration', 'setPublicRegistration', $data, $session);
@@ -229,13 +234,6 @@ class SessionSerializer
         if (isset($data['restrictions'])) {
             $this->sipe('restrictions.users', 'setMaxUsers', $data, $session);
             $this->sipe('restrictions.hidden', 'setHidden', $data, $session);
-
-            if (isset($data['restrictions']['dates'])) {
-                $dates = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
-
-                $session->setStartDate($dates[0]);
-                $session->setEndDate($dates[1]);
-            }
         }
 
         $course = $session->getCourse();

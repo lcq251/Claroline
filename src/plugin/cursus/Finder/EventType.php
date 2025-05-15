@@ -5,12 +5,14 @@ namespace Claroline\CursusBundle\Finder;
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\FinderInterface;
+use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Entity\Team;
 use Claroline\CoreBundle\Finder\WorkspaceType;
 use Claroline\CursusBundle\Entity\Event;
+use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,9 +33,9 @@ class EventType extends AbstractType
             ->add('name', TextType::class)
             ->add('code', TextType::class)
             ->add('description', TextType::class)
-            //->add('startDate', DateType::class)
-            //->add('endDate', DateType::class)
-            //->add('session', SessionType::class)
+            // ->add('startDate', DateType::class)
+            // ->add('endDate', DateType::class)
+            // ->add('session', SessionType::class)
             ->add('workspace', WorkspaceType::class, [
                 'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $alias = $finder->getAlias();
@@ -43,6 +45,42 @@ class EventType extends AbstractType
 
                     $queryBuilder->leftJoin($alias.'.session', 'sessionWorkspace');
                     $queryBuilder->leftJoin('sessionWorkspace.workspace', $finder->getAlias());
+                },
+            ])
+            ->add('capacity', ClosureType::class, [
+                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    if (null === $finder->getFilterValue()) {
+                        return;
+                    }
+
+                    $alias = $finder->getAlias();
+                    if (!$finder->isRoot()) {
+                        $alias = $finder->getParent()->getAlias();
+                    }
+
+                    $countSubquery = "(
+                        SELECT COUNT(DISTINCT su)
+                        FROM Claroline\CursusBundle\Entity\Registration\EventUser AS su
+                        LEFT JOIN su.user AS u
+                        WHERE su.type = :registrationType
+                          AND su.event = $alias
+                          AND (su.confirmed = 1 AND su.validated = 1)
+                          AND u.disabled = false AND u.isRemoved = false AND u.technical = false
+                    )";
+
+                    switch ($finder->getFilterValue()) {
+                        case 'available_seats':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NULL OR $alias.maxUsers > $countSubquery)");
+                            break;
+                        case 'full':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NOT NULL AND $alias.maxUsers = $countSubquery)");
+                            break;
+                        case 'missing_seats':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NOT NULL AND $alias.maxUsers < $countSubquery)");
+                            break;
+                    }
+
+                    $queryBuilder->setParameter('registrationType', AbstractRegistration::LEARNER);
                 },
             ])
         ;

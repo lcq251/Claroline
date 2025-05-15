@@ -11,7 +11,7 @@ const GroupFormModal = (props) =>
   <FormModal
     {...omit(props, 'group')}
     name="groupForm"
-    title={props.isNew ? trans('new_group', {}, 'community') : undefined}
+    title={trans(props.isNew ? 'new_group' : 'group', {}, 'community')}
     subtitle={props.isNew ? trans('Créez des groupes pour simplifier la gestion de vos utilisateurs.') : undefined}
     target={props.isNew ?
       ['apiv2_group_create'] :

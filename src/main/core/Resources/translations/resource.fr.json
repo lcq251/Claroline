@@ -1,7 +1,6 @@
 {
     "add_files": "Ajouter des fichiers",
     "no_resource": "Aucune ressource n'a été ajoutée pour le moment.",
-    "change_file": "Modifier le fichier",
     "directory": "Dossier",
     "directory_desc": "Créer un dossier pour organiser vos ressources.",
     "file": "Fichier",

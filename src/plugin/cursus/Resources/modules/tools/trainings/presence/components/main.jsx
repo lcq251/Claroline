@@ -5,7 +5,7 @@ import {Routes} from '#/main/app/router/components/routes'
 import {EventPresence} from '#/plugin/cursus/presence/components/event'
 import {SignPresence} from '#/plugin/cursus/presence/components/signing'
 
-const PresenceMain = (props) =>
+const TrainingsPresence = (props) =>
   <Routes
     path={props.path+'/presence'}
     routes={[
@@ -26,5 +26,5 @@ const PresenceMain = (props) =>
   />
 
 export {
-  PresenceMain
+  TrainingsPresence
 }

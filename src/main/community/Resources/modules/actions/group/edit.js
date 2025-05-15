@@ -5,8 +5,9 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {MODAL_GROUP_FORM} from '#/main/community/group/modals/form'
+import {declareAction} from '#/main/app/action'
 
-export default (groups, refresher) => ({
+export default declareAction((groups, refresher) => ({
   name: 'edit',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-pencil',
@@ -20,4 +21,4 @@ export default (groups, refresher) => ({
   primary: true,
   group: trans('management'),
   scope: ['object']
-})
+}))

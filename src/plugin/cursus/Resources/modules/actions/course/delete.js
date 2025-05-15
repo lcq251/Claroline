@@ -2,12 +2,13 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete courses action.
  */
-export default (courses, refresher) => {
-  const processable = courses.filter(course => hasPermission('delete', course))
+export default declareAction((courses, refresher) => {
+  const processable = courses.filter(course => hasPermission('administrate', course))
 
   return {
     name: 'delete',
@@ -35,4 +36,4 @@ export default (courses, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

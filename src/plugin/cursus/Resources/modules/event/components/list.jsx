@@ -1,237 +1,164 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {PropTypes as T} from 'prop-types'
-import {connect} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
+import merge from 'lodash/merge'
 
-import {url} from '#/main/app/api'
-import {hasPermission} from '#/main/app/security'
-import {trans, transChoice} from '#/main/app/intl/translation'
+import {selectors as securitySelectors} from '#/main/app/security'
+import {trans} from '#/main/app/intl/translation'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {actions as listActions} from '#/main/app/content/list/store'
-import {ASYNC_BUTTON, LINK_BUTTON, MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {constants} from '#/plugin/cursus/constants'
 import {EventCard} from '#/plugin/cursus/event/components/card'
 import {EventStatus} from '#/plugin/cursus/components/event-status'
 import {constants as listConst} from '#/main/app/content/list/constants'
-import {MODAL_TRAINING_EVENT_PARAMETERS} from '#/plugin/cursus/event/modals/parameters'
+import {getActions, getDefaultAction} from '#/plugin/cursus/event/utils'
 
-const Events = (props) =>
-  <ListData
-    primaryAction={(row) => ({
-      type: LINK_BUTTON,
-      target: props.path+'/'+row.id,
-      label: trans('open', {}, 'actions')
-    })}
-    actions={(rows) => [
-      {
-        name: 'edit',
-        type: MODAL_BUTTON,
-        icon: 'fa fa-fw fa-pencil',
-        label: trans('edit', {}, 'actions'),
-        modal: [MODAL_TRAINING_EVENT_PARAMETERS, {
-          event: rows[0],
-          onSave: props.invalidate
-        }],
-        scope: ['object'],
-        group: trans('management'),
-        displayed: hasPermission('edit', rows[0])
-      }, {
-        name: 'copy',
-        type: ASYNC_BUTTON,
-        icon: 'fa fa-fw fa-clone',
-        label: trans('copy', {}, 'actions'),
-        displayed: hasPermission('edit', rows[0]),
-        confirm: {
-          title: transChoice('copy_event_confirm_title', rows.length, {}, 'actions'),
-          subtitle: 1 === rows.length ? rows[0].name : transChoice('count_elements', rows.length, {count: rows.length}),
-          message: transChoice('copy_event_confirm_message', rows.length, {count: rows.length}, 'actions')
-        },
-        request: {
-          url: url(['apiv2_cursus_event_copy']),
-          request: {
-            method: 'POST',
-            body: JSON.stringify({
-              ids: rows.map(row => row.id)
-            })
+const EventList = (props) => {
+  const dispatch = useDispatch()
+  const currentUser = useSelector(securitySelectors.currentUser)
+
+  const refresher = useMemo(() => merge({
+    add:    () => dispatch(listActions.invalidateData(props.name)),
+    update: () => dispatch(listActions.invalidateData(props.name)),
+    delete: () => dispatch(listActions.invalidateData(props.name))
+  }, props.refresher || {}), [props.path])
+
+  return (
+    <ListData
+      primaryAction={(row) => getDefaultAction(row, refresher, props.path, currentUser)}
+      actions={(rows) => getActions(rows, refresher, props.path, currentUser).then((actions) => [].concat(actions, props.customActions(rows)))}
+      definition={[
+        {
+          name: 'status',
+          type: 'choice',
+          label: trans('status'),
+          sortable: false,
+          displayed: true,
+          filterable: true,
+          order: 1,
+          options: {
+            noEmpty: true,
+            choices: {
+              not_started: trans('session_not_started', {}, 'cursus'),
+              in_progress: trans('session_in_progress', {}, 'cursus'),
+              ended: trans('session_ended', {}, 'cursus'),
+              not_ended: trans('session_not_ended', {}, 'cursus')
+            }
+          },
+          render: (row) => <EventStatus startDate={get(row, 'start')} endDate={get(row, 'end')} />
+        }, {
+          name: 'name',
+          type: 'string',
+          label: trans('name'),
+          displayed: true,
+          filterable: false,
+          primary: true
+        }, {
+          name: 'code',
+          type: 'string',
+          label: trans('code'),
+          filterable: false,
+          displayed: false
+        }, {
+          name: 'start',
+          alias: 'startDate',
+          type: 'date',
+          label: trans('start_date'),
+          displayed: true,
+          options: {
+            time: true
           }
-        },
-        group: trans('management'),
-        scope: ['object', 'collection']
-      }, {
-        name: 'export-pdf',
-        type: URL_BUTTON,
-        icon: 'fa fa-fw fa-file-pdf',
-        label: trans('export-pdf', {}, 'actions'),
-        displayed: hasPermission('open', rows[0]),
-        scope: ['object'],
-        group: trans('transfer'),
-        target: ['apiv2_cursus_event_download_pdf', {id: rows[0].id}]
-      }, {
-        name: 'export-ics',
-        type: URL_BUTTON,
-        icon: 'fa fa-fw fa-calendar',
-        label: trans('export-ics', {}, 'actions'),
-        displayed: hasPermission('open', rows[0]),
-        scope: ['object'],
-        group: trans('transfer'),
-        target: ['apiv2_cursus_event_download_ics', {id: rows[0].id}]
-      }, {
-        name: 'export-presences-empty',
-        type: URL_BUTTON,
-        icon: 'fa fa-fw fa-border-none',
-        label: trans('export-presences-empty', {}, 'cursus'),
-        displayed: hasPermission('edit', rows[0]),
-        group: trans('presences', {}, 'cursus'),
-        target: ['apiv2_cursus_event_presence_download', {id: rows[0].id, filled: 0}]
-      }, {
-        name: 'export-presences-filled',
-        type: URL_BUTTON,
-        icon: 'fa fa-fw fa-border-all',
-        label: trans('export-presences-filled', {}, 'cursus'),
-        displayed: hasPermission('edit', rows[0]),
-        group: trans('presences', {}, 'cursus'),
-        target: ['apiv2_cursus_event_presence_download', {id: rows[0].id, filled: 1}]
-      }, {
-        name: 'confirm-status',
-        type: ASYNC_BUTTON,
-        icon: 'fa fa-fw fa-clipboard-check',
-        label: trans('presence_validation', {}, 'presence'),
-        displayed: hasPermission('edit', rows[0]),
-        group: trans('presences', {}, 'cursus'),
-        request: {
-          url: ['apiv2_cursus_event_presence_confirm', {id: rows[0].id}],
-          request: {
-            method: 'PUT'
+        }, {
+          name: 'end',
+          alias: 'endDate',
+          type: 'date',
+          label: trans('end_date'),
+          options: {
+            time: true
+          },
+          displayed: true
+        }, {
+          name: 'location',
+          type: 'location',
+          label: trans('location'),
+          placeholder: trans('online_session', {}, 'cursus'),
+          displayed: true,
+          options: {multiple: false}
+        }, {
+          name: 'tutors',
+          type: 'user',
+          label: trans('tutors', {}, 'cursus'),
+          options: {multiple: true},
+          filterable: false
+        }, {
+          name: 'availableSeats',
+          type: 'number',
+          label: trans('available_seats', {}, 'cursus'),
+          displayed: true,
+          filterable: false,
+          sortable: false,
+          render: (row) => {
+            if (get(row, 'restrictions.users')) {
+              return (get(row, 'restrictions.users') - get(row, 'participants.learners', 0)) + ' / ' + get(row, 'restrictions.users')
+            }
+
+            return (
+              <>
+                <span className="visually-hidden">{trans('not_limited', {}, 'cursus')}</span>
+                <span className="fa fa-infinity" aria-hidden={true} />
+              </>
+            )
           }
+        }, {
+          name: 'capacity',
+          type: 'choice',
+          label: trans('available_seats', {}, 'cursus'),
+          options: {
+            choices: {
+              available_seats: trans('available_seats', {}, 'cursus'),
+              full: trans('full', {}, 'cursus'),
+              missing_seats: trans('missing_seats', {}, 'cursus')
+            }
+          },
+          displayable: false,
+          sortable: false,
+          filterable: true
         }
-      }
-    ].concat(props.customActions(rows))}
-    delete={{
-      url: ['apiv2_cursus_event_delete'],
-      displayed: (rows) => -1 !== rows.findIndex(row => hasPermission('delete', row))
-    }}
-    definition={[
-      {
-        name: 'status',
-        type: 'choice',
-        label: trans('status'),
-        sortable: false,
-        displayed: true,
-        filterable: true,
-        order: 1,
-        options: {
-          noEmpty: true,
-          choices: {
-            not_started: trans('session_not_started', {}, 'cursus'),
-            in_progress: trans('session_in_progress', {}, 'cursus'),
-            ended: trans('session_ended', {}, 'cursus'),
-            not_ended: trans('session_not_ended', {}, 'cursus')
-          }
-        },
-        render: (row) => <EventStatus startDate={get(row, 'start')} endDate={get(row, 'end')} />
-      }, {
-        name: 'name',
-        type: 'string',
-        label: trans('name'),
-        displayed: true,
-        primary: true
-      }, {
-        name: 'code',
-        type: 'string',
-        label: trans('code'),
-        displayed: false
-      }, {
-        name: 'start',
-        alias: 'startDate',
-        type: 'date',
-        label: trans('start_date'),
-        displayed: true,
-        options: {
-          time: true
-        }
-      }, {
-        name: 'end',
-        alias: 'endDate',
-        type: 'date',
-        label: trans('end_date'),
-        options: {
-          time: true
-        },
-        displayed: true
-      }, {
-        name: 'location',
-        type: 'location',
-        label: trans('location'),
-        placeholder: trans('online_session', {}, 'cursus'),
-        displayed: true,
-        options: {multiple: false}
-      }, {
-        name: 'tutors',
-        type: 'user',
-        label: trans('tutors', {}, 'cursus'),
-        options: {multiple: true}
-      }, {
-        name: 'restrictions.users',
-        alias: 'maxUsers',
-        type: 'number',
-        label: trans('max_participants', {}, 'cursus'),
-        displayed: true
-      }, {
-        name: 'registration.registrationType',
-        alias: 'registrationType',
-        type: 'choice',
-        label: trans('registration'),
-        displayed: false,
-        options: {
-          choices: constants.REGISTRATION_TYPES
-        }
-      }
-    ].concat(props.customDefinition)}
-    display={{
-      current: listConst.DISPLAY_LIST
-    }}
+      ].concat(props.customDefinition || [])}
+      display={{
+        current: listConst.DISPLAY_LIST
+      }}
 
-    {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'invalidate')}
+      {...omit(props, 'path', 'url', 'autoload', 'customDefinition', 'customActions', 'invalidate')}
 
-    name={props.name}
-    fetch={{
-      url: props.url,
-      autoload: true
-    }}
-    card={EventCard}
-  />
+      name={props.name}
+      fetch={{
+        url: props.url,
+        autoload: true
+      }}
+      card={EventCard}
+    />
+  )
+}
 
-Events.propTypes = {
+EventList.propTypes = {
+  path: T.string.isRequired,
   name: T.string.isRequired,
   url: T.oneOfType([T.string, T.array]).isRequired,
-
-  path: T.string.isRequired,
   autoload: T.bool,
   customDefinition: T.arrayOf(T.shape({
     // data list prop types
   })),
-  customActions: T.func,
-  primaryAction: T.func,
-  actions: T.func,
-  invalidate: T.func.isRequired
+  customActions: T.func
 }
 
-Events.defaultProps = {
+EventList.defaultProps = {
   autoload: true,
-  customDefinition: [],
   customActions: () => []
 }
-
-const EventList = connect(
-  null,
-  (dispatch, ownProps) => ({
-    invalidate() {
-      dispatch(listActions.invalidateData(ownProps.name))
-    }
-  })
-)(Events)
 
 export {
   EventList

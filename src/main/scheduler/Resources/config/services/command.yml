@@ -2,6 +2,5 @@ services:
     Claroline\SchedulerBundle\Command\ExecuteScheduledTasksCommand:
         arguments:
             - '@Claroline\SchedulerBundle\Manager\ScheduledTaskManager'
-            - '@messenger.default_bus'
         tags:
             - { name: 'console.command', command: 'claroline:tasks:execute' }

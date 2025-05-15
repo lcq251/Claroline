@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EnableMaintenanceCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Enable maintenance mode');
     }

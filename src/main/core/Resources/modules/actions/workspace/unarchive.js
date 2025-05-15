@@ -4,6 +4,7 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Unarchives some workspaces.
@@ -11,7 +12,7 @@ import {trans} from '#/main/app/intl/translation'
  * @param {Array}  workspaces - the list of workspaces on which we want to execute the action.
  * @param {object} refresher  - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (workspaces, refresher) => {
+export default declareAction((workspaces, refresher) => {
   const processable = workspaces.filter(workspace => hasPermission('archive', workspace) && get(workspace, 'meta.archived'))
 
   return {
@@ -34,4 +35,4 @@ export default (workspaces, refresher) => {
     scope: ['object', 'collection'],
     dangerous: true
   }
-}
+})

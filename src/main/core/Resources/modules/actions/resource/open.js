@@ -2,6 +2,8 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/core/resource/routing'
+import {declareAction} from '#/main/app/action'
+import {hasPermission} from '#/main/app/security'
 
 /**
  * Opens a resource node.
@@ -10,12 +12,13 @@ import {route} from '#/main/core/resource/routing'
  * @param {object} nodesRefresher
  * @param {string} path
  */
-export default (resourceNodes, nodesRefresher, path) => ({
+export default declareAction((resourceNodes, nodesRefresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-arrow-circle-right',
   label: trans('open', {}, 'actions'),
   target: route(resourceNodes[0], path),
+  displayed: hasPermission('open', resourceNodes[0]),
   scope: ['object'],
   default: true
-})
+}))

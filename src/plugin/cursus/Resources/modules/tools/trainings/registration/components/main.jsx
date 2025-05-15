@@ -1,32 +1,31 @@
 import React from 'react'
-
-import {trans} from '#/main/app/intl'
-import {Routes} from '#/main/app/router'
-import {ToolPage, selectors as toolSelectors} from '#/main/core/tool'
 import {useSelector} from 'react-redux'
-import {TrainingsRegistrationSessions} from '#/plugin/cursus/tools/trainings/registration/components/sessions'
 
-const TrainingsRegistration = (props) => {
+import {Routes} from '#/main/app/router'
+import {selectors as toolSelectors} from '#/main/core/tool'
+
+import {TrainingsRegistrationSessions} from '#/plugin/cursus/tools/trainings/registration/components/sessions'
+import {TrainingsRegistrationEvents} from '#/plugin/cursus/tools/trainings/registration/components/events'
+
+const TrainingsRegistration = () => {
   const toolPath = useSelector(toolSelectors.path)
 
   return (
-    <ToolPage title={trans('registrations', {}, 'cursus')}>
-      <Routes
-        path={toolPath+'/registrations'}
-        redirect={[
-          {from: '/', exact: true, to: '/sessions'}
-        ]}
-        routes={[
-          {
-            path: '/sessions',
-            component: TrainingsRegistrationSessions
-          }, {
-            path: '/events',
-            component: TrainingsRegistrationSessions
-          }
-        ]}
-      />
-    </ToolPage>
+    <Routes
+      path={toolPath+'/registrations'}
+      redirect={[
+        {from: '/', exact: true, to: '/session'}
+      ]}
+      routes={[
+        {
+          path: '/session',
+          component: TrainingsRegistrationSessions
+        }, {
+          path: '/event',
+          component: TrainingsRegistrationEvents
+        }
+      ]}
+    />
   )
 }
 

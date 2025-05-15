@@ -20,7 +20,7 @@ const PageListSection = ({
 
     {children}
 
-    {addAction &&
+    {addAction && (undefined === addAction.displayed || addAction.displayed) &&
       <ButtonSticky
         {...addAction}
         className="me-4"

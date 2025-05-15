@@ -3,8 +3,9 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
+import {declareAction} from '#/main/app/action'
 
-export default(evaluations, refresher) => {
+export default declareAction((evaluations, refresher) => {
   const processable = evaluations.filter(evaluation => hasPermission('administrate', evaluation))
 
   return ({
@@ -24,4 +25,4 @@ export default(evaluations, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   })
-}
+})

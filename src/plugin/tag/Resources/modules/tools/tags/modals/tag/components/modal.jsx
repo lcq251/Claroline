@@ -11,7 +11,7 @@ const TagModal = (props) =>
   <FormModal
     {...omit(props, 'tag')}
     name="tagForm"
-    title={!props.tag ? trans('new_tag', {}, 'tag') : undefined}
+    title={trans(!props.tag ? 'new_tag' : 'tag', {}, 'tag')}
     target={!props.tag ?
       ['apiv2_tag_create'] :
       ['apiv2_tag_update', {id: props.tag.id}]

@@ -4,8 +4,9 @@ import {trans} from '#/main/app/intl'
 import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
-export default (teams, refresher) => {
+export default declareAction((teams, refresher) => {
   const processable = teams.filter(team => hasPermission('edit', team))
 
   return {
@@ -25,4 +26,4 @@ export default (teams, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

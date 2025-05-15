@@ -43,7 +43,7 @@ PageTabbedSection.propTypes = {
     title: T.string,
     displayed: T.bool,
     disabled: T.bool,
-    badge: T.element,
+    badge: T.node,
     render: T.func,
     component: T.element
   })).isRequired

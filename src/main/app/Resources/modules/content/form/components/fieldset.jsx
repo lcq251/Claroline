@@ -9,7 +9,6 @@ import {Alert} from '#/main/app/components/alert'
 import {toKey} from '#/main/app/utils/text'
 import {Html} from '#/main/app/components/html'
 import {DataInput} from '#/main/app/data/components/input'
-import {DataDisplay} from '#/main/app/data/components/display'
 
 /**
  * ATTENTION : as it's only to be used in the FormData component, the `fields` are not defaulted by the component.
@@ -133,9 +132,7 @@ class FormFieldset extends Component {
 
 FormFieldset.propTypes = {
   id: T.string,
-  className: T.string,
   disabled: T.bool,
-  mode: T.string,
   size: T.oneOf(['sm', 'lg']),
   errors: T.object,
   data: T.object,

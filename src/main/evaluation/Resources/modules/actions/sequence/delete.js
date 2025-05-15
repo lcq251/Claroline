@@ -3,11 +3,12 @@ import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Deletes some resource sequences.
  */
-export default (sequences, refresher) => {
+export default declareAction((sequences, refresher) => {
   const processable = sequences.filter(sequence => hasPermission('administrate', sequence))
 
   return {
@@ -35,6 +36,8 @@ export default (sequences, refresher) => {
       },
       success: () => refresher.delete(processable)
     },
-    group: trans('management')
+    group: trans('management'),
+    scope: [constants.ACTION_SCOPE_OBJECT, constants.ACTION_SCOPE_COLLECTION],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
-}
+})

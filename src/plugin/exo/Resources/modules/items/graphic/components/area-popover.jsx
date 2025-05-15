@@ -52,7 +52,7 @@ export class AreaPopover extends Component {
               {
                 name: 'delete',
                 type: CALLBACK_BUTTON,
-                className: 'btn btn-text-danger',
+                className: 'btn btn-text-body',
                 icon: 'fa fa-fw fa-trash',
                 label: trans('delete', {}, 'actions'),
                 callback: this.props.onDelete,

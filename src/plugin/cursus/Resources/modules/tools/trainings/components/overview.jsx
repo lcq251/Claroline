@@ -22,7 +22,7 @@ const MySessionsSection = (props) => {
   const [status, setStatus] = useState('in_progress')
 
   const filteredSessions = mySessions
-    .filter(session => status === getPeriodStatus(get(session, 'restrictions.dates[0]'), get(session, 'restrictions.dates[1]')))
+    .filter(session => status === getPeriodStatus(get(session, 'dates[0]'), get(session, 'dates[1]')))
 
   return (
     <PageSection

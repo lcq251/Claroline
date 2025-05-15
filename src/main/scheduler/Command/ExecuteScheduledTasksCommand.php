@@ -19,20 +19,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class ExecuteScheduledTasksCommand extends Command
 {
-    private $taskManager;
-    private $messageBus;
-
     public function __construct(
-        ScheduledTaskManager $taskManager,
-        MessageBusInterface $messageBus
+        private readonly ScheduledTaskManager $taskManager
     ) {
-        $this->taskManager = $taskManager;
-        $this->messageBus = $messageBus;
-
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Execute scheduled tasks with passed execution date');
     }

@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {route} from '#/main/community/organization/routing'
+import {declareAction} from '#/main/app/action'
 
-export default (organizations, refresher, path) => ({
+export default declareAction((organizations, refresher, path) => ({
   name: 'edit',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-pencil',
@@ -14,4 +15,4 @@ export default (organizations, refresher, path) => ({
   primary: true,
   group: trans('management'),
   scope: ['object']
-})
+}))

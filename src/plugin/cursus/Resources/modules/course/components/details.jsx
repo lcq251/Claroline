@@ -8,7 +8,7 @@ import {hasPermission} from '#/main/app/security'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
-import {CourseParticipants} from '#/plugin/cursus/course/containers/participants'
+import {CourseParticipants} from '#/plugin/cursus/course/components/participants'
 import {CourseSessions} from '#/plugin/cursus/course/components/sessions'
 import {
   canSelfRegister,
@@ -100,7 +100,7 @@ const CourseDetails = (props) => {
           add: () => props.reload(props.course.slug),
           update: () => props.reload(props.course.slug),
           delete: () => props.reload(props.course.slug)
-        }, props.basePath, props.currentUser) : []}
+        }, props.path, props.currentUser) : []}
       />
 
       <PageSection className="mb-5">
@@ -160,7 +160,7 @@ const CourseDetails = (props) => {
             badge: props.availableSessions.length,
             render: () => (
               <CourseSessions
-                path={props.basePath}
+                path={props.path}
                 course={props.course}
                 availableSessions={props.availableSessions}
                 reload={props.reload}
@@ -173,7 +173,7 @@ const CourseDetails = (props) => {
             render: () => {
               return (
                 <CourseParticipants
-                  path={props.path+'/participants'}
+                  path={props.path}
                   course={props.course}
                 />
               )
@@ -187,6 +187,7 @@ const CourseDetails = (props) => {
               <CourseStats
                 course={props.course}
                 stats={props.stats}
+                loadStats={props.loadStats}
               />
             )
           }

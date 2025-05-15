@@ -49,7 +49,7 @@ class EventPresenceSerializer
             'id' => $eventPresence->getUuid(),
             'user' => $this->userSerializer->serialize($eventPresence->getUser(), [SerializerInterface::SERIALIZE_MINIMAL]),
             'event' => $this->eventSerializer->serialize($eventPresence->getEvent(), [SerializerInterface::SERIALIZE_MINIMAL]),
-            'session' => $this->sessionSerializer->serialize($eventPresence->getEvent()->getSession(), [SerializerInterface::SERIALIZE_MINIMAL]),
+            'session' => $this->sessionSerializer->serialize($eventPresence->getEvent()->getSession(), [SerializerInterface::SERIALIZE_MINIMAL]), // not sure this is required
             'status' => $eventPresence->getStatus(),
             'signature' => $eventPresence->getSignature(),
             'validation_date' => DateNormalizer::normalize($eventPresence->getValidationDate()),

@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl'
 import {Tool} from '#/main/core/tool'
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON, MENU_BUTTON} from '#/main/app/buttons'
 
 import {EventMain} from '#/plugin/cursus/tools/trainings/event/containers/main'
 import {CatalogMain} from '#/plugin/cursus/tools/trainings/catalog/containers/main'
@@ -11,7 +11,6 @@ import {SessionMain} from '#/plugin/cursus/tools/trainings/session/containers/ma
 import {TrainingsEditor} from '#/plugin/cursus/tools/trainings/editor/containers/main'
 import {TrainingsOverview} from '#/plugin/cursus/tools/trainings/components/overview'
 import {TrainingsDashboard} from '#/plugin/cursus/tools/trainings/dashboard/components/main'
-import {TrainingsRegistration} from '#/plugin/cursus/tools/trainings/registration/components/main'
 
 const TrainingsTool = (props) =>
   <Tool
@@ -30,22 +29,60 @@ const TrainingsTool = (props) =>
         target: props.path+'/course'
       }, {
         name: 'sessions',
-        type: LINK_BUTTON,
+        type: MENU_BUTTON,
         label: trans('sessions', {}, 'cursus'),
-        target: props.path + '/sessions',
-        displayed: props.canRegister
+        displayed: props.canRegister,
+        indicator: true,
+        menu: {
+          align: 'end',
+          items: [
+            {
+              name: 'sessions',
+              type: LINK_BUTTON,
+              label: trans('all_sessions', {}, 'cursus'),
+              target: props.path + '/sessions',
+              exact: true
+            }, {
+              name: 'participants',
+              type: LINK_BUTTON,
+              label: trans('participants'),
+              target: props.path + '/sessions/participants'
+            }, {
+              name: 'tutors',
+              type: LINK_BUTTON,
+              label: trans('tutors', {}, 'cursus'),
+              target: props.path + '/sessions/tutors'
+            }
+          ]
+        }
       }, {
         name: 'events',
-        type: LINK_BUTTON,
+        type: MENU_BUTTON,
         label: trans('session_events', {}, 'cursus'),
-        target: props.path + '/events',
-        displayed: props.canRegister
-      }, {
-        name: 'registrations',
-        type: LINK_BUTTON,
-        label: trans('registrations', {}, 'cursus'),
-        target: props.path + '/registrations',
-        displayed: props.canRegister
+        displayed: props.canRegister,
+        indicator: true,
+        menu: {
+          align: 'end',
+          items: [
+            {
+              name: 'events',
+              type: LINK_BUTTON,
+              label: trans('all_events', {}, 'cursus'),
+              target: props.path + '/events',
+              exact: true
+            }, {
+              name: 'participants',
+              type: LINK_BUTTON,
+              label: trans('participants'),
+              target: props.path + '/events/participants'
+            }, {
+              name: 'tutors',
+              type: LINK_BUTTON,
+              label: trans('tutors', {}, 'cursus'),
+              target: props.path + '/events/tutors'
+            }
+          ]
+        }
       }
     ]}
     pages={[
@@ -64,10 +101,6 @@ const TrainingsTool = (props) =>
         path: '/events',
         component: EventMain,
         disabled: !props.canRegister
-      }, {
-        path: '/registrations',
-        component: TrainingsRegistration,
-        disabled: !props.canRegister
       }
     ]}
     editor={TrainingsEditor}
@@ -75,6 +108,7 @@ const TrainingsTool = (props) =>
   />
 
 TrainingsTool.propTypes = {
+  contextType: T.string.isRequired,
   authenticated: T.bool.isRequired,
   canEdit: T.bool.isRequired,
   canRegister: T.bool.isRequired,

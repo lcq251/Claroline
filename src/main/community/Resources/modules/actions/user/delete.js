@@ -4,11 +4,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete users action.
  */
-export default (users, refresher) => {
+export default declareAction((users, refresher) => {
   const processable = users.filter(user => hasPermission('delete', user) && get(user, 'restrictions.disabled'))
 
   return {
@@ -21,7 +22,7 @@ export default (users, refresher) => {
     confirm: {
       message: transChoice('user_delete_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'community'),
       additional: trans('irreversible_action_confirm'),
-      items:  processable.map(item => ({
+      items: processable.map(item => ({
         thumbnail: item.picture,
         id: item.id,
         name: item.name
@@ -37,4 +38,4 @@ export default (users, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

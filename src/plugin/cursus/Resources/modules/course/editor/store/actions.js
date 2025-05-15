@@ -2,7 +2,8 @@
 import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
-import {selectors} from '#/plugin/cursus/course/store/selectors'
+import {selectors} from '#/plugin/cursus/course/editor/store/selectors'
+
 export const actions = {}
 
 actions.openForm = (courseSlug = null, defaultProps = {}, workspace = null) => (dispatch) => {

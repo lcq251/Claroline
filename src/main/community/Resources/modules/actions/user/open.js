@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/community/user/routing'
+import {declareAction} from '#/main/app/action'
 
-export default (users, refresher, path) => ({
+export default declareAction((users, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-address-card',
@@ -13,4 +14,4 @@ export default (users, refresher, path) => ({
   displayed: hasPermission('open', users[0]),
   scope: ['object'],
   default: true
-})
+}))

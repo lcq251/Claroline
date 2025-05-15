@@ -4,7 +4,9 @@ namespace Claroline\CursusBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
+use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\HiddenType;
@@ -15,7 +17,9 @@ use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Finder\LocationType;
 use Claroline\CoreBundle\Finder\WorkspaceType;
+use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Session;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SessionType extends AbstractType
@@ -41,7 +45,50 @@ class SessionType extends AbstractType
             ->add('course', CourseType::class)
             ->add('workspace', RelatedEntityType::class)
             ->add('location', RelatedEntityType::class)
+            ->add('capacity', ClosureType::class, [
+                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    if (null === $finder->getFilterValue()) {
+                        return;
+                    }
+
+                    $alias = $finder->getAlias();
+                    if (!$finder->isRoot()) {
+                        $alias = $finder->getParent()->getAlias();
+                    }
+
+                    $countSubquery = "(
+                        SELECT COUNT(DISTINCT su)
+                        FROM Claroline\CursusBundle\Entity\Registration\SessionUser AS su
+                        LEFT JOIN su.user AS u
+                        WHERE su.type = :registrationType
+                          AND su.session = $alias
+                          AND (su.confirmed = 1 AND su.validated = 1)
+                          AND u.disabled = false AND u.isRemoved = false AND u.technical = false
+                    )";
+
+                    switch ($finder->getFilterValue()) {
+                        case 'available_seats':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NULL OR $alias.maxUsers > $countSubquery)");
+                            break;
+                        case 'full':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NOT NULL AND $alias.maxUsers = $countSubquery)");
+                            break;
+                        case 'missing_seats':
+                            $queryBuilder->andWhere("($alias.maxUsers IS NOT NULL AND $alias.maxUsers < $countSubquery)");
+                            break;
+                    }
+
+                    $queryBuilder->setParameter('registrationType', AbstractRegistration::LEARNER);
+                },
+            ])
         ;
+    }
+
+    public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
+    {
+        if ($finder->getSortValue()) {
+            $queryBuilder->addOrderBy("{$finder->getQueryPath()}.startDate", $finder->getSortValue());
+        }
     }
 
     public function getParent(): ?string

@@ -4,8 +4,9 @@ import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
+import {declareAction} from '#/main/app/action'
 
-export default (evaluations, refresher, path, currentUser) => ({
+export default declareAction((evaluations, refresher, path, currentUser) => ({
   name: 'send-message',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-envelope',
@@ -17,4 +18,4 @@ export default (evaluations, refresher, path, currentUser) => ({
     }
   }],
   scope: ['object', 'collection']
-})
+}))

@@ -10,7 +10,7 @@ import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {route} from '#/plugin/cursus/course/routing'
-import {MODAL_SESSION_FORM} from '#/plugin/cursus/session/modals/parameters'
+import {MODAL_SESSION_FORM} from '#/plugin/cursus/session/modals/form'
 
 import {SessionDateCard} from '#/plugin/cursus/session/components/card'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'

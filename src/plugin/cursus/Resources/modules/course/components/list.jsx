@@ -1,7 +1,6 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {useMemo} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
-import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
@@ -14,20 +13,22 @@ import {actions as listActions} from '#/main/app/content/list/store'
 import {CourseCard} from '#/plugin/cursus/course/components/card'
 import {getActions, getDefaultAction} from '#/plugin/cursus/course/utils'
 
-import {ContentSizing} from '#/main/app/content/components/sizing'
 import {DataMicro} from '#/main/app/data/components/micro'
 
-const Courses = (props) => {
-  const refresher = merge({
-    add:    () => props.invalidate(props.name),
-    update: () => props.invalidate(props.name),
-    delete: () => props.invalidate(props.name)
-  }, props.refresher || {})
+const CourseList = (props) => {
+  const dispatch = useDispatch()
+  const currentUser = useSelector(securitySelectors.currentUser)
+
+  const refresher = useMemo(() => ({
+    add:    () => dispatch(listActions.invalidateData(props.name)),
+    update: () => dispatch(listActions.invalidateData(props.name)),
+    delete: () => dispatch(listActions.invalidateData(props.name))
+  }), [props.path])
 
   return (
     <ListData
-      primaryAction={(row) => getDefaultAction(row, refresher, props.path, props.currentUser)}
-      actions={(rows) => getActions(rows, refresher, props.path, props.currentUser)}
+      primaryAction={(row) => getDefaultAction(row, refresher, props.path, currentUser)}
+      actions={(rows) => getActions(rows, refresher, props.path, currentUser)}
       definition={[
         {
           name: 'name',
@@ -76,20 +77,20 @@ const Courses = (props) => {
           options: {
             objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
           }
-        }, {
+        }/*, {
           name: 'display.order',
           alias: 'order',
           type: 'number',
           label: trans('order'),
           displayable: false,
           filterable: false
-        }
+        }*/
       ]}
       display={{
         current: listConst.DISPLAY_TILES
       }}
 
-      {...omit(props, 'path', 'url', 'autoload', 'refresher', 'invalidate')}
+      {...omit(props, 'path', 'url', 'autoload')}
 
       name={props.name}
       fetch={{
@@ -97,39 +98,20 @@ const Courses = (props) => {
         autoload: props.autoload
       }}
       card={CourseCard}
-    >
-      <ContentSizing size="lg" className="mt-4">
-        {props.children}
-      </ContentSizing>
-    </ListData>
+    />
   )
 }
 
-Courses.propTypes = {
+CourseList.propTypes = {
   path: T.string.isRequired,
   name: T.string.isRequired,
-  url: T.oneOfType([T.string, T.array]),
-  currentUser: T.object,
-  refresher: T.object,
-  invalidate: T.func.isRequired,
-  children: T.node
+  url: T.oneOfType([T.string, T.array])
 }
 
-Courses.defaultProps = {
+CourseList.defaultProps = {
   url: ['apiv2_cursus_course_list'],
   autoload: true
 }
-
-const CourseList = connect(
-  (state) => ({
-    currentUser: securitySelectors.currentUser(state)
-  }),
-  (dispatch) => ({
-    invalidate(name) {
-      dispatch(listActions.invalidateData(name))
-    }
-  })
-)(Courses)
 
 export {
   CourseList

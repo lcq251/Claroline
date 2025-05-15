@@ -68,7 +68,7 @@ const CollectionInput = props =>
               </DataInput>
 
               <Button
-                className="btn btn-text-danger btn-delete"
+                className="btn btn-text-body btn-delete"
                 type={CALLBACK_BUTTON}
                 icon="fa fa-fw fa-trash"
                 label={trans('delete', {}, 'actions')}

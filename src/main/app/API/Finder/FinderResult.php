@@ -16,8 +16,17 @@ class FinderResult implements FinderResultInterface, \Countable
         private readonly string $name,
         private readonly FinderQuery $searchQuery,
         private readonly QueryBuilder $queryBuilder,
-        private readonly ?\Closure $rowTransformer = null
+        private readonly ?\Closure $rowTransformer = null,
+        private readonly bool $readonly = true
     ) {
+    }
+
+    /**
+     * Checks if the retrieved entities are marked as readOnly in the ORM.
+     */
+    public function isReadonly(): bool
+    {
+        return $this->readonly;
     }
 
     public function count(): int
@@ -40,11 +49,12 @@ class FinderResult implements FinderResultInterface, \Countable
         if (null !== $this->rowTransformer) {
             $count = 0;
             foreach ($this->results as $result) {
+                $this->queryBuilder->getEntityManager()->getUnitOfWork()->markReadOnly($result);
+
                 yield ($this->rowTransformer)($result);
 
                 ++$count;
                 if (0 === $count % 30 && $flush) {
-                    // $this->queryBuilder->getEntityManager()->clear();
                     flush();
                 }
             }
@@ -81,7 +91,8 @@ class FinderResult implements FinderResultInterface, \Countable
 
         return $this->queryBuilder
             ->getQuery()
-            ->setHint(SqlWalker::HINT_DISTINCT, true);
+            ->setHint(SqlWalker::HINT_DISTINCT, true)
+            ->setHint(Query::HINT_READ_ONLY, $this->readonly);
     }
 
     public function toResponse(): StreamedJsonResponse

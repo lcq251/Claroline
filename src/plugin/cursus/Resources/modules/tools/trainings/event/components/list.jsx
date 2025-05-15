@@ -7,19 +7,38 @@ import {PageListSection} from '#/main/app/page'
 
 import {EventList} from '#/plugin/cursus/event/components/list'
 import {selectors} from '#/plugin/cursus/tools/trainings/event/store'
+import {MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
+import {MODAL_TRAINING_EVENT_FORM} from '#/plugin/cursus/event/modals/form'
 
 const EventsList = (props) =>
   <ToolPage
-    title={props.title}
+    title={trans('session_events', {}, 'cursus')}
   >
     <PageListSection
-      title={props.title}
+      title={trans('session_events', {}, 'cursus')}
+      addAction={{
+        type: MODAL_BUTTON,
+        label: trans('plan_training_event', {}, 'actions'),
+        modal: [MODAL_TRAINING_SESSIONS, {
+          multiple: false,
+          selectAction: (selected) => ({
+            type: MODAL_BUTTON,
+            label: trans('plan_training_event', {}, 'actions'),
+            modal: [MODAL_TRAINING_EVENT_FORM, {
+              session: selected[0],
+              onSave: props.invalidateList
+            }]
+          })
+        }],
+        displayed: props.canEdit
+      }}
     >
       <EventList
         className="mb-5"
         flush={true}
         path={props.path}
-        name={selectors.STORE_NAME}
+        name={selectors.STORE_NAME+'.list'}
         url={props.url}
         customDefinition={[
           {
@@ -35,8 +54,8 @@ const EventsList = (props) =>
 
 EventsList.propTypes = {
   path: T.string.isRequired,
-  title: T.string.isRequired,
-  url: T.oneOfType([T.array, T.string]).isRequired
+  url: T.oneOfType([T.array, T.string]).isRequired,
+  canEdit: T.bool.isRequired
 }
 
 export {

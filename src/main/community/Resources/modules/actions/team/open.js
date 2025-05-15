@@ -3,11 +3,12 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/community/team/routing'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Open team action.
  */
-export default (teams, refresher, path) => ({
+export default declareAction((teams, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-arrow-circle-right',
@@ -16,4 +17,4 @@ export default (teams, refresher, path) => ({
   target: route(teams[0], path),
   scope: ['object'],
   default: true
-})
+}))

@@ -17,6 +17,9 @@ use Claroline\CoreBundle\API\Finder\Filter\FieldFacetFilter;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class SessionUserFinder extends AbstractFinder
 {
     public static function getClass(): string

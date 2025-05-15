@@ -9,8 +9,8 @@ import {DataMicro} from '#/main/app/data/components/micro'
 
 const RoleDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_role', {}, 'community')}
+    {...props}
     card={(cardProps) => <DataMicro {...cardProps} object={{name: trans(cardProps.object.translationKey)}} />}
   />
 

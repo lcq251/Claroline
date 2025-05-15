@@ -2,8 +2,9 @@ import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
-export default (workspaces, refresher) => {
+export default declareAction((workspaces, refresher) => {
   const processable = workspaces.filter(workspace => hasPermission('administrate', workspace))
 
   return {
@@ -30,4 +31,4 @@ export default (workspaces, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

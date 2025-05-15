@@ -15,7 +15,7 @@ import {PageContent, PageHeadingSkeleton} from '#/main/app/page'
 import {SequencePage} from '#/main/evaluation/sequence/components/page'
 
 const SequenceShow = props => {
-  const [sequence, status, error, errorCode] = useFetch(selectors.STORE_NAME, ['apiv2_evaluation_sequence_open', {id: props.id}])
+  const [sequence, status] = useFetch(selectors.STORE_NAME, ['apiv2_evaluation_sequence_open', {id: props.id}])
 
   if ('succeeded' === status) {
     return (
@@ -35,7 +35,7 @@ const SequenceShow = props => {
             disabled: !hasPermission('edit', sequence.sequence)
           }, {
             path: '/dashboard',
-            disabled: !hasPermission('edit', sequence.sequence),
+            disabled: !hasPermission('follow', sequence.sequence),
             component: SequenceDashboard
           }, {
             path: '/progression',

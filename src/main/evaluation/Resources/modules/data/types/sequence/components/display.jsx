@@ -8,8 +8,8 @@ import {Sequence as SequenceTypes} from '#/main/evaluation/sequence/prop-types'
 
 const SequenceDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_sequence', {}, 'evaluation')}
+    {...props}
   />
 
 SequenceDisplay.propTypes = {

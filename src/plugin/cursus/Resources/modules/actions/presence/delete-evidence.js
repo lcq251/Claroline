@@ -2,11 +2,12 @@ import {hasPermission} from '#/main/app/security'
 import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete evidence action.
  */
-export default (presences, refresher) => {
+export default declareAction((presences, refresher) => {
   const processable = presences.filter(presence => hasPermission('edit', presence))
 
   return {
@@ -30,4 +31,4 @@ export default (presences, refresher) => {
     group: trans('management'),
     scope: ['object']
   }
-}
+})

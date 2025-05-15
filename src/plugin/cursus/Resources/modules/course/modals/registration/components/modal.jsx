@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -26,11 +26,8 @@ const RegistrationModal = props => {
   return (
     <Modal
       {...omit(props, 'path', 'course', 'session', 'register')}
-      icon="fa fa-fw fa-user-plus"
       title={trans('registration')}
       subtitle={getInfo(props.course, activeSession, 'name')}
-      poster={getInfo(props.course, activeSession, 'poster')}
-      size="lg"
     >
       {(!activeSession && isEmpty(props.available)) &&
         <div className="modal-body">
@@ -41,11 +38,12 @@ const RegistrationModal = props => {
 
       {(!activeSession && !isEmpty(props.available)) &&
         <div className="modal-body lead text-center">
-          <p className="lead text-center">Veuillez choisir à quelle session vous désirez vous inscrire.</p>
+          <p className="lead text-center mb-5">Veuillez choisir à quelle session vous désirez vous inscrire.</p>
 
-          <div className="d-flex flex-column gap-1">
+          <div className="d-flex flex-column gap-1 mb-3">
             {props.available.map(session =>
               <SessionCard
+                orientation="row"
                 key={session.id}
                 data={session}
                 primaryAction={{
@@ -59,13 +57,11 @@ const RegistrationModal = props => {
       }
 
       {activeSession &&
-        <Fragment>
+        <div className="modal-body">
           {isFull(activeSession) &&
-            <div className="modal-body">
-              <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
-                {trans('Vous pouvez vous inscrire en liste d\'attente ou parcourir les autres sessions.', {}, 'cursus')}
-              </Alert>
-            </div>
+            <Alert type="warning" title={trans('session_full', {}, 'cursus')}>
+              {trans('Vous pouvez vous inscrire en liste d\'attente ou parcourir les autres sessions.', {}, 'cursus')}
+            </Alert>
           }
 
           <DetailsData
@@ -77,13 +73,9 @@ const RegistrationModal = props => {
                 primary: true,
                 fields: [
                   {
-                    name: 'restrictions.dates',
+                    name: 'dates',
                     type: 'date-range',
                     label: trans('date')
-                  }, {
-                    name: 'description',
-                    type: 'html',
-                    label: trans('description')
                   }, {
                     name: 'location',
                     type: 'location',
@@ -97,18 +89,23 @@ const RegistrationModal = props => {
                     label: trans('available_seats', {}, 'cursus'),
                     displayed: (session) => !!get(session, 'restrictions.users'),
                     calculated: (session) => (get(session, 'restrictions.users') - get(session, 'participants.learners')) + ' / ' + get(session, 'restrictions.users')
+                  }, {
+                    name: 'description',
+                    type: 'html',
+                    label: trans('description')
                   }
                 ]
               }
             ]}
           />
-        </Fragment>
+        </div>
       }
 
       <Toolbar
-        className="btn-group-vertical"
-        variant="btn"
-        buttonName="modal-btn"
+        className="modal-footer"
+        buttonName="btn"
+        defaultName="btn-link"
+        primaryName="btn-primary"
         actions={[
           {
             name: 'show_other_sessions',
@@ -128,7 +125,7 @@ const RegistrationModal = props => {
             displayed: isEmpty(get(props.course, 'registration.form', [])) && (
               // no session but course pending list is enabled
               (!activeSession && get(props.course, 'registration.pendingRegistrations')) ||
-              // session is full with pending list enabled
+              // session is full and pending list is enabled
               activeSession && isFull(activeSession) && get(activeSession, 'registration.pendingRegistrations')
             )
           }, {
@@ -157,7 +154,6 @@ const RegistrationModal = props => {
               props.register(props.course, activeSession ? activeSession.id : null)
               props.fadeModal()
             },
-            size: 'lg',
             displayed: isEmpty(get(props.course, 'registration.form', [])) && (activeSession && !isFull(activeSession))
           }, {
             name: 'self_register',
@@ -172,7 +168,6 @@ const RegistrationModal = props => {
                 props.register(props.course, activeSession ? activeSession.id : null, registrationData.data)
               }
             }],
-            size: 'lg',
             displayed: !isEmpty(get(props.course, 'registration.form', [])) && (activeSession && !isFull(activeSession))
           }
         ]}

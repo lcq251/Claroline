@@ -5,10 +5,8 @@ import omit from 'lodash/omit'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {Button} from '#/main/app/action/components/button'
-import {LINK_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {UserCard} from '#/main/community/user/components/card'
-import {route} from '#/main/community//user/routing'
 
 const RegistrationUsers = (props) =>
   <>
@@ -16,19 +14,15 @@ const RegistrationUsers = (props) =>
       delete={props.unregisterUrl ? {
         url: props.unregisterUrl,
         label: trans('unregister', {}, 'actions'),
-        displayed: (row) => hasPermission('administrate', row)
+        displayed: (rows) => -1 !== rows.findIndex((row) => hasPermission('administrate', row))
       } : undefined}
-      primaryAction={(row) => ({
-        type: LINK_BUTTON,
-        label: trans('show_profile', {}, 'actions'),
-        target: route(row.user)
-      })}
       definition={[
         {
           name: 'user',
           type: 'user',
           label: trans('user'),
-          displayed: true
+          displayed: true,
+          order: 0
         }, {
           name: 'date',
           type: 'date',
@@ -36,7 +30,7 @@ const RegistrationUsers = (props) =>
           options: {time: true},
           displayed: true
         }, {
-          name: 'userDisabled',
+          name: 'user.disabled',
           label: trans('user_disabled', {}, 'community'),
           type: 'boolean',
           displayable: false,
@@ -58,7 +52,7 @@ const RegistrationUsers = (props) =>
 
     {props.add &&
       <Button
-        className="w-100 mb-3"
+        className="w-100 mt-4 mb-5"
         variant="btn"
         primary={true}
         size="lg"
@@ -70,7 +64,7 @@ const RegistrationUsers = (props) =>
 RegistrationUsers.propTypes = {
   name: T.string.isRequired,
   url: T.oneOfType([T.string, T.array]).isRequired,
-  unregisterUrl: T.oneOfType([T.string, T.array]).isRequired,
+  unregisterUrl: T.oneOfType([T.string, T.array]),
   customDefinition: T.arrayOf(T.shape({
     // data list prop types
   })),

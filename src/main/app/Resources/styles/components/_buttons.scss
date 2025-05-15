@@ -2,6 +2,23 @@
  * Buttons styles
  */
 
+// absorbs button borders for correct alignment/sizing with surrounding elements
+// this cannot be done directly in the $btn-padding-* vars because they are used in some calculation during compilation
+.btn {
+    --#{$prefix}btn-padding-x: calc(#{$btn-padding-x} - #{$btn-border-width});
+    --#{$prefix}btn-padding-y: calc(#{$btn-padding-y} - #{$btn-border-width});
+}
+
+.btn-lg {
+    --#{$prefix}btn-padding-x: calc(#{$btn-padding-x-lg} - #{$btn-border-width});
+    --#{$prefix}btn-padding-y: calc(#{$btn-padding-y-lg} - #{$btn-border-width});
+}
+
+.btn-sm {
+    --#{$prefix}btn-padding-x: calc(#{$btn-padding-x-sm} - #{$btn-border-width});
+    --#{$prefix}btn-padding-y: calc(#{$btn-padding-y-sm} - #{$btn-border-width});
+}
+
 .toolbar-separator {
     display: inline-block;
     margin: map-get($spacers, 2);
@@ -30,12 +47,6 @@
 
 // Button text variants
 
-@each $color, $value in $theme-colors {
-    .btn-text-#{$color} {
-        @include button-text-variant($value);
-    }
-}
-
 .btn-text-body {
     @include button-text-variant(
         var(--#{$prefix}secondary-color),
@@ -51,7 +62,7 @@
 
 .btn-body {
     --#{$prefix}btn-color: var(--#{$prefix}body-color);
-    --#{$prefix}btn-bg: var(--#{$prefix}tertiary-bg);
+    --#{$prefix}btn-bg: var(--#{$prefix}body-bg);
     --#{$prefix}btn-border-color: var(--#{$prefix}border-color-translucent);
 
     --#{$prefix}btn-hover-color: var(--#{$prefix}body-color);
@@ -73,6 +84,7 @@
 /*.btn:active {
     transform: scale(0.97);
 }*/
+
 
 //-
 // Button effects

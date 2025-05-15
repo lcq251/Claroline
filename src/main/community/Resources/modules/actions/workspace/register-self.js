@@ -4,11 +4,12 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {isAdmin} from '#/main/app/security/permissions'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Let the current user register himself to some workspaces.
  */
-export default (workspaces, refresher, path, currentUser) => {
+export default declareAction((workspaces, refresher, path, currentUser) => {
   const processable = workspaces.filter(workspace => !workspace.registered && !get(workspace, 'meta.model') && !get(workspace, 'meta.archived') && !get(workspace, 'registration.waitingForRegistration')
     && (get(workspace, 'registration.selfRegistration') || isAdmin(currentUser)))
 
@@ -36,4 +37,4 @@ export default (workspaces, refresher, path, currentUser) => {
     scope: ['object', 'collection'],
     primary: true
   }
-}
+})

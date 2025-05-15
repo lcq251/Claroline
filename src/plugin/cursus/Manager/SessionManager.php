@@ -140,6 +140,7 @@ class SessionManager
 
             if (empty($sessionUser)) {
                 $sessionUser = new SessionUser();
+                $sessionUser->setCourse($session->getCourse());
                 $sessionUser->setSession($session);
                 $sessionUser->setUser($user);
 
@@ -161,25 +162,32 @@ class SessionManager
     /**
      * @param SessionUser[] $sessionUsers
      */
-    public function moveUsers(Session $targetSession, array $sessionUsers, string $type = AbstractRegistration::LEARNER): void
+    public function moveUsers(?Session $targetSession = null, ?array $sessionUsers = [], string $type = AbstractRegistration::LEARNER): void
     {
         $this->om->startFlushSuite();
 
-        // unregister users from current session
-        $this->crud->deleteBulk($sessionUsers);
-
-        // register to the new session
-        $registrationData = [];
-        $users = array_map(function (SessionUser $sessionUser) use (&$registrationData) {
-            $serialized = $this->serializer->serialize($sessionUser);
-            if ($serialized['data']) {
-                $registrationData[$sessionUser->getUser()->getUuid()] = $serialized['data'];
+        if (empty($targetSession)) {
+            foreach ($sessionUsers as $sessionUser) {
+                $sessionUser->setSession(null);
+                $this->om->persist($sessionUser);
             }
+        } else {
+            // unregister users from current session
+            $this->crud->deleteBulk($sessionUsers, [Crud::NO_PERMISSIONS]);
 
-            return $sessionUser->getUser();
-        }, $sessionUsers);
+            // register to the new session
+            $registrationData = [];
+            $users = array_map(function (SessionUser $sessionUser) use (&$registrationData) {
+                $serialized = $this->serializer->serialize($sessionUser);
+                if ($serialized['data']) {
+                    $registrationData[$sessionUser->getUser()->getUuid()] = $serialized['data'];
+                }
 
-        $this->addUsers($targetSession, $users, $type, true, $registrationData);
+                return $sessionUser->getUser();
+            }, $sessionUsers);
+
+            $this->addUsers($targetSession, $users, $type, true, $registrationData);
+        }
 
         $this->om->endFlushSuite();
     }

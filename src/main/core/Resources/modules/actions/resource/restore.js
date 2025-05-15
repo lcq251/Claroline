@@ -4,6 +4,7 @@ import {url} from '#/main/app/api/router'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Restores some soft deleted resource nodes.
@@ -11,7 +12,7 @@ import {hasPermission} from '#/main/app/security'
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
  * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
  */
-export default (resourceNodes, nodesRefresher) => {
+export default declareAction((resourceNodes, nodesRefresher) => {
   const processable = resourceNodes.filter(node => !get(node, 'meta.active') && hasPermission('administrate', node))
 
   return {
@@ -39,6 +40,8 @@ export default (resourceNodes, nodesRefresher) => {
         method: 'POST'
       },
       success: (restoredNodes) => nodesRefresher.update(restoredNodes)
-    }
+    },
+    group: trans('management'),
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
-}
+})

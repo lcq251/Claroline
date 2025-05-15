@@ -2,8 +2,9 @@ import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
-export default (users, refresher, path, currentUser) => ({
+export default declareAction((users, refresher, path, currentUser) => ({
   name: 'view-as',
   type: URL_BUTTON,
   icon: 'fa fa-fw fa-mask',
@@ -15,4 +16,4 @@ export default (users, refresher, path, currentUser) => ({
   target: url(['claro_index', {_switch: users[0].username}])+(path ? '#'+path.replace('community', '') : ''),
   group: trans('management'),
   scope: ['object']
-})
+}))

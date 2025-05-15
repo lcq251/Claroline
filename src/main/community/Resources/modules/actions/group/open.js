@@ -3,11 +3,12 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/community/group/routing'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Open group action.
  */
-export default (groups, refresher, path) => ({
+export default declareAction((groups, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-arrow-circle-right',
@@ -16,4 +17,4 @@ export default (groups, refresher, path) => ({
   target: route(groups[0], path),
   scope: ['object'],
   default: true
-})
+}))

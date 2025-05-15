@@ -3,9 +3,10 @@ import {PropTypes as T} from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 
 import {Button} from '#/main/app/action'
-import {Toolbar} from '#/main/app/action/components/toolbar'
 
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
+import {MENU_BUTTON} from '#/main/app/buttons'
+import {trans} from '#/main/app/intl'
 
 const PageActions = (props) => {
   if (isEmpty(props.actions)) {
@@ -23,52 +24,35 @@ const PageActions = (props) => {
     }
   }
 
-  let secondaryAction
-  if (props.secondaryAction) {
-    const secondaryPos = actions.findIndex(action => action.name === props.secondaryAction)
-    if (-1 !== secondaryPos) {
-      secondaryAction = actions[secondaryPos]
-      actions.splice(secondaryPos, 1)
-    }
-  }
-
-  if (!secondaryAction && 1 === actions.length) {
-    secondaryAction = actions[0]
+  if (!primaryAction) {
+    primaryAction = actions[0]
     actions.splice(0, 1)
   }
 
   return (
-    <div className="gap-1 ms-auto d-flex flex-nowrap" role="toolbar">
+    <div className="btn-group ms-auto d-flex flex-nowrap" role="toolbar">
       {primaryAction && (undefined === primaryAction.displayed || primaryAction.displayed) &&
         <Button
           {...primaryAction}
-          className="btn btn-body px-3 py-2"
-          icon={undefined}
-          tooltip={undefined}
+          className="btn btn-body"
+          //icon={undefined}
           size="sm"
-        />
-      }
-
-      {secondaryAction && (undefined === secondaryAction.displayed || secondaryAction.displayed) &&
-        <Button
-          {...secondaryAction}
-          className="btn btn-body px-3 py-2"
-          icon={undefined}
-          tooltip={undefined}
-          size="sm"
+          disabled={props.disabled || props.primaryAction.disabled}
         />
       }
 
       {!isEmpty(actions) &&
-        <Toolbar
-          className="btn-toolbar gap-1 flex-nowrap"
-          buttonName="btn btn-text-body px-2 py-2 focus-ring focus-ring-secondary"
+        <Button
+          className="btn btn-body"
+          type={MENU_BUTTON}
+          icon="fa fa-chevron-down text-body-tertiary fs-sm"
           tooltip="bottom"
-          toolbar={props.toolbar}
-          actions={actions}
+          label={trans('show-more-actions', {}, 'actions')}
           disabled={props.disabled}
-          scope="object"
-          role="presentation"
+          menu={{
+            items: actions,
+            align: 'end'
+          }}
           size="sm"
         />
       }
@@ -86,14 +70,6 @@ PageActions.propTypes = {
   primaryAction: T.string,
 
   /**
-   * The name of an optional secondary action of the page.
-   * NB. The action MUST be defined in the `actions` list.
-   */
-  secondaryAction: T.string,
-
-  toolbar: T.string,
-
-  /**
    * The list of actions available for the current page.
    * NB. This list MUST contain the actions for `primaryAction` and `secondaryAction` if defined.
    *
@@ -101,7 +77,8 @@ PageActions.propTypes = {
    */
   actions: T.arrayOf(T.shape(
     ActionTypes.propTypes
-  ))
+  )),
+  size: T.oneOf(['sm', 'lg'])
 }
 
 export {

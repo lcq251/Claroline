@@ -3,11 +3,12 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/evaluation/sequence'
 import {hasPermission} from '#/main/app/security'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Displays a form to modify sequence properties.
  */
-export default (sequences, refresher, path) => ({
+export default declareAction((sequences, refresher, path) => ({
   name: 'configure',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-sliders',
@@ -16,5 +17,5 @@ export default (sequences, refresher, path) => ({
   displayed: -1 !== sequences.findIndex(sequence => hasPermission('edit', sequence)),
   group: trans('management'),
   scope: ['object'],
-  primary: true
-})
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
+}))

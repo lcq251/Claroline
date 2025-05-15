@@ -8,8 +8,8 @@ import {Group as GroupTypes} from '#/main/community/prop-types'
 
 const GroupDisplay = (props) =>
   <EntityDisplay
-    {...props}
     placeholder={trans('no_group', {}, 'community')}
+    {...props}
   />
 
 GroupDisplay.propTypes = {

@@ -11,9 +11,11 @@
 
 namespace Claroline\CursusBundle\Entity\Registration;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Facet\FieldFacetValue;
 use Claroline\CursusBundle\Entity\Course;
 use Claroline\CursusBundle\Entity\Session;
+use Claroline\CursusBundle\Finder\Registration\SessionUserType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_cursusbundle_course_session_user')]
 #[ORM\UniqueConstraint(name: 'training_session_unique_user', columns: ['session_id', 'user_id'])]
 #[ORM\Entity]
+#[CrudEntity(finderClass: SessionUserType::class)]
 class SessionUser extends AbstractUserRegistration
 {
     #[ORM\JoinColumn(name: 'course_id', nullable: false, onDelete: 'CASCADE')]

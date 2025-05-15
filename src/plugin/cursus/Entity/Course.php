@@ -55,6 +55,15 @@ class Course extends AbstractTraining
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $certification = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $objectives = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $requirements = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $targetAudience = null;
+
     /**
      * @var Collection<int, Session>
      */
@@ -136,6 +145,36 @@ class Course extends AbstractTraining
     public function setCertification(?string $certification): void
     {
         $this->certification = $certification;
+    }
+
+    public function getObjectives(): ?string
+    {
+        return $this->objectives;
+    }
+
+    public function setObjectives(string $objectives = null): void
+    {
+        $this->objectives = $objectives;
+    }
+
+    public function getRequirements(): ?string
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements(?string $requirements = null): void
+    {
+        $this->requirements = $requirements;
+    }
+
+    public function getTargetAudience(): ?string
+    {
+        return $this->targetAudience;
+    }
+
+    public function setTargetAudience(?string $targetAudience = null): void
+    {
+        $this->targetAudience = $targetAudience;
     }
 
     public function getSessions(): Collection

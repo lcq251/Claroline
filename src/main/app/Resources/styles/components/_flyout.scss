@@ -2,6 +2,7 @@
 .flyout-menu {
   flex-direction: column;
   overflow-y: hidden;
+  background: var(--#{$prefix}body-bg);
 
   @include border-radius(var(--#{$prefix}border-radius-xl));
 

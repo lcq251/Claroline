@@ -57,7 +57,6 @@ FormPrimarySection.propTypes = {
   className: T.string,
   level: T.number, // level for section heading
   displayLevel: T.number, // modifier for headings level (used when some headings levels are hidden in the page)
-  first: T.bool,
   title: T.string,
   hideTitle: T.bool,
   description: T.string,
@@ -130,7 +129,6 @@ FormToggleSection.propTypes = {
   className: T.string,
   level: T.number, // level for section heading
   displayLevel: T.number, // modifier for headings level (used when some headings levels are hidden in the page)
-  first: T.bool,
   title: T.string,
   hideTitle: T.bool,
   description: T.string,

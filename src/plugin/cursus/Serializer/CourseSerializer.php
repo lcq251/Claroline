@@ -96,6 +96,9 @@ class CourseSerializer
                 'archived' => $course->isArchived(),
             ],
             'certification' => $course->getCertification(),
+            'objectives' => $course->getObjectives(),
+            'requirements' => $course->getRequirements(),
+            'targetAudience' => $course->getTargetAudience(),
             'pricing' => [
                 'price' => $course->getPrice(),
                 'description' => $course->getPriceDescription(),
@@ -106,7 +109,6 @@ class CourseSerializer
             ],
             'restrictions' => [
                 'hidden' => $course->isHidden(),
-                // 'active' => $course->hasAvailableSession(),
             ],
             'tags' => $this->serializeTags($course),
         ];
@@ -184,6 +186,9 @@ class CourseSerializer
         $this->sipe('opening.session', 'setSessionOpening', $data, $course);
 
         $this->sipe('certification', 'setCertification', $data, $course);
+        $this->sipe('objectives', 'setObjectives', $data, $course);
+        $this->sipe('requirements', 'setRequirements', $data, $course);
+        $this->sipe('targetAudience', 'setTargetAudience', $data, $course);
         $this->sipe('pricing.price', 'setPrice', $data, $course);
         $this->sipe('pricing.description', 'setPriceDescription', $data, $course);
 

@@ -12,7 +12,7 @@ const SessionMain = connect(
   }),
   (dispatch) => ({
     invalidateList() {
-      dispatch(listActions.invalidateData(selectors.STORE_NAME))
+      dispatch(listActions.invalidateData(selectors.STORE_NAME + '.list'))
     }
   })
 )(SessionMainComponent)

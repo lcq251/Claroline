@@ -152,6 +152,7 @@ class SequenceSerializer
             $serialized['permissions'] = [
                 'open' => $administrate || $this->authorization->isGranted('OPEN', $sequence),
                 'delete' => $administrate,
+                'follow' => $administrate || $this->authorization->isGranted('EDIT', $sequence),
                 'edit' => $administrate || $this->authorization->isGranted('EDIT', $sequence),
                 'administrate' => $administrate,
             ];
@@ -294,7 +295,7 @@ class SequenceSerializer
     {
         $ids = [];
         foreach ($assignmentsData as $assignmentData) {
-            if ($assignmentData['id']) {
+            if (isset($assignmentData['id'])) {
                 $assignment = $sequence->getAssignment($assignmentData['id']);
             }
 

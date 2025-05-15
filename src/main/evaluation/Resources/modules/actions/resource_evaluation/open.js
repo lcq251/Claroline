@@ -4,8 +4,9 @@ import {hasPermission} from '#/main/app/security'
 import {MODAL_USER_PROGRESSION} from '#/main/evaluation/sequence/modals/user-progression'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_RESOURCE_EVALUATIONS} from '#/main/evaluation/modals/resource-evaluations'
+import {declareAction} from '#/main/app/action'
 
-export default (evaluations) => ({
+export default declareAction((evaluations) => ({
   name: 'open',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-eye',
@@ -16,4 +17,4 @@ export default (evaluations) => ({
     userEvaluation: evaluations[0]
   }],
   default: true
-})
+}))
