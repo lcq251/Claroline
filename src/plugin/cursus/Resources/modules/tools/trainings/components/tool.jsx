@@ -106,7 +106,7 @@ const TrainingsTool = (props) =>
       }
     ]}
     editor={TrainingsEditor}
-    dashboard={TrainingsDashboard}
+    // dashboard={TrainingsDashboard}
   />
 
 TrainingsTool.propTypes = {
