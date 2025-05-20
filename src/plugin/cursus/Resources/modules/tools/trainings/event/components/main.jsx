@@ -20,10 +20,9 @@ const EventMain = (props) =>
         render: useCallback(() => (
           <EventsList
             path={props.path}
-            url={props.authenticated && (props.canEdit || props.canRegister) ?
-              ['apiv2_cursus_event_list', {workspace: props.contextId}] :
-              ['apiv2_cursus_event_public', {workspace: props.contextId}]
-            }
+            contextType={props.contextType}
+            contextId={props.contextId}
+            invalidateList={props.invalidateList}
             canEdit={props.canEdit}
           />
         ),[props.path, props.authenticated, props.canEdit, props.canRegister]),
@@ -32,6 +31,8 @@ const EventMain = (props) =>
         render: useCallback(() => (
           <TrainingsEventUsers
             path={props.path}
+            contextType={props.contextType}
+            contextId={props.contextId}
             title={trans('participants')}
             type={constants.LEARNER_TYPE}
             name={selectors.STORE_NAME+'.participants'}
@@ -43,6 +44,8 @@ const EventMain = (props) =>
         render: useCallback(() => (
           <TrainingsEventUsers
             path={props.path}
+            contextType={props.contextType}
+            contextId={props.contextId}
             title={trans('tutors', {}, 'cursus')}
             type={constants.TEACHER_TYPE}
             name={selectors.STORE_NAME+'.tutors'}

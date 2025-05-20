@@ -26,7 +26,8 @@ const TrainingsTool = (props) =>
         name: 'catalog',
         type: LINK_BUTTON,
         label: trans('catalog', {}, 'cursus'),
-        target: props.path+'/course'
+        target: props.path+'/course',
+        displayed: 'desktop' === props.contextType
       }, {
         name: 'sessions',
         type: MENU_BUTTON,
@@ -92,7 +93,8 @@ const TrainingsTool = (props) =>
         exact: true
       }, {
         path: '/course',
-        component: CatalogMain
+        component: CatalogMain,
+        disabled: 'desktop' !== props.contextType
       }, {
         path: '/sessions',
         component: SessionMain,

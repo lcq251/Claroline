@@ -16,6 +16,9 @@ use Claroline\CommunityBundle\Finder\Filter\UserFilter;
 use Claroline\CursusBundle\Entity\EventPresence;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class EventPresenceFinder extends AbstractFinder
 {
     public static function getClass(): string

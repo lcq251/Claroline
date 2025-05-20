@@ -35,9 +35,13 @@ class EventType extends AbstractType
             ->add('description', TextType::class)
             // ->add('startDate', DateType::class)
             // ->add('endDate', DateType::class)
-            // ->add('session', SessionType::class)
-            ->add('workspace', WorkspaceType::class, [
-                'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+            ->add('session', SessionType::class)
+            ->add('workspace', ClosureType::class, [
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    if (null === $finder->getFilterValue()) {
+                        return;
+                    }
+
                     $alias = $finder->getAlias();
                     if (!$finder->isRoot()) {
                         $alias = $finder->getParent()->getAlias();
@@ -45,6 +49,8 @@ class EventType extends AbstractType
 
                     $queryBuilder->leftJoin($alias.'.session', 'sessionWorkspace');
                     $queryBuilder->leftJoin('sessionWorkspace.workspace', $finder->getAlias());
+                    $queryBuilder->andWhere("{$finder->getAlias()}.uuid = :workspaceId");
+                    $queryBuilder->setParameter('workspaceId', $finder->getFilterValue());
                 },
             ])
             ->add('capacity', ClosureType::class, [

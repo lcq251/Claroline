@@ -43,7 +43,7 @@ const TrainingsSessionUsers = (props) =>
         className="mb-5"
         flush={true}
         name={props.name}
-        url={['apiv2_training_session_user_list']}
+        url={['apiv2_training_session_user_context_list', {context: props.contextType, contextId: props.contextId}]}
         unregisterUrl={['apiv2_training_session_user_delete']}
         customDefinition={[
           {
@@ -70,6 +70,8 @@ const TrainingsSessionUsers = (props) =>
 
 TrainingsSessionUsers.propTypes = {
   path: T.string.isRequired,
+  contextType: T.string.isRequired,
+  contextId: T.string.isRequired,
   title: T.string.isRequired,
   type: T.string.isRequired,
   name: T.string.isRequired,

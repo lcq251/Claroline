@@ -4,6 +4,7 @@ namespace Claroline\CursusBundle\Controller\Registration;
 
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\Controller\AbstractCrudController;
+use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\EventUser;
@@ -38,6 +39,23 @@ class EventUserController extends AbstractCrudController
     public static function getClass(): string
     {
         return EventUser::class;
+    }
+
+    #[Route(path: '/context/{context}/{contextId}', name: 'context_list', methods: ['GET'])]
+    public function listByContextAction(
+        string $context,
+        string $contextId = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        if (WorkspaceContext::getName() === $context) {
+            $finderQuery->addFilter('event.workspace', $contextId);
+        }
+
+        $options = static::getOptions();
+        $assertions = $this->crud->search(EventUser::class, $finderQuery, $options['list'] ?? []);
+
+        return $assertions->toResponse();
     }
 
     #[Route(path: '/{id}', name: 'event_list', methods: ['GET'])]

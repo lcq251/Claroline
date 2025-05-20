@@ -39,7 +39,7 @@ const EventsList = (props) =>
         flush={true}
         path={props.path}
         name={selectors.STORE_NAME+'.list'}
-        url={props.url}
+        url={['apiv2_cursus_event_list', {workspace: props.contextId}]}
         customDefinition={[
           {
             name: 'session',
@@ -54,7 +54,9 @@ const EventsList = (props) =>
 
 EventsList.propTypes = {
   path: T.string.isRequired,
-  url: T.oneOfType([T.array, T.string]).isRequired,
+  contextType: T.string.isRequired,
+  contextId: T.string,
+  invalidateList: T.func.isRequired,
   canEdit: T.bool.isRequired
 }
 

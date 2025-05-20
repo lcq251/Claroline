@@ -17,6 +17,9 @@ use Claroline\CursusBundle\Entity\Registration\EventUser;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class EventFinder extends AbstractFinder
 {
     public static function getClass(): string

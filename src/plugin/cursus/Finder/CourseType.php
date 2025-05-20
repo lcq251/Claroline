@@ -10,7 +10,6 @@ use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\NumericType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Finder\OrganizationType;
-use Claroline\CoreBundle\Finder\LocationType;
 use Claroline\CursusBundle\Entity\Course;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,17 +33,6 @@ class CourseType extends AbstractType
             ->add('price', NumericType::class)
             ->add('archived', BooleanType::class, ['default' => false])
             ->add('organizations', OrganizationType::class)
-            /*->add('location', LocationType::class, [
-                'joinQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
-                    $alias = $finder->getAlias();
-                    if (!$finder->isRoot()) {
-                        $alias = $finder->getParent()->getAlias();
-                    }
-
-                    $queryBuilder->leftJoin($alias.'.sessions', "{$finder->getAlias()}Sessions");
-                    $queryBuilder->leftJoin("{$finder->getAlias()}Sessions.location", $finder->getAlias());
-                },
-            ])*/
         ;
     }
 

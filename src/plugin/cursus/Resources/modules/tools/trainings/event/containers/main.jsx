@@ -12,7 +12,7 @@ const EventMain = connect(
   (state) => ({
     path: toolSelectors.path(state),
     contextType: toolSelectors.contextType(state),
-    currentId: toolSelectors.contextId(state),
+    contextId: toolSelectors.contextId(state),
     authenticated: securitySelectors.isAuthenticated(state),
     canEdit: hasPermission('edit', toolSelectors.toolData(state)),
     canRegister: hasPermission('register', toolSelectors.toolData(state))

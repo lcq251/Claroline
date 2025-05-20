@@ -36,7 +36,10 @@ class TrainingsTool extends ToolComponent
 
     public function supportsContext(string $context): bool
     {
-        return DesktopContext::getName() === $context;
+        return in_array($context, [
+            DesktopContext::getName(),
+            WorkspaceContext::getName(),
+        ]);
     }
 
     public function open(OrderedTool $tool, string $context, ContextSubjectInterface $contextSubject = null): ?array

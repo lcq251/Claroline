@@ -3,7 +3,9 @@
 namespace Claroline\CursusBundle\Controller\Registration;
 
 use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
+use Claroline\CoreBundle\Component\Context\WorkspaceContext;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -42,6 +44,23 @@ class SessionUserController extends AbstractCrudController
     public static function getClass(): string
     {
         return SessionUser::class;
+    }
+
+    #[Route(path: '/context/{context}/{contextId}', name: 'context_list', methods: ['GET'])]
+    public function listByContextAction(
+        string $context,
+        string $contextId = null,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
+        if (WorkspaceContext::getName() === $context) {
+            $finderQuery->addFilter('session.workspace', $contextId);
+        }
+
+        $options = static::getOptions();
+        $assertions = $this->crud->search(SessionUser::class, $finderQuery, $options['list'] ?? []);
+
+        return $assertions->toResponse();
     }
 
     /**

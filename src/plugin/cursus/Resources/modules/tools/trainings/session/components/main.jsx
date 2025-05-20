@@ -40,6 +40,8 @@ const SessionMain = (props) => {
           render: useCallback(() => (
             <TrainingsSessionUsers
               path={props.path}
+              contextType={contextType}
+              contextId={contextId}
               title={trans('participants')}
               type={constants.LEARNER_TYPE}
               name={selectors.STORE_NAME+'.participants'}
@@ -51,6 +53,8 @@ const SessionMain = (props) => {
           render: useCallback(() => (
             <TrainingsSessionUsers
               path={props.path}
+              contextType={contextType}
+              contextId={contextId}
               title={trans('tutors', {}, 'cursus')}
               type={constants.TEACHER_TYPE}
               name={selectors.STORE_NAME+'.tutors'}

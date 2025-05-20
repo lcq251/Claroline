@@ -1,10 +1,5 @@
 plugin:
     tools:
-        - name: training_events
-          icon: graduation-cap
-          tool_rights:
-              - register
-
         - name: trainings
           icon: graduation-cap
           tool_rights:

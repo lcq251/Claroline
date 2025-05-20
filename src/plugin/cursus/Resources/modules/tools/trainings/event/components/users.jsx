@@ -18,7 +18,7 @@ const TrainingsEventUsers = (props) => {
           flush={true}
           path={props.path}
           name={props.name}
-          url={['apiv2_training_event_user_list']}
+          url={['apiv2_training_event_user_context_list', {context: props.contextType, contextId: props.contextId}]}
           customDefinition={[
             {
               name: 'event',
@@ -46,6 +46,8 @@ const TrainingsEventUsers = (props) => {
 
 TrainingsEventUsers.propTypes = {
   path: T.string.isRequired,
+  contextType: T.string.isRequired,
+  contextId: T.string.isRequired,
   title: T.string.isRequired,
   type: T.string.isRequired,
   name: T.string.isRequired,

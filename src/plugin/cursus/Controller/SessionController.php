@@ -83,9 +83,9 @@ class SessionController extends AbstractCrudController
             $finderQuery->addFilter('workspace', $contextId);
         }
 
-        $assertions = $this->crud->search(Session::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+        $sessions = $this->crud->search(Session::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-        return $assertions->toResponse();
+        return $sessions->toResponse();
     }
 
     #[Route(path: '/copy', name: 'copy', methods: ['POST'])]
