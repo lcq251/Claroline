@@ -71,6 +71,7 @@ function getTabSummary(path, tab, showHidden = false) {
     icon: tab.icon ? `fa fa-fw fa-${tab.icon}` : undefined,
     label: tab.title,
     target: `${path}/${tab.slug}`,
+    indicator: true,
     menu: {
       align: 'end',
       items: children.map((child) => getTabSummary(path, child, showHidden))
