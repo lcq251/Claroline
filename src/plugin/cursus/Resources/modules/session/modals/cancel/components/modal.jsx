@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import omit from 'lodash/omit'
 import get from 'lodash/get'
@@ -40,7 +40,7 @@ const SessionCancelModal = props =>
     }}
   >
     <FormData
-      className="mt-5 mb-n4"
+      className="mt-5"
       name={selectors.STORE_NAME}
       definition={[
         {

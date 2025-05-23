@@ -51,7 +51,7 @@ class LoginAccount extends Component {
       >
         {this.props.resetPassword &&
           <Button
-            className="btn btn-link border-0 p-0 ms-auto text-wrap text-start mt-n2 mb-4"
+            className="btn btn-link border-0 p-0 ms-auto text-wrap text-start mt-n4"
             type={LINK_BUTTON}
             label={trans('forgot_password')}
             target="/reset_password"
@@ -59,7 +59,7 @@ class LoginAccount extends Component {
         }
 
         <Button
-          className="btn btn-primary w-100 mt-4"
+          className="btn btn-primary w-100"
           size="lg"
           type={CALLBACK_BUTTON}
           htmlType="submit"

@@ -16,70 +16,72 @@ class RegistrationMain extends Component {
 
   render() {
     return (
-      <FormData
-        level={2}
-        className="content-md"
-        name={selectors.FORM_NAME}
-        definition={[
-          {
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'lastName',
-                type: 'string',
-                label: trans('last_name'),
-                required: true
-              }, {
-                name: 'firstName',
-                type: 'string',
-                label: trans('first_name'),
-                required: true
-              }, {
-                name: 'email',
-                type: 'email',
-                label: trans('email'),
-                required: true,
-                options: {
-                  unique: {
-                    check: ['apiv2_user_get', {field: 'email'}]
+      <>
+        <FormData
+          level={2}
+          className="content-md"
+          name={selectors.FORM_NAME}
+          definition={[
+            {
+              title: trans('general'),
+              primary: true,
+              fields: [
+                {
+                  name: 'lastName',
+                  type: 'string',
+                  label: trans('last_name'),
+                  required: true
+                }, {
+                  name: 'firstName',
+                  type: 'string',
+                  label: trans('first_name'),
+                  required: true
+                }, {
+                  name: 'email',
+                  type: 'email',
+                  label: trans('email'),
+                  required: true,
+                  options: {
+                    unique: {
+                      check: ['apiv2_user_get', {field: 'email'}]
+                    }
                   }
-                }
-              }, {
-                name: 'username',
-                type: 'string',
-                label: trans('username'),
-                required: true,
-                displayed: param('community.username'),
-                options: {
-                  unique: {
-                    check: ['apiv2_user_get', {field: 'username'}],
-                    error: 'This username already exists.'
+                }, {
+                  name: 'username',
+                  type: 'string',
+                  label: trans('username'),
+                  required: true,
+                  displayed: param('community.username'),
+                  options: {
+                    unique: {
+                      check: ['apiv2_user_get', {field: 'username'}],
+                      error: 'This username already exists.'
+                    }
                   }
+                }, {
+                  name: 'plainPassword',
+                  type: 'password',
+                  label: trans('password'),
+                  required: true
+                }, {
+                  name: 'meta.acceptedTerms',
+                  type: 'boolean',
+                  label: trans('accept_terms_of_service'),
+                  required: true
                 }
-              }, {
-                name: 'plainPassword',
-                type: 'password',
-                label: trans('password'),
-                required: true
-              }, {
-                name: 'meta.acceptedTerms',
-                type: 'boolean',
-                label: trans('accept_terms_of_service'),
-                required: true
-              }
-            ]
-          }
-        ]}
-      >
-        <Button
-          className="btn btn-primary w-100 mt-4"
-          size="lg"
-          type={CALLBACK_BUTTON}
-          label={trans('create-account', {}, 'actions')}
-          callback={() => this.props.register(this.props.user, this.props.onRegister)}
-          htmlType="submit"
-        />
+              ]
+            }
+          ]}
+        >
+          <Button
+            className="btn btn-primary w-100"
+            size="lg"
+            type={CALLBACK_BUTTON}
+            label={trans('create-account', {}, 'actions')}
+            callback={() => this.props.register(this.props.user, this.props.onRegister)}
+            htmlType="submit"
+          />
+        </FormData>
 
         <Button
           className="btn btn-body w-100 mt-1"
@@ -87,7 +89,7 @@ class RegistrationMain extends Component {
           label={trans('login', {}, 'actions')}
           target="/login"
         />
-      </FormData>
+      </>
     )
   }
 }
