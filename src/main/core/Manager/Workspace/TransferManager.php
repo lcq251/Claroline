@@ -50,8 +50,11 @@ class TransferManager implements LoggerAwareInterface
         $options = [];
         $fileBag = $this->archiveManager->extractFiles($archive);
 
-        $defaultRole = $data['registration']['defaultRole'];
-        unset($data['registration']['defaultRole']);
+        $defaultRole = null;
+        if (!empty($data['registration']) && !empty($data['registration']['defaultRole'])) {
+            $defaultRole = $data['registration']['defaultRole'];
+            unset($data['registration']['defaultRole']);
+        }
 
         $workspace = $this->importWorkspace($data, $workspace, $fileBag, $options);
 
@@ -166,7 +169,7 @@ class TransferManager implements LoggerAwareInterface
         }, $workspace->getRoles()->toArray());
     }
 
-    private function importRoles(array $data, Workspace $workspace, array $defaultRole = null): array
+    private function importRoles(array $data, Workspace $workspace, ?array $defaultRole = null): array
     {
         $roles = [];
 

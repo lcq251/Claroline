@@ -36,7 +36,8 @@ const CreationModal = (props) => {
       StepComponent = (
         <CreationUpload
           changeStep={setCurrentStep}
-          create={create}
+          onCreate={props.onCreate}
+          fadeModal={props.fadeModal}
         />
       )
       break

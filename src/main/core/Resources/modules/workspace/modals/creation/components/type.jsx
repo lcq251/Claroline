@@ -9,7 +9,6 @@ import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {ContentMenu} from '#/main/app/content/components/menu'
 
 import {MODAL_WORKSPACES} from '#/main/core/modals/workspaces'
-import {MODAL_WORKSPACE_IMPORT} from '#/main/core/workspace/modals/import'
 
 const CreationType = (props) =>
   <div className="modal-body" role="presentation">
@@ -91,9 +90,8 @@ const CreationType = (props) =>
           label: trans('Importer une archive'),
           description: trans('Déposez une archive (.zip) générée à partir d\'une autre plateforme compatible.'),
           action: {
-            type: MODAL_BUTTON,
-            //callback: () => props.changeStep('upload'),
-            modal: [MODAL_WORKSPACE_IMPORT]
+            type: CALLBACK_BUTTON,
+            callback: () => props.changeStep('upload')
           },
           advanced: true,
           group: 'A partir d\'un contenu existant'

@@ -37,7 +37,7 @@ class AssignmentSerializer
         return 'sequence_assignment';
     }
 
-    public function serialize(Assignment $assignment, array $options = []): array
+    public function serialize(Assignment $assignment, ?array $options = []): array
     {
         return [
             'id' => $assignment->getUuid(),
@@ -48,14 +48,8 @@ class AssignmentSerializer
         ];
     }
 
-    public function deserialize(array $data, Assignment $assignment, array $options = []): Assignment
+    public function deserialize(array $data, Assignment $assignment, ?array $options = []): Assignment
     {
-        /*if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
-            $this->sipe('id', 'setUuid', $data, $assignment);
-        } else {
-            $assignment->refreshUuid();
-        }*/
-
         $this->sipe('required', 'setRequired', $data, $assignment);
         $this->sipe('scored', 'setScored', $data, $assignment);
 

@@ -2,7 +2,6 @@
 
 namespace Claroline\EvaluationBundle\Component\Tool;
 
-use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Options;
@@ -155,11 +154,33 @@ class ProgressionTool extends ToolComponent
             $newSequence = new Sequence();
             $newSequence->setWorkspace($contextSubject);
 
+            $assignments = [];
+            if (!empty($sequenceData['assignments'])) {
+                // we need to manually manage sequence requirements in order to link them to the correct roles
+                $assignments = $sequenceData['assignments'];
+                unset($sequenceData['assignments']);
+            }
+
             $this->crud->create($newSequence, $sequenceData, [
                 Crud::NO_PERMISSIONS, // this has already been checked by the core before forwarding the import
                 Crud::NO_VALIDATION,
                 Options::REFRESH_UUID,
             ]);
+
+            if (!empty($assignments)) {
+                foreach ($assignments as $assignmentData) {
+                    $role = $entities[$assignmentData['role']['id']];
+                    if (!empty($role)) {
+                        $assignment = new Assignment();
+                        $newSequence->addAssignment($assignment);
+                        $this->serializer->deserialize(array_merge($assignmentData, [
+                            'role' => [
+                                'id' => $role->getUuid(),
+                            ],
+                        ]), $assignment);
+                    }
+                }
+            }
 
             $entities[$sequenceData['id']] = $newSequence;
         }
