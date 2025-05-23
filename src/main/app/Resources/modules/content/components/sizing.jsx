@@ -9,7 +9,7 @@ const ContentSizing = (props) =>
 
 ContentSizing.propTypes = {
   className: T.string,
-  size: T.oneOf(['sm', 'md', 'lg', 'full']).isRequired,
+  size: T.oneOf(['sm', 'md', 'lg', 'xl', 'full']).isRequired,
   children: T.any
 }
 

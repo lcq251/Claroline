@@ -116,11 +116,7 @@ const AppearanceParameters = (props) =>
                                   success: () => props.removeIconSet(current)
                                 },
                                 disabled: current.default,
-                                confirm: {
-                                  title: transChoice('icon_set_delete_confirm_title', 1, {}, 'appearance'),
-                                  subtitle: current.name,
-                                  message: transChoice('icon_set_delete_confirm_message', 1, {count: 1}, 'appearance')
-                                },
+                                confirm: transChoice('icon_set_delete_confirm_message', 1, {count: 1}, 'appearance'),
                                 dangerous: true
                               }
                             ]}

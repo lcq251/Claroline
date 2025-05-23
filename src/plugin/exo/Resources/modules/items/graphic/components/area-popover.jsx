@@ -69,7 +69,7 @@ export class AreaPopover extends Component {
           />
         </Popover.Header>
         <Popover.Body>
-          <div className={classes('form-group', 'base-controls', {'mb-0': !this.state.showFeedback})}>
+          <div className={classes('form-group', 'base-controls', {'mb-3': this.state.showFeedback})}>
             <ColorInput
               id="area-color"
               className="color"

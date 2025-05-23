@@ -196,7 +196,6 @@ class TransferManager implements LoggerAwareInterface
     private function exportTools(Workspace $workspace, FileBag $fileBag): array
     {
         // we want to load the resources first
-        /** @var OrderedTool[] $orderedTools */
         $orderedTools = $this->toolProvider->getEnabledTools(WorkspaceContext::getName(), $workspace);
 
         $idx = null;
@@ -239,7 +238,7 @@ class TransferManager implements LoggerAwareInterface
         return $createdObjects;
     }
 
-    private function replaceResourceIds(array $data)
+    private function replaceResourceIds(array $data): array
     {
         if (empty($data['tools'])) {
             return $data;

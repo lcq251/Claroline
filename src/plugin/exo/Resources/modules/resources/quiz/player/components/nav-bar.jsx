@@ -191,7 +191,7 @@ NotLastQuestionButton.propTypes = {
 }
 
 const PlayerNav = props =>
-  <nav className="player-nav component-container">
+  <nav className="player-nav">
     <div className="backward">
       {props.showBack && props.previous &&
         <PreviousButton onClick={() => props.navigateToAndValidate(props.previous)} resourceId={props.resourceId} />

@@ -107,6 +107,15 @@ class PdfResource extends ResourceComponent implements DownloadableResourceInter
         return true;
     }
 
+    /** @param Pdf $resource */
+    public function export(AbstractResource $resource, FileBag $fileBag): ?array
+    {
+        // get the file path
+        $fileBag->add($resource->getUrl(), $resource->getUrl());
+
+        return [];
+    }
+
     public function supportsFile(File $file): int
     {
         if ('application/pdf' === $file->getMimeType()) {

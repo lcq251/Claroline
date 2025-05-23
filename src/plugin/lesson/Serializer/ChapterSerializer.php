@@ -82,7 +82,7 @@ class ChapterSerializer
             'nextSlug' => $nextChapter?->getSlug(),
         ];
 
-        if (in_array(static::INCLUDE_INTERNAL_NOTES, $options)) {
+        if (in_array(SerializerInterface::SERIALIZE_TRANSFER, $options) || in_array(static::INCLUDE_INTERNAL_NOTES, $options)) {
             $serialized['internalNote'] = $chapter->getInternalNote();
         }
 
@@ -97,10 +97,13 @@ class ChapterSerializer
         return $this->serializeChapterTreeNode($tree);
     }
 
-    public function deserialize(array $data, Chapter $chapter = null): Chapter
+    public function deserialize(array $data, Chapter $chapter, ?array $options = []): Chapter
     {
-        if (empty($chapter)) {
-            $chapter = new Chapter();
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $chapter);
+            $this->sipe('slug', 'setSlug', $data, $chapter);
+        } else {
+            $chapter->refreshUuid();
         }
 
         $this->sipe('title', 'setTitle', $data, $chapter);

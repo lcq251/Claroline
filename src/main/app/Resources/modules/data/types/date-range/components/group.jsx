@@ -17,7 +17,7 @@ const DateRangeGroup = props => {
   const error = typeof props.error === 'string' ? props.error : undefined
 
   return (
-    <fieldset className={classes('data-range-group form-group mb-4', props.className, getValidationClassName(props.error))}>
+    <fieldset className={classes('data-range-group form-group', props.className, getValidationClassName(props.error))}>
       {props.label &&
         <legend
           className={classes('form-label d-flex align-items-baseline gap-2', {

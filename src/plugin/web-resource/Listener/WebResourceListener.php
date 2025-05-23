@@ -13,25 +13,19 @@ namespace Claroline\WebResourceBundle\Listener;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
-use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\File;
-use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
-use Claroline\CoreBundle\Manager\ResourceManager;
 use Claroline\WebResourceBundle\Manager\WebResourceManager;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class WebResourceListener extends ResourceComponent implements DownloadableResourceInterface
 {
     public function __construct(
         private readonly string $filesDir,
-        private readonly ObjectManager $om,
         private readonly string $uploadDir,
         private readonly WebResourceManager $webResourceManager,
-        private readonly ResourceManager $resourceManager,
         private readonly SerializerProvider $serializer
     ) {
     }
@@ -46,7 +40,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
     {
         $ds = DIRECTORY_SEPARATOR;
 
-        $hash = $resource->getHashName();
+        $hash = $resource->getUrl();
         $workspace = $resource->getResourceNode()->getWorkspace();
         $unzippedPath = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid();
 
@@ -67,7 +61,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
     {
         return $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.
             DIRECTORY_SEPARATOR.$resource->getResourceNode()->getWorkspace()->getUuid().
-            DIRECTORY_SEPARATOR.$resource->getHashName();
+            DIRECTORY_SEPARATOR.$resource->getUrl();
     }
 
     /** @param File $resource */
@@ -77,7 +71,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
 
         $path = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$resource->getHashName();
 
-        $fileBag->add($resource->getHashName(), $path);
+        $fileBag->add($resource->getUrl(), $path);
 
         return [];
     }
@@ -90,7 +84,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         $filesPath = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$resource->getHashName();
 
         $fileSystem = new Filesystem();
-        $fileSystem->mirror($fileBag->get($resource->getHashName()), $filesPath);
+        $fileSystem->mirror($fileBag->get($resource->getUrl()), $filesPath);
     }
 
     /** @param File $resource */
@@ -101,7 +95,7 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         }
 
         $workspace = $resource->getResourceNode()->getWorkspace();
-        $hashName = $resource->getHashName();
+        $hashName = $resource->getUrl();
 
         $archiveFile = $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$hashName;
         if (file_exists($archiveFile)) {
@@ -114,24 +108,5 @@ class WebResourceListener extends ResourceComponent implements DownloadableResou
         }
 
         return true;
-    }
-
-    /**
-     * Changes actual file associated to File resource.
-     */
-    public function onFileChange(ResourceActionEvent $event): void
-    {
-        $parameters = $event->getData();
-        $node = $event->getResourceNode();
-
-        $resource = $this->resourceManager->getResourceFromNode($node);
-
-        if ($resource) {
-            $resource->setHashName($parameters['file']['hashName']);
-            $this->om->persist($resource);
-            $this->om->flush();
-        }
-
-        $event->setResponse(new JsonResponse($this->serializer->serialize($node)));
     }
 }

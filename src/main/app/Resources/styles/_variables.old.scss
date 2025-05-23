@@ -2,7 +2,6 @@
  * Default values for claroline vars
  */
 
-$component-margin-bottom: map-get($spacers, 3) !default;
 
 //== Panels
 // @deprecated
@@ -80,7 +79,7 @@ $loader-bg:        transparent !default;
 // ---
 
 $flying-alert-width:          34rem !default;
-$flying-alert-box-shadow:     $box-shadow/*, 0 0 1px rgba(0, 0, 0, .25)*/ !default;
+$flying-alert-box-shadow:     $box-shadow !default;
 
 
 // -

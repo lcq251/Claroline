@@ -6,6 +6,7 @@ use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AnnouncementBundle\Entity\AnnouncementParameters;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
@@ -64,7 +65,7 @@ final class AnnouncementTool extends ToolComponent
             $parameters->setOrderedTool($tool);
         }
 
-        $this->serializer->deserialize($configData['parameters'], $parameters, [Options::REFRESH_UUID]);
+        $this->serializer->deserialize($configData['parameters'], $parameters, [SerializerInterface::REFRESH_UUID]);
 
         $this->om->persist($parameters);
         $this->om->flush();

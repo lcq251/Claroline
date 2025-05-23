@@ -1382,8 +1382,8 @@ $card-group-margin:                 $grid-gutter-width * .5 !default;
 // Accordion
 
 // scss-docs-start accordion-variables
-$accordion-padding-y:                     1rem !default;
-$accordion-padding-x:                     1.25rem !default;
+$accordion-padding-y:                     map-get($spacers, 4) !default; // 1rem !default;
+$accordion-padding-x:                     map-get($spacers, 4) !default; // 1.25rem !default;
 $accordion-color:                         var(--#{$prefix}body-color) !default;
 $accordion-bg:                            var(--#{$prefix}body-bg) !default;
 $accordion-border-width:                  var(--#{$prefix}border-width) !default;
@@ -1394,7 +1394,7 @@ $accordion-inner-border-radius:           subtract($accordion-border-radius, $ac
 $accordion-body-padding-y:                $accordion-padding-y !default;
 $accordion-body-padding-x:                $accordion-padding-x !default;
 
-$accordion-button-padding-y:              $accordion-padding-y !default;
+$accordion-button-padding-y:              map-get($spacers, 3) !default; // $accordion-padding-y !default;
 $accordion-button-padding-x:              $accordion-padding-x !default;
 $accordion-button-color:                  var(--#{$prefix}body-color) !default;
 $accordion-button-bg:                     var(--#{$prefix}accordion-bg) !default;

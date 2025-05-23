@@ -1,9 +1,7 @@
 {
   "group": "Group",
   "groups": "Groups",
-  "group_delete_confirm_title": "{1} Group deletion | [2,Inf[ Groups deletion",
   "group_delete_confirm_message": "{1} Are you sure you want to delete this group? | [2,Inf[ Are you sure you want to delete these %count% groups?",
-  "group_unregister_confirm_title": "{1} Group unsubscription | [2,Inf[ Groups unsubscription",
   "group_unregister_confirm_message": "{1} Are you sure you want to unsubscribe this group? | [2,Inf[ Are you sure you want to unsubscribe these %count% groups?",
   "group_locked": "This group is locked and cannot be edited manually.",
   "no_group": "No group.",
@@ -13,7 +11,6 @@
 
   "organization": "Organization",
   "organizations": "Organizations",
-  "organization_delete_confirm_title": "{1} Organization deletion | [2,Inf[ Organizations deletion",
   "organization_delete_confirm_message": "{1} Are you sure you want to delete this organization? | [2,Inf[ Are you sure you want to delete these %count% organizations?",
   "no_organization": "No organization.",
   "new_organization": "New organization",
@@ -26,7 +23,6 @@
 
   "role": "Role",
   "roles": "Roles",
-  "role_delete_confirm_title": "{1} Role deletion | [2,Inf[ Roles deletion",
   "role_delete_confirm_message": "{1} Are you sure you want to delete this role? | [2,Inf[ Are you sure you want to delete these %count% roles?",
   "new_role": "New role",
   "no_role": "No role.",
@@ -37,7 +33,6 @@
 
   "team": "Role",
   "teams": "Roles",
-  "team_delete_confirm_title": "{1} Team deletion | [2,Inf[ Teams deletion",
   "team_delete_confirm_message": "{1} Are you sure you want to delete this team? | [2,Inf[ Are you sure you want to delete these %count% teams?",
   "new_team": "New team",
   "no_team": "No team.",
@@ -58,9 +53,7 @@
   "user": "User",
   "users": "Users",
   "user_name": "User: %name%",
-  "user_delete_confirm_title": "{1} User deletion | [2,Inf[ Users deletion",
   "user_delete_confirm_message": "{1} Are you sure you want to delete this user? | [2,Inf[ Are you sure you want to delete these %count% users?",
-  "user_disable_confirm_title": "{1} User deactivation | [2,Inf[ Users deactivation",
   "user_disable_confirm_message": "{1} Are you sure you want to disable this user? | [2,Inf[ Are you sure you want to disable these %count% users?",
   "new_user": "New user",
   "no_user": "No user.",

@@ -17,12 +17,12 @@ const FormPrimarySection = (props) => {
 
   return (
     <section
-      className={classes('form-primary-section', props.className)}
+      className={classes('data-form-section form-primary-section', props.className)}
       aria-labelledby={titleId}
       aria-describedby={props.description ? descriptionId : undefined}
     >
       <header className={classes({
-        'mb-5': !props.hideTitle,
+        'mb-3': !props.hideTitle,
         'visually-hidden': props.hideTitle
       })}>
         <Heading
@@ -71,11 +71,11 @@ const FormToggleSection = (props) => {
 
   return (
     <section
-      className={classes('form-primary-section', props.className)}
+      className={classes('data-form-section form-primary-section', props.className)}
       aria-labelledby={titleId}
       aria-describedby={props.description ? descriptionId : undefined}
     >
-      <header className="mb-5">
+      <header className="mb-3">
         <Heading
           id={titleId}
           className="mb-0 form-check form-switch form-check-reverse d-flex flex-row flex-nowrap align-items-center"
@@ -145,7 +145,7 @@ FormToggleSection.propTypes = {
 const FormSection = (props) =>
   <Section
     {...omit(props, 'errors')}
-    className={classes('form-section', props.className, getValidationClassName(props.errors))}
+    className={classes(props.className, getValidationClassName(props.errors))}
   >
     {props.children}
   </Section>
@@ -160,7 +160,7 @@ FormSection.propTypes = {
 
 const FormSections = props =>
   <Sections
-    className={classes('form-sections', props.className)}
+    className={classes('data-form-sections', props.className)}
     level={props.level}
     displayLevel={props.displayLevel}
     accordion={props.accordion}

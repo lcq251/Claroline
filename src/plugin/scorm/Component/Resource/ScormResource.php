@@ -11,7 +11,7 @@
 
 namespace Claroline\ScormBundle\Component\Resource;
 
-use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -60,7 +60,7 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
             // retrieve user progression
             $evaluation = $this->serializer->serialize(
                 $this->evaluationManager->getResourceUserEvaluation($resource, $user),
-                [Options::SERIALIZE_MINIMAL]
+                [SerializerInterface::SERIALIZE_MINIMAL]
             );
 
             // retrieve progression for each sco in the scorm
@@ -120,7 +120,7 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         // get the file path
-        $fileBag->add($resource->getHashName(), $this->getScormArchive($resource));
+        $fileBag->add($resource->getUrl(), $this->getScormArchive($resource));
 
         return [];
     }
@@ -131,8 +131,8 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
         $resourceNode = $resource->getResourceNode();
 
         try {
-            $file = new File($fileBag->get($resource->getHashName()));
-            $this->scormManager->unzipScormArchive($resourceNode->getWorkspace(), $file, $resource->getHashName());
+            $file = new File($fileBag->get($resource->getUrl()));
+            $this->scormManager->unzipScormArchive($resourceNode->getWorkspace(), $file, $resource->getUrl());
         } catch (\Exception $e) {
             // scorm was invalid.
         }
@@ -215,6 +215,24 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
         return $supposedArchiveLocation;
     }
 
+    public function supportsFile(File $file): int
+    {
+        // Checks if it is a valid scorm archive
+        $zip = new \ZipArchive();
+        $openValue = $zip->open($file);
+
+        if (true === $openValue && $zip->getStream('imsmanifest.xml')) {
+            return FileAdapterInterface::SUPPORTED;
+        }
+
+        return FileAdapterInterface::UNSUPPORTED;
+    }
+
+    public function fromFile(File $file): ?array
+    {
+        return $this->scormManager->parseScormArchive($file);
+    }
+
     /**
      * Gets the relative path between 2 instances (not optimized yet).
      */
@@ -236,23 +254,5 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
             }
         }
         rmdir($dirPath);
-    }
-
-    public function supportsFile(File $file): int
-    {
-        // Checks if it is a valid scorm archive
-        $zip = new \ZipArchive();
-        $openValue = $zip->open($file);
-
-        if (true === $openValue && $zip->getStream('imsmanifest.xml')) {
-            return FileAdapterInterface::SUPPORTED;
-        }
-
-        return FileAdapterInterface::UNSUPPORTED;
-    }
-
-    public function fromFile(File $file): ?array
-    {
-        return $this->scormManager->parseScormArchive($file);
     }
 }

@@ -74,14 +74,13 @@ const QuizEditorStep = props => {
     >
       {0 === props.items.length &&
         <ContentPlaceholder
-          className="mt-4"
           size="lg"
           title={trans('no_item_info', {}, 'quiz')}
         />
       }
 
       {0 !== props.items.length &&
-        <FormSections level={3} defaultOpened={'item'+props.currentItemId} className="mt-4">
+        <FormSections level={3} defaultOpened={'item'+props.currentItemId}>
           {props.items.map((item, itemIndex) =>
             <EditorItem
               key={item.id}
@@ -102,7 +101,7 @@ const QuizEditorStep = props => {
       }
 
       <Toolbar
-        className="d-grid gap-1 my-5"
+        className="d-grid gap-1"
         buttonName="btn"
         defaultName="btn-body"
         primaryName={classes('btn-primary btn-lg', {

@@ -134,7 +134,7 @@ class WorkspaceSubscriber implements EventSubscriberInterface
 
         $root = $this->resourceManager->getWorkspaceRoot($workspace);
         if ($root) {
-            $this->resourceManager->createRights($root, [], true, false);
+            $this->resourceManager->createRights($root, [], true);
         }
     }
 

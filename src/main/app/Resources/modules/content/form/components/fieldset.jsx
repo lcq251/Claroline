@@ -94,7 +94,7 @@ class FormFieldset extends Component {
 
       if (field.linked && 0 !== field.linked.length) {
         rendered.push(
-          <div className="sub-fields mb-4" key={`${field.name}-subset`} role="presentation">
+          <div className="sub-fields" key={`${field.name}-subset`} role="presentation">
             {this.renderFields(field.linked)}
           </div>
         )

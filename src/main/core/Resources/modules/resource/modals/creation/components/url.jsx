@@ -1,42 +1,50 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+import merge from 'lodash/merge'
+import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {FormData} from '#/main/app/content/form'
+import {Form, FormContent} from '#/main/app/content/form'
 
 import {selectors} from '#/main/core/resource/modals/creation/store/selectors'
-import get from 'lodash/get'
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
+
 
 const CreationUrl = (props) => {
   const newNode = useSelector(selectors.newNode)
 
   return (
-    <FormData
+    <Form
       name={selectors.STORE_NAME}
       dataPart={selectors.FORM_NODE_PART}
       flush={true}
-      definition={[
-        {
-          title: trans('general'),
-          fields: [
-            {
-              name: 'url',
-              type: 'url',
-              label: trans('url'),
-              hideLabel: true,
-              //options: {multiple: true}
-            }
-          ]
-        }
-      ]}
     >
-      <div className="modal-footer">
+      <FormContent
+        className="modal-body"
+        name={selectors.STORE_NAME}
+        dataPart={selectors.FORM_NODE_PART}
+        flush={true}
+        definition={[
+          {
+            title: trans('general'),
+            fields: [
+              {
+                name: 'url',
+                type: 'url',
+                label: trans('url'),
+                hideLabel: true,
+                //options: {multiple: true}
+              }
+            ]
+          }
+        ]}
+      />
+
+      <div className="modal-footer mt-n5">
         <Button
           className="btn btn-text-body me-auto"
           type={CALLBACK_BUTTON}
@@ -59,15 +67,14 @@ const CreationUrl = (props) => {
           }}
         />
       </div>
-    </FormData>
+    </Form>
   )
 }
 
 CreationUrl.propTypes = {
-  /*create: T.func.isRequired,
-  fadeModal: T.func.isRequired,*/
   fromUrl: T.func.isRequired,
-  changeStep: T.func.isRequired
+  changeStep: T.func.isRequired,
+  startCreation: T.func.isRequired
 }
 
 export {

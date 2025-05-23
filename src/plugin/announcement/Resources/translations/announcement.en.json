@@ -1,7 +1,6 @@
 {
     "announcement_creation": "New announcement",
     "announcement_delete_confirm_message": "This announcement will be permanently deleted.",
-    "announcement_delete_confirm_title": "Do you really want to delete this announcement ?",
     "announcement_edition": "Edit announcement",
     "announcements": "Announcements",
     "announcement_list": "Announcements list",

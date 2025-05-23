@@ -337,7 +337,7 @@ const ChoiceEditor = props => {
               required: true,
               options: {
                 noEmpty: true,
-                condensed: true,
+                condensed: false,
                 choices: NUMBERINGS
               }
             }, {

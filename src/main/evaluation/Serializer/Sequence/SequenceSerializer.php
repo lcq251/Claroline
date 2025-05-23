@@ -128,8 +128,6 @@ class SequenceSerializer
                 'resource' => $sequence->getOverviewResource() ? $this->resourceNodeSerializer->serialize($sequence->getOverviewResource(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
             ],
             'end' => [
-                // 'message' => $sequence->getEndMessage(),
-                // 'navigation' => $sequence->hasEndNavigation(),
                 'back' => [
                     'type' => $sequence->getEndBackType(),
                     'label' => $sequence->getEndBackLabel(),
@@ -204,7 +202,7 @@ class SequenceSerializer
             }
         }
 
-        if (!empty($data['workspace'])) {
+        if (empty($sequence->getWorkspace()) && !empty($data['workspace'])) {
             $workspace = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $data['workspace']['id']]);
             if ($workspace) {
                 $sequence->setWorkspace($workspace);

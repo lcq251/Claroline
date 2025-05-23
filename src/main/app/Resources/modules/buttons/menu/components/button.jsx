@@ -73,7 +73,7 @@ const StandardMenu = (props) => {
       )}
 
       {Object.keys(actions.groups).map((group, i) => [
-        (0 !== i || 0 !== actions.primary.length || 0 !== actions.unclassified.length) && <MenuDivider />,
+        (0 !== i || 0 !== actions.primary.length || 0 !== actions.unclassified.length) && <MenuDivider key={group} />,
         ...actions.groups[group].map((action) =>
           <MenuAction
             {...action}

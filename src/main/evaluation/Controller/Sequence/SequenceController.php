@@ -18,6 +18,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -159,14 +160,19 @@ class SequenceController extends AbstractCrudController
         }, $processed));
     }
 
-    #[Route(path: '/copy', name: 'copy', methods: ['PUT'])]
-    public function copyAction(Request $request): JsonResponse
+    #[Route(path: '/copy', name: 'copy', methods: ['POST'])]
+    public function copyAction(Request $request, #[MapQueryParameter] bool $copyResources = false): JsonResponse
     {
         $toCopy = $this->decodeIdsString($request, Sequence::class);
 
+        $options = [Crud::NO_PERMISSIONS];
+        if ($copyResources) {
+            $options[] = 'copyResources';
+        }
+
         foreach ($toCopy as $sequence) {
             if ($this->checkPermission('EDIT', $sequence)) {
-
+                $this->crud->copy($sequence, $options);
             }
         }
 

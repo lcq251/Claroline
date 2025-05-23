@@ -101,7 +101,7 @@ class ChapterController
     ): JsonResponse {
         $this->checkPermission('EDIT', $lesson->getResourceNode(), [], true);
 
-        $newChapter = $this->chapterManager->createChapter($lesson, json_decode($request->getContent(), true), $parent);
+        $newChapter = $this->chapterManager->createChapter($lesson, json_decode($request->getContent(), true), $parent, [Crud::NO_PERMISSIONS]);
         $internalNotes = $this->checkPermission('VIEW_INTERNAL_NOTES', $lesson->getResourceNode());
 
         return new JsonResponse($this->chapterSerializer->serialize($newChapter, $internalNotes ? [ChapterSerializer::INCLUDE_INTERNAL_NOTES] : []));

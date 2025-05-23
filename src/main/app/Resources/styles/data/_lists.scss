@@ -26,7 +26,7 @@
     }
 
     .content-loader {
-        margin-top: $component-margin-bottom;
+        margin-top: $spacer;
     }
 }
 
@@ -129,7 +129,7 @@
     .data-grid-col {
         .data-grid-content {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); // smaller cards
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); // smaller cards
         }
     }
 }

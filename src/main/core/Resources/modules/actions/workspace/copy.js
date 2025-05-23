@@ -24,7 +24,7 @@ export default declareAction((workspaces, refresher) => {
     request: {
       url: url(['apiv2_workspace_copy'], {ids: processable.map(workspace => workspace.id)}),
       request: {
-        method: 'PUT'
+        method: 'POST'
       },
       success: refresher.update
     },

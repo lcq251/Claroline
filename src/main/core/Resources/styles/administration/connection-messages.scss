@@ -12,7 +12,7 @@ $content-preview-height: 140px;
     .slides {
         list-style-type: none;
         padding: 0;
-        margin-bottom: $component-margin-bottom;
+        margin-bottom: $spacer;
 
         display: flex;
         flex-direction: row;

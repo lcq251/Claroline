@@ -43,11 +43,7 @@ const AppearanceColorCharts = (props) => {
                     },
                     success: () => props.removeColorChart(color)
                   },
-                  confirm: {
-                    title: transChoice('color_chart_delete_confirm_title', 1, {}, 'appearance'),
-                    subtitle: color.name,
-                    message: transChoice('color_chart_delete_confirm_message', 1, {count: 1}, 'appearance')
-                  },
+                  confirm: transChoice('color_chart_delete_confirm_message', 1, {count: 1}, 'appearance'),
                   dangerous: true
                 }
               ]}

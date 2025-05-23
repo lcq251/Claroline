@@ -8,7 +8,6 @@ import {trans} from '#/main/app/intl/translation'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {FormSections, FormSection} from '#/main/app/content/form/components/sections'
 
-import {Url as UrlTypes} from '#/plugin/url/prop-types'
 import {constants} from '#/plugin/scorm/resources/scorm/constants'
 
 class UrlForm extends Component {
@@ -123,9 +122,6 @@ class UrlForm extends Component {
 
 UrlForm.propTypes = {
   name: T.string.isRequired,
-  /*url: T.shape(
-    UrlTypes.propTypes
-  ).isRequired,*/
   updateProp: T.func.isRequired
 }
 

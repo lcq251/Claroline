@@ -36,7 +36,7 @@ const EditorPage = (props) => {
         aria-labelledby={titleId}
         aria-describedby={props.help ? descriptionId : undefined}
       >
-        <header className="mb-5">
+        <header className="">
           <div className="d-flex flex-row align-items-center gap-2" role="presentation">
             <Heading id={titleId} level={2} displayLevel={4} className="app-editor-title m-0">
               {props.title}

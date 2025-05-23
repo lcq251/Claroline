@@ -2,6 +2,8 @@
 
 namespace Claroline\EvaluationBundle\Subscriber\Crud;
 
+use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Event\Crud\CopyEvent;
 use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\AppBundle\Event\Crud\DeleteEvent;
@@ -13,6 +15,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\CodeNormalizer;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
+use Claroline\EvaluationBundle\Entity\Sequence\Step;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -21,6 +24,7 @@ class SequenceSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
+        private readonly Crud $crud,
         private readonly FileManager $fileManager
     ) {
     }
@@ -126,7 +130,7 @@ class SequenceSubscriber implements EventSubscriberInterface
         $newSequence->setUpdatedAt(new \DateTime());
 
         // make sure the resource code is unique
-        $sequenceCode = $this->om->getRepository(ResourceNode::class)->findNextUnique(
+        $sequenceCode = $this->om->getRepository(Sequence::class)->findNextUnique(
             'code',
             $newSequence->getCode() ?? CodeNormalizer::normalize($newSequence->getName())
         );
@@ -143,13 +147,78 @@ class SequenceSubscriber implements EventSubscriberInterface
     {
         /** @var Sequence $newSequence */
         $newSequence = $event->getCopy();
+        $options = $event->getOptions();
 
         if ($newSequence->getPoster()) {
-            $this->fileManager->linkFile(ResourceNode::class, $newSequence->getUuid(), $newSequence->getPoster());
+            $this->fileManager->linkFile(Sequence::class, $newSequence->getUuid(), $newSequence->getPoster());
         }
 
         if ($newSequence->getThumbnail()) {
-            $this->fileManager->linkFile(ResourceNode::class, $newSequence->getUuid(), $newSequence->getThumbnail());
+            $this->fileManager->linkFile(Sequence::class, $newSequence->getUuid(), $newSequence->getThumbnail());
         }
+
+        if (in_array('copyResources', $options) && $newSequence->hasResources()) {
+            $copiedResources = [];
+
+            if (!empty($newSequence->getOverviewResource())) {
+                $copiedResources = $this->copyResource($newSequence->getOverviewResource(), $copiedResources);
+
+                // replace resource by the copy
+                $newSequence->setOverviewResource($copiedResources[$newSequence->getOverviewResource()->getUuid()]);
+            }
+
+            // copy resources for all steps
+            foreach ($newSequence->getSteps() as $step) {
+                if ($step->hasResources()) {
+                    $copiedResources = $this->copyStepResources($step, $copiedResources);
+                }
+            }
+        }
+
+        $this->om->persist($newSequence);
+        $this->om->flush();
+    }
+
+    private function copyStepResources(Step $step, array $copiedResources = []): array
+    {
+        // copy primary resource
+        if (!empty($step->getResource())) {
+            $resourceNode = $step->getResource();
+
+            $copiedResources = $this->copyResource($resourceNode, $copiedResources);
+
+            // replace resource by the copy
+            $step->setResource($copiedResources[$resourceNode->getUuid()]);
+            $this->om->persist($step);
+        }
+
+        // copy secondary resources
+        if (!empty($step->getSecondaryResources())) {
+            foreach ($step->getSecondaryResources() as $secondaryResource) {
+                $resourceNode = $secondaryResource->getResource();
+                $copiedResources = $this->copyResource($resourceNode, $copiedResources);
+
+                // replace resource by the copy
+                $secondaryResource->setResource($copiedResources[$resourceNode->getUuid()]);
+            }
+
+            $this->om->persist($step);
+        }
+
+        return $copiedResources;
+    }
+
+    private function copyResource(ResourceNode $resourceNode, array $copiedResources): array
+    {
+        if (!isset($copiedResources[$resourceNode->getUuid()])) {
+            // resource not already copied, create a new copy
+            $resourceCopy = $this->crud->copy($resourceNode, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS]);
+
+            if ($resourceCopy) {
+                $copiedResources[$resourceNode->getUuid()] = $resourceCopy;
+            }
+        }
+
+        return $copiedResources;
     }
 }

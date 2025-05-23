@@ -1,11 +1,11 @@
 /* PLAYER ROOT CONTAINER */
 .quiz-player {
   .progress {
-    margin-bottom: calc($component-margin-bottom - 4px);
+    margin-bottom: calc($spacer - 4px);
   }
 
   .score-gauge {
-    margin-bottom: $component-margin-bottom;
+    margin-bottom: $spacer;
   }
 
   .player-nav {
@@ -38,7 +38,7 @@
   }
 
   .alert-test-mode {
-    margin-top: $component-margin-bottom;
+    margin-top: $spacer;
   }
 
   .progress + .alert-test-mode {

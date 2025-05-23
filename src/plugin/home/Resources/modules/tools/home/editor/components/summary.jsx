@@ -104,11 +104,7 @@ const HomeEditorSummary = (props) => {
           label: trans('delete', {}, 'actions'),
           icon: 'fa fa-fw fa-trash',
           dangerous: true,
-          confirm: {
-            title: trans('home_tab_delete_confirm_title', {}, 'home'),
-            message: trans('home_tab_delete_confirm_message', {}, 'home'),
-            subtitle: getTabTitle({type: contextType, data: contextData}, tab)
-          },
+          confirm: trans('home_tab_delete_confirm_message', {}, 'home'),
           disabled: 1 >= tabs.length,
           callback: () => deleteTab(tabs, tab),
           group: trans('management')

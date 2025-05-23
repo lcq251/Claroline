@@ -1,7 +1,9 @@
 import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
+import {hasPermission} from '#/main/app/security'
 import {Routes} from '#/main/app/router'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {PageAside} from '#/main/app/page'
@@ -29,6 +31,7 @@ const LessonPlayer = () => {
   const tree = useSelector(selectors.tree)
   const lessonNumbering = useSelector(selectors.numbering)
   const showOverview = useSelector(selectors.showOverview)
+  const canAdd = useSelector((state) => hasPermission('edit', resourceSelectors.resourceNode(state)))
 
   const loadChapter = useCallback((chapter) => {
     dispatch(actions.loadChapter(chapter))
@@ -65,6 +68,7 @@ const LessonPlayer = () => {
             title={resourceName}
             summary={get(tree, 'children', []).map(getPageSummary)}
             showOverview={showOverview}
+            canAdd={canAdd}
           />
         </PageAside>
       }
@@ -78,13 +82,14 @@ const LessonPlayer = () => {
           {
             path: '/',
             component: LessonPlayerOverview,
-            disabled: !showOverview,
+            disabled: !showOverview && !isEmpty(pages),
             exact: true
           }, {
             path: '/new/:parentSlug?',
-            exact: true,
+            // exact: true,
             onEnter: (params) => createChapter(params.parentSlug),
-            component: ChapterForm
+            component: ChapterForm,
+            disabled: !canAdd
           }, {
             path: '/:slug',
             onEnter: (params) => {

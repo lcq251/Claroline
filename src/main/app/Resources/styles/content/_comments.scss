@@ -2,7 +2,7 @@
 .comments-container {
     padding: $card-spacer-y $card-spacer-y;
     background: var(--#{$prefix}secondary-bg);
-    margin-bottom: $component-margin-bottom;
+    margin-bottom: $spacer;
 
     border: var(--#{$prefix}border-width) solid transparent; // for correct alignment
 

@@ -101,7 +101,7 @@ const EventAbout = (props) =>
       />
 
       {isEmpty(get(props.event, 'location')) &&
-        <div className="component-container">
+        <div className="mb-3">
           {isEmpty(get(props.event, 'locationUrl')) &&
             <em className="text-secondary">{trans('online_session', {}, 'cursus')}</em>
           }
@@ -114,7 +114,7 @@ const EventAbout = (props) =>
 
       {!isEmpty(get(props.event, 'location')) &&
         <LocationCard
-          className="component-container"
+          className="mb-3"
           size="xs"
           orientation="row"
           data={get(props.event, 'location')}

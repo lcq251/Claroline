@@ -4,7 +4,6 @@ import classes from 'classnames'
 import get from 'lodash/get'
 
 import {Button} from '#/main/app/action'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
 const Stars = (props) =>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 893.34 906.17" className={props.className} style={{width: '8rem'}} aria-hidden={true}>

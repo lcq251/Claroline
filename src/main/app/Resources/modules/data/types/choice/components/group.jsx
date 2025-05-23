@@ -21,7 +21,7 @@ const ChoiceGroup = props => {
 
   return (
     <div
-      className={classes('form-group mb-4', props.className, getValidationClassName(props.error))}
+      className={classes('form-group', props.className, getValidationClassName(props.error))}
       role={props.multiple ? 'group' : 'radiogroup'}
       aria-labelledby={labelId}
     >

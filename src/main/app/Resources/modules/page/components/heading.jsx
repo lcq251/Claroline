@@ -66,7 +66,7 @@ const PageHeadingSkeleton = ({
 PageHeadingSkeleton.propTypes = {
   className: T.string,
   level: T.number,
-  size: T.oneOf(['sm', 'md', 'lg', 'full']),
+  size: T.oneOf(['sm', 'md', 'lg', 'xl', 'full']),
   icon: T.bool,
   eyebrow: T.bool,
   description: T.bool,

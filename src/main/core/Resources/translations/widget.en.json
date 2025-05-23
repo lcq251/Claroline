@@ -2,7 +2,6 @@
     "widget": "Widget",
     "add_widget": "Add a widget",
     "cancel_move_widget": "Cancel move",
-    "widget_delete_confirm_title": "Delete widget",
     "widget_delete_confirm_message": "Are you sure you want to delete this widget ?",
     "insert_widget": "Drop widget",
     "modify_widget": "Edit widget",

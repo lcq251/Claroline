@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: flex-start;
     max-width: 100%;
-    // margin-bottom: $component-margin-bottom;
+    // margin-bottom: $spacer;
 
     gap: $user-message-arrow-size + map-get($spacers, 3);
 

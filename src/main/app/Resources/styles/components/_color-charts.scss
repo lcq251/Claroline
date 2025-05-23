@@ -63,7 +63,7 @@ $transparent-bg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf
 
         .btn-view {
             border: 1px solid;
-            margin-top: $component-margin-bottom;
+            margin-top: $spacer;
 
             &.text-light {
                 border-color: $color-contrast-light;

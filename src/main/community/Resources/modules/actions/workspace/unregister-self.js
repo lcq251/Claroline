@@ -20,8 +20,6 @@ export default declareAction((workspaces, refresher, path, currentUser) => {
     label: trans('self_unregister', {}, 'actions'),
     displayed: 0 !== processable.length,
     confirm: {
-      title: transChoice('self_unregister_confirm_title', processable.length, {}, 'workspace'),
-      subtitle: 1 === processable.length ? processable[0].name : transChoice('count_elements', processable.length, {count: processable.length}),
       message: transChoice('self_unregister_confirm_message', processable.length, {count: processable.length}, 'workspace'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,

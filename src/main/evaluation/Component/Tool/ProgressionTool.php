@@ -2,10 +2,13 @@
 
 namespace Claroline\EvaluationBundle\Component\Tool;
 
+use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\ToolComponent;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -116,6 +119,54 @@ class ProgressionTool extends ToolComponent
         }
 
         return [];
+    }
+
+    public function export(string $context, ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null): ?array
+    {
+        $sequences = $this->om->getRepository(Sequence::class)->findBy(['workspace' => $contextSubject]);
+        if (empty($sequences)) {
+            return [];
+        }
+
+        return [
+            'sequences' => array_map(function (Sequence $sequence) use ($fileBag) {
+                if ($sequence->getThumbnail()) {
+                    $fileBag->add($sequence->getThumbnail(), $sequence->getThumbnail());
+                }
+
+                if ($sequence->getPoster()) {
+                    $fileBag->add($sequence->getPoster(), $sequence->getPoster());
+                }
+
+                return $this->serializer->serialize($sequence, [SerializerInterface::SERIALIZE_TRANSFER]);
+            }, $sequences),
+        ];
+    }
+
+    public function import(string $context, ?ContextSubjectInterface $contextSubject = null, FileBag $fileBag = null, array $data = [], array $entities = []): ?array
+    {
+        if (empty($data['sequences'])) {
+            return [];
+        }
+
+        $this->om->startFlushSuite();
+
+        foreach ($data['sequences'] as $sequenceData) {
+            $newSequence = new Sequence();
+            $newSequence->setWorkspace($contextSubject);
+
+            $this->crud->create($newSequence, $sequenceData, [
+                Crud::NO_PERMISSIONS, // this has already been checked by the core before forwarding the import
+                Crud::NO_VALIDATION,
+                Options::REFRESH_UUID,
+            ]);
+
+            $entities[$sequenceData['id']] = $newSequence;
+        }
+
+        $this->om->endFlushSuite();
+
+        return $entities;
     }
 
     private function getUserEvaluation(Workspace $workspace): ?WorkspaceEvaluation

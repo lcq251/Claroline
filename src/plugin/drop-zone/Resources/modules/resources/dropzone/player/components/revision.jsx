@@ -53,7 +53,7 @@ const RevisionComponent = props => props.revision && props.drop ?
 
       {matchPath(props.location.pathname, {path: `${props.path}/revisions/`}) &&
         <Button
-          className="btn component-container"
+          className="btn mb-3"
           icon="fa fa-fw fa-plus"
           type={MODAL_BUTTON}
           label={trans('add_document', {}, 'dropzone')}

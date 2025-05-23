@@ -7,7 +7,7 @@ import omit from 'lodash/omit'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {actions as formActions, FormData} from '#/main/app/content/form'
+import {actions as formActions, Form, FormContent} from '#/main/app/content/form'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 
@@ -25,49 +25,55 @@ const CreationForm = (props) => {
   return (
     <Modal
       {...omit(props, 'create', 'changeStep')}
-      title={trans('sequence', {}, 'evaluation')}
+      title={trans('new_sequence', {}, 'evaluation')}
       centered={true}
       onExited={reset}
     >
-      <FormData
+      <Form
         name={selectors.STORE_NAME}
         flush={true}
-        definition={[
-          {
-            title: trans('general'),
-            fields: [
-              {
-                name: 'poster',
-                type: 'poster',
-                label: trans('poster'),
-                hideLabel: true
-              }, {
-                name: 'name',
-                type: 'string',
-                label: trans('name'),
-                required: true,
-                autoFocus: true
-              }, {
-                name: 'meta.description',
-                type: 'string',
-                label: trans('description_short'),
-                help: trans('Décrivez succinctement votre séquence (La description courte est affichée dans les listes.'),
-                recommended: true,
-                options: {
-                  long: true,
-                  minRows: 2
-                }
-              }, {
-                name: 'meta.published',
-                label: trans('publish_sequence', {}, 'evaluation'),
-                type: 'boolean',
-                help: trans('publish_sequence_help', {}, 'evaluation')
-              }
-            ]
-          }
-        ]}
       >
-        <div className="modal-footer">
+        <FormContent
+          className="modal-body"
+          name={selectors.STORE_NAME}
+          flush={true}
+          definition={[
+            {
+              title: trans('general'),
+              fields: [
+                {
+                  name: 'poster',
+                  type: 'poster',
+                  label: trans('poster'),
+                  hideLabel: true
+                }, {
+                  name: 'name',
+                  type: 'string',
+                  label: trans('name'),
+                  required: true,
+                  autoFocus: true
+                }, {
+                  name: 'meta.description',
+                  type: 'string',
+                  label: trans('description_short'),
+                  help: trans('Décrivez succinctement votre séquence (La description courte est affichée dans les listes.'),
+                  recommended: true,
+                  options: {
+                    long: true,
+                    minRows: 2
+                  }
+                }, {
+                  name: 'meta.published',
+                  label: trans('publish_sequence', {}, 'evaluation'),
+                  type: 'boolean',
+                  help: trans('publish_sequence_help', {}, 'evaluation')
+                }
+              ]
+            }
+          ]}
+        />
+
+        <div className="modal-footer mt-n5">
           <Button
             type={CALLBACK_BUTTON}
             label={trans('back')}
@@ -91,7 +97,7 @@ const CreationForm = (props) => {
             callback={props.create}
           />
         </div>
-      </FormData>
+      </Form>
     </Modal>
   )
 }

@@ -48,7 +48,7 @@ const EditorItem = props =>
 
           errors={props.errors}
           actions={props.actions}
-          fill={true}
+          // fill={true}
         >
           <ItemEditor
             embedded={true}

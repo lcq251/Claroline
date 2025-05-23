@@ -62,18 +62,19 @@ const FormModal = (props) => {
         name={props.name}
         level={2}
         displayLevel={5}
+        flush={true}
       >
-        <div className="modal-body">
-          <FormContent
-            name={props.name}
-            level={2}
-            displayLevel={5}
-            definition={props.definition}
-          />
-        </div>
+        <FormContent
+          className="modal-body"
+          name={props.name}
+          level={2}
+          displayLevel={5}
+          definition={props.definition}
+          flush={true}
+        />
 
         <div
-          className="modal-footer flex-sm-nowrap gap-2"
+          className="modal-footer flex-sm-nowrap gap-2 mt-n5"
           role="toolbar"
           aria-label={trans('form_toolbar')}
           aria-describedby={descriptionId}

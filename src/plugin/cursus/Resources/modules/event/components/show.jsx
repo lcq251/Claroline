@@ -23,6 +23,7 @@ import {AvailableSeats} from '#/plugin/cursus/components/available-seats'
 import {getActions} from '#/plugin/cursus/event/utils'
 import {selectors} from '#/plugin/cursus/event/store'
 import {EventUsers} from '#/plugin/cursus/event/components/users'
+import {CalendarIcon} from '#/main/app/calendar/components/icon'
 
 const EventShow = (props) => {
   const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const EventShow = (props) => {
       {!event &&
         <PageContent className="placeholder-glow">
           <PageToolbarSkeleton toolbar="edit more" />
-          <PageHeadingSkeleton />
+          <PageHeadingSkeleton icon={true} />
         </PageContent>
       }
 
@@ -59,6 +60,9 @@ const EventShow = (props) => {
           />
 
           <PageHeading
+            icon={
+              <CalendarIcon square={true} size="lg" date={event.date} />
+            }
             title={event.name}
           />
 

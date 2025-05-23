@@ -54,7 +54,7 @@ const MyDrop = props =>
 
       {props.isDropEnabled && !props.myDrop.finished &&
         <Toolbar
-          className="component-container"
+          className="mb-3"
           buttonName="btn"
           actions={[
             {

@@ -3,7 +3,7 @@
 @import "src/main/app/Resources/styles/variables";
 
 .transfer-schema-select {
-    margin-top: $component-margin-bottom;
+    margin-top: $spacer;
     margin-left: 11px; // padding + border width of .transfer-schema-field, to align checkboxes
 }
 
@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: $component-margin-bottom;
+    margin-top: $spacer;
     margin-bottom: 10px; // same as list grid sort
 
     .btn {

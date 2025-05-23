@@ -1,9 +1,7 @@
 {
   "group": "Groupe",
   "groups": "Groupes",
-  "group_delete_confirm_title": "{1} Suppression d'un groupe | [2,Inf[ Suppression de plusieurs groupes",
   "group_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce groupe ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% groupes ?",
-  "group_unregister_confirm_title": "{1} Désinscription d'un groupe | [2,Inf[ Désinscription de plusieurs groupes",
   "group_unregister_confirm_message": "{1} Êtes-vous sûr(e) de vouloir désinscrire ce groupe ?|[2,Inf[ Êtes-vous sûr(e) de vouloir désinscrire ces %count% groupes ?",
   "group_locked": "Ce groupe est vérouillé et ne peut pas être modifié manuellement.",
   "no_group": "Aucun groupe.",
@@ -15,7 +13,6 @@
 
   "organization": "Organisation",
   "organizations": "Organisations",
-  "organization_delete_confirm_title": "{1} Suppression d'une organisation | [2,Inf[ Suppression de plusieurs organisations",
   "organization_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cette organisation ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% organisations ?",
   "no_organization": "Aucune organisation.",
   "new_organization": "Nouvelle organisation",
@@ -28,7 +25,6 @@
 
   "role": "Rôle",
   "roles": "Rôles",
-  "role_delete_confirm_title": "{1} Suppression d'un rôle | [2,Inf[ Suppression de plusieurs rôles",
   "role_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce rôle ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% rôles ?",
   "new_role": "Nouveau rôle",
   "no_role": "Aucun rôle.",
@@ -39,7 +35,6 @@
 
   "team": "Equipe",
   "teams": "Equipes",
-  "team_delete_confirm_title": "{1} Suppression d'une équipe | [2,Inf[ Suppression de plusieurs équipes",
   "team_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cette équipe ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% équipes ?",
   "new_team": "Nouvelle équipe",
   "no_team": "Aucune équipe.",
@@ -60,9 +55,7 @@
   "user": "Utilisateur",
   "users": "Utilisateurs",
   "user_name": "Utilisateur : %name%",
-  "user_delete_confirm_title": "{1} Suppression d'un utilisateur | [2,Inf[ Suppression de plusieurs utilisateurs",
   "user_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% utilisateurs ?",
-  "user_disable_confirm_title": "{1} Désactivation d'un utilisateur | [2,Inf[ Désactivation de plusieurs utilisateurs",
   "user_disable_confirm_message": "{1} Êtes-vous sûr(e) de vouloir désactiver cet utilisateur ? | [2,Inf[ Êtes-vous sûr(e) de vouloir désactiver ces %count% utilisateurs ?",
   "new_user": "Nouvel utilisateur",
   "no_user": "Aucun utilisateur.",

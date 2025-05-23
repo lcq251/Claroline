@@ -57,6 +57,7 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
         }
 
         return [
+            'url' => $resource->getUrl(),
             'userEvaluation' => $userEvaluation ?
                 $this->serializer->serialize($userEvaluation, [SerializerInterface::SERIALIZE_MINIMAL])
                 : null,
@@ -106,6 +107,20 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
         }
 
         return true;
+    }
+
+    /** @param Image $resource */
+    public function export(AbstractResource $resource, FileBag $fileBag): ?array
+    {
+        // get the file path
+        $fileBag->add($resource->getUrl(), $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl());
+
+        return [];
+    }
+
+    /** @param Image $resource */
+    public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
+    {
     }
 
     public function supportsFile(File $file): int

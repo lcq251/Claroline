@@ -3,7 +3,7 @@
 .evaluation-parameters {
     list-style-type: none;
     padding: 0;
-    margin-bottom: $component-margin-bottom;
+    margin-bottom: $spacer;
 
     .evaluation-parameter {
         flex: 1;
@@ -24,7 +24,7 @@
     flex-direction: row;
     list-style-type: none;
     padding: 0 $timeline-endpoint-size;
-    padding-top: $timeline-endpoint-size + $component-margin-bottom;
+    padding-top: $timeline-endpoint-size + $spacer;
     margin: 0;
     gap: map-get($spacers, 2);
 
@@ -68,7 +68,7 @@
         left: 50%;
         bottom: 100%;
         margin-left: math.div(-$timeline-lines-width, 2);
-        height: $timeline-endpoint-size + $component-margin-bottom;
+        height: $timeline-endpoint-size + $spacer;
         width: $timeline-lines-width;
         background: $timeline-lines-color;
     }
@@ -76,7 +76,7 @@
     &:after {
         content: " ";
         position: absolute;
-        top: -($timeline-endpoint-size + $component-margin-bottom);
+        top: -($timeline-endpoint-size + $spacer);
         left: 50%;
         margin-left: math.div(-$timeline-endpoint-size, 2);
         border-radius: 50%;

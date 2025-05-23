@@ -69,7 +69,7 @@ const ImageEditorModal = (props) => {
           size="sm"
         >
           {url ?
-            <Poster url={url} className="rounded-3" /> :
+            <Poster url={url} className="rounded-3 z-0" /> :
             <div className="bg-body-tertiary rounded-3 ratio ratio-poster">
               <div role="presentation" className="p-3 d-flex flex-column align-items-center justify-content-center gap-3">
                 <span className="fa fa-camera fs-1 text-body-tertiary" />
@@ -102,7 +102,7 @@ const ImageEditorModal = (props) => {
                   tooltip="top"
                   callback={() => setUrl(file)}
                 >
-                  <Poster url={file} className="rounded-2" />
+                  <Poster url={file} className="rounded-2 z-0" />
                 </Button>
               )}
 
@@ -116,7 +116,7 @@ const ImageEditorModal = (props) => {
                   tooltip="top"
                   callback={() => setUrl(props.url)}
                 >
-                  <Poster url={props.url} className="rounded-2" />
+                  <Poster url={props.url} className="rounded-2 z-0" />
                 </Button>
               }
 

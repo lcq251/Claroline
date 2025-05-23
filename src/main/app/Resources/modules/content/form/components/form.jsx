@@ -10,14 +10,14 @@ import {FormSave} from '#/main/app/content/form/components/save'
 const FormWrapper = props => props.embedded ?
   <fieldset
     {...omit(props, 'embedded', 'flush', 'children')}
-    className={classes('form data-form', props.className, props.flush && 'data-form-flush')}
+    className={classes('form data-form d-flex flex-column gap-5', props.className, props.flush && 'data-form-flush')}
   >
     {props.children}
   </fieldset>
   :
   <form
     {...omit(props, 'embedded', 'flush', 'children')}
-    className={classes('form data-form', props.className, props.flush && 'data-form-flush', !props.flush && 'content-lg')}
+    className={classes('form data-form d-flex flex-column gap-5', props.className, props.flush && 'data-form-flush', !props.flush && 'content-lg')}
     onSubmit={(e) => e.preventDefault()}
   >
     {props.children}

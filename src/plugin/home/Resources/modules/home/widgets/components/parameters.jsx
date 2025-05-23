@@ -174,11 +174,7 @@ class WidgetsTabParameters extends Component {
                 icon: 'fa fa-fw fa-trash',
                 label: trans('delete', {}, 'actions'),
                 dangerous: true,
-                confirm: {
-                  title: trans('section_delete_confirm_title'),
-                  message: trans('section_delete_confirm_message'),
-                  subtitle: widgets[index].name
-                },
+                confirm: trans('section_delete_confirm_message'),
                 callback: () => {
                   const newWidgets = cloneDeep(widgets) // copy array
                   newWidgets.splice(index, 1) // remove element

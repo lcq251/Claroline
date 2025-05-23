@@ -19,7 +19,7 @@ const SectionParameters = props =>
     icon={props.icon ? `fa fa-fw fa-${props.icon}` : undefined}
     title={props.title || trans('facet_section')}
     subtitle={props.description}
-    fill={true}
+    // fill={true}
     actions={[
       {
         name: 'delete',
@@ -110,7 +110,7 @@ SectionParameters.propTypes = {
 const FormParameters = (props) =>
   <>
     {0 < props.sections.length &&
-      <FormSections level={2} className="mb-3">
+      <FormSections level={2}>
         {props.sections.map((section, sectionIndex) =>
           <SectionParameters
             id={section.id}
@@ -146,7 +146,6 @@ const FormParameters = (props) =>
 
     {0 === props.sections.length &&
       <ContentPlaceholder
-        className="mb-3"
         size="lg"
         title={trans('facet_no_section')}
         help={trans('facet_no_section_help')}
@@ -155,7 +154,7 @@ const FormParameters = (props) =>
 
     <Button
       type={CALLBACK_BUTTON}
-      className="w-100 mb-3"
+      className="w-100"
       variant="btn"
       size="lg"
       label={trans('facet_section_add')}

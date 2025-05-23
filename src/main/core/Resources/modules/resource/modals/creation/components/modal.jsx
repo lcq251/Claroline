@@ -84,7 +84,7 @@ const ResourceCreationModal = (props) => {
 
   return (
     <Modal
-      {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add', 'fromFile')}
+      {...omit(props, 'parent', 'startCreation', 'create', 'reset', 'add', 'fromFile', 'fromUrl')}
       title={trans('new_resource', {}, 'resource')}
       subtitle={trans('new_resource_desc', {}, 'resource')}
       centered={true}

@@ -71,10 +71,7 @@ const AnnouncementPost = (props) => {
                   history.push(props.path)
                 },
                 dangerous: true,
-                confirm: {
-                  title: trans('announcement_delete_confirm_title', {}, 'announcement'),
-                  message: trans('announcement_delete_confirm_message', {}, 'announcement'),
-                },
+                confirm: trans('announcement_delete_confirm_message', {}, 'announcement'),
                 displayed: props.editable
               }
             ]}

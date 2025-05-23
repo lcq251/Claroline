@@ -3,6 +3,8 @@
 namespace Icap\LessonBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -62,7 +64,7 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
                 if (empty($chapterData['title'])) {
                     $chapterData['title'] = $resource->getName();
                 }
-                $this->chapterManager->createChapter($resource, $chapterData, $resource->getRoot());
+                $this->chapterManager->createChapter($resource, $chapterData, $resource->getRoot(), [Crud::NO_PERMISSIONS]);
             }
         }
 
@@ -86,6 +88,7 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
 
         return [
             'resource' => $this->serializer->serialize($resource),
+            'placeholders' => $this->placeholderManager->getAvailablePlaceholders(),
             'chapters' => array_map(function (Chapter $chapter) {
                 return $this->serializer->serialize($chapter);
             }, $chapters),
@@ -112,32 +115,42 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
     /** @param Lesson $resource */
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
+        $chapters = $this->om->getRepository(Chapter::class)->getChildren($resource->getRoot());
+
         return [
-            'root' => $this->chapterManager->serializeChapterTree($resource),
+            'chapters' => array_map(function (Chapter $chapter) {
+                return $this->serializer->serialize($chapter, [SerializerInterface::SERIALIZE_TRANSFER]);
+            }, $chapters),
         ];
     }
 
     /** @param Lesson $resource */
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
-        if (empty($data['root'])) {
+        if (empty($data['chapters'])) {
             return;
         }
 
-        $rootChapter = $data['root'];
+        $this->om->startFlushSuite();
+
         $resource->buildRoot();
-        $root = $resource->getRoot();
-
-        if (isset($rootChapter['children'])) {
-            $children = $rootChapter['children'];
-
-            foreach ($children as $child) {
-                $chapter = $this->importChapter($resource, $child);
-                $chapter->setLesson($resource);
-                $chapter->setParent($root);
-                $this->om->persist($chapter);
+        $chapters = [];
+        foreach ($data['chapters'] as $chapterData) {
+            $parent = $resource->getRoot();
+            if (!empty($chapterData['parentSlug']) && !empty($chapters[$chapterData['parentSlug']])) {
+                $parent = $chapters[$chapterData['parentSlug']];
             }
+
+            $chapter = $this->chapterManager->createChapter($resource, $chapterData, $parent, [
+                Crud::NO_PERMISSIONS, // this has already been checked by the core before forwarding the import
+                Crud::NO_VALIDATION,
+                Options::REFRESH_UUID,
+            ]);
+
+            $chapters[$chapterData['slug']] = $chapter;
         }
+
+        $this->om->endFlushSuite();
     }
 
     private function importChapter(Lesson $lesson, array $data = []): Chapter

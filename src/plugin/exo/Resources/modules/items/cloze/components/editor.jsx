@@ -274,7 +274,7 @@ class ClozeEditor extends Component {
       >
         <HtmlInput
           id={`cloze-text-${this.props.item.id}`}
-          className="component-container"
+          className="mb-3"
           value={this.state.text}
           onInit={(evt, editor) => this.editor = editor}
           config={{

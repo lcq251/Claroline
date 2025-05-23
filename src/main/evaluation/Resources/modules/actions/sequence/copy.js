@@ -1,9 +1,9 @@
-import {url} from '#/main/app/api'
-import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 
-import {trans, transChoice} from '#/main/app/intl/translation'
+import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {constants, declareAction} from '#/main/app/action'
+import {MODAL_SEQUENCE_COPY} from '#/main/evaluation/sequence/modals/copy'
 
 /**
  * Creates a copy of sequences chosen by the user.
@@ -16,25 +16,14 @@ export default declareAction((sequences, refresher) => {
 
   return ({
     name: 'copy',
-    type: ASYNC_BUTTON,
+    type: MODAL_BUTTON,
     icon: 'fa fa-fw fa-clone',
     label: trans('copy', {}, 'actions'),
     displayed: 0 !== processable.length,
-    confirm: {
-      message: transChoice('copy_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'sequence'),
-      items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
-        id: item.id,
-        name: item.name
-      }))
-    },
-    request: {
-      url: url(['apiv2_evaluation_sequence_copy'], {ids: processable.map(workspace => workspace.id)}),
-      request: {
-        method: 'PUT'
-      },
-      success: refresher.update
-    },
+    modal: [MODAL_SEQUENCE_COPY, {
+      sequences: processable,
+      onCopy: () => refresher.update(processable)
+    }],
     group: trans('management'),
     scope: ['object', 'collection'],
     set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]

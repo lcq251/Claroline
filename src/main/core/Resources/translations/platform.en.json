@@ -478,9 +478,6 @@
     "widgets": "Widget",
     "width": "Width",
 
-    "workspace_queue_cancel_confirm_title": "Cancel registration request",
-    "workspace_registration_confirm_title": "Are you sure you want to register to this workspace?",
-    "workspace_unregistration_confirm_title": "Are you sure you want to unregister from this workspace?",
     "workspaces": "Workspaces",
     "workspaces_count": "{1} 1 workspace|[2,Inf[ %count% workspaces",
     "ws_creator": "Workspace creator",

@@ -216,7 +216,7 @@ class WorkspaceController extends AbstractCrudController
     /**
      * Copies a list of workspaces.
      */
-    #[Route(path: '/copy', name: 'copy', methods: ['PUT'])]
+    #[Route(path: '/copy', name: 'copy', methods: ['POST'])]
     public function copyAction(Request $request): JsonResponse
     {
         $options = [Crud::NO_PERMISSIONS];

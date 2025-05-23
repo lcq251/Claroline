@@ -8,21 +8,24 @@ import {selectors as resourceSelectors} from '#/main/core/resource'
 import {selectors} from '#/plugin/lesson/resources/lesson/store'
 
 import {trans} from '#/main/app/intl'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {PageSection} from '#/main/app/page/components/section'
 import {Html} from '#/main/app/components/html'
 import {ContentSummary} from '#/main/app/content/components/summary'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {getNumbering} from '#/plugin/lesson/resources/lesson/utils'
-import {Poster} from '#/main/app/components/poster'
 import {PageContent} from '#/main/app/page'
+import {EmptyState} from '#/main/app/components/empty-state'
+import {selectors as contextSelectors} from '#/main/app/context'
+import {hasPermission} from '#/main/app/security'
 
 const LessonPlayerOverview = () => {
+  const contextPath = useSelector(contextSelectors.path)
   const resourcePath = useSelector(resourceSelectors.path)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
   const showHeader = useSelector(resourceSelectors.showHeader)
   const embedded = useSelector(resourceSelectors.embedded)
   const description = get(resourceNode, 'meta.descriptionHtml', null)
+  const canAdd = useSelector((state) => hasPermission('edit', resourceSelectors.resourceNode(state)))
 
   const numbering = useSelector(selectors.numbering)
   const tree = useSelector(selectors.tree)
@@ -51,24 +54,41 @@ const LessonPlayerOverview = () => {
         </PageSection>
       }
 
-      <PageSection
-        title={trans('summary')}
-        className={classes({
-          'mt-5': !description && (!embedded || showHeader)
-        })}
-      >
-        {isEmpty(chapters) ?
-          <ContentPlaceholder
-            className="mb-5"
-            title={trans('no_chapter', {}, 'lesson')}
-            size="lg"
-          /> :
+      {isEmpty(chapters) &&
+        <EmptyState
+          className="px-4"
+          icon="fa fa-file-lines"
+          title={trans('no_page', {}, 'lesson')}
+          description={trans(canAdd ? 'no_page_manager_help' : 'no_page_help', {}, 'lesson')}
+          primaryAction={{
+            type: LINK_BUTTON,
+            label: trans('add_page', {}, 'actions'),
+            target: `${resourcePath}/new`,
+            displayed: canAdd
+          }}
+          secondaryAction={{
+            type: LINK_BUTTON,
+            icon: 'fa fa-arrow-left',
+            label: trans('back_home', {}, 'actions'),
+            target: contextPath,
+            displayed: !embedded
+          }}
+        />
+      }
+
+      {!isEmpty(chapters) &&
+        <PageSection
+          title={trans('summary')}
+          className={classes({
+            'mt-5': !description && (!embedded || showHeader)
+          })}
+        >
           <ContentSummary
             className="mb-5"
             links={chapters.map(getChapterSummary)}
           />
-        }
-      </PageSection>
+        </PageSection>
+      }
     </PageContent>
   )
 }

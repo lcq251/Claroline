@@ -2,28 +2,30 @@
  * Forms.
  */
 
-.data-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-}
-
 .data-form-flush {
-    > .form-primary-section {
-        padding: $modal-inner-padding;
-
-        + .form-primary-section {
-            border-top: 1px solid $accordion-border-width solid $accordion-border-color;;
+    .form-primary-section {
+        + .data-form-sections {
+            border-top: 1px solid $accordion-border-width solid $accordion-border-color;
         }
+    }
 
-        + .form-sections {
-            border-top: 1px solid $accordion-border-width solid $accordion-border-color;;
-        }
+    .modal-body .data-form-sections {
+        border-bottom: 1px solid $accordion-border-width solid $accordion-border-color;
+    }
+
+    .accordion {
+        margin-bottom: map-get($spacers, 4) * -1;
+        margin-left: map-get($spacers, 4) * -1;
+        margin-right: map-get($spacers, 4) * -1;
     }
 }
 
-.form-group.mb-4 { // FIXME : ugly selector
-    margin-bottom: $form-group-spacer !important;
+.data-form .accordion-body,
+.data-form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: $form-group-spacer;
 }
 
 
@@ -64,9 +66,6 @@
     border-left: 3px solid $input-border-color;
 }
 
-.form-group + .sub-fields {
-    margin-top: -$form-group-spacer*.5;
-}
 
 // -
 // Inputs

@@ -173,8 +173,13 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
         }
 
         // link new node to its parent
-        /** @var ResourceNode $newParent */
-        $newParent = $event->getExtra()['parent'];
+        if (!empty($event->getExtra()) && !empty($event->getExtra()['parent'])) {
+            /** @var ResourceNode $newParent */
+            $newParent = $event->getExtra()['parent'];
+        } else {
+            $newParent = $node->getParent();
+        }
+
         $newNode->setWorkspace($newParent->getWorkspace());
         $newNode->setParent($newParent);
         $newParent->addChild($newNode);

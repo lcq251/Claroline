@@ -104,6 +104,15 @@ final class VideoResource extends ResourceComponent implements DownloadableResou
         return true;
     }
 
+    /** @param Video $resource */
+    public function export(AbstractResource $resource, FileBag $fileBag): ?array
+    {
+        // get the file path
+        $fileBag->add($resource->getUrl(), $resource->getUrl());
+
+        return [];
+    }
+
     public function supportsFile(File $file): int
     {
         if (str_starts_with($file->getMimeType(), 'video')) {

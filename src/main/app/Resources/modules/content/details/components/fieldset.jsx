@@ -52,7 +52,7 @@ const DetailsFieldset = (props) => {
 
     if (field.linked && 0 !== field.linked.length) {
       fields.push(
-        <div className="sub-fields mb-3" key={`${field.name}-subset`} role="presentation">
+        <div className="sub-fields" key={`${field.name}-subset`} role="presentation">
           {this.renderFields(field.linked)}
         </div>
       )

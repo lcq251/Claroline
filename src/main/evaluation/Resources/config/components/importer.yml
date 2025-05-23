@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        tags: [ claroline.transfer.importer ]
+
+    Claroline\EvaluationBundle\Transfer\Importer\WorkspaceEvaluation\Create:
+        parent: Claroline\TransferBundle\Transfer\Importer\AbstractCreateImporter

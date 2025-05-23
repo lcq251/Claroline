@@ -1,5 +1,6 @@
 import React, {createElement, Fragment} from 'react'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import {FormFieldset} from '#/main/app/content/form/components/fieldset'
@@ -27,11 +28,11 @@ const FormContent = (props) => {
   }
 
   return (
-    <>
+    <div className={classes('data-form-content d-flex flex-column gap-5', props.className)} role="presentation">
       {primarySections.map((primarySection, index) =>
         <Fragment key={primarySection.title}>
           {0 !== index &&
-            <hr className="mb-5 mt-4" aria-hidden={true} />
+            <hr className="my-0" aria-hidden={true} />
           }
 
           {!primarySection.onToggle ?
@@ -95,7 +96,6 @@ const FormContent = (props) => {
           displayLevel={props.displayLevel}
           defaultOpened={openedSection ? getSectionId(openedSection, props.id) : undefined}
           flush={props.flush}
-          /*className={classes(!props.flush && 'mb-3')}*/
         >
           {otherSections.map(section => (
             <FormSection
@@ -107,7 +107,7 @@ const FormContent = (props) => {
               subtitle={section.description}
               errors={getSectionErrors(section.fields, props.errors)}
               actions={section.actions}
-              fill={section.fill}
+              // fill={section.fill}
             >
               <FormFieldset
                 id={`${getSectionId(section, props.id)}-fieldset`}
@@ -128,7 +128,7 @@ const FormContent = (props) => {
           ))}
         </FormSections>
       }
-    </>
+    </div>
   )
 }
 
