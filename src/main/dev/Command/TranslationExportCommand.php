@@ -82,6 +82,6 @@ class TranslationExportCommand extends Command
             }
         } catch (\Exception $e) {
             $output->writeln('<error>'.$e->getMessage().'</error>');
-        } // kernel will throw an exception if no translations is defined
+        } // kernel will throw an exception if no translation is defined
     }
 }

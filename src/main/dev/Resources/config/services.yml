@@ -13,3 +13,9 @@ services:
             - '@Claroline\AppBundle\Manager\File\ArchiveManager'
         tags:
             - { name: 'console.command', command: 'claroline:translation:export' }
+
+    Claroline\DevBundle\Command\TranslationImportCommand:
+        arguments:
+            - '@kernel'
+        tags:
+            - { name: 'console.command', command: 'claroline:translation:import' }

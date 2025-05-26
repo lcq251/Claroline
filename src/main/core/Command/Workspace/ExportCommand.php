@@ -38,7 +38,7 @@ class ExportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $workspace = $this->em->getRepository(Workspace::class)->findOneByCode($input->getArgument('code'));
+        $workspace = $this->em->getRepository(Workspace::class)->findOneBy(['code' => $input->getArgument('code')]);
         $path = $this->workspaceManager->export($workspace);
 
         $output->writeln($path);
