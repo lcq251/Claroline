@@ -1,0 +1,18 @@
+{
+    "tokens": "Authenticatietokens",
+    "add_token": "Authenticatietoken toevoegen",
+    "new_token": "Nieuw authenticatietoken",
+    "token": "Authenticatietoken",
+    "add_ip": "IP-adres toevoegen",
+    "new_ip": "Nieuw IP-adres",
+    "ips_help": "De lijst van bekende IP-adressen stelt u in staat om automatisch personen te authenticeren die vanaf deze adressen uw platform raadplegen met de geselecteerde gebruikers.",
+    "define_ip_range": "IP-bereik definiëren",
+    "allow_change_password": "Gebruikers toestaan om hun wachtwoord te wijzigen",
+    "display_internal_account": "Claroline Connect-authenticatie weergeven",
+    "force_password_complexity": "Wachtwoordcomplexiteit afdwingen",
+    "tokens_help": "Authenticatietokens worden gebruikt om u te identificeren bij het gebruik van de API.",
+    "tokens_info": "Geavanceerd gebruik voor gebruikers die gegevens willen beheren zonder de gebruikersinterface.",
+    "user_password_reset_confirm_message": "{1} Weet u zeker dat u het wachtwoord van deze gebruiker opnieuw wilt instellen? | [2,Inf[ Weet u zeker dat u het wachtwoord van deze %count% gebruikers opnieuw wilt instellen?",
+    "group_password_reset_confirm_message": "{1} Weet u zeker dat u het wachtwoord van alle gebruikers van deze groep opnieuw wilt instellen? | [2,Inf[ Weet u zeker dat u het wachtwoord van alle gebruikers van deze %count% groepen opnieuw wilt instellen?",
+    "password_reset_confirm_help": "Een e-mail met een link om het wachtwoord te wijzigen, wordt naar de gebruiker gestuurd.<br> Door op de link te klikken, wordt de gebruiker naar een pagina geleid waar hij een nieuw wachtwoord kan instellen."
+}

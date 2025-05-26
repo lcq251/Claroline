@@ -1,0 +1,23 @@
+{
+    "add_evidences": "Voeg een bewijsstuk toe",
+    "evidence": "Bewijsstuk",
+    "evidences": "Bewijsstukken",
+    "evidence_count": "{0} Geen bewijsstuk | {1} 1 bewijsstuk | ]1,Inf[ %count% bewijsstukken",
+    "event_not_found": "Sessie niet gevonden",
+    "event_not_found_desc": "Deze code komt niet overeen met een sessie.",
+    "event_not_found_retry": "Voer de code van de sessie opnieuw in",
+    "event_presence_label": "Voer uw naam en voornaam in",
+    "not_registered": "Inloggen vereist",
+    "not_registered_desc": "U moet ingelogd zijn om uw aanwezigheid bij deze sessie te bevestigen.",
+    "presence_code": "Code van de sessie",
+    "presence_code_desc": "Voer de code van de sessie in waarvoor u uw aanwezigheid wilt bevestigen.",
+    "presence_confirm_title": "Bevestiging van aanwezigheid",
+    "presence_confirm_desc": "Uw aanwezigheid bij de sessie %event_title% is geregistreerd.",
+    "presence_confirm_other": "Bevestig een andere aanwezigheid",
+    "presence_confirmation_date": "Datum van bevestiging",
+    "presence_validation_date": "Datum van validatie door de trainer",
+    "presence_info": "Ik, %user%, was aanwezig bij de sessie %event_title% van %event_datetime_start% tot %event_datetime_end%.",
+    "presence_validation": "Bevestig de aanwezigheid",
+    "validate": "Valideren",
+    "validation": "Validatie"
+}

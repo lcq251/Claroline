@@ -1,0 +1,16 @@
+{
+  "add_group": "Groep toevoegen",
+  "add_groups": "Groepen toevoegen",
+  "add_role": "Rol toevoegen",
+  "add_roles": "Rollen toevoegen",
+  "add_user": "Gebruiker toevoegen",
+  "add_users": "Gebruikers toevoegen",
+  "add_organization": "Organisatie toevoegen",
+  "add_organizations": "Organisaties toevoegen",
+  "add_team": "Team toevoegen",
+  "show_profile": "Profiel bekijken",
+  "fill": "Invullen",
+  "empty": "Leegmaken",
+  "show_activity": "Activiteit bekijken",
+  "choose_role": "Rol kiezen om gebruikers/groepen in te schrijven"
+}

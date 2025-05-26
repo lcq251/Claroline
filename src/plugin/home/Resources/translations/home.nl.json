@@ -1,0 +1,26 @@
+{
+    "add_tab": "Tabblad toevoegen",
+    "tab_add_child": "Subtabblad toevoegen",
+    "home_tab_delete_confirm_title": "Tabblad verwijderen",
+    "home_tab_delete_confirm_message": "Weet u zeker dat u dit tabblad wilt verwijderen?",
+    "new_tab": "Nieuw tabblad",
+    "new_tab_configure": "2. Configurer l'onglet",
+    "new_tab_select": "1. Choisir le type d'onglet à créer",
+    "loading": "We laden uw tabblad...",
+    "widgets": "Widgets",
+    "widgets_desc": "Maakt het mogelijk om een raster van verschillende widgettypen te maken.",
+    "restricted_access_message": "U hebt geen toegang tot dit tabblad omdat niet aan alle toegangsvoorwaarden is voldaan.",
+    "restrictions": {
+        "dismiss_help": "Als beheerder kunt u altijd toegang krijgen tot het tabblad, zelfs als niet aan de toegangsvoorwaarden is voldaan.",
+        "unlocked": "U hebt het tabblad ontgrendeld.",
+        "locked": "Toegang vereist een code.",
+        "locked_help": "Voer de code in die u hebt ontvangen om toegang te krijgen tot de resource.",
+        "period_opened": "De toegangsperiode voor het tabblad is momenteel actief.",
+        "period_opened_help": "L'onglet' est accessible du %start% au %end%.",
+        "period_not_limited": "De toegangsperiode voor het tabblad is onbeperkt.",
+        "not_started": "Het tabblad is nog niet toegankelijk.",
+        "not_started_help": "Wacht tot %date%.",
+        "ended": "Het tabblad is niet langer toegankelijk.",
+        "ended_help": "De toegang is gesloten sinds %date%."
+    }
+}

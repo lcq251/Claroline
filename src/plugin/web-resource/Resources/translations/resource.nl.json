@@ -1,0 +1,6 @@
+{
+    "claroline_web_resource": "Webresource",
+    "claroline_web_resource_desc": "Met deze resource kunt u een \"website\" uploaden in zip-indeling die is geschreven in HTML, CSS en JavaScript.",
+    "not_a_zip": "Het bestand moet een .zip-archief zijn met een bestand \"index.html\" of \"index.htm\".",
+    "has_to_be_a_zip": "Het bestand moet een .zip-archief zijn met een bestand \"index.html\" of \"index.htm\"."
+}

@@ -1,0 +1,22 @@
+{
+  "log_resource-claroline_announcement_aggregate-create_filter": "Aankondiging aangemaakt",
+  "log_resource-claroline_announcement_aggregate-create_sentence": "heeft een aankondiging gemaakt in %resource%",
+  "log_resource-claroline_announcement_aggregate-create_shortname": "Creatie",
+  "log_resource-claroline_announcement_aggregate-create_title": "Aankondiging aangemaakt",
+  "log_resource-claroline_announcement_aggregate-delete_filter": "Aankondiging verwijderd",
+  "log_resource-claroline_announcement_aggregate-delete_sentence": "heeft een aankondiging verwijderd in %resource%",
+  "log_resource-claroline_announcement_aggregate-delete_shortname": "Verwijdering",
+  "log_resource-claroline_announcement_aggregate-delete_title": "Aankondiging verwijderd",
+  "log_resource-claroline_announcement_aggregate-edit_filter": "Aankondiging gewijzigd",
+  "log_resource-claroline_announcement_aggregate-edit_sentence": "heeft een aankondiging gewijzigd in %resource%",
+  "log_resource-claroline_announcement_aggregate-edit_shortname": "Wijziging",
+  "log_resource-claroline_announcement_aggregate-edit_title": "Aankondiging gewijzigd",
+  "log_announcement-create_sentence": "een aankondiging is gemaakt in %resource%",
+  "log_announcement-send_sentence": "heeft een aankondiging verzonden in %resource%",
+  "log_announcement-update_sentence": "heeft een aankondiging gewijzigd in %resource%",
+  "log_announcement-delete_sentence": "heeft een aankondiging verwijderd in %resource%",
+  "log_announcement-create_shortname": "Creatie van een aankondiging",
+  "log_announcement-send_shortname": "Verzenden van een aankondiging",
+  "log_announcement-update_shortname": "Bijwerken van een aankondiging",
+  "log_announcement-delete_shortname": "Verwijderen van een aankondiging"
+}

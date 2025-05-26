@@ -1,0 +1,23 @@
+{
+  "evaluation.attempt_end": "Einde van een poging bij een resource",
+  "evaluation.attempt_end_desc": "Wanneer een gebruiker een poging bij een resource beëindigt.",
+  "evaluation.attempt_end_message": "heeft een poging bij de resource %resource% <b>%status%</b>.",
+  "evaluation.attempt_give": "Extra poging bij een resource toegekend",
+  "evaluation.attempt_give_desc": "Wanneer een beheerder een extra poging geeft aan een gebruiker.",
+  "evaluation.attempt_give_message": "heeft een <b>extra poging</b> gekregen bij de resource %resource%.",
+  "evaluation.attempt_start": "Start van een poging bij een resource",
+  "evaluation.attempt_start_desc": "Wanneer een gebruiker een nieuwe poging bij een resource start.",
+  "evaluation.attempt_start_message": "heeft een poging bij de resource %resource% <b>gestart</b>.",
+  "evaluation.resource_end": "Einde van de evaluatie van een resource",
+  "evaluation.resource_end_desc": "Wanneer een gebruiker de evaluatie van een resource beëindigt.",
+  "evaluation.resource_end_message": "heeft de evaluatie van de resource %resource% <b>%status%</b>.",
+  "evaluation.resource_start": "Start van de evaluatie van een resource",
+  "evaluation.resource_start_desc": "Wanneer een gebruiker de evaluatie van een resource start.",
+  "evaluation.resource_start_message": "heeft de evaluatie van de resource %resource% <b>gestart</b>.",
+  "evaluation.workspace_end": "Einde van de evaluatie van een workspace",
+  "evaluation.workspace_end_desc": "Wanneer een gebruiker de evaluatie van een workspace beëindigt.",
+  "evaluation.workspace_end_message": "heeft de evaluatie van de workspace %workspace% <b>%status%</b>.",
+  "evaluation.workspace_start": "Start van de evaluatie van een workspace",
+  "evaluation.workspace_start_desc": "Wanneer een gebruiker de evaluatie van een workspace start.",
+  "evaluation.workspace_start_message": "heeft de evaluatie van de workspace %workspace% <b>gestart</b>."
+}

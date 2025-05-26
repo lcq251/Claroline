@@ -1,0 +1,8 @@
+{
+    "correct_zone_desc": "Blauwe zone = Verwachte correcte zone",
+    "default_tolerance": "Standaardtolerantie",
+    "expected_zones": "Verwachte correcte zones",
+    "nb_authorized_selection": "Aantal toegestane selecties",
+    "pick_audio_file": "Kies een audiobestand",
+    "tolerance_zone_desc": "Roze zone = Tolerantiemarge"
+}

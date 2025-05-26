@@ -1,0 +1,19 @@
+{
+    "loading": "Uw tool wordt geladen...",
+    "not_found": "Tool niet gevonden",
+    "not_found_desc": "Het spijt ons, we konden uw tool niet vinden. Mogelijk bestaat deze niet (meer) of is de gebruikte URL onjuist.",
+    "forbidden": "Toegang tot de tool is niet mogelijk",
+    "forbidden_desc": "U hebt geen toegang tot deze tool. Neem contact op met een beheerder om de benodigde rechten te verkrijgen.",
+    "parameters": "Parameters",
+    "resources": "Resources",
+    "resources_desc": "Maak en organiseer uw digitale inhoud. Van YouTube-video's tot leerpaths.",
+    "community": "Community",
+    "technical_settings": "Technische instellingen",
+    "appearance_settings": "Weergave",
+    "templates": "Templates",
+    "resource_trash": "Resource-prullenbak",
+    "integration": "Integratie",
+    "workspaces": "Workspaces",
+    "locations": "Locaties",
+    "show_icon": "Toon het pictogram van de tool in de paginakoptekst"
+}

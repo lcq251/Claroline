@@ -1,0 +1,4 @@
+{
+  "my_notifications": "Mijn meldingen",
+  "notifications_count": "{0} U heeft geen nieuwe meldingen. | {1} U heeft 1 nieuwe melding. | ]1,Inf[ U heeft %count% nieuwe meldingen."
+}

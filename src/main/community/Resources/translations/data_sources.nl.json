@@ -1,0 +1,23 @@
+{
+  "users": "Gebruikerslijst",
+  "users_desc": "Hiermee kan de lijst van gebruikers worden weergegeven die zichtbaar zijn voor de huidige gebruiker.",
+  "teams": "Lijst van teams van de workspace",
+  "teams_desc": "Hiermee kan de lijst van teams van de workspace worden weergegeven.",
+  "my-teams": "Lijst van mijn teams",
+  "my-teams_desc": "Hiermee kan de lijst van mijn teams worden weergegeven.",
+  "teams-members": "Lijst van leden van mijn teams",
+  "teams-members_desc": "Hiermee kan de lijst van leden van mijn teams worden weergegeven.",
+  "team": "Team",
+  "groups": "Groepenlijst",
+  "groups_desc": "Hiermee kan de lijst van groepen worden weergegeven.",
+  "my-groups": "Lijst van mijn groepen",
+  "my-groups_desc": "Hiermee kan de lijst van mijn groepen worden weergegeven.",
+  "roles": "Rollenlijst",
+  "roles_desc": "Hiermee kan de lijst van rollen worden weergegeven.",
+  "my-roles": "Lijst van mijn rollen",
+  "my-roles_desc": "Hiermee kan de lijst van mijn rollen worden weergegeven.",
+  "organizations": "Lijst van organisaties",
+  "organizations_desc": "Hiermee kan de lijst van organisaties worden weergegeven.",
+  "my-organizations": "Lijst van mijn organisaties",
+  "my-organizations_desc": "Hiermee kan de lijst van mijn organisaties worden weergegeven."
+}

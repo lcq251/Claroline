@@ -1,0 +1,29 @@
+{
+  "country_storage": "Land van gegevensopslag",
+  "country_storage_alert_enabled": "U hebt het land van gegevensopslag ingevoerd",
+  "country_storage_alert_disabled": "U hebt het land van gegevensopslag niet ingevoerd",
+  "dpo": "Functionaris voor gegevensbescherming",
+  "dpo_alert_enabled": "U hebt de contactgegevens van de functionaris voor gegevensbescherming ingevoerd",
+  "dpo_alert_disabled": "U hebt de contactgegevens van de functionaris voor gegevensbescherming niet ingevoerd",
+  "dpo_email_missing_title": "E-mailadres van de FG ontbreekt",
+  "dpo_email_missing_content": "Het e-mailadres van de FG is niet ingevuld.<br>Gelieve het in te stellen door te klikken op %link%, rubriek Privacy -> Functionaris voor gegevensbescherming.",
+  "personal_data": "Mijn persoonlijke gegevens",
+  "export_data": "Mijn gegevens exporteren",
+  "request_deletion": "Verzoek tot verwijdering van mijn account",
+  "delete_account": "Verzoek tot verwijdering van mijn account",
+  "delete_account_message": "Weet u zeker dat u wilt verzoeken om uw account te verwijderen?",
+  "account_deletion": {
+    "subject": "Verzoek tot accountverwijdering",
+    "body": "De gebruiker %name% <br/> ID : %id% <br/> wil zijn account verwijderen. Gelieve de nodige maatregelen te treffen.<br/><hr/>"
+  },
+  "terms_of_service": "Gebruiksvoorwaarden",
+  "terms_of_service_accept": "Accepteer de gebruiksvoorwaarden",
+  "terms_of_service_refuse": "Weiger de gebruiksvoorwaarden",
+  "terms_of_service_accepted": "U hebt de gebruiksvoorwaarden van het platform geaccepteerd",
+  "terms_of_service_not_accepted": "U hebt de gebruiksvoorwaarden van het platform nog niet geaccepteerd",
+  "terms_of_service_activation": "Gebruiksvoorwaarden activeren",
+  "terms_of_service_activation_help": "Nieuwe gebruikers moeten de voorwaarden accepteren voordat ze het platform kunnen gebruiken",
+  "terms_of_service_alert_enabled": "U hebt de gebruiksvoorwaarden van het platform geactiveerd",
+  "terms_of_service_alert_disabled": "U hebt de gebruiksvoorwaarden van het platform niet geactiveerd",
+  "terms_of_service_show": "Bekijk de gebruiksvoorwaarden"
+}

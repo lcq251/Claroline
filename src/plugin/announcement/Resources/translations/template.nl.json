@@ -1,0 +1,8 @@
+{
+  "email_announcement": "Verzenden van een aankondiging",
+  "email_announcement_desc": "Sjabloon gebruikt om een aankondiging te verzenden",
+  "publication_datetime_desc": "Publicatiedatum van de aankondiging",
+  "pdf_announcement": "Exporteren van een aankondiging",
+  "pdf_announcement_desc": "Sjabloon gebruikt om een aankondiging naar PDF te exporteren",
+  "title_desc": "Titel van de aankondiging"
+}

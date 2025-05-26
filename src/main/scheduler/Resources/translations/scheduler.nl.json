@@ -1,0 +1,17 @@
+{
+  "cron_not_configured": "De planner (CRON) van het platform is niet geconfigureerd.",
+  "cron_not_configured_help": "Het is niet mogelijk om nieuwe taken te maken en bestaande taken kunnen niet automatisch worden uitgevoerd. Neem contact op met een beheerder om de planner te configureren.",
+  "scheduled_date": "Geplande datum",
+  "execution_date": "Uitvoerdatum",
+  "add_scheduled_task": "Taak plannen",
+  "task_pending": "In afwachting",
+  "task_in_progress": "Bezig met uitvoeren",
+  "task_success": "Uitgevoerd",
+  "task_error": "Mislukt",
+  "planing": "Planning",
+  "schedule": "Uitvoering plannen",
+  "once": "Eenmalige uitvoering",
+  "recurring": "Terugkerende uitvoering",
+  "interval": "Uitvoeringsinterval",
+  "new_task": "Nieuwe geplande taak"
+}

@@ -1,0 +1,7 @@
+{
+    "button_desc": "Toon een knop om de URL te openen",
+    "iframe_desc": "Toon de URL binnen de resource",
+    "redirect_desc": "Open de URL in het huidige tabblad",
+    "tab_desc": "Open de URL in een nieuw tabblad",
+    "https_iframe_help": "De URL moet het HTTPS-protocol gebruiken om correct te worden weergegeven."
+}

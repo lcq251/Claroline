@@ -1,0 +1,22 @@
+{
+  "event_invitation": "Uitnodiging voor een evenement",
+  "event_invitation_desc": "Template gebruikt voor het versturen van uitnodigingen voor evenementen.",
+  "event_name": "De naam van het evenement",
+  "event_description_desc": "De beschrijving van het evenement",
+  "event_poster_desc": "De poster van het evenement",
+  "event_join_url": "URL waarmee de gebruiker kan aangeven dat hij zal deelnemen aan het evenement",
+  "event_maybe_url": "URL waarmee de gebruiker kan aangeven dat hij misschien zal deelnemen aan het evenement",
+  "event_decline_url": "URL waarmee de gebruiker kan aangeven dat hij niet zal deelnemen aan het evenement",
+  "event_start_datetime_utc_desc": "De startdatum en -tijd van het evenement (UTC)",
+  "event_start_date_utc_desc": "De startdatum van het evenement (UTC)",
+  "event_start_time_utc_desc": "De starttijd van het evenement (UTC)",
+  "event_start_datetime_desc": "De startdatum en -tijd van het evenement",
+  "event_start_date_desc": "De startdatum van het evenement",
+  "event_start_time_desc": "De starttijd van het evenement",
+  "event_end_datetime_utc_desc": "De einddatum en -tijd van het evenement (UTC)",
+  "event_end_date_utc_desc": "De einddatum van het evenement (UTC)",
+  "event_end_time_utc_desc": "De eindtijd van het evenement (UTC)",
+  "event_end_datetime_desc": "De einddatum en -tijd van het evenement",
+  "event_end_date_desc": "De einddatum van het evenement",
+  "event_end_time_desc": "De eindtijd van het evenement"
+}

@@ -1,0 +1,21 @@
+{
+    "best_score": "Beste score",
+    "best_status": "Beste status",
+    "browsed": "Bekeken",
+    "completed": "Voltooid",
+    "failed": "Mislukt",
+    "incomplete": "Onvolledig",
+    "last_score": "Laatste score",
+    "last_session_date": "Datum van de laatste sessie",
+    "not attempted": "Niet geprobeerd",
+    "not_attempted": "Niet geprobeerd",
+    "passed": "Geslaagd",
+    "play_scorm": "Start de Scorm",
+    "sco": "SCO",
+    "scorm_results": "SCORM-resultaten",
+    "session_time": "Duur van de laatste sessie",
+    "success_status": "Status",
+    "unknown": "Onbekend",
+    "scorm_12": "Scorm 1.2",
+    "scorm_2004": "Scorm 2004"
+}

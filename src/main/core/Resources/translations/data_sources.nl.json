@@ -1,0 +1,16 @@
+{
+    "admin_tools": "Lijst van beheertools",
+    "admin_tools_desc": "Hiermee kan de huidige gebruiker de beheertools weergeven.",
+    "my_workspaces": "Lijst van mijn workspaces",
+    "my_workspaces_desc": "Hiermee kan de huidige gebruiker de workspaces waarin hij of zij is ingeschreven, weergeven.",
+    "resources": "Lijst van resources",
+    "resources_desc": "Hiermee kan de huidige gebruiker de toegankelijke resources weergeven.",
+    "tools": "Lijst van tools",
+    "tools_desc": "Hiermee kan de huidige gebruiker de toegankelijke tools weergeven.",
+    "workspaces": "Lijst van workspaces",
+    "workspaces_desc": "Hiermee kan de huidige gebruiker de zichtbare workspaces weergeven, inclusief de workspaces die de gebruiker beheert, waarin hij of zij is ingeschreven of waarop hij of zij zich kan inschrijven.",
+    "resource": "Geselecteerde resource",
+    "resource_desc": "Hiermee kan een gekozen resource worden weergegeven.",
+    "personal_workspace": "Map van de persoonlijke workspace",
+    "personal_workspace_desc": "Hiermee kan de hoofdmap van de persoonlijke workspace van de huidige gebruiker worden weergegeven."
+}

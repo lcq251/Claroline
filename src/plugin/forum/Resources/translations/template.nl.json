@@ -1,0 +1,15 @@
+{
+    "forum_new_message": "Nieuw bericht in een forum",
+    "forum_new_message_desc": "Template gebruikt om gebruikers te informeren dat een nieuw bericht is geplaatst in een forum.",
+    "forum_desc": "Naam van het forum",
+    "forum_url_desc": "URL van het forum",
+    "subject_desc": "Naam van het onderwerp",
+    "subject_url_desc": "URL van het onderwerp",
+    "message_desc": "Bericht",
+    "post_datetime_utc_desc": "Datum en tijd van het bericht (UTC)",
+    "post_date_utc_desc": "Datum van het bericht (UTC)",
+    "post_time_utc_desc": "Tijd van het bericht (UTC)",
+    "post_datetime_desc": "Tijd en datum van het bericht",
+    "post_date_desc": "Datum van het bericht",
+    "post_time_desc": "Tijd van het bericht"
+}

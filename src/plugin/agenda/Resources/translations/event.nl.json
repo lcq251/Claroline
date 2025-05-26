@@ -1,0 +1,6 @@
+{
+  "event": "Evenement",
+  "event_desc": "Maakt het mogelijk een evenement te plannen en gebruikers uit te nodigen.",
+  "task": "Taak",
+  "task_desc": "Maakt het mogelijk een taak te plannen die moet worden uitgevoerd."
+}

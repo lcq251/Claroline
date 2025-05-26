@@ -1,0 +1,12 @@
+{
+  "resource_attempts": "Lijst van pogingen bij resources",
+  "resource_attempts_desc": "Maakt het mogelijk om de pogingen van gebruikers op te sommen.",
+  "resource_evaluations": "Lijst van evaluaties van resources",
+  "resource_evaluations_desc": "Maakt het mogelijk om de evaluaties te tonen die gebruikers hebben verkregen voor resources.",
+  "my_resource_evaluations": "Lijst van mijn evaluaties van resources",
+  "my_resource_evaluations_desc": "Maakt het mogelijk om mijn evaluaties van resources te tonen.",
+  "workspace_evaluations": "Lijst van evaluaties van workspaces",
+  "workspace_evaluations_desc": "Maakt het mogelijk om de evaluaties te tonen die gebruikers hebben verkregen voor workspaces.",
+  "my_workspace_evaluations": "Lijst van mijn evaluaties van workspaces",
+  "my_workspace_evaluations_desc": "Maakt het mogelijk om mijn evaluaties van workspaces te tonen."
+}

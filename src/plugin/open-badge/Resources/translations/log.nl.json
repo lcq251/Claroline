@@ -1,0 +1,8 @@
+{
+    "badge.grant": "Toekenning van een badge",
+    "badge.grant_desc": "Wanneer een gebruiker een nieuwe badge ontvangt als gevolg van activiteit op het platform of een handmatige toekenning.",
+    "badge.grant_message": "heeft de badge %badge% behaald.",
+    "badge.revoke": "Intrekking van een badge",
+    "badge.revoke_desc": "Wanneer een beheerder de badge handmatig intrekt van een gebruiker.",
+    "badge.revoke_message": "heeft de badge %badge% verloren."
+}

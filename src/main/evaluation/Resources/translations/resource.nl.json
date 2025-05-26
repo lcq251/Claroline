@@ -1,0 +1,11 @@
+{
+  "evaluation_not_attempted_status": "Je bent niet begonnen met de resource.",
+  "evaluation_todo_status": "Je moet deze resource doen.",
+  "evaluation_unknown_status": "We kennen je voortgang in deze resource niet.",
+  "evaluation_opened_status": "Je hebt de resource geopend.",
+  "evaluation_incomplete_status": "Je hebt de resource niet voltooid.",
+  "evaluation_participated_status": "Je hebt deelgenomen aan de resource.",
+  "evaluation_failed_status": "Je bent niet geslaagd voor de resource.",
+  "evaluation_completed_status": "Je hebt de resource voltooid.",
+  "evaluation_passed_status": "Je bent geslaagd voor de resource."
+}

@@ -1,0 +1,5 @@
+{
+    "claroline/distribution": "Standaarddistributie van Claroline",
+    "claroline_core": "Kern",
+    "claroline_core_desc": "Biedt de basisfunctionaliteiten van het Claroline-platform."
+}

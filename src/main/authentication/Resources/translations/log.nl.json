@@ -1,0 +1,20 @@
+{
+    "authentication.forgot_password": "Wachtwoord vergeten",
+    "authentication.forgot_password_desc": "Wanneer een gebruiker vraagt om het wachtwoord opnieuw in te stellen met de functie \"Wachtwoord vergeten\".",
+    "authentication.forgot_password_message": "heeft gevraagd om het wachtwoord van de account %user% opnieuw in te stellen.",
+    "authentication.new_password": "Wachtwoordwijziging",
+    "authentication.new_password_desc": "Wanneer een gebruiker het wachtwoord van een gebruikersaccount wijzigt.",
+    "authentication.new_password_message": "heeft het wachtwoord van de account %user% gewijzigd.",
+    "authentication.user_login": "Gebruikerslogin",
+    "authentication.user_login_desc": "Wanneer een gebruiker inlogt op het platform met zijn account (intern of extern).",
+    "authentication.user_login_message": "is <b>ingelogd</b>.",
+    "authentication.user_login_failed": "Mislukte inlogpoging",
+    "authentication.user_login_failed_desc": "Wanneer een gebruiker niet kan inloggen op het platform (onbestaande of gedeactiveerde account, onjuist wachtwoord, ...).",
+    "authentication.user_login_failed_message": "heeft niet kunnen inloggen. Reden: %error%.",
+    "authentication.user_logout": "Gebruikersuitlog",
+    "authentication.user_logout_desc": "Wanneer een gebruiker uitlogt van het platform.",
+    "authentication.user_logout_message": "is <b>uitgelogd</b>.",
+    "authentication.user_switch": "Modus \"Weergeven als\"",
+    "authentication.user_switch_desc": "Wanneer een beheerder de functie \"Weergeven als\" gebruikt om door het platform te bladeren met de account van een andere gebruiker.",
+    "authentication.user_switch_message": "heeft <b>de account</b> van %user% <b>overgenomen</b>."
+}

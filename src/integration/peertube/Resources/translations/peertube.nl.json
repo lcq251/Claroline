@@ -1,0 +1,11 @@
+{
+  "autoplay": "Automatisch afspelen",
+  "controls": "Weergave van de bedieningselementen",
+  "loop": "Herhalen van de weergave",
+  "peertubeLink": "Weergave van de Peertube-link",
+  "playback_param": "Afspeelinstellingen",
+  "resume": "Hervatten van de weergave",
+  "timecode_help": "Opgelet: het gebruik van timecodes kan de voortgangsberekening beïnvloeden.",
+  "timecode_start": "Starttijdcode",
+  "timecode_end": "Eindtijdcode"
+}

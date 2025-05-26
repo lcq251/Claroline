@@ -1,0 +1,20 @@
+{
+    "my_course_sessions": "Lijst van mijn trainingssessies",
+    "my_course_sessions_desc": "Hiermee kunt u de sessies weergeven waarvoor de huidige gebruiker is ingeschreven.",
+    "public_course_sessions": "Lijst van openbare trainingssessies",
+    "public_course_sessions_desc": "Hiermee kunt u sessies met openbare inschrijvingen weergeven.",
+    "course_sessions": "Lijst van trainingssessies",
+    "course_sessions_desc": "Hiermee kunt u de trainingssessies weergeven.",
+    "all_courses": "Lijst van alle trainingen",
+    "all_courses_desc": "Hiermee kunt u de trainingen op het platform weergeven.",
+    "public_courses_desc": "Hiermee kunt u alle openbare trainingen weergeven.",
+    "training_event": "Trainingssessie",
+    "training_events": "Lijst van sessies",
+    "training_events_desc": "Hiermee kunt u de trainingssessies weergeven.",
+    "my_training_events": "Lijst van mijn trainingssessies",
+    "my_training_events_desc": "Hiermee kunt u de sessies weergeven waarvoor de huidige gebruiker is ingeschreven.",
+    "event_presences": "Lijst van aanwezigheden",
+    "event_presences_desc": "Hiermee kunt u de aanwezigheden bij een trainingssessie weergeven.",
+    "my_event_presences": "Lijst van mijn aanwezigheden",
+    "my_event_presences_desc": "Hiermee kunt u mijn aanwezigheden bij een trainingssessie weergeven."
+}

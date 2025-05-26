@@ -1,0 +1,6 @@
+{
+  "functional": "Functionele logboeken",
+  "operational": "Operationele logboeken",
+  "security": "Beveiligingslogboeken",
+  "message": "Berichtlogboeken"
+}

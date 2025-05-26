@@ -1,0 +1,18 @@
+{
+  "add_user": "Gebruiker toevoegen",
+  "remove_user": "Gebruiker verwijderen",
+  "add_group": "Groep toevoegen",
+  "remove_group": "Groep verwijderen",
+  "add_manager": "Beheerder toevoegen",
+  "remove_manager": "Beheerder verwijderen",
+  "set_main_organization": "Hoofdorganisatie instellen",
+  "group": "Groep",
+  "user": "Gebruiker",
+  "organization": "Organisatie",
+  "enable": "Activeren",
+  "disable": "Deactiveren",
+  "list_users": "Gebruikerslijst",
+  "list_managers": "Beheerderslijst",
+  "list_groups": "Groepenlijst",
+  "empty_users": "Alle gebruikers verwijderen"
+}

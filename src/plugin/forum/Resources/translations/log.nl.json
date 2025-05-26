@@ -1,0 +1,18 @@
+{
+    "log_forum_subject-create_shortname": "Onderwerp aanmaken",
+    "log_forum_message-unmoderated_shortname": "Bericht deblokkeren",
+    "log_forum_message-create_shortname": "Bericht aanmaken",
+    "log_forum_subject-stick_shortname": "Onderwerp vastzetten",
+    "log_forum_subject-flag_shortname": "Onderwerp melden",
+    "log_forum_subject-update_shortname": "Onderwerp bewerken",
+    "log_forum_subject-open_shortname": "Onderwerp openen",
+    "log_forum_subject-close_shortname": "Onderwerp sluiten",
+    "log_forum_subject-create_sentence": "heeft het onderwerp %subject.title% aangemaakt in %resource%",
+    "log_forum_message-unmoderated_sentence": "heeft een bericht gedeblokkeerd in het onderwerp %subject.title% in %resource%",
+    "log_forum_message-create_sentence": "heeft een bericht aangemaakt in het onderwerp %subject.title% in %resource%",
+    "log_forum_subject-stick_sentence": "heeft het onderwerp %subject.title% vastgezet in %resource%",
+    "log_forum_subject-flag_sentence": "heeft het onderwerp %subject.title% gemeld in %resource%",
+    "log_forum_subject-update_sentence": "heeft het onderwerp %subject.title% bijgewerkt in %resource%",
+    "log_forum_subject-open_sentence": "heeft het onderwerp %subject.title% geopend in %resource%",
+    "log_forum_subject-close_sentence": "heeft het onderwerp %subject.title% gesloten in %resource%"
+}

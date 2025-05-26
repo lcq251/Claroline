@@ -1,0 +1,5 @@
+{
+    "message.send": "Verzenden van een bericht",
+    "message.send_desc": "Wanneer een gebruiker een bericht verstuurt vanaf het platform.",
+    "message.send_message": "heeft een bericht verzonden naar %receiver%."
+}

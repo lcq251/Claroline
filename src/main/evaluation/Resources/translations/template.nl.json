@@ -1,0 +1,18 @@
+{
+  "workspace_description_desc": "Beschrijving van de workspace",
+  "workspace_poster_desc": "Poster van de workspace",
+  "workspace_participation_certificate": "Deelnamecertificaat voor een workspace",
+  "workspace_participation_certificate_desc": "Template gebruikt om gebruikersparticipatiecertificaten te genereren.",
+  "workspace_success_certificate": "Succescertificaat voor een workspace",
+  "workspace_success_certificate_desc": "Template gebruikt om succescertificaten voor gebruikers te genereren.",
+  "evaluation_duration_desc": "Duur van de evaluatie",
+  "evaluation_status_desc": "Status van de evaluatie (Niet begonnen, Bezig, Geslaagd, etc.)",
+  "evaluation_datetime_desc": "De datum van de laatste activiteit op de evaluatie (Datum + Tijd)",
+  "evaluation_date_desc": "De datum van de laatste activiteit op de evaluatie (Alleen datum)",
+  "evaluation_time_desc": "De datum van de laatste activiteit op de evaluatie (Alleen tijd)",
+  "evaluation_score_desc": "Score van de evaluatie",
+  "evaluation_score_max_desc": "Maximale score van de evaluatie",
+  "user_first_name_desc": "Voornaam van de gebruiker",
+  "user_last_name_desc": "Achternaam van de gebruiker",
+  "user_username_desc": "Gebruikersnaam van de gebruiker"
+}

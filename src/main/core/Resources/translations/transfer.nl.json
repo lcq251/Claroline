@@ -1,0 +1,21 @@
+{
+    "workspace": "Workspace",
+    "directory": "Map",
+    "resource": "Resource",
+    "archive": "Archiveren",
+    "unarchive": "Dearchiveren",
+    "empty_role": "Rol leegmaken (gebruikers en groepen)",
+    "remove_all_groups": "Alle groepen verwijderen",
+    "remove_all_users": "Alle gebruikers verwijderen",
+    "directory_id": "ID van de map",
+    "directory_name": "Naam van de map",
+    "directory_open": "Recht om te openen [standaard: 0 (onwaar)]",
+    "directory_delete": "Recht om te verwijderen [standaard: 0 (onwaar)]",
+    "directory_edit": "Recht om te bewerken [standaard: 0 (onwaar)]",
+    "directory_copy": "Recht om te kopiëren [standaard: 0 (onwaar)]",
+    "directory_export": "Recht om te exporteren [standaard: 0 (onwaar)]",
+    "directory_administrate": "Administratierecht voor medewerkers",
+    "directory_user": "Een gebruikersnaam indien hij de enige is die toegang heeft",
+    "directory_role": "Vertalingssleutel van de rol (standaardrol indien niet gedefinieerd)",
+    "directory_creation": "Lijst van toegestane resourcetypes die mogen worden aangemaakt (gescheiden door komma's) - %types% - standaard: allemaal"
+}

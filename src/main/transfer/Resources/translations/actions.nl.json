@@ -1,0 +1,14 @@
+{
+  "import": "Importeren",
+  "export": "Exporteren",
+  "refresh": "Gegevens verversen",
+  "delete_import": "Import verwijderen",
+  "delete_import_help": "Hiermee verwijdert u de import",
+  "delete_export": "Export verwijderen",
+  "delete_export_help": "Hiermee verwijdert u de export",
+  "unblock": "Deblokkeren",
+  "unblock_import": "Import deblokkeren",
+  "unblock_import_help": "Hiermee deblokkeert u de import als deze blijft hangen op Bezig",
+  "unblock_export": "Export deblokkeren",
+  "unblock_export_help": "Hiermee deblokkeert u de export als deze blijft hangen op Bezig"
+}
