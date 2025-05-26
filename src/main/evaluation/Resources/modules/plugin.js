@@ -41,7 +41,8 @@ registry.add('ClarolineEvaluationBundle', {
     resource_evaluation: {
       'open': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-open" */ '#/main/evaluation/actions/resource_evaluation/open') },
       'send-message': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-send-message" */ '#/main/evaluation/actions/resource_evaluation/send-message') },
-      'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-show-profile" */ '#/main/evaluation/actions/resource_evaluation/show-profile') }
+      'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-show-profile" */ '#/main/evaluation/actions/resource_evaluation/show-profile') },
+      'delete': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-delete" */ '#/main/evaluation/actions/resource_evaluation/delete') }
     },
 
     sequence_evaluation: {
@@ -61,7 +62,8 @@ registry.add('ClarolineEvaluationBundle', {
       'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-show-profile" */ '#/main/evaluation/actions/workspace_evaluation/show-profile') },
       'download-certificate': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-certificate" */ '#/main/evaluation/actions/workspace_evaluation/download-certificate') },
       'regenerate-certificate': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-regenerate-certificate" */ '#/main/evaluation/actions/workspace_evaluation/regenerate-certificate') },
-      'recompute': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-recompute" */ '#/main/evaluation/actions/workspace_evaluation/recompute') }
+      'recompute': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-recompute" */ '#/main/evaluation/actions/workspace_evaluation/recompute') },
+      'delete': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-delete" */ '#/main/evaluation/actions/workspace_evaluation/delete') }
     }
   },
 

@@ -73,7 +73,7 @@ class SchemaProvider
         }
 
         $schema = $this->getSchema($class);
-        if (isset($schema->claroline)) {
+        if (isset($schema->claroline) && !empty($schema->claroline->ids)) {
             return $schema->claroline->ids;
         }
 
@@ -81,7 +81,7 @@ class SchemaProvider
     }
 
     /**
-     * Gets the json schema of a class.
+     * Gets the JSON schema of a class.
      */
     public function getSchema(string $class, array $options = []): ?\stdClass
     {

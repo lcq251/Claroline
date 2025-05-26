@@ -97,6 +97,22 @@ class WorkspaceEvaluationController
         );
     }
 
+    #[Route(path: '/', name: 'apiv2_workspace_evaluation_delete', methods: ['DELETE'])]
+    public function deleteAction(Request $request): JsonResponse
+    {
+        $evaluationIds = $this->decodeRequest($request);
+
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
+                'uuid' => $evaluationId,
+            ]);
+
+            $this->crud->delete($evaluation);
+        }
+
+        return new JsonResponse(null, 204);
+    }
+
     /**
      * Initializes evaluations for all the users of a workspace.
      */

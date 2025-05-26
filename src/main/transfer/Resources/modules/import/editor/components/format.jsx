@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 
 import has from 'lodash/has'
 import classes from 'classnames'
@@ -131,7 +131,7 @@ const ImportEditorFormat = (props) => {
           render: () => {
             if (props.schema.properties && 0 !== props.schema.properties.length) {
               return (
-                <Fragment>
+                <div role="presentation">
                   <div
                     className="transfer-schema-filter">
                     {trans('list_filter_by')}
@@ -147,7 +147,7 @@ const ImportEditorFormat = (props) => {
                   {props.schema.properties.filter(prop => 'all' === columns || prop.required).map((prop, index) =>
                     <Field key={index} {...prop} />)
                   }
-                </Fragment>
+                </div>
               )
             }
           }

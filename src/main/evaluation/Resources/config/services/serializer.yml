@@ -5,6 +5,7 @@ services:
     Claroline\EvaluationBundle\Serializer\UserEvaluation\WorkspaceEvaluationSerializer:
         arguments:
             - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CommunityBundle\Serializer\UserSerializer'
             - '@Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer'
 

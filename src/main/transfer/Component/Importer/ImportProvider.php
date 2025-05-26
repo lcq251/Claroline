@@ -8,7 +8,7 @@ use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 /**
  * Aggregates all the importers defined in the Claroline app.
  *
- * An importer MUST :
+ * An importer MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.importer".
  *   - implement the ImporterInterface interface (or the AbstractImporter class).
  */

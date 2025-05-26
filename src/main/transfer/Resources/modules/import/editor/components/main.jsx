@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
-import get from 'lodash/get'
 import {PropTypes as T} from 'prop-types'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {Editor} from '#/main/app/editor/components/main'
@@ -25,7 +25,7 @@ const ImportEditor = (props) => {
     <Editor
       path={props.path + (props.isNew ? '/new' : '/edit')}
       styles={['claroline-distribution-main-transfer-transfer-tool']}
-      title={get(props.formData, 'name', trans('import', {}, 'transfer'))}
+      title={get(props.formData, 'name') || trans('import', {}, 'transfer')}
       name={selectors.FORM_NAME}
       target={(formData, isNew) => isNew ? ['apiv2_transfer_import_create']: ['apiv2_transfer_import_update', {id: props.formData.id}]}
       onSave={(response) => {

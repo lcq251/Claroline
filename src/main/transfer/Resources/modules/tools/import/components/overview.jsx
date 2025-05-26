@@ -16,13 +16,7 @@ const ImportOverview = () => {
   Object.keys(importers).map(importerGroup => {
     links = links.concat(Object.keys(importers[importerGroup]).map(importerName => ({
       id: importerGroup+'_'+importerName,
-      /*icon: classes('fa fa-fw', {
-        'fa-plus': 'create' === importerName,
-        'fa-trash': 'delete' === importerName,
-        'fa-pencil': 'update' === importerName
-      }),*/
       label: trans(importerName, {}, 'transfer'),
-      //description: trans('Lorem ipsum dolor sit amet.'),
       action: {
         type: CALLBACK_BUTTON,
         callback: () => true

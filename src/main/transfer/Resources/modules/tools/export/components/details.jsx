@@ -26,6 +26,7 @@ const ExportDetails = props => {
           name: 'download',
           //size: 'lg',
           type: URL_BUTTON,
+          icon: 'fa fa-fw fa-download',
           label: trans('download', {}, 'actions'),
           target: ['apiv2_transfer_export_download', {id: props.exportFile ? props.exportFile.id : null}],
           disabled: !props.exportFile || 'success' !== props.exportFile.status,
@@ -33,6 +34,7 @@ const ExportDetails = props => {
         }, {
           name: 'refresh',
           type: CALLBACK_BUTTON,
+          icon: 'fa fa-fw fa-refresh',
           label: trans('refresh', {}, 'actions'),
           callback: () => props.refresh(props.exportFile.id),
           disabled: !props.exportFile || !hasPermission('refresh', props.exportFile) || 'in_progress' === props.exportFile.status

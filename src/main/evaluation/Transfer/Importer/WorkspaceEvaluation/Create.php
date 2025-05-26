@@ -10,7 +10,7 @@ class Create extends AbstractCreateImporter
 {
     public static function getAction(): array
     {
-        return ['workspace_evaluation', self::MODE_CREATE];
+        return ['workspaceEvaluation', self::MODE_CREATE];
     }
 
     protected static function getClass(): string

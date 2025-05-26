@@ -7,22 +7,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExplanationBuilder
 {
-    private $translator;
-    private $mode;
-
-    public function __construct(TranslatorInterface $translator, $mode = 'default')
-    {
-        $this->translator = $translator;
-        $this->mode = $mode;
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly string $mode = 'default'
+    ) {
     }
 
-    /**
-     * @param \stdClass   $data
-     * @param Explanation $explanation
-     * @param string      $currentPath
-     * @param bool        $isArray
-     */
-    private function explainObject($data, $explanation, $currentPath, $isArray = false)
+    private function explainObject(\stdClass $data, Explanation $explanation, string $currentPath, ?bool $isArray = false): void
     {
         if (!isset($data->properties)) {
             return;
@@ -59,14 +50,14 @@ class ExplanationBuilder
     }
 
     /**
-     * A oneOf is simply an other schema that needs to be explained.
+     * A oneOf is simply another schema that needs to be explained.
      *
      * @param \stdClass   $data
      * @param Explanation $explanation
      * @param string      $currentPath
      * @param bool        $isArray
      */
-    private function explainOneOf($data, $explanation, $currentPath, $isArray = false)
+    private function explainOneOf(\stdClass $data, Explanation $explanation, string $currentPath, ?bool $isArray = false): void
     {
         $explanation->addOneOf(array_map(function ($oneOf) use ($currentPath, $isArray) {
             return $this->explainSchema($oneOf, null, $currentPath, $isArray);
@@ -74,27 +65,20 @@ class ExplanationBuilder
     }
 
     /**
-     * Explain how to import according to the json-schema for a given mime type (csv)
+     * Explain how to import, according to the json-schema for a given mime type (csv)
      * Here, we'll give a csv description according to the schema
-     * This is only a first version because not everything will be supported by csv.
-     *
-     * @param \stdClass   $data
-     * @param Explanation $explanation
-     * @param string      $currentPath
-     * @param bool        $isArray
-     *
-     * @return Explanation
+     * This is only a first version because not everything is supported by csv.
      */
     public function explainSchema(
-        $data,
-        $explanation = null,
-        $currentPath = '',
-        $isArray = false
-    ) {
+        \stdClass $data,
+        ?Explanation $explanation = null,
+        ?string $currentPath = '',
+        ?bool $isArray = false
+    ): Explanation {
         if (!$explanation) {
             $explanation = new Explanation();
         }
-        // parse the json and explain what to do
+        // parse the JSON and explain what to do
 
         if (isset($data->type)) {
             $this->explainObject($data, $explanation, $currentPath, $isArray);
@@ -107,10 +91,7 @@ class ExplanationBuilder
         return $explanation;
     }
 
-    /**
-     * @return Explanation
-     */
-    public function explainIdentifiers(array $schemas)
+    public function explainIdentifiers(array $schemas): Explanation
     {
         $explanation = new Explanation();
 
@@ -132,9 +113,7 @@ class ExplanationBuilder
                         $data->type,
                         $this->translator->trans($this->getDescription($data), [], 'schema'),
                         false,
-                        false,
-                        false,
-                        true
+                        false
                     )]);
                 }
 
@@ -148,7 +127,7 @@ class ExplanationBuilder
         return $explanation;
     }
 
-    private function getProperty($data, $prop, $default)
+    private function getProperty(\stdClass $data, string $prop, mixed $default): mixed
     {
         if (isset($data->{$prop})) {
             return $data->{$prop};
@@ -157,7 +136,7 @@ class ExplanationBuilder
         return $default;
     }
 
-    private function getDescription($property)
+    private function getDescription(\stdClass $property): string
     {
         return $this->getProperty($property, 'description', '');
     }

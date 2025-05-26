@@ -16,6 +16,8 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\Controller\RequestDecoderTrait;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -39,10 +41,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ResourceEvaluationController
 {
     use PermissionCheckerTrait;
+    use RequestDecoderTrait;
 
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly FinderProvider $finder,
         private readonly ResourceEvaluationManager $evaluationManager,
@@ -76,6 +80,22 @@ class ResourceEvaluationController
         $evaluations = $this->crud->search(ResourceEvaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
         return $evaluations->toResponse();
+    }
+
+    #[Route(path: '/', name: 'apiv2_resource_evaluation_delete', methods: ['DELETE'])]
+    public function deleteAction(Request $request): JsonResponse
+    {
+        $evaluationIds = $this->decodeRequest($request);
+
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
+                'uuid' => $evaluationId,
+            ]);
+
+            $this->crud->delete($evaluation);
+        }
+
+        return new JsonResponse(null, 204);
     }
 
     #[Route(path: '/attempts/{userEvaluationId}', name: 'apiv2_resource_evaluation_list_attempts', methods: ['GET'])]

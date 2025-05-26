@@ -81,8 +81,14 @@ class GroupSerializer
         return $serialized;
     }
 
-    public function deserialize(array $data, Group $group): Group
+    public function deserialize(array $data, Group $group, array $options = []): Group
     {
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
+            $this->sipe('id', 'setUuid', $data, $group);
+        } else {
+            $group->refreshUuid();
+        }
+
         $this->sipe('name', 'setName', $data, $group);
         $this->sipe('code', 'setCode', $data, $group);
         $this->sipe('poster', 'setPoster', $data, $group);

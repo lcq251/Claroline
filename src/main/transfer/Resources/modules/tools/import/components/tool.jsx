@@ -16,7 +16,7 @@ const ImportTool = (props) =>
     {...props}
     styles={['claroline-distribution-main-transfer-transfer-tool']}
     menu={[
-      {
+      /*{
         name: 'overview',
         type: LINK_BUTTON,
         label: trans('about'),
@@ -27,15 +27,17 @@ const ImportTool = (props) =>
         type: LINK_BUTTON,
         label: trans('all_imports', {}, 'transfer'),
         target: props.path+'/all'
-      }
+      }*/
     ]}
     pages={[
       {
         path: '/',
         exact: true,
-        component: ImportOverview
+        component: ImportOverview,
+        disabled: true
       }, {
-        path: '/all',
+        path: '/',
+        exact: true,
         component: ImportList
       }, {
         path: '/new',

@@ -79,7 +79,6 @@ const UserEditorOverview = () => {
           ]
         }, {
           title: trans('Informations personnelles'),
-          // description: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet tristique diam, sit amet auctor erat.'),
           primary: true,
           fields: [
             {

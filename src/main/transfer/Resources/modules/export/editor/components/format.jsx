@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 
 import classes from 'classnames'
 import {trans} from '#/main/app/intl'
@@ -106,7 +106,7 @@ const ExportEditorFormat = (props) => {
           render: () => {
             if (props.schema.properties && 0 !== props.schema.properties.length) {
               return (
-                <Fragment>
+                <div role="presentation">
                   <Checkbox
                     id="export-column-select"
                     className="transfer-schema-select"
@@ -139,7 +139,7 @@ const ExportEditorFormat = (props) => {
                       }}
                     />
                   )}
-                </Fragment>
+                </div>
               )
             }
           }

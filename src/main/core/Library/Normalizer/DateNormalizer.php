@@ -10,7 +10,7 @@ class DateNormalizer
      *
      * @var string
      */
-    const DATE_FORMAT = 'Y-m-d\TH:i:s';
+    public const DATE_FORMAT = 'Y-m-d\TH:i:s';
 
     /**
      * Normalizes a DateTime to a string.

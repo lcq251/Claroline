@@ -6,25 +6,79 @@
       "type": "string",
       "description": "The uuid of the evaluation"
     },
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The uuid of the user"
+        },
+        "email": {
+          "type": "string",
+          "description": "The email of the user"
+        },
+        "username": {
+          "type": "string",
+          "description": "The username of the user"
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The uuid of the workspace"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code of the workspace"
+        }
+      }
+    },
+    "certified": {
+      "type": "boolean",
+      "description": "Is the evaluation certified ?"
+    },
     "lastActivityAt": {
       "type": "string",
-      "description": "The last activity date of the evaluation"
+      "description": "The last activity date of the evaluation in UTC (Format : Y-m-dTH:i:s)"
     },
     "startedAt": {
       "type": "string",
-      "description": "The start date of the evaluation"
+      "description": "The start date of the evaluation in UTC (Format : Y-m-dTH:i:s)"
     },
     "endedAt": {
       "type": "string",
-      "description": "The end date of the evaluation"
+      "description": "The end date of the evaluation in UTC (Format : Y-m-dTH:i:s)"
     },
     "status": {
       "type": "string",
-      "description": "The status of the evaluation (not attempted, success, failure, etc.)"
+      "description": "The status of the evaluation (not_attempted, incomplete, completed, failed, passed, unknown)"
+    },
+    "duration": {
+      "type": "number",
+      "description": "The duration of the evaluation in seconds"
     },
     "progression": {
       "type": "number",
-      "description": "The progression of the user (0-100%)"
+      "description": "The progression of the user (0-100)"
+    },
+    "rawScore": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "type": "number",
+          "description": "The current score of the evaluation"
+        },
+        "total": {
+          "type": "number",
+          "description": "The total score of the evaluation"
+        }
+      }
     }
+  },
+  "claroline": {
+    "requiredAtCreation": ["status", "user", "workspace"]
   }
 }

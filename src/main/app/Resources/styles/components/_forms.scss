@@ -21,7 +21,8 @@
 }
 
 .data-form .accordion-body,
-.data-form-section {
+.data-form-section,
+.sub-fields {
     display: flex;
     flex-direction: column;
     justify-content: stretch;

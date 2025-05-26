@@ -25,6 +25,7 @@ const ImportShow = props => {
           name: 'download',
           //size: 'lg',
           type: URL_BUTTON,
+          icon: 'fa fa-fw fa-download',
           label: trans('download', {}, 'actions'),
           target: get(props.importFile, 'file.url'),
           disabled: !get(props.importFile, 'file.url'),

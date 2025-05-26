@@ -73,7 +73,7 @@ class ObjectManager extends EntityManagerDecorator
     }
 
     /**
-     * Fetch an object from database according to the class and the id/uuid of the data.
+     * Fetch an object from the database according to the class and the id/uuid of the data.
      *
      * @return object|null
      */
@@ -81,7 +81,7 @@ class ObjectManager extends EntityManagerDecorator
     {
         $object = null;
 
-        // try to retrieve object with its id
+        // try to retrieve an object with its id
         if (isset($data['id']) || isset($data['uuid'])) {
             if (isset($data['uuid'])) {
                 $object = $this->getRepository($class)->findOneBy(['uuid' => $data['uuid']]);

@@ -113,6 +113,16 @@ class SequenceEvaluationController
     #[Route(path: '/', name: 'apiv2_sequence_evaluation_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
+        $evaluationIds = $this->decodeRequest($request);
+
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = $this->om->getRepository(SequenceEvaluation::class)->findOneBy([
+                'uuid' => $evaluationId,
+            ]);
+
+            $this->crud->delete($evaluation);
+        }
+
         return new JsonResponse(null, 204);
     }
 

@@ -56,14 +56,14 @@ class CsvAdapter implements AdapterInterface
         return $data;
     }
 
-    public function explainSchema(\stdClass $data, $mode)
+    public function explainSchema(\stdClass $schema, string $mode): Explanation
     {
         $builder = new ExplanationBuilder($this->translator, $mode);
 
-        return $builder->explainSchema($data);
+        return $builder->explainSchema($schema);
     }
 
-    public function explainIdentifiers(array $schemas)
+    public function explainIdentifiers(array $schemas): Explanation
     {
         $builder = new ExplanationBuilder($this->translator);
 
@@ -85,7 +85,7 @@ class CsvAdapter implements AdapterInterface
                 return $propDef['name'];
             }, $schema['properties']);
         } else {
-            // get all the columns from first data row
+            // get all the columns from the first data row
             $headers = ArrayUtils::getPropertiesName($data[0]);
         }
 
@@ -140,7 +140,7 @@ class CsvAdapter implements AdapterInterface
      *
      * @return array
      */
-    private function addPropertyToObject(Property $property, array &$object, $value)
+    private function addPropertyToObject(Property $property, array &$object, $value): array
     {
         $propertyName = $property->getName();
         $types = !is_array($property->getType()) ? [$property->getType()] : $property->getType();
@@ -165,7 +165,7 @@ class CsvAdapter implements AdapterInterface
         return $object;
     }
 
-    private function formatValue(array $types, $value)
+    private function formatValue(array $types, mixed $value): mixed
     {
         $formattedValue = $value;
 
@@ -174,6 +174,8 @@ class CsvAdapter implements AdapterInterface
         } else {
             if (in_array('integer', $types)) {
                 $formattedValue = (int) $value;
+            } elseif (in_array('number', $types)) {
+                $formattedValue = (float) $value;
             } elseif (in_array('boolean', $types)) {
                 $formattedValue = (bool) $value;
             } elseif (in_array('string', $types) && empty($value)) {
