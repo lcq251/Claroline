@@ -12,7 +12,7 @@ const PasswordModal = props => {
     <FormModal
       {...omit(props, 'user')}
       name="changePasswordForm"
-      title={trans('change_password', {}, 'actions')}
+      title={trans('new_password', {}, 'security')}
       target={['apiv2_user_update', {id: props.user.id}]}
       isNew={false}
       data={props.user}

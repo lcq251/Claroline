@@ -2,7 +2,6 @@
 
 namespace Claroline\CoreBundle\Controller\Model;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,21 +19,6 @@ trait HasOrganizationsTrait
 
     abstract public static function getName(): string;
 
-    /**
-     * List organizations of the collection.
-     *
-     *
-     * @ApiDoc(
-     *     description="List the objects of class Claroline\CoreBundle\Entity\Organization\Organization.",
-     *     queryString={
-     *         "$finder",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     },
-     *     response={"$list=Claroline\CoreBundle\Entity\Organization\Organization"}
-     * )
-     */
     #[Route(path: '/{id}/organization', name: 'list_organizations', methods: ['GET'], priority: 1)]
     public function listOrganizationsAction(string $id, Request $request): JsonResponse
     {
@@ -50,21 +34,6 @@ trait HasOrganizationsTrait
         );
     }
 
-    /**
-     * Adds organizations to the collection.
-     *
-     *
-     * @ApiDoc(
-     *     description="Adds objects of class Claroline\CoreBundle\Entity\Organization\Organization.",
-     *     parameters={
-     *         {"name": "id", "type": "string", "description": "The object id."}
-     *     },
-     *     response={"$object"},
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The organization id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/organization', name: 'add_organizations', methods: ['PATCH'], priority: 1)]
     public function addOrganizationsAction(string $id, Request $request): JsonResponse
     {
@@ -80,21 +49,6 @@ trait HasOrganizationsTrait
         );
     }
 
-    /**
-     * Removes organizations from the collection.
-     *
-     *
-     * @ApiDoc(
-     *     description="Removes objects of class Claroline\CoreBundle\Entity\Organization\Organization.",
-     *     parameters={
-     *         {"name": "id", "type": "string", "description": "The object id."}
-     *     },
-     *     response={"$object"},
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The organization id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/organization', name: 'remove_organizations', methods: ['DELETE'], priority: 1)]
     public function removeOrganizationsAction(string $id, Request $request): JsonResponse
     {

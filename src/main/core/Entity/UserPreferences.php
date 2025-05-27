@@ -18,7 +18,7 @@ class UserPreferences
     private ?User $user = null;
 
     /**
-     * A short string representing the preference type (e.g. theme, intl).
+     * A short string representing the preference type (e.g., theme, intl).
      */
     #[ORM\Column()]
     private string $type;

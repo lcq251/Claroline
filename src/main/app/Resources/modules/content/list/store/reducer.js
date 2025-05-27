@@ -32,7 +32,7 @@ const defaultState = {
 
 /**
  * Reducers list data invalidated state.
- * A list is invalidated when its data need to be refreshed.
+ * A list is invalidated when its data needs to be refreshed.
  */
 const invalidatedReducer = makeInstanceReducer(defaultState.invalidated, {
   [SECURITY_USER_CHANGE]: () => true,

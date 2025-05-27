@@ -1,7 +1,7 @@
 import {useCallback, useSyncExternalStore} from 'react'
 
 function dispatchStorageEvent(key, newValue) {
-  window.dispatchEvent(new StorageEvent("storage", { key, newValue }))
+  window.dispatchEvent(new StorageEvent('storage', { key, newValue }))
 }
 
 function setLocalStorageItem(key, value) {

@@ -16,7 +16,7 @@ const TosMain = (props) =>
     title={trans('terms_of_service', {}, 'privacy')}
   >
     <Alert
-      className="mb-4"
+      className="mb-0"
       type={get(props.currentUser, 'meta.acceptedTerms') ? 'success' : 'warning'}
     >
       {get(props.currentUser, 'meta.acceptedTerms') ?
@@ -29,7 +29,7 @@ const TosMain = (props) =>
 
     {!get(props.currentUser, 'meta.acceptedTerms') &&
       <Button
-        className="btn btn-primary mt-4 ms-auto"
+        className="btn btn-primary ms-auto"
         type={CALLBACK_BUTTON}
         label={trans('terms_of_service_accept', {}, 'privacy')}
         callback={props.acceptTerms}

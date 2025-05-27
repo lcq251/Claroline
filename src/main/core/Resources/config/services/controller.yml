@@ -74,7 +74,6 @@ services:
             - '@Claroline\CoreBundle\Manager\RoleManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager'
-            - '@Claroline\AppBundle\API\Finder\FinderFactory'
 
     Claroline\CoreBundle\Controller\Platform\ConnectionMessageController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
@@ -98,13 +97,6 @@ services:
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
             - '@Claroline\CoreBundle\Manager\VersionManager'
             - '@Claroline\CoreBundle\API\Serializer\ParametersSerializer'
-
-    Claroline\CoreBundle\Controller\SwaggerController:
-        arguments:
-            - '@Claroline\AppBundle\Routing\Finder'
-            - '@Claroline\AppBundle\Routing\Documentator'
-            - '@Claroline\AppBundle\API\SchemaProvider'
-            - '%kernel.project_dir%'
 
     Claroline\CoreBundle\Controller\WidgetController:
         arguments:

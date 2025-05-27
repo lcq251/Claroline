@@ -10,7 +10,7 @@ final class ClientEvents
     /**
      * The CONFIGURE event occurs when the client configuration is retrieved.
      *
-     * This event allows you to append custom parameters to the base configuration in order to
+     * This event allows you to append custom parameters to the base configuration to
      * make them available in the Web client.
      *
      * @Event("Claroline\AppBundle\Event\Client\ConfigureEvent")
@@ -21,7 +21,7 @@ final class ClientEvents
      * The USER_PREFERENCES event occurs when the preferences of the current user are retrieved.
      * It is fired for authenticated AND anonymous users.
      *
-     * This event allows you to append custom preferences to the base preferences in order to
+     * This event allows you to append custom preferences to the base preferences to
      * make them available in the Web client.
      *
      * @Event("Claroline\AppBundle\Event\Client\UserPreferencesEvent")
@@ -31,7 +31,7 @@ final class ClientEvents
     /**
      * The JAVASCRIPTS event occurs when the client configuration is retrieved.
      *
-     * This event allows you to append custom javascripts to web client.
+     * This event allows you to append custom JavaScript to the web client.
      *
      * @Event("Claroline\AppBundle\Event\Client\InjectJavascriptEvent")
      */
@@ -40,7 +40,7 @@ final class ClientEvents
     /**
      * The JAVASCRIPTS event occurs when the client configuration is retrieved.
      *
-     * This event allows you to append custom styles to web client.
+     * This event allows you to append custom styles to the web client.
      *
      * @Event("Claroline\AppBundle\Event\Client\InjectStylesheetEvent")
      */

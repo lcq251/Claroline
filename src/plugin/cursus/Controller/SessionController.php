@@ -173,17 +173,17 @@ class SessionController extends AbstractCrudController
     #[Route(path: '/{id}/events', name: 'list_events', methods: ['GET'])]
     public function listEventsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
-        Session $session, Request $request
-    ): JsonResponse {
+        Session $session,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $session, [], true);
 
-        $params = $request->query->all();
-        $params['hiddenFilters'] = $this->getDefaultHiddenFilters();
-        $params['hiddenFilters']['session'] = $session->getUuid();
-
-        return new JsonResponse(
-            $this->crud->list(Event::class, $params)
-        );
+        return $this->crud
+            ->search(Event::class, $finderQuery->addFilters([
+                'session' => $session->getUuid(),
+            ]), [SerializerInterface::SERIALIZE_LIST])
+            ->toResponse();
     }
 
     #[Route(path: '/{id}/users/{type}', name: 'add_users', methods: ['PATCH'])]

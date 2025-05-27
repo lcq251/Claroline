@@ -8,7 +8,7 @@ import {MODAL_BUTTON} from '#/main/app/buttons'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {actions as listActions} from '#/main/app/content/list/store'
 
-import {MODAL_IP_PARAMETERS} from '#/main/authentication/ip/modals/parameters'
+import {MODAL_IP_FORM} from '#/main/authentication/ip/modals/form'
 
 const IpList = (props) => {
   const dispatch = useDispatch()
@@ -60,8 +60,9 @@ const IpList = (props) => {
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-pencil',
           label: trans('edit', {}, 'actions'),
-          modal: [MODAL_IP_PARAMETERS, {
+          modal: [MODAL_IP_FORM, {
             ip: rows[0],
+            userDisabled: true,
             onSave: () => dispatch(listActions.invalidateData(props.name))
           }],
           disabled: rows[0].restrictions.locked,

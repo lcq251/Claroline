@@ -14,5 +14,6 @@
     "tokens_info": "Geavanceerd gebruik voor gebruikers die gegevens willen beheren zonder de gebruikersinterface.",
     "user_password_reset_confirm_message": "{1} Weet u zeker dat u het wachtwoord van deze gebruiker opnieuw wilt instellen? | [2,Inf[ Weet u zeker dat u het wachtwoord van deze %count% gebruikers opnieuw wilt instellen?",
     "group_password_reset_confirm_message": "{1} Weet u zeker dat u het wachtwoord van alle gebruikers van deze groep opnieuw wilt instellen? | [2,Inf[ Weet u zeker dat u het wachtwoord van alle gebruikers van deze %count% groepen opnieuw wilt instellen?",
-    "password_reset_confirm_help": "Een e-mail met een link om het wachtwoord te wijzigen, wordt naar de gebruiker gestuurd.<br> Door op de link te klikken, wordt de gebruiker naar een pagina geleid waar hij een nieuw wachtwoord kan instellen."
+    "password_reset_confirm_help": "Een e-mail met een link om het wachtwoord te wijzigen, wordt naar de gebruiker gestuurd.<br> Door op de link te klikken, wordt de gebruiker naar een pagina geleid waar hij een nieuw wachtwoord kan instellen.",
+    "new_password": "Nieuw wachtwoord"
 }

@@ -131,7 +131,7 @@ class PlatformDefaults implements ParameterProviderInterface
                 'enabled' => true,
                 // how many times the changelog is displayed
                 'duration' => 'P7D',
-                // which roles see the changelog message
+                // which roles see the changelog message?
                 'roles' => ['ROLE_ADMIN'],
             ],
             // a list of file mime types disallowed on the whole platform

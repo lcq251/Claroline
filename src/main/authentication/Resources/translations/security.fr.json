@@ -3,7 +3,8 @@
   "add_token": "Ajouter un jeton d'authentification",
   "new_token": "Nouveau jeton d'authentification",
   "token": "Jeton d'authentification",
-  "ips": "Adresses IP connues",
+  "ips": "Adresses IP authorisées",
+  "ip": "Adresse IP authorisée",
   "add_ip": "Ajouter une adresse IP",
   "new_ip": "Nouvelle adresse IP",
   "ips_help": "La liste d'adresse IPs connues vous permet d'authentifier automatiquement les personnes consultant votre platforme depuis ces adresses avec les Utilisateurs choisis.",
@@ -18,5 +19,7 @@
   "password_reset_confirm_help": "Un e-mail contenant un lien pour changer le mot de passe sera envoyé à l'utilisateur.<br> En cliquant sur le lien, l'utilisateur sera redirigé vers une page où il pourra définir un nouveau mot de passe.",
   "logs": "Logs de sécurité",
   "logs_help": "Retrouvez toutes les actions de sécurité effectuées sur votre compte, telles que les connexions ou les changements de permissions.",
-  "authentication_help": "Configurez les modes de connexion à votre compte et retrouvez divers informations concernant la sécurité."
+  "authentication_help": "Configurez les modes de connexion à votre compte et retrouvez divers informations concernant la sécurité.",
+  "account_name": "Nom du compte :",
+  "new_password": "Nouveau mot de passe"
 }

@@ -6,7 +6,7 @@ import {PrivacySummary} from '#/main/privacy/components/summary'
 import {API_REQUEST} from '#/main/app/api'
 import {Html} from '#/main/app/components/html'
 
-const Privacy = (props) => {
+const Privacy = () => {
   const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
@@ -38,7 +38,6 @@ const Privacy = (props) => {
     return (
       <>
         <PrivacySummary
-          className="mb-4"
           dpo={privacy.dpo}
           countryStorage={privacy.countryStorage}
         />
@@ -49,7 +48,6 @@ const Privacy = (props) => {
 
   return null
 }
-
 
 export {
   Privacy

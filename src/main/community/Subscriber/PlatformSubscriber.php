@@ -4,12 +4,9 @@ namespace Claroline\CommunityBundle\Subscriber;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Event\Client\ConfigureEvent;
-use Claroline\AppBundle\Event\Client\UserPreferencesEvent;
 use Claroline\AppBundle\Event\ClientEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\UserProfile;
-use Claroline\ThemeBundle\Entity\ColorCollection;
-use Claroline\ThemeBundle\Manager\ThemeManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class PlatformSubscriber implements EventSubscriberInterface

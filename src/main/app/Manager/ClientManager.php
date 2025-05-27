@@ -48,7 +48,7 @@ class ClientManager
     }
 
     /**
-     * Gets the javascript injected by the plugins if any.
+     * Gets the JavaScript injected by the plugins if any.
      */
     public function getJavascripts(): string
     {

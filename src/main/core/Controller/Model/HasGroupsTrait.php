@@ -2,7 +2,6 @@
 
 namespace Claroline\CoreBundle\Controller\Model;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Organization\Organization;
@@ -13,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /**
- * Manages a groups collection on an entity.
+ * Manages a group collection on an entity.
  */
 trait HasGroupsTrait
 {
@@ -23,20 +22,6 @@ trait HasGroupsTrait
 
     abstract public static function getName(): string;
 
-    /**
-     * List groups of the collection.
-     *
-     * @ApiDoc(
-     *     description="List the objects of class Claroline\CoreBundle\Entity\Group.",
-     *     queryString={
-     *         "$finder",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     },
-     *     response={"$list=Claroline\CoreBundle\Entity\Group"}
-     * )
-     */
     #[Route(path: '/{id}/group', name: 'list_groups', methods: ['GET'], priority: 1)]
     public function listGroupsAction(string $id, #[CurrentUser] ?User $user, Request $request): JsonResponse
     {
@@ -63,20 +48,6 @@ trait HasGroupsTrait
         );
     }
 
-    /**
-     * Adds groups to the collection.
-     *
-     * @ApiDoc(
-     *     description="Add objects of class Claroline\CoreBundle\Entity\Group.",
-     *     parameters={
-     *         {"name": "id", "type": "string", "description": "The object id."}
-     *     },
-     *     response={"$object"},
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The groups id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/group', name: 'add_groups', methods: ['PATCH'], priority: 1)]
     public function addGroupsAction(string $id, Request $request): JsonResponse
     {
@@ -92,20 +63,6 @@ trait HasGroupsTrait
         );
     }
 
-    /**
-     * Removes groups from the collection.
-     *
-     * @ApiDoc(
-     *     description="Removes objects of class Claroline\CoreBundle\Entity\Group.",
-     *     parameters={
-     *         {"name": "id", "type": "string", "description": "The object id."}
-     *     },
-     *     response={"$object"},
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The groups id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/group', name: 'remove_groups', methods: ['DELETE'], priority: 1)]
     public function removeGroupsAction(string $id, Request $request): JsonResponse
     {

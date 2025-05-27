@@ -133,26 +133,6 @@ class EventController extends AbstractCrudController
         return $results->toResponse();
     }
 
-    #[Route(path: '/public/{workspace}', name: 'public', methods: ['GET'])]
-    public function listPublicAction(
-        Request $request,
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace = null
-    ): JsonResponse {
-        $options = static::getOptions();
-
-        $query = $request->query->all();
-        $query['hiddenFilters'] = $this->getDefaultHiddenFilters();
-        $query['hiddenFilters']['registrationType'] = Session::REGISTRATION_PUBLIC;
-        if ($workspace) {
-            $query['hiddenFilters']['workspace'] = $workspace->getUuid();
-        }
-
-        return new JsonResponse(
-            $this->crud->list(Event::class, $query, $options['list'] ?? [])
-        );
-    }
-
     #[Route(path: '/{id}/open', name: 'open', methods: ['GET'])]
     public function openAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]

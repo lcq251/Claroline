@@ -11,7 +11,8 @@ import {
   PageContent,
   PageHeading,
   PageHeadingSkeleton,
-  PageSection, PageTabbedSection,
+  PageSection,
+  PageTabbedSection,
   PageToolbar,
   PageToolbarSkeleton
 } from '#/main/app/page'
@@ -47,7 +48,7 @@ const SessionShow = (props) => {
       }
 
       {session &&
-        <PageContent poster={session.poster}>
+        <PageContent poster={session.poster} className="d-flex flex-column">
           <PageToolbar
             toolbar="edit more"
             actions={getActions([session], {

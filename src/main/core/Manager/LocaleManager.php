@@ -49,10 +49,10 @@ class LocaleManager
     }
 
     /**
-     * This method returns the user locale and store it in session, if there is no user this method return default
+     * This method returns the user locale and stores it in the session if there is no user this method returns default
      * language or the browser language if it is present in translations.
      *
-     * @return string The locale string as en, fr, es, etc
+     * @return string the locale string as en, fr, es, etc
      */
     public function getUserLocale(Request $request): string
     {

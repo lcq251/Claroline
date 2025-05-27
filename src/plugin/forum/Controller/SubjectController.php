@@ -2,7 +2,6 @@
 
 namespace Claroline\ForumBundle\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\ForumBundle\Entity\Message;
@@ -38,20 +37,6 @@ class SubjectController extends AbstractCrudController
         return ['list', 'create'];
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Get the messages of a subject",
-     *     queryString={
-     *         "$finder=Claroline\ForumBundle\Entity\Message&!parent&!subject",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     },
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The subject id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/messages', name: 'get_messages', methods: ['GET'])]
     public function listMessagesAction(
         Request $request,
@@ -68,14 +53,6 @@ class SubjectController extends AbstractCrudController
         );
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Create a message in a subject",
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The subject id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/message', name: 'create_message', methods: ['POST', 'PUT'])]
     public function createMessage(
         #[MapEntity(mapping: ['id' => 'uuid'])]
@@ -97,14 +74,6 @@ class SubjectController extends AbstractCrudController
         );
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Udate a message in a subject",
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The subject id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{subject}/message/{message}', name: 'message_update', methods: ['PUT'])]
     public function updateMessageAction(
         #[MapEntity(mapping: ['message' => 'uuid'])]

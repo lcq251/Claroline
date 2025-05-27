@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Allows the target class to checks the current user permissions on an object.
+ * Allows the target class to check the current user permissions on an object.
  */
 trait PermissionCheckerTrait
 {

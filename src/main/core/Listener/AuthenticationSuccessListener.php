@@ -62,7 +62,7 @@ class AuthenticationSuccessListener implements AuthenticationSuccessHandlerInter
             return new JsonResponse([
                 'user' => $this->serializer->serialize($user, [SerializerInterface::SERIALIZE_MINIMAL]),
                 'acceptedTerms' => $user->hasAcceptedTerms(),
-                'config' => $this->clientManager->getUserPreferences($user), // for retro-compatibility. Should be in a new key userPreferences
+                'config' => $this->clientManager->getUserPreferences($user), // For retro-compatibility. Should be in a new key userPreferences
                 'messages' => $this->messageManager->getConnectionMessagesByUser($user),
                 'contexts' => $this->contextProvider->getAvailableContexts(),
                 'contextFavorites' => $this->contextProvider->getFavoriteContexts(),
@@ -75,7 +75,7 @@ class AuthenticationSuccessListener implements AuthenticationSuccessHandlerInter
 
     private function getRedirectUrl(Request $request): string
     {
-        // SSO has stored where to redirect in session or the ui has sent us a path to redirect to
+        // SSO has stored where to redirect in the session, or the ui has sent us a path to redirect to
         $redirectPath = $request->getSession()->get('redirectPath');
         if ($redirectPath) {
             return $this->routingHelper->indexUrl().$redirectPath;

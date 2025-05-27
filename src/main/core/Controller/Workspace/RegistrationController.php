@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Controller\Workspace;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -49,20 +48,6 @@ class RegistrationController
     ) {
     }
 
-    /**
-     * @ApiDoc(
-     *     description="List the user registration pending for workspace.",
-     *     queryString={
-     *         "$finder=Claroline\CoreBundle\Entity\User",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     },
-     *     parameters={
-     *         {"name": "id",  "type": {"string", "integer"}, "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/user/pending', name: 'apiv2_workspace_list_pending', methods: ['GET'])]
     public function listPendingAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
@@ -75,17 +60,6 @@ class RegistrationController
         ));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Validate user registration pending for workspace.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of user uuids."}
-     *     },
-     *     parameters={
-     *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/registration/validate', name: 'apiv2_workspace_registration_validate', methods: ['PATCH'])]
     public function validatePendingAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
@@ -110,17 +84,6 @@ class RegistrationController
         ));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Remove user registration pending for workspace.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of user uuids."}
-     *     },
-     *     parameters={
-     *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/registration/remove', name: 'apiv2_workspace_registration_remove', methods: ['DELETE'])]
     public function removePendingAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace): JsonResponse
@@ -141,17 +104,6 @@ class RegistrationController
         ));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Unregister users from workspace.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of user uuids."}
-     *     },
-     *     parameters={
-     *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/users/unregister', name: 'apiv2_workspace_unregister_users', methods: ['DELETE'])]
     public function unregisterUsersAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace): JsonResponse
@@ -164,17 +116,6 @@ class RegistrationController
         return new JsonResponse(null, 204);
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Unregister groups from workspace.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of group uuids."}
-     *     },
-     *     parameters={
-     *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/groups/unregister', name: 'apiv2_workspace_unregister_groups', methods: ['DELETE'])]
     public function unregisterGroupsAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace): JsonResponse
@@ -187,16 +128,6 @@ class RegistrationController
         return new JsonResponse(null, 204);
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Register users/groups in different workspaces.",
-     *     parameters={
-     *         {"name": "role", "type": {"string"}, "description": "The role translation key"},
-     *     }
-     * )
-     *
-     * @throws InvalidDataException
-     */
     #[Route(path: '/register/{role}', name: 'apiv2_workspace_register', requirements: ['role' => '.+'], defaults: ['role' => ''], methods: ['PATCH'])]
     public function registerAction(string $role, Request $request): JsonResponse
     {
@@ -226,17 +157,6 @@ class RegistrationController
         }, $workspaces));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Unregister a user from a list of workspace.",
-     *     queryString={
-     *         {"name": "workspaces", "type": "array", "description": "The list of workspace uuids."},
-     *     },
-     *     parameters={
-     *         {"name": "user", "type": {"string"}, "description": "The user uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/unregister', name: 'apiv2_workspace_self_unregister', methods: ['DELETE'])]
     public function selfUnregisterAction(Request $request): JsonResponse
     {
@@ -253,14 +173,6 @@ class RegistrationController
         }, $workspaces));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Self-register to a workspace that allows it.",
-     *     parameters={
-     *         {"name": "workspace", "type": {"string"}, "description": "The workspace uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{workspace}/register/self', name: 'apiv2_workspace_self_register', methods: ['PUT'])]
     public function selfRegisterAction(
         #[MapEntity(mapping: ['workspace' => 'uuid'])]

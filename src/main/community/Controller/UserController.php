@@ -11,7 +11,6 @@
 
 namespace Claroline\CommunityBundle\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AuthenticationBundle\Manager\MailManager;
@@ -81,14 +80,6 @@ class UserController extends AbstractCrudController
         return parent::listAction($finderQuery);
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Enable a list of users.",
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/enable', name: 'enable', methods: ['PUT'])]
     public function enableAction(Request $request): JsonResponse
     {
@@ -111,14 +102,6 @@ class UserController extends AbstractCrudController
         }, $processed));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Disable a list of users.",
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/disable', name: 'disable', methods: ['PUT'])]
     public function disableAction(Request $request): JsonResponse
     {
@@ -156,14 +139,6 @@ class UserController extends AbstractCrudController
         return new JsonResponse();
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Reset a list of user password.",
-     *     queryString={
-     *         {"name": "ids[]", "type": {"string", "integer"}, "description": "The object id or uuid."}
-     *     }
-     * )
-     */
     #[Route(path: '/password/reset', name: 'password_reset', methods: ['PUT'])]
     public function resetPasswordAction(Request $request): JsonResponse
     {

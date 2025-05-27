@@ -96,7 +96,7 @@ const WorkspacesTool = (props) => {
                 <WorkspaceList
                   className="mb-5"
                   flush={true}
-                  url={props.contextType === toolConstants.TOOL_PUBLIC ? ['apiv2_workspace_list_public'] : ['apiv2_workspace_list']}
+                  url={['apiv2_workspace_list']}
                   name="workspaces.public"
                   refresher={refresher}
                   display={{

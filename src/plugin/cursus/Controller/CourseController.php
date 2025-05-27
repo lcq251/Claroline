@@ -11,6 +11,7 @@
 
 namespace Claroline\CursusBundle\Controller;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
@@ -24,16 +25,15 @@ use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Library\RoutingHelper;
 use Claroline\CoreBundle\Manager\Tool\ToolManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Claroline\CursusBundle\Entity\Course;
-use Claroline\CursusBundle\Entity\Registration\CourseUser;
-use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\CourseManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -103,30 +103,18 @@ class CourseController extends AbstractCrudController
         return $filters;
     }
 
-    #[Route(path: '/public', name: 'list_public', methods: ['GET'])]
-    public function listPublicAction(Request $request): JsonResponse
-    {
-        return new JsonResponse($this->crud->list(
-            Course::class,
-            array_merge($request->query->all(), ['hiddenFilters' => array_merge($this->getDefaultHiddenFilters(), [
-                'public' => true,
-            ])]),
-            $this->getOptions()['list']
-        ));
-    }
-
     #[Route(path: '/archived', name: 'list_archived', methods: ['GET'])]
-    public function listArchivedAction(Request $request): JsonResponse
-    {
+    public function listArchivedAction(
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        return new JsonResponse($this->crud->list(
-            Course::class,
-            array_merge($request->query->all(), ['hiddenFilters' => array_merge($this->getDefaultHiddenFilters(), [
-                'archived' => true,
-            ])]),
-            $this->getOptions()['list']
-        ));
+        $archives = $this->crud->search(Course::class, $finderQuery->addFilters([
+            'archived' => true,
+        ]), [SerializerInterface::SERIALIZE_LIST]);
+
+        return $archives->toResponse();
     }
 
     #[Route(path: '/list/existing', name: 'list_existing', methods: ['GET'])]

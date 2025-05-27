@@ -2,7 +2,6 @@
 
 namespace Claroline\ForumBundle\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\ForumBundle\Entity\Forum;
@@ -38,14 +37,6 @@ class MessageController extends AbstractCrudController
         return ['list', 'create'];
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Create a comment in a message",
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The message id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/comment', name: 'create_comment', methods: ['POST'])]
     public function createComment(#[MapEntity(mapping: ['id' => 'uuid'])]
         Message $message, Request $request): JsonResponse

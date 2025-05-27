@@ -11,7 +11,6 @@
 
 namespace Claroline\OpenBadgeBundle\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
@@ -44,17 +43,6 @@ class ArchiveController
         $this->authorization = $authorization;
     }
 
-    /**
-     * @ApiDoc(
-     *     description="The list of archived badges for the current security token.",
-     *     queryString={
-     *         "$finder=Claroline\OpenBadgeBundle\Entity\BadgeClass&!archived",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
     #[Route(path: '/{contextId}', name: 'apiv2_badge_archive_list', methods: ['GET'])]
     public function listAction(
         ?string $contextId = null,
@@ -73,14 +61,6 @@ class ArchiveController
         return $archives->toResponse();
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Archive badges.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of badge uuids."}
-     *     }
-     * )
-     */
     #[Route(path: '/', name: 'apiv2_badge_archive', methods: ['POST'])]
     public function archiveAction(Request $request): JsonResponse
     {
@@ -104,14 +84,6 @@ class ArchiveController
         }, $processed));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Unarchive badges.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of badge uuids."}
-     *     }
-     * )
-     */
     #[Route(path: '/', name: 'apiv2_badge_restore', methods: ['PUT'])]
     public function restoreAction(Request $request): JsonResponse
     {

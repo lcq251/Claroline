@@ -23,7 +23,6 @@ const CatalogListComponent = (props) =>
         flush={true}
         path={props.path}
         name={selectors.LIST_NAME}
-        url={['apiv2_cursus_course_list_public']}
       />
     </PageListSection>
   </ToolPage>

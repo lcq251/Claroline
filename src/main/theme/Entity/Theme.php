@@ -11,14 +11,14 @@
 
 namespace Claroline\ThemeBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\ThemeBundle\Repository\ThemeRepository;
 use Claroline\AppBundle\Entity\FromPlugin;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\AppBundle\Entity\Meta\Disabled;
 use Claroline\AppBundle\Entity\Meta\Name;
+use Claroline\ThemeBundle\Repository\ThemeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,7 +38,7 @@ class Theme
     use ThemeParameters;
 
     /**
-     * Is it the default platform theme ?
+     * Is it the default platform theme?
      */
     #[ORM\Column(name: 'is_default', type: Types::BOOLEAN)]
     private bool $default = false;

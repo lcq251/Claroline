@@ -22,7 +22,7 @@ const WorkspaceInput = (props) => {
       add={addLabel}
       pickerType={MODAL_WORKSPACES}
       picker={Object.assign({
-        url: props.model ? ['apiv2_workspace_list_model'] : ['apiv2_workspace_list_managed']
+        url: props.model ? ['apiv2_workspace_list_model'] : ['apiv2_workspace_list']
       }, props.picker || {})}
     />
   )

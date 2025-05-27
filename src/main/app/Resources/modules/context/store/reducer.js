@@ -34,7 +34,7 @@ const reducer = combineReducers({
   }),
 
   /**
-   * Is the context menu opened ?
+   * Is the context menu opened?
    * NB. we store the value inside the store to avoid the menu auto close when react render.
    */
   menuOpened: makeReducer(false, {
@@ -42,7 +42,7 @@ const reducer = combineReducers({
   }),
 
   /**
-   * Are the context data fully loaded ?
+   * Are the context data fully loaded?
    */
   loaded: makeReducer(false, {
     [SECURITY_USER_CHANGE]: () => false,

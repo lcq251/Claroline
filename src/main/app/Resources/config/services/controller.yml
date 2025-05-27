@@ -37,6 +37,7 @@ services:
             - '@Claroline\AppBundle\Component\Context\ContextProvider'
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\AppBundle\Manager\ClientManager'
+            - '@Claroline\AppBundle\API\DocumentationProvider'
 
     Claroline\AppBundle\Controller\Component\ContextController:
         arguments:

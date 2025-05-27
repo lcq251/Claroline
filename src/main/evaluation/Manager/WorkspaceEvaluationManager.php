@@ -183,7 +183,7 @@ class WorkspaceEvaluationManager extends AbstractEvaluationManager
 
     /**
      * Recomputes all the evaluations of a workspace.
-     * This is called when required sequence are added/removed in order to update the users progression and score.
+     * This is called when required sequences are added/removed to update the user progression and score.
      */
     public function recomputeEvaluations(Workspace $workspace): void
     {

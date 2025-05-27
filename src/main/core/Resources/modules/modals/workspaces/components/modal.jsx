@@ -85,7 +85,7 @@ WorkspacesModal.propTypes = {
 }
 
 WorkspacesModal.defaultProps = {
-  url: ['apiv2_workspace_list_managed'],
+  url: ['apiv2_workspace_list'],
   title: trans('workspaces', {}, 'workspace')
 }
 

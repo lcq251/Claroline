@@ -8,7 +8,7 @@ import {ToolPage} from '#/main/core/tool'
 import {PageListSection} from '#/main/app/page'
 
 import {selectors} from '#/main/authentication/administration/authentication/store'
-import {MODAL_IP_PARAMETERS} from '#/main/authentication/ip/modals/parameters'
+import {MODAL_IP_FORM} from '#/main/authentication/ip/modals/form'
 
 import {IpList} from '#/main/authentication/ip/components/list'
 
@@ -25,8 +25,8 @@ const AuthenticationIps = props =>
         tooltip: 'bottom',
         label: trans('add_ip', {}, 'security'),
         primary: true,
-        modal: [MODAL_IP_PARAMETERS, {
-          onSave: () => props.invalidateList()
+        modal: [MODAL_IP_FORM, {
+          onSave: props.invalidateList
         }]
       }}
     >

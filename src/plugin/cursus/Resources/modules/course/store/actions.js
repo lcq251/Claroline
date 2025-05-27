@@ -12,8 +12,6 @@ export const LOAD_COURSE = 'LOAD_COURSE'
 export const LOAD_COURSE_SESSION = 'LOAD_COURSE_SESSION'
 export const LOAD_COURSE_STATS = 'LOAD_COURSE_STATS'
 
-export const SWITCH_PARTICIPANTS_VIEW = 'SWITCH_PARTICIPANTS_VIEW'
-
 export const actions = {}
 
 actions.loadCourse = makeActionCreator(LOAD_COURSE, 'course', 'defaultSession', 'availableSessions', 'registrations')

@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Controller\Workspace;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
@@ -42,17 +41,6 @@ class ArchiveController
         $this->authorization = $authorization;
     }
 
-    /**
-     * @ApiDoc(
-     *     description="The list of archived workspace for the current security token.",
-     *     queryString={
-     *         "$finder=Claroline\CoreBundle\Entity\Workspace\Workspace&!archived",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
     #[Route(path: '/', name: 'apiv2_workspace_archive_list', methods: ['GET'])]
     public function listAction(
         #[MapQueryString]
@@ -67,14 +55,6 @@ class ArchiveController
         return $archives->toResponse();
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Archive workspaces.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of workspace uuids."}
-     *     }
-     * )
-     */
     #[Route(path: '/', name: 'apiv2_workspace_archive', methods: ['POST'])]
     public function archiveAction(Request $request): JsonResponse
     {
@@ -98,14 +78,6 @@ class ArchiveController
         }, $processed));
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Unarchive workspaces.",
-     *     queryString={
-     *         {"name": "ids", "type": "array", "description": "the list of workspace uuids."}
-     *     }
-     * )
-     */
     #[Route(path: '/', name: 'apiv2_workspace_restore', methods: ['PUT'])]
     public function restoreAction(Request $request): JsonResponse
     {

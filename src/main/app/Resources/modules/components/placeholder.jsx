@@ -61,7 +61,7 @@ PlaceholderParagraph.defaultProps = {
 
 const PlaceholderText = (props) => {
   return (
-    <>
+    <div role="presentation">
       <PlaceholderTitle align={props.align} level={props.level} displayLevel={props.displayLevel} />
       <PlaceholderParagraph align={props.align} rows={3} />
       {range(0, props.paragraphs).map(paragraph =>
@@ -70,7 +70,7 @@ const PlaceholderText = (props) => {
           <PlaceholderParagraph align={props.align} rows={random(4, 6)} />
         </Fragment>
       )}
-    </>
+    </div>
   )
 }
 

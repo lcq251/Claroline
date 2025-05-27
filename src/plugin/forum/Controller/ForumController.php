@@ -2,7 +2,6 @@
 
 namespace Claroline\ForumBundle\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -37,20 +36,6 @@ class ForumController extends AbstractCrudController
         return 'forum';
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Get the subjects of a forum",
-     *     queryString={
-     *         "$finder=Claroline\ForumBundle\Entity\Subject&!forum",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     },
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The forum id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/subjects', name: 'list_subjects', methods: ['GET'])]
     public function listSubjectsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
@@ -67,14 +52,6 @@ class ForumController extends AbstractCrudController
         );
     }
 
-    /**
-     * @ApiDoc(
-     *     description="Create a subject in a forum",
-     *     parameters={
-     *          {"name": "id", "type": {"string", "integer"},  "description": "The forum id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/subject', name: 'create_subject', methods: ['POST', 'PUT'])]
     public function createSubjectAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]

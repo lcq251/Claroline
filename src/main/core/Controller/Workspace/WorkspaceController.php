@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Controller\Workspace;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderFactory;
 use Claroline\AppBundle\API\Finder\FinderQuery;
@@ -62,8 +61,7 @@ class WorkspaceController extends AbstractCrudController
         private readonly TempFileManager $tempManager,
         private readonly RoleManager $roleManager,
         private readonly WorkspaceManager $workspaceManager,
-        private readonly WorkspaceRestrictionsManager $restrictionsManager,
-        private readonly FinderFactory $finder
+        private readonly WorkspaceRestrictionsManager $restrictionsManager
     ) {
         $this->authorization = $authorization;
     }
@@ -78,42 +76,6 @@ class WorkspaceController extends AbstractCrudController
         return Workspace::class;
     }
 
-    /**
-     * @ApiDoc(
-     *     description="The list of public workspaces for the current security token.",
-     *     queryString={
-     *         "$finder",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
-    #[Route(path: '/list/public', name: 'list_public', methods: ['GET'])]
-    public function listPublicAction(Request $request): JsonResponse
-    {
-        return new JsonResponse($this->crud->list(
-            Workspace::class,
-            array_merge($request->query->all(), ['hiddenFilters' => [
-                'displayable' => true,
-                'model' => false,
-                'public' => true,
-            ]]),
-            static::getOptions()['list']
-        ));
-    }
-
-    /**
-     * @ApiDoc(
-     *     description="The list of registered workspaces for the current security token.",
-     *     queryString={
-     *         "$finder=Claroline\CoreBundle\Entity\Workspace\Workspace&!user",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
     #[Route(path: '/list/registered', name: 'list_registered', methods: ['GET'])]
     public function listRegisteredAction(
         #[MapQueryString]
@@ -121,64 +83,13 @@ class WorkspaceController extends AbstractCrudController
     ): StreamedJsonResponse {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        $workspaces = $this->finder->create(WorkspaceType::class)
-            ->submit($finderQuery->addFilters([
+        return $this->crud
+            ->search(Workspace::class, $finderQuery->addFilters([
                 'roles' => $this->tokenStorage->getToken()->getRoleNames(),
-            ]))
-            ->getResult(function (Workspace $workspace): array {
-                return $this->serializer->serialize($workspace, [SerializerInterface::SERIALIZE_LIST]);
-            })
-        ;
-
-        return new StreamedJsonResponse([
-            'totalResults' => $workspaces->count(),
-            'data' => $workspaces->getItems(),
-        ]);
+            ]), [SerializerInterface::SERIALIZE_LIST])
+            ->toResponse();
     }
 
-    /**
-     * @ApiDoc(
-     *     description="The list of administrated workspaces for the current security token.",
-     *     queryString={
-     *         "$finder=Claroline\CoreBundle\Entity\Workspace\Workspace&!administrated",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
-    #[Route(path: '/list/administrated', name: 'list_managed', methods: ['GET'])]
-    public function listManagedAction(
-        #[MapQueryString]
-        ?FinderQuery $finderQuery = new FinderQuery()
-    ): StreamedJsonResponse {
-        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
-
-        $workspaces = $this->finder->create(WorkspaceType::class)
-            ->submit($finderQuery->addFilters([
-                // 'model' => false,
-                // 'roles' => $this->tokenStorage->getToken()->getRoleNames(),
-                // 'administrated' => true,
-            ]))
-            ->getResult(function (Workspace $workspace): array {
-                return $this->serializer->serialize($workspace, [SerializerInterface::SERIALIZE_LIST]);
-            })
-        ;
-
-        return $workspaces->toResponse();
-    }
-
-    /**
-     * @ApiDoc(
-     *     description="The list of workspace models for the current security token.",
-     *     queryString={
-     *         "$finder=Claroline\CoreBundle\Entity\Workspace\Workspace&!model",
-     *         {"name": "page", "type": "integer", "description": "The queried page."},
-     *         {"name": "limit", "type": "integer", "description": "The max amount of objects per page."},
-     *         {"name": "sortBy", "type": "string", "description": "Sort by the property if you want to."}
-     *     }
-     * )
-     */
     #[Route(path: '/list/model', name: 'list_model', methods: ['GET'])]
     public function listModelAction(
         #[MapQueryString]
@@ -186,13 +97,11 @@ class WorkspaceController extends AbstractCrudController
     ): StreamedJsonResponse {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        $finderQuery->addFilters([
-            'model' => true,
-        ]);
-
-        $models = $this->crud->search(Workspace::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
-
-        return $models->toResponse();
+        return $this->crud
+            ->search(Workspace::class, $finderQuery->addFilters([
+                'model' => true,
+            ]), [SerializerInterface::SERIALIZE_LIST])
+            ->toResponse();
     }
 
     #[Route(path: '/', name: 'create', methods: ['POST'])]
@@ -263,16 +172,6 @@ class WorkspaceController extends AbstractCrudController
         return new JsonResponse(null, 204);
     }
 
-    /**
-     * Exports a Workspace into a Claroline archive.
-     *
-     * @ApiDoc(
-     *     description="Export the workspace as a zip archive.",
-     *     parameters={
-     *         {"name": "id", "type": {"string", "integer"},  "description": "The workspace id or uuid"}
-     *     }
-     * )
-     */
     #[Route(path: '/{id}/export', name: 'export', methods: ['GET'])]
     public function exportAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]

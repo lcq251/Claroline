@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\NumericType;
+use Claroline\AppBundle\API\Finder\Type\PublicType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Finder\OrganizationType;
 use Claroline\CursusBundle\Entity\Course;
@@ -31,6 +32,7 @@ class CourseType extends AbstractType
             ->add('code', TextType::class)
             ->add('description', TextType::class)
             ->add('price', NumericType::class)
+            ->add('public', PublicType::class)
             ->add('archived', BooleanType::class, ['default' => false])
             ->add('organizations', OrganizationType::class)
         ;

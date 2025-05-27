@@ -1,19 +1,10 @@
 <?php
 
-/*
- * This file is part of the Claroline Connect package.
- *
- * (c) Claroline Consortium <consortium@claroline.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Claroline\CursusBundle\Manager;
 
-use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Manager\PlatformManager;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Manager\Template\TemplateManager;
 use Claroline\CursusBundle\Entity\Course;
@@ -24,8 +15,8 @@ class CourseManager
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
-        private readonly FinderProvider $finder,
         private readonly PlatformManager $platformManager,
         private readonly TemplateManager $templateManager
     ) {
@@ -47,16 +38,16 @@ class CourseManager
 
     public function getRegistrations(User $user, ?Course $course = null): array
     {
-        $search = ['user' => $user->getUuid()];
+        $search = ['user' => $user];
 
         if ($course) {
-            $search['course'] = $course->getUuid();
+            $search['course'] = $course;
         }
 
-        $userRegistrations = $this->finder->fetch(SessionUser::class, $search);
+        $userRegistrations = $this->om->getRepository(SessionUser::class)->findBy($search);
 
         return array_map(function (SessionUser $sessionUser) {
-            return $this->serializer->serialize($sessionUser/* , [SerializerInterface::SERIALIZE_MINIMAL] */);
+            return $this->serializer->serialize($sessionUser);
         }, $userRegistrations);
     }
 }

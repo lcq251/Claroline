@@ -11,44 +11,55 @@ import {Toolbar} from '#/main/app/action'
 
 import {getValidationClassName} from '#/main/app/content/form/validator'
 
-const FormPrimarySection = (props) => {
+const FormPrimarySection = ({
+  className,
+  title,
+  description,
+  children,
+  level = 2,
+  displayLevel = 5,
+  hideTitle = false,
+  actions = []
+}) => {
   const titleId = useId()
   const descriptionId = useId()
 
   return (
     <section
-      className={classes('data-form-section form-primary-section', props.className)}
-      aria-labelledby={titleId}
-      aria-describedby={props.description ? descriptionId : undefined}
+      className={classes('data-form-section form-primary-section', className)}
+      aria-labelledby={title ? titleId : undefined}
+      aria-describedby={description ? descriptionId : undefined}
     >
-      <header className={classes({
-        'mb-3': !props.hideTitle,
-        'visually-hidden': props.hideTitle
-      })}>
-        <Heading
-          id={titleId}
-          className="mb-0"
-          level={props.level}
-          displayLevel={props.displayLevel}
-        >
-          {props.title}
-        </Heading>
+      {title &&
+        <header className={classes({
+          'mb-3': !hideTitle,
+          'visually-hidden': hideTitle
+        })}>
+          <Heading
+            id={titleId}
+            className="mb-0"
+            level={level}
+            displayLevel={displayLevel}
+          >
+            {title}
+          </Heading>
 
-        {props.description &&
-          <p id={descriptionId} className="text-body-secondary mt-2 mb-0">{props.description}</p>
-        }
-      </header>
+          {description &&
+            <p id={descriptionId} className="text-body-secondary mt-2 mb-0">{description}</p>
+          }
+        </header>
+      }
 
-      {!isEmpty(props.actions) &&
+      {!isEmpty(actions) &&
         <Toolbar
-          buttonName="btn"
+          buttonName="btn btn-body"
           className="text-right form-group"
           size="sm"
-          actions={props.actions}
+          actions={actions}
         />
       }
 
-      {props.children}
+      {children}
     </section>
   )
 }

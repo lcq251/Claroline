@@ -2,8 +2,8 @@ services:
     Claroline\CursusBundle\Manager\CourseManager:
         arguments:
             - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\AppBundle\API\FinderProvider'
             - '@Claroline\AppBundle\Manager\PlatformManager'
             - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
 

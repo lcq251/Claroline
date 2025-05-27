@@ -1,26 +1,30 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch} from 'react-redux'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {FormData} from '#/main/app/content/form/containers/data'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
+import {FormModal} from '#/main/app/data/modals/form/components/modal'
+import {actions as formActions} from '#/main/app/content/form'
 
-import {selectors} from '#/main/authentication/ip/modals/parameters/store'
+const STORE_NAME = 'ipForm'
 
-const ParametersModal = props =>
-  <Modal
-    {...omit(props, 'ip', 'isNew', 'data', 'saveEnabled', 'update', 'loadIp', 'saveIp', 'onSave')}
-    // icon={props.isNew ? 'fa fa-fw fa-plus' : 'fa fa-fw fa-cog'}
-    title={props.isNew ? trans('new_ip', {}, 'security') : trans('parameters')}
-    subtitle={!props.isNew && props.ip ? props.ip.ip : ''}
-    onEntering={() => props.loadIp(props.ip)}
-  >
-    <FormData
-      flush={true}
-      name={selectors.STORE_NAME}
+const IpFormModal = props => {
+  const dispatch = useDispatch()
+  const isNew = !props.ip || !props.ip.id
+
+  return (
+    <FormModal
+      {...omit(props, 'ip', 'userDisabled')}
+      name={STORE_NAME}
+      title={trans(isNew ? 'new_ip' : 'ip', {}, 'security')}
+      data={props.ip}
+      isNew={isNew}
+      target={isNew ?
+        ['apiv2_ip_user_create'] :
+        ['apiv2_ip_user_update', {id: props.ip.id}]
+      }
+      saveLabel={trans('save', {}, 'actions')}
       definition={[
         {
           title: trans('general'),
@@ -31,9 +35,9 @@ const ParametersModal = props =>
               label: trans('define_ip_range', {}, 'security'),
               onChange: (checked) => {
                 if (checked) {
-                  props.update('ip', [])
+                  dispatch(formActions.updateProp(STORE_NAME, 'ip', []))
                 } else {
-                  props.update('ip', '')
+                  dispatch(formActions.updateProp(STORE_NAME, 'ip', ''))
                 }
               },
               linked: [
@@ -67,49 +71,27 @@ const ParametersModal = props =>
               name: 'user',
               type: 'user',
               label: trans('user'),
+              disabled: props.userDisabled,
               required: true
             }
           ]
         }
       ]}
-    >
-      <Button
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        type={CALLBACK_BUTTON}
-        htmlType="submit"
-        primary={true}
-        label={trans('save', {}, 'actions')}
-        disabled={!props.saveEnabled}
-        callback={() => {
-          props.saveIp(props.data, props.isNew, props.onSave)
-          props.fadeModal()
-        }}
-      />
-    </FormData>
-  </Modal>
+    />
+  )
+}
 
-ParametersModal.propTypes = {
+IpFormModal.propTypes = {
   ip: T.shape({
+    id: T.string,
     ip: T.oneOfType([T.string, T.arrayOf(T.string)]),
     user: T.object,
     range: T.bool
   }),
-  data: T.shape({
-    ip: T.string,
-    user: T.object,
-    range: T.bool
-  }),
-  isNew: T.bool.isRequired,
-  update: T.func.isRequired,
-  onSave: T.func,
-  saveEnabled: T.bool.isRequired,
-  saveIp: T.func.isRequired,
-  loadIp: T.func.isRequired,
-  fadeModal: T.func.isRequired
+  userDisabled: T.bool,
+  onSave: T.func
 }
 
 export {
-  ParametersModal
+  IpFormModal
 }

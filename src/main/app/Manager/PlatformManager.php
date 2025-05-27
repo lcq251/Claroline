@@ -41,7 +41,7 @@ class PlatformManager
                 $url .= $request->getHost();
             }
 
-            // add path if any
+            // add the path if any
             if ($request) {
                 $url .= '/'.trim($request->getBasePath(), '/');
             }

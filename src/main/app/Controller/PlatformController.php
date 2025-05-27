@@ -2,6 +2,7 @@
 
 namespace Claroline\AppBundle\Controller;
 
+use Claroline\AppBundle\API\DocumentationProvider;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextProvider;
@@ -35,7 +36,8 @@ class PlatformController
         private readonly SecurityManager $securityManager,
         private readonly ContextProvider $contextProvider,
         private readonly SerializerProvider $serializer,
-        private readonly ClientManager $clientManager
+        private readonly ClientManager $clientManager,
+        private readonly DocumentationProvider $documentation
     ) {
     }
 
@@ -93,7 +95,7 @@ class PlatformController
     }
 
     /**
-     * Change current organization.
+     * Change the current organization.
      */
     #[Route(path: '/o/{organization}', name: 'claro_organization_change', methods: ['PUT'])]
     public function changeOrganizationAction(
@@ -123,7 +125,7 @@ class PlatformController
             // the name of the web application as it is usually displayed to the user
             'name' => $this->config->getParameter('name'),
             // a shorter variant of the app name to be displayed when there is not
-            // enough space (e.g. as a label for an icon on the phone home screen).
+            // enough space (e.g., as a label for an icon on the phone home screen).
             'short_name' => $this->config->getParameter('name'),
 
             // use it to explain what the application does
@@ -162,5 +164,13 @@ class PlatformController
         $response->headers->set('Content-Type', 'application/manifest+json');
 
         return $response;
+    }
+
+    #[Route(path: '/doc', name: 'claro_documentation', methods: ['GET'])]
+    public function getDocumentationAction(Request $request): JsonResponse
+    {
+        return new JsonResponse(
+            $this->documentation->get()
+        );
     }
 }

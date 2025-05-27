@@ -5,7 +5,6 @@ namespace Claroline\LogBundle\Controller;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
-use Claroline\AppBundle\Controller\AbstractSecurityController;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route(path: '/log/functional')]
-class FunctionalLogController extends AbstractSecurityController
+class FunctionalLogController
 {
     use PermissionCheckerTrait;
 

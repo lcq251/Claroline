@@ -2,7 +2,6 @@
 
 namespace Claroline\AppBundle\API\Controller;
 
-use Claroline\AppBundle\Annotations\ApiDoc;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

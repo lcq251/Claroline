@@ -114,7 +114,7 @@ class SchemaProvider
     }
 
     /**
-     * Gets the json schema examples.
+     * Gets the JSON schema examples.
      */
     public function getSamples(string $class): array
     {

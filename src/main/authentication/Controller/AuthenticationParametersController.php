@@ -16,21 +16,13 @@ class AuthenticationParametersController extends AbstractSecurityController
 {
     use RequestDecoderTrait;
 
-    private Crud $crud;
-    private AuthenticationManager $authenticationManager;
-    private SerializerProvider $serializer;
-    private AuthorizationCheckerInterface $authorization;
-
     public function __construct(
-        Crud $crud,
-        AuthenticationManager $authenticationManager,
-        SerializerProvider $serializer,
+        private readonly Crud $crud,
+        private readonly AuthenticationManager $authenticationManager,
+        private readonly SerializerProvider $serializer,
         AuthorizationCheckerInterface $authorization
     ) {
-        $this->crud = $crud;
-        $this->authenticationManager = $authenticationManager;
-        $this->serializer = $serializer;
-        $this->authorization = $authorization;
+        $this->setAuthorizationChecker($authorization);
     }
 
     #[Route(path: '/authentication', name: 'apiv2_authentication_parameters_update', methods: ['PUT'])]
