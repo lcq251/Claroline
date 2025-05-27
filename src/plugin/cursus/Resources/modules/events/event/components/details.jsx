@@ -8,7 +8,6 @@ import {trans} from '#/main/app/intl'
 import {URL_BUTTON} from '#/main/app/buttons'
 import {Event as EventTypes} from '#/plugin/cursus/prop-types'
 import {EventMain} from '#/plugin/cursus/events/event/containers/main'
-import {EventDetails as TrainingEventDetails} from '#/plugin/cursus/event/containers/details'
 
 const EventDetails = (props) =>
   <EventMain eventId={props.event.id}>
@@ -28,9 +27,7 @@ const EventDetails = (props) =>
           target: ['apiv2_cursus_event_download_ics', {id: props.trainingEvent.id}]
         }
       ] : []}
-    >
-      <TrainingEventDetails path={props.path} />
-    </EventPage>
+    />
   </EventMain>
 
 EventDetails.propTypes = {

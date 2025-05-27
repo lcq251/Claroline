@@ -12,8 +12,8 @@ import {ImportEditorOverview} from '#/main/transfer/import/editor/components/ove
 import {ImportEditorExamples} from '#/main/transfer/import/editor/components/examples'
 
 const ImportEditor = (props) => {
-  let entity = typeof props.formData.action !== 'undefined' ? props.formData.action.substring(0, props.formData.action.indexOf('_')) : props.formData.type
-  let action = typeof props.formData.action !== 'undefined' ? props.formData.action.substring(props.formData.action.indexOf('_') + 1) : props.formData.action
+  let entity = get(props.formData, 'action') ? props.formData.action.substring(0, props.formData.action.indexOf('_')) : props.formData.type
+  let action = get(props.formData, 'action') ? props.formData.action.substring(props.formData.action.indexOf('_') + 1) : props.formData.action
 
   useEffect(() => {
     if (props.isNew) {

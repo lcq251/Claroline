@@ -1,27 +1,25 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
-import {ContentTitle} from '#/main/app/content/components/title'
 import {route as resourceRoute} from '#/main/core/resource/routing'
 
 import {Recordings} from '#/integration/big-blue-button/components/recordings'
 import {selectors} from '#/integration/big-blue-button/integration/bbb/store/selectors'
+import {Button} from '#/main/app/action'
 
 const BBBRecordings = (props) =>
-  <Fragment>
-    <ContentTitle
-      level={2} title={trans('recordings', {}, 'bbb')}
-      actions={[
-        {
-          name: 'sync',
-          type: CALLBACK_BUTTON,
-          icon: 'fa fa-fw fa-sync',
-          label: trans('sync_recordings', {}, 'bbb'),
-          callback: () => props.syncRecordings()
-        }
-      ]}
+  <>
+    <Button
+      className="btn btn-body mb-4 me-auto"
+      {...{
+        name: 'sync',
+        type: CALLBACK_BUTTON,
+        // icon: 'fa fa-fw fa-sync',
+        label: trans('sync_recordings', {}, 'bbb'),
+        callback: () => props.syncRecordings()
+      }}
     />
 
     <Recordings
@@ -52,7 +50,7 @@ const BBBRecordings = (props) =>
         }
       ]}
     />
-  </Fragment>
+  </>
 
 BBBRecordings.propTypes = {
   syncRecordings: T.func.isRequired

@@ -7,15 +7,16 @@ import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 import {Select} from '#/main/app/input/components/select'
 import {Checkboxes} from '#/main/app/input/components/checkboxes'
 import {Radios} from '#/main/app/input/components/radios'
+import {getValidationClassName} from '#/main/app/content/form/validator'
 
 const ChoiceInput = props => {
-  const className = classes('choice-control', props.className, props.size)
+  const className = classes('choice-control', props.className, getValidationClassName(props.error), props.size)
 
   /**
    * Removes unknown choices to avoid obscure validation error.
-   * (in list configuration, you often get these kind of errors because of deleted / renamed column in the list definition).
+   * (in list configuration, you often get this kind of errors because of deleted / renamed column in the list definition).
    *
-   * This will also permit to clean the DB over time.
+   * This will also permit cleaning the DB over time.
    */
   const sanitize = (value) => {
     let sanitized = value

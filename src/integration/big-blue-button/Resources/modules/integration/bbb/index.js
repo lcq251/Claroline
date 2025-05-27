@@ -2,6 +2,5 @@ import {BBBTool} from '#/integration/big-blue-button/integration/bbb/containers/
 
 export default {
   component: BBBTool,
-  name: 'bbb',
-  icon: 'fa fa-comments'
+  name: 'bbb'
 }

@@ -12,9 +12,9 @@ const ImportEditorOverview = () => {
   const isNew = useSelector(state => formSelectors.isNew(formSelectors.form(state, selectors.FORM_NAME)))
   const explanation = useSelector(state => selectors.importExplanation(state))
 
-  let entity = typeof formData.action !== 'undefined' ? formData.action.substring(0, formData.action.indexOf('_')) : formData.type
-  let action = typeof formData.action !== 'undefined' ? formData.action.substring(formData.action.indexOf('_') + 1) : formData.action
-  if(typeof formData.type !== 'undefined' && formData.type !== entity) {
+  let entity = formData.action ? formData.action.substring(0, formData.action.indexOf('_')) : formData.type
+  let action = formData.action ? formData.action.substring(formData.action.indexOf('_') + 1) : formData.action
+  if (formData.type && formData.type !== entity) {
     entity = formData.type
     action = ''
   }
@@ -33,6 +33,7 @@ const ImportEditorOverview = () => {
               label: trans('type'),
               disabled: !isNew,
               calculated: () => entity,
+              required: true,
               options: {
                 noEmpty: false,
                 condensed: true,
@@ -46,6 +47,7 @@ const ImportEditorOverview = () => {
               label: trans('action'),
               disabled: !isNew,
               displayed: !!entity,
+              required: true,
               calculated: () => entity + '_' + action,
               options: {
                 noEmpty: false,

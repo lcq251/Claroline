@@ -41,6 +41,11 @@ class WorkspaceEvaluationSerializer
         return '#/main/evaluation/workspace-evaluation.json';
     }
 
+    public function getSamples(): string
+    {
+        return '#/main/evaluation/workspace_evaluation';
+    }
+
     public function serialize(WorkspaceEvaluation $evaluation, ?array $options = []): array
     {
         $progression = $evaluation->getProgression();

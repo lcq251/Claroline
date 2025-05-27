@@ -35,10 +35,10 @@ const ExampleComponents = (props) =>
             label: 'Buttons',
             target: props.path+'/components/buttons'
           }, {
-            name: 'navs',
+            name: 'menus',
             type: LINK_BUTTON,
-            label: 'Navs',
-            target: props.path+'/components/navs'
+            label: 'Menus',
+            target: props.path+'/components/menus'
           }, {
             name: 'content',
             type: LINK_BUTTON,
@@ -76,8 +76,8 @@ const ExampleComponents = (props) =>
             path: '/buttons',
             component: ExampleButtons
           }, {
-            path: '/navs',
-            render: () => <ExampleNavs path={props.path+'/components/navs'} />
+            path: '/menus',
+            component: ExampleNavs
           }, {
             path: '/content',
             component: ExampleContent

@@ -37,7 +37,6 @@ const IntegrationTool = props => {
       menu={pages.map(page => ({
         name: page.name,
         type: LINK_BUTTON,
-        icon: page.icon,
         label: trans(page.name, {}, 'integration'),
         target: `${props.path}/${page.name}`
       }))}

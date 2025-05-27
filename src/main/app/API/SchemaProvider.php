@@ -136,7 +136,7 @@ class SchemaProvider
     }
 
     /**
-     * Loads a json schema.
+     * Loads a JSON schema.
      */
     public function loadSchema(string $path): \stdClass
     {
