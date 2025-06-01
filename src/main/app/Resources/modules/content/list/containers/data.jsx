@@ -86,7 +86,7 @@ AutoloadListData.propTypes = {
   fetchData: T.func
 }
 
-// connect list to redux
+// connect the list to redux
 const ListData = connect()(AutoloadListData)
 
 ListData.propTypes = {
@@ -115,14 +115,17 @@ ListData.propTypes = {
   ).isRequired,
 
   /**
-   * Open action generator for rows.
+   * Open action name or generator for rows.
    * It gets the current data row as first param.
    *
    * NB. It's called to generate the action (to be able to catch generated URL),
    * so if your open action is a func, generator should return another function,
-   * not call it. Example : (row) => myFunc
+   * not call it. Example: (row) => myFunc
    */
-  primaryAction: T.func,
+  primaryAction: T.oneOfType([
+    T.string, // the name of an action available in props.actions
+    T.func // an action generator which returns an action object
+  ]),
 
   /**
    * Provides data delete.

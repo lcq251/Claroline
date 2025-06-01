@@ -2,10 +2,7 @@ services:
     Claroline\EvaluationBundle\Subscriber\ResourceEvaluationSubscriber:
         tags: [ 'kernel.event_subscriber' ]
         arguments:
-            - '@security.token_storage'
-            - '@messenger.default_bus'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
 
     Claroline\EvaluationBundle\Subscriber\SequenceEvaluationSubscriber:
         tags: [ 'kernel.event_subscriber' ]

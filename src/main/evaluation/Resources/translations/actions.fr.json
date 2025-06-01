@@ -9,6 +9,7 @@
   "regenerate_certificates": "Régénérer les certificats",
   "download_workspace_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi l'espace d'activités.",
   "download_sequence_certificates_help": "Téléchargez les certificats de tous les utilisateurs ayant terminé/réussi la séquence.",
+  "open_sequence": "Ouvrir la séquence",
   "add_sequence": "Ajouter une séquence",
   "add_sequences": "Ajouter des séquences",
   "add_sequence_step": "Ajouter une étape",

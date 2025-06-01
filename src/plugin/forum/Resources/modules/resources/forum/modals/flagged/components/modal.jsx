@@ -75,7 +75,7 @@ const FlaggedModal = (props) => {
           {
             name: 'open',
             type: LINK_BUTTON,
-            icon: 'fa fa-fw fa-eye',
+            icon: 'fa fa-fw fa-arrow-up-right-from-square',
             label: trans('see_message_context', {}, 'forum'),
             target: `${path}/subjects/${rows[0].subject.id}`,
             scope: ['object']

@@ -5,14 +5,13 @@ import {Alert} from '#/main/app/components/alert'
 import {ContentLoader} from '#/main/app/content/components/loader'
 import {selectors as toolSelectors, ToolOverview} from '#/main/core/tool'
 
-import {WorkspaceEvaluation} from '#/main/evaluation/workspace/components/evaluation'
 import {selectors} from '#/main/evaluation/tools/evaluation/store'
+import {EvaluationJumbotron} from '#/main/evaluation/components/jumbotron'
 
 const EvaluationOverview = () => {
 
   const toolLoaded = useSelector(toolSelectors.loaded)
   const workspaceEvaluation = useSelector(selectors.currentWorkspaceEvaluation)
-  const resourceEvaluations = useSelector(selectors.currentResourceEvaluations)
 
   return (
     <ToolOverview>
@@ -30,9 +29,8 @@ const EvaluationOverview = () => {
       }
 
       {toolLoaded && workspaceEvaluation &&
-        <WorkspaceEvaluation
-          workspaceEvaluation={workspaceEvaluation}
-          resourceEvaluations={resourceEvaluations}
+        <EvaluationJumbotron
+          evaluation={workspaceEvaluation}
         />
       }
     </ToolOverview>

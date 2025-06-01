@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Controller\Sequence;
+namespace Claroline\EvaluationBundle\Controller\UserEvaluation;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -102,10 +103,37 @@ class SequenceEvaluationController
         $this->evaluationManager->update($step, $user);
 
         return new JsonResponse([
-            'userEvaluation' => $this->serializer->serialize(
+            'evaluation' => $this->serializer->serialize(
                 $this->evaluationManager->getUserEvaluation($sequence, $user, false),
                 [SerializerInterface::SERIALIZE_MINIMAL]
             ),
+            'progression' => $this->evaluationManager->getProgression($sequence, $user),
+        ]);
+    }
+
+    #[Route(path: '/{sequence}/user/{user}', name: 'apiv2_sequence_evaluation_get', methods: ['GET'])]
+    public function geAction(
+        #[MapEntity(mapping: ['sequence' => 'uuid'])]
+        Sequence $sequence,
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user
+    ): JsonResponse {
+        $sequenceEvaluation = $this->om->getRepository(SequenceEvaluation::class)->findOneBy([
+            'sequence' => $sequence,
+            'user' => $user,
+        ]);
+
+        if (empty($sequenceEvaluation)) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->checkPermission('OPEN', $sequenceEvaluation, [], true);
+
+        return new JsonResponse([
+            'parameters' => [
+                'successCondition' => $sequence->getSuccessCondition(),
+            ],
+            'evaluation' => $this->serializer->serialize($sequenceEvaluation),
             'progression' => $this->evaluationManager->getProgression($sequence, $user),
         ]);
     }

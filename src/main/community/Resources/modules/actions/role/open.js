@@ -11,7 +11,7 @@ import {declareAction} from '#/main/app/action'
 export default declareAction((roles, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-arrow-circle-right',
+  icon: 'fa fa-fw fa-arrow-up-right-from-square',
   label: trans('open', {}, 'actions'),
   displayed: hasPermission('open', roles[0]),
   target: route(roles[0], path),

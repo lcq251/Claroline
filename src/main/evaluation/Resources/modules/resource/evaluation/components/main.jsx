@@ -8,7 +8,7 @@ import {ResourceCard} from '#/main/evaluation/resource/components/card'
 import {selectors} from '#/main/evaluation/resource/evaluation/store'
 
 import {EvaluationList} from '#/main/evaluation/components/list'
-import {getActions, getDefaultAction} from '#/main/evaluation/resource/utils'
+import {getActions} from '#/main/evaluation/resource/utils'
 import {actions as listActions} from '#/main/app/content/list'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 
@@ -16,8 +16,10 @@ const ResourceDashboardEvaluations = () => {
   const dispatch = useDispatch()
 
   const currentUser = useSelector(securitySelectors.currentUser)
-  const resourceId = useSelector(resourceSelectors.id)
   const resourcePath = useSelector(resourceSelectors.path)
+  const resourceId = useSelector(resourceSelectors.id)
+  const hasScore = useSelector(resourceSelectors.hasScore)
+  const totalScore = useSelector(resourceSelectors.totalScore)
 
   const invalidateList = useCallback(() => {
     dispatch(listActions.invalidateData(selectors.STORE_NAME))
@@ -35,9 +37,11 @@ const ResourceDashboardEvaluations = () => {
         <EvaluationList
           name={selectors.STORE_NAME}
           url={['apiv2_resource_evaluation_list', {nodeId: resourceId}]}
-          primaryAction={(row) => getDefaultAction(row, evaluationsRefresher, resourcePath, currentUser)}
-          actions={(rows) => getActions(rows, evaluationsRefresher, resourcePath, currentUser)}
+          primaryAction="open"
+          actions={(rows) => getActions(rows, evaluationsRefresher, resourcePath, currentUser, true)}
           card={ResourceCard}
+          hasScore={hasScore}
+          totalScore={totalScore}
         />
       </PageSection>
     </PageContent>

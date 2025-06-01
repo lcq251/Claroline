@@ -40,6 +40,7 @@ registry.add('ClarolineEvaluationBundle', {
 
     resource_evaluation: {
       'open': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-open" */ '#/main/evaluation/actions/resource_evaluation/open') },
+      'open-resource': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-open-resource" */ '#/main/evaluation/actions/resource_evaluation/open-resource') },
       'send-message': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-send-message" */ '#/main/evaluation/actions/resource_evaluation/send-message') },
       'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-show-profile" */ '#/main/evaluation/actions/resource_evaluation/show-profile') },
       'delete': () => { return import(/* webpackChunkName: "evaluation-action-resource_evaluation-delete" */ '#/main/evaluation/actions/resource_evaluation/delete') }
@@ -47,6 +48,7 @@ registry.add('ClarolineEvaluationBundle', {
 
     sequence_evaluation: {
       'open': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-open" */ '#/main/evaluation/actions/sequence_evaluation/open') },
+      'open-sequence': () => { return import(/* webpackChunkName: "evaluation-action-workspace_evaluation-open-sequence" */ '#/main/evaluation/actions/sequence_evaluation/open-sequence') },
       'send-message': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-send-message" */ '#/main/evaluation/actions/sequence_evaluation/send-message') },
       'show-profile': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-show-profile" */ '#/main/evaluation/actions/sequence_evaluation/show-profile') },
       'download-certificate': () => { return import(/* webpackChunkName: "evaluation-action-sequence_evaluation-certificate" */ '#/main/evaluation/actions/sequence_evaluation/download-certificate') },

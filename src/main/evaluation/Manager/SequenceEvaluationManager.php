@@ -2,7 +2,6 @@
 
 namespace Claroline\EvaluationBundle\Manager;
 
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
@@ -116,7 +115,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         return $this->sequenceRepo->findResourceEvaluations($sequence, $user);
     }
 
-    public function getProgression(Sequence $sequence, User $user): array
+    public function getProgression(Sequence $sequence, User $user, ?array $options = []): array
     {
         $progression = $this->progressionRepo->findBySequenceAndUser($sequence, $user);
         $resourceEvaluations = $this->getResourceEvaluations($sequence, $user);
@@ -135,11 +134,14 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 }
 
                 if ($stepEvaluation) {
-                    $result[$stepProgression->getStep()->getUuid()] = $this->serializer->serialize($stepEvaluation, [SerializerInterface::SERIALIZE_MINIMAL]);
+                    $result[$stepProgression->getStep()->getUuid()] = $this->serializer->serialize($stepEvaluation, $options);
                 }
             } else {
                 $result[$stepProgression->getStep()->getUuid()] = [
                     'status' => $stepProgression->getStatus(),
+                    'step' => [
+                        'name' => $stepProgression->getStep()->getTitle(),
+                    ],
                 ];
             }
         }
@@ -149,6 +151,9 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             if (!array_key_exists($step->getUuid(), $result)) {
                 $result[$step->getUuid()] = [
                     'status' => EvaluationStatus::NOT_ATTEMPTED,
+                    'step' => [
+                        'name' => $step->getTitle(),
+                    ],
                 ];
             }
         }
@@ -157,7 +162,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
     }
 
     /**
-     * Get all steps progression for a user.
+     * Get all steps progressions for a user.
      */
     public function getStepsProgressionForUser(Sequence $sequence, User $user): array
     {
@@ -179,11 +184,14 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             'user' => $user,
         ]);
 
-        if (empty($progression)) {
-            // No progression for User => initialize a new one
-            $progression = new SequenceProgression();
-            $progression->setStep($step);
-            $progression->setUser($user);
+        if (empty($progression) || EvaluationStatus::COMPLETED !== $progression->getStatus()) {
+            if (empty($progression)) {
+                // No progression for User => initialize a new one
+                $progression = new SequenceProgression();
+                $progression->setStep($step);
+                $progression->setUser($user);
+            }
+
             $progression->setStatus(EvaluationStatus::COMPLETED);
 
             $this->om->persist($progression);

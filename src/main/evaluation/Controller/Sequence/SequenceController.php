@@ -100,7 +100,7 @@ class SequenceController extends AbstractCrudController
                 $this->evaluationManager->getUserEvaluation($sequence, $user),
                 [SerializerInterface::SERIALIZE_MINIMAL]
             );
-            $progression = $this->evaluationManager->getProgression($sequence, $user);
+            $progression = $this->evaluationManager->getProgression($sequence, $user, [SerializerInterface::SERIALIZE_MINIMAL]);
         }
 
         return new JsonResponse([

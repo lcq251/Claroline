@@ -31,11 +31,6 @@ class ResourceEvaluationSerializer
 
     public function serialize(ResourceEvaluation $evaluation, ?array $options = []): array
     {
-        $score = $evaluation->getScore();
-        if ($score) {
-            $score = round($score, EvaluationOptions::SCORE_PRECISION);
-        }
-
         $progression = $evaluation->getProgression();
         if ($progression) {
             $progression = round($progression, EvaluationOptions::PROGRESSION_PRECISION);
@@ -47,13 +42,10 @@ class ResourceEvaluationSerializer
             'startedAt' => DateNormalizer::normalize($evaluation->getStartedAt()),
             'endedAt' => DateNormalizer::normalize($evaluation->getEndedAt()),
             'status' => $evaluation->getStatus(),
-            'score' => $score,
-            'scoreMin' => $evaluation->getScoreMin(),
-            'scoreMax' => $evaluation->getScoreMax(),
             'progression' => $progression,
             'nbAttempts' => $evaluation->getNbAttempts(),
             'duration' => $evaluation->getDuration(),
-            'estimatedDuration' => $evaluation->getEstimatedDuration(),
+            'estimatedDuration' => $evaluation->getEstimatedDuration() * 60,
         ];
 
         // evaluation has a score, expose it

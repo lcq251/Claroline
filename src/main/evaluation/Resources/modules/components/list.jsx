@@ -44,6 +44,12 @@ const EvaluationList = (props) => {
           displayed: false,
           filterable: false
         }, {
+          name: 'estimatedDuration',
+          type: 'time',
+          label: trans('estimated_duration'),
+          displayed: false,
+          filterable: false
+        }, {
           name: 'progression',
           label: trans('progression'),
           type: 'progression',

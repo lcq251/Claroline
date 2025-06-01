@@ -10,7 +10,7 @@ import {route} from '#/plugin/open-badge/badge/routing'
 export default (assertions, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-arrow-circle-right',
+  icon: 'fa fa-fw fa-arrow-up-right-from-square',
   label: trans('open', {}, 'actions'),
   displayed: hasPermission('open', assertions[0]),
   target: route(assertions[0].badge, path),

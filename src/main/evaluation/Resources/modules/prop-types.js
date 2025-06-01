@@ -22,7 +22,7 @@ const UserEvaluation = {
       total: T.number
     }),
     duration: T.number,
-    estimatedDuration: T.string
+    estimatedDuration: T.number
   }
 }
 

@@ -35,7 +35,7 @@ trait AttemptParametersTrait
 
     /**
      * Number of attempts allowed.
-     * If 0, the user can retry as many times he wishes.
+     * If 0, the user can retry as many time he wishes.
      */
     #[ORM\Column(name: 'max_attempts', type: 'integer')]
     private ?int $maxAttempts = 0;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Controller;
+namespace Claroline\EvaluationBundle\Controller\UserEvaluation;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
@@ -26,7 +26,7 @@ use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
+use Claroline\EvaluationBundle\Entity\UserEvaluation\SequenceEvaluation;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -90,11 +90,23 @@ class WorkspaceEvaluationController
             'user' => $user,
         ]);
 
+        if (empty($workspaceEvaluation)) {
+            throw new NotFoundHttpException();
+        }
+
         $this->checkPermission('OPEN', $workspaceEvaluation, [], true);
 
-        return new JsonResponse(
-            $this->serializer->serialize($workspaceEvaluation)
-        );
+        $evaluations = $this->om->getRepository(SequenceEvaluation::class)->findByWorkspaceAndUser($workspace, $user);
+
+        return new JsonResponse([
+            'parameters' => [
+                'successCondition' => $workspace->getSuccessCondition(),
+            ],
+            'evaluation' => $this->serializer->serialize($workspaceEvaluation),
+            'progression' => array_map(function (SequenceEvaluation $evaluation) {
+                return $this->serializer->serialize($evaluation);
+            }, $evaluations),
+        ]);
     }
 
     #[Route(path: '/', name: 'apiv2_workspace_evaluation_delete', methods: ['DELETE'])]
@@ -126,32 +138,6 @@ class WorkspaceEvaluationController
         $this->manager->initialize($workspace);
 
         return new JsonResponse(null, 204);
-    }
-
-    #[Route(path: '/{workspace}/progression/{user}', name: 'apiv2_workspace_get_user_progression', methods: ['GET'])]
-    public function getUserProgressionAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        #[MapEntity(mapping: ['user' => 'uuid'])]
-        User $user
-    ): JsonResponse {
-        $workspaceEvaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
-            'workspace' => $workspace,
-            'user' => $user,
-        ]);
-
-        if (empty($workspaceEvaluation)) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->checkPermission('OPEN', $workspaceEvaluation, [], true);
-
-        return new JsonResponse([
-            'workspaceEvaluation' => $this->serializer->serialize($workspaceEvaluation),
-            'resourceEvaluations' => $this->finder->search(ResourceEvaluation::class, [
-                'filters' => ['workspace' => $workspace->getUuid(), 'user' => $user->getUuid()],
-            ])['data'],
-        ]);
     }
 
     #[Route(path: '/{workspace}/requirements', name: 'apiv2_workspace_required_resource_list', methods: ['GET'])]

@@ -111,7 +111,7 @@ class DataDisplay extends Component {
     }
 
     if (!this.props.value && false !== this.props.value && 0 !== this.props.value) {
-      return (
+      return this.props.placeholder || (
         <em role="presentation" className="text-body-tertiary">{trans('empty_value')}</em>
       )
     }

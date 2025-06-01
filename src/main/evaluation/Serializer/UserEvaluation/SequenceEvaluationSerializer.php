@@ -45,7 +45,7 @@ class SequenceEvaluationSerializer
             'status' => $evaluation->getStatus(),
             'progression' => $progression,
             'duration' => $evaluation->getDuration(),
-            'estimatedDuration' => $evaluation->getEstimatedDuration(),
+            'estimatedDuration' => $evaluation->getEstimatedDuration() * 60,
             'certified' => $evaluation->isCertified(),
         ];
 
@@ -58,8 +58,8 @@ class SequenceEvaluationSerializer
 
             $score = $evaluation->getScore();
             $total = $evaluation->getScoreMax();
-            if ($evaluation->getSequence() && $evaluation->getSequence()->getScoreTotal()) {
-                $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getSequence()->getScoreTotal();
+            if ($score && $evaluation->getSequence() && $evaluation->getSequence()->getScoreTotal()) {
+                $score = ($score / $total) * $evaluation->getSequence()->getScoreTotal();
                 $total = $evaluation->getSequence()->getScoreTotal();
             }
 

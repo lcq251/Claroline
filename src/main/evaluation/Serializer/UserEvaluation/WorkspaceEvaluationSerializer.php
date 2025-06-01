@@ -62,7 +62,7 @@ class WorkspaceEvaluationSerializer
             'duration' => $evaluation->getDuration(),
             'progression' => $progression,
             'certified' => $evaluation->isCertified(),
-            'estimatedDuration' => $evaluation->getEstimatedDuration(),
+            'estimatedDuration' => $evaluation->getEstimatedDuration() * 60,
         ];
 
         // evaluation has a score, expose it
@@ -74,7 +74,7 @@ class WorkspaceEvaluationSerializer
 
             $score = $evaluation->getScore();
             $total = $evaluation->getScoreMax();
-            if ($evaluation->getWorkspace() && $evaluation->getWorkspace()->getScoreTotal()) {
+            if ($score && $evaluation->getWorkspace() && $evaluation->getWorkspace()->getScoreTotal()) {
                 $score = ($evaluation->getScore() / $evaluation->getScoreMax()) * $evaluation->getWorkspace()->getScoreTotal();
                 $total = $evaluation->getWorkspace()->getScoreTotal();
             }

@@ -80,7 +80,8 @@ $utilities: map-merge(
       (
         values: map-merge($utilities-border-colors, (
           // sometimes you need to add transparent borders in order to keep alignment with components with borders
-          "transparent": transparent
+          "transparent": transparent,
+          "current": currentColor
         ))
       )
     )

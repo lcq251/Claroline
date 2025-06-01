@@ -84,7 +84,7 @@ const QuizResource = props =>
       }
     ]}
 
-    overviewPage={props.hasOverview && QuizOverview}
+    overviewPage={props.hasOverview ? QuizOverview : undefined}
     editor={QuizEditor}
     pages={[
       {

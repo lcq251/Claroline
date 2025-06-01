@@ -11,5 +11,6 @@ export default declareAction((evaluations) => ({
   label: trans('open-workspace', {}, 'actions'),
   target: route(evaluations[0].workspace),
   scope: ['object'],
-  exact: true
+  exact: true,
+  default: true
 }))

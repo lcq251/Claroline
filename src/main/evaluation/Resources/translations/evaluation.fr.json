@@ -84,5 +84,9 @@
   "objective": "Objectif d'apprentissage",
   "copy_sequence_confirm_message": "{1} Êtes-vous sûr(e) de vouloir copier cette séquence ? | [2,Inf[ Êtes-vous sûr(e) de vouloir copier ces %count% séquences ?",
   "sequence_copy_activities": "Copier les activités",
-  "sequence_copy_activities_help": "Toutes les activités et ressources complémentaires seront dupliquées avec la séquence."
+  "sequence_copy_activities_help": "Toutes les activités et ressources complémentaires seront dupliquées avec la séquence.",
+  "certified": "Formation certifiée",
+  "certified_help": "L'utilisateur obtient un certificate lorsqu'il termine/réussit cette évaluation.",
+  "attempt": "Tentative n°%number%",
+  "attempts": "Tentatives"
 }

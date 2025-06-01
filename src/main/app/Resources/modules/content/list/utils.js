@@ -3,6 +3,7 @@ import merge from 'lodash/merge'
 import {isTypeEnabled} from '#/main/app/data/types'
 
 import {DataListProperty} from '#/main/app/content/list/prop-types'
+import {pickAction} from '#/main/app/action'
 
 /**
  * Fills definition with missing default values.
@@ -36,16 +37,21 @@ function getPropDefinition(propName, dataProps) {
  * Gets primary action for each data object.
  *
  * @param {object}   item            - The current row data.
- * @param {function} actionGenerator - A function to generate the primary action for a data row.
+ * @param {function|string} actionGenerator - A function to generate the primary action for a data row or an action name defined in the actions list.
+ * @param {function} actionsGenerator - A function to generate all the actions for a data row.
  *
  * @returns {Array}
  */
-function getPrimaryAction(item, actionGenerator) {
-  if (actionGenerator) {
-    return actionGenerator(item)
+function getPrimaryAction(item, actionGenerator, actionsGenerator) {
+  if (!actionGenerator) {
+    return null
   }
 
-  return null
+  if (typeof actionGenerator === 'string') {
+    return pickAction(actionGenerator, getActions([item], actionsGenerator))
+  }
+
+  return actionGenerator(item)
 }
 
 /**

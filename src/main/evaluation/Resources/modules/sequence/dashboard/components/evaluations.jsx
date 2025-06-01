@@ -1,14 +1,13 @@
 import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
-
 import {PageContent, PageSection} from '#/main/app/page'
 import {actions as listActions} from '#/main/app/content/list'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {EvaluationList} from '#/main/evaluation/components/list'
 
 import {EvaluationSequenceCard} from '#/main/evaluation/sequence/components/card'
-import {getEvaluationActions, getEvaluationDefaultAction} from '#/main/evaluation/sequence/utils'
+import {getEvaluationActions} from '#/main/evaluation/sequence/utils'
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
@@ -38,8 +37,8 @@ const SequenceDashboardEvaluations = () => {
         <EvaluationList
           name={selectors.STORE_NAME+'.evaluations'}
           url={['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}]}
-          primaryAction={(row) => getEvaluationDefaultAction(row, evaluationsRefresher, sequencePath, currentUser)}
-          actions={(rows) => getEvaluationActions(rows, evaluationsRefresher, sequencePath, currentUser)}
+          primaryAction="open"
+          actions={(rows) => getEvaluationActions(rows, evaluationsRefresher, sequencePath, currentUser, true)}
           card={EvaluationSequenceCard}
           hasScore={hasScore}
           totalScore={totalScore}

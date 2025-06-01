@@ -11,3 +11,13 @@ input[type=reset] {
   box-shadow: none;
   padding: 0;
 }
+
+dl {
+  dt {
+    text-transform: var(--#{$prefix}label-text-transform);
+    color: var(--#{$prefix}secondary-color);
+    font-weight: $form-label-font-weight;
+    font-size: $font-size-sm;
+    margin-bottom: map-get($spacers, 2);
+  }
+}

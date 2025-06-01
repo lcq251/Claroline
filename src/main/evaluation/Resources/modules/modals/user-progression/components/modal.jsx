@@ -1,30 +1,40 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {CloseButton} from 'react-bootstrap'
 import classes from 'classnames'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
-import {trans} from '#/main/app/intl/translation'
+import {url} from '#/main/app/api'
+import {trans, displayDuration} from '#/main/app/intl'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Toolbar, ActionTypes, PromisedActionTypes} from '#/main/app/action'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 import {Nav} from '#/main/app/components/nav'
-import {Datetime} from '#/main/app/components/date'
-import {UserMicro} from '#/main/core/user/components/micro'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 
 import {constants} from '#/main/evaluation/constants'
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
-import {displayDuration} from '#/main/app/intl'
 import {UserEvaluation as UserEvaluationTypes} from '#/main/evaluation/prop-types'
+import {DescriptionList} from '#/main/app/data/components/description-list'
 
 const UserProgressionModal = props => {
   const [section, changeSection] = useState('overview')
 
+  useEffect(() => {
+    if (!isEmpty(props.url)) {
+      props.fetchUserProgression(props.url)
+    }
+
+    return () => {
+      props.resetUserProgression()
+    }
+  }, [url(props.url)])
+
   return (
     <ModalEmpty
-      {...omit(props, 'evaluation', 'actions')}
+      {...omit(props, 'evaluation', 'actions', 'additional', 'fetchUserProgression', 'resetUserProgression')}
       size="xl"
     >
       <div className="d-flex flex-row" role="presentation">
@@ -36,10 +46,10 @@ const UserProgressionModal = props => {
           style={{maxWidth: '16rem'}}
         >
           {props.evaluation.certified &&
-            <TooltipOverlay id="certified" tip="L'utilisateur obtient un certificate lorsqu'il termine/réussit cette évaluation." position="bottom">
+            <TooltipOverlay id="certified" tip={trans('certified_help', {}, 'evaluation')} position="bottom">
               <div className="me-auto fw-bolder mb-3 mt-n2 fs-sm ms-n2 cursor-help">
                 <span className="fa fa-certificate me-2" aria-hidden={true} />
-                Formation Certifiée
+                {trans('certified', {}, 'evaluation')}
               </div>
             </TooltipOverlay>
           }
@@ -61,53 +71,64 @@ const UserProgressionModal = props => {
           }
 
           <div className="d-flex flex-wrap gap-2 justify-content-center mt-3">
-            <div className="bg-body rounded-2 px-2 py-1 d-flex flex-row flex-nowrap align-items-center gap-2">
-              <span className="fa fa-clock fs-base" aria-hidden={true} />
-              {get(props.evaluation, 'duration') ?
-                displayDuration(get(props.evaluation, 'duration')) : (get(props.evaluation, 'estimatedDuration') ? displayDuration(get(props.evaluation, 'estimatedDuration')) : '-')
+            {[
+              {
+                icon: 'fa fa-clock',
+                value: get(props.evaluation, 'duration') ? displayDuration(get(props.evaluation, 'duration')) : null,
+                label: trans('duration'),
+                displayed: !!get(props.evaluation, 'duration')
+              }, {
+                icon: 'fa fa-clock',
+                label: trans('estimated_duration'),
+                value: get(props.evaluation, 'estimatedDuration') ? displayDuration(get(props.evaluation, 'estimatedDuration')) : '-',
+                displayed: !get(props.evaluation, 'duration')
               }
-            </div>
-
-            <div className="bg-body rounded-2 px-2 py-1 d-flex flex-row flex-nowrap align-items-center gap-2">
-              <span className="fa fa-eye fs-base" aria-hidden={true} />
-              20
-            </div>
-
-            <div className="bg-body rounded-2 px-2 py-1 d-flex flex-row flex-nowrap align-items-center gap-2">
-              <span className="fa fa-rotate-right fs-base" aria-hidden={true} />
-              3 / 4
-            </div>
+            ].concat(props.additional || [])
+              .filter(info => undefined === info.displayed || info.displayed)
+              .map(info =>
+                <TooltipOverlay tip={info.label} key={info.label} position="bottom">
+                  <div className="bg-body rounded-2 px-2 py-1 d-flex flex-row flex-nowrap align-items-center gap-2">
+                    <span className={info.icon} aria-hidden={true} />
+                    {info.value}
+                  </div>
+                </TooltipOverlay>
+              )
+            }
           </div>
 
-          <ul className="list-unstyled mb-0 mt-4">
-            <li>
-              <b className="text-uppercase d-block fs-sm mb-1 text-nowrap">{trans('user')}</b>
-              <UserMicro {...get(props.evaluation, 'user')} link={true} />
-            </li>
-            <li>
-              <b className="text-uppercase d-block fs-sm mb-1 text-nowrap mt-4">{trans('last_activity_at')}</b>
-              {get(props.evaluation, 'lastActivityAt') ?
-                <Datetime value={get(props.evaluation, 'lastActivityAt')} time={true} long={true} /> :
-                '-'
+          <DescriptionList
+            className="border-top-0 border-bottom-0 mb-0 mt-2"
+            data={props.evaluation}
+            variant={constants.EVALUATION_STATUS_COLOR[get(props.evaluation, 'status')]}
+            fields={[
+              {
+                name: 'user',
+                type: 'user',
+                label: trans('user')
+              }, {
+                name: 'lastActivityAt',
+                type: 'date',
+                label: trans('last_activity_at'),
+                options: {long: true, time: true},
+                placeholder: '-'
+              }, {
+                name: 'startedAt',
+                type: 'date',
+                label: trans('started_at'),
+                options: {long: true, time: true},
+                placeholder: '-'
+              }, {
+                name: 'endedAt',
+                type: 'date',
+                label: trans('ended_at'),
+                options: {long: true, time: true},
+                placeholder: '-'
               }
-            </li>
-            <li>
-              <b className="text-uppercase d-block fs-sm mb-1 text-nowrap mt-4">{trans('started_at')}</b>
-              {get(props.evaluation, 'startedAt') ?
-                <Datetime value={get(props.evaluation, 'startedAt')} time={true} long={true} /> :
-                '-'
-              }
-            </li>
-            <li>
-              <b className="text-uppercase d-block fs-sm mb-1 text-nowrap mt-4">{trans('ended_at')}</b>
-              {get(props.evaluation, 'endedAt') ?
-                <Datetime value={get(props.evaluation, 'endedAt')} time={true} long={true} /> :
-                '-'
-              }
-            </li>
-          </ul>
+            ]}
+          />
         </div>
-        <div className="flex-fill" role="presentation">
+
+        <div className="flex-fill d-flex flex-column" role="presentation">
           <div className="modal-header">
             <Nav
               orientation="horizontal"
@@ -138,8 +159,8 @@ const UserProgressionModal = props => {
             <CloseButton onClick={props.fadeModal} aria-label={trans('close', {}, 'actions')} />
           </div>
 
-          <div className="modal-body pt-0">
-
+          <div className="modal-body d-flex flex-column pt-0">
+            {props.children}
           </div>
         </div>
       </div>
@@ -148,6 +169,8 @@ const UserProgressionModal = props => {
 }
 
 UserProgressionModal.propTypes = {
+  // the api URL to fetch the user evaluation and progression
+  url: T.oneOfType([T.string, T.array]).isRequired,
   evaluation: T.shape(
     UserEvaluationTypes.propTypes
   ).isRequired,
@@ -161,6 +184,13 @@ UserProgressionModal.propTypes = {
       PromisedActionTypes.propTypes
     )
   ]),
+  additional: T.arrayOf(T.shape({
+    icon: T.string.isRequired,
+    label: T.string.isRequired,
+    value: T.any.isRequired
+  })),
+  fetchUserProgression: T.func.isRequired,
+  resetUserProgression: T.func.isRequired,
   fadeModal: T.func.isRequired
 }
 

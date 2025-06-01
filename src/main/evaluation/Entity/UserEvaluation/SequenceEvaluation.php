@@ -44,6 +44,15 @@ class SequenceEvaluation extends AbstractUserEvaluation
         return $this->sequence->isCertified();
     }
 
+    public function getScoreMax(): ?float
+    {
+        if ($this->scoreMax) {
+            return $this->scoreMax;
+        }
+
+        return $this->sequence?->getScoreTotal();
+    }
+
     public function getEstimatedDuration(): ?int
     {
         if ($this->sequence) {

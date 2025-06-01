@@ -2,6 +2,7 @@ import isEmpty from 'lodash/isEmpty'
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 import uniqWith from 'lodash/uniqWith'
+import pickBy from 'lodash/pickBy'
 
 import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl/translation'
@@ -16,6 +17,32 @@ import {MODAL_CONFIRM} from '#/main/app/modals/confirm'
 
 const GROUP_SEPARATOR  = '|'
 const ACTION_SEPARATOR = ' '
+
+/**
+ * Returns a subset of actions by their name.
+ *
+ * @param {string[]} actionNames
+ * @param {array|Promise} actions
+ *
+ * @return {array|Promise}
+ */
+function pickActions(actionNames, actions) {
+  if (Array.isArray(actions)) {
+    return [].concat(actions)
+      .filter(action => actionNames.includes(action.name))
+  }
+
+  return actions.then((loadedActions) => loadedActions.filter(action => actionNames.includes(action.name)))
+}
+
+function pickAction(actionName, actions) {
+  if (Array.isArray(actions)) {
+    return [].concat(actions)
+      .filter(action => action.name === actionName)
+  }
+
+  return actions.then((loadedActions) => loadedActions.find(action => action.name === actionName))
+}
 
 function createActionDefinition(action) {
   // compute id based on received config
@@ -199,5 +226,7 @@ function makeAbsolute(action) {
 export {
   createActionDefinition,
   buildToolbar,
-  makeAbsolute
+  makeAbsolute,
+  pickActions,
+  pickAction
 }

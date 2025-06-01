@@ -144,6 +144,16 @@ const hasEvaluation = createSelector(
   (resourceNode) => supportEvaluation(resourceNode)
 )
 
+const totalScore = createSelector(
+  [resourceNode],
+  (sequence) => get(sequence, 'evaluation.scoreTotal', null)
+)
+
+const hasScore = createSelector(
+  [totalScore],
+  (totalScore) => !!totalScore
+)
+
 // evaluation selectors
 const userEvaluation = createSelector(
   [store],
@@ -156,7 +166,7 @@ const userEvaluation = createSelector(
 const resourceEvaluation = userEvaluation
 
 const evaluationStatus = createSelector(
-  [resourceEvaluation],
+  [userEvaluation],
   (evaluation) => evaluation ? evaluation.status : null
 )
 
@@ -205,6 +215,8 @@ export const selectors = {
   userEvaluation,
   resourceEvaluation,
   hasEvaluation,
+  hasScore,
+  totalScore,
   evaluationStatus,
   isTerminated
 }

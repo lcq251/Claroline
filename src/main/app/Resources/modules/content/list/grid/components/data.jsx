@@ -83,7 +83,7 @@ const GridData = props => {
             orientation={props.orientation}
             row={row}
             card={props.card}
-            primaryAction={props.loaded ? getPrimaryAction(row, props.primaryAction) : undefined}
+            primaryAction={props.loaded ? getPrimaryAction(row, props.primaryAction, props.actions) : undefined}
             actions={props.loaded ? getActions([row], props.actions) : undefined}
             selected={isRowSelected(row, props.selection ? props.selection.current : [])}
             onSelect={

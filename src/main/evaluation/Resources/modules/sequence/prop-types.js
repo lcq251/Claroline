@@ -89,7 +89,7 @@ const SequenceEvaluation = {
     user: T.shape(
       User.propTypes
     ),
-    estimatedDuration: T.string
+    estimatedDuration: T.number
   }
 }
 

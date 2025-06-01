@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useId} from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {OverlayTrigger} from '#/main/app/overlays/components/overlay'
 import {Tooltip} from '#/main/app/overlays/tooltip/components/tooltip'
 
 const TooltipOverlay = props => {
+  const tipId = useId()
+
   if (props.disabled) {
     return props.children
   }
@@ -13,7 +15,7 @@ const TooltipOverlay = props => {
     <OverlayTrigger
       placement={props.position || 'top'}
       overlay={
-        <Tooltip id={props.id} role="tooltip" >{props.tip}</Tooltip>
+        <Tooltip id={props.id || tipId} role="tooltip" >{props.tip}</Tooltip>
       }
     >
       {props.children}
@@ -22,11 +24,11 @@ const TooltipOverlay = props => {
 }
 
 TooltipOverlay.propTypes = {
-  id: T.string.isRequired,
+  id: T.string,
   tip: T.string.isRequired,
   disabled: T.bool,
   /**
-   * ATTENTION : children need to be able to receive a React ref (either by being a class component or by using `forwardRef`).
+   * ATTENTION: children need to be able to receive a React ref (either by being a class component or by using `forwardRef`).
    */
   children: T.element.isRequired,
   position: T.oneOf(['top', 'right', 'bottom', 'left'])

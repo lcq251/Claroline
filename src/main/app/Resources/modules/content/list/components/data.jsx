@@ -25,7 +25,7 @@ import {ListHeader} from '#/main/app/content/list/components/header'
 import {ListFooter} from '#/main/app/content/list/components/footer'
 
 /**
- * Full data list with configured components (eg. search, pagination).
+ * Full data list with configured components (e.g., search, pagination).
  */
 class ListData extends Component {
   constructor(props) {
@@ -70,20 +70,21 @@ class ListData extends Component {
     let availableDisplays = display.available ? display.available : listConst.DEFAULT_DISPLAY_MODES
 
     if (!hasCard) {
-      // disables grid based displays if no card provided
+      // disables grid-based displays if no card provided
       availableDisplays = availableDisplays.filter(displayName => !DISPLAY_MODES[displayName].options.useCard)
 
-      // throws error if there is no available displays after filtering
+      // throws error if there is no available display after filtering
       invariant(
         0 < availableDisplays.length,
         'Data list has no available displays. Either enable table displays or pass a DataCard component to the list.'
       )
 
       if (DISPLAY_MODES[currentDisplay].options.useCard) {
-        // current display is a grid, change it
+        // the current display is a grid, change it
         currentDisplay = DISPLAY_MODES[listConst.DEFAULT_DISPLAY_MODE].options.useCard ?
-          listConst.DEFAULT_DISPLAY_MODE : // gets the default mode if it's not card based
-          // get the first non card based available display
+          // gets the default mode if it's not card-based
+          listConst.DEFAULT_DISPLAY_MODE :
+          // get the first non card-based available display
           availableDisplays[0]
       }
     }
@@ -198,7 +199,7 @@ ListData.propTypes = {
    * The data list to display.
    */
   data: T.arrayOf(T.shape({
-    // because some features (like selection) requires to retrieves some data rows
+    // because some features (like selection) require retrieving some data rows
     id: T.oneOfType([T.string, T.number]).isRequired
   })).isRequired,
 
@@ -218,7 +219,10 @@ ListData.propTypes = {
    * Data primary action (aka open/edit action for rows in most cases).
    * Providing this object will automatically display the primary action (depending on the current view mode).
    */
-  primaryAction: T.func,
+  primaryAction: T.oneOfType([
+    T.string, // the name of an action available in props.actions
+    T.func // an action generator which returns an action object
+  ]),
 
   /**
    * Actions available for each data row and selected rows (if selection is enabled).
@@ -234,7 +238,7 @@ ListData.propTypes = {
 
   /**
    * Display formats of the list.
-   * Providing this object automatically display the display formats component.
+   * Providing this object automatically displays the display formats component.
    */
   display: T.shape(
     DataListDisplay.propTypes
@@ -242,7 +246,7 @@ ListData.propTypes = {
 
   /**
    * Search filters configuration.
-   * Providing this object automatically display the search box component.
+   * Providing this object automatically displays the search box component.
    */
   filters: T.shape(
     DataListSearch.propTypes
@@ -250,7 +254,7 @@ ListData.propTypes = {
 
   /**
    * Sorting configuration.
-   * Providing this object automatically display data sorting components.
+   * Providing this object automatically displays data sorting components.
    */
   sorting: T.shape({
     current: T.shape({
@@ -262,7 +266,7 @@ ListData.propTypes = {
 
   /**
    * Pagination configuration.
-   * Providing this object automatically display pagination and results per page components.
+   * Providing this object automatically displays pagination and results per page components.
    */
   pagination: T.shape(
     DataListPagination.propTypes
@@ -270,7 +274,7 @@ ListData.propTypes = {
 
   /**
    * Selection configuration.
-   * Providing this object automatically display select checkboxes for each data results.
+   * Providing this object automatically displays select checkboxes for each data result.
    */
   selection: T.shape(
     DataListSelection.propTypes

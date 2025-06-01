@@ -17,5 +17,6 @@ export default declareAction((evaluations, refresher, path, currentUser) => ({
       users: evaluations.map((row => row.user))
     }
   }],
-  scope: ['object', 'collection']
+  scope: ['object', 'collection'],
+  group: trans('community')
 }))

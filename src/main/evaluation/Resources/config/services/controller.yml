@@ -2,26 +2,6 @@ services:
     _defaults:
         public: true
 
-    Claroline\EvaluationBundle\Controller\WorkspaceEvaluationController:
-        arguments:
-            - '@security.token_storage'
-            - '@security.authorization_checker'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
-
-    Claroline\EvaluationBundle\Controller\ResourceEvaluationController:
-        arguments:
-            - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
-            - '@Claroline\AppBundle\API\Crud'
-
     Claroline\EvaluationBundle\Controller\Certificate\SequenceCertificateController:
         arguments:
             - '@security.authorization_checker'
@@ -52,7 +32,18 @@ services:
             - '@security.token_storage'
             - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
 
-    Claroline\EvaluationBundle\Controller\Sequence\SequenceEvaluationController:
+    # User evaluations
+    Claroline\EvaluationBundle\Controller\UserEvaluation\WorkspaceEvaluationController:
+        arguments:
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\AppBundle\API\FinderProvider'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
+
+    Claroline\EvaluationBundle\Controller\UserEvaluation\SequenceEvaluationController:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -60,3 +51,13 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\EvaluationBundle\Manager\SequenceEvaluationManager'
+
+    Claroline\EvaluationBundle\Controller\UserEvaluation\ResourceEvaluationController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\AppBundle\API\FinderProvider'
+            - '@Claroline\EvaluationBundle\Manager\ResourceEvaluationManager'
+            - '@Claroline\AppBundle\API\Crud'

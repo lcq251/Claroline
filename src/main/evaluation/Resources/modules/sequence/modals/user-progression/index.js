@@ -4,7 +4,7 @@
 
 import {registry} from '#/main/app/modals/registry'
 
-import {UserProgressionModal} from '#/main/evaluation/sequence/modals/user-progression/containers/modal'
+import {UserProgressionModal} from '#/main/evaluation/sequence/modals/user-progression/components/modal'
 
 const MODAL_USER_PROGRESSION = 'MODAL_SEQUENCE_USER_PROGRESSION'
 

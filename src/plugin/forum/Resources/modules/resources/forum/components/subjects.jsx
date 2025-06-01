@@ -175,7 +175,7 @@ const SubjectsList = (props) =>
       }, {
         name: 'open',
         type: CALLBACK_BUTTON,
-        icon: 'fa fa-fw fa-circle-check',
+        icon: 'fa fa-fw fa-arrow-up-right-from-square',
         label: trans('open_subject', {}, 'forum'),
         callback: () => props.unCloseSubject(rows[0]),
         displayed: -1 !== rows.findIndex(row => row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),

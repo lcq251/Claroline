@@ -17,7 +17,7 @@ const DataListProperty = {
      * An alias for the property.
      * If defined, filters and sortBy will use it to retrieve the property.
      *
-     * This permits to simplify queryStrings and server communication when prop
+     * This permits simplifying queryStrings and server communication when prop
      * is in a sub-object (e.g. `meta.published` can be referenced using `published`).
      *
      * @type {string}
@@ -190,7 +190,10 @@ const DataListView = {
     /**
      * Data primary action (aka open/edit action for rows in most cases).
      */
-    primaryAction: T.func,
+    primaryAction: T.oneOfType([
+      T.string, // the name of an action available in props.actions
+      T.func // an action generator which returns an action object
+    ]),
 
     actions: T.func
   },

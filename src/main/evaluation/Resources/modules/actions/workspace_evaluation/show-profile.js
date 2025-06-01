@@ -13,5 +13,6 @@ export default declareAction((evaluations, refresher, path, currentUser) => ({
   label: trans('show_profile', {}, 'actions'),
   target: route(get(evaluations[0], 'user')),
   displayed: get(evaluations[0], 'user.id') !== get(currentUser, 'id'),
-  scope: ['object']
+  scope: ['object'],
+  group: trans('community')
 }))

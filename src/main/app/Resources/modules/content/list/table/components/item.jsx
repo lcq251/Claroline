@@ -100,7 +100,7 @@ const TableItem = props => {
   // retrieve the column that should hold the primary action
   let columnAction = props.columns.find(columnDef => columnDef.primary)
   if (!columnAction) {
-    // primary column is not displayed, take the first one by default
+    // the primary column is not displayed, take the first one by default
     columnAction = props.columns[0]
   }
 
@@ -157,7 +157,7 @@ const TableItem = props => {
           column={column}
           rowData={props.row}
           size={props.size}
-          action={props.primaryAction && columnAction === column ? getPrimaryAction(props.row, props.primaryAction)  : undefined}
+          action={props.primaryAction && columnAction === column ? getPrimaryAction(props.row, props.primaryAction, props.actions)  : undefined}
         />
       )}
 
@@ -191,7 +191,10 @@ TableItem.propTypes = {
     T.shape(DataListProperty.propTypes)
   ).isRequired,
   size: T.oneOf(['sm', 'md']),
-  primaryAction: T.func,
+  primaryAction: T.oneOfType([
+    T.string, // the name of an action available in props.actions
+    T.func // an action generator which returns an action object
+  ]),
   actions: T.func,
   selected: T.bool,
   onSelect: T.func,

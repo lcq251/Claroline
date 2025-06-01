@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\EvaluationBundle\Controller;
+namespace Claroline\EvaluationBundle\Controller\UserEvaluation;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -80,6 +81,36 @@ class ResourceEvaluationController
         $evaluations = $this->crud->search(ResourceEvaluation::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
         return $evaluations->toResponse();
+    }
+
+    #[Route(path: '/{resource}/user/{user}', name: 'apiv2_resource_evaluation_get', methods: ['GET'])]
+    public function getAction(
+        #[MapEntity(mapping: ['resource' => 'uuid'])]
+        ResourceNode $resource,
+        #[MapEntity(mapping: ['user' => 'uuid'])]
+        User $user
+    ): JsonResponse {
+        $resourceEvaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
+            'resource' => $resource,
+            'user' => $user,
+        ]);
+
+        if (empty($resourceEvaluation)) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->checkPermission('OPEN', $resourceEvaluation, [], true);
+
+        $attempts = $this->om->getRepository(ResourceAttempt::class)->findBy([
+            'resourceUserEvaluation' => $resourceEvaluation,
+        ]);
+
+        return new JsonResponse([
+            'evaluation' => $this->serializer->serialize($resourceEvaluation),
+            'progression' => array_map(function (ResourceAttempt $attempt) {
+                return $this->serializer->serialize($attempt);
+            }, $attempts),
+        ]);
     }
 
     #[Route(path: '/', name: 'apiv2_resource_evaluation_delete', methods: ['DELETE'])]

@@ -9,8 +9,9 @@ import {DataDisplay} from '#/main/app/data/components/display'
 const DescriptionList = ({
   className,
   fields,
-  size,
-  inline = true,
+  inline = false,
+  bordered = true,
+  variant = null,
   loaded = true,
   data = null
 }) => {
@@ -35,10 +36,11 @@ const DescriptionList = ({
     })
 
   return (
-    <dl className={classes('border-top', {
+    <dl className={classes(variant && `border-${variant} border-opacity-25`, {
+      'border-top border-bottom': bordered,
       'placeholder-glow': !loaded
     }, className)}>
-      {displayedFields.map(field => {
+      {displayedFields.map((field, index) => {
         let value
         if (undefined !== field.calculated) {
           value = typeof field.calculated === 'function' ? field.calculated(data) : field.calculated
@@ -54,10 +56,11 @@ const DescriptionList = ({
         }
 
         return (
-          <div key={field.name} className={classes('border-bottom py-3', {
+          <div key={field.name} className={classes('py-3', variant && `border-${variant} border-opacity-25`, {
+            'border-bottom': bordered && index !== displayedFields.length - 1,
             'd-flex flex-row align-items-start gap-3': inline
           })} role="presentation">
-            <dt className={classes('form-label text-body-secondary', {
+            <dt className={classes(variant && `text-${variant}-emphasis`, {
               'w-25 mb-0': inline
             })}>
               <span className={classes({'placeholder rounded-1': !loaded})} role="presentation">
@@ -68,7 +71,7 @@ const DescriptionList = ({
               </span>
             </dt>
 
-            <dd className={classes('mb-0', {
+            <dd className={classes('mb-0',variant && `text-${variant}-emphasis`,  {
               'w-75': inline,
               'placeholder rounded-1': !loaded
             })}>
@@ -77,7 +80,6 @@ const DescriptionList = ({
                 type={field.type}
                 options={field.options}
                 placeholder={field.placeholder}
-                size={size}
                 value={value}
               >
                 {customInput}
@@ -93,11 +95,13 @@ const DescriptionList = ({
 DescriptionList.propTypes = {
   className: T.string,
   inline: T.bool,
-  size: T.oneOf(['sm']),
+  bordered: T.bool,
+  variant: T.oneOf(['success', 'info', 'warning', 'danger', 'secondary']),
   loaded: T.bool,
   data: T.object,
   fields: T.arrayOf(T.shape({
     order: T.number,
+    type: T.string.isRequired,
     displayed: T.oneOfType([T.bool, T.func]),
     help: T.oneOfType([
       T.string,

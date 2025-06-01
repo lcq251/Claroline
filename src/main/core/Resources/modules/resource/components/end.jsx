@@ -1,20 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 import merge from 'lodash/merge'
 
-import {makeCancelable} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
 import {toKey} from '#/main/app/utils/text'
 import {Toolbar, ActionTypes} from '#/main/app/action'
 import {Alert} from '#/main/app/components/alert'
 import {Html} from '#/main/app/components/html'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
 
-import {constants as evalConstants} from '#/main/evaluation/constants'
-import {actions as evalActions} from '#/main/evaluation/store/actions'
 import {constants} from '#/main/evaluation/resource/constants'
 import {ResourceAttempt as ResourceAttemptTypes} from '#/main/evaluation/resource/prop-types'
 import {EvaluationFeedback} from '#/main/evaluation/components/feedback'
@@ -23,57 +19,8 @@ import {EvaluationDetails} from '#/main/evaluation/components/details'
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 import {PageContent} from '#/main/app/page'
 
-const WorkspaceCertificatesToolbar = (props) => {
-  const dispatch = useDispatch()
-  const [wsEval, setWsEval] = useState(null)
-
-  const userId = props.currentUser.id
-  const workspaceId = props.workspace.id
-
-  useEffect(() => {
-    if (!wsEval) {
-      const evalFetching = makeCancelable(dispatch(evalActions.fetchEvaluation(workspaceId, userId)))
-
-      evalFetching.promise.then(response => setWsEval(response))
-
-      return () => evalFetching.cancel()
-    }
-  }, [workspaceId, userId, wsEval])
-
-  return (
-    <Toolbar
-      className="mb-3"
-      variant="btn"
-      buttonName="w-100"
-      size="lg"
-      actions={[
-        {
-          name: 'download-certificate',
-          type: CALLBACK_BUTTON,
-          label: trans('download_certificate', {}, 'actions'),
-          callback: () => dispatch(evalActions.downloadCertificate(workspaceId, userId)),
-          displayed: [
-            evalConstants.EVALUATION_STATUS_COMPLETED,
-            evalConstants.EVALUATION_STATUS_PASSED
-          ].includes(get(wsEval, 'status', evalConstants.EVALUATION_STATUS_UNKNOWN))
-        }
-      ]}
-    />
-  )
-}
-
-WorkspaceCertificatesToolbar.propTypes = {
-  workspace: T.shape({
-    id: T.string.isRequired
-  }).isRequired,
-  currentUser: T.shape({
-    id: T.string.isRequired
-  }).isRequired
-}
-
 const ResourceEnd = (props) => {
   const resourceNode = useSelector(resourceSelectors.resourceNode)
-  const workspace = useSelector(resourceSelectors.workspace)
 
   return (
     <ResourcePage>
@@ -135,13 +82,6 @@ const ResourceEnd = (props) => {
                 />
               }
 
-              {get(props, 'display.certificates') && workspace && get(props.attempt, 'user') &&
-                <WorkspaceCertificatesToolbar
-                  workspace={props.workspace}
-                  currentUser={get(props.attempt, 'user')}
-                />
-              }
-
               {props.children}
             </div>
           </div>
@@ -162,8 +102,7 @@ ResourceEnd.propTypes = {
     scoreMax: T.number,
     successScore: T.number,
     feedback: T.bool,
-    toolbar: T.bool,
-    certificates: T.bool
+    toolbar: T.bool
   }),
   statusTexts: T.object,
   /**

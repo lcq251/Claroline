@@ -23,25 +23,27 @@ const EditorActions = ({
     <EditorPage
       title={trans('advanced_actions', {}, 'actions')}
     >
-      {displayedActions.map(action =>
-        <ActionCard
-          {...action}
-          key={action.title}
-          className="mb-2"
-        />
-      )}
+      <div className="d-flex flex-column gap-2" role="presentation">
+        {displayedActions.map(action =>
+          <ActionCard
+            {...action}
+            key={action.title}
+          />
+        )}
+      </div>
 
       {!isEmpty(displayedActions) && !isEmpty(dangerousActions) &&
-        <hr className="mt-3 mb-4" aria-hidden={true} />
+        <hr className="m-0" aria-hidden={true} />
       }
 
-      {dangerousActions.map((action) =>
-        <ActionCard
-          {...action}
-          key={action.title}
-          className="mb-2"
-        />
-      )}
+      <div className="d-flex flex-column gap-2" role="presentation">
+        {dangerousActions.map((action) =>
+          <ActionCard
+            {...action}
+            key={action.title}
+          />
+        )}
+      </div>
     </EditorPage>
   )
 }

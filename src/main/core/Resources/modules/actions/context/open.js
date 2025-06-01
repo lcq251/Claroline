@@ -10,7 +10,7 @@ import {declareAction} from '#/main/app/action'
 export default declareAction((contexts) => ({
   name: 'open',
   type: LINK_BUTTON,
-  icon: 'fa fa-fw fa-arrow-circle-right',
+  icon: 'fa fa-fw fa-arrow-up-right-from-square',
   label: trans('open', {}, 'actions'),
   target: route(contexts[0].type, contexts[0].slug),
   scope: ['object'],

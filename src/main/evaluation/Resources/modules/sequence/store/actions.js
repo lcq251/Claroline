@@ -23,6 +23,6 @@ actions.updateProgression = (stepId) => (dispatch) => dispatch({
     request: {
       method: 'PUT'
     },
-    success: (response) => dispatch(actions.updateUserEvaluation(response.userEvaluation, response.progression))
+    success: (response) => dispatch(actions.updateUserEvaluation(response.evaluation, response.progression))
   }
 })

@@ -88,7 +88,7 @@ class SubjectComponent extends Component {
               }, {
                 name: 'open',
                 type: CALLBACK_BUTTON,
-                icon: 'fa fa-fw fa-circle-check',
+                icon: 'fa fa-fw fa-arrow-up-right-from-square',
                 label: trans('open_subject', {}, 'forum'),
                 displayed: (get(this.props.subject, 'meta.closed', false)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
                 callback: () => this.props.unCloseSubject(this.props.subject),

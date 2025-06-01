@@ -11,22 +11,20 @@
 
 namespace Claroline\EvaluationBundle\Repository\UserEvaluation;
 
-use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
-use Claroline\EvaluationBundle\Library\EvaluationStatus;
+use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Doctrine\ORM\EntityRepository;
 
 class SequenceEvaluationRepository extends EntityRepository
 {
-    public function findInProgress(Sequence $sequence): array
+    public function findByWorkspaceAndUser(Workspace $workspace, User $user): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.status IN (:status)')
-            ->andWhere('e.sequence = :sequence')
-            ->setParameter('status', [
-                EvaluationStatus::NOT_ATTEMPTED,
-                EvaluationStatus::INCOMPLETE,
-            ])
-            ->setParameter('sequence', $sequence)
+            ->leftJoin('e.sequence', 's')
+            ->where('s.workspace = :workspace')
+            ->andWhere('e.user = :user')
+            ->setParameter('workspace', $workspace)
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }

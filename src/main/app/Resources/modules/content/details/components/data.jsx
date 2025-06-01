@@ -28,6 +28,7 @@ const DetailsData = props => {
         >
           <DescriptionList
             className="mb-0"
+            inline={true}
             fields={primarySection.fields}
             more={primarySection.more}
             data={props.data}
@@ -49,6 +50,7 @@ const DetailsData = props => {
         >
           <DescriptionList
             className="mb-0"
+            inline={true}
             fields={section.fields}
             more={section.more}
             data={props.data}

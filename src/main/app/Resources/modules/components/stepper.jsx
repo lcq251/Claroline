@@ -10,7 +10,7 @@ const Stepper = ({
 }) =>
   <div className={classes('d-flex gap-1 ', `flex-${orientation}`, className)} role="presentation">
     {(new Array(total)).fill(1).map((v, i) =>
-      <div className={classes('bg-primary p-1 rounded-3 opacity-25', {
+      <div key={i} className={classes('bg-primary p-1 rounded-3 opacity-25', {
         'opacity-75': i === current,
         'opacity-25': i !== current,
         'px-2': i === current && 'row' === orientation,
