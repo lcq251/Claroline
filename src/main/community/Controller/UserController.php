@@ -142,10 +142,10 @@ class UserController extends AbstractCrudController
     #[Route(path: '/password/reset', name: 'password_reset', methods: ['PUT'])]
     public function resetPasswordAction(Request $request): JsonResponse
     {
-        /** @var User[] $users */
-        $users = $this->decodeIdsString($request, User::class);
-
         $this->om->startFlushSuite();
+
+        $userIds = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $userIds]);
 
         $processed = [];
         foreach ($users as $user) {

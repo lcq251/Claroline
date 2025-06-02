@@ -59,18 +59,25 @@ class GroupController extends AbstractCrudController
     #[Route(path: '/password/reset', name: 'password_reset', methods: ['PUT'])]
     public function resetPasswordAction(Request $request): JsonResponse
     {
-        /** @var Group[] $groups */
-        $groups = $this->decodeIdsString($request, Group::class);
+        $groupIds = $this->decodeRequest($request);
+        $groups = $this->om->getRepository(Group::class)->findBy(['uuid' => $groupIds]);
 
         $this->om->startFlushSuite();
         $i = 0;
+        $processed = [];
         foreach ($groups as $group) {
             $users = $this->om->getRepository(User::class)->findByGroup($group);
             foreach ($users as $user) {
+                if (in_array($user->getId(), $processed)) {
+                    continue;
+                }
+
                 if ($this->authorization->isGranted('ADMINISTRATE', $user)) {
                     $this->mailManager->sendInitPassword($user);
                     ++$i;
                 }
+
+                $processed[] = $user->getId();
 
                 if (0 === $i % 200) {
                     $this->om->forceFlush();

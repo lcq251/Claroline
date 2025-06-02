@@ -1,5 +1,4 @@
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {declareAction} from '#/main/app/action'
@@ -25,9 +24,10 @@ export default declareAction((users) => {
     },
     request: {
       type: 'send',
-      url: url(['apiv2_user_password_reset'], {ids: processable.map(user => user.id)}),
+      url: ['apiv2_user_password_reset'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(user => user.id))
       }
     },
     scope: ['object', 'collection'],

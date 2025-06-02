@@ -1,6 +1,5 @@
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl'
-import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {declareAction} from '#/main/app/action'
 
@@ -25,9 +24,10 @@ export default declareAction((groups) => {
     },
     request: {
       type: 'send',
-      url: url(['apiv2_group_password_reset'], {ids: processable.map(group => group.id)}),
+      url: ['apiv2_group_password_reset'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(group => group.id))
       }
     },
     scope: ['object', 'collection'],
