@@ -35,6 +35,7 @@ class UserSubscriber implements EventSubscriberInterface
             $preferences = $this->om->getRepository(UserPreferences::class)->findOneBy(['user' => $user]);
             if (empty($preferences)) {
                 $preferences = new UserPreferences();
+                $preferences->setUser($user);
             }
 
             $this->serializer->deserialize($data['preferences']['theme'], $preferences);
