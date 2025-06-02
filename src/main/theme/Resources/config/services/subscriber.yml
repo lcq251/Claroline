@@ -12,3 +12,8 @@ services:
     Claroline\ThemeBundle\Subscriber\Crud\ThemeSubscriber:
         arguments:
             - '@Claroline\CoreBundle\Manager\FileManager'
+
+    Claroline\ThemeBundle\Subscriber\Crud\UserSubscriber:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'

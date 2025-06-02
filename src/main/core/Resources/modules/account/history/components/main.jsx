@@ -39,7 +39,7 @@ const AccountHistory = () => {
         },
       ]}
     >
-      <hr className="mb-5 mt-4" aria-hidden="true" />
+      <hr className="m-0" aria-hidden="true" />
 
       {me &&
         <ContextHistory size="sm" delete={true} />

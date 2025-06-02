@@ -1,7 +1,7 @@
 {
   "themes": "Thèmes",
   "theme": "Thème",
-  "icons": "Icones",
+  "icons": "Icônes",
   "colors": "Couleurs",
   "color_charts": "Palettes de couleurs",
   "edit_color_chart": "Modifier la palette de couleurs",
@@ -10,11 +10,11 @@
   "footer_show_locale": "Afficher la langue",
   "footer_show_help": "Afficher l'aide",
   "footer_show_terms_of_service": "Afficher les conditions d'utilisation",
-  "new_icon_set": "Nouveau jeu d'icones",
+  "new_icon_set": "Nouveau jeu d'icônes",
   "add_color": "Ajouter une couleur",
   "new_color_chart": "Nouvelle palette de couleurs",
   "color_chart_delete_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer cette palette de couleurs ?",
-  "icon_set_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce jeu d'icones ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% jeux d'icones ?",
+  "icon_set_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce jeu d'icônes ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% jeux d'icônes ?",
 
   "theme_mode": "Mode",
   "theme_mode_auto": "Système",
@@ -27,8 +27,11 @@
   "font_size_md": "Moyen",
   "font_size_lg": "Large",
 
-  "font_weight": "Epaisseur des textes",
+  "font_weight": "Épaisseur des textes",
   "font_weight_light": "Fin",
   "font_weight_normal": "Normal",
-  "font_weight_medium": "Epais"
+  "font_weight_medium": "Épais",
+
+  "striped": "Activer l'alternance des couleurs dans les listes/tableaux",
+  "striped_help": "Une ligne sur deux possède une couleur différente pour améliorer le suivi visuel des lignes."
 }

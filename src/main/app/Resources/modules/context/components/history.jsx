@@ -6,23 +6,11 @@ import isEmpty from 'lodash/isEmpty'
 import {trans} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LinkButton} from '#/main/app/buttons'
 
-import {getRecent, removeRecent, parseRecent, hasRecent, emptyRecent} from '#/main/app/history'
+import {getRecent, parseRecent, hasRecent, emptyRecent} from '#/main/app/history'
 import {Button} from '#/main/app/action'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {getPlainText} from '#/main/app/data/types/html/utils'
 import {EmptyState} from '#/main/app/components/empty-state'
-
-const test = () => ({
-  name: 'delete',
-  type: CALLBACK_BUTTON,
-  icon: 'fa fa-fw fa-times',
-  label: trans('delete', {}, 'actions'),
-  displayed: props.delete,
-  callback: () => {
-    const newRecent = removeRecent(result.id)
-    setHistory(parseRecent(newRecent))
-  }
-})
 
 const ContextHistory = (props) => {
   let recent = getRecent()
@@ -43,7 +31,7 @@ const ContextHistory = (props) => {
       {props.delete && hasRecent() &&
         <Button
           type={CALLBACK_BUTTON}
-          className="mb-3 me-auto btn btn-primary"
+          className="me-auto btn btn-primary"
           label={trans('empty_history', {}, 'actions')}
           callback={() => {
             emptyRecent()

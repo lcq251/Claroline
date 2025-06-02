@@ -11,6 +11,7 @@ services:
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Manager\PlatformManager'
             - '@Claroline\CoreBundle\API\Serializer\Platform\ClientSerializer'
+            - '@Claroline\AppBundle\Manager\UserPreferencesManager'
 
     Claroline\AppBundle\Manager\SecurityManager:
         arguments:
@@ -31,3 +32,7 @@ services:
             - '@twig'
             - '@Claroline\AppBundle\Manager\File\TempFileManager'
             - '@Claroline\AppBundle\Manager\PlatformManager'
+
+    Claroline\AppBundle\Manager\UserPreferencesManager:
+        arguments:
+            - '@event_dispatcher'

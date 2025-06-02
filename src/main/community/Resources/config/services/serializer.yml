@@ -35,6 +35,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
             - '@Claroline\CoreBundle\Manager\FacetManager'
+            - '@Claroline\AppBundle\Manager\UserPreferencesManager'
 
     Claroline\CommunityBundle\Serializer\UserProfileSerializer:
         tags: [ claroline.serializer ]

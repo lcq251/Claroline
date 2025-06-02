@@ -1,10 +1,8 @@
-import {selectors as formSelectors} from '#/main/app/content/form'
 import {createSelector} from 'reselect'
+import {selectors as formSelectors} from '#/main/app/content/form'
 
 const STORE_NAME = 'userEditor'
 const FORM_NAME = STORE_NAME+'.form'
-
-const store = (state) => state[STORE_NAME]
 
 const user = (state) => formSelectors.data(formSelectors.form(state, FORM_NAME))
 

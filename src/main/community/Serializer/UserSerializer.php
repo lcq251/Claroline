@@ -4,6 +4,7 @@ namespace Claroline\CommunityBundle\Serializer;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
+use Claroline\AppBundle\Manager\UserPreferencesManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Entity\UserProfile;
 use Claroline\CommunityBundle\Repository\UserProfileRepository;
@@ -29,7 +30,8 @@ class UserSerializer
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly PlatformConfigurationHandler $config,
-        private readonly FacetManager $facetManager
+        private readonly FacetManager $facetManager,
+        private readonly UserPreferencesManager $userPreferencesManager,
     ) {
         $this->userProfileRepo = $om->getRepository(UserProfile::class);
     }
@@ -126,6 +128,9 @@ class UserSerializer
         if (!in_array(SerializerInterface::SERIALIZE_TRANSFER, $options)) {
             $serializedUser['status'] = $user->getStatus();
             $serializedUser['permissions'] = $this->serializePermissions($user);
+
+            // this should be moved outside the serializer
+            $serializedUser['preferences'] = $this->userPreferencesManager->getPreferences($user);
         }
 
         if (0 !== $user->getProfileValues()->count()) {

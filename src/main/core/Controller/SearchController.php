@@ -22,9 +22,9 @@ class SearchController
 
     /**
      * Search elements in the platform.
-     * It searches in :
-     *   - Workspace : name, code.
-     *   - Resource : name.
+     * It searches in:
+     *   - Workspace: name, code.
+     *   - Resource: name.
      *   - User : username, firstName, lastName, email.
      */
     #[Route(path: '/{search}', name: 'claro_search', methods: ['GET'])]

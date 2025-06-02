@@ -25,7 +25,7 @@ registry.add('ClarolineCoreBundle', {
    * Provides pages for the user editor.
    */
   account: {
-    'favourites': () => { return import(/* webpackChunkName: "core-account-favourites" */ '#/main/core/account/favourites')},
+    // 'favourites': () => { return import(/* webpackChunkName: "core-account-favourites" */ '#/main/core/account/favourites')},
     'history': () => { return import(/* webpackChunkName: "core-account-history" */ '#/main/core/account/history')}
   },
 

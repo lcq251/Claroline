@@ -16,7 +16,8 @@ class ClientManager
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PlatformManager $platformManager,
-        private readonly ClientSerializer $clientSerializer
+        private readonly ClientSerializer $clientSerializer,
+        private readonly UserPreferencesManager $userPreferencesManager,
     ) {
     }
 
@@ -30,10 +31,7 @@ class ClientManager
      */
     public function getUserPreferences(?User $user = null): array
     {
-        $event = new UserPreferencesEvent($user);
-        $this->eventDispatcher->dispatch($event, ClientEvents::USER_PREFERENCES);
-
-        return $event->getPreferences();
+        return $this->userPreferencesManager->getPreferences($user);
     }
 
     public function getParameters(): array
