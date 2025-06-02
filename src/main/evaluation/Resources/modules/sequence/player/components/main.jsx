@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useHistory} from 'react-router-dom'
 import get from 'lodash/get'
@@ -22,13 +22,11 @@ const SequencePlayer = props => {
   const history = useHistory()
   const basePath = route(props.sequence, null, props.path)
 
-  const [seen, setSeen] = useState([])
-  const updateProgression = useCallback((stepId, force = false) => {
-    if ((force || !seen.includes(stepId)) && props.currentUser) {
-      setSeen([].concat(seen, [stepId]))
+  const updateProgression = useCallback((stepId) => {
+    if (props.currentUser) {
       props.updateProgression(stepId)
     }
-  }, [basePath, seen.join('-')])
+  }, [basePath, get(props.currentUser, 'id')])
 
   return (
     <SequencePage>

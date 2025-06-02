@@ -88,5 +88,6 @@
   "certified": "Formation certifiée",
   "certified_help": "L'utilisateur obtient un certificate lorsqu'il termine/réussit cette évaluation.",
   "attempt": "Tentative n°%number%",
-  "attempts": "Tentatives"
+  "attempts": "Tentatives",
+  "no_activity": "aucune activité"
 }

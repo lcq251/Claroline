@@ -8,8 +8,8 @@ import omit from 'lodash/omit'
 
 import {url} from '#/main/app/api'
 import {trans, displayDuration} from '#/main/app/intl'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Toolbar, ActionTypes, PromisedActionTypes} from '#/main/app/action'
+import {CALLBACK_BUTTON, LinkButton} from '#/main/app/buttons'
+import {Toolbar, ActionTypes, PromisedActionTypes, pickActionSet, constants as actionConst} from '#/main/app/action'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 import {Nav} from '#/main/app/components/nav'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
@@ -18,6 +18,21 @@ import {constants} from '#/main/evaluation/constants'
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
 import {UserEvaluation as UserEvaluationTypes} from '#/main/evaluation/prop-types'
 import {DescriptionList} from '#/main/app/data/components/description-list'
+import {UserAvatar} from '#/main/app/user/components/avatar'
+
+const UserProgressionInfo = ({user, title}) =>
+  <div className={classes('d-flex flex-row gap-3')} role="presentation">
+    <UserAvatar
+      user={user}
+      size="sm"
+    />
+    <div className="d-flex flex-column" role="presentation">
+      <LinkButton className="fw-normal text-reset fs-5" target="#">{get(user, 'name') || trans('unknown')}</LinkButton>
+      <span className="text-body-tertiary fs-sm">
+        {title}
+      </span>
+    </div>
+  </div>
 
 const UserProgressionModal = props => {
   const [section, changeSection] = useState('overview')
@@ -30,12 +45,13 @@ const UserProgressionModal = props => {
     return () => {
       props.resetUserProgression()
     }
-  }, [url(props.url)])
+  }, [url(props.url), props.evaluation.id])
 
   return (
     <ModalEmpty
-      {...omit(props, 'evaluation', 'actions', 'additional', 'fetchUserProgression', 'resetUserProgression')}
+      {...omit(props, 'evaluation', 'actions', 'additional', 'fetchUserProgression', 'resetUserProgression', 'title', 'loaded')}
       size="xl"
+      onExiting={props.resetUserProgression}
     >
       <div className="d-flex flex-row" role="presentation">
         <div
@@ -66,7 +82,7 @@ const UserProgressionModal = props => {
               className="mx-auto"
               buttonName={classes('btn btn-text-body text-reset', `focus-ring-${constants.EVALUATION_STATUS_COLOR[get(props.evaluation, 'status')]}`)}
               tooltip="bottom"
-              actions={props.actions}
+              actions={pickActionSet(actionConst.ACTION_SET_DETAILS, props.actions)}
             />
           }
 
@@ -101,11 +117,11 @@ const UserProgressionModal = props => {
             data={props.evaluation}
             variant={constants.EVALUATION_STATUS_COLOR[get(props.evaluation, 'status')]}
             fields={[
-              {
+              /*{
                 name: 'user',
                 type: 'user',
                 label: trans('user')
-              }, {
+              }, */{
                 name: 'lastActivityAt',
                 type: 'date',
                 label: trans('last_activity_at'),
@@ -130,7 +146,17 @@ const UserProgressionModal = props => {
 
         <div className="flex-fill d-flex flex-column" role="presentation">
           <div className="modal-header">
+            <UserProgressionInfo
+              user={props.evaluation.user}
+              title={props.title}
+            />
+
+            <CloseButton onClick={props.fadeModal} aria-label={trans('close', {}, 'actions')} />
+          </div>
+
+          <div className="modal-body d-flex flex-column pt-0">
             <Nav
+              className="mb-4"
               orientation="horizontal"
               variant="underline"
               items={[
@@ -145,22 +171,20 @@ const UserProgressionModal = props => {
                   type: CALLBACK_BUTTON,
                   label: trans('statistics'),
                   active: 'stats' === section,
+                  displayed: false,
                   callback: () => changeSection('stats')
                 }, {
                   name: 'activity',
                   type: CALLBACK_BUTTON,
                   label: trans('activity'),
                   active: 'activity' === section,
+                  displayed: false,
                   callback: () => changeSection('activity')
                 }
               ]}
             />
 
-            <CloseButton onClick={props.fadeModal} aria-label={trans('close', {}, 'actions')} />
-          </div>
-
-          <div className="modal-body d-flex flex-column pt-0">
-            {props.children}
+            {props.loaded && props.children}
           </div>
         </div>
       </div>
@@ -184,6 +208,7 @@ UserProgressionModal.propTypes = {
       PromisedActionTypes.propTypes
     )
   ]),
+  loaded: T.bool,
   additional: T.arrayOf(T.shape({
     icon: T.string.isRequired,
     label: T.string.isRequired,

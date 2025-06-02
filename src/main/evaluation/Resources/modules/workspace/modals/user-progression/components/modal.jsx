@@ -6,10 +6,8 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
-import {displayDate, trans} from '#/main/app/intl'
-import {precision} from '#/main/app/intl/number'
+import {trans} from '#/main/app/intl'
 import {EmptyState} from '#/main/app/components/empty-state'
-import {Badge} from '#/main/app/components/badge'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {UserProgressionModal as BaseProgressionModal} from '#/main/evaluation/modals/user-progression/containers/modal'
 
@@ -18,59 +16,9 @@ import {getEvaluationActions} from '#/main/evaluation/workspace/utils'
 import {WorkspaceEvaluation} from '#/main/evaluation/workspace/prop-types'
 import {SequenceEvaluation} from '#/main/evaluation/sequence/prop-types'
 import {selectors} from '#/main/evaluation/modals/user-progression/store'
-import {EvaluationScore} from '#/main/evaluation/components/score'
-import {EvaluationStatus} from '#/main/evaluation/components/status'
-import {constants} from '#/main/evaluation/constants'
-
-const UserProgressionSequence = ({evaluation}) => {
-  return (
-    <>
-      <div role="presentation">
-        <b>{get(evaluation, 'sequence.name')}</b>
-        <div className={classes('d-flex gap-2 text-body-secondary fs-sm mt-2')} role="presentation">
-          <div role="presentation">
-            <span className="fa fa-clock me-2" aria-hidden={true} />
-            280min
-          </div>
-          <span aria-hidden={true}>-</span>
-
-          <div role="presentation">
-            <span className="fa fa-calendar me-2" aria-hidden={true} />
-            {displayDate(get(evaluation, 'lastActivityAt'), true, true)}
-          </div>
-        </div>
-      </div>
-
-      <div className="ms-auto d-flex flex-column text-end" style={{minWidth: '8rem'}}>
-        <span className="fs-sm text-body-tertiary  d-block mb-1">Score</span>
-        <EvaluationScore
-          className="ms-auto"
-          condensed={false}
-          size="lg"
-          score={get(evaluation, 'displayScore.current')}
-          scoreMax={get(evaluation, 'displayScore.total')}
-        />
-      </div>
-
-      <div className=" d-flex flex-column" style={{minWidth: '8rem'}}>
-        <span className="fs-sm text-body-tertiary  d-block mb-1">Statut</span>
-
-        {constants.EVALUATION_STATUS_INCOMPLETE === evaluation.status ?
-          <Badge className="fs-base me-auto" variant="info" subtle={true}>
-            {precision(evaluation.progression || 0, 1)}%
-          </Badge> :
-          <EvaluationStatus className="fs-base me-auto" status={evaluation.status} subtle={true} />
-        }
-      </div>
-
-      <span className="fa fa-fw fa-chevron-right text-body-tertiary align-self-center" aria-hidden={true} />
-    </>
-  )
-}
-
-UserProgressionSequence.propTypes = {
-  evaluation: T.shape(SequenceEvaluation.propTypes).isRequired
-}
+import {EvaluationListItem} from '#/main/evaluation/components/list-item'
+import {MODAL_USER_PROGRESSION} from '#/main/evaluation/sequence/modals/user-progression'
+import {MODAL_BUTTON} from '#/main/app/buttons'
 
 const UserProgressionModal = props => {
   const currentUser = useSelector(securitySelectors.currentUser)
@@ -80,6 +28,7 @@ const UserProgressionModal = props => {
     <BaseProgressionModal
       {...omit(props)}
       evaluation={props.evaluation}
+      title={get(props.evaluation, 'workspace.name')}
       url={['apiv2_workspace_evaluation_get', {workspace: get(props.evaluation, 'workspace.id'), user: get(props.evaluation, 'user.id')}]}
       actions={getEvaluationActions([props.evaluation], {}, route(props.evaluation), currentUser)}
     >
@@ -89,13 +38,24 @@ const UserProgressionModal = props => {
         />
       }
 
-      <ul className="list-unstyled mb-0">
-        {progression.map((sequenceEvaluation, index) =>
-          <li key={sequenceEvaluation.id} className={classes('py-3 d-flex flex-row gap-4', 0 !== index && 'border-top')}>
-            <UserProgressionSequence evaluation={sequenceEvaluation} />
-          </li>
-        )}
-      </ul>
+      {!isEmpty(progression) &&
+        <ul className="list-unstyled mb-0">
+          {progression.map((sequenceEvaluation, index) =>
+            <li key={sequenceEvaluation.id} className={classes(0 !== index && 'border-top')}>
+              <EvaluationListItem
+                title={get(sequenceEvaluation, 'sequence.name')}
+                evaluation={sequenceEvaluation}
+                primaryAction={{
+                  type: MODAL_BUTTON,
+                  modal: [MODAL_USER_PROGRESSION, {
+                    evaluation: sequenceEvaluation
+                  }]
+                }}
+              />
+            </li>
+          )}
+        </ul>
+      }
     </BaseProgressionModal>
   )
 }

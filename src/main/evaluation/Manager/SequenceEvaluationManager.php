@@ -7,6 +7,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\EvaluationBundle\Entity\Sequence\Requirement;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
 use Claroline\EvaluationBundle\Entity\Sequence\Step;
@@ -134,12 +135,19 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 }
 
                 if ($stepEvaluation) {
-                    $result[$stepProgression->getStep()->getUuid()] = $this->serializer->serialize($stepEvaluation, $options);
+                    $result[$stepProgression->getStep()->getUuid()] = array_merge([
+                        'step' => [
+                            'id' => $stepProgression->getStep()->getUuid(),
+                            'name' => $stepProgression->getStep()->getTitle(),
+                        ],
+                    ], $this->serializer->serialize($stepEvaluation, $options));
                 }
             } else {
                 $result[$stepProgression->getStep()->getUuid()] = [
                     'status' => $stepProgression->getStatus(),
+                    'lastActivityAt' => DateNormalizer::normalize($stepProgression->getLastActivityAt()),
                     'step' => [
+                        'id' => $stepProgression->getStep()->getUuid(),
                         'name' => $stepProgression->getStep()->getTitle(),
                     ],
                 ];
@@ -152,13 +160,25 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 $result[$step->getUuid()] = [
                     'status' => EvaluationStatus::NOT_ATTEMPTED,
                     'step' => [
+                        'id' => $stepProgression->getStep()->getUuid(),
                         'name' => $step->getTitle(),
                     ],
                 ];
             }
         }
 
-        return $result;
+        return array_values($result);
+    }
+
+    private function getStepProgression(Step $step, User $user): ?SequenceEvaluation
+    {
+        if ($step->getChildren()->count() > 0) {
+            $childrenProgression = array_map(function (Step $child) use ($user) {
+                return $this->getStepProgression($child, $user);
+            }, $step->getChildren()->toArray());
+
+            return $childrenProgression;
+        }
     }
 
     /**
@@ -184,19 +204,24 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
             'user' => $user,
         ]);
 
-        if (empty($progression) || EvaluationStatus::COMPLETED !== $progression->getStatus()) {
-            if (empty($progression)) {
-                // No progression for User => initialize a new one
-                $progression = new SequenceProgression();
-                $progression->setStep($step);
-                $progression->setUser($user);
-            }
+        if (empty($progression)) {
+            $progression = new SequenceProgression();
+            $progression->setStep($step);
+            $progression->setUser($user);
+        }
 
+        $progression->setLastActivityAt(new \DateTime());
+
+        $recompute = false;
+        if (EvaluationStatus::COMPLETED !== $progression->getStatus()) {
+            $recompute = true;
             $progression->setStatus(EvaluationStatus::COMPLETED);
+        }
 
-            $this->om->persist($progression);
-            $this->om->flush();
+        $this->om->persist($progression);
+        $this->om->flush();
 
+        if ($recompute) {
             // recompute sequence progression for user
             $this->computeEvaluation($step->getSequence(), $user);
         }

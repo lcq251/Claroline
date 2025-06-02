@@ -8,8 +8,8 @@ import {actions, reducer, selectors} from '#/main/evaluation/modals/user-progres
 const UserProgressionModal = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     (state) => ({
-      // evaluation: selectors.evaluation(state),
-      progression: selectors.progression(state)
+      loaded: selectors.loaded(state),
+      // progression: selectors.progression(state)
     }),
     (dispatch) => ({
       fetchUserProgression(url) {

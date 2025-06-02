@@ -12,6 +12,7 @@ actions.resetUserProgression = makeActionCreator(USER_PROGRESSION_RESET)
 actions.fetchUserProgression = (url) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: url,
+    before: () => dispatch(actions.resetUserProgression()),
     success: (data) => dispatch(actions.loadUserProgression(data.evaluation, data.progression))
   }
 })

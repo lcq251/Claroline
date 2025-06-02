@@ -34,6 +34,9 @@ class SequenceProgression
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?User $user = null;
 
+    #[ORM\Column(name: 'last_activity_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastActivityAt = null;
+
     /**
      * Current state of the Step.
      */
@@ -68,5 +71,15 @@ class SequenceProgression
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getLastActivityAt(): ?\DateTimeInterface
+    {
+        return $this->lastActivityAt;
+    }
+
+    public function setLastActivityAt(?\DateTimeInterface $lastActivityAt = null): void
+    {
+        $this->lastActivityAt = $lastActivityAt;
     }
 }

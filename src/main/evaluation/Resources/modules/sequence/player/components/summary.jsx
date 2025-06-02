@@ -43,7 +43,7 @@ const PlayerSummary = (props) => {
       <ul className="list-unstyled mb-0 mx-n3 mt-4">
         {steps.map((step) => {
           const numbering = getNumbering(props.sequence.display.numbering, props.sequence.steps, step)
-          const stepProgression = props.progression[step.id] || {}
+          const stepProgression = props.progression.find(e => get(e, 'step.id') === step.id) || {}
 
           return (
             <li key={step.id}>
@@ -84,7 +84,7 @@ PlayerSummary.propTypes = {
   userEvaluation: T.shape(
     SequenceEvaluationTypes.propTypes
   ),
-  progression: T.object,
+  progression: T.array,
   // from aside
   autoClose: T.func
 }

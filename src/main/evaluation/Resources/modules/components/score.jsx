@@ -13,30 +13,40 @@ const EvaluationScore = ({
   condensed = true
 }) => {
   let userScore = score
+  let totalScore = display || scoreMax
   if (null !== userScore && display) {
     userScore = (userScore / scoreMax) * display
   }
 
-  /*if (condensed) {
+  if (condensed) {
     return (
-      <div className={classes('score-box', className, size ? 'score-box-'+size : null)}>
-        <span className="user-score" role="presentation">{userScore || 0 === userScore ? number(userScore) : '-'}</span>
-        <span className="visually-hidden" role="presentation">/</span>
-
-        {display ?
-          <span className="max-score" role="presentation">{number(display)}</span>
-          :
-          <span className="max-score" role="presentation">{scoreMax || 0 === scoreMax ? number(scoreMax) : '-'}</span>
-        }
+      <div
+        className={classes('d-inline-flex flex-row text-center py-1', className, size && `fs-${size}`)}
+        style={{lineHeight: 1}}
+      >
+        <span className="user-score fw-bold" role="presentation">
+          {userScore || 0 === userScore ? number(userScore) : '-'}
+        </span>
+        <span aria-hidden={true} className="mx-2 vr" />
+        <span className="max-score fw-normal" role="presentation">
+          {totalScore || 0 === totalScore ? number(totalScore) : '-'}
+        </span>
       </div>
     )
-  }*/
+  }
 
   return (
-    <div className={classes('d-inline-flex flex-row text-center py-1', className, size && `fs-${size}`)} style={{lineHeight: 1}}>
-      <span className="user-score fw-bold" role="presentation">{userScore || 0 === userScore ? number(userScore) : '-'}</span>
-      <span aria-hidden={true} className="mx-2 vr" />
-      <span className="max-score fw-normal" role="presentation">{scoreMax || 0 === scoreMax ? number(scoreMax) : '-'}</span>
+    <div
+      className={classes('d-inline-flex flex-column text-center justify-content-center', className, size && `fs-${size}`)}
+      style={{lineHeight: 1}}
+    >
+      <span className="user-score fw-bold" role="presentation">
+        {userScore || 0 === userScore ? number(userScore) : '-'}
+      </span>
+      <hr aria-hidden={true} className="my-2" />
+      <span className="max-score fw-normal" role="presentation">
+        {totalScore || 0 === totalScore ? number(totalScore) : '-'}
+      </span>
     </div>
   )
 }

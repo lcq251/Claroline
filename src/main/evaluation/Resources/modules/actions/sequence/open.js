@@ -2,7 +2,7 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/evaluation/sequence/routing'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Opens a sequence.
@@ -14,5 +14,6 @@ export default declareAction((sequences, refresher, path) => ({
   label: trans('open', {}, 'actions'),
   target: route(sequences[0], null, path),
   scope: ['object'],
-  default: true
+  default: true,
+  set: [constants.ACTION_SET_LIST]
 }))

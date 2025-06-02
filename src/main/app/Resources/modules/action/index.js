@@ -10,7 +10,7 @@ import {
   Toolbar as ToolbarTypes
 } from '#/main/app/action/prop-types'
 import {constants} from '#/main/app/action/constants'
-import {pickAction, pickActions} from '#/main/app/action/utils'
+import {pickAction, pickActions, pickActionSet} from '#/main/app/action/utils'
 
 /**
  * Declare a new action to the application.
@@ -33,5 +33,6 @@ export {
   Button,
   Toolbar,
   pickAction,
-  pickActions
+  pickActions,
+  pickActionSet
 }

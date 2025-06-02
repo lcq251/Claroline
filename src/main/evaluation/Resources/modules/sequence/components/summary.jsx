@@ -16,7 +16,7 @@ const SequenceSummary = (props) => {
     <ul className={classes('list-unstyled d-flex flex-column gap-1 mb-0', props.className)}>
       {steps.map((step, index) => {
         const numbering = getNumbering(props.sequence.display.numbering, props.sequence.steps, step)
-        const stepProgression = props.progression[step.id] || {}
+        const stepProgression = props.progression.find(e => get(e, 'step.id') === step.id) || {}
 
         return (
           <li key={step.id}>
@@ -49,7 +49,7 @@ SequenceSummary.propTypes = {
   sequence: T.shape(
     SequenceTypes.propTypes
   ).isRequired,
-  progression: T.object
+  progression: T.array
 }
 
 export {

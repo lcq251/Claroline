@@ -27,30 +27,37 @@ const ExampleProgression = () =>
     <div className="mb-3 d-flex gap-3 align-items-lg-start">
       <EvaluationGauge
         status={constants.EVALUATION_STATUS_NOT_ATTEMPTED}
-        size="xl"
+        size="lg"
       />
 
       <EvaluationGauge
         status={constants.EVALUATION_STATUS_INCOMPLETE}
-        size="xl"
+        size="lg"
         progression={40}
       />
 
       <EvaluationGauge
         status={constants.EVALUATION_STATUS_PENDING}
-        size="xl"
+        size="lg"
         progression={100}
       />
 
       <EvaluationGauge
         status={constants.EVALUATION_STATUS_PASSED}
-        size="xl"
+        size="lg"
         progression={100}
       />
 
       <EvaluationGauge
+        status={constants.EVALUATION_STATUS_PASSED}
+        size="lg"
+        progression={100}
+        displayScore={{current: 80, total: 100}}
+      />
+
+      <EvaluationGauge
         status={constants.EVALUATION_STATUS_FAILED}
-        size="xl"
+        size="lg"
         progression={100}
       />
     </div>

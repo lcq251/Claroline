@@ -91,7 +91,7 @@ class ResourceEvaluationController
         User $user
     ): JsonResponse {
         $resourceEvaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
-            'resource' => $resource,
+            'resourceNode' => $resource,
             'user' => $user,
         ]);
 

@@ -12,6 +12,7 @@
 .evaluation-gauge {
   display: inline-flex;
   flex-direction: column;
+  position: relative;
 
   .bg,
   .meter {
@@ -36,16 +37,29 @@
     @include evaluation-gauge-color-variant($secondary, $secondary-bg-subtle);
   }
 
+  .evaluation-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -.25rem;
+  }
+
   .evaluation-status {
     transform: translateY(-50%);
-    //margin-bottom: 0;
     text-transform: uppercase;
-    //font-weight: 700;
     white-space: normal;
   }
 }
 
 .evaluation-gauge-md {
+  .evaluation-text {
+    @include rfs(map-get($icon-sizes, md), 'height');
+
+    &.fa {
+      font-size: $font-size-lg;
+    }
+  }
+
   .gauge {
     @include rfs(map-get($icon-sizes, md), 'width');
     @include rfs(map-get($icon-sizes, md), 'height');
@@ -53,6 +67,15 @@
 }
 
 .evaluation-gauge-lg {
+  .evaluation-text {
+    @include rfs(map-get($icon-sizes, lg), 'height');
+
+    font-size: $font-size-lg;
+    &.fa {
+      font-size: $h2-font-size;
+    }
+  }
+
   .gauge {
     @include rfs(map-get($icon-sizes, lg), 'width');
     @include rfs(map-get($icon-sizes, lg), 'height');
@@ -64,6 +87,15 @@
 }
 
 .evaluation-gauge-xl {
+  .evaluation-text {
+    @include rfs(map-get($icon-sizes, xl), 'height');
+
+    font-size: $h2-font-size;
+    &.fa {
+      font-size: $h1-font-size;
+    }
+  }
+
   .gauge {
     @include rfs(map-get($icon-sizes, xl), 'width');
     @include rfs(map-get($icon-sizes, xl), 'height');

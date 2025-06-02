@@ -1,4 +1,4 @@
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {MODAL_BUTTON} from '#/main/app/buttons'
@@ -14,5 +14,6 @@ export default declareAction((evaluations) => ({
   scope: ['object'],
   modal: [MODAL_USER_PROGRESSION, {
     evaluation: evaluations[0]
-  }]
+  }],
+  set: [constants.ACTION_SET_LIST]
 }))

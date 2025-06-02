@@ -44,6 +44,15 @@ function pickAction(actionName, actions) {
   return actions.then((loadedActions) => loadedActions.find(action => action.name === actionName))
 }
 
+function pickActionSet(setName, actions) {
+  if (Array.isArray(actions)) {
+    return [].concat(actions)
+      .filter(action => !action.set || action.set.includes(setName))
+  }
+
+  return actions.then((loadedActions) => loadedActions.filter(action => !action.set || action.set.includes(setName)))
+}
+
 function createActionDefinition(action) {
   // compute id based on received config
   let actionDef = {
@@ -228,5 +237,6 @@ export {
   buildToolbar,
   makeAbsolute,
   pickActions,
-  pickAction
+  pickAction,
+  pickActionSet
 }

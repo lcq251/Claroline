@@ -106,7 +106,7 @@ class Sequence implements CrudEntityInterface
 
     /**
      * The conditions to get a success status for the sequence evaluation.
-     * Supported conditions : minimal score, min successful resources, max failed resources.
+     * Supported conditions: minimal score, min successful resources, max failed resources.
      */
     #[ORM\Column(name: 'success_condition', type: Types::JSON, nullable: true)]
     private ?array $successCondition = null;
@@ -119,13 +119,13 @@ class Sequence implements CrudEntityInterface
     private Collection $steps;
 
     /**
-     * Who see the sequence and should do it ?
+     * Who see the sequence and should do it?
      */
     #[ORM\OneToMany(targetEntity: Assignment::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $assignments;
 
     /**
-     * Which sequences must be done before unlocking this one.
+     * Which sequences must be done before unlocking this one?
      */
     #[ORM\OneToMany(targetEntity: Requirement::class, mappedBy: 'sequence', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $requirements;

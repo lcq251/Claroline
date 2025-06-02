@@ -19,7 +19,8 @@ const UserProgressionModal = props => {
     <BaseProgressionModal
       {...omit(props, 'evaluation', 'path', 'stepsProgression', 'fetchUserStepsProgression', 'resetUserStepsProgression')}
       evaluation={props.evaluation}
-      url={['apiv2_resource_evaluation_get', {resource: get(props.evaluation, 'resource.id'), user: get(props.evaluation, 'user.id')}]}
+      title={get(props.evaluation, 'resourceNode.name')}
+      url={['apiv2_resource_evaluation_get', {resource: get(props.evaluation, 'resourceNode.id'), user: get(props.evaluation, 'user.id')}]}
       actions={getActions([props.evaluation], {}, route(get(props.evaluation, 'resourceNode')), currentUser)}
       additional={[
         {
