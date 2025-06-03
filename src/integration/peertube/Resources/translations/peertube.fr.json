@@ -1,11 +1,16 @@
 {
+  "playback_help": "Personnalisez le comportement du lecteur vidéo.",
   "autoplay": "Lecture automatique",
+  "autoplay_help": "Lancer automatiquement la vidéo lorsque l'utilisateur ouvre la ressource.",
   "controls": "Affichage des contrôles",
+  "controls_help": "Afficher les boutons de contrôle de la vidéo tels que Lecture, Pause, Plein écran, etc.",
   "loop": "Lecture en boucle",
-  "peertubeLink": "Affichage du lien Peertube",
-  "playback_param": "Paramètres de lecture",
+  "loop_help": "Relancer automatiquement la vidéo une fois qu'elle est terminée",
   "resume": "Reprise de la lecture",
+  "resume_help": "Reprendre la vidéo là où l'utilisateur l'avait laissé lors de sa dernière consultation.",
   "timecode_help":"Attention : l'utilisation des timecodes peut fausser le calcul de la progression.",
   "timecode_start": "Timecode de début",
-  "timecode_end": "Timecode de fin"
+  "timecode_start_help": "Démarrer la vidéo à la position définie",
+  "timecode_end": "Timecode de fin",
+  "timecode_end_help": "Arrêter la vidéo à la position définie"
 }
