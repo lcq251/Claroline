@@ -70,7 +70,6 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
                 $this->evaluationManager->getResourceUserEvaluation($resource->getResourceNode(), $user),
                 [SerializerInterface::SERIALIZE_MINIMAL]
             ) : null,
-            'url' => $resource->getUrl(),
         ];
     }
 
