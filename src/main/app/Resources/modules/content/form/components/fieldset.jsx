@@ -109,7 +109,7 @@ class FormFieldset extends Component {
       const helps = Array.isArray(this.props.help) ? this.props.help : [this.props.help]
 
       return helps.map(help =>
-        <Alert key={toKey(help)} type="info">
+        <Alert key={toKey(help)} type="info" className="mb-0">
           <Html>{help}</Html>
         </Alert>
       )

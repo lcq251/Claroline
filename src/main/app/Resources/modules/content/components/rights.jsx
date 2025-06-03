@@ -193,7 +193,7 @@ const ContentRights = props => {
 
   return (
     <>
-      <table className="table table-striped table-hover content-rights-advanced mb-3">
+      <table className="table table-striped table-hover content-rights-advanced">
         <thead>
           <tr>
             <th scope="col">{trans('role')}</th>
@@ -261,7 +261,7 @@ const ContentRights = props => {
       </table>
 
       <ModalButton
-        className="btn btn-primary w-100 mb-3"
+        className="btn btn-primary w-100"
         modal={[MODAL_ROLES, {
           url: !isEmpty(props.workspace) ?
             ['apiv2_workspace_list_roles', {id: props.workspace.id}] :

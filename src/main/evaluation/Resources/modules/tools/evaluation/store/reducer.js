@@ -9,30 +9,18 @@ import {makeInstanceAction} from '#/main/app/store/actions'
 const reducer = combineReducers({
   current: combineReducers({
     sequences: makeReducer([], {
-      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.sequences
+      [CONTEXT_OPEN]: () => [],
+      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.sequences || []
     }),
     workspaceEvaluation: makeReducer(null, {
-      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => {
-        return action.toolData.workspaceEvaluation
-      }
-    }),
-    resourceEvaluations: makeReducer([], {
-      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.resourceEvaluations
+      [CONTEXT_OPEN]: () => null,
+      [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.workspaceEvaluation || null
     })
   }),
 
   sequences: makeListReducer(selectors.STORE_NAME+'.sequences', {
     sortBy: {property: 'name', direction: 1}
   }, {
-    loaded: makeReducer(false, {
-      [CONTEXT_OPEN]: () => false
-    }),
-    invalidated: makeReducer(false, {
-      [TOOL_OPEN]: () => true
-    })
-  }),
-
-  requiredResources: makeListReducer(selectors.STORE_NAME+'.requiredResources', {}, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
     }),

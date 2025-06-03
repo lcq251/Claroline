@@ -10,7 +10,6 @@ const ResourceEditorPermissions = withReducer(selectors.STORE_NAME, reducer)(
     (state) => ({
       resourceNode: selectors.resourceNode(state),
       rights: selectors.rights(state)
-      //recursiveEnabled: selectors.recursiveEnabled(state)
     }),
     (dispatch) => ({
       loadRights(resourceNode) {
@@ -21,9 +20,6 @@ const ResourceEditorPermissions = withReducer(selectors.STORE_NAME, reducer)(
       },
       updateRights(perms) {
         dispatch(actions.updateRights(perms))
-      },
-      setRecursiveEnabled(bool) {
-        dispatch(actions.setRecursive(bool))
       }
     })
   )(ResourceEditorPermissionsComponent)

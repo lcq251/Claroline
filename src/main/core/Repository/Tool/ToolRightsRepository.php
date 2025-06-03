@@ -20,7 +20,7 @@ class ToolRightsRepository extends EntityRepository
      */
     public function findMaximumRights(array $roles, OrderedTool $orderedTool): int
     {
-        // add the role anonymous for everyone !
+        // add the role anonymous for everyone!
         if (!in_array('ROLE_ANONYMOUS', $roles)) {
             $roles[] = 'ROLE_ANONYMOUS';
         }

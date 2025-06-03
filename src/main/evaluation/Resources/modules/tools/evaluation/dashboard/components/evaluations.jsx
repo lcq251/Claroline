@@ -48,7 +48,8 @@ const EvaluationDashboardEvaluations = () => {
               label: trans('workspace'),
               displayable: !contextId,
               displayed: !contextId,
-              filterable: false
+              filterable: false,
+              order: 2
             }
           ]}
           card={EvaluationWorkspaceCard}

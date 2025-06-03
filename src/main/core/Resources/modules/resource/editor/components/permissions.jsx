@@ -5,7 +5,6 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {param} from '#/main/app/config'
-import {Checkbox} from '#/main/app/input/components/checkbox'
 import {EditorPage} from '#/main/app/editor'
 import {ContentRights} from '#/main/app/content/components/rights'
 
@@ -46,30 +45,15 @@ const ResourceEditorPermissions = (props) => {
           title: trans('roles'),
           description: trans('Assignez des permissions aux rôles pour personnaliser les droits des utilisateurs possédant ce rôle.'),
           primary: true,
-          render: () => (
-            <>
-              {props.rights &&
-                <ContentRights
-                  workspace={props.resourceNode.workspace}
-                  creatable={param('resources.types').reduce((resourceTypes, current) => Object.assign(resourceTypes, {
-                    [current.name]: trans(current.name, {}, 'resource')
-                  }), {})}
-                  rights={props.rights}
-                  updateRights={props.updateRights}
-                />
-              }
-
-              {'directory' === get(props.resourceNode, 'meta.type') &&
-                <Checkbox
-                  className="form-switch form-check-reverse"
-                  id={'recursive-node-' + props.resourceNode.id}
-                  label={trans('apply_recursively_to_directories', {}, 'platform')}
-                  checked={props.recursiveEnabled}
-                  onChange={value => props.setRecursiveEnabled(value)}
-                  inline={true}
-                />
-              }
-            </>
+          render: () => props.rights && (
+            <ContentRights
+              workspace={props.resourceNode.workspace}
+              creatable={param('resources.types').reduce((resourceTypes, current) => Object.assign(resourceTypes, {
+                [current.name]: trans(current.name, {}, 'resource')
+              }), {})}
+              rights={props.rights}
+              updateRights={props.updateRights}
+            />
           )
         }, {
           name: 'restrictions',
@@ -138,10 +122,7 @@ ResourceEditorPermissions.propTypes = {
   ).isRequired,
   updateResourceNode: T.func.isRequired,
   updateRights: T.func.isRequired,
-  loadRights: T.func.isRequired,
-
-  setRecursiveEnabled: T.func.isRequired,
-  recursiveEnabled: T.bool
+  loadRights: T.func.isRequired
 }
 
 export {

@@ -48,7 +48,9 @@ const ResourceEditorOverview = (props) =>
             help: trans('publish_resource_help', {}, 'resource')
           }
         ]
-      }, {
+      }
+    ].concat(props.definition || [], [
+      {
         title: trans('further_information'),
         description: trans('further_information_help'),
         primary: true,
@@ -83,7 +85,7 @@ const ResourceEditorOverview = (props) =>
           }
         ]
       }
-    ].concat(props.definition || [])}
+    ])}
     locked={props.locked}
   >
     {props.children}

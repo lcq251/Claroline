@@ -31,7 +31,7 @@ class OrderedToolRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findOneByNameAndContext(string $name, string $context, string $contextId = null): ?OrderedTool
+    public function findOneByNameAndContext(string $name, string $context, ?string $contextId = null): ?OrderedTool
     {
         return $this->getEntityManager()
             ->createQuery('

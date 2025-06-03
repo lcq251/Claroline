@@ -12,7 +12,6 @@ import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {EvaluationEditor} from '#/main/evaluation/tools/evaluation/editor/components/main'
 import {EvaluationOverview} from '#/main/evaluation/tools/evaluation/components/overview'
-import {EvaluationActivities} from '#/main/evaluation/tools/evaluation/containers/activities'
 import {EvaluationDashboard} from '#/main/evaluation/tools/evaluation/dashboard/containers/main'
 import {EvaluationSequences} from '#/main/evaluation/tools/evaluation/components/sequences'
 import {SequenceShow} from '#/main/evaluation/sequence/containers/show'
@@ -75,9 +74,6 @@ const EvaluationTool = (props) => {
           path: '/sequences',
           component: EvaluationSequences,
           exact: true
-        }, {
-          path: '/activities',
-          component: EvaluationActivities
         }
       ]}
       editor={EvaluationEditor}

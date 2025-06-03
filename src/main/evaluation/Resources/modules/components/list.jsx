@@ -20,7 +20,8 @@ const EvaluationList = (props) => {
           type: 'user',
           label: trans('user'),
           displayed: true,
-          primary: true
+          primary: true,
+          order: 1
         }, {
           name: 'startedAt',
           label: trans('start_date'),

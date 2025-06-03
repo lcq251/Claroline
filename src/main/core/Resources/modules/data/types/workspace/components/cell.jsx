@@ -9,7 +9,7 @@ import {route} from '#/main/core/workspace/routing'
 const WorkspaceCell = (props) =>
   <EntityCell
     {...props}
-    link={(item) => route(item)}
+    // link={(item) => route(item)}
   />
 
 WorkspaceCell.propTypes = {

@@ -13,15 +13,12 @@ namespace Claroline\EvaluationBundle\Controller\UserEvaluation;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
-use Claroline\AppBundle\API\FinderProvider;
-use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Component\Context\WorkspaceContext;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -53,7 +50,6 @@ class WorkspaceEvaluationController
         AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly Crud $crud,
-        private readonly FinderProvider $finder,
         private readonly SerializerProvider $serializer,
         private readonly WorkspaceEvaluationManager $manager
     ) {
@@ -67,7 +63,7 @@ class WorkspaceEvaluationController
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
         ?Workspace $workspace = null
     ): StreamedJsonResponse {
-        $this->checkToolAccess('OPEN', $workspace);
+        $this->checkToolAccess('EDIT', $workspace);
 
         if ($workspace) {
             $finderQuery->addFilter('workspace', $workspace->getUuid());
@@ -140,22 +136,6 @@ class WorkspaceEvaluationController
         return new JsonResponse(null, 204);
     }
 
-    #[Route(path: '/{workspace}/requirements', name: 'apiv2_workspace_required_resource_list', methods: ['GET'])]
-    public function listRequiredResourcesAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        Request $request
-    ): JsonResponse {
-        $this->checkToolAccess('OPEN', $workspace);
-
-        return new JsonResponse(
-            $this->finder->search(ResourceNode::class, array_merge($request->query->all(), ['hiddenFilters' => [
-                'workspace' => $workspace->getUuid(),
-                'required' => true,
-            ]]), [Options::SERIALIZE_LIST])
-        );
-    }
-
     /**
      * Recalculates (score, status, progression, ...) evaluations for all the users of a workspace.
      */
@@ -207,14 +187,14 @@ class WorkspaceEvaluationController
     /**
      * Checks user rights to access evaluation tool.
      */
-    private function checkToolAccess(string $permission, Workspace $workspace = null, bool $exception = true): bool
+    private function checkToolAccess(string $permission, ?Workspace $workspace = null): bool
     {
         if (!empty($workspace)) {
-            $evaluationTool = $this->om->getRepository(OrderedTool::class)->findOneByNameAndContext('evaluation', WorkspaceContext::getName(), $workspace->getUuid());
+            $evaluationTool = $this->om->getRepository(OrderedTool::class)->findOneByNameAndContext('progression', WorkspaceContext::getName(), $workspace->getUuid());
         } else {
-            $evaluationTool = $this->om->getRepository(OrderedTool::class)->findOneByNameAndContext('evaluation', DesktopContext::getName());
+            $evaluationTool = $this->om->getRepository(OrderedTool::class)->findOneByNameAndContext('progression', DesktopContext::getName());
         }
 
-        return $this->checkPermission($permission, $evaluationTool, [], $exception);
+        return $this->checkPermission($permission, $evaluationTool, [], true);
     }
 }

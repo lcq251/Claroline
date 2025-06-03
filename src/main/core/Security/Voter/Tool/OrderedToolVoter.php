@@ -29,17 +29,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class OrderedToolVoter extends AbstractVoter
 {
-    private ContextProvider $contextProvider;
-    private ToolMaskDecoderManager $maskManager;
     private ToolRightsRepository $rightsRepository;
 
     public function __construct(
         ObjectManager $om,
-        ContextProvider $contextProvider,
-        ToolMaskDecoderManager $maskManager
+        private readonly ContextProvider $contextProvider,
+        private readonly ToolMaskDecoderManager $maskManager
     ) {
-        $this->contextProvider = $contextProvider;
-        $this->maskManager = $maskManager;
         $this->rightsRepository = $om->getRepository(ToolRights::class);
     }
 

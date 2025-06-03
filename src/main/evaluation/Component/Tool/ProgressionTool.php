@@ -3,7 +3,6 @@
 namespace Claroline\EvaluationBundle\Component\Tool;
 
 use Claroline\AppBundle\API\Crud;
-use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
@@ -18,7 +17,6 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\EvaluationBundle\Entity\Sequence\Assignment;
 use Claroline\EvaluationBundle\Entity\Sequence\Sequence;
-use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Library\EvaluationOptions;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,7 +26,6 @@ class ProgressionTool extends ToolComponent
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
-        private readonly FinderProvider $finder,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud
     ) {
@@ -101,9 +98,6 @@ class ProgressionTool extends ToolComponent
                 return $this->serializer->serialize($sequence, [SerializerInterface::SERIALIZE_MINIMAL]);
             }, $sequences),
             'workspaceEvaluation' => $workspaceEvaluation ? $this->serializer->serialize($workspaceEvaluation) : null,
-            'resourceEvaluations' => $this->finder->search(ResourceEvaluation::class, [
-                'filters' => ['workspace' => $contextSubject->getContextIdentifier(), 'user' => $user->getUuid()],
-            ])['data'],
         ];
     }
 

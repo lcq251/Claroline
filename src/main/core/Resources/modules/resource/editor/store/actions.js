@@ -1,11 +1,8 @@
-import {makeActionCreator} from '#/main/app/store/actions'
 import {API_REQUEST} from '#/main/app/api'
 
 import {actions as resourceActions} from '#/main/core/resource/store/actions'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 import {selectors} from '#/main/core/resource/editor/store/selectors'
-
-export const SET_RIGHTS_RECURSIVE = 'SET_RIGHTS_RECURSIVE'
 
 export const actions = {}
 
@@ -37,8 +34,6 @@ actions.updateResource = (value, propPath = null) => {
 
   return formActions.updateProp(selectors.STORE_NAME, 'resource', value)
 }
-
-actions.setRecursive = makeActionCreator(SET_RIGHTS_RECURSIVE, 'recursiveEnabled')
 
 actions.updateRights = (perms) => formActions.updateProp(selectors.STORE_NAME, 'rights', perms)
 

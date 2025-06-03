@@ -31,7 +31,8 @@ class ToolMaskDecoderManager
                 }
                 $this->maskDecoders[$maskDecoder->getTool()][] = $maskDecoder;
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -96,7 +97,7 @@ class ToolMaskDecoderManager
 
     /**
      * Encode a mask for an array of permission and a tool.
-     * The array of permissions should be defined that way:.
+     * The array of permissions should be defined that way:
      *
      * array('open' => true, 'edit' => false, ...)
      */
