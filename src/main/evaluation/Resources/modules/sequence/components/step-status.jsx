@@ -9,8 +9,7 @@ import {constants} from '#/main/evaluation/constants'
 import {EvaluationScore} from '#/main/evaluation/components/score'
 
 const StepStatus = ({
-  progression,
-  totalScore
+  progression
 }) => {
   return (
     <span className="ms-auto">
@@ -19,7 +18,6 @@ const StepStatus = ({
         <EvaluationScore
           score={get(progression, 'displayScore.current')}
           scoreMax={get(progression, 'displayScore.total')}
-          display={totalScore}
           size="sm"
         />
       }
@@ -46,8 +44,7 @@ StepStatus.propTypes = {
       current: T.number,
       total: T.number.isRequired
     })
-  }),
-  totalScore: T.number
+  })
 }
 
 export {

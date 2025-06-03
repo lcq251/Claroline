@@ -89,12 +89,12 @@ const UserProgressionModal = props => {
           <div className="d-flex flex-wrap gap-2 justify-content-center mt-3">
             {[
               {
-                icon: 'fa fa-clock',
+                icon: 'fa far fa-clock',
                 value: get(props.evaluation, 'duration') ? displayDuration(get(props.evaluation, 'duration')) : null,
                 label: trans('duration'),
                 displayed: !!get(props.evaluation, 'duration')
               }, {
-                icon: 'fa fa-clock',
+                icon: 'fa far fa-clock',
                 label: trans('estimated_duration'),
                 value: get(props.evaluation, 'estimatedDuration') ? displayDuration(get(props.evaluation, 'estimatedDuration')) : '-',
                 displayed: !get(props.evaluation, 'duration')

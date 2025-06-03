@@ -60,7 +60,7 @@ class EvaluationAggregator implements EvaluationInterface
     }
 
     /**
-     * Get the sum of all the evaluations score in the aggregate.
+     * Get the sum of all the evaluation's scores in the aggregate.
      * NB. Score is only available once all the evaluations of the aggregate are considered terminated.
      */
     public function getScore(): ?float
@@ -76,13 +76,13 @@ class EvaluationAggregator implements EvaluationInterface
     }
 
     /**
-     * Get the sum of all the evaluations score max in the aggregate.
+     * Get the sum of all the evaluation's scores max in the aggregate.
      * NB. Score is only available once all the evaluations of the aggregate are considered terminated.
      */
     public function getScoreMax(): ?float
     {
         if (!$this->isTerminated()) {
-            // score is only available when the evaluation is terminated
+            // the score is only available when the evaluation is terminated
             return null;
         }
 

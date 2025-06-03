@@ -33,7 +33,6 @@ const SequenceSummary = (props) => {
 
               <StepStatus
                 progression={stepProgression}
-                totalScore={get(props.sequence, 'evaluation.scoreTotal')}
               />
             </LinkButton>
           </li>

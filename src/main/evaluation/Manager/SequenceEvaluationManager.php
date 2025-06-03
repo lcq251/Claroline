@@ -160,7 +160,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 $result[$step->getUuid()] = [
                     'status' => EvaluationStatus::NOT_ATTEMPTED,
                     'step' => [
-                        'id' => $stepProgression->getStep()->getUuid(),
+                        'id' => $step->getUuid(),
                         'name' => $step->getTitle(),
                     ],
                 ];
