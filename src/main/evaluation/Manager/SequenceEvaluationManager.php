@@ -144,6 +144,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
                 }
             } else {
                 $result[$stepProgression->getStep()->getUuid()] = [
+                    'id' => $stepProgression->getStep()->getUuid(),
                     'status' => $stepProgression->getStatus(),
                     'lastActivityAt' => DateNormalizer::normalize($stepProgression->getLastActivityAt()),
                     'step' => [

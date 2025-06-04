@@ -1,24 +1,23 @@
-import React, {useEffect, useState} from 'react'
+import React, {createElement, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {CloseButton} from 'react-bootstrap'
 import classes from 'classnames'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
-import {url} from '#/main/app/api'
+import {useFetch} from '#/main/app/api/fetch'
 import {trans, displayDuration} from '#/main/app/intl'
 import {CALLBACK_BUTTON, LinkButton} from '#/main/app/buttons'
 import {Toolbar, ActionTypes, PromisedActionTypes, pickActionSet, constants as actionConst} from '#/main/app/action'
 import {ModalEmpty} from '#/main/app/overlays/modal/components/empty'
 import {Nav} from '#/main/app/components/nav'
 import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
+import {DescriptionList} from '#/main/app/data/components/description-list'
+import {UserAvatar} from '#/main/app/user/components/avatar'
 
 import {constants} from '#/main/evaluation/constants'
 import {EvaluationGauge} from '#/main/evaluation/components/gauge'
 import {UserEvaluation as UserEvaluationTypes} from '#/main/evaluation/prop-types'
-import {DescriptionList} from '#/main/app/data/components/description-list'
-import {UserAvatar} from '#/main/app/user/components/avatar'
 
 const UserProgressionInfo = ({user, title}) =>
   <div className={classes('d-flex flex-row gap-3')} role="presentation">
@@ -35,23 +34,13 @@ const UserProgressionInfo = ({user, title}) =>
   </div>
 
 const UserProgressionModal = props => {
+  const [evaluationData, status] = useFetch(props.name, props.url)
   const [section, changeSection] = useState('overview')
-
-  useEffect(() => {
-    if (!isEmpty(props.url)) {
-      props.fetchUserProgression(props.url)
-    }
-
-    return () => {
-      props.resetUserProgression()
-    }
-  }, [url(props.url), props.evaluation.id])
 
   return (
     <ModalEmpty
-      {...omit(props, 'evaluation', 'actions', 'additional', 'fetchUserProgression', 'resetUserProgression', 'title', 'loaded')}
+      {...omit(props, 'evaluation', 'actions', 'additional', 'title', 'name', 'overview')}
       size="xl"
-      onExiting={props.resetUserProgression}
     >
       <div className="d-flex flex-row" role="presentation">
         <div
@@ -117,11 +106,7 @@ const UserProgressionModal = props => {
             data={props.evaluation}
             variant={constants.EVALUATION_STATUS_COLOR[get(props.evaluation, 'status')]}
             fields={[
-              /*{
-                name: 'user',
-                type: 'user',
-                label: trans('user')
-              }, */{
+              {
                 name: 'lastActivityAt',
                 type: 'date',
                 label: trans('last_activity_at'),
@@ -184,7 +169,10 @@ const UserProgressionModal = props => {
               ]}
             />
 
-            {props.loaded && props.children}
+            {'succeeded' === status && createElement(props.overview, {
+              evaluation: evaluationData.evaluation,
+              progression: evaluationData.progression
+            })}
           </div>
         </div>
       </div>
@@ -193,6 +181,7 @@ const UserProgressionModal = props => {
 }
 
 UserProgressionModal.propTypes = {
+  name: T.string.isRequired,
   // the api URL to fetch the user evaluation and progression
   url: T.oneOfType([T.string, T.array]).isRequired,
   evaluation: T.shape(
@@ -208,14 +197,12 @@ UserProgressionModal.propTypes = {
       PromisedActionTypes.propTypes
     )
   ]),
-  loaded: T.bool,
   additional: T.arrayOf(T.shape({
     icon: T.string.isRequired,
     label: T.string.isRequired,
     value: T.any.isRequired
   })),
-  fetchUserProgression: T.func.isRequired,
-  resetUserProgression: T.func.isRequired,
+  overview: T.elementType.isRequired,
   fadeModal: T.func.isRequired
 }
 

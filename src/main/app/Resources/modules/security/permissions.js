@@ -34,7 +34,11 @@ function isAdmin(user) {
  * @return {boolean}
  */
 function hasPermission(permission, object) {
-  return get(object.permissions, permission, false)
+  if (object && object.permissions) {
+    return get(object.permissions, permission, false)
+  }
+
+  return false
 }
 
 export {

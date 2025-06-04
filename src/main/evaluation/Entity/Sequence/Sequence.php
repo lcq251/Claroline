@@ -95,11 +95,11 @@ class Sequence implements CrudEntityInterface
     #[ORM\Column(options: ['default' => '_self'])]
     private string $secondaryResourcesTarget = '_self';
 
-    #[ORM\Column(name: 'score_total', type: Types::FLOAT, options: ['default' => 100])]
+    #[ORM\Column(name: 'score_total', type: Types::FLOAT, nullable: true, options: ['default' => 100])]
     private ?float $scoreTotal = 100;
 
     /**
-     * @deprecated will be replaced by the score type on resource node
+     * @deprecated
      */
     #[ORM\Column(name: 'show_score', type: Types::BOOLEAN)]
     private bool $showScore = false;

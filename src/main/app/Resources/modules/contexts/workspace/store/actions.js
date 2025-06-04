@@ -2,10 +2,6 @@ import {API_REQUEST} from '#/main/app/api'
 
 import {actions as contextActions} from '#/main/app/context/store'
 
-// actions
-export const WORKSPACE_EVALUATION_UPDATE    = 'WORKSPACE_EVALUATION_UPDATE'
-
-// action creators
 export const actions = {}
 
 actions.checkAccessCode = (workspace, code) => (dispatch) => dispatch({

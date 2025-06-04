@@ -1,7 +1,7 @@
 import {useStore} from 'react-redux'
 
 /**
- * Allows to dynamically mount a reducer in the store.
+ * Allows dynamically mounting a reducer in the store.
  * NB. Dynamic reducer can only be mounted at the root of the store.
  *
  * @param {string} key     - The key in the store object where the reducer will be mounted

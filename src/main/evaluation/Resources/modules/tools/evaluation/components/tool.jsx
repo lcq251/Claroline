@@ -50,12 +50,6 @@ const EvaluationTool = (props) => {
           target: props.path/*+'/sequences'*/,
           displayed: 'workspace' === props.contextType,
           exact: true
-        }, {
-          name: 'activities',
-          type: LINK_BUTTON,
-          label: trans('activities'),
-          target: props.path+'/activities',
-          displayed: props.canFollow && 'workspace' === props.contextType
         }
       ]}
       redirect={[

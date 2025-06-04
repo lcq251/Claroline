@@ -1,8 +1,15 @@
 import {createSelector} from 'reselect'
+import get from 'lodash/get'
 
 const STORE_NAME = 'userEvaluation'
 
-const store = (state) => state[STORE_NAME] || {}
+const store = createSelector(
+  [
+    (state) => state,
+    (state, formName) => formName
+  ],
+  (state, storeName) => get(state, storeName, {})
+)
 
 const loaded = createSelector(
   [store],

@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect'
+import get from 'lodash/get'
 
 import {selectors as contextSelectors} from '#/main/app/context/store/selectors'
 import {hasPermission as permissionChecker} from '#/main/app/security'
@@ -6,17 +7,17 @@ import {hasPermission as permissionChecker} from '#/main/app/security'
 const STORE_NAME = 'tool'
 const EDITOR_NAME = 'toolEditor'
 
-const store = (state) => state[STORE_NAME] || {}
+const store = (state) => state[STORE_NAME]
 const tool = store
 
 const loaded = createSelector(
   [store],
-  (store) => store.loaded || false
+  (store) => get(store, 'loaded', false)
 )
 
 const name = createSelector(
   [store],
-  (store) => store.name
+  (store) => get(store, 'name')
 )
 
 /**

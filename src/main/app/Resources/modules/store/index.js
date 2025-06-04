@@ -20,7 +20,7 @@ const middleware = [apiMiddleware, thunk]
 
 // add dev tools
 if ('production' !== env()) {
-  // Register redux freeze (it will throw errors if the state is mistakenly mutated)
+  // Register redux-freeze (it will throw errors if the state is mistakenly mutated)
   middleware.push(
     require('redux-freeze')
   )
@@ -49,8 +49,8 @@ function createStore(name, reducers, initialState = {}, customMiddlewares = []) 
     return combineReducers(reducers)
   }
 
-  // register browser extension
-  // we must do it at each store creation in order to register all
+  // register the browser extension
+  // we must do it at each store creation to register all
   // of them in the dev console
   const composeEnhancers =
     env() !== 'production' &&
@@ -75,7 +75,7 @@ function createStore(name, reducers, initialState = {}, customMiddlewares = []) 
   store.asyncReducers = {}
   store.injectReducer = (key, reducer) => {
     if (!get(store.asyncReducers, key, false)) {
-      // only append non mounted reducers
+      // only append non-mounted reducers
       set(store.asyncReducers, key, reducer)
 
       store.replaceReducer(

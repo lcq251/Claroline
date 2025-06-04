@@ -63,7 +63,14 @@ class WorkspaceEvaluationController
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
         ?Workspace $workspace = null
     ): StreamedJsonResponse {
-        $this->checkToolAccess('EDIT', $workspace);
+        $this->checkToolAccess('OPEN', $workspace);
+
+        if (!$this->checkToolAccess('EDIT', $workspace)) {
+            // only display evaluation of the current user
+            /** @var User $user */
+            $user = $this->tokenStorage->getToken()?->getUser();
+            $finderQuery->addFilter('user', $user->getUuid());
+        }
 
         if ($workspace) {
             $finderQuery->addFilter('workspace', $workspace->getUuid());

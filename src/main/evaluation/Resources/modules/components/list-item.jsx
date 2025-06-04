@@ -37,14 +37,14 @@ const EvaluationListItem = ({
             }
           </div>
 
-          {duration &&
+          {(duration && 0 !== duration) ?
             <>
               <span aria-hidden={true}>-</span>
               <div role="presentation">
                 <span className="fa fa-clock me-2" aria-hidden={true} />
                 {displayDuration(duration)}
               </div>
-            </>
+            </> : null
           }
         </div>
       </div>

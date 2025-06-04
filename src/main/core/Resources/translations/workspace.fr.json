@@ -64,5 +64,6 @@
   "managed_workspaces_menu": "Espaces gérés",
   "workspace_user_register_validation_message": "Voulez-vous vraiment inscrire les utilisateurs suivants: [%users%] ?",
   "favourites" : "Favoris",
-  "favourites_desc": "Retrouvez et gérez vos espaces favoris."
+  "favourites_desc": "Retrouvez et gérez vos espaces favoris.",
+  "workspace_name": "Espace d'activités : %name%"
 }

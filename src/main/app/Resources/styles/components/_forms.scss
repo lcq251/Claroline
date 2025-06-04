@@ -22,7 +22,7 @@
 
 .data-form .accordion-body,
 .data-form-section,
-.data-form-section > .collapse,
+.data-form-section > .collapse.show,
 .sub-fields {
     display: flex;
     flex-direction: column;

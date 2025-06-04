@@ -8,9 +8,11 @@ import {trans} from '#/main/app/intl'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {route} from '#/main/core/resource'
 
-import {UserProgressionModal as BaseProgressionModal} from '#/main/evaluation/modals/user-progression/containers/modal'
+import {UserProgressionModal as BaseProgressionModal} from '#/main/evaluation/modals/user-progression/components/modal'
 import {getActions} from '#/main/evaluation/resource/utils'
 import {ResourceEvaluation} from '#/main/evaluation/resource/prop-types'
+
+const STORE_NAME = 'userResourceEvaluation'
 
 const UserProgressionModal = props => {
   const currentUser = useSelector(securitySelectors.currentUser)
@@ -19,6 +21,7 @@ const UserProgressionModal = props => {
     <BaseProgressionModal
       {...omit(props, 'evaluation', 'path', 'stepsProgression', 'fetchUserStepsProgression', 'resetUserStepsProgression')}
       evaluation={props.evaluation}
+      name={STORE_NAME}
       title={get(props.evaluation, 'resourceNode.name')}
       url={['apiv2_resource_evaluation_get', {resource: get(props.evaluation, 'resourceNode.id'), user: get(props.evaluation, 'user.id')}]}
       actions={getActions([props.evaluation], {}, route(get(props.evaluation, 'resourceNode')), currentUser)}

@@ -13,7 +13,7 @@ const EDITOR_NAME = 'contextEditor'
 /**
  * Root of the context store.
  */
-const store = (state) => state[STORE_NAME] || {}
+const store = (state) => state[STORE_NAME]
 
 /**
  * Get the context type.
@@ -22,7 +22,7 @@ const store = (state) => state[STORE_NAME] || {}
  */
 const type = createSelector(
   [store],
-  (store) => store.type
+  (store) => get(store, 'type')
 )
 
 /**
@@ -32,7 +32,7 @@ const type = createSelector(
  */
 const id = createSelector(
   [store],
-  (store) => store.id
+  (store) => get(store, 'id')
 )
 
 const path = createSelector(
@@ -42,32 +42,32 @@ const path = createSelector(
 
 const menuOpened = createSelector(
   [store],
-  (store) => store.menuOpened
+  (store) => get(store, 'menuOpened', false)
 )
 
 const data = createSelector(
   [store],
-  (store) => store.data
+  (store) => get(store, 'data', null)
 )
 
 /**
- * Is the context fully loaded ?
+ * Is the context fully loaded?
  *
  * @return bool
  */
 const loaded = createSelector(
   [store],
-  (store) => store.loaded
+  (store) => get(store, 'loaded', false)
 )
 
 /**
- * Is context not found ?
+ * Is context not found?
  *
  * @return bool
  */
 const notFound = createSelector(
   [store],
-  (store) => store.notFound
+  (store) => get(store, 'notFound', false)
 )
 
 /**
@@ -77,7 +77,7 @@ const notFound = createSelector(
  */
 const accessErrors = createSelector(
   [store],
-  (store) => store.accessErrors
+  (store) => get(store, 'accessErrors')
 )
 
 const hasErrors = createSelector(
@@ -86,7 +86,7 @@ const hasErrors = createSelector(
 )
 
 /**
- * Can the current user manage the context ?
+ * Can the current user manage the context?
  *
  * @return bool
  */
@@ -96,13 +96,13 @@ const managed = createSelector(
 )
 
 /**
- * Does the current user impersonate some user/role ?
+ * Does the current user impersonate some user/role?
  *
  * @return bool
  */
 const impersonated = createSelector(
   [store],
-  (store) => store.impersonated
+  (store) => get(store, 'impersonated', false)
 )
 
 /**
@@ -115,7 +115,7 @@ const roles = createSelector(
 
 const organizations = createSelector(
   [store],
-  (store) => [].concat(store.organizations || [])
+  (store) => [].concat(get(store, 'organizations', []))
     .sort((a, b) => {
       if (a.name > b.name) {
         return 1
@@ -127,7 +127,7 @@ const organizations = createSelector(
 
 const tools = createSelector(
   [store],
-  (store) => store.tools || []
+  (store) => get(store, 'tools', [])
 )
 
 const accessibleTools = createSelector(

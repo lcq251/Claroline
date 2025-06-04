@@ -26,8 +26,6 @@ const displayedAlerts = createSelector(
   (sortedAlerts) => sortedAlerts.slice(0, constants.ALERT_DISPLAY_MAX)
 )
 
-
-
 export const selectors = {
   STORE_NAME,
   alerts,
