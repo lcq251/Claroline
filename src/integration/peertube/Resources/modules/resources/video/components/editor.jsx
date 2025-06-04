@@ -42,16 +42,6 @@ const VideoEditorPlayback = () => {
           hideTitle: true,
           fields: [
             {
-              name: 'autoplay',
-              label: trans('autoplay', {}, 'peertube'),
-              help: trans('autoplay_help', {}, 'peertube'),
-              type: 'boolean'
-            }, {
-              name: 'looping',
-              label: trans('loop', {}, 'peertube'),
-              help: trans('loop_help', {}, 'peertube'),
-              type: 'boolean'
-            }, {
               name: 'controls',
               label: trans('controls', {}, 'peertube'),
               help: trans('controls_help', {}, 'peertube'),
@@ -60,6 +50,16 @@ const VideoEditorPlayback = () => {
               name: 'resume',
               label: trans('resume', {}, 'peertube'),
               help: trans('resume_help', {}, 'peertube'),
+              type: 'boolean'
+            }, {
+              name: 'autoplay',
+              label: trans('autoplay', {}, 'peertube'),
+              help: trans('autoplay_help', {}, 'peertube'),
+              type: 'boolean'
+            }, {
+              name: 'looping',
+              label: trans('loop', {}, 'peertube'),
+              help: trans('loop_help', {}, 'peertube'),
               type: 'boolean'
             }
           ]
