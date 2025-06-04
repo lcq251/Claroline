@@ -23,7 +23,10 @@ const UserProgressionModal = props => {
       {...omit(props, 'evaluation', 'path', 'stepsProgression', 'fetchUserStepsProgression', 'resetUserStepsProgression')}
       evaluation={props.evaluation}
       name={STORE_NAME}
-      title={get(props.evaluation, 'resourceNode.name')}
+      title={trans('resource_name', {
+        type: trans(get(props.evaluation, 'resourceNode.meta.type'), {}, 'resource'),
+        name: get(props.evaluation, 'resourceNode.name')
+      }, 'resource')}
       url={['apiv2_resource_evaluation_get', {resource: get(props.evaluation, 'resourceNode.id'), user: get(props.evaluation, 'user.id')}]}
       actions={getActions([props.evaluation], {}, route(get(props.evaluation, 'resourceNode')), currentUser)}
       additional={[

@@ -271,7 +271,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
         foreach ($sequence->getSteps() as $step) {
             if (!empty($step->getResource()) && $step->isRequired()) {
                 // the step contains a required resource, we need to get the evaluation for this resource
-                // in order to compute the step progression
+                // to compute the step progression
                 $resourceEvaluation = $this->resourceEvalManager->getUserEvaluation($step->getResource(), $user, false);
                 if (!$resourceEvaluation) {
                     // no evaluation, adds an empty evaluation for correct progression check
@@ -304,7 +304,7 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
 
     /**
      * Recomputes all the evaluations of a sequence.
-     * This is called when required resources are added/removed in order to update the users progression and score.
+     * This is called when required resources are added/removed to update users progression and score.
      * This can also be called manually from the ui.
      */
     public function recomputeEvaluations(Sequence $sequence): void

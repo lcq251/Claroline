@@ -11,6 +11,7 @@
 
 namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
+use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Doctrine\DBAL\Types\Types;
 use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,6 +33,11 @@ class ResourceAttempt extends AbstractEvaluation
 
     #[ORM\Column(name: 'more_data', type: Types::JSON, nullable: true)]
     private ?array $data = [];
+
+    public function getResourceNode(): ?ResourceNode
+    {
+        return $this->resourceUserEvaluation->getResourceNode();
+    }
 
     public function getResourceUserEvaluation(): ?ResourceEvaluation
     {

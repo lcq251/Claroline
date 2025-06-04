@@ -17,7 +17,8 @@ import {Button} from '#/main/app/action'
 const EvaluationListItem = ({
   title,
   evaluation,
-  primaryAction
+  meta = [],
+  primaryAction = null
 }) => {
   let duration = evaluation.duration
   if (!duration && evaluation.estimatedDuration) {
@@ -29,6 +30,13 @@ const EvaluationListItem = ({
       <div role="presentation">
         <b>{title}</b>
         <div className={classes('d-flex gap-2 text-body-secondary fs-sm mt-2')} role="presentation">
+          {meta.map(metaItem =>
+            <>
+              {metaItem}
+              <span aria-hidden={true}>-</span>
+            </>
+          )}
+
           <div role="presentation">
             <span className="fa fa-calendar me-2" aria-hidden={true} />
             {get(evaluation, 'lastActivityAt') ?
@@ -80,9 +88,13 @@ const EvaluationListItem = ({
 EvaluationListItem.propTypes = {
   // The title of the activity which has generated the evaluation
   title: T.string.isRequired,
+  meta: T.array,
   evaluation: T.shape(
     UserEvaluation.propTypes
-  ).isRequired
+  ).isRequired,
+  primaryAction: T.shape({
+    // action types
+  })
 }
 
 export {

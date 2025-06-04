@@ -34,6 +34,11 @@ const UserProgressionOverview = (props) => {
                 evaluation: stepEvaluation
               }]
             } : undefined}
+            meta={[
+              get(stepEvaluation, 'resourceNode') ?
+                trans(get(stepEvaluation, 'resourceNode.meta.type'), {}, 'resource') :
+                trans('information')
+            ]}
           />
         </li>
       )}
