@@ -130,7 +130,7 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
 
     /**
      * The conditions to get a success status for the workspace evaluation.
-     * Supported conditions : minimal score, min successful resources, max failed resources.
+     * Supported conditions: minimal score, min successful resources, max failed resources.
      */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $successCondition = null;

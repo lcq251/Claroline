@@ -118,68 +118,64 @@ class SequenceEvaluationManager extends AbstractEvaluationManager
 
     public function getProgression(Sequence $sequence, User $user, ?array $options = []): array
     {
+        // loads all the user evaluations (step progression and resource evaluations)
         $progression = $this->progressionRepo->findBySequenceAndUser($sequence, $user);
         $resourceEvaluations = $this->getResourceEvaluations($sequence, $user);
 
-        $result = [];
-        foreach ($progression as $stepProgression) {
-            $step = $stepProgression->getStep();
-            if (!empty($step->getResource()) && $step->isRequired()) {
-                $resourceId = $step->getResource()->getId();
-                $stepEvaluation = null;
-                foreach ($resourceEvaluations as $resourceEvaluation) {
-                    if ($resourceEvaluation->getResourceNode()->getId() === $resourceId) {
-                        $stepEvaluation = $resourceEvaluation;
-                        break;
-                    }
-                }
-
-                if ($stepEvaluation) {
-                    $result[$stepProgression->getStep()->getUuid()] = array_merge([
-                        'step' => [
-                            'id' => $stepProgression->getStep()->getUuid(),
-                            'name' => $stepProgression->getStep()->getTitle(),
-                        ],
-                    ], $this->serializer->serialize($stepEvaluation, $options));
-                }
-            } else {
-                $result[$stepProgression->getStep()->getUuid()] = [
-                    'id' => $stepProgression->getStep()->getUuid(),
-                    'status' => $stepProgression->getStatus(),
-                    'lastActivityAt' => DateNormalizer::normalize($stepProgression->getLastActivityAt()),
-                    'step' => [
-                        'id' => $stepProgression->getStep()->getUuid(),
-                        'name' => $stepProgression->getStep()->getTitle(),
-                    ],
-                ];
-            }
+        $progress = [];
+        foreach ($sequence->getRootSteps() as $step) {
+            $progress = array_merge($progress, $this->getStepProgression($step, $progression, $resourceEvaluations, $options));
         }
 
-        // adds steps with no progression at all
-        foreach ($sequence->getSteps() as $step) {
-            if (!array_key_exists($step->getUuid(), $result)) {
-                $result[$step->getUuid()] = [
-                    'status' => EvaluationStatus::NOT_ATTEMPTED,
-                    'step' => [
-                        'id' => $step->getUuid(),
-                        'name' => $step->getTitle(),
-                    ],
-                ];
-            }
-        }
-
-        return array_values($result);
+        return $progress;
     }
 
-    private function getStepProgression(Step $step, User $user): ?SequenceEvaluation
+    private function getStepProgression(Step $step, ?array $stepProgressions = [], ?array $resourceEvaluations = [], ?array $options = []): array
     {
-        if ($step->getChildren()->count() > 0) {
-            $childrenProgression = array_map(function (Step $child) use ($user) {
-                return $this->getStepProgression($child, $user);
-            }, $step->getChildren()->toArray());
-
-            return $childrenProgression;
+        $stepEvaluation = null;
+        if (!empty($step->getResource()) && $step->isRequired()) {
+            $resourceId = $step->getResource()->getId();
+            foreach ($resourceEvaluations as $resourceEvaluation) {
+                if ($resourceEvaluation->getResourceNode()->getId() === $resourceId) {
+                    $stepEvaluation = $this->serializer->serialize($resourceEvaluation, $options);
+                    break;
+                }
+            }
+        } else {
+            foreach ($stepProgressions as $stepProgression) {
+                if ($stepProgression->getStep()->getId() === $step->getId()) {
+                    $stepEvaluation = [
+                        'id' => $stepProgression->getStep()->getUuid(),
+                        'status' => $stepProgression->getStatus(),
+                        'lastActivityAt' => DateNormalizer::normalize($stepProgression->getLastActivityAt()),
+                    ];
+                    break;
+                }
+            }
         }
+
+        if (empty($stepEvaluation)) {
+            $stepEvaluation = [
+                'id' => $step->getUuid(),
+                'status' => EvaluationStatus::NOT_ATTEMPTED,
+            ];
+        }
+
+        $stepEvaluation['step'] = [
+            'id' => $step->getUuid(),
+            'name' => $step->getTitle(),
+        ];
+
+        if ($step->getChildren()->count() > 0) {
+            $childrenProgression = [];
+            foreach ($step->getChildren() as $child) {
+                $childrenProgression = array_merge($childrenProgression, $this->getStepProgression($child, $stepProgressions, $resourceEvaluations, $options));
+            }
+
+            return array_merge([$stepEvaluation], $childrenProgression);
+        }
+
+        return [$stepEvaluation];
     }
 
     /**

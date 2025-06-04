@@ -11,6 +11,7 @@ import {route} from '#/main/core/resource'
 import {UserProgressionModal as BaseProgressionModal} from '#/main/evaluation/modals/user-progression/components/modal'
 import {getActions} from '#/main/evaluation/resource/utils'
 import {ResourceEvaluation} from '#/main/evaluation/resource/prop-types'
+import {UserProgressionOverview} from '#/main/evaluation/resource/modals/user-progression/components/overview'
 
 const STORE_NAME = 'userResourceEvaluation'
 
@@ -32,6 +33,7 @@ const UserProgressionModal = props => {
           value: get(props.evaluation, 'nbAttempts', 0)
         }
       ]}
+      overview={UserProgressionOverview}
     />
   )
 }
