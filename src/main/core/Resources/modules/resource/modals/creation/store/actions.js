@@ -29,7 +29,6 @@ actions.startCreation = (parent, resourceType, nodeData = {}, resourceData = {})
         mimeType: `custom/${resourceType}`,
         type: resourceType
       },
-      restrictions: parent.restrictions,
       rights: parent.rights
     }, nodeData)
   }

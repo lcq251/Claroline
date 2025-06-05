@@ -11,7 +11,7 @@ trait Hidden
     protected bool $hidden = false;
 
     /**
-     * Is the entity hidden ?
+     * Is the entity hidden?
      */
     public function isHidden(): bool
     {
