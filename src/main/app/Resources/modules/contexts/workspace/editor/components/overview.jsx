@@ -6,23 +6,24 @@ import {EditorPage} from '#/main/app/editor'
 const WorkspaceEditorOverview = () =>
   <EditorPage
     title={trans('overview')}
+    dataPart="data"
     definition={[
       {
         title: trans('general'),
         primary: true,
         fields: [
           {
-            name: 'data.poster',
+            name: 'poster',
             type: 'poster',
             label: trans('poster'),
             hideLabel: true
           }, {
-            name: 'data.name',
+            name: 'name',
             type: 'string',
             label: trans('name'),
             required: true
           }, {
-            name: 'data.code',
+            name: 'code',
             type: 'string',
             label: trans('code'),
             required: true
@@ -34,7 +35,7 @@ const WorkspaceEditorOverview = () =>
         primary: true,
         fields: [
           {
-            name: 'data.meta.description',
+            name: 'meta.description',
             type: 'string',
             label: trans('description_short'),
             help: trans('Décrivez succinctement votre espace d\'activités (La description courte est affichée dans les listes et sur la vue "À propos").'),
@@ -44,12 +45,16 @@ const WorkspaceEditorOverview = () =>
               minRows: 2
             }
           }, {
-            name: 'data.meta.descriptionHtml',
+            name: 'meta.descriptionHtml',
             label: trans('description_long'),
             type: 'html',
             help: trans('Décrivez de manière détaillée le contenu de votre espace d\'activités, la travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue "À propos" à la place de la description courte).')
           }, {
-            name: 'data.tags',
+            name: 'contactEmail',
+            label: trans('contact_email'),
+            type: 'email'
+          }, {
+            name: 'tags',
             label: trans('tags'),
             type: 'tag'
           }

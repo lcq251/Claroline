@@ -122,9 +122,6 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     #[ORM\OneToOne(targetEntity: WorkspaceOptions::class, mappedBy: 'workspace', cascade: ['persist'])]
     private WorkspaceOptions $options;
 
-    /**
-     * @deprecated
-     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $contactEmail = null;
 
@@ -142,7 +139,7 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     #[ORM\JoinTable(name: 'workspace_organization')]
     private Collection $organizations;
 
-    // not mapped. Used for creation
+    // Not mapped. Used for creation
     private ?Workspace $workspaceModel = null;
 
     /**
@@ -365,17 +362,11 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
         return $this->workspaceModel;
     }
 
-    /**
-     * @deprecated
-     */
     public function getContactEmail(): ?string
     {
         return $this->contactEmail;
     }
 
-    /**
-     * @deprecated
-     */
     public function setContactEmail(string $email = null): void
     {
         $this->contactEmail = $email;
