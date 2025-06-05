@@ -58,7 +58,7 @@ class PeriodStatusType extends AbstractType
 
         switch ($value) {
             case self::NOT_STARTED:
-                $queryBuilder->andWhere("$startProp < :{$finder->getAlias()}Now");
+                $queryBuilder->andWhere("$startProp > :{$finder->getAlias()}Now");
                 break;
             case self::IN_PROGRESS:
                 $queryBuilder->andWhere("($startProp <= :{$finder->getAlias()}Now AND $endProp >= :{$finder->getAlias()}Now)");
