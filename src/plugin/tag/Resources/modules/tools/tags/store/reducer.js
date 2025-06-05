@@ -1,28 +1,29 @@
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
-import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 import {makeListReducer} from '#/main/app/content/list/store/reducer'
-import {makeInstanceAction} from '#/main/app/store/actions'
-import {FORM_SUBMIT_SUCCESS} from '#/main/app/content/form/store/actions'
 
 import {TOOL_OPEN} from '#/main/core/tool/store/actions'
 
 import {selectors} from '#/plugin/tag/tools/tags/store/selectors'
+import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
+import {makeInstanceAction} from '#/main/app/store/actions'
+import {API_FETCH_PENDING} from '#/main/app/api/fetch/store/actions'
 
 export const reducer = combineReducers({
   tags: makeListReducer(selectors.STORE_NAME + '.tags', {
     sortBy: {property: 'name', direction: 1}
   }, {
+    loaded: makeReducer(false, {
+      [CONTEXT_OPEN]: () => false
+    }),
     invalidated: makeReducer(false, {
-      [makeInstanceAction(FORM_SUBMIT_SUCCESS, selectors.STORE_NAME + '.tag.form')]: () => true,
       [TOOL_OPEN]: () => true
     })
   }),
-  tag: combineReducers({
-    form: makeFormReducer(selectors.STORE_NAME + '.tag.form'),
-    objects: makeListReducer(selectors.STORE_NAME + '.tag.objects', {}, {
-      invalidated: makeReducer(false, {
-        [TOOL_OPEN]: () => true
-      })
+  taggedObjects: makeListReducer(selectors.STORE_NAME + '.taggedObjects', {}, {
+    loaded: makeReducer(false, {
+      [CONTEXT_OPEN]: () => false,
+      [TOOL_OPEN]: () => false,
+      [makeInstanceAction(API_FETCH_PENDING, 'tag')]: () => false
     })
   })
 })

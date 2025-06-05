@@ -47,7 +47,7 @@ const TagShow = (props) => {
           <PageSection>
             <ListData
               className="mb-5"
-              name={selectors.STORE_NAME + '.tag.objects'}
+              name={selectors.STORE_NAME + '.taggedObjects'}
               fetch={{
                 url: ['apiv2_tag_list_objects', {id: props.id}],
                 autoload: true

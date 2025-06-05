@@ -1,5 +1,4 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
@@ -102,11 +101,6 @@ const TagList = () => {
       </PageListSection>
     </ToolPage>
   )
-}
-
-TagList.propTypes = {
-  path: T.string.isRequired,
-  canCreate: T.bool.isRequired
 }
 
 export {

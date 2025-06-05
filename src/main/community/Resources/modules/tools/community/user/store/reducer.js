@@ -1,6 +1,5 @@
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
 
-import {FORM_SUBMIT_SUCCESS} from '#/main/app/content/form/store/actions'
 import {makeListReducer} from '#/main/app/content/list/store'
 import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 import {makeInstanceAction} from '#/main/app/store/actions'
@@ -22,8 +21,7 @@ const reducer = combineReducers({
       [CONTEXT_OPEN]: () => false
     }),
     invalidated: makeReducer(false, {
-      [TOOL_OPEN]: () => true,
-      [makeInstanceAction(FORM_SUBMIT_SUCCESS, selectors.FORM_NAME)]: () => true
+      [TOOL_OPEN]: () => true
     })
   }),
   current: makeFormReducer(selectors.FORM_NAME, {}, {

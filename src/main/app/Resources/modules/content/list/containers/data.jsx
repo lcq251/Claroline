@@ -29,6 +29,7 @@ class AutoloadListData extends Component {
     if (this.isAutoLoaded()) {
       // list is configured to auto fetch data
       if (!isEqual(this.props.invalidated, prevProps.invalidated)
+        || !isEqual(this.props.loaded, prevProps.loaded)
         || !isEqual(this.props.fetch, prevProps.fetch)) {
         // we force reload if the target url has changed
         this.reload(!isEqual(this.props.fetch.url, prevProps.fetch.url))
