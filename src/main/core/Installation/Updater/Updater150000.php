@@ -32,6 +32,7 @@ class Updater150000 extends Updater
         $this->removeTool('connection_messages');
 
         $this->linkWorkspacesToOrganizations();
+        $this->linkLocationsToOrganizations();
     }
 
     private function updateConfig(): void
@@ -75,6 +76,22 @@ class Updater150000 extends Updater
             FROM claro_workspace AS w 
             LEFT JOIN workspace_organization AS wo ON w.id = wo.workspace_id 
             WHERE wo.organization_id IS NULL
+        ');
+
+        $updateQuery->bindValue('default_organization_id', $organization->getId());
+        $updateQuery->executeQuery();
+    }
+
+    private function linkLocationsToOrganizations(): void
+    {
+        $organization = $this->organizationManager->getDefault(true);
+
+        $updateQuery = $this->connection->prepare('
+            INSERT INTO claro__location_organization (location_id, organization_id)
+            SELECT l.id AS location_id, :default_organization_id AS organization_id
+            FROM claro__location AS l 
+            LEFT JOIN claro__location_organization AS lo ON l.id = lo.location_id 
+            WHERE lo.organization_id IS NULL
         ');
 
         $updateQuery->bindValue('default_organization_id', $organization->getId());
