@@ -7,7 +7,7 @@ import {param} from '#/main/app/config'
 import {trans} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {FormData} from '#/main/app/content/form'
+import {Form, FormContent, FormData} from '#/main/app/content/form'
 
 import {selectors as toolSelectors} from '#/main/core/tool/store'
 import {route} from '#/main/community/user/routing'
@@ -19,55 +19,63 @@ const CreationInfo = (props) => {
   const toolPath = useSelector(toolSelectors.path)
 
   return (
-    <FormData
+    <Form
       name={selectors.STORE_NAME}
       flush={true}
-      definition={[
-        {
-          title: trans('general'),
-          fields: [
-            {
-              name: 'lastName',
-              type: 'string',
-              label: trans('last_name'),
-              required: true
-            }, {
-              name: 'firstName',
-              type: 'string',
-              label: trans('first_name'),
-              required: true
-            }, {
-              name: 'email',
-              type: 'email',
-              label: trans('email'),
-              required: true,
-              options: {
-                unique: {
-                  check: ['apiv2_user_get', {field: 'email'}]
-                }
-              }
-            }, {
-              name: 'username',
-              type: 'string',
-              label: trans('username'),
-              required: true,
-              displayed: param('community.username'),
-              options: {
-                unique: {
-                  check: ['apiv2_user_get', {field: 'username'}],
-                  error: 'This username already exists.'
-                }
-              }
-            }, {
-              name: 'plainPassword',
-              type: 'password',
-              label: trans('password'),
-              required: true
-            }
-          ]
-        }
-      ]}
     >
+      <FormContent
+        className="modal-body"
+        name={selectors.STORE_NAME}
+        level={2}
+        displayLevel={5}
+        flush={true}
+        definition={[
+          {
+            title: trans('general'),
+            fields: [
+              {
+                name: 'lastName',
+                type: 'string',
+                label: trans('last_name'),
+                required: true
+              }, {
+                name: 'firstName',
+                type: 'string',
+                label: trans('first_name'),
+                required: true
+              }, {
+                name: 'email',
+                type: 'email',
+                label: trans('email'),
+                required: true,
+                options: {
+                  unique: {
+                    check: ['apiv2_user_get', {field: 'email'}]
+                  }
+                }
+              }, {
+                name: 'username',
+                type: 'string',
+                label: trans('username'),
+                required: true,
+                displayed: param('community.username'),
+                options: {
+                  unique: {
+                    check: ['apiv2_user_get', {field: 'username'}],
+                    error: 'This username already exists.'
+                  }
+                }
+              }, {
+                name: 'plainPassword',
+                type: 'password',
+                label: trans('password'),
+                required: true
+              }
+            ]
+          }
+        ]}
+      />
+
       <div className="modal-footer">
         <Button
           type={CALLBACK_BUTTON}
@@ -92,7 +100,7 @@ const CreationInfo = (props) => {
           callback={props.create}
         />
       </div>
-    </FormData>
+    </Form>
   )
 }
 
