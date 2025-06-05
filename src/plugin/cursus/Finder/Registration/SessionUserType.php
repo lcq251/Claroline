@@ -4,6 +4,7 @@ namespace Claroline\CursusBundle\Finder\Registration;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\ChoiceType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
@@ -29,10 +30,11 @@ class SessionUserType extends AbstractType
             ->add('user', UserType::class)
             ->add('session', SessionType::class)
             ->add('date', DateType::class)
+            ->add('confirmed', BooleanType::class)
+            ->add('validated', BooleanType::class)
             ->add('type', ChoiceType::class, [
                 'choices' => [AbstractRegistration::LEARNER, AbstractRegistration::TUTOR],
             ])
-            // ->add('workspace', RelatedEntityType::class)
         ;
     }
 

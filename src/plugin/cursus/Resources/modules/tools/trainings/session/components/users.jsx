@@ -5,9 +5,10 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {ToolPage} from '#/main/core/tool'
 import {PageContentList} from '#/main/app/page'
-
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_USERS} from '#/main/community/modals/users'
+
+import {constants} from '#/plugin/cursus/constants'
 import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 import {RegistrationUsers} from '#/plugin/cursus/registration/components/users'
 
@@ -50,9 +51,9 @@ const TrainingsSessionUsers = (props) =>
             name: 'course',
             label: trans('course', {}, 'cursus'),
             type: 'training_course',
-            displayed: true,
             filterable: true,
             sortable: true,
+            displayed: 'desktop' === props.contextType,
             order: 1
           }, {
             name: 'session',
@@ -62,6 +63,20 @@ const TrainingsSessionUsers = (props) =>
             filterable: true,
             sortable: true,
             order: 1
+          }, {
+            name: 'confirmed',
+            label: trans('confirmed', {}, 'cursus'),
+            type: 'boolean',
+            displayed: constants.LEARNER_TYPE === props.type,
+            filterable: true,
+            sortable: true,
+          }, {
+            name: 'validated',
+            label: trans('validated', {}, 'cursus'),
+            type: 'boolean',
+            displayed: constants.LEARNER_TYPE === props.type,
+            filterable: true,
+            sortable: true,
           }
         ]}
       />

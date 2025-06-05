@@ -180,5 +180,7 @@
     "event_name": "Séance : %name%",
     "all_sessions": "Toutes les sessions",
     "all_events": "Toutes les séances",
-    "presence": "Présence"
+    "presence": "Présence",
+    "confirmed": "Confirmé",
+    "validated": "Validé"
 }
