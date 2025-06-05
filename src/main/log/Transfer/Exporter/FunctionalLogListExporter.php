@@ -58,23 +58,23 @@ class FunctionalLogListExporter extends AbstractListExporter
 
                 // user
                 [
-                    'name' => 'user.id',
+                    'name' => 'doer.id',
                     'type' => 'string',
                     'description' => $this->translator->trans('The user id', [], 'schema'),
                 ], [
-                    'name' => 'user.email',
+                    'name' => 'doer.email',
                     'type' => 'string',
                     'description' => $this->translator->trans('The user email address', [], 'schema'),
                 ], [
-                    'name' => 'user.username',
+                    'name' => 'doer.username',
                     'type' => 'string',
                     'description' => $this->translator->trans('The user username', [], 'schema'),
                 ], [
-                    'name' => 'user.firstName',
+                    'name' => 'doer.firstName',
                     'type' => 'string',
                     'description' => $this->translator->trans('The user first name', [], 'schema'),
                 ], [
-                    'name' => 'user.lastName',
+                    'name' => 'doer.lastName',
                     'type' => 'string',
                     'description' => $this->translator->trans('The user last name', [], 'schema'),
                 ],
