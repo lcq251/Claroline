@@ -121,25 +121,23 @@ const DataCard = props => {
         </Badge>
       }
 
-      {(props.poster || props.icon) &&
-        <Thumbnail
-          loaded={props.loaded}
-          name={props.name}
-          thumbnail={props.poster}
-          color={props.color}
-          size={props.size}
-          square={asIcon}
-          className={classes('data-card-thumbnail', {
-            'rounded-circle': asIcon,
-            'my-2': 'xs' === props.size
-          })}
-        >
-          {typeof props.icon === 'string' ?
-            <span className={props.icon} /> :
-            props.icon
-          }
-        </Thumbnail>
-      }
+      <Thumbnail
+        loaded={props.loaded}
+        name={props.name}
+        thumbnail={props.poster}
+        color={props.color}
+        size={props.size}
+        square={asIcon}
+        className={classes('data-card-thumbnail', {
+          'rounded-circle': asIcon,
+          'my-2': 'xs' === props.size
+        })}
+      >
+        {typeof props.icon === 'string' ?
+          <span className={props.icon} /> :
+          props.icon
+        }
+      </Thumbnail>
 
       <CardAction
         action={props.primaryAction}

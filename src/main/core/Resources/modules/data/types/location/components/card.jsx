@@ -11,9 +11,9 @@ const LocationCard = props =>
   <DataCard
     {...props}
     id={props.data.id}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
-    icon={!props.data.thumbnail ? <>{props.data.name.charAt(0)}</> : null}
+    poster={props.data.thumbnail}
     title={props.data.name}
+    name={props.data.name}
     contentText={getAddressString(props.data.address)}
   />
 

@@ -12,7 +12,6 @@ const WorkspaceCard = props =>
   <DataCard
     {...props}
     poster={props.data.thumbnail}
-    icon="fa fa-book"
     name={props.data.name}
     title={
       <>
