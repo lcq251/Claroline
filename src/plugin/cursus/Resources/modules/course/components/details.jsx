@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MODAL_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {CourseParticipants} from '#/plugin/cursus/course/components/participants'
@@ -74,9 +74,9 @@ const CourseDetails = (props) => {
       primary: !selfRegistration
     }, {
       name: 'download',
+      type: URL_BUTTON,
       label: trans('download_training', {}, 'actions'),
-      type: CALLBACK_BUTTON,
-      callback: () => true
+      target: ['apiv2_cursus_course_download_pdf', {id: props.course.id}],
     }
   ]
 

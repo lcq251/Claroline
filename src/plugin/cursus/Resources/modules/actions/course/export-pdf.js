@@ -5,7 +5,7 @@ import {declareAction} from '#/main/app/action'
 
 
 /**
- * Export course into PDF file.
+ * Export course into a PDF file.
  */
 export default declareAction((courses) => ({
   name: 'export-pdf',
