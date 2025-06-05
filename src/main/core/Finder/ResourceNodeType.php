@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
+use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\HiddenType;
 use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
@@ -56,6 +57,8 @@ class ResourceNodeType extends AbstractType
             // for evaluations
             ->add('required', BooleanType::class)
             ->add('evaluated', BooleanType::class)
+            ->add('creationDate', DateType::class)
+            ->add('modificationDate', DateType::class)
         ;
     }
 

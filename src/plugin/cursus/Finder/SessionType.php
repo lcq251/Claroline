@@ -7,6 +7,7 @@ use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
+use Claroline\AppBundle\API\Finder\Type\CreatorType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\HiddenType;
@@ -14,9 +15,6 @@ use Claroline\AppBundle\API\Finder\Type\NumericType;
 use Claroline\AppBundle\API\Finder\Type\PeriodStatusType;
 use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\CoreBundle\Finder\LocationType;
-use Claroline\CoreBundle\Finder\WorkspaceType;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Session;
 use Doctrine\ORM\QueryBuilder;
@@ -45,6 +43,9 @@ class SessionType extends AbstractType
             ->add('course', CourseType::class)
             ->add('workspace', RelatedEntityType::class)
             ->add('location', RelatedEntityType::class)
+            ->add('creator', CreatorType::class)
+            ->add('createdAt', DateType::class)
+            ->add('updatedAt', DateType::class)
             ->add('capacity', ClosureType::class, [
                 'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null === $finder->getFilterValue()) {

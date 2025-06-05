@@ -6,6 +6,7 @@ use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
+use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\HiddenType;
 use Claroline\AppBundle\API\Finder\Type\PublicType;
@@ -38,6 +39,8 @@ class WorkspaceType extends AbstractType
             ->add('public', PublicType::class)
             ->add('organizations', OrganizationType::class)
             ->add('creator', CreatorType::class)
+            ->add('createdAt', DateType::class)
+            ->add('updatedAt', DateType::class)
             ->add('roles', RoleType::class)
         ;
     }
