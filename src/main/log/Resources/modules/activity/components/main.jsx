@@ -1,39 +1,18 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {ActivityCalendar} from '#/main/log/activity/components/calendar'
+// import {ActivityCalendar} from '#/main/log/activity/components/calendar'
 import {LogFunctionalList} from '#/main/log/components/functional-list'
 
 const Activity = (props) =>
   <>
-    <ActivityCalendar className="mb-5 mt-4 mx-auto" />
+    {/*<ActivityCalendar className="mb-5 mt-4 mx-auto" />*/}
 
     <LogFunctionalList
-      className="mb-5"
+      className="mt-4 mb-5"
       name={props.name}
       url={props.url}
-      customDefinition={[
-        /*{
-          name: 'workspace',
-          type: 'workspace',
-          label: trans('workspace'),
-          displayable: isEmpty(this.props.contextId),
-          displayed: isEmpty(this.props.contextId)
-        }, {
-          name: 'resource',
-          type: 'resource',
-          label: trans('resource'),
-          displayed: true
-        }*/
-      ]}
     />
-
-    {/*<Button
-      className="btn btn-link w-100 mt-3"
-      type={CALLBACK_BUTTON}
-      label={trans('Voir plus d\'activités')}
-      callback={() => true}
-    />*/}
   </>
 
 Activity.propTypes = {
