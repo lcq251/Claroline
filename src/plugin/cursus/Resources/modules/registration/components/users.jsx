@@ -30,6 +30,16 @@ const RegistrationUsers = (props) =>
           options: {time: true},
           displayed: true
         }, {
+          name: 'user.groups',
+          type: 'group',
+          label: trans('group', {}, 'community'),
+          displayable: false,
+          filterable: true,
+          sortable: false,
+          options: {
+            multiple: true
+          }
+        }, {
           name: 'user.disabled',
           label: trans('user_disabled', {}, 'community'),
           type: 'boolean',

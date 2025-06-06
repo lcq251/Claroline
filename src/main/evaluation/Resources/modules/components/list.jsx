@@ -23,6 +23,16 @@ const EvaluationList = (props) => {
           primary: true,
           order: 1
         }, {
+          name: 'user.groups',
+          type: 'group',
+          label: trans('group', {}, 'community'),
+          displayable: false,
+          filterable: true,
+          sortable: false,
+          options: {
+            multiple: true
+          }
+        }, {
           name: 'startedAt',
           label: trans('start_date'),
           type: 'date',

@@ -60,12 +60,8 @@ const UserEditorOverview = () => {
               }
             }, {
               name: 'meta.description',
-              type: 'string',
-              label: trans('À propos de moi'),
-              options: {
-                long: true,
-                minRows: 2
-              }
+              type: 'html',
+              label: trans('about_me')
             }/*, {
               name: 'public',
               type: 'boolean',

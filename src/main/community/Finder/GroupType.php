@@ -4,9 +4,11 @@ namespace Claroline\CommunityBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CoreBundle\Entity\Group;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupType extends AbstractType
@@ -27,6 +29,13 @@ class GroupType extends AbstractType
             ->add('description', TextType::class)
             ->add('organization', OrganizationType::class)
         ;
+    }
+
+    public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
+    {
+        if ($finder->getSortValue()) {
+            $queryBuilder->addOrderBy("{$finder->getQueryPath()}.name", $finder->getSortValue());
+        }
     }
 
     public function getParent(): ?string

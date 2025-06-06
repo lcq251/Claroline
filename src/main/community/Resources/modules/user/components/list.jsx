@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 import omit from 'lodash/omit'
 
@@ -15,17 +15,20 @@ import {UserAvatar} from '#/main/app/user/components/avatar'
 import {UserCard} from '#/main/community/user/components/card'
 import {UserStatus} from '#/main/app/user/components/status'
 
-const Users = (props) => {
+const UserList = (props) => {
+  const dispatch = useDispatch()
+  const currentUser = useSelector(securitySelectors.currentUser)
+
   const usersRefresher = {
-    add:    () => props.invalidate(props.name),
-    update: () => props.invalidate(props.name),
-    delete: () => props.invalidate(props.name)
+    add:    () => dispatch(listActions.invalidateData(props.name)),
+    update: () => dispatch(listActions.invalidateData(props.name)),
+    delete: () => dispatch(listActions.invalidateData(props.name))
   }
 
   return (
     <ListData
-      primaryAction={(row) => getDefaultAction(row, usersRefresher, props.path, props.currentUser)}
-      actions={(rows) => getActions(rows, usersRefresher, props.path, props.currentUser).then((actions) => [].concat(actions, props.customActions(rows)))}
+      primaryAction={(row) => getDefaultAction(row, usersRefresher, props.path, currentUser)}
+      actions={(rows) => getActions(rows, usersRefresher, props.path, currentUser).then((actions) => [].concat(actions, props.customActions(rows)))}
       definition={[
         {
           name: 'username',
@@ -115,7 +118,7 @@ const Users = (props) => {
   )
 }
 
-Users.propTypes = {
+UserList.propTypes = {
   path: T.string,
   currentUser: T.object,
   name: T.string.isRequired,
@@ -124,26 +127,14 @@ Users.propTypes = {
   customDefinition: T.arrayOf(T.shape({
     // data list prop types
   })),
-  customActions: T.func,
-  invalidate: T.func.isRequired
+  customActions: T.func
 }
 
-Users.defaultProps = {
+UserList.defaultProps = {
   autoload: true,
   customDefinition: [],
   customActions: () => []
 }
-
-const UserList = connect(
-  (state) => ({
-    currentUser: securitySelectors.currentUser(state)
-  }),
-  dispatch => ({
-    invalidate(name) {
-      dispatch(listActions.invalidateData(name))
-    }
-  })
-)(Users)
 
 export {
   UserList

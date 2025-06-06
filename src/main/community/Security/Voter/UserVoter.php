@@ -130,7 +130,7 @@ class UserVoter extends AbstractRoleSubjectVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        // allow creation for self registration
+        // allow creation for self-registration
         if ($this->config->getParameter('registration.self')) {
             $defaultRole = $this->config->getParameter('registration.default_role');
 

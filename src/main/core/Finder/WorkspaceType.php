@@ -4,6 +4,7 @@ namespace Claroline\CoreBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
@@ -14,6 +15,7 @@ use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CommunityBundle\Finder\OrganizationType;
 use Claroline\CommunityBundle\Finder\RoleType;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WorkspaceType extends AbstractType
@@ -43,6 +45,13 @@ class WorkspaceType extends AbstractType
             ->add('updatedAt', DateType::class)
             ->add('roles', RoleType::class)
         ;
+    }
+
+    public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
+    {
+        if ($finder->getSortValue()) {
+            $queryBuilder->addOrderBy("{$finder->getQueryPath()}.name", $finder->getSortValue());
+        }
     }
 
     public function getParent(): ?string

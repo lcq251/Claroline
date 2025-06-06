@@ -19,6 +19,7 @@ const EvaluationDashboardEvaluations = () => {
 
   const path = useSelector(toolSelectors.path)
   const currentUser = useSelector(securitySelectors.currentUser)
+  const contextType = useSelector(toolSelectors.contextType)
   const contextId = useSelector(toolSelectors.contextId)
   const hasScore = useSelector(selectors.hasScore)
   const totalScore = useSelector(selectors.totalScore)
@@ -41,17 +42,18 @@ const EvaluationDashboardEvaluations = () => {
           url={['apiv2_workspace_evaluation_list', {workspace: contextId}]}
           primaryAction="open"
           actions={(rows) => getActions(rows, evaluationsRefresher, path, currentUser, true)}
-          customDefinition={[
+          customDefinition={'desktop' === contextType ? [
             {
               name: 'workspace',
               type: 'workspace',
               label: trans('workspace'),
-              displayable: !contextId,
-              displayed: !contextId,
-              filterable: false,
+              displayable: true,
+              displayed: true,
+              filterable: true,
+              sortable: true,
               order: 2
             }
-          ]}
+          ] : []}
           card={EvaluationWorkspaceCard}
           hasScore={hasScore}
           totalScore={totalScore}
