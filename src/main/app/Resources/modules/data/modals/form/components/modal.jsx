@@ -17,7 +17,7 @@ import {
 import {FormContent} from '#/main/app/content/form/containers/content'
 
 const FormModal = (props) => {
-  // append form reducer to the store if not already mounted
+  // append the form reducer to the store if it is not already mounted
   const reducer = useMemo(() => makeFormReducer(props.name), [props.name])
   useReducer(props.name, reducer)
 
@@ -37,9 +37,14 @@ const FormModal = (props) => {
   const save = useCallback((target) => {
     setSaving(true)
     return dispatch(formActions.save(props.name, target)).then(
-      () => setSaving(false),
       (response) => {
         setSaving(false)
+
+        return Promise.resolve(response)
+      },
+      (response) => {
+        setSaving(false)
+
         return Promise.reject(response)
       }
     )
@@ -54,7 +59,6 @@ const FormModal = (props) => {
       onEnter={() => reset(props.data, props.isNew)}
       scrollable={true}
       centered={true}
-      // closeButton={false}
       backdrop={hasPendingChanges ? 'static' : true}
     >
       <Form

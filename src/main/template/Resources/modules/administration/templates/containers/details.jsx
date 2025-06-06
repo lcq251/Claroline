@@ -13,9 +13,10 @@ const TemplateDetails = connect(
     templates: selectors.templates(state)
   }),
   (dispatch) => ({
-    newTemplate() {
-      dispatch(actions.newTemplate())
-    },loadTemplate(template) {
+    addTemplate(template) {
+      dispatch(actions.addTemplate(template))
+    },
+    loadTemplate(template) {
       dispatch(actions.loadTemplate(template))
     },
     deleteTemplate(templateTypeId, templateId) {

@@ -18,7 +18,7 @@ const Form = connect(
 
     let errors = selectors.errors(formState)
     if (ownProps.dataPart) {
-      // just select what is related to the managed data part
+      // select what is related to the managed data part
       errors = get(errors, ownProps.dataPart)
     }
 
@@ -97,7 +97,7 @@ Form.propTypes = {
   name: T.string.isRequired,
 
   /**
-   * Permits to connect the form on a sub-part of the data.
+   * Permits to connect the form on a subpart of the data.
    * This is useful when the form is broken in multiple steps/pages
    *
    * It MUST be a valid lodash/get selector.
@@ -105,7 +105,7 @@ Form.propTypes = {
   dataPart: T.string,
 
   /**
-   * Do we need to show the form buttons ?
+   * Do we need to show the form buttons?
    */
   buttons: T.bool,
 
@@ -113,7 +113,7 @@ Form.propTypes = {
    * The API target of the Form (only used if props.buttons === true).
    *
    * NB. It can be a route definition or a function to calculate the final route.
-   * If a function is provided it's called with the current data & new flag as param.
+   * If a function is provided, it's called with the current data & new flag as param.
    */
   target: T.oneOfType([T.string, T.array, T.func]),
 

@@ -1,10 +1,12 @@
+import cloneDeep from 'lodash/cloneDeep'
+
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {makeReducer, combineReducers} from '#/main/app/store/reducer'
 import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 
 import {TOOL_LOAD} from '#/main/core/tool/store/actions'
 import {selectors} from '#/main/template/administration/templates/store/selectors'
-import {TEMPLATE_TYPE_LOAD} from '#/main/template/administration/templates/store/actions'
+import {TEMPLATE_TYPE_LOAD, TEMPLATE_ADD} from '#/main/template/administration/templates/store/actions'
 
 const reducer = combineReducers({
   templateTypes: makeReducer({}, {
@@ -13,8 +15,14 @@ const reducer = combineReducers({
   current: makeReducer(null, {
     [TEMPLATE_TYPE_LOAD]: (state, action) => action.templateType
   }),
-  templates: makeReducer(false, {
-    [TEMPLATE_TYPE_LOAD]: (state, action) => action.templates
+  templates: makeReducer([], {
+    [TEMPLATE_TYPE_LOAD]: (state, action) => action.templates,
+    [TEMPLATE_ADD]: (state, action) => {
+      const newState = cloneDeep(state)
+      newState.push(action.template)
+
+      return newState
+    }
   }),
   template: makeFormReducer(selectors.STORE_NAME + '.template')
 })

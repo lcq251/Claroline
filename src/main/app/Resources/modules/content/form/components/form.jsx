@@ -60,7 +60,7 @@ class Form extends Component {
   }
 
   componentWillUnmount() {
-    // if client route has changed, it will not trigger before unload
+    // if the client route has changed, it will not trigger before unload
     window.removeEventListener('beforeunload', this.warnPendingChanges)
   }
 
@@ -71,7 +71,7 @@ class Form extends Component {
       >
         {this.props.children}
 
-        {(this.props.save || this.props.cancel) &&
+        {(this.props.save || this.props.cancel) && !this.props.disabled &&
           <FormSave
             pendingChanges={this.props.pendingChanges}
             errors={this.props.errors}
@@ -88,7 +88,7 @@ Form.propTypes = {
   id: T.string,
   className: T.string,
   /**
-   * Is the form embed into another ?
+   * Is the form embed into another?
    *
    * Permits to know if we use a <form> or a <fieldset> tag.
    */

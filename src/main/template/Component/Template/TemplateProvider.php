@@ -12,7 +12,7 @@ use Claroline\TemplateBundle\Entity\Template;
 /**
  * Aggregates all the templates defined in the Claroline app.
  *
- * A template MUST :
+ * A template MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.template".
  *   - implement the TemplateTypeInterface interface.
  */
@@ -90,7 +90,7 @@ class TemplateProvider extends AbstractComponentProvider
             $content = $template->getTemplateContent($locale);
         }
 
-        // template for the requested locale does not exist. Try with platform default locale
+        // The template for the requested locale does not exist. Try with platform default locale
         $defaultLocale = $this->localeManager->getDefault();
         if (empty($content) && $locale !== $defaultLocale) {
             $content = $template->getTemplateContent($defaultLocale);

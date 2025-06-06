@@ -5,12 +5,13 @@ import {actions as formActions} from '#/main/app/content/form/store'
 import {selectors} from '#/main/template/administration/templates/store/selectors'
 
 export const TEMPLATE_TYPE_LOAD = 'TEMPLATE_TYPE_LOAD'
+export const TEMPLATE_ADD = 'TEMPLATE_ADD'
 
 const actions = {}
 
 actions.loadTemplateType = makeActionCreator(TEMPLATE_TYPE_LOAD, 'templateType', 'templates')
+actions.addTemplate = makeActionCreator(TEMPLATE_ADD, 'template')
 actions.loadTemplate = (template) => formActions.resetForm(selectors.STORE_NAME + '.template', template, false)
-actions.newTemplate = () => formActions.resetForm(selectors.STORE_NAME + '.template', {}, true)
 
 actions.open = (type = null) => (dispatch) => {
   if (type) {

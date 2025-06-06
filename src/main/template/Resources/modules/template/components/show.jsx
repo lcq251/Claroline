@@ -1,6 +1,7 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
 import {selectors} from '#/main/template/administration/templates/store'
@@ -10,6 +11,7 @@ import {Form} from '#/main/app/content/form'
 import {FormFieldset} from '#/main/app/content/form/containers/fieldset'
 
 import {Template} from '#/main/template/prop-types'
+import {Alert} from '#/main/app/components/alert'
 
 const TemplateShow = (props) => {
   const currentLocale = useSelector(selectors.currentLocale)
@@ -25,30 +27,33 @@ const TemplateShow = (props) => {
         ['apiv2_template_create'] :
         ['apiv2_template_update', {id: template.id}]
       }
+      disabled={get(props.template, 'system', false)}
     >
       <Tabs
+        className="mb-n4"
         defaultActiveKey={currentLocale}
       >
         {locales.map(locale =>
           <Tab
-            className="coucou"
             key={locale}
             eventKey={locale}
             title={
               <>
-                <CountryFlag countryCode={'en' === locale ? 'gb' : locale} className="icon-with-text-right" />
+                <CountryFlag countryCode={'en' === locale ? 'gb' : locale} className="me-2" />
                 {trans(locale)}
               </>
             }
           >
-            <div className="mt-4 mb-5">
+            <div className="data-form-section">
               <FormFieldset
                 name={selectors.STORE_NAME + '.template'}
+                disabled={get(props.template, 'system', false)}
                 fields={[
                   {
                     name: `contents.${locale}.title`,
                     type: 'string',
-                    label: trans('title')
+                    label: trans('title'),
+                    recommended: true
                   }, {
                     name: `contents.${locale}.content`,
                     type: 'html',
@@ -75,11 +80,11 @@ const TemplateShow = (props) => {
             </>
           }
         >
-          <div className="alert alert-info mt-4">
+          <Alert type="info">
             {trans('placeholders_info', {}, 'template')}
-          </div>
+          </Alert>
 
-          <table className="table table-striped table-hover mb-5">
+          <table className="table table-striped table-hover">
             <thead>
               <tr>
                 <th>{trans('parameter')}</th>

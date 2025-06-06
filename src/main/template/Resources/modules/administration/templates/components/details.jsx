@@ -5,13 +5,14 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
-import {CALLBACK_BUTTON, MenuButton} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MenuButton, MODAL_BUTTON} from '#/main/app/buttons'
+import {Badge} from '#/main/app/components/badge'
 import {PageContent, PageHeading, PageHeadingSkeleton, PageSection} from '#/main/app/page'
 import {ToolPage} from '#/main/core/tool'
 
 import {TemplateShow} from '#/main/template/template/components/show'
 import {Template, TemplateType} from '#/main/template/prop-types'
-import {Badge} from '#/main/app/components/badge'
+import {MODAL_TEMPLATE_FORM} from '#/main/template/template/modals/form'
 
 const TemplateDetails = (props) => {
   return (
@@ -61,7 +62,23 @@ const TemplateDetails = (props) => {
                     children: template.description ?
                       <p className={classes('mb-0 fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{template.description}</p> :
                       <em className={classes('d-block fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{trans('no_description')}</em>
-                  }))
+                  })).concat([
+                    {
+                      name: 'new',
+                      type: MODAL_BUTTON,
+                      icon: 'fa fa-fw fa-plus',
+                      label: trans('add_template', {}, 'template'),
+                      modal: [MODAL_TEMPLATE_FORM, {
+                        isNew: true,
+                        template: {type: get(props.templateType, 'name')},
+                        onSave: (template) => {
+                          console.log(template)
+                          props.addTemplate(template)
+                          props.loadTemplate(template)
+                        }
+                      }]
+                    }
+                  ])
                 }}
               >
                 <div role="presentation">
@@ -101,7 +118,7 @@ TemplateDetails.propTypes = {
     Template.propTypes
   ),
   templates: T.array,
-  newTemplate: T.func.isRequired,
+  addTemplate: T.func.isRequired,
   loadTemplate: T.func.isRequired
 }
 
