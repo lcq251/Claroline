@@ -17,7 +17,7 @@ const QuizEditorAppearance = () =>
         hideTitle: true,
         fields: [
           {
-            name: 'resource.display.showOverview',
+            name: 'resource.parameters.showOverview',
             type: 'boolean',
             label: trans('show_overview', {}, 'quiz'),
             help: trans('show_overview_help', {}, 'quiz')

@@ -110,7 +110,7 @@ class ExerciseSerializer
             'maxAttempts' => $exercise->getMaxAttempts(),
             'showFeedback' => $exercise->getShowFeedback(),
             'progressionDisplayed' => $exercise->isProgressionDisplayed(),
-            'timeLimited' => $exercise->isTimeLimited(), // todo : remove me
+            'timeLimited' => $exercise->isTimeLimited(), // deprecated
             'duration' => $exercise->getDuration(),
             'anonymizeAttempts' => $exercise->getAnonymizeAttempts(),
             'interruptible' => $exercise->isInterruptible(),
