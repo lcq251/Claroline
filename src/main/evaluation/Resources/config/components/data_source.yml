@@ -1,0 +1,24 @@
+services:
+  Claroline\EvaluationBundle\Component\DataSource\ResourceAttemptsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\EvaluationBundle\Component\DataSource\ResourceEvaluationsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\EvaluationBundle\Component\DataSource\MyResourceEvaluationsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+
+  Claroline\EvaluationBundle\Component\DataSource\WorkspaceEvaluationsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\EvaluationBundle\Component\DataSource\MyWorkspaceEvaluationsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'

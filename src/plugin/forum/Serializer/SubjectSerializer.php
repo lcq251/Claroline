@@ -3,7 +3,7 @@
 namespace Claroline\ForumBundle\Serializer;
 
 use Claroline\AppBundle\API\FinderProvider;
-use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
@@ -61,6 +61,12 @@ class SubjectSerializer
             'first' => true,
         ]);
 
+        $count = $this->messageRepo->count([
+            'subject' => $subject,
+            'parent' => null,
+            'first' => false,
+        ]);
+
         return [
             'id' => $subject->getUuid(),
             'forum' => [
@@ -72,11 +78,10 @@ class SubjectSerializer
             'tags' => $this->serializeTags($subject),
             'meta' => [
                 'views' => $subject->getViewCount(),
-                // don't use Finder in a Serializer
-                'messages' => $this->finder->fetch(Message::class, ['subject' => $subject->getUuid(), 'first' => false, 'parent' => null], null, 0, 0, true),
-                'creator' => !empty($subject->getCreator()) ? $this->userSerializer->serialize($subject->getCreator(), [Options::SERIALIZE_MINIMAL]) : null,
-                'created' => DateNormalizer::normalize($subject->getCreationDate()),
-                'updated' => DateNormalizer::normalize($subject->getModificationDate()),
+                'messages' => $count,
+                'creator' => !empty($subject->getCreator()) ? $this->userSerializer->serialize($subject->getCreator(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
+                'created' => DateNormalizer::normalize($subject->getCreatedAt()),
+                'updated' => DateNormalizer::normalize($subject->getUpdatedAt()),
                 'sticky' => $subject->isSticked(),
                 'closed' => $subject->isClosed(),
                 'flagged' => $subject->isFlagged(),
@@ -94,7 +99,7 @@ class SubjectSerializer
             'first' => true,
         ]);
 
-        if (!in_array(Options::REFRESH_UUID, $options)) {
+        if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {
             $this->sipe('id', 'setUuid', $data, $subject);
         }
 
@@ -115,8 +120,12 @@ class SubjectSerializer
         }
 
         if (isset($data['meta'])) {
+            if (isset($data['meta']['created'])) {
+                $subject->setCreatedAt(DateNormalizer::denormalize($data['meta']['updated']));
+            }
+
             if (isset($data['meta']['updated'])) {
-                $subject->setModificationDate(DateNormalizer::denormalize($data['meta']['updated']));
+                $subject->setUpdatedAt(DateNormalizer::denormalize($data['meta']['updated']));
             }
 
             if (isset($data['meta']['creator'])) {

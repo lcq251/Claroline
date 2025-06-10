@@ -11,23 +11,22 @@
 
 namespace Claroline\SchedulerBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Claroline\SchedulerBundle\Repository\ScheduledTaskRepository;
-use Doctrine\DBAL\Types\Types;
-use DateTimeInterface;
-use DateTime;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Name;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\SchedulerBundle\Repository\ScheduledTaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_scheduled_task')]
 #[ORM\Entity(repositoryClass: ScheduledTaskRepository::class)]
-class ScheduledTask
+class ScheduledTask implements CrudEntityInterface
 {
     use Id;
     use Name;
@@ -36,115 +35,89 @@ class ScheduledTask
     /**
      * The task will be executed only once.
      */
-    const ONCE = 'once';
+    public const ONCE = 'once';
 
     /**
      * The task will be executed multiple times at the defined interval.
      */
-    const RECURRING = 'recurring';
+    public const RECURRING = 'recurring';
 
     /**
      * The task is waiting for execution.
      */
-    const PENDING = 'pending';
+    public const PENDING = 'pending';
 
     /**
      * The task is currently executed.
      */
-    const IN_PROGRESS = 'in_progress';
+    public const IN_PROGRESS = 'in_progress';
 
     /**
      * The task has been executed without errors.
      */
-    const SUCCESS = 'success';
+    public const SUCCESS = 'success';
 
     /**
      * The task has failed due to some errors.
      */
-    const ERROR = 'error';
+    public const ERROR = 'error';
 
     #[ORM\Column(name: 'task_action')]
-    private $action;
+    private ?string $action = null;
 
     #[ORM\Column(name: 'execution_type')]
-    private $executionType = 'once';
+    private string $executionType = self::ONCE;
 
-    /**
-     * @var DateTimeInterface
-     */
     #[ORM\Column(name: 'scheduled_date', type: Types::DATETIME_MUTABLE)]
-    private $scheduledDate;
+    private ?\DateTimeInterface $scheduledDate = null;
 
-    /**
-     * @var DateTimeInterface
-     */
     #[ORM\Column(name: 'execution_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private $executionDate = null;
+    private ?\DateTimeInterface $executionDate = null;
 
     /**
-     * For recurring execution only, define interval (in days) between each recurring execution.
-     *
-     *
-     * @var int
+     * For recurring execution only, define an interval (in days) between each recurring execution.
      */
     #[ORM\Column(name: 'execution_interval', type: Types::INTEGER, nullable: true)]
-    private $executionInterval = null;
+    private ?int $executionInterval = null;
 
     /**
      * For recurring execution only, define when we will need to stop replaying the task.
-     *
-     *
-     * @var DateTimeInterface
      */
     #[ORM\Column(name: 'end_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private $endDate = null;
+    private ?\DateTimeInterface $endDate = null;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(name: 'execution_status', nullable: true)]
-    private $status = self::PENDING;
+    private ?string $status = self::PENDING;
 
     /**
-     * The UUID of the object which have generated the task (eg. an announcement id, an import/export id).
-     *
-     *
-     * @var string
+     * The UUID of the object which have generated the task (e.g., an announcement id, an import/export id).
      */
     #[ORM\Column(name: 'parent_id', type: Types::STRING, nullable: true)]
-    private $parentId;
+    private ?string $parentId;
 
     #[ORM\Column(name: 'task_data', type: Types::JSON, nullable: true)]
-    private $data;
+    private ?array $data = [];
 
     /**
-     *
      * @var Collection<int, User>
      *
      * @deprecated
      */
+    #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinTable(name: 'claro_scheduled_task_users')]
     #[ORM\JoinColumn(name: 'scheduled_task_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $users;
 
     /**
-     *
-     * @var Group
-     *
      * @deprecated
      */
-    #[ORM\JoinColumn(name: 'group_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'group_id', nullable: true, onDelete: 'SET NULL')]
     private ?Group $group = null;
 
-    /**
-     *
-     * @var Workspace
-     */
-    #[ORM\JoinColumn(name: 'workspace_id', nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Workspace::class)]
+    #[ORM\JoinColumn(name: 'workspace_id', nullable: true, onDelete: 'SET NULL')]
     private ?Workspace $workspace = null;
 
     public function __construct()
@@ -154,12 +127,17 @@ class ScheduledTask
         $this->users = new ArrayCollection();
     }
 
+    public static function getIdentifiers(): array
+    {
+        return [];
+    }
+
     public function getAction(): ?string
     {
         return $this->action;
     }
 
-    public function setAction(string $action)
+    public function setAction(string $action): void
     {
         $this->action = $action;
     }
@@ -169,27 +147,27 @@ class ScheduledTask
         return $this->executionType;
     }
 
-    public function setExecutionType(string $type)
+    public function setExecutionType(string $type): void
     {
         $this->executionType = $type;
     }
 
-    public function getScheduledDate(): ?DateTimeInterface
+    public function getScheduledDate(): ?\DateTimeInterface
     {
         return $this->scheduledDate;
     }
 
-    public function setScheduledDate(DateTimeInterface $scheduledDate)
+    public function setScheduledDate(\DateTimeInterface $scheduledDate): void
     {
         $this->scheduledDate = clone $scheduledDate;
     }
 
-    public function getExecutionDate(): ?DateTimeInterface
+    public function getExecutionDate(): ?\DateTimeInterface
     {
         return $this->executionDate;
     }
 
-    public function setExecutionDate(?DateTimeInterface $executionDate = null)
+    public function setExecutionDate(?\DateTimeInterface $executionDate = null): void
     {
         $this->executionDate = $executionDate ? clone $executionDate : null;
     }
@@ -199,17 +177,17 @@ class ScheduledTask
         return $this->executionInterval;
     }
 
-    public function setExecutionInterval(?int $executionInterval = null)
+    public function setExecutionInterval(?int $executionInterval = null): void
     {
         $this->executionInterval = $executionInterval;
     }
 
-    public function setEndDate(?DateTimeInterface $endDate = null)
+    public function setEndDate(?\DateTimeInterface $endDate = null): void
     {
         $this->endDate = $endDate ? clone $endDate : null;
     }
 
-    public function getEndDate(): ?DateTimeInterface
+    public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;
     }
@@ -219,7 +197,7 @@ class ScheduledTask
         return $this->status;
     }
 
-    public function setStatus(string $status)
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
@@ -229,7 +207,7 @@ class ScheduledTask
         return $this->workspace;
     }
 
-    public function setWorkspace(?Workspace $workspace = null)
+    public function setWorkspace(?Workspace $workspace = null): void
     {
         $this->workspace = $workspace;
     }
@@ -239,60 +217,51 @@ class ScheduledTask
         return $this->parentId;
     }
 
-    public function setParentId(?string $parentId = null)
+    public function setParentId(?string $parentId = null): void
     {
         $this->parentId = $parentId;
     }
 
-    public function getData()
+    public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function setData($data)
+    public function setData(?array $data = null): void
     {
         $this->data = $data;
     }
 
-    public function getUsers()
+    public function getUsers(): array
     {
         return $this->users->toArray();
     }
 
-    public function addUser(User $user)
+    public function addUser(User $user): void
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
         }
-
-        return $this;
     }
 
-    public function removeUser(User $user)
+    public function removeUser(User $user): void
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
-
-        return $this;
     }
 
-    public function emptyUsers()
+    public function emptyUsers(): void
     {
         $this->users->clear();
     }
 
-    /**
-     * Get group.
-     *
-     * @return Group
-     */
-    public function getGroup()
+    public function getGroup(): ?Group
     {
         return $this->group;
     }
 
-    public function setGroup(Group $group = null)
+    public function setGroup(Group $group = null): void
     {
         $this->group = $group;
     }

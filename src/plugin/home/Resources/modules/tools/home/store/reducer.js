@@ -18,6 +18,7 @@ import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
 
 const reducer = combineReducers({
   currentTabId: makeReducer(null, {
+    [CONTEXT_OPEN]: () => null,
     [TOOL_OPEN]: () => null,
     [CURRENT_TAB]: (state, action) => action.tab
   }),
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   }),
 
   loaded: makeReducer(false, {
+    [CONTEXT_OPEN]: () => false,
     [SECURITY_USER_CHANGE]: () => false,
     [TAB_LOAD]: () => true,
     [TAB_SET_LOADED]: (state, action) => action.loaded

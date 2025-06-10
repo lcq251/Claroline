@@ -11,11 +11,14 @@
 
 namespace Claroline\ForumBundle\Entity;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Creator;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
+use Claroline\ForumBundle\Finder\MessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,7 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_forum_message')]
 #[ORM\Entity]
-class Message
+#[CrudEntity(finderClass: MessageType::class)]
+class Message implements CrudEntityInterface
 {
     use Id;
     use Uuid;
@@ -62,6 +66,11 @@ class Message
         $this->updatedAt = new \DateTime();
 
         $this->children = new ArrayCollection();
+    }
+
+    public static function getIdentifiers(): array
+    {
+        return [];
     }
 
     public function setContent(?string $content): void

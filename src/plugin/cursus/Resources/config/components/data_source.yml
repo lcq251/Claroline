@@ -1,0 +1,37 @@
+services:
+  Claroline\CursusBundle\Component\DataSource\CoursesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\CursusBundle\Component\DataSource\EventPresencesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+  Claroline\CursusBundle\Component\DataSource\EventsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\CursusBundle\Component\DataSource\MyEventPresencesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+      - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+  Claroline\CursusBundle\Component\DataSource\MyEventsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+
+  Claroline\CursusBundle\Component\DataSource\MySessionsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+
+  Claroline\CursusBundle\Component\DataSource\SessionsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]

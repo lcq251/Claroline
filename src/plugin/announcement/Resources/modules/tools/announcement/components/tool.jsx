@@ -1,14 +1,11 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import merge from 'lodash/merge'
 
-import {makeId} from '#/main/app/utils/id'
 import {Tool} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {AnnouncementEditor} from '#/plugin/announcement/tools/announcement/components/editor'
 import {AnnouncementList} from '#/plugin/announcement/tools/announcement/components/list'
-import {AnnounceForm} from '#/plugin/announcement/tools/announcement/components/announce-form'
 import {AnnouncementPost} from '#/plugin/announcement/tools/announcement/containers/post'
 
 const AnnouncementTool = (props) =>
@@ -21,21 +18,11 @@ const AnnouncementTool = (props) =>
         exact: true,
         component: AnnouncementList
       }, {
-        path: '/add',
-        component: AnnounceForm,
-        onEnter: () => props.resetForm(merge({}, AnnouncementTypes.defaultProps, {
-          id: makeId()
-        }), true)
-      }, {
         path: '/:id',
         component: AnnouncementPost,
         exact: true,
         onEnter: (params) => props.openDetail(params.id),
         onLeave: props.resetDetail
-      }, {
-        path: '/:id/edit',
-        component: AnnounceForm,
-        onEnter: (params) => props.resetForm(props.posts.find(post => post.id === params.id))
       }
     ]}
   />

@@ -1,0 +1,21 @@
+services:
+  Claroline\CoreBundle\Component\DataSource\WorkspacesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\CoreBundle\Component\DataSource\MyWorkspacesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+
+  Claroline\CoreBundle\Component\DataSource\ResourcesList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\CoreBundle\Component\DataSource\ToolsList:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'
+      - '@Claroline\AppBundle\Component\Context\ContextProvider'

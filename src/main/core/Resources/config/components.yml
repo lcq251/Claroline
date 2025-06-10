@@ -1,5 +1,6 @@
 imports:
     - { resource: components/context.yml }
     - { resource: components/log.yml }
+    - { resource: components/data_source.yml }
     - { resource: components/template.yml }
     - { resource: components/tool.yml }

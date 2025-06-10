@@ -12,6 +12,7 @@
 namespace Claroline\CursusBundle\Controller;
 
 use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Manager\PdfManager;
@@ -143,12 +144,14 @@ class EventController extends AbstractCrudController
         $user = $this->tokenStorage->getToken()?->getUser();
         $registration = [];
         if ($user instanceof User) {
-            $registration = [
-                'users' => $this->crud->list(EventUser::class, ['filters' => [
-                    'user' => $user->getUuid(),
-                    'event' => $sessionEvent->getUuid(),
-                ]])['data'],
-            ];
+            $userRegistration = $this->om->getRepository(EventUser::class)->findOneBy([
+                'user' => $user,
+                'event' => $sessionEvent,
+            ]);
+
+            if ($userRegistration) {
+                $registration = ['users' => [$this->serializer->serialize($userRegistration)]];
+            }
         }
 
         return new JsonResponse([
@@ -223,38 +226,17 @@ class EventController extends AbstractCrudController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Event $sessionEvent,
         string $type,
-        Request $request
-    ): JsonResponse {
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $sessionEvent, [], true);
 
-        $params = $request->query->all();
+        $users = $this->crud->search(EventUser::class, $finderQuery->addFilters([
+            'type' => $type,
+            'event' => $sessionEvent->getUuid(),
+        ]), [SerializerInterface::SERIALIZE_LIST]);
 
-        if (!isset($params['hiddenFilters'])) {
-            $params['hiddenFilters'] = [];
-        }
-        $params['hiddenFilters']['event'] = $sessionEvent->getUuid();
-        $params['hiddenFilters']['type'] = $type;
-
-        // only list participants of the same organization
-        if (EventUser::LEARNER === $type && !$this->authorization->isGranted('ROLE_ADMIN')) {
-            /** @var User $user */
-            $user = $this->tokenStorage->getToken()?->getUser();
-
-            // filter by organizations
-            if ($user instanceof User) {
-                $organizations = $user->getOrganizations();
-            } else {
-                $organizations = $this->om->getRepository(Organization::class)->findBy(['default' => true]);
-            }
-
-            $params['hiddenFilters']['organizations'] = array_map(function (Organization $organization) {
-                return $organization->getUuid();
-            }, $organizations);
-        }
-
-        return new JsonResponse(
-            $this->crud->list(EventUser::class, $params)
-        );
+        return $users->toResponse();
     }
 
     #[Route(path: '/{id}/users/{type}', name: 'add_users', methods: ['PATCH'])]

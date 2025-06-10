@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 
 class ScheduledTaskRepository extends EntityRepository
 {
-    public function findTasksToExecute()
+    public function findTasksToExecute(): array
     {
         return $this->getEntityManager()
             ->createQuery('

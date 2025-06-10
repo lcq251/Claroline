@@ -3,7 +3,7 @@ import {URL_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl/translation'
 import {route} from '#/main/core/resource/routing'
 
-import {AnnouncementCard} from '#/plugin/announcement/data/components/announcement-card'
+import {AnnouncementCard} from '#/plugin/announcement/announcement/components/card'
 
 export default {
   name: 'announcements',

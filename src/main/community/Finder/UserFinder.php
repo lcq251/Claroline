@@ -18,6 +18,9 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class UserFinder extends AbstractFinder
 {
     public static function getClass(): string

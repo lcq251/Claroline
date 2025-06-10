@@ -30,6 +30,7 @@ use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\SessionManager;
+use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -119,21 +120,17 @@ class SessionController extends AbstractCrudController
     public function listCanceledAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Course $course,
-        Request $request
-    ): JsonResponse {
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('EDIT', $course, [], true);
 
-        $filters = $request->query->all();
-        $filters['hiddenFilters'] = $filters['hiddenFilters'] ?? [];
+        $finderQuery->addFilter('course', $course->getUuid());
+        $finderQuery->addFilter('canceled', true);
 
-        $filters['hiddenFilters'] = array_merge($filters['hiddenFilters'], [
-            'course' => $course->getUuid(),
-            'canceled' => true,
-        ]);
+        $sessions = $this->crud->search(Session::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-        return new JsonResponse(
-            $this->crud->list(Session::class, $filters)
-        );
+        return $sessions->toResponse();
     }
 
     #[Route(path: '/cancel', name: 'cancel', methods: ['POST'])]

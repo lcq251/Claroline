@@ -88,7 +88,6 @@ class AnnouncementSerializer
 
         $announce->setTitle($data['title']);
         $announce->setContent($data['content']);
-        $announce->setAnnouncer($data['meta']['author']);
 
         if (isset($data['meta']) && !empty($data['meta']['creator'])) {
             /** @var User $creator */
@@ -96,14 +95,16 @@ class AnnouncementSerializer
             $announce->setCreator($creator);
         }
 
-        // calculate visibility restrictions
-        $announce->setVisible(!$data['restrictions']['hidden']);
+        if (isset($data['restrictions'])) {
+            // calculate visibility restrictions
+            $announce->setVisible(!$data['restrictions']['hidden']);
 
-        if (isset($data['restrictions']['dates'])) {
-            $dateRange = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
+            if (isset($data['restrictions']['dates'])) {
+                $dateRange = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
 
-            $announce->setVisibleFrom($dateRange[0]);
-            $announce->setVisibleUntil($dateRange[1]);
+                $announce->setVisibleFrom($dateRange[0]);
+                $announce->setVisibleUntil($dateRange[1]);
+            }
         }
 
         // calculate publication date

@@ -7,13 +7,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ExecuteScheduledTaskEvent extends Event
 {
-    /** @var ScheduledTask */
-    private $task;
+    private ScheduledTask $task;
 
-    /** @var string */
-    private $status = ScheduledTask::SUCCESS;
-
-    private $errors;
+    private string $status = ScheduledTask::SUCCESS;
 
     public function __construct(ScheduledTask $task)
     {
@@ -30,18 +26,8 @@ class ExecuteScheduledTaskEvent extends Event
         return $this->status;
     }
 
-    public function setStatus(string $status)
+    public function setStatus(string $status): void
     {
         $this->status = $status;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    public function setErrors($errors)
-    {
-        $this->errors = $errors;
     }
 }

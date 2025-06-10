@@ -1,0 +1,4 @@
+services:
+  Claroline\ForumBundle\Component\DataSource\ForumMessageSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]

@@ -19,13 +19,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class ScheduledTaskManager
 {
-    /** @var ObjectManager */
-    private $om;
-    /** @var MessageBusInterface */
-    private $messageBus;
-
-    /** @var ScheduledTaskRepository */
-    private $repository;
+    private ObjectManager $om;
+    private MessageBusInterface $messageBus;
+    private ScheduledTaskRepository $repository;
 
     public function __construct(
         ObjectManager $om,
@@ -37,7 +33,7 @@ class ScheduledTaskManager
         $this->repository = $om->getRepository(ScheduledTask::class);
     }
 
-    public function execute(ScheduledTask $scheduledTask)
+    public function execute(ScheduledTask $scheduledTask): void
     {
         $scheduledTask->setStatus(ScheduledTask::IN_PROGRESS);
         $this->om->persist($scheduledTask);
@@ -50,7 +46,7 @@ class ScheduledTaskManager
     /**
      * Flags a ScheduledTask as executed.
      */
-    public function markAsExecuted(ScheduledTask $task, string $status)
+    public function markAsExecuted(ScheduledTask $task, string $status): void
     {
         $task->setExecutionDate(new \DateTime());
         $task->setStatus($status);
@@ -68,10 +64,8 @@ class ScheduledTaskManager
 
     /**
      * Retrieves the list of ScheduledTasks to execute.
-     *
-     * @return array
      */
-    public function getTasksToExecute()
+    public function getTasksToExecute(): array
     {
         return $this->repository->findTasksToExecute();
     }

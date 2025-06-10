@@ -29,6 +29,7 @@ class SubjectSubscriber implements EventSubscriberInterface
         return [
             CrudEvents::getEventName(CrudEvents::PRE_CREATE, Subject::class) => 'preCreate',
             CrudEvents::getEventName(CrudEvents::POST_CREATE, Subject::class) => 'postCreate',
+            CrudEvents::getEventName(CrudEvents::PRE_UPDATE, Subject::class) => 'preUpdate',
             CrudEvents::getEventName(CrudEvents::POST_UPDATE, Subject::class) => 'postUpdate',
             CrudEvents::getEventName(CrudEvents::POST_DELETE, Subject::class) => 'postDelete',
         ];
@@ -38,6 +39,8 @@ class SubjectSubscriber implements EventSubscriberInterface
     {
         /** @var Subject $subject */
         $subject = $event->getObject();
+        $subject->setCreatedAt(new \DateTime());
+        $subject->setUpdatedAt(new \DateTime());
 
         if (empty($subject->getCreator())) {
             $subject->setCreator($this->tokenStorage->getToken()?->getUser());
@@ -58,10 +61,18 @@ class SubjectSubscriber implements EventSubscriberInterface
 
         $message = $subject->getFirstMessage();
         if ($message) {
-            // hacky : when we are in a flushSuite (e.g. copy), the messenger will fail because the message does not exist
+            // hacky: when we are in a flushSuite (e.g., copy), the messenger will fail because the message does not exist
             $this->om->forceFlush();
             $this->messageBus->dispatch(new NotifyUsersOnMessageCreated($message->getId()));
         }
+    }
+
+    public function preUpdate(UpdateEvent $event): void
+    {
+        /** @var Subject $subject */
+        $subject = $event->getObject();
+
+        $subject->setUpdatedAt(new \DateTime());
     }
 
     public function postUpdate(UpdateEvent $event): void

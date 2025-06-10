@@ -1,5 +1,6 @@
 imports:
     - { resource: components/badge.yml }
+    - { resource: components/data_source.yml }
     - { resource: components/importer.yml }
     - { resource: components/log.yml }
     - { resource: components/template.yml }

@@ -1,4 +1,4 @@
-# Declares all services required for the management of Claroline Components (e.g. tools, resources, widgets).
+# Declare all services required for the management of Claroline Components (e.g., tools, resources, widgets).
 services:
     # Contexts
     Claroline\AppBundle\Component\Context\ContextProvider:
@@ -48,3 +48,6 @@ services:
 
     Claroline\AppBundle\Component\DataSource\ListSourceComponent:
         abstract: true
+        calls:
+            - setFinder: [ '@Claroline\AppBundle\API\Finder\FinderFactory' ]
+            - setSerializer: [ '@Claroline\AppBundle\API\SerializerProvider' ]

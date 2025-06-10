@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Aggregates all the resources defined in the Claroline app.
  *
- * A resource MUST :
+ * A resource MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.resource".
  *   - implement the ResourceInterface interface (or the ResourceComponent class).
  */
@@ -33,14 +33,6 @@ class ResourceProvider extends AbstractComponentProvider
     protected function getRegisteredComponents(): iterable
     {
         return $this->registeredResources;
-    }
-
-    public function open()
-    {
-    }
-
-    public function create()
-    {
     }
 
     public function fromUrl(string $url): ?array
@@ -97,13 +89,13 @@ class ResourceProvider extends AbstractComponentProvider
             return null;
         }
 
-        // clean up filename to generate the resource name
+        // clean filename to generate the resource name
         $extension = pathinfo($file->getClientOriginalName() ?: $file->getFilename(), PATHINFO_EXTENSION);
         $resourceName = str_replace('.'.$extension, '', $file->getClientOriginalName() ?: $file->getFilename());
         $resourceName = str_replace('_', ' ', $resourceName);
         $resourceName = ucfirst($resourceName);
 
-        // move file in temp to reuse it when the user will create the resource
+        // move the file in temp to reuse it when the user will create the resource
         $tempName = $this->tempFileManager->copy($file, true);
 
         return array_merge([

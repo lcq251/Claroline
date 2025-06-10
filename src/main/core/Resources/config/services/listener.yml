@@ -1,42 +1,4 @@
 services:
-    Claroline\CoreBundle\Listener\DataSource\Workspace\AllSource:
-        arguments:
-            - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\API\FinderProvider'
-        tags:
-            - { name: kernel.event_listener, event: data_source.workspaces.load, method: getData }
-
-    Claroline\CoreBundle\Listener\DataSource\Workspace\RegisteredSource:
-        arguments:
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\API\FinderProvider'
-        tags:
-            - { name: kernel.event_listener, event: data_source.my_workspaces.load, method: getData }
-
-    Claroline\CoreBundle\Listener\DataSource\AdminToolSource:
-        arguments:
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@security.token_storage'
-        tags:
-            - { name: kernel.event_listener, event: data_source.admin_tools.load, method: getData }
-
-    Claroline\CoreBundle\Listener\DataSource\ResourceSource:
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@security.token_storage'
-        tags:
-            - { name: kernel.event_listener, event: data_source.resources.load, method: getData }
-
-    Claroline\CoreBundle\Listener\DataSource\ToolSource:
-        arguments:
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@security.token_storage'
-            - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
-        tags:
-            - { name: kernel.event_listener, event: data_source.tools.load, method: getData }
 
     Claroline\CoreBundle\Listener\Resource\Types\DirectoryListener:
         tags: ['claroline.component.resource', 'kernel.event_subscriber']

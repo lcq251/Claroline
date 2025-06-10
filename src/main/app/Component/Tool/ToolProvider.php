@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Aggregates all the tools defined in the Claroline app.
  *
- * A tool MUST :
+ * A tool MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.tool".
  *   - implement the ToolInterface interface (or the AbstractTool class in most cases).
  */
@@ -95,7 +95,7 @@ class ToolProvider extends AbstractComponentProvider
 
         $orderedTool = $this->orderedToolRepo->findOneByNameAndContext($toolName, $context, $contextSubject?->getContextIdentifier());
         if (empty($orderedTool)) {
-            // tool is not enabled in the context
+            // the tool is not enabled in the context
             throw new \RuntimeException(sprintf('Tool "%s" is not enabled for the context "%s(%s)".', $toolName, $context, $contextSubject?->getContextIdentifier() ?? ''));
         }
 
@@ -121,7 +121,7 @@ class ToolProvider extends AbstractComponentProvider
         $openResponse = $toolHandler->open($orderedTool, $context, $contextSubject) ?? [];
 
         // dispatch open event to let the app know a tool has been opened
-        // this is useful for side effects or to let others plugins integrates with the tool (e.g. IntegrationTool is extensible by plugins).
+        // this is useful for side effects or to let other plugins integrate with the tool (e.g., IntegrationTool is extensible by plugins).
         $openEvent = new OpenToolEvent($toolName, $context, $contextSubject);
         $this->eventDispatcher->dispatch($openEvent, ToolEvents::OPEN);
 
@@ -156,7 +156,7 @@ class ToolProvider extends AbstractComponentProvider
         /** @var ToolInterface $toolHandler */
         $toolHandler = $this->getComponent($toolName);
 
-        // create new tool and link it to the context
+        // create a new tool and link it to the context
         $orderedTool = new OrderedTool();
         $orderedTool->setContextName($context);
         if ($contextSubject) {

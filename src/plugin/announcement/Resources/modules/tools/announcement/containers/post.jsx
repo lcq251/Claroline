@@ -10,7 +10,6 @@ const AnnouncementPost = connect(
   state => ({
     path: toolSelectors.path(state),
     announcement: selectors.detail(state),
-    workspaceRoles: selectors.workspaceRoles(state),
     editable: hasPermission('edit', toolSelectors.toolData(state))
   }),
   dispatch => ({

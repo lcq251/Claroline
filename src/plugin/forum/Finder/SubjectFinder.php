@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\ForumBundle\Entity\Subject;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class SubjectFinder extends AbstractFinder
 {
     public static function getClass(): string

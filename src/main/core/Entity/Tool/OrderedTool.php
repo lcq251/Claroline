@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Entity\Tool;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Hidden;
 use Claroline\AppBundle\Entity\Display\Order;
@@ -19,6 +20,7 @@ use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\HasContext;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\CoreBundle\Finder\ToolType;
 use Claroline\CoreBundle\Repository\Tool\OrderedToolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,6 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_ordered_tool')]
 #[ORM\Entity(repositoryClass: OrderedToolRepository::class)]
 #[ORM\UniqueConstraint(name: 'context_unique_tool', columns: ['tool_name', 'context_name', 'context_id'])]
+#[CrudEntity(finderClass: ToolType::class)]
 class OrderedTool implements CrudEntityInterface
 {
     use Id;

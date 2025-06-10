@@ -5,6 +5,9 @@ services:
     Claroline\CursusBundle\Finder\EventType:
         tags: [ claroline.finder.type ]
 
+    Claroline\CursusBundle\Finder\EventPresenceType:
+        tags: [ claroline.finder.type ]
+
     Claroline\CursusBundle\Finder\SessionType:
         tags: [ claroline.finder.type ]
 

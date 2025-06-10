@@ -17,12 +17,12 @@ import {selectors} from '#/plugin/announcement/tools/announcement/modals/sending
 
 const SendingModal = (props) =>
   <Modal
-    {...omit(props, 'announcement', 'workspace', 'workspaceRoles', 'formData', 'send', 'reset', 'update', 'updateReceivers')}
+    {...omit(props, 'announcement', 'workspace', 'formData', 'send', 'reset', 'update', 'updateReceivers')}
     title={trans('announcement_sending', {}, 'announcement')}
     subtitle={props.announcement.title}
     icon="fa fa-fw fa-paper-plane"
     size="lg"
-    onEnter={() => props.reset(props.announcement, props.workspaceRoles)}
+    onEnter={() => props.reset(props.announcement, [])}
   >
     <FormData
       flush={true}
@@ -129,7 +129,6 @@ SendingModal.propTypes = {
   workspace: T.shape({
     id: T.string
   }).isRequired,
-  workspaceRoles: T.array,
   formData: T.object,
   reset: T.func.isRequired,
   update: T.func.isRequired,

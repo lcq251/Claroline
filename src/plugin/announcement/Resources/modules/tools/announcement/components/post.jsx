@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import get from 'lodash/get'
 
@@ -13,8 +14,11 @@ import {ToolPage} from '#/main/core/tool'
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
 import {MODAL_ANNOUNCEMENT_SENDING} from '#/plugin/announcement/tools/announcement/modals/sending'
 import {PageToolbar, PageToolbarSkeleton} from '#/main/app/page/components/toolbar'
+import {MODAL_ANNOUNCEMENT_FORM} from '#/plugin/announcement/announcement/modals/form'
+import {actions} from '#/plugin/announcement/tools/announcement/store'
 
 const AnnouncementPost = (props) => {
+  const dispatch = useDispatch()
   const history = useHistory()
 
   return (
@@ -39,11 +43,17 @@ const AnnouncementPost = (props) => {
             actions={[
               {
                 name: 'edit',
-                type: LINK_BUTTON,
+                type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-pencil',
                 label: trans('edit', {}, 'actions'),
                 target: `${props.path}/${props.announcement.id}/edit`,
-                displayed: props.editable
+                displayed: props.editable,
+                modal: [MODAL_ANNOUNCEMENT_FORM, {
+                  announcement: props.announcement,
+                  onSave: (announcement) => {
+                    dispatch(actions.changeAnnounce(announcement))
+                  }
+                }]
               }, {
                 name: 'download',
                 type: CALLBACK_BUTTON,
@@ -57,8 +67,7 @@ const AnnouncementPost = (props) => {
                 label: trans('send', {}, 'actions'),
                 target: `${props.path}/${props.announcement.id}/send`,
                 modal: [MODAL_ANNOUNCEMENT_SENDING, {
-                  announcement: props.announcement,
-                  workspaceRoles: props.workspaceRoles
+                  announcement: props.announcement
                 }],
                 displayed: props.editable
               }, {
@@ -113,7 +122,6 @@ AnnouncementPost.propTypes = {
   announcement: T.shape(
     AnnouncementTypes.propTypes
   ).isRequired,
-  workspaceRoles: T.array,
   exportPDF: T.func.isRequired,
   remove: T.func.isRequired
 }

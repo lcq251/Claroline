@@ -39,7 +39,7 @@ const RoleFormModal = (props) =>
             options: {
               long: true
             }
-          },
+          }
         ]
       }
     ]}

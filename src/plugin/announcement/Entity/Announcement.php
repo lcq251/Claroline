@@ -13,6 +13,7 @@ namespace Claroline\AnnouncementBundle\Entity;
 
 use Claroline\AnnouncementBundle\Finder\AnnouncementType;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -28,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_announcement')]
 #[ORM\Entity]
 #[CrudEntity(finderClass: AnnouncementType::class)]
-class Announcement
+class Announcement implements CrudEntityInterface
 {
     use Id;
     use Uuid;
@@ -42,6 +43,9 @@ class Announcement
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    /**
+     * @deprecated
+     */
     #[ORM\Column(nullable: true)]
     private ?string $announcer = null;
 
@@ -79,6 +83,11 @@ class Announcement
         $this->roles = new ArrayCollection();
     }
 
+    public static function getIdentifiers(): array
+    {
+        return [];
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -99,11 +108,17 @@ class Announcement
         $this->content = $content;
     }
 
+    /**
+     * @deprecated
+     */
     public function getAnnouncer(): ?string
     {
         return $this->announcer;
     }
 
+    /**
+     * @deprecated
+     */
     public function setAnnouncer(?string $announcer): void
     {
         $this->announcer = $announcer;

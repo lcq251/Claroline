@@ -1,0 +1,37 @@
+services:
+    Claroline\CommunityBundle\Component\DataSource\UsersList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+
+    Claroline\CommunityBundle\Component\DataSource\TeamsList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+
+    Claroline\CommunityBundle\Component\DataSource\MyTeamsList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+
+    Claroline\CommunityBundle\Component\DataSource\GroupsList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+
+    Claroline\CommunityBundle\Component\DataSource\MyGroupsList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+        arguments:
+
+    Claroline\CommunityBundle\Component\DataSource\RolesList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+
+    Claroline\CommunityBundle\Component\DataSource\MyRolesList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+        arguments:
+
+    Claroline\CommunityBundle\Component\DataSource\TeamMembersList:
+        parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+        tags: [ 'claroline.component.data_source' ]
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\CommunityBundle\Manager\TeamManager'

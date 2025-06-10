@@ -40,30 +40,11 @@ class DataSourceManager
      *
      * @return array
      */
-    public function getAvailable($context = null)
+    public function getAvailable(?string $context = null): array
     {
         $enabledPlugins = $this->pluginManager->getEnabled();
 
         return $this->dataSourceRepository->findAllAvailable($enabledPlugins, $context);
-    }
-
-    /**
-     * Checks if a data source exists and is available for the given context.
-     */
-    public function check(string $type, string $context): bool
-    {
-        /** @var DataSource $dataSource */
-        $dataSource = $this->dataSourceRepository->findOneBy(['name' => $type]);
-        if (!$dataSource) {
-            // unknown data source
-            return false;
-        }
-
-        if (!in_array($context, $dataSource->getContext())) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

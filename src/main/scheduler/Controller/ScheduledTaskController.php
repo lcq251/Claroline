@@ -39,7 +39,7 @@ class ScheduledTaskController extends AbstractCrudController
 
     /**
      * Manually execute a list of scheduled tasks.
-     * If no ids is passed, it will execute all eligible tasks.
+     * If no ids are passed, it will execute all eligible tasks.
      */
     #[Route(path: '/execute', name: 'execute', methods: ['POST'])]
     public function executeAction(Request $request): JsonResponse

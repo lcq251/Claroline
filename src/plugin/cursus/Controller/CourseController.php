@@ -118,19 +118,17 @@ class CourseController extends AbstractCrudController
     }
 
     #[Route(path: '/list/existing', name: 'list_existing', methods: ['GET'])]
-    public function listNoWorkspaceAction(Request $request): JsonResponse
-    {
+    public function listNoWorkspaceAction(
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        $filters = array_merge($request->query->all(), [
-            'hiddenFilters' => array_merge($this->getDefaultHiddenFilters(), [
-                'workspace' => null,
-            ]),
-        ]);
+        $courses = $this->crud->search(Course::class, $finderQuery->addFilters([
+            'workspace' => null,
+        ]), [SerializerInterface::SERIALIZE_LIST]);
 
-        $list = $this->crud->list(Course::class, $filters, $this->getOptions()['list']);
-
-        return new JsonResponse($list);
+        return $courses->toResponse();
     }
 
     #[Route(path: '/archive', name: 'archive', methods: ['POST'])]
@@ -311,26 +309,17 @@ class CourseController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/sessions', name: 'list_sessions', methods: ['GET'])]
-    public function listSessionsAction(#[MapEntity(mapping: ['id' => 'uuid'])] Course $course, Request $request): JsonResponse
-    {
+    public function listSessionsAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])] Course $course,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $course, [], true);
 
-        $params = $request->query->all();
+        $finderQuery->addFilter('course', $course->getUuid());
+        $sessions = $this->crud->search(Session::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-        if (!isset($params['hiddenFilters'])) {
-            $params['hiddenFilters'] = [];
-        }
-        $params['hiddenFilters']['course'] = $course->getUuid();
-        $params['hiddenFilters']['canceled'] = false;
-
-        // hide hidden sessions for non admin
-        if (!$this->checkToolAccess('EDIT')) {
-            $params['hiddenFilters']['hidden'] = false;
-        }
-
-        return new JsonResponse(
-            $this->crud->list(Session::class, $params)
-        );
+        return $sessions->toResponse();
     }
 
     #[Route(path: '/{id}/self/register', name: 'self_register', methods: ['PUT'])]

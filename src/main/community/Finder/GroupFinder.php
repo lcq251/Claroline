@@ -17,6 +17,9 @@ use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class GroupFinder extends AbstractFinder
 {
     public static function getClass(): string

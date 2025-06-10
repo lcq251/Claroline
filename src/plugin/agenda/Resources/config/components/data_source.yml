@@ -1,0 +1,8 @@
+services:
+  Claroline\AgendaBundle\Component\DataSource\EventSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\AgendaBundle\Component\DataSource\TaskSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]

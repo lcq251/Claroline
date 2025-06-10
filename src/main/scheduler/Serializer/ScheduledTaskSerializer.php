@@ -18,28 +18,15 @@ class ScheduledTaskSerializer
 {
     use SerializerTrait;
 
-    /** @var AuthorizationCheckerInterface */
-    private $authorization;
-    /** @var ObjectManager */
-    private $om;
-    /** @var WorkspaceSerializer */
-    private $workspaceSerializer;
-    /** @var UserSerializer */
-    private $userSerializer;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorization,
-        ObjectManager $om,
-        WorkspaceSerializer $workspaceSerializer,
-        UserSerializer $userSerializer
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly ObjectManager $om,
+        private readonly WorkspaceSerializer $workspaceSerializer,
+        private readonly UserSerializer $userSerializer
     ) {
-        $this->authorization = $authorization;
-        $this->om = $om;
-        $this->workspaceSerializer = $workspaceSerializer;
-        $this->userSerializer = $userSerializer;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'scheduled_task';
     }

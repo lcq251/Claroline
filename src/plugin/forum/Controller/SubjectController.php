@@ -2,6 +2,8 @@
 
 namespace Claroline\ForumBundle\Controller;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\ForumBundle\Entity\Message;
@@ -9,6 +11,8 @@ use Claroline\ForumBundle\Entity\Subject;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -39,18 +43,20 @@ class SubjectController extends AbstractCrudController
 
     #[Route(path: '/{id}/messages', name: 'get_messages', methods: ['GET'])]
     public function listMessagesAction(
-        Request $request,
         #[MapEntity(mapping: ['id' => 'uuid'])]
-        Subject $subject
-    ): JsonResponse {
+        Subject $subject,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $subject, [], true);
 
-        return new JsonResponse(
-            $this->crud->list(Message::class, array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['subject' => $subject->getUuid(), 'parent' => null, 'first' => false]]
-            ))
-        );
+        $finderQuery->addFilter('subject', $subject->getUuid());
+        $finderQuery->addFilter('parent', null);
+        $finderQuery->addFilter('first', false);
+
+        $subjects = $this->crud->search(Message::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $subjects->toResponse();
     }
 
     #[Route(path: '/{id}/message', name: 'create_message', methods: ['POST', 'PUT'])]

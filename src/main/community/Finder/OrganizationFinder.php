@@ -20,6 +20,9 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @deprecated
+ */
 class OrganizationFinder extends AbstractFinder
 {
     public function __construct(

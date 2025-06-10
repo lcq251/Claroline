@@ -27,7 +27,6 @@ use Claroline\OpenBadgeBundle\Manager\AssertionManager;
 use Claroline\OpenBadgeBundle\Manager\BadgeManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -112,22 +111,21 @@ class AssertionController extends AbstractCrudController
 
     #[Route(path: '/{assertion}/evidences', name: 'evidences', methods: ['GET'])]
     public function listEvidencesAction(
-        Request $request,
         #[MapEntity(mapping: ['assertion' => 'uuid'])]
-        Assertion $assertion
-    ): JsonResponse {
+        Assertion $assertion,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $assertion, [], true);
 
-        return new JsonResponse(
-            $this->crud->list(Evidence::class, array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['assertion' => $assertion->getUuid()]]
-            ))
-        );
+        $finderQuery->addFilter('assertion', $assertion->getUuid());
+        $evidences = $this->crud->search(Evidence::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $evidences->toResponse();
     }
 
     /**
-     * Downloads pdf version of assertion.
+     * Downloads a PDF version of assertion.
      */
     #[Route(path: '/{assertion}/pdf', name: 'pdf_download', methods: ['GET'])]
     public function downloadPdfAction(

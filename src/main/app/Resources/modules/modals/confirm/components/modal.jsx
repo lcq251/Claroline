@@ -23,7 +23,7 @@ const ConfirmModal = (props) =>
         {props.question || trans('action_confirm_message')}
       </Html>
 
-      {props.items && 1 < props.items.length &&
+      {props.items && 0 < props.items.length &&
         <ul className="list-group list-group-flush border-top border-bottom mt-4">
           {props.items.map((item) =>
             <li key={item.id} className="list-group-item px-0">

@@ -1,0 +1,6 @@
+services:
+  Claroline\AnnouncementBundle\Component\DataSource\AnnouncementSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'

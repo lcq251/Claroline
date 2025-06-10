@@ -11,11 +11,6 @@ services:
         arguments:
             - '@security.token_storage'
 
-    Claroline\AuthenticationBundle\Subscriber\DataSource\MyTokensSource:
-        arguments:
-            - '@Claroline\AppBundle\API\FinderProvider'
-            - '@security.token_storage'
-
     Claroline\AuthenticationBundle\Subscriber\RefreshTokenSubscriber:
         arguments:
             - '@Claroline\AuthenticationBundle\Security\Authentication\Authenticator'

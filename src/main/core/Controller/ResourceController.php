@@ -37,7 +37,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Manages platform resources.
- * ATTENTION. be careful if you change routes order.
+ * ATTENTION. Be careful if you change routes order.
  */
 #[Route(path: '/resources')]
 class ResourceController

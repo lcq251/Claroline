@@ -6,7 +6,7 @@ interface FinderInterface
 {
     /**
      * Returns the local name of the property that the finder is mapped.
-     * Attention : this name MAY NOT be unique in the Finder tree {@see getAlias()}.
+     * Attention: this name MAY NOT be unique in the Finder tree {@see getAlias()}.
      */
     public function getName(): string;
 

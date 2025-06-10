@@ -1,6 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Fade} from 'react-bootstrap'
 import classes from 'classnames'
 import get from 'lodash/get'
@@ -10,7 +10,7 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {getPlainText} from '#/main/app/data/types/html/utils'
 import {Datetime} from '#/main/app/components/date'
-import {LINK_BUTTON, LinkButton} from '#/main/app/buttons'
+import {LINK_BUTTON, LinkButton, MODAL_BUTTON} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 import {PageContent, PageSection} from '#/main/app/page'
 import {UserMicro} from '#/main/core/user/components/micro'
@@ -20,16 +20,18 @@ import {Html} from '#/main/app/components/html'
 import {Text} from '#/main/app/components/text'
 import {TextSkeleton} from '#/main/app/components/placeholder'
 import {DataMicro} from '#/main/app/data/components/micro'
+import {ButtonSticky} from '#/main/app/button'
+import {EmptyState} from '#/main/app/components/empty-state'
 import {selectors as contextSelectors} from '#/main/app/context'
 import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {Announcement as AnnouncementTypes} from '#/plugin/announcement/prop-types'
-import {selectors} from '#/plugin/announcement/tools/announcement/store'
-import {ButtonSticky} from '#/main/app/button'
-import {EmptyState} from '#/main/app/components/empty-state'
+import {actions, selectors} from '#/plugin/announcement/tools/announcement/store'
+
+import {MODAL_ANNOUNCEMENT_FORM} from '#/plugin/announcement/announcement/modals/form'
 
 const Announce = (props) =>
-  <Fade key={props.key} in={true} appear={true}>
+  <Fade in={true} appear={true}>
     <li className="d-flex flex-row gap-4 w-100 py-5">
       {(!props.loaded || props.announcement.poster) &&
         <Thumbnail
@@ -111,6 +113,8 @@ Announce.propTypes = {
 }
 
 const AnnouncementList = () => {
+  const dispatch = useDispatch()
+
   const contextPath = useSelector(contextSelectors.path)
   const toolPath = useSelector(toolSelectors.path)
   const loaded = useSelector(toolSelectors.loaded)
@@ -172,10 +176,16 @@ const AnnouncementList = () => {
           {0 !== posts.length && hasPermission('edit', tool) &&
             <ButtonSticky
               {...{
-                type: LINK_BUTTON,
+                type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 label: trans('add_announcement', {}, 'actions'),
-                target: `${toolPath}/add`
+                target: `${toolPath}/add`,
+                modal: [MODAL_ANNOUNCEMENT_FORM, {
+                  isNew: true,
+                  onSave: (announcement) => {
+                    dispatch(actions.addAnnounce(announcement))
+                  }
+                }]
               }}
             />
           }

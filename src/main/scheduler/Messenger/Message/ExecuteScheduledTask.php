@@ -15,7 +15,7 @@ use Claroline\AppBundle\Messenger\Message\AsyncLowMessageInterface;
 
 class ExecuteScheduledTask implements AsyncLowMessageInterface
 {
-    private $scheduledTaskId;
+    private int $scheduledTaskId;
 
     public function __construct(int $scheduledTaskId)
     {

@@ -32,7 +32,6 @@ class EventUserType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'choices' => [AbstractRegistration::LEARNER, AbstractRegistration::TUTOR],
             ])
-            // ->add('workspace', RelatedEntityType::class)
         ;
     }
 

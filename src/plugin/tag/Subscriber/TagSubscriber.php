@@ -20,9 +20,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TagSubscriber implements EventSubscriberInterface
 {
-    /**
-     * TagListener constructor.
-     */
     public function __construct(
         private readonly ObjectManager $om,
         private readonly TagManager $manager
@@ -35,7 +32,6 @@ class TagSubscriber implements EventSubscriberInterface
             'objects.search' => 'onSearchObjects',
             'claroline_tag_multiple_data' => 'onDataTag',
             'claroline_retrieve_used_tags_by_class_and_ids' => 'onRetrieveUsedTagsByClassAndIds',
-            'claroline_retrieve_used_tags_object_by_class_and_ids' => 'onRetrieveUsedTagsObjectByClassAndIds',
         ];
     }
 
@@ -59,7 +55,7 @@ class TagSubscriber implements EventSubscriberInterface
                 ->groupBy('to.objectId')
                 ->having('COUNT(to.id) = :expectedCount'); // this permits to make a AND between tags
 
-            // append sub query to the original one
+            // append subquery to the original one
             $queryBuilder = $event->getQueryBuilder();
             $queryBuilder->andWhere($queryBuilder->expr()->exists($tagQueryBuilder->getDql()))
                 ->setParameter('objectClass', $event->getObjectClass())
@@ -84,7 +80,7 @@ class TagSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Used by serializers to retrieves tags.
+     * Used by serializers to retrieve tags.
      */
     public function onRetrieveUsedTagsByClassAndIds(GenericDataEvent $event): void
     {
@@ -95,59 +91,12 @@ class TagSubscriber implements EventSubscriberInterface
             /** @var TaggedObject[] $taggedObjects */
             $taggedObjects = $this->manager->getTaggedObjects($data['class'], $data['ids']);
 
-            if (isset($data['frequency']) && $data['frequency']) {
-                // array [tagName => frequency]
-                foreach ($taggedObjects as $taggedObject) {
-                    $tag = $taggedObject->getTag();
-                    if (!array_key_exists($tag->getName(), $tags)) {
-                        $tags[$tag->getName()] = 0;
-                    }
-                    ++$tags[$tag->getName()];
-                }
-            } else {
-                // array [tagName]
-                foreach ($taggedObjects as $taggedObject) {
-                    $tag = $taggedObject->getTag();
-                    $tags[$tag->getId()] = $tag->getName();
-                }
-                $tags = array_values($tags);
+            // array [tagName]
+            foreach ($taggedObjects as $taggedObject) {
+                $tag = $taggedObject->getTag();
+                $tags[$tag->getId()] = $tag->getName();
             }
-        }
-        $event->setResponse($tags);
-    }
-
-    /**
-     * Used by serializers to retrieves tags object.
-     */
-    public function onRetrieveUsedTagsObjectByClassAndIds(GenericDataEvent $event): void
-    {
-        $tags = [];
-        $data = $event->getData();
-
-        if (is_array($data) && isset($data['class']) && !empty($data['ids'])) {
-            /** @var TaggedObject[] $taggedObjects */
-            $taggedObjects = $this->manager->getTaggedObjects($data['class'], $data['ids']);
-
-            if (isset($data['frequency']) && $data['frequency']) {
-                // array [tagName => frequency]
-                foreach ($taggedObjects as $taggedObject) {
-                    $tag = $taggedObject->getTag();
-                    if (!array_key_exists($tag->getName(), $tags)) {
-                        $tags[$tag->getName()] = 0;
-                    }
-                    ++$tags[$tag->getName()];
-                }
-            } else {
-                // array [tagName]
-                foreach ($taggedObjects as $taggedObject) {
-                    $tag = $taggedObject->getTag();
-                    $tags[$tag->getId()] = [
-                        'id' => $tag->getUuid(),
-                        'name' => $tag->getName(),
-                    ];
-                }
-                $tags = array_values($tags);
-            }
+            $tags = array_values($tags);
         }
         $event->setResponse($tags);
     }

@@ -1,0 +1,10 @@
+services:
+  Claroline\OpenBadgeBundle\Component\DataSource\BadgesSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+
+  Claroline\OpenBadgeBundle\Component\DataSource\MyBadgesSource:
+    parent: Claroline\AppBundle\Component\DataSource\ListSourceComponent
+    tags: [ 'claroline.component.data_source' ]
+    arguments:
+      - '@security.token_storage'

@@ -1,5 +1,6 @@
 {
   "add_announcement": "Poster une annonce",
   "create-announce": "Ajouter une annonce",
-  "send-announce": "Envoyer par message"
+  "send-announce": "Envoyer par message",
+  "save_announcement": "Enregistrer l'annonce"
 }

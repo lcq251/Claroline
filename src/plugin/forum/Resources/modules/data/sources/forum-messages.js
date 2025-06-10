@@ -25,14 +25,22 @@ export default {
         displayed: true
       }, {
         name: 'meta.created',
-        alias: 'creationDate',
+        alias: 'createdAt',
         type: 'date',
         label: trans('date'),
         displayed: true,
         options: {time: true}
       }, {
+        name: 'meta.updated',
+        alias: 'updatedAt',
+        type: 'date',
+        label: trans('last_modification'),
+        displayed: false,
+        options: {time: true}
+      }, {
         name: 'meta.creator',
         type: 'user',
+        alias: 'creator',
         label: trans('creator'),
         displayed: true
       }

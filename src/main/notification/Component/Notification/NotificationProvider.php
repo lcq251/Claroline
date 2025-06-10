@@ -7,7 +7,7 @@ use Claroline\AppBundle\Component\AbstractComponentProvider;
 /**
  * Aggregates all the notifications defined in the Claroline app.
  *
- * A log MUST :
+ * A log MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.notification".
  *   - implement the NotificationInterface interface (or the AbstractNotification class).
  */

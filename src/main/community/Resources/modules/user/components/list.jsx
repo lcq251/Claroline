@@ -92,7 +92,7 @@ const UserList = (props) => {
         }, {
           name: 'meta.created',
           type: 'date',
-          alias: 'created',
+          alias: 'createdAt',
           label: trans('creation_date'),
           filterable: true
         }, {

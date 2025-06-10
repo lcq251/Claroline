@@ -1,4 +1,10 @@
 services:
+    Claroline\ForumBundle\Finder\MessageType:
+        tags: [ claroline.finder.type ]
+
+    Claroline\ForumBundle\Finder\SubjectType:
+        tags: [ claroline.finder.type ]
+
     Claroline\ForumBundle\Finder\MessageFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]

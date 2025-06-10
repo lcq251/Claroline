@@ -85,6 +85,7 @@ const SubjectsList = (props) =>
         name: 'meta.updated',
         type: 'date',
         label: trans('last_modification'),
+        alias: 'updatedAt',
         displayed: true,
         filterable: false,
         sortable: false,

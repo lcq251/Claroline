@@ -2,6 +2,8 @@
 
 namespace Claroline\ForumBundle\Controller;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -11,6 +13,8 @@ use Claroline\ForumBundle\Manager\ForumManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -40,16 +44,16 @@ class ForumController extends AbstractCrudController
     public function listSubjectsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Forum $forum,
-        Request $request
-    ): JsonResponse {
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('OPEN', $forum->getResourceNode(), [], true);
 
-        return new JsonResponse(
-            $this->crud->list(Subject::class, array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['forum' => [$forum->getUuid()], 'moderation' => false]]
-            ))
-        );
+        $finderQuery->addFilter('forum', $forum->getUuid());
+
+        $subjects = $this->crud->search(Subject::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $subjects->toResponse();
     }
 
     #[Route(path: '/{id}/subject', name: 'create_subject', methods: ['POST', 'PUT'])]

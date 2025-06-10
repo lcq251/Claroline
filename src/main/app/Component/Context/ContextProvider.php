@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Aggregates all the contexts defined in the Claroline app.
  *
- * A context MUST :
+ * A context MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.context".
  *   - implement the ContextInterface interface (or the AbstractContext class).
  *

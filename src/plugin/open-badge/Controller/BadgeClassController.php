@@ -78,22 +78,22 @@ class BadgeClassController extends AbstractCrudController
 
     #[Route(path: '/{badge}/users', name: 'list_assertions', methods: ['GET'])]
     public function listUsersAction(
-        Request $request,
         #[MapEntity(mapping: ['badge' => 'uuid'])]
-        BadgeClass $badge
-    ): JsonResponse {
+        BadgeClass $badge,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         if ($badge->getHideRecipients()) {
             $this->checkPermission('GRANT', $badge, [], true);
         } else {
             $this->checkPermission('OPEN', $badge, [], true);
         }
 
-        return new JsonResponse(
-            $this->crud->list(Assertion::class, array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['badge' => $badge->getUuid(), 'revoked' => false]]
-            ))
-        );
+        $finderQuery->addFilter('badge', $badge->getUuid());
+
+        $assertions = $this->crud->search(Assertion::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $assertions->toResponse();
     }
 
     #[Route(path: '/{badge}/users/current', name: 'current_user', methods: ['GET'])]

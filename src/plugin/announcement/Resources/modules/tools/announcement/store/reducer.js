@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
-import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 import {TOOL_LOAD} from '#/main/core/tool/store'
 
 import {selectors} from '#/plugin/announcement/tools/announcement/store/selectors'
@@ -14,7 +14,6 @@ import {
   ANNOUNCE_CHANGE
 } from '#/plugin/announcement/tools/announcement/store/actions'
 import {CONTEXT_OPEN} from '#/main/app/context/store/actions'
-import isEmpty from 'lodash/isEmpty'
 
 const reducer = combineReducers({
   parameters: makeReducer(null, {
@@ -55,14 +54,9 @@ const reducer = combineReducers({
       return newState
     }
   }),
-  announcementForm: makeFormReducer(selectors.STORE_NAME+'.announcementForm'),
   announcementDetail: makeReducer(null, {
     [ANNOUNCE_DETAIL_OPEN]: (state, action) => action.announceId,
     [ANNOUNCE_DETAIL_RESET]: () => null
-  }),
-
-  workspaceRoles: makeReducer([], {
-    [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.workspaceRoles || state
   })
 })
 

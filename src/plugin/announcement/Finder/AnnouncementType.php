@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
+use Claroline\CommunityBundle\Finder\RoleType;
 use Claroline\CoreBundle\Finder\WorkspaceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,6 +29,7 @@ class AnnouncementType extends AbstractType
             ->add('content', TextType::class)
             ->add('creator', CreatorType::class)
             ->add('workspace', WorkspaceType::class)
+            ->add('roles', RoleType::class)
         ;
     }
 

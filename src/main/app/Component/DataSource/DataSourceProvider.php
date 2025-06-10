@@ -8,7 +8,7 @@ use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 /**
  * Aggregates all the data sources defined in the Claroline app.
  *
- * A data source MUST :
+ * A data source MUST:
  *   - be declared as a symfony service and tagged with "claroline.component.data_source".
  *   - implement the DataSourceInterface interface (or the AbstractDataSource class in most cases).
  */
@@ -51,12 +51,8 @@ class DataSourceProvider extends AbstractComponentProvider
         return $available;
     }
 
-    public function getDataSource(string $name, string $context, ContextSubjectInterface $contextSubject = null): void
+    public function getDataSource(string $name, string $context, ContextSubjectInterface $contextSubject = null): DataSourceInterface
     {
-    }
-
-    public function open(string $toolName, string $context, ContextSubjectInterface $contextSubject = null): void
-    {
-
+        return $this->getComponent($name);
     }
 }

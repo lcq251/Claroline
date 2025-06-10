@@ -2,6 +2,8 @@
 
 namespace Claroline\ForumBundle\Controller;
 
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\ForumBundle\Entity\Forum;
@@ -9,6 +11,8 @@ use Claroline\ForumBundle\Entity\Message;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -57,17 +61,18 @@ class MessageController extends AbstractCrudController
 
     #[Route(path: '/forum/{forum}/messages/list/flagged', name: 'flagged_list', methods: ['GET'])]
     public function listFlaggedAction(
-        Request $request,
         #[MapEntity(mapping: ['forum' => 'uuid'])]
-        Forum $forum
-    ): JsonResponse {
+        Forum $forum,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         $this->checkPermission('EDIT', $forum->getResourceNode(), [], true);
 
-        return new JsonResponse(
-            $this->crud->list(self::getClass(), array_merge(
-                $request->query->all(),
-                ['hiddenFilters' => ['flagged' => true, 'forum' => $forum->getUuid()]]
-            ))
-        );
+        $finderQuery->addFilter('forum', $forum->getUuid());
+        $finderQuery->addFilter('flagged', true);
+
+        $subjects = $this->crud->search(Message::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
+
+        return $subjects->toResponse();
     }
 }

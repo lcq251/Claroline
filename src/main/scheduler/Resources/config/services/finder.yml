@@ -1,4 +1,7 @@
 services:
+    Claroline\SchedulerBundle\Finder\ScheduledTaskType:
+        tags: [ claroline.finder.type ]
+
     Claroline\SchedulerBundle\Finder\ScheduledTaskFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]

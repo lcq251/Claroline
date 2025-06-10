@@ -43,17 +43,11 @@ const detail = createSelector(
   (posts, announcementDetail) => posts.find(post => post.id === announcementDetail)
 )
 
-const workspaceRoles = createSelector(
-  [tool],
-  (tool) => tool.workspaceRoles
-)
-
 export const selectors = {
   STORE_NAME,
   posts,
   sortedPosts,
   parameters,
   detail,
-  workspaceRoles,
   listFullContent
 }

@@ -68,6 +68,7 @@ export default (contextType, contextData, refresher, currentUser) => ({
       name: 'meta.creator',
       type: 'user',
       label: trans('creator'),
+      alias: 'creator',
       displayed: true
     }, {
       name: 'estimatedDuration',

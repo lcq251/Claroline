@@ -11,17 +11,20 @@
 
 namespace Claroline\OpenBadgeBundle\Entity;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
+use Claroline\OpenBadgeBundle\Finder\EvidenceType;
 use Claroline\OpenBadgeBundle\Repository\EvidenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro__open_badge_evidence')]
 #[ORM\Entity(repositoryClass: EvidenceRepository::class)]
+#[CrudEntity(finderClass: EvidenceType::class)]
 class Evidence
 {
     use Id;

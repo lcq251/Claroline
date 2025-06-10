@@ -8,6 +8,9 @@ services:
     Claroline\CoreBundle\Finder\ResourceNodeType:
         tags: [ claroline.finder.type ]
 
+    Claroline\CoreBundle\Finder\ToolType:
+        tags: [ claroline.finder.type ]
+
     Claroline\CoreBundle\Finder\WorkspaceType:
         tags: [ claroline.finder.type ]
 

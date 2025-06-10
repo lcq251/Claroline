@@ -11,7 +11,9 @@
 
 namespace Claroline\EvaluationBundle\Entity\UserEvaluation;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\EvaluationBundle\Finder\ResourceAttemptType;
 use Doctrine\DBAL\Types\Types;
 use Claroline\EvaluationBundle\Repository\UserEvaluation\ResourceAttemptRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Table(name: 'claro_resource_evaluation')]
 #[ORM\Entity(repositoryClass: ResourceAttemptRepository::class)]
+#[CrudEntity(finderClass: ResourceAttemptType::class)]
 class ResourceAttempt extends AbstractEvaluation
 {
     #[ORM\JoinColumn(name: 'resource_user_evaluation', onDelete: 'CASCADE')]

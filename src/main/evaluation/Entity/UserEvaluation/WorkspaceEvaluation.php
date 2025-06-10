@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_workspace_evaluation')]
 #[ORM\UniqueConstraint(name: 'workspace_user_evaluation', columns: ['workspace_id', 'user_id'])]
-#[ORM\Entity()]
+#[ORM\Entity]
 #[CrudEntity(finderClass: WorkspaceEvaluationType::class)]
 class WorkspaceEvaluation extends AbstractUserEvaluation
 {

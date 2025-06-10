@@ -15,6 +15,9 @@ use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class AnnouncementFinder extends AbstractFinder
 {
     public static function getClass(): string
