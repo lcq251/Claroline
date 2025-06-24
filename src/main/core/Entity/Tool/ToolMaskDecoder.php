@@ -22,11 +22,12 @@ class ToolMaskDecoder
 {
     use Id;
 
-    public const DEFAULT_ACTIONS = ['open', 'edit', 'administrate'];
+    public const DEFAULT_ACTIONS = ['open', 'follow', 'edit', 'administrate'];
     public const DEFAULT_VALUES = [
         'open' => 1,
         'edit' => 2,
         'administrate' => 4,
+        'follow' => 8,
     ];
 
     #[ORM\Column(type: Types::INTEGER)]

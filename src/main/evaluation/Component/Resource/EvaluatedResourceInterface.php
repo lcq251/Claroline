@@ -7,7 +7,4 @@ namespace Claroline\EvaluationBundle\Component\Resource;
  */
 interface EvaluatedResourceInterface
 {
-    // public static function supportsScore(): bool;
-    // public static function supportsAttempts(): bool;
-    // public static function supportsProgression(): bool;
 }

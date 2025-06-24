@@ -12,10 +12,12 @@ import {constants, declareAction} from '#/main/app/action'
  * Deletes some resource nodes.
  *
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
- * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
+ * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => {
   const processable = resourceNodes.filter(node => !isEmpty(node.parent) && hasPermission('administrate', node))
+
+  const archive = -1 === processable.findIndex(node => get(node, 'meta.active'))
 
   return {
     name: 'delete',
@@ -34,16 +36,13 @@ export default declareAction((resourceNodes, nodesRefresher) => {
       }))
     },
     request: {
-      url: url(
-        ['claro_resource_collection_action', {action: 'delete'}],
-        {
-          ids: processable.map(resourceNode => resourceNode.id),
-          //if selected nodes already are soft deleted
-          hard: -1 === processable.findIndex(node => get(node, 'meta.active'))
-        }
-      ),
+      url: archive ?
+        ['claro_resource_archive'] :
+        ['claro_resource_delete']
+      ,
       request: {
-        method: 'DELETE'
+        method: archive ? 'POST' : 'DELETE',
+        body: JSON.stringify(processable.map(resourceNode => resourceNode.id))
       },
       success: () => nodesRefresher.delete(processable)
     },

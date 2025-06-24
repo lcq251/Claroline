@@ -16,7 +16,7 @@ import {trans} from '#/main/app/intl'
 const SessionMain = (props) => {
   const contextType = useSelector(toolSelectors.contextType)
   const contextId = useSelector(toolSelectors.contextId)
-  const canRegister = useSelector(state => toolSelectors.hasPermission('register', state))
+  const canRegister = useSelector(state => toolSelectors.hasPermission('follow', state))
   const canCreateSession = useSelector(state => toolSelectors.hasPermission('edit', state))
 
   return (

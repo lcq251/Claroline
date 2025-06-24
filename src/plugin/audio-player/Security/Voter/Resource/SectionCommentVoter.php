@@ -43,7 +43,7 @@ class SectionCommentVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
     }
 
     private function checkEdit(TokenInterface $token, SectionComment $sectionComment): int

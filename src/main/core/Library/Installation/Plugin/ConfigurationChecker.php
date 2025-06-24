@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Library\Installation\Plugin;
 
-use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\Tool\Tool;
 use Claroline\CoreBundle\Entity\Widget\Widget;
@@ -25,7 +24,7 @@ use Symfony\Component\Yaml\Parser;
  */
 class ConfigurationChecker implements CheckerInterface
 {
-    private $processedConfiguration;
+    private array $processedConfiguration;
 
     public function __construct(
         private readonly Parser $yamlParser,
@@ -33,9 +32,6 @@ class ConfigurationChecker implements CheckerInterface
     ) {
     }
 
-    /**
-     * @todo Create dedicated repository methods to retrieve tool/type names
-     */
     public function check(PluginBundleInterface $plugin, ?bool $updateMode = false): array
     {
         if (!is_file($plugin->getConfigFile())) {
@@ -72,21 +68,6 @@ class ConfigurationChecker implements CheckerInterface
             $tools[] = sprintf('%s%s', $toolPlugin ? $toolPlugin->getBundleFQCN().'-' : '', $tool->getName());
         }
 
-        $resourceActions = [];
-
-        // required for update to claroline v10 because database not updated yet from older version
-        try {
-            $listResourceActions = $this->em
-                ->getRepository(MenuAction::class)
-                ->findBy(['resourceType' => null, 'isCustom' => true]);
-        } catch (\Exception $e) {
-            $listResourceActions = [];
-        }
-
-        foreach ($listResourceActions as $resourceAction) {
-            $resourceActions[] = $resourceAction->getName();
-        }
-
         $widgets = [];
         /** @var Widget[] $listWidget */
         $listWidget = $this->em
@@ -100,7 +81,7 @@ class ConfigurationChecker implements CheckerInterface
         }
 
         $processor = new Processor();
-        $configuration = new Configuration($plugin, $names, $tools, $resourceActions, $widgets);
+        $configuration = new Configuration($plugin, $names, $tools, $widgets);
         $configuration->setUpdateMode($updateMode);
 
         try {
@@ -114,7 +95,7 @@ class ConfigurationChecker implements CheckerInterface
         return [];
     }
 
-    public function getProcessedConfiguration()
+    public function getProcessedConfiguration(): array
     {
         return $this->processedConfiguration;
     }

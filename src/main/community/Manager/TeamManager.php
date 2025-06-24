@@ -164,7 +164,7 @@ class TeamManager
         $this->om->refresh($directory->getResourceNode());
 
         if (!is_null($resource)) {
-            $this->crud->copy($resource, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS], ['user' => $user, 'parent' => $directory->getResourceNode()]);
+            $this->crud->copy($resource, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS], ['parent' => $directory->getResourceNode()]);
         }
 
         return $directory;

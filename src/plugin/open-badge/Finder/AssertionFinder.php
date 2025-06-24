@@ -89,7 +89,7 @@ class AssertionFinder extends AbstractFinder
                     $qb->setParameter('user', $filterValue);
                     break;
                 case 'fromGrantableBadges':
-                    $grantDecoder = $this->toolMaskDecoderManager->getMaskDecoderByToolAndName(
+                    $grantDecoder = $this->toolMaskDecoderManager->getDecoder(
                         'badges',
                         'grant'
                     );

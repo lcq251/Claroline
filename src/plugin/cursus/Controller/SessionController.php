@@ -190,7 +190,7 @@ class SessionController extends AbstractCrudController
         string $type,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
+        $this->checkPermission('FOLLOW', $session, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
         $nbUsers = count($users);
@@ -214,7 +214,7 @@ class SessionController extends AbstractCrudController
         Session $session,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
+        $this->checkPermission('FOLLOW', $session, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
         $sessionUsers = $this->manager->addUsers($session, $users, AbstractRegistration::LEARNER, false);
@@ -272,7 +272,7 @@ class SessionController extends AbstractCrudController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Session $session
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
+        $this->checkPermission('FOLLOW', $session, [], true);
 
         $this->manager->inviteAllSessionLearners($session);
 
@@ -284,7 +284,7 @@ class SessionController extends AbstractCrudController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Session $session
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $session, [], true);
+        $this->checkPermission('FOLLOW', $session, [], true);
 
         $stats = $this->om->getRepository(Course::class)->getRegistrationStats($session->getCourse(), $session);
 

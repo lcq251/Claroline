@@ -17,4 +17,23 @@ export default declareTool(ExportTool, () => new CommandPalette('export')
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  export: {
+    order: 1,
+    actions: [
+      'Créer et administrer de nouveaux exports'
+    ]
+  },
+  follow: {
+    order: 5,
+    actions: [
+      'Relancer les exports'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Administrer tous les exports'
+    ]
+  },
+})

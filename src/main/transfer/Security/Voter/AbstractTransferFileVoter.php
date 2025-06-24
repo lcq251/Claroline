@@ -8,6 +8,6 @@ abstract class AbstractTransferFileVoter extends AbstractVoter
 {
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE];
+        return [self::OPEN, self::FOLLOW, self::CREATE, self::EDIT, self::DELETE];
     }
 }

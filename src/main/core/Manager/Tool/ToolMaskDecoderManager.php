@@ -41,24 +41,35 @@ class ToolMaskDecoderManager
     public function createDefaultToolMaskDecoders(string $toolName): void
     {
         foreach (ToolMaskDecoder::DEFAULT_ACTIONS as $action) {
-            $maskDecoder = $this->getMaskDecoderByToolAndName($toolName, $action);
-
+            $maskDecoder = $this->getDecoder($toolName, $action);
             if (empty($maskDecoder)) {
-                $maskDecoder = new ToolMaskDecoder();
-                $maskDecoder->setTool($toolName);
-                $maskDecoder->setName($action);
-                $maskDecoder->setValue(ToolMaskDecoder::DEFAULT_VALUES[$action]);
-
-                if (empty($this->maskDecoders[$toolName])) {
-                    $this->maskDecoders[$toolName] = [];
-                }
-                $this->maskDecoders[$toolName][] = $maskDecoder;
-
-                $this->om->persist($maskDecoder);
+                $this->createToolMaskDecoder($toolName, $action, ToolMaskDecoder::DEFAULT_VALUES[$action]);
             }
         }
+    }
 
-        $this->om->flush();
+    public function createCustomToolMaskDecoders(string $toolName, array $customRights): void
+    {
+        $decoders = $this->om->getRepository(ToolMaskDecoder::class)->findBy([
+            'tool' => $toolName,
+        ]);
+
+        $nb = count($decoders);
+        foreach ($customRights as $right) {
+            $maskDecoder = null;
+            foreach ($decoders as $decoder) {
+                if ($decoder->getName() === $right) {
+                    $maskDecoder = $decoder;
+                    break;
+                }
+            }
+
+            if (empty($maskDecoder)) {
+                $value = pow(2, $nb);
+                $this->createToolMaskDecoder($toolName, $right, $value);
+                ++$nb;
+            }
+        }
     }
 
     /**
@@ -80,14 +91,27 @@ class ToolMaskDecoderManager
         $this->om->flush();
     }
 
+    public function removeToolMaskDecoder(string $toolName, string $action): void
+    {
+        $toolDecoders = $this->getDecoders($toolName);
+        foreach ($toolDecoders as $index => $toolDecoder) {
+            if ($toolDecoder->getName() === $action) {
+                unset($this->maskDecoders[$toolName][$index]);
+                $this->om->remove($toolDecoder);
+
+                return;
+            }
+        }
+    }
+
     /**
      * Returns an array containing the permission for a mask and a tool.
      */
-    public function decodeMask(int $mask, string $toolName): array
+    public function decodeMask(string $toolName, int $mask): array
     {
         $perms = [];
 
-        $decoders = $this->getMaskDecodersByTool($toolName);
+        $decoders = $this->getDecoders($toolName);
         foreach ($decoders as $decoder) {
             $perms[$decoder->getName()] = ($mask & $decoder->getValue()) ? true : false;
         }
@@ -96,16 +120,15 @@ class ToolMaskDecoderManager
     }
 
     /**
-     * Encode a mask for an array of permission and a tool.
-     * The array of permissions should be defined that way:
+     * Encode a mask for an array of permission.
      *
-     * array('open' => true, 'edit' => false, ...)
+     * @param array $perms The list of permissions in the format [ACTION_NAME => true|false]
      */
-    public function encodeMask(array $perms, string $toolName): int
+    public function encodeMask(string $toolName, array $perms): int
     {
         $mask = 0;
 
-        $decoders = $this->getMaskDecodersByTool($toolName);
+        $decoders = $this->getDecoders($toolName);
         foreach ($decoders as $decoder) {
             if (isset($perms[$decoder->getName()])) {
                 $mask += $perms[$decoder->getName()] ? $decoder->getValue() : 0;
@@ -118,14 +141,14 @@ class ToolMaskDecoderManager
     /**
      * @return ToolMaskDecoder[]
      */
-    public function getMaskDecodersByTool(string $toolName): array
+    public function getDecoders(string $toolName): array
     {
         return $this->maskDecoders[$toolName] ?? [];
     }
 
-    public function getMaskDecoderByToolAndName(string $toolName, string $name): ?ToolMaskDecoder
+    public function getDecoder(string $toolName, string $name): ?ToolMaskDecoder
     {
-        $toolDecoders = $this->getMaskDecodersByTool($toolName);
+        $toolDecoders = $this->getDecoders($toolName);
         foreach ($toolDecoders as $toolDecoder) {
             if (strtolower($toolDecoder->getName()) === strtolower($name)) {
                 return $toolDecoder;

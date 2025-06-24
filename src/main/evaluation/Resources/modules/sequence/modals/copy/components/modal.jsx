@@ -27,11 +27,11 @@ const SequenceCopyModal = props => {
         label: trans('copy', {}, 'actions'),
         request: {
           url: url(['apiv2_evaluation_sequence_copy'], {
-            ids: props.sequences.map(sequence => sequence.id),
             copyResources: copyResources
           }),
           request: {
-            method: 'POST'
+            method: 'POST',
+            body: JSON.stringify(props.sequences.map(sequence => sequence.id))
           },
           success: props.onCopy
         }

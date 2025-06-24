@@ -31,7 +31,6 @@ class TeamVoter extends AbstractVoter
 
         switch ($attributes[0]) {
             case self::OPEN:
-            case self::VIEW:
                 if ($this->isGranted(ToolPermissions::getPermission('community', 'OPEN'), $object->getWorkspace())) {
                     if ($object->isSelfRegistration() || ($token->getUser() instanceof User && $object->hasUser($token->getUser()))) {
                         return VoterInterface::ACCESS_GRANTED;
@@ -57,6 +56,6 @@ class TeamVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
     }
 }

@@ -11,7 +11,7 @@
     "new_event_desc": "Planifiez une séance pour la session \"%session%\".",
     "public_course": "Formation publique",
     "make_course_public": "Rendre la formation publique",
-    "make_course_public_help": "Les formations publiques sont visibles par les anonymes.",
+    "make_course_public_help": "Les formations publiques sont accessibles par les anonymes.",
 
     "create_mode_workspace": "Créer une formation avec espace d'activités",
     "create_mode_workspace_desc": "Toutes les sessions de la formation se déroule dans le même espace d'activités.",

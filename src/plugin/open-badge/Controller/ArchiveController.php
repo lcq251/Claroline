@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route(path: '/badge/archives')]
@@ -34,7 +33,6 @@ class ArchiveController
     use RequestDecoderTrait;
 
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
@@ -64,16 +62,16 @@ class ArchiveController
     #[Route(path: '/', name: 'apiv2_badge_archive', methods: ['POST'])]
     public function archiveAction(Request $request): JsonResponse
     {
-        $processed = [];
-
         $this->om->startFlushSuite();
 
+        $processed = [];
+        $badgeIds = $this->decodeRequest($request);
+
         /** @var BadgeClass[] $badges */
-        $badges = self::decodeIdsString($request, BadgeClass::class);
+        $badges = $this->om->getRepository(BadgeClass::class)->findBy(['uuid' => $badgeIds]);
         foreach ($badges as $badge) {
             if (!$badge->isArchived()) {
-                $this->crud->replace($badge, 'archived', true);
-                $processed[] = $badge;
+                $processed[] = $this->crud->replace($badge, 'archived', true);
             }
         }
 
@@ -87,16 +85,16 @@ class ArchiveController
     #[Route(path: '/', name: 'apiv2_badge_restore', methods: ['PUT'])]
     public function restoreAction(Request $request): JsonResponse
     {
-        $processed = [];
-
         $this->om->startFlushSuite();
 
+        $processed = [];
+        $badgeIds = $this->decodeRequest($request);
+
         /** @var BadgeClass[] $badges */
-        $badges = self::decodeIdsString($request, BadgeClass::class);
+        $badges = $this->om->getRepository(BadgeClass::class)->findBy(['uuid' => $badgeIds]);
         foreach ($badges as $badge) {
             if ($badge->isArchived()) {
-                $this->crud->replace($badge, 'archived', false);
-                $processed[] = $badge;
+                $processed[] = $this->crud->replace($badge, 'archived', false);
             }
         }
 

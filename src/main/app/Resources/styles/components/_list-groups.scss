@@ -18,6 +18,12 @@
     }
 }
 
+.list-group-hover {
+    .list-group-item:hover {
+        background: $list-group-hover-bg;
+    }
+}
+
 .list-group-values { // deprecated
     .list-group-item {
         display: flex;

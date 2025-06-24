@@ -80,6 +80,9 @@ abstract class AbstractCrudController
         return [];
     }
 
+    /**
+     * @deprecated no longer interpreted
+     */
     public function getIgnore(): array
     {
         return [];

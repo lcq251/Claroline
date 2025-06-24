@@ -173,7 +173,7 @@ const AnnouncementList = () => {
             </ul>
           }
 
-          {0 !== posts.length && hasPermission('edit', tool) &&
+          {0 !== posts.length && hasPermission('create', tool) &&
             <ButtonSticky
               {...{
                 type: MODAL_BUTTON,

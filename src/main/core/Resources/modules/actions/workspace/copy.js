@@ -5,7 +5,7 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {declareAction} from '#/main/app/action'
 
 export default declareAction((workspaces, refresher) => {
-  const processable = workspaces.filter(workspace => hasPermission('administrate', workspace))
+  const processable = workspaces.filter(workspace => hasPermission('edit', workspace))
 
   return {
     name: 'copy',
@@ -22,9 +22,10 @@ export default declareAction((workspaces, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_workspace_copy'], {ids: processable.map(workspace => workspace.id)}),
+      url: url(['apiv2_workspace_copy']),
       request: {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify(processable.map(workspace => workspace.id))
       },
       success: refresher.update
     },

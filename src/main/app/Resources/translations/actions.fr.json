@@ -110,6 +110,8 @@
   "back_home": "Retour à l'accueil",
   "show_description": "Afficher la description",
   "hide_description": "Cacher la description",
+  "show_help": "Afficher l'aide",
+  "hide_help": "Cacher l'aide",
   "resume": "Reprendre",
   "show_history": "Voir l'historique",
   "exit_impersonation": "Quitter l'usurpation",
@@ -119,5 +121,6 @@
   "change_owner": "Changer le propriétaire",
   "remove_filters": "Retirer les filtres",
   "transfer": "Transférer",
-  "regenerate": "Régénérer"
+  "regenerate": "Régénérer",
+  "contribute": "Contribuer"
 }

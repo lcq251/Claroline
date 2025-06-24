@@ -60,7 +60,7 @@ class OrderedToolVoter extends AbstractVoter
             }
         }
 
-        $decoder = $this->maskManager->getMaskDecoderByToolAndName($object->getName(), $attributes[0]);
+        $decoder = $this->maskManager->getDecoder($object->getName(), $attributes[0]);
         if ($decoder) {
             $mask = $this->rightsRepository->findMaximumRights($token->getRoleNames(), $object);
 

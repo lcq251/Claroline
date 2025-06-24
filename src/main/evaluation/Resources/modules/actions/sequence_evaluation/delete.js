@@ -29,7 +29,7 @@ export default declareAction((evaluations, refresher) => {
       url: ['apiv2_sequence_evaluation_delete'],
       request: {
         method: 'DELETE',
-        body: JSON.stringify({ids: processable.map(evaluation => evaluation.id)})
+        body: JSON.stringify(processable.map(evaluation => evaluation.id))
       },
       success: () => refresher.delete(processable)
     },

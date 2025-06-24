@@ -26,9 +26,9 @@ const reducer = combineReducers({
     selected: makeReducer([], {
       [EXPLORER_SET_CURRENT]: () => []
     }),
-    filters: makeReducer([], {
+    /*filters: makeReducer([], {
       [EXPLORER_SET_CURRENT]: (state, action) => action.filters
-    }),
+    }),*/
     page: makeReducer([], {
       [EXPLORER_SET_CURRENT]: () => 0
     })

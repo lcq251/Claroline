@@ -214,7 +214,7 @@ class EventController extends AbstractCrudController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Event $sessionEvent
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
+        $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
         $this->manager->inviteAllSessionEventLearners($sessionEvent);
 
@@ -246,7 +246,7 @@ class EventController extends AbstractCrudController
         string $type,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
+        $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
         $nbUsers = count($users);
@@ -270,7 +270,7 @@ class EventController extends AbstractCrudController
         Event $sessionEvent,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
+        $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
         $sessionEventUsers = $this->decodeIdsString($request, EventUser::class);
         $this->manager->removeUsers($sessionEvent, $sessionEventUsers);
@@ -284,7 +284,7 @@ class EventController extends AbstractCrudController
         Event $sessionEvent,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('REGISTER', $sessionEvent, [], true);
+        $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
         $sessionUsers = $this->decodeIdsString($request, EventUser::class);
         $this->manager->sendSessionEventInvitation($sessionEvent, array_map(function (EventUser $sessionUser) {

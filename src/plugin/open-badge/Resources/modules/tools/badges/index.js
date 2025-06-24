@@ -24,4 +24,12 @@ export default declareTool(BadgeTool, () => new CommandPalette('badges')
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  edit: {
+    order: 10,
+    actions: [
+      'Créer et administrer de nouveaux badges',
+      'Administrer tous les badges'
+    ]
+  }
+})

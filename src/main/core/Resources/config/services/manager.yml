@@ -55,11 +55,13 @@ services:
     Claroline\CoreBundle\Manager\ResourceManager:
         arguments:
             - '@security.authorization_checker'
+            - '@security.token_storage'
             - '@event_dispatcher'
             - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\Manager\File\TempFileManager'
             - '@security.helper'
+            - '@Claroline\AppBundle\API\Crud'
 
     claroline.manager.resource_manager:
         alias: Claroline\CoreBundle\Manager\ResourceManager
@@ -188,13 +190,6 @@ services:
         arguments:
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-
-    Claroline\CoreBundle\Manager\Resource\ResourceActionManager:
-        arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@security.authorization_checker'
-            - '@event_dispatcher'
-            - '@Claroline\CoreBundle\Manager\ResourceManager'
 
     Claroline\CoreBundle\Manager\Resource\MaskManager:
         arguments:

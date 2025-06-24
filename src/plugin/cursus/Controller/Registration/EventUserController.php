@@ -65,7 +65,7 @@ class EventUserController extends AbstractCrudController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        $this->checkPermission('REGISTER', $event, [], true);
+        $this->checkPermission('FOLLOW', $event, [], true);
 
         $finderQuery->addFilter('event', $event->getUuid());
 
@@ -86,7 +86,7 @@ class EventUserController extends AbstractCrudController
 
         $this->om->startFlushSuite();
         foreach ($eventUsers as $eventUser) {
-            $this->checkPermission('REGISTER', $eventUser->getEvent());
+            $this->checkPermission('FOLLOW', $eventUser->getEvent());
 
             $this->eventManager->sendSessionEventInvitation($eventUser->getEvent(), [$eventUser->getUser()]);
         }

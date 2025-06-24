@@ -11,6 +11,8 @@
 
 namespace Claroline\CoreBundle\Manager;
 
+use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\RoleRepository;
@@ -21,6 +23,7 @@ use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
+use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
 use Claroline\CoreBundle\Event\Resource\DownloadResourceEvent;
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
 use Claroline\CoreBundle\Event\Resource\LoadResourceEvent;
@@ -31,6 +34,7 @@ use Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ResourceManager
@@ -41,11 +45,13 @@ class ResourceManager
 
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly RightsManager $rightsManager,
         private readonly ObjectManager $om,
         private readonly TempFileManager $tempManager,
-        private readonly Security $security
+        private readonly Security $security,
+        private readonly Crud $crud
     ) {
         $this->resourceTypeRepo = $om->getRepository(ResourceType::class);
         $this->resourceNodeRepo = $om->getRepository(ResourceNode::class);
@@ -317,33 +323,26 @@ class ResourceManager
         return $node;
     }
 
-    /**
-     * Restores a soft deleted resource node.
-     */
-    public function restore(ResourceNode $resourceNode): void
-    {
-        $this->setActive($resourceNode);
-        $workspace = $resourceNode->getWorkspace();
-        if ($workspace) {
-            $root = $this->getWorkspaceRoot($workspace);
-            $resourceNode->setParent($root);
-        }
-
-        $this->om->persist($resourceNode);
-        $this->om->flush();
-    }
-
-    public function load(ResourceNode $resourceNode, $embedded = false): ?array
+    public function load(ResourceNode $resourceNode, ?bool $embedded = false): ?array
     {
         $resource = $this->getResourceFromNode($resourceNode);
-        if ($resource) {
-            /** @var LoadResourceEvent $event */
-            $event = $this->eventDispatcher->dispatch(
-                new LoadResourceEvent($resource, $embedded),
-                ResourceEvents::OPEN
-            );
+        $user = $this->tokenStorage->getToken()?->getUser();
 
-            return $event->getData();
+        // Increment view count if viewer is not creator of the resource
+        if (!($user instanceof User) || $user !== $resourceNode->getCreator()) {
+            $this->addView($resourceNode);
+        }
+
+        if ($resource) {
+            // generic event
+            $event = new LoadResourceEvent($resource, $embedded);
+            $this->eventDispatcher->dispatch($event, ResourceEvents::getEventName(ResourceEvents::OPEN));
+
+            // specific event
+            $openEvent = new LoadResourceEvent($this->getResourceFromNode($resourceNode), $event->isEmbedded());
+            $this->eventDispatcher->dispatch($openEvent, ResourceEvents::getEventName(ResourceEvents::OPEN, $resourceNode->getResourceType()->getName()));
+
+            return array_merge($event->getData(), $openEvent->getData());
         }
 
         throw new \RuntimeException(sprintf('Cannot load AbstractResource from ResourceNode (%s).', $resourceNode->getUuid()));
@@ -431,16 +430,6 @@ class ResourceManager
             }
         }
         $this->om->endFlushSuite();
-    }
-
-    private function setActive(ResourceNode $node): void
-    {
-        foreach ($node->getChildren() as $child) {
-            $this->setActive($child);
-        }
-
-        $node->setActive(true);
-        $this->om->persist($node);
     }
 
     /**

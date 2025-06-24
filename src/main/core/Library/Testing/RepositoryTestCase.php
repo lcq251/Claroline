@@ -165,7 +165,6 @@ abstract class RepositoryTestCase extends WebTestCase
         $type = new ResourceType();
         $type->setName($name);
         $type->setClass($class);
-        $type->setExportable($isExportable);
 
         if ($plugin) {
             $type->setPlugin($plugin);

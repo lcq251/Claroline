@@ -17,4 +17,24 @@ export default declareTool(WorkspacesTool, () => new CommandPalette('workspaces'
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  create: {
+    order: 1,
+    actions: [
+      'Créer et administrer de nouveaux espaces'
+    ]
+  },
+  archive: {
+    order: 2,
+    actions: [
+      'Archiver des espaces'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Administrer tous les espaces',
+      'Copier des espaces'
+    ]
+  }
+})

@@ -79,10 +79,7 @@ class FinderResult implements FinderResultInterface, \Countable
             ->setHint(SqlWalker::HINT_DISTINCT, true);
     }
 
-    /**
-     * @internal
-     */
-    public function getQuery(): Query
+    private function getQuery(): Query
     {
         if (0 < $this->searchQuery->getPageSize()) {
             $this->queryBuilder->setFirstResult($this->searchQuery->getPage() * $this->searchQuery->getPageSize());

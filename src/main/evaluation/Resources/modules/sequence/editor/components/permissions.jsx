@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import classes from 'classnames'
 import get from 'lodash/get'
@@ -14,12 +14,14 @@ import {actions, selectors} from '#/main/evaluation/sequence/editor/store'
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {MODAL_ROLES} from '#/main/community/modals/roles'
+import {Collapse} from 'react-bootstrap'
 
 const restrictedByDates = (formData) => get(formData, 'restrictions.enableDates') || !isEmpty(get(formData, 'restrictions.dates'))
 const restrictByCode = (formData) => get(formData, 'restrictions.enableCode') || !!get(formData, 'restrictions.code')
 
 const Assignments = () => {
   const dispatch = useDispatch()
+  const [showHelp, setShowHelp] = useState(false)
 
   const workspace = useSelector(sequenceSelectors.workspace)
   const assignments = useSelector(selectors.assignments)
@@ -44,55 +46,87 @@ const Assignments = () => {
 
   return (
     <>
-      <dl className="p-3 mb-4 bg-body-tertiary rounded-3">
-        <dt className="text-uppercase fw-bolder">Disponible</dt>
-        <dd className="mb-3">
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            Les utilisateurs <b>peuvent faire</b> la séquence
-          </div>
-          <div className="py-1 text-body-secondary">
-            <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
-            La participation à la séquence <b>n'est pas requise</b> pour progresser dans l'espace d'activités
-          </div>
-          <div className="py-1 text-body-secondary">
-            <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
-            Le score de la séquence <b>n'est pas comptabilisé</b> lors du calcul du score de l'espace d'activités
-          </div>
-        </dd>
+      <div className="d-flex flex-row gap-1" role="presentation">
+        <Button
+          className="btn btn-primary"
+          type={MODAL_BUTTON}
+          modal={[MODAL_ROLES, {
+            multiple: true,
+            url: !isEmpty(workspace) ?
+              ['apiv2_workspace_list_roles', {id: workspace.id}] :
+              ['apiv2_role_list'],
+            selectAction: (selected) => ({
+              type: CALLBACK_BUTTON,
+              callback: () => updateAssignments([].concat(assignments, selected.map(role => ({
+                role: role,
+                required: false,
+                scored: false
+              }))))
+            })
+          }]}
+          label={trans('Ajouter des participants')}
+        />
 
-        <dt className="text-uppercase fw-bolder">Requis</dt>
-        <dd className="mb-3">
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            Les utilisateurs <b>peuvent faire</b> la séquence
-          </div>
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            La participation à la séquence <b>est requise</b> pour progresser dans l'espace d'activités
-          </div>
-          <div className="py-1 text-body-secondary">
-            <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
-            Le score de la séquence <b>n'est pas comptabilisé</b> lors du calcul du score de l'espace d'activités
-          </div>
-        </dd>
+        <Button
+          className="btn btn-text-body focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-question-circle"
+          label={trans(showHelp ? 'hide_help' : 'show_help', {}, 'actions')}
+          callback={() => setShowHelp(!showHelp)}
+        />
+      </div>
 
-        <dt className="text-uppercase fw-bolder">Noté</dt>
-        <dd className="mb-0">
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            Les utilisateurs <b>peuvent faire</b> la séquence
-          </div>
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            La participation à la séquence <b>est requise</b> pour progresser dans l'espace d'activités
-          </div>
-          <div className="py-1">
-            <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
-            Le score de la séquence <b>est comptabilisé</b> lors du calcul du score de l'espace d'activités
-          </div>
-        </dd>
-      </dl>
+      <Collapse in={showHelp}>
+        <dl className="p-3 mb-0 bg-body-tertiary rounded-3 gap-0">
+          <dt className="text-uppercase fw-bolder fs-base text-body">Disponible</dt>
+          <dd className="mb-3">
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              Les utilisateurs <b>peuvent faire</b> la séquence
+            </div>
+            <div className="py-1 text-body-secondary">
+              <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
+              La participation à la séquence <b>n'est pas requise</b> pour progresser dans l'espace d'activités
+            </div>
+            <div className="py-1 text-body-secondary">
+              <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
+              Le score de la séquence <b>n'est pas comptabilisé</b> lors du calcul du score de l'espace d'activités
+            </div>
+          </dd>
+
+          <dt className="text-uppercase fw-bolder fs-base text-body">Requis</dt>
+          <dd className="mb-3">
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              Les utilisateurs <b>peuvent faire</b> la séquence
+            </div>
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              La participation à la séquence <b>est requise</b> pour progresser dans l'espace d'activités
+            </div>
+            <div className="py-1 text-body-secondary">
+              <span className="fa fa-fw fa-times-circle text-body-tertiary me-2" aria-hidden={true} />
+              Le score de la séquence <b>n'est pas comptabilisé</b> lors du calcul du score de l'espace d'activités
+            </div>
+          </dd>
+
+          <dt className="text-uppercase fw-bolder fs-base text-body">Noté</dt>
+          <dd className="mb-0">
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              Les utilisateurs <b>peuvent faire</b> la séquence
+            </div>
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              La participation à la séquence <b>est requise</b> pour progresser dans l'espace d'activités
+            </div>
+            <div className="py-1">
+              <span className="fa fa-fw fa-check-circle text-primary me-2" aria-hidden={true} />
+              Le score de la séquence <b>est comptabilisé</b> lors du calcul du score de l'espace d'activités
+            </div>
+          </dd>
+        </dl>
+      </Collapse>
 
       {!isEmpty(assignments) &&
         <ul className="list-group list-group-flush">
@@ -102,7 +136,7 @@ const Assignments = () => {
                 name: trans(assignment.role.translationKey)
               }} />
 
-              <div role="radiogroup" className="ms-auto gap-2 d-flex flex-row fs-sm">
+              <div role="radiogroup" className="ms-auto gap-1 d-flex flex-row fs-sm">
                 <input
                   type="radio"
                   className="btn-check"
@@ -117,7 +151,7 @@ const Assignments = () => {
                   }}
                 />
                 <label
-                  className={classes('py-2 px-3  rounded-2 border focus-ring fw-medium', {
+                  className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
                     'border-primary text-primary-emphasis bg-primary-subtle': !assignment.required && !assignment.scored
                   })}
                   htmlFor={`${get(assignment, 'role.id')}-optional`}
@@ -139,7 +173,7 @@ const Assignments = () => {
                   }}
                 />
                 <label
-                  className={classes('py-2 px-3 rounded-2 border focus-ring fw-medium', {
+                  className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
                     'border-primary text-primary-emphasis bg-primary-subtle': assignment.required && !assignment.scored
                   })}
                   htmlFor={`${get(assignment, 'role.id')}-required`}
@@ -161,7 +195,7 @@ const Assignments = () => {
                   }}
                 />
                 <label
-                  className={classes('py-2 px-3 rounded-2 border focus-ring fw-medium', {
+                  className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
                     'border-primary text-primary-emphasis bg-primary-subtle': assignment.scored
                   })}
                   htmlFor={`${get(assignment, 'role.id')}-scored`}
@@ -171,7 +205,7 @@ const Assignments = () => {
               </div>
 
               <Button
-                className="btn btn-link me-n2"
+                className="btn btn-link mx-n2"
                 type={CALLBACK_BUTTON}
                 label={trans('remove', {}, 'actions')}
                 callback={() => deleteAssignment(index)}
@@ -181,26 +215,6 @@ const Assignments = () => {
           )}
         </ul>
       }
-
-      <Button
-        className="btn btn-primary mt-3 mb-4"
-        type={MODAL_BUTTON}
-        modal={[MODAL_ROLES, {
-          multiple: true,
-          url: !isEmpty(workspace) ?
-            ['apiv2_workspace_list_roles', {id: workspace.id}] :
-            ['apiv2_role_list'],
-          selectAction: (selected) => ({
-            type: CALLBACK_BUTTON,
-            callback: () => updateAssignments([].concat(assignments, selected.map(role => ({
-              role: role,
-              required: false,
-              scored: false
-            }))))
-          })
-        }]}
-        label={trans('Ajouter des participants')}
-      />
     </>
   )
 }
@@ -226,9 +240,7 @@ const SequenceEditorPermissions = () => {
               name: 'meta.public',
               type: 'boolean',
               label: trans('make_sequence_public', {}, 'evaluation'),
-              help: [
-                trans('make_sequence_public_help', {}, 'evaluation')
-              ]
+              help: trans('make_sequence_public_help', {}, 'evaluation')
             }
           ]
         }, {

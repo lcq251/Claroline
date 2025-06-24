@@ -19,14 +19,10 @@ class ResourceRightsRepository extends EntityRepository
     /**
      * Returns the maximum rights on a given resource for a set of roles.
      * Used by the ResourceVoter.
-     *
-     * @param string[] $roles
-     *
-     * @return int
      */
-    public function findMaximumRights(array $roles, ResourceNode $resource)
+    public function findMaximumRights(array $roles, ResourceNode $resource): int
     {
-        //add the role anonymous for everyone !
+        // add the role anonymous for everyone!
         if (!in_array('ROLE_ANONYMOUS', $roles)) {
             $roles[] = 'ROLE_ANONYMOUS';
         }
@@ -63,12 +59,9 @@ class ResourceRightsRepository extends EntityRepository
     }
 
     /**
-     * Returns the resource types a set of roles is allowed to create in a given
-     * directory.
-     *
-     * @return array
+     * Returns the resource types a set of roles is allowed to create in a given directory.
      */
-    public function findCreationRights(array $roles, ResourceNode $node)
+    public function findCreationRights(array $roles, ResourceNode $node): array
     {
         if (0 === count($roles)) {
             throw new \RuntimeException('Roles cannot be empty');

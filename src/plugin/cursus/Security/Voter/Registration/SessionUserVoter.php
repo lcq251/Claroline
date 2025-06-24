@@ -32,7 +32,7 @@ class SessionUserVoter extends AbstractVoter
         $session = $object->getSession();
 
         // managers of the session registrations can do everything
-        if ($this->isGranted('REGISTER', $session)) {
+        if ($this->isGranted('FOLLOW', $session)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

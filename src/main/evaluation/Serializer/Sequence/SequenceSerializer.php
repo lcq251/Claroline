@@ -150,7 +150,7 @@ class SequenceSerializer
             $serialized['permissions'] = [
                 'open' => $administrate || $this->authorization->isGranted('OPEN', $sequence),
                 'delete' => $administrate,
-                'follow' => $administrate || $this->authorization->isGranted('EDIT', $sequence),
+                'follow' => $administrate || $this->authorization->isGranted('FOLLOW', $sequence),
                 'edit' => $administrate || $this->authorization->isGranted('EDIT', $sequence),
                 'administrate' => $administrate,
             ];

@@ -39,7 +39,9 @@ class OrderedToolSerializer
             'name' => $orderedTool->getName(),
             'icon' => $tool::getIcon(),
             'poster' => $orderedTool->getPoster(),
-            // 'thumbnail' => $orderedTool->getThumbnail(),
+            'meta' => [
+                'public' => $orderedTool->isPublic(),
+            ],
             'display' => [
                 'order' => $orderedTool->getOrder(),
             ],
@@ -65,7 +67,7 @@ class OrderedToolSerializer
 
         $this->sipe('name', 'setName', $data, $orderedTool);
         $this->sipe('poster', 'setPoster', $data, $orderedTool);
-        // $this->sipe('thumbnail', 'setThumbnail', $data, $orderedTool);
+        $this->sipe('meta.public', 'setPublic', $data, $orderedTool);
         $this->sipe('display.order', 'setOrder', $data, $orderedTool);
         $this->sipe('restrictions.hidden', 'setHidden', $data, $orderedTool);
 

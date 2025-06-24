@@ -38,7 +38,6 @@ class ResourceTypeSerializer
             'id' => $resourceType->getId(),
             'name' => $resourceType->getName(),
             'class' => $resourceType->getClass(),
-            'tags' => $resourceType->getTags(),
             'enabled' => $resourceType->isEnabled(),
             'evaluation' => $evaluation,
             'downloadable' => $download,

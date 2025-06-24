@@ -1,16 +1,14 @@
+import get from 'lodash/get'
+
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
-
-import {route as desktopRoute} from '#/main/core/tool/routing'
-import {route as workspaceRoute} from '#/main/core/workspace/routing'
+import {route} from '#/main/app/context/routing'
 import {ToolCard} from '#/main/core/tool/components/card'
 
-export default (contextType, contextData, refresher, currentUser) => ({
+export default (contextType, contextData) => ({
   primaryAction: (tool) => ({
     type: URL_BUTTON,
-    target: 'desktop' === tool.context.type ?
-      `#${desktopRoute(tool.name)}` :
-      `#${workspaceRoute(tool.context.data, tool.name)}`
+    target: `#${route(contextType, get(contextData, 'id'), tool.name)}`
   }),
   definition: [
     {

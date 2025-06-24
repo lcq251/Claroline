@@ -36,7 +36,7 @@ class DropzoneListener extends ResourceComponent implements EvaluatedResourceInt
         return 'claroline_dropzone';
     }
 
-    /** @var Dropzone $resource */
+    /** @param Dropzone $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -47,7 +47,7 @@ class DropzoneListener extends ResourceComponent implements EvaluatedResourceInt
         return $this->dropzoneManager->getDropzoneData($resource, $user);
     }
 
-    /** @var Dropzone $resource */
+    /** @param Dropzone $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         return [
@@ -64,7 +64,7 @@ class DropzoneListener extends ResourceComponent implements EvaluatedResourceInt
         $this->dropzoneManager->copyDropzone($original, $copy);
     }
 
-    /** @var Dropzone $resource */
+    /** @param Dropzone $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         if ($softDelete) {

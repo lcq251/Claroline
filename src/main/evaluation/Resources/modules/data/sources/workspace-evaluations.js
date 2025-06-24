@@ -85,11 +85,12 @@ export default (contextType, contextData, refresher, currentUser) => {
         sortable: false,
         filterable: true
       }, {
-        name: 'workspaceTags',
+        name: 'workspaceTags', // for retro-compatibility
         type: 'tag',
         label: trans('tags'),
         displayable: true,
         sortable: false,
+        alias: 'workspace.tags',
         options: {
           objectClass: 'Claroline\\CoreBundle\\Entity\\Workspace\\Workspace'
         }

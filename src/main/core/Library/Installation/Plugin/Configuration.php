@@ -23,20 +23,17 @@ class Configuration implements ConfigurationInterface
     private array $listNames = [];
     private array $listTools = [];
     private array $listWidgets = [];
-    private array $listResourceActions = [];
     private bool $updateMode = false;
 
     public function __construct(
         PluginBundleInterface $plugin,
         array $resourceNames,
         array $listTools,
-        array $listResourceActions,
         array $listWidgets
     ) {
         $this->plugin = $plugin;
         $this->listNames = $resourceNames;
         $this->listTools = $listTools;
-        $this->listResourceActions = $listResourceActions;
         $this->listWidgets = $listWidgets;
         $this->updateMode = false;
     }
@@ -50,7 +47,6 @@ class Configuration implements ConfigurationInterface
         $this->addWidgetSection($pluginSection);
         $this->addDataSourceSection($pluginSection);
         $this->addResourceSection($pluginSection);
-        $this->addResourceActionSection($pluginSection);
         $this->addToolSection($pluginSection);
         $this->addThemeSection($pluginSection);
         $this->addTemplateSection($pluginSection);
@@ -113,73 +109,11 @@ class Configuration implements ConfigurationInterface
                                     )
                                 ->end()
                             ->end()
-                       ->scalarNode('exportable')->defaultValue(false)->end()
-                       ->arrayNode('tags')
-                           ->prototype('scalar')->end()
-                           ->defaultValue([])
-                       ->end()
-                       ->arrayNode('actions')
-                         ->prototype('array')
-                            ->children()
-                                ->scalarNode('name')->isRequired()->end()
-                                ->scalarNode('group')->defaultValue(null)->end()
-                                ->scalarNode('decoder')->defaultValue('open')->end()
-                                ->arrayNode('scope')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(['object'])
-                                ->end()
-                                ->arrayNode('api')
-                                    ->prototype('scalar')->end()
-                                ->end()
-                                ->booleanNode('default')->defaultValue(false)->end()
-                                ->booleanNode('recursive')->defaultValue(false)->end()
-                            ->end()
-                         ->end()
+                       ->arrayNode('resource_rights')
+                            ->scalarPrototype()->end()
                        ->end()
                     ->end()
                  ->end()
-            ->end()
-        ->end()->end();
-    }
-
-    public function addResourceActionSection(NodeBuilder $pluginSection): void
-    {
-        $plugin = $this->plugin;
-        $pluginFqcn = get_class($plugin);
-        $listResourceActions = $this->listResourceActions;
-        $updateMode = $this->isInUpdateMode();
-
-        $pluginSection
-            ->arrayNode('resource_actions')
-                ->prototype('array')
-                    ->children()
-                        ->scalarNode('name')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                            ->validate()
-                                ->ifTrue(
-                                    function ($v) use ($listResourceActions, $updateMode) {
-                                        return !$updateMode && in_array($v, $listResourceActions);
-                                    }
-                                )
-                                ->thenInvalid($pluginFqcn.' : the resource action name already exists')
-                            ->end()
-                        ->end()
-                        ->scalarNode('name')->isRequired()->end()
-                        ->scalarNode('group')->defaultValue(null)->end()
-                        ->scalarNode('decoder')->defaultValue('open')->end()
-                        ->arrayNode('scope')
-                            ->prototype('scalar')->end()
-                            ->defaultValue(['object'])
-                        ->end()
-                        ->arrayNode('api')
-                            ->prototype('scalar')->end()
-                        ->end()
-                        ->booleanNode('default')->defaultValue(false)->end()
-                        ->booleanNode('recursive')->defaultValue(false)->end()
-                        ->scalarNode('resource_type')->defaultNull()->end() // todo : should be an array
-                    ->end()
-                ->end()
             ->end()
         ->end()->end();
     }
@@ -273,7 +207,7 @@ class Configuration implements ConfigurationInterface
                                 ->thenInvalid($pluginFqcn.' : the tool name already exists')
                             ->end()
                         ->end()
-                        ->scalarNode('icon')->end()
+                        ->scalarNode('icon')->defaultValue('tools')->end()
                         ->arrayNode('tool_rights')
                             ->scalarPrototype()->end()
                         ->end()

@@ -2,4 +2,3 @@ plugin:
   resources:
     - name: claroline_web_resource
       class: Claroline\CoreBundle\Entity\Resource\File
-      tags: [content]

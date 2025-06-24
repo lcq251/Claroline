@@ -20,6 +20,7 @@ use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\HasContext;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\IsPublic;
 use Claroline\CoreBundle\Finder\ToolType;
 use Claroline\CoreBundle\Repository\Tool\OrderedToolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +37,7 @@ class OrderedTool implements CrudEntityInterface
     use Id;
     use Uuid;
     use HasContext;
-    // meta
+    use IsPublic;
     use Thumbnail;
     use Poster;
     use Order;
@@ -48,7 +49,7 @@ class OrderedTool implements CrudEntityInterface
     /**
      * @var Collection<int, ToolRights>
      */
-    #[ORM\OneToMany(targetEntity: ToolRights::class, mappedBy: 'orderedTool')]
+    #[ORM\OneToMany(targetEntity: ToolRights::class, mappedBy: 'orderedTool', fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $rights;
 
     public function __construct()

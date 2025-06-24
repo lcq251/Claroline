@@ -18,8 +18,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CourseVoter extends AbstractVoter
 {
-    public const REGISTER = 'REGISTER';
-
     public function getClass(): string
     {
         return Course::class;
@@ -38,26 +36,29 @@ class CourseVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::ADMINISTRATE:
             case self::CREATE:
-            case self::EDIT: // admin of organization | EDIT right on tool
+            case self::EDIT:
             case self::PATCH:
             case self::DELETE:
                 if ($this->isToolGranted('ADMINISTRATE', 'trainings')
-                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'training_events', $workspace))) {
+                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'trainings', $workspace))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;
 
             case self::OPEN: // member of organization & OPEN right on tool
-            case self::VIEW:
-                if ($object->isPublic() || $this->isToolGranted('OPEN', 'training_events', $workspace) || $this->isToolGranted('OPEN', 'trainings')) {
+                if ($object->isPublic()
+                    || $this->isToolGranted('OPEN', 'trainings')
+                    || ($workspace && $this->isToolGranted('OPEN', 'trainings', $workspace))
+                ) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;
 
-            case self::REGISTER:
-                if ($this->isToolGranted('REGISTER', 'training_events', $workspace) || $this->isToolGranted('REGISTER', 'trainings')) {
+            case self::FOLLOW:
+                if ($this->isToolGranted('FOLLOW', 'trainings')
+                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'trainings', $workspace))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
@@ -69,6 +70,6 @@ class CourseVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::REGISTER, self::ADMINISTRATE];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::FOLLOW, self::ADMINISTRATE];
     }
 }

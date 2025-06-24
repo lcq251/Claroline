@@ -85,7 +85,7 @@ class ResourceRightsSerializer
             $resourceRights->setMask($this->maskManager->encodeMask($data['permissions'], $nodeType));
 
             if ('directory' === $nodeType->getName()) {
-                // ugly hack to only get create rights for directories (it's the only one that can handle it).
+                // ugly hack to only get the creation right for directories (it's the only one that can handle it).
                 $creatableTypes = [];
                 if (!empty($data['permissions']) && !empty($data['permissions']['create'])) {
                     $creatableTypes = array_filter(array_map(function (string $typeName) {

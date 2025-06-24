@@ -84,7 +84,7 @@ class BadgeClassController extends AbstractCrudController
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
         if ($badge->getHideRecipients()) {
-            $this->checkPermission('GRANT', $badge, [], true);
+            $this->checkPermission('FOLLOW', $badge, [], true);
         } else {
             $this->checkPermission('OPEN', $badge, [], true);
         }
@@ -129,7 +129,7 @@ class BadgeClassController extends AbstractCrudController
         BadgeClass $badge,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('GRANT', $badge, [], true);
+        $this->checkPermission('FOLLOW', $badge, [], true);
 
         $users = $this->decodeIdsString($request, User::class);
 
@@ -148,7 +148,7 @@ class BadgeClassController extends AbstractCrudController
         BadgeClass $badge,
         Request $request
     ): JsonResponse {
-        $this->checkPermission('GRANT', $badge, [], true);
+        $this->checkPermission('FOLLOW', $badge, [], true);
 
         $assertions = $this->decodeIdsString($request, Assertion::class);
 
@@ -169,7 +169,7 @@ class BadgeClassController extends AbstractCrudController
         #[MapEntity(mapping: ['badge' => 'uuid'])]
         BadgeClass $badge
     ): JsonResponse {
-        $this->checkPermission('GRANT', $badge, [], true);
+        $this->checkPermission('FOLLOW', $badge, [], true);
 
         if (empty($badge->getRules())) {
             // we can only recompute badges with auto rules

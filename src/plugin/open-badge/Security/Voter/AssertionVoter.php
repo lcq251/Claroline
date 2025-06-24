@@ -37,7 +37,7 @@ class AssertionVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::OPEN:
                 // has grant rights on the badge or is owner
-                if ($this->isGranted('GRANT', $object->getBadge())
+                if ($this->isGranted('FOLLOW', $object->getBadge())
                     || (!empty($currentUser) && !empty($object->getRecipient()) && $currentUser->getId() === $object->getRecipient()->getId())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
@@ -49,7 +49,7 @@ class AssertionVoter extends AbstractVoter
             case self::ADMINISTRATE:
             case self::DELETE:
                 // has grant rights on the badge
-                if ($this->isGranted('GRANT', $object->getBadge())) {
+                if ($this->isGranted('FOLLOW', $object->getBadge())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

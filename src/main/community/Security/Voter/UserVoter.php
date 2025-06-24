@@ -33,7 +33,6 @@ class UserVoter extends AbstractRoleSubjectVoter
         $collection = isset($options['collection']) ? $options['collection'] : null;
 
         switch ($attributes[0]) {
-            case self::VIEW:
             case self::OPEN:
                 return $this->checkOpen($token, $object);
             case self::CREATE:
@@ -122,7 +121,7 @@ class UserVoter extends AbstractRoleSubjectVoter
     private function checkCreate(TokenInterface $token, User $user): int
     {
         // allow creation to administrators
-        if ($this->isToolGranted('REGISTER', 'community')) {
+        if ($this->isToolGranted('FOLLOW', 'community')) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -154,6 +153,6 @@ class UserVoter extends AbstractRoleSubjectVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::ADMINISTRATE, self::DELETE, self::PATCH, self::VIEW];
+        return [self::OPEN, self::CREATE, self::EDIT, self::ADMINISTRATE, self::DELETE, self::PATCH];
     }
 }

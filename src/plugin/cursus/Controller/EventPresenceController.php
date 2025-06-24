@@ -22,7 +22,7 @@ use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\ToolPermissions;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
-use Claroline\CursusBundle\Component\Tool\TrainingEventsTool;
+use Claroline\CursusBundle\Component\Tool\TrainingsTool;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\EventPresence;
 use Claroline\CursusBundle\Manager\EventManager;
@@ -170,8 +170,8 @@ class EventPresenceController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace, Request $request
     ): JsonResponse {
-        $isManager = $this->checkPermission(ToolPermissions::getPermission(TrainingEventsTool::getName(), 'EDIT'), $workspace, [])
-            || $this->checkPermission(ToolPermissions::getPermission(TrainingEventsTool::getName(), 'REGISTER'), $workspace, []);
+        $isManager = $this->checkPermission(ToolPermissions::getPermission(TrainingsTool::getName(), 'EDIT'), $workspace)
+            || $this->checkPermission(ToolPermissions::getPermission(TrainingsTool::getName(), 'FOLLOW'), $workspace);
 
         $params = $request->query->all();
         $params['hiddenFilters'] = [

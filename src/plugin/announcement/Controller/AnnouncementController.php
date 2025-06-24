@@ -96,7 +96,7 @@ class AnnouncementController
     }
 
     /**
-     * Sends an announcement (in current implementation, it's sent by email).
+     * Sends an announcement (in the current implementation, it's sent by email).
      */
     #[Route(path: '/{id}/validate', name: 'claro_announcement_validate', methods: ['GET'])]
     public function validateSendAction(

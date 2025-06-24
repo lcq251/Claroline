@@ -15,7 +15,7 @@ const EventMain = connect(
     contextId: toolSelectors.contextId(state),
     authenticated: securitySelectors.isAuthenticated(state),
     canEdit: hasPermission('edit', toolSelectors.toolData(state)),
-    canRegister: hasPermission('register', toolSelectors.toolData(state))
+    canRegister: hasPermission('follow', toolSelectors.toolData(state))
   }),
   (dispatch) => ({
     invalidateList() {

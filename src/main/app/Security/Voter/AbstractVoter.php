@@ -162,7 +162,6 @@ abstract class AbstractVoter implements ClarolineVoterInterface, CacheableVoterI
 
         // crud actions
         switch ($attributes[0]) {
-            case self::VIEW:         return $this->checkView($token, $object);
             case self::CREATE:       return $this->checkCreation($token, $object);
             case self::EDIT:         return $this->checkEdit($token, $object);
             case self::ADMINISTRATE: return $this->checkAdministrate($token, $object);
@@ -173,39 +172,34 @@ abstract class AbstractVoter implements ClarolineVoterInterface, CacheableVoterI
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkView(TokenInterface $token, $object)
+    private function checkCreation(TokenInterface $token, mixed $object): int
     {
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkCreation(TokenInterface $token, $object)
+    private function checkEdit(TokenInterface $token, mixed $object): int
     {
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkEdit(TokenInterface $token, $object)
+    private function checkAdministrate(TokenInterface $token, mixed $object): int
     {
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkAdministrate(TokenInterface $token, $object)
+    private function checkDelete(TokenInterface $token, mixed $object): int
     {
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkDelete(TokenInterface $token, $object)
-    {
-        return VoterInterface::ACCESS_GRANTED;
-    }
-
-    private function checkPatch(TokenInterface $token, $object, ObjectCollection $collection = null)
+    private function checkPatch(TokenInterface $token, mixed $object, ?ObjectCollection $collection = null): int
     {
         return VoterInterface::ACCESS_GRANTED;
     }
 
     public function getSupportedActions(): ?array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
     }
 
     private function getCollection($object): ObjectCollection

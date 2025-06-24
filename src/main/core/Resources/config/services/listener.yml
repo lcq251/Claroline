@@ -1,16 +1,9 @@
 services:
-
     Claroline\CoreBundle\Listener\Resource\Types\DirectoryListener:
         tags: ['claroline.component.resource', 'kernel.event_subscriber']
         arguments:
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\CoreBundle\Manager\FileManager'
-            - '@Claroline\CoreBundle\Manager\ResourceManager'
-            - '@Claroline\CoreBundle\Manager\Resource\ResourceActionManager'
-            - '@Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager'
-            - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
 
     Claroline\CoreBundle\Listener\Resource\Types\FileListener:
         tags: ['claroline.component.resource', 'kernel.event_subscriber']
@@ -23,28 +16,11 @@ services:
 
     Claroline\CoreBundle\Listener\Resource\ResourceListener:
         arguments:
-            - '@security.token_storage'
-            - '@security.authorization_checker'
-            - '@event_dispatcher'
             - '@twig'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\Crud'
-            - '@Claroline\AppBundle\API\SerializerProvider'
-            - '@Claroline\CoreBundle\Manager\ResourceManager'
             - '@Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager'
         tags:
-            - { name: kernel.event_listener, event: resource.load, method: load }
             - { name: kernel.event_listener, event: resource.embed, method: embed }
-            - { name: kernel.event_listener, event: resource.create, method: create }
-            - { name: kernel.event_listener, event: resource.configure, method: configure }
-            - { name: kernel.event_listener, event: resource.rights, method: rights }
-            - { name: kernel.event_listener, event: resource.publish, method: publish }
-            - { name: kernel.event_listener, event: resource.unpublish, method: unpublish }
             - { name: kernel.event_listener, event: resource.export, method: export }
-            - { name: kernel.event_listener, event: resource.delete, method: delete }
-            - { name: kernel.event_listener, event: resource.restore, method: restore }
-            - { name: kernel.event_listener, event: resource.copy, method: copy }
-            - { name: kernel.event_listener, event: resource.move, method: move }
 
     Claroline\CoreBundle\Listener\ViewAsListener:
         arguments:

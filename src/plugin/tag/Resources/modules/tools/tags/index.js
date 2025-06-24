@@ -19,3 +19,17 @@ export default declareTool(TagsTool, () => new CommandPalette('tags')
     }
   ])
 )
+  .addPermissions({
+    create: {
+      order: 1,
+      actions: [
+        'Créer et administrer de nouveaux tags'
+      ]
+    },
+    edit: {
+      order: 10,
+      actions: [
+        'Administrer tous les tags'
+      ]
+    }
+  })

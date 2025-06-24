@@ -15,7 +15,6 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\DataSource;
 use Claroline\CoreBundle\Entity\Plugin;
 use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
-use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\Tool\Tool;
 use Claroline\CoreBundle\Entity\Tool\ToolMaskDecoder;
@@ -28,7 +27,6 @@ use Claroline\ThemeBundle\Entity\Theme;
 use Claroline\ThemeBundle\Manager\IconSetBuilderManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class is used to save/delete a plugin and its possible dependencies (like
@@ -43,7 +41,6 @@ class DatabaseWriter implements LoggerAwareInterface
     public function __construct(
         private readonly ObjectManager $em,
         private readonly MaskManager $mm,
-        private readonly Filesystem $fileSystem,
         private readonly ToolMaskDecoderManager $toolMaskManager,
         private readonly IconSetBuilderManager $iconSetManager
     ) {
@@ -87,9 +84,9 @@ class DatabaseWriter implements LoggerAwareInterface
         $this->em->persist($plugin);
         $this->logger->debug('Configuration was retrieved: updating...');
 
+        $this->em->startFlushSuite();
         $this->updateConfiguration($pluginConfiguration, $plugin, $pluginBundle);
-
-        $this->em->flush();
+        $this->em->endFlushSuite();
 
         return $plugin;
     }
@@ -121,11 +118,7 @@ class DatabaseWriter implements LoggerAwareInterface
     private function persistConfiguration(array $processedConfiguration, Plugin $plugin, PluginBundleInterface $pluginBundle): void
     {
         foreach ($processedConfiguration['resources'] as $resource) {
-            $this->persistResourceType($resource, $plugin, $pluginBundle);
-        }
-
-        foreach ($processedConfiguration['resource_actions'] as $resourceAction) {
-            $this->persistResourceAction($resourceAction, $plugin);
+            $this->persistResourceType($resource, $plugin);
         }
 
         foreach ($processedConfiguration['widgets'] as $widget) {
@@ -137,7 +130,7 @@ class DatabaseWriter implements LoggerAwareInterface
         }
 
         foreach ($processedConfiguration['tools'] as $tool) {
-            $this->updateTool($tool, $plugin);
+            $this->persistTool($tool, $plugin);
         }
 
         foreach ($processedConfiguration['themes'] as $theme) {
@@ -154,11 +147,7 @@ class DatabaseWriter implements LoggerAwareInterface
     private function updateConfiguration(array $processedConfiguration, Plugin $plugin, PluginBundleInterface $pluginBundle): void
     {
         foreach ($processedConfiguration['resources'] as $resourceConfiguration) {
-            $this->updateResourceType($resourceConfiguration, $plugin, $pluginBundle);
-        }
-
-        foreach ($processedConfiguration['resource_actions'] as $resourceAction) {
-            $this->updateResourceAction($resourceAction, $plugin);
+            $this->updateResourceType($resourceConfiguration, $plugin);
         }
 
         foreach ($processedConfiguration['widgets'] as $widgetConfiguration) {
@@ -218,73 +207,6 @@ class DatabaseWriter implements LoggerAwareInterface
         $this->iconSetManager->generateFromPlugin($pluginBundle->getPath(), $mimeTypes);
     }
 
-    private function updateResourceType(array $resourceConfiguration, Plugin $plugin, PluginBundleInterface $pluginBundle): ResourceType
-    {
-        $this->logger->debug(sprintf('Updating the resource type : "%s".', $resourceConfiguration['name']));
-
-        $resourceType = $this->em->getRepository(ResourceType::class)
-            ->findOneBy(['name' => $resourceConfiguration['name']]);
-
-        if (null === $resourceType) {
-            $resourceType = new ResourceType();
-            $resourceType->setName($resourceConfiguration['name']);
-        }
-
-        $resourceType->setClass($resourceConfiguration['class']);
-        $resourceType->setTags($resourceConfiguration['tags']);
-        $resourceType->setPlugin($plugin);
-        $resourceType->setExportable($resourceConfiguration['exportable']);
-        $this->em->persist($resourceType);
-
-        if (!$this->mm->hasMenuAction($resourceType)) {
-            $this->mm->addDefaultPerms($resourceType);
-        }
-
-        $newActions = [];
-        if (!empty($resourceConfiguration['actions'])) {
-            foreach ($resourceConfiguration['actions'] as $resourceAction) {
-                $newActions[] = $resourceAction['decoder'];
-                $this->updateResourceAction(array_merge($resourceAction, [
-                    'resource_type' => $resourceType->getName(),
-                ]), $plugin);
-            }
-        }
-
-        $permissionMap = $this->mm->getPermissionMap($resourceType);
-        $defaults = $this->mm->getDefaultResourceActionsMask();
-        $oldActions = array_filter($permissionMap, function ($name) use ($defaults) {
-            return !in_array($name, array_keys($defaults));
-        });
-
-        $toRemove = array_filter($oldActions, function ($action) use ($newActions) {
-            return !in_array($action, $newActions);
-        });
-
-        foreach ($toRemove as $el) {
-            $mask = $this->em->getRepository(MaskDecoder::class)->findOneBy(['resourceType' => $resourceType, 'name' => $el]);
-            $this->logger->debug('Remove mask decoder '.$el);
-            $this->em->remove($mask);
-        }
-
-        $this->em->flush();
-
-        return $resourceType;
-    }
-
-    private function updateTool(array $toolConfiguration, Plugin $plugin): void
-    {
-        $tool = $this->em
-            ->getRepository(Tool::class)
-            ->findOneBy(['name' => $toolConfiguration['name']]);
-
-        if (null === $tool) {
-            $tool = new Tool();
-        }
-
-        $this->persistTool($toolConfiguration, $plugin, $tool);
-        $this->updateCustomToolRights($toolConfiguration['tool_rights'], $tool);
-    }
-
     private function updateWidget(array $widgetConfiguration, Plugin $plugin): Widget
     {
         /** @var Widget $widget */
@@ -297,72 +219,6 @@ class DatabaseWriter implements LoggerAwareInterface
         }
 
         return $this->persistWidget($widgetConfiguration, $widget);
-    }
-
-    public function persistResourceAction(array $action, Plugin $plugin): void
-    {
-        // also remove duplicates if some are found
-        $resourceType = null;
-        if (!empty($action['resource_type'])) {
-            /** @var ResourceType $resourceType */
-            $resourceType = $this->em
-                ->getRepository(ResourceType::class)
-                ->findOneBy(['name' => $action['resource_type']]);
-        }
-
-        $this->logger->debug(sprintf('Updating resource action : "%s".', $action['name']));
-
-        // initializes the mask decoder if needed
-        $this->mm->createDecoder($action['decoder'], $resourceType);
-
-        /** @var MenuAction $resourceAction */
-        $resourceAction = $this->em
-            ->getRepository(MenuAction::class)
-            ->findOneBy(['name' => $action['name'], 'resourceType' => $resourceType]);
-
-        if (!$resourceAction) {
-            $resourceAction = new MenuAction();
-        }
-
-        $resourceAction->setName($action['name']);
-        $resourceAction->setPlugin($plugin);
-        $resourceAction->setDecoder($action['decoder']);
-        $resourceAction->setGroup($action['group']);
-        $resourceAction->setScope($action['scope']);
-        $resourceAction->setApi($action['api']);
-        $resourceAction->setDefault($action['default']);
-        $resourceAction->setResourceType($resourceType);
-
-        $this->em->persist($resourceAction);
-        $this->em->flush();
-    }
-
-    public function updateResourceAction(array $action, Plugin $plugin): void
-    {
-        $this->persistResourceAction($action, $plugin);
-    }
-
-    private function persistResourceType(array $resourceConfiguration, Plugin $plugin, PluginBundleInterface $pluginBundle): ResourceType
-    {
-        $this->logger->debug('Adding resource type '.$resourceConfiguration['name']);
-        $resourceType = new ResourceType();
-        $resourceType->setName($resourceConfiguration['name']);
-        $resourceType->setClass($resourceConfiguration['class']);
-        $resourceType->setExportable($resourceConfiguration['exportable']);
-        $resourceType->setTags($resourceConfiguration['tags']);
-        $resourceType->setPlugin($plugin);
-        $this->em->persist($resourceType);
-        $this->mm->addDefaultPerms($resourceType);
-
-        if (!empty($resourceConfiguration['actions'])) {
-            foreach ($resourceConfiguration['actions'] as $resourceAction) {
-                $this->persistResourceAction(array_merge($resourceAction, [
-                    'resource_type' => $resourceType->getName(),
-                ]), $plugin);
-            }
-        }
-
-        return $resourceType;
     }
 
     private function createWidget(array $widgetConfiguration, Plugin $plugin): Widget
@@ -425,24 +281,123 @@ class DatabaseWriter implements LoggerAwareInterface
         return $this->persistDataSource($sourceConfiguration, $source);
     }
 
-    private function persistTool(array $toolConfiguration, Plugin $plugin, Tool $tool): void
+    private function persistTool(array $toolConfiguration, Plugin $plugin): void
     {
-        $this->logger->debug(sprintf('Updating the tool : "%s".', $toolConfiguration['name']));
+        $this->logger->debug('Adding tool: '.$toolConfiguration['name']);
+
+        $tool = new Tool();
+        $tool->setName($toolConfiguration['name']);
+        $tool->setPlugin($plugin);
+        $tool->setIcon($toolConfiguration['icon']);
+        $this->em->persist($tool);
+
+        $this->toolMaskManager->createDefaultToolMaskDecoders($tool->getName());
+        if (!empty($toolConfiguration['tool_rights'])) {
+            $this->toolMaskManager->createCustomToolMaskDecoders($tool->getName(), $toolConfiguration['tool_rights']);
+        }
+    }
+
+    private function updateTool(array $toolConfiguration, Plugin $plugin): void
+    {
+        $this->logger->debug(sprintf('Updating the tool: "%s".', $toolConfiguration['name']));
+
+        $tool = $this->em
+            ->getRepository(Tool::class)
+            ->findOneBy(['name' => $toolConfiguration['name']]);
+
+        if (null === $tool) {
+            $tool = new Tool();
+        }
 
         $tool->setName($toolConfiguration['name']);
         $tool->setPlugin($plugin);
-
-        if (isset($toolConfiguration['icon'])) {
-            $tool->setIcon("{$toolConfiguration['icon']}");
-        } else {
-            $tool->setIcon('tools');
-        }
+        $tool->setIcon($toolConfiguration['icon']);
 
         $this->em->persist($tool);
 
         $this->toolMaskManager->createDefaultToolMaskDecoders($tool->getName());
 
-        $this->persistCustomToolRights($toolConfiguration['tool_rights'], $tool);
+        $newActions = [];
+        if (!empty($toolConfiguration['tool_rights'])) {
+            $newActions = $toolConfiguration['tool_rights'];
+            $this->toolMaskManager->createCustomToolMaskDecoders($tool->getName(), $newActions);
+        }
+
+        $oldActions = [];
+        foreach ($this->toolMaskManager->getDecoders($tool->getName()) as $decoder) {
+            if (!in_array($decoder->getName(), ToolMaskDecoder::DEFAULT_ACTIONS)) {
+                $oldActions[] = $decoder->getName();
+            }
+        }
+
+        $toRemove = array_filter($oldActions, function (string $actionName) use ($newActions) {
+            return !in_array($actionName, $newActions);
+        });
+
+        foreach ($toRemove as $el) {
+            $this->logger->debug('Removing the tool right: '.$el);
+            $this->toolMaskManager->removeToolMaskDecoder($tool->getName(), $el);
+        }
+    }
+
+    private function persistResourceType(array $resourceConfiguration, Plugin $plugin): void
+    {
+        $this->logger->debug('Adding resource type: '.$resourceConfiguration['name']);
+
+        $resourceType = new ResourceType();
+        $resourceType->setName($resourceConfiguration['name']);
+        $resourceType->setClass($resourceConfiguration['class']);
+        $resourceType->setPlugin($plugin);
+        $this->em->persist($resourceType);
+
+        $this->mm->createDefaultResourceMaskDecoders($resourceType);
+
+        if (!empty($resourceConfiguration['resource_rights'])) {
+            $this->mm->createCustomResourceMaskDecoders($resourceType, $resourceConfiguration['resource_rights']);
+        }
+    }
+
+    private function updateResourceType(array $resourceConfiguration, Plugin $plugin): void
+    {
+        $this->logger->debug(sprintf('Updating the resource type: %s.', $resourceConfiguration['name']));
+
+        $resourceType = $this->em->getRepository(ResourceType::class)
+            ->findOneBy(['name' => $resourceConfiguration['name']]);
+
+        if (null === $resourceType) {
+            $resourceType = new ResourceType();
+            $resourceType->setName($resourceConfiguration['name']);
+        }
+
+        $resourceType->setClass($resourceConfiguration['class']);
+        $resourceType->setPlugin($plugin);
+
+        $this->em->persist($resourceType);
+
+        $this->mm->createDefaultResourceMaskDecoders($resourceType);
+
+        $newActions = [];
+
+        if (!empty($resourceConfiguration['resource_rights'])) {
+            $newActions = $resourceConfiguration['resource_rights'];
+            $this->mm->createCustomResourceMaskDecoders($resourceType, $newActions);
+        }
+
+        $oldActions = [];
+        foreach ($this->mm->getDecoders($resourceType) as $decoder) {
+            if (!in_array($decoder->getName(), MaskDecoder::DEFAULT_ACTIONS)) {
+                $oldActions[] = $decoder->getName();
+            }
+        }
+
+        $toRemove = array_filter($oldActions, function (string $actionName) use ($newActions) {
+            return !in_array($actionName, $newActions);
+        });
+
+        foreach ($toRemove as $el) {
+            $this->logger->debug('Removing the resource right: '.$el);
+            $this->mm->removeResourceMaskDecoder($resourceType, $el);
+        }
     }
 
     private function createTheme(array $themeConfiguration, Plugin $plugin): void
@@ -468,49 +423,5 @@ class DatabaseWriter implements LoggerAwareInterface
         $theme->setName($themeConfiguration['name']);
         $theme->setPlugin($plugin);
         $this->em->persist($theme);
-    }
-
-    private function persistCustomToolRights(array $rights, Tool $tool): void
-    {
-        $decoders = $this->em->getRepository(ToolMaskDecoder::class)->findBy([
-            'tool' => $tool->getName(),
-        ]);
-        $nb = count($decoders);
-
-        foreach ($rights as $right) {
-            $maskDecoder = null;
-            foreach ($decoders as $decoder) {
-                if ($decoder->getName() === $right) {
-                    $maskDecoder = $decoder;
-                    break;
-                }
-            }
-
-            if (empty($maskDecoder)) {
-                $value = pow(2, $nb);
-                $this->toolMaskManager->createToolMaskDecoder($tool->getName(), $right, $value);
-                ++$nb;
-            }
-        }
-    }
-
-    private function updateCustomToolRights(array $rights, Tool $tool): void
-    {
-        $this->deleteCustomToolRights($tool);
-        $this->persistCustomToolRights($rights, $tool);
-    }
-
-    private function deleteCustomToolRights(Tool $tool): void
-    {
-        $customDecoders = $this->em->getRepository(ToolMaskDecoder::class)->findBy([
-            'tool' => $tool->getName(),
-        ]);
-
-        foreach ($customDecoders as $decoder) {
-            if (!in_array($decoder->getName(), ToolMaskDecoder::DEFAULT_ACTIONS)) {
-                $this->em->remove($decoder);
-            }
-        }
-        $this->em->flush();
     }
 }

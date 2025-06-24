@@ -17,4 +17,17 @@ export default declareTool(ImportTool, () => new CommandPalette('import')
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  import: {
+    order: 1,
+    actions: [
+      'Créer et administrer de nouveaux imports'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Administrer tous les imports'
+    ]
+  },
+})

@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 
-import {url} from '#/main/app/api/router'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
@@ -32,12 +31,10 @@ export default declareAction((resourceNodes, nodesRefresher) => {
       dangerous: false
     },
     request: {
-      url: url(
-        ['claro_resource_collection_action', {action: 'restore'}],
-        {ids: processable.map(node => node.id)}
-      ),
+      url: ['claro_resource_restore'],
       request: {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify(processable.map(node => node.id))
       },
       success: (restoredNodes) => nodesRefresher.update(restoredNodes)
     },

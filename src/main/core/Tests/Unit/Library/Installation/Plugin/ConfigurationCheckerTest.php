@@ -11,7 +11,6 @@
 
 namespace Claroline\CoreBundle\Tests\Unit\Library\Installation\Plugin;
 
-use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\Tool\Tool;
 use Claroline\CoreBundle\Entity\Widget\Widget;
@@ -35,8 +34,6 @@ class ConfigurationCheckerTest extends MockeryTestCase
         $resourceTypeRepo->shouldReceive('findAll')->andReturn([]);
         $toolRepo = $this->mock('Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository');
         $toolRepo->shouldReceive('findAll')->andReturn([]);
-        $menuActionRepo = $this->mock('Claroline\CoreBundle\Repository\Resource\ResourceActionRepository');
-        $menuActionRepo->shouldReceive('findBy')->with(['resourceType' => null, 'isCustom' => true])->andReturn([]);
         $widgetRepo = $this->mock('Claroline\CoreBundle\Repository\Widget\WidgetRepository');
         $widgetRepo->shouldReceive('findAll')->andReturn([]);
         $em = $this->mock('Doctrine\ORM\EntityManager');
@@ -49,27 +46,24 @@ class ConfigurationCheckerTest extends MockeryTestCase
         $em->shouldReceive('getRepository')
             ->with(Widget::class)
             ->andReturn($widgetRepo);
-        $em->shouldReceive('getRepository')
-            ->with(MenuAction::class)
-            ->andReturn($menuActionRepo);
         $this->checker = new ConfigurationChecker(new Parser(), $em);
     }
 
-    public function testCheckerReturnsAnErrorOnNonExistentResourceFile()
+    public function testCheckerReturnsAnErrorOnNonExistentResourceFile(): void
     {
         $pluginFqcn = 'Invalid\NonExistentConfigFile1\InvalidNonExistentConfigFile1';
         $errors = $this->checker->check($this->loadPlugin($pluginFqcn));
         $this->assertStringContainsString('config.yml file missing', $errors[0]->getMessage());
     }
 
-    public function testCheckerReturnsAnErrorOnMissingResourceKey()
+    public function testCheckerReturnsAnErrorOnMissingResourceKey(): void
     {
         $pluginFqcn = 'Invalid\MissingResourceKey1\InvalidMissingResourceKey1';
         $errors = $this->checker->check($this->loadPlugin($pluginFqcn));
         $this->assertTrue($errors[0] instanceof ValidationError);
     }
 
-    public function testCheckerReturnsAnErrorOnUnloadableResourceClass()
+    public function testCheckerReturnsAnErrorOnUnloadableResourceClass(): void
     {
         $pluginFqcn = 'Invalid\UnloadableResourceClass1\InvalidUnloadableResourceClass1';
         $errors = $this->checker->check($this->loadPlugin($pluginFqcn));
@@ -77,7 +71,7 @@ class ConfigurationCheckerTest extends MockeryTestCase
         $this->assertStringContainsString('was not found', $errors[0]->getMessage());
     }
 
-    public function testCheckerReturnsAnErrorOnUnloadableResourceClass2()
+    public function testCheckerReturnsAnErrorOnUnloadableResourceClass2(): void
     {
         $pluginFqcn = 'Invalid\UnloadableResourceClass2\InvalidUnloadableResourceClass2';
         $this->requirePluginClass('Invalid\UnloadableResourceClass2\Entity\ResourceX');
@@ -89,7 +83,7 @@ class ConfigurationCheckerTest extends MockeryTestCase
     /**
      * @dataProvider provideValidPlugins
      */
-    public function testCheckerReturnsNoErrorOnValidPlugin($pluginFqcn)
+    public function testCheckerReturnsNoErrorOnValidPlugin(string $pluginFqcn): void
     {
         $this->assertEquals(0, count($this->checker->check($this->loadPlugin($pluginFqcn))));
     }

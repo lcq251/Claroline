@@ -13,8 +13,6 @@ namespace Claroline\EvaluationBundle\Finder;
 
 use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CommunityBundle\Finder\Filter\UserFilter;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\CoreBundle\Event\SearchObjectsEvent;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Doctrine\ORM\QueryBuilder;
 
@@ -76,20 +74,6 @@ class WorkspaceEvaluationFinder extends AbstractFinder
                         $qb->andWhere("w.uuid = :{$filterName}");
                         $qb->setParameter($filterName, $filterValue);
                     }
-                    break;
-
-                case 'workspaceTags':
-                case 'workspace.tags':
-                    if (!$workspaceJoin) {
-                        $qb->join('obj.workspace', 'w');
-                        $workspaceJoin = true;
-                    }
-
-                    // small cheat to be able to filter by tags
-                    // if we let the default event handle it, it will search tags on the evaluations (which is not the case)
-                    $event = new SearchObjectsEvent($qb, Workspace::class, 'w', ['tags' => $searches['workspaceTags']], $sortBy, $page, $limit);
-                    $this->eventDispatcher->dispatch($event, 'objects.search');
-
                     break;
 
                 case 'workspace.hidden':

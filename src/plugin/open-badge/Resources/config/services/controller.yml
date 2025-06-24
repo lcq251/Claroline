@@ -4,7 +4,6 @@ services:
 
     Claroline\OpenBadgeBundle\Controller\ArchiveController:
         arguments:
-            - '@security.token_storage'
             - '@security.authorization_checker'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'

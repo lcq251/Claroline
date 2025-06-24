@@ -2,8 +2,10 @@
 
 namespace Claroline\AppBundle\API\Finder;
 
+use Claroline\CoreBundle\Event\SearchObjectsEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Finder implements FinderInterface
 {
@@ -16,13 +18,15 @@ class Finder implements FinderInterface
     private array $options;
     private bool $distinct = false;
     private EntityManagerInterface $em;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EntityManagerInterface $em, ResolvedFinderTypeInterface $type, string $name, array $options)
+    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $eventDispatcher, ResolvedFinderTypeInterface $type, string $name, array $options)
     {
         $this->name = $name;
         $this->type = $type;
         $this->options = $options;
         $this->em = $em;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getName(): string
@@ -116,6 +120,9 @@ class Finder implements FinderInterface
             $queryBuilder->setFirstResult($this->query->getPage() * $this->query->getPageSize());
             $queryBuilder->setMaxResults($this->query->getPageSize());
         }
+
+        $event = new SearchObjectsEvent($queryBuilder, $this->getAlias(), $this->query);
+        $this->eventDispatcher->dispatch($event, 'objects.search');
 
         return new FinderResult($this->getAlias(), $this->query, $queryBuilder, $rowTransformer, $readonly);
     }

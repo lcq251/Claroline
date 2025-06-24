@@ -18,8 +18,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SessionVoter extends AbstractVoter
 {
-    public const REGISTER = 'REGISTER';
-
     public function getClass(): string
     {
         return Session::class;
@@ -33,16 +31,13 @@ class SessionVoter extends AbstractVoter
             case self::EDIT:
             case self::DELETE:
             case self::PATCH:
-                $granted = $this->isGranted('EDIT', $object->getCourse());
+                $granted = $this->isGranted(self::EDIT, $object->getCourse());
                 break;
             case self::OPEN:
-                $granted = $this->isGranted('OPEN', $object->getCourse());
+                $granted = $this->isGranted(self::OPEN, $object->getCourse());
                 break;
-            case self::VIEW:
-                $granted = $this->isGranted('VIEW', $object->getCourse());
-                break;
-            case self::REGISTER:
-                $granted = $this->isGranted('REGISTER', $object->getCourse());
+            case self::FOLLOW:
+                $granted = $this->isGranted(self::FOLLOW, $object->getCourse());
                 break;
         }
 
@@ -57,6 +52,6 @@ class SessionVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::REGISTER];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::FOLLOW];
     }
 }

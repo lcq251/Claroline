@@ -26,7 +26,6 @@ class TemplateVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::CREATE:
             case self::OPEN:
-            case self::VIEW:
                 return $this->hasAdminToolAccess($token, 'templates') ?
                     VoterInterface::ACCESS_GRANTED :
                     VoterInterface::ACCESS_DENIED;
@@ -54,6 +53,6 @@ class TemplateVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
     }
 }

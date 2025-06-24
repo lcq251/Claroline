@@ -75,7 +75,7 @@ class SessionUserController extends AbstractCrudController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        $this->checkPermission('REGISTER', $course, [], true);
+        $this->checkPermission('FOLLOW', $course, [], true);
 
         if (!empty($sessionId)) {
             $finderQuery->addFilter('session', $sessionId);
@@ -169,7 +169,7 @@ class SessionUserController extends AbstractCrudController
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {
-            $this->checkPermission('REGISTER', $sessionUser->getSession());
+            $this->checkPermission('FOLLOW', $sessionUser->getSession());
 
             $this->sessionManager->sendSessionInvitation($sessionUser->getSession(), [$sessionUser->getUser()], !$sessionUser->isConfirmed());
         }

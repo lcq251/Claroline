@@ -21,7 +21,6 @@ services:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\Resource\MaskManager'
-            - '@filesystem'
             - '@Claroline\CoreBundle\Manager\Tool\ToolMaskDecoderManager'
             - '@Claroline\ThemeBundle\Manager\IconSetBuilderManager'
         calls:

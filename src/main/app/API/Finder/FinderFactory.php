@@ -3,12 +3,14 @@
 namespace Claroline\AppBundle\API\Finder;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class FinderFactory implements FinderFactoryInterface
 {
     public function __construct(
         private readonly FinderRegistryInterface $registry,
-        private readonly EntityManagerInterface $em
+        private readonly EntityManagerInterface $em,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -27,7 +29,7 @@ final class FinderFactory implements FinderFactoryInterface
         $type = $this->registry->getType($type);
         $resolver = $type->getOptionsResolver();
 
-        $builder = new FinderBuilder($this->em, $this, $type, $name, $resolver->resolve($options));
+        $builder = new FinderBuilder($this->em, $this->eventDispatcher, $this, $type, $name, $resolver->resolve($options));
 
         $type->buildFinder($builder, $builder->getOptions());
 

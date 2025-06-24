@@ -50,7 +50,7 @@ class ShortcutListener extends ResourceComponent implements EvaluatedResourceInt
         return 'shortcut';
     }
 
-    /** @var Shortcut */
+    /** @param Shortcut $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [
@@ -58,6 +58,7 @@ class ShortcutListener extends ResourceComponent implements EvaluatedResourceInt
         ];
     }
 
+    /** @param Shortcut $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         return [

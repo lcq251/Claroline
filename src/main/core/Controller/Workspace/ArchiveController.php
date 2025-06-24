@@ -58,16 +58,18 @@ class ArchiveController
     #[Route(path: '/', name: 'apiv2_workspace_archive', methods: ['POST'])]
     public function archiveAction(Request $request): JsonResponse
     {
-        $processed = [];
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
         $this->om->startFlushSuite();
 
+        $processed = [];
+        $workspaceIds = $this->decodeRequest($request);
+
         /** @var Workspace[] $workspaces */
-        $workspaces = self::decodeIdsString($request, Workspace::class);
+        $workspaces = $this->om->getRepository(Workspace::class)->findBy(['uuid' => $workspaceIds]);
         foreach ($workspaces as $workspace) {
             if (!$workspace->isArchived()) {
-                $this->crud->replace($workspace, 'archived', true);
-                $processed[] = $workspace;
+                $processed[] = $this->crud->replace($workspace, 'archived', true);
             }
         }
 
@@ -81,16 +83,18 @@ class ArchiveController
     #[Route(path: '/', name: 'apiv2_workspace_restore', methods: ['PUT'])]
     public function restoreAction(Request $request): JsonResponse
     {
-        $processed = [];
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
         $this->om->startFlushSuite();
 
+        $processed = [];
+        $workspaceIds = $this->decodeRequest($request);
+
         /** @var Workspace[] $workspaces */
-        $workspaces = self::decodeIdsString($request, Workspace::class);
+        $workspaces = $this->om->getRepository(Workspace::class)->findBy(['uuid' => $workspaceIds]);
         foreach ($workspaces as $workspace) {
             if ($workspace->isArchived()) {
-                $this->crud->replace($workspace, 'archived', false);
-                $processed[] = $workspace;
+                $processed[] = $this->crud->replace($workspace, 'archived', false);
             }
         }
 

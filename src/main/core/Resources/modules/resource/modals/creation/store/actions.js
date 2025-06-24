@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 import {makeId} from '#/main/app/utils/id'
 import {actions as formActions} from '#/main/app/content/form/store/actions'
 
-import {getResource} from '#/main/core/resources'
+import {getResource} from '#/main/core/resource/utils'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
 import {selectors} from '#/main/core/resource/modals/creation/store/selectors'
 import {API_REQUEST} from '#/main/app/api'
@@ -68,9 +68,8 @@ actions.updateResource = (prop, value) => formActions.updateProp(selectors.STORE
  *
  * @param {object} parent - the parent of the new resource
  */
-actions.create = (parent) => formActions.saveForm(selectors.STORE_NAME, ['claro_resource_action', {
-  action: 'add',
-  id: parent.id
+actions.create = (parent) => formActions.saveForm(selectors.STORE_NAME, ['claro_resource_create', {
+  parentId: parent.id
 }])
 
 actions.fromFile = (file) => (dispatch) => {

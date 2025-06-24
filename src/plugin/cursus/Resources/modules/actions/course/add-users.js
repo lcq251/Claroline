@@ -15,7 +15,7 @@ export default declareAction((courses, refresher) => {
     type: MODAL_BUTTON,
     icon: 'fa fa-fw fa-user-plus',
     label: trans('register_users'),
-    displayed: hasPermission('register', courses[0]),
+    displayed: hasPermission('follow', courses[0]),
     modal: [MODAL_TRAINING_SESSIONS, {
       url: ['apiv2_cursus_course_list_sessions', {id: get(courses[0], 'id')}],
       filters: [{property: 'status', value: 'not_ended'}],

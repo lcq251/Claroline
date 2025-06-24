@@ -15,4 +15,17 @@ export default declareTool(AnnouncementTool, () => new CommandPalette('announcem
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  create: {
+    order: 1,
+    actions: [
+      'Créer et administrer de nouvelles annonces'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Administrer toutes les annonces'
+    ]
+  }
+})

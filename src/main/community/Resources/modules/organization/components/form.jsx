@@ -91,7 +91,7 @@ const OrganizationFormComponent = props => {
           title: trans('access_restrictions'),
           fields: [
             {
-              name: 'restrictions.public',
+              name: 'meta.public',
               type: 'boolean',
               label: trans('make_organization_public', {}, 'community'),
               help: [

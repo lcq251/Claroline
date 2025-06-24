@@ -40,7 +40,7 @@ const CommunityTool = (props) =>
         type: LINK_BUTTON,
         label: trans('pending_registrations'),
         target: `${props.path}/pending`,
-        displayed: props.contextType === toolConstants.TOOL_WORKSPACE && props.canEdit && props.hasPendingRegistrations
+        displayed: props.contextType === toolConstants.TOOL_WORKSPACE && props.canRegister && props.hasPendingRegistrations
       }, {
         name: 'teams',
         type: LINK_BUTTON,
@@ -75,7 +75,7 @@ const CommunityTool = (props) =>
       }, {
         path: '/pending',
         component: PendingMain,
-        disabled: !props.canEdit || props.contextType !== toolConstants.TOOL_WORKSPACE || !props.hasPendingRegistrations
+        disabled: !props.canRegister || props.contextType !== toolConstants.TOOL_WORKSPACE || !props.hasPendingRegistrations
       }
     ]}
     actions={[
@@ -91,6 +91,7 @@ CommunityTool.propTypes = {
   contextData: T.object,
   workspace: T.object,
   hasPendingRegistrations: T.bool.isRequired,
+  canRegister: T.bool.isRequired,
   canEdit: T.bool.isRequired
 }
 

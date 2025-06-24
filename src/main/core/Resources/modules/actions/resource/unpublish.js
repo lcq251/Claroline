@@ -11,7 +11,7 @@ import {constants, declareAction} from '#/main/app/action'
  * Unpublishes some resource nodes.
  *
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
- * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
+ * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => ({
   name: 'unpublish',
@@ -21,12 +21,10 @@ export default declareAction((resourceNodes, nodesRefresher) => ({
   displayed: -1 !== resourceNodes.findIndex(node => !!node.parent && !!get(node, 'meta.published') && hasPermission('edit', node)),
   request: {
     type: 'unpublish',
-    url: url(
-      ['claro_resource_collection_action', {action: 'unpublish'}],
-      {ids: resourceNodes.map(resourceNode => resourceNode.id)}
-    ),
+    url: ['claro_resource_unpublish'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(resourceNodes.map(resourceNode => resourceNode.id))
     },
     success: (response) => nodesRefresher.update(response)
   },

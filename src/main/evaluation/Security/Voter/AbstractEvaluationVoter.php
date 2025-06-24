@@ -17,6 +17,6 @@ abstract class AbstractEvaluationVoter extends AbstractVoter
 {
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::EDIT, self::DELETE];
+        return [self::OPEN, self::FOLLOW, self::EDIT, self::ADMINISTRATE, self::DELETE];
     }
 }

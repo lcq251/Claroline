@@ -104,7 +104,7 @@ const BadgeDetails = (props) => {
         }
       </PageSection>
 
-      {(hasPermission('grant', props.badge) || !get(props.badge, 'restrictions.hideRecipients')) &&
+      {(hasPermission('follow', props.badge) || !get(props.badge, 'restrictions.hideRecipients')) &&
         <PageSection
           title={trans('Utilisateurs ayant obtenu ce badge', {}, 'badges')}
           className="mb-5"

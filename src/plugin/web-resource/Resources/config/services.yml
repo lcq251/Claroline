@@ -8,11 +8,3 @@ services:
         public: true
         arguments:
             - '@Claroline\WebResourceBundle\Manager\WebResourceManager'
-
-    Claroline\WebResourceBundle\Listener\WebResourceListener:
-        tags: ['claroline.component.resource', 'kernel.event_subscriber']
-        arguments:
-            - '%claroline.param.files_directory%'
-            - '%claroline.param.uploads_directory%'
-            - '@Claroline\WebResourceBundle\Manager\WebResourceManager'
-            - '@Claroline\AppBundle\API\SerializerProvider'

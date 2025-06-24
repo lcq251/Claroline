@@ -72,7 +72,7 @@ class ExportController extends AbstractCrudController
     #[Route(path: '/{id}/execute', name: 'execute', methods: ['POST'])]
     public function executeAction(#[MapEntity(mapping: ['id' => 'uuid'])] ExportFile $exportFile): JsonResponse
     {
-        $this->checkPermission('REFRESH', $exportFile, [], true);
+        $this->checkPermission('FOLLOW', $exportFile, [], true);
 
         $this->exportManager->requestExport($exportFile);
 

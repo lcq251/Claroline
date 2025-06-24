@@ -1,3 +1,5 @@
+import merge from 'lodash/merge'
+
 import {route} from '#/main/core/resource/routing'
 import {Resource} from '#/main/core/resource/components/main'
 import {ResourcePage} from '#/main/core/resource/components/page'
@@ -14,7 +16,53 @@ import {selectors} from '#/main/core/resource/store'
 function declareResource(ResourceComponent, additional) {
   return {
     component: ResourceComponent,
-    ...additional
+    ...additional,
+    permissions: {
+      open: {
+        order: 0,
+        actions: [
+          'Voir et ouvrir la ressource'
+        ]
+      },
+      export: {
+        order: 5,
+        actions: [
+          'Copier la ressource'
+        ]
+      },
+      follow: {
+        order: 10,
+        actions: [
+          'Voir le tableau de bord de la ressource'
+        ]
+      },
+      delete: {
+        order: 15,
+        actions: [
+          'Supprimer la ressource'
+        ]
+      },
+      edit: {
+        order: 20,
+        actions: [
+          'Modifier la ressource',
+          'Publier/Dépublier la ressource'
+        ]
+      },
+      administrate: {
+        order: 25,
+        actions: [
+          'Déplacer la ressource',
+          'Modifier les permissions des utilisateurs sur la ressource'
+        ]
+      }
+    },
+
+    addPermissions(permissions) {
+      this.permissions = merge(this.permissions, permissions)
+
+      return this
+    }
   }
 }
 

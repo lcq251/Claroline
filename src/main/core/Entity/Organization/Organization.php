@@ -56,7 +56,7 @@ class Organization implements CrudEntityInterface, ContextSubjectInterface
     public function __construct()
     {
         $this->refreshUuid();
-        // todo : generate unique from name for a more beautiful code
+        // we should generate unique code from name for a more beautiful code
         $this->code = BaseUuid::uuid4()->toString();
     }
 

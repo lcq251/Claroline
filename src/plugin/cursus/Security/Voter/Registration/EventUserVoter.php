@@ -33,7 +33,7 @@ class EventUserVoter extends AbstractVoter
         $event = $object->getEvent();
 
         // managers of the session registrations can do everything
-        if ($this->isGranted('REGISTER', $event)) {
+        if ($this->isGranted(self::FOLLOW, $event)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

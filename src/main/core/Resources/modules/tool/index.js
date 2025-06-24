@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 import {ToolPage} from '#/main/core/tool/components/page'
 import {ToolMain as Tool} from '#/main/core/tool/components/main'
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
@@ -17,11 +19,43 @@ import {route} from '#/main/core/tool/routing'
 function declareTool(ToolComponent, commands) {
   return {
     component: ToolComponent,
-    commands: commands
+    commands: commands,
+    permissions: {
+      open: {
+        order: 0,
+        actions: [
+          'Voir et ouvrir l\'outil'
+        ]
+      },
+      edit: {
+        order: 10,
+        actions: [
+          'Modifier les paramètres de l\'outil'
+        ]
+      },
+      administrate: {
+        order: 15,
+        actions: [
+          'Modifier les permissions des utilisateurs dans l\'outil'
+        ]
+      }
+    },
+
+    addPermissions(permissions) {
+      const permNames = Object.keys(permissions)
+      permNames.map(perm => {
+        this.permissions[perm] = {
+          order: permissions[perm].order || get(this.permissions[perm], 'order', []),
+          actions: get(this.permissions[perm], 'actions', []).concat(permissions[perm].actions || [])
+        }
+      })
+
+      return this
+    }
   }
 }
 
-// Declare public element of the tool module
+// Export the public elements of the tool module
 export {
   Tool,
   ToolEditor,

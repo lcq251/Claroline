@@ -31,7 +31,7 @@ class CommunityDashboard extends Component {
             title: trans('overview'),
             render: () => (
               <PageContent>
-                <PageSection size="full">
+                <PageSection size="full" className="mt-4">
                   <ContentInfoBlocks
                     size="lg"
                     items={[

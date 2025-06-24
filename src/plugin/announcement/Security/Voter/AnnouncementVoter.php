@@ -33,6 +33,12 @@ class AnnouncementVoter extends AbstractVoter
                 return VoterInterface::ACCESS_DENIED;
 
             case self::CREATE:
+                if ($this->isToolGranted('CREATE', 'announcement', $object->getWorkspace())) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+
+                return VoterInterface::ACCESS_DENIED;
+
             case self::EDIT:
             case self::DELETE:
             case self::ADMINISTRATE:

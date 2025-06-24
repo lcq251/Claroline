@@ -36,9 +36,8 @@ class ToolRightsSerializer
 
         $serialized = [
             'id' => $toolRights->getId(),
-            'orderedToolId' => $orderedTool->getUuid(), // TODO : to remove
             'role' => $this->roleSerializer->serialize($role, [SerializerInterface::SERIALIZE_MINIMAL]),
-            'permissions' => $this->maskManager->decodeMask($toolRights->getMask(), $orderedTool->getName()),
+            'permissions' => $this->maskManager->decodeMask($orderedTool->getName(), $toolRights->getMask()),
 
             // TODO : do not flatten role data (UI expects this structure).
             'translationKey' => $role->getTranslationKey(),
@@ -79,7 +78,7 @@ class ToolRightsSerializer
         }
 
         if ($toolRights->getOrderedTool()) {
-            $toolRights->setMask($this->maskManager->encodeMask($data['permissions'], $toolRights->getOrderedTool()->getName()));
+            $toolRights->setMask($this->maskManager->encodeMask($toolRights->getOrderedTool()->getName(), $data['permissions']));
         }
 
         return $toolRights;

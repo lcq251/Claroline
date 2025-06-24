@@ -11,7 +11,7 @@ export default (badges, refresher) => ({
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-user-plus',
   label: trans('grant_users', {}, 'actions'),
-  displayed: hasPermission('grant', badges[0]),
+  displayed: hasPermission('follow', badges[0]),
   disabled: get(badges[0], 'meta.archived', false),
 
   modal: [MODAL_USERS, {

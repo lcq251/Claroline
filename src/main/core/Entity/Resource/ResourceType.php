@@ -37,7 +37,7 @@ class ResourceType
     /**
      * @var Collection<int, MaskDecoder>
      */
-    #[ORM\OneToMany(targetEntity: MaskDecoder::class, mappedBy: 'resourceType', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: MaskDecoder::class, mappedBy: 'resourceType', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $maskDecoders;
 
     #[ORM\Column(name: 'is_exportable', type: Types::BOOLEAN)]
@@ -120,6 +120,9 @@ class ResourceType
         return $this->exportable;
     }
 
+    /**
+     * @deprecated
+     */
     public function getMaskDecoders(): Collection
     {
         return $this->maskDecoders;

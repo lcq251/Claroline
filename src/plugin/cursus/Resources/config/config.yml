@@ -2,8 +2,6 @@ plugin:
     tools:
         - name: trainings
           icon: graduation-cap
-          tool_rights:
-              - register
 
         - name: presence
           icon: signature

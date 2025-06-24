@@ -4,6 +4,7 @@ namespace Claroline\AppBundle\API\Finder;
 
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class FinderBuilder implements FinderBuilderInterface
 {
@@ -22,17 +23,26 @@ class FinderBuilder implements FinderBuilderInterface
 
     private EntityManagerInterface $em;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     private array $options;
 
     private bool $locked = false;
 
-    public function __construct(EntityManagerInterface $em, FinderFactoryInterface $factory, ResolvedFinderTypeInterface $type, string $name, array $options = [])
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        EventDispatcherInterface $eventDispatcher,
+        FinderFactoryInterface $factory,
+        ResolvedFinderTypeInterface $type,
+        string $name,
+        array $options = []
+    ) {
         $this->name = $name;
         $this->type = $type;
         $this->options = $options;
         $this->factory = $factory;
         $this->em = $em;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getOptions(): array
@@ -48,7 +58,7 @@ class FinderBuilder implements FinderBuilderInterface
 
         $this->locked = true;
 
-        $finder = new Finder($this->em, $this->type, $this->name, $this->options);
+        $finder = new Finder($this->em, $this->eventDispatcher, $this->type, $this->name, $this->options);
 
         foreach ($this->children as $child) {
             $finder->add($child->getFinder());

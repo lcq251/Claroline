@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\WebResourceBundle\Listener;
+namespace Claroline\WebResourceBundle\Component\Resource;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
@@ -20,7 +20,7 @@ use Claroline\CoreBundle\Entity\Resource\File;
 use Claroline\WebResourceBundle\Manager\WebResourceManager;
 use Symfony\Component\Filesystem\Filesystem;
 
-class WebResourceListener extends ResourceComponent implements DownloadableResourceInterface
+class WebResource extends ResourceComponent implements DownloadableResourceInterface
 {
     public function __construct(
         private readonly string $filesDir,

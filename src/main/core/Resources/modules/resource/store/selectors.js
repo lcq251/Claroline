@@ -125,7 +125,7 @@ const canEdit = createSelector(
 
 const canFollow = createSelector(
   [resourceNode],
-  (resourceNode) => hasPermission('edit', resourceNode)
+  (resourceNode) => hasPermission('follow', resourceNode)
 )
 
 // access restrictions selectors

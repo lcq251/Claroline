@@ -23,4 +23,19 @@ export default declareTool(EvaluationTool, () => new CommandPalette('evaluation'
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  follow: {
+    order: 5,
+    actions: [
+      'Voir le tableau de bord de l\'outil',
+      'Voir le tableau de bord des séquences'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Créer des séquences',
+      'Administrer toutes les séquences'
+    ]
+  }
+})

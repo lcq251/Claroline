@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\HiddenType;
+use Claroline\AppBundle\API\Finder\Type\PublicType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Doctrine\ORM\QueryBuilder;
@@ -27,9 +28,10 @@ class ToolType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('context', TextType::class)
+            ->add('contextName', TextType::class)
             ->add('contextId', TextType::class)
             ->add('hidden', HiddenType::class)
+            ->add('public', PublicType::class)
             ->add('roles', ClosureType::class, [
                 'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null === $finder->getFilterValue()) {

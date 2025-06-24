@@ -17,4 +17,11 @@ export default declareTool(ResourcesTool, () => new CommandPalette('resources')
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  follow: {
+    order: 5,
+    actions: [
+      'Voir le tableau de bord de l\'outil'
+    ]
+  }
+})

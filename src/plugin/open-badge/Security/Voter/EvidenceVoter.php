@@ -40,7 +40,7 @@ class EvidenceVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::OPEN:
                 // has grant rights on the badge or is owner
-                if ($this->isGranted('GRANT', $badge)
+                if ($this->isGranted('FOLLOW', $badge)
                     || (!empty($currentUser) && !empty($recipient) && $currentUser->getId() === $recipient->getId())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
@@ -52,7 +52,7 @@ class EvidenceVoter extends AbstractVoter
             case self::ADMINISTRATE:
             case self::DELETE:
                 // has grant rights on the badge
-                if ($this->isGranted('GRANT', $badge)) {
+                if ($this->isGranted('FOLLOW', $badge)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

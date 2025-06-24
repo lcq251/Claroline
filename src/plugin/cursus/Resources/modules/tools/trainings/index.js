@@ -20,28 +20,28 @@ export default declareTool(TrainingsTool, (tool) => new CommandPalette('training
       icon: 'fa fa-fw fa-calendar-week',
       label: trans('sessions', {}, 'cursus'),
       target: '/trainings/sessions',
-      displayed: hasPermission('register', tool)
+      displayed: hasPermission('follow', tool)
     }, {
       name: 'events',
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-calendar-day',
       label: trans('session_events', {}, 'cursus'),
       target: '/trainings/events',
-      displayed: hasPermission('register', tool)
+      displayed: hasPermission('follow', tool)
     }, {
       name: 'registrations',
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-user-plus',
       label: trans('registrations', {}, 'cursus'),
       target: '/trainings/registrations',
-      displayed: hasPermission('register', tool)
+      displayed: hasPermission('follow', tool)
     }, {
       name: 'dashboard',
       type: LINK_BUTTON,
       icon: 'fa fa-fw fa-gauge',
       label: trans('dashboard'),
       target: '/trainings/dashboard',
-      displayed: hasPermission('register', tool)
+      displayed: hasPermission('follow', tool)
     }
   ])
   .addCommands([
@@ -83,4 +83,19 @@ export default declareTool(TrainingsTool, (tool) => new CommandPalette('training
       callback: () => true
     }
   ])
-)
+).addPermissions({
+  follow: {
+    order: 5,
+    actions: [
+      'Inscrire des utilisateurs aux formations',
+      'Gérer les inscriptions des utilisateurs'
+    ]
+  },
+  edit: {
+    order: 10,
+    actions: [
+      'Créer et administrer de nouvelles formations',
+      'Administrer toutes les formations'
+    ]
+  }
+})

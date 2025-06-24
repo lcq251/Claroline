@@ -12,6 +12,7 @@
 namespace Claroline\CoreBundle\Manager\Resource;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceRights;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
@@ -105,7 +106,9 @@ class RightsManager
         return $this->rightsRepo->findMaximumRights($roles, $node);
     }
 
-    // TODO : this should be done by a serializer
+    /**
+     * @deprecated no replacement
+     */
     public function getRights(ResourceNode $resourceNode): array
     {
         return array_map(function (ResourceRights $rights) use ($resourceNode) {
@@ -145,7 +148,7 @@ class RightsManager
     /**
      * Checks if the current user is a manager of a resource.
      *
-     * A user is a manager of a resource if :
+     * A user is a manager of a resource if:
      *   - It is the creator of the resource
      *   - It is the manager of the parent workspace
      *   - It is a platform admin
@@ -193,7 +196,12 @@ class RightsManager
                 $creatable[] = $resourceType->getName();
             }
 
-            $perms = array_fill_keys(array_values($this->maskManager->getPermissionMap($resourceNode->getResourceType())), true);
+            $actions = [];
+            foreach ($this->maskManager->getDecoders($resourceNode->getResourceType()) as $decoder) {
+                $actions[] = $decoder->getName();
+            }
+
+            $perms = array_fill_keys($actions, true);
         } else {
             $creatable = $this->getCreatableTypes($roleNames, $resourceNode);
 
@@ -215,7 +223,7 @@ class RightsManager
         }, $creationRights);
     }
 
-    private function singleUpdate(ResourceNode $node, Role $role, $mask = 1, $types = []): void
+    private function singleUpdate(ResourceNode $node, Role $role, ?int $mask = 1, ?array $types = []): void
     {
         $sql = "
             INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id)
@@ -272,8 +280,7 @@ class RightsManager
     {
         // take into account the fact that some node have type with extended permissions
         // default actions should be set in stone with that way of doing it
-        $defaults = MaskManager::getDefaultActions();
-        $fullDirectoryMask = pow(2, count($defaults)) - 1;
+        $fullDirectoryMask = pow(2, count(MaskDecoder::DEFAULT_ACTIONS)) - 1;
 
         /**
          * For complexes resources the bits look like this.

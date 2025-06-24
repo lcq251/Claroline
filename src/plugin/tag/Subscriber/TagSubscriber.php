@@ -30,18 +30,18 @@ class TagSubscriber implements EventSubscriberInterface
     {
         return [
             'objects.search' => 'onSearchObjects',
-            'claroline_tag_multiple_data' => 'onDataTag',
-            'claroline_retrieve_used_tags_by_class_and_ids' => 'onRetrieveUsedTagsByClassAndIds',
+            'claroline_tag_multiple_data' => 'onTagObject',
+            'claroline_retrieve_used_tags_by_class_and_ids' => 'onGetObjectTags',
         ];
     }
 
     public function onSearchObjects(SearchObjectsEvent $event): void
     {
         // checks if there are filters managed by tag plugin in query
-        $filters = $event->getFilters();
-
-        if (!empty($filters) && !empty($filters['tags'])) {
-            $tags = is_string($filters['tags']) ? [$filters['tags']] : $filters['tags'];
+        $query = $event->getQuery();
+        $tags = $query->getFilter('tags');
+        if (!empty($tags)) {
+            $tags = is_string($tags) ? [$tags] : $tags;
 
             // generate query for tags filter
             $tagQueryBuilder = $this->om->createQueryBuilder();
@@ -49,7 +49,6 @@ class TagSubscriber implements EventSubscriberInterface
                 ->select('to.id')
                 ->from(TaggedObject::class, 'to')
                 ->innerJoin('to.tag', 't')
-                ->where('to.objectClass = :objectClass')
                 ->andWhere("to.objectId = {$event->getObjectAlias()}.uuid") // this makes the UUID required on tagged objects
                 ->andWhere('(t.uuid IN (:tagIds) OR t.name IN (:tagNames))')
                 ->groupBy('to.objectId')
@@ -58,16 +57,13 @@ class TagSubscriber implements EventSubscriberInterface
             // append subquery to the original one
             $queryBuilder = $event->getQueryBuilder();
             $queryBuilder->andWhere($queryBuilder->expr()->exists($tagQueryBuilder->getDql()))
-                ->setParameter('objectClass', $event->getObjectClass())
                 ->setParameter('tagIds', $tags)
                 ->setParameter('tagNames', $tags)
                 ->setParameter('expectedCount', count($tags));
-
-            $event->setFilters($filters);
         }
     }
 
-    public function onDataTag(GenericDataEvent $event): void
+    public function onTagObject(GenericDataEvent $event): void
     {
         $taggedObject = null;
         $data = $event->getData();
@@ -82,7 +78,7 @@ class TagSubscriber implements EventSubscriberInterface
     /**
      * Used by serializers to retrieve tags.
      */
-    public function onRetrieveUsedTagsByClassAndIds(GenericDataEvent $event): void
+    public function onGetObjectTags(GenericDataEvent $event): void
     {
         $tags = [];
         $data = $event->getData();

@@ -2,5 +2,3 @@ plugin:
     resources:
         - name: youtube_video
           class: Claroline\YouTubeBundle\Entity\Video
-          tags: [ content ]
-          exportable: true

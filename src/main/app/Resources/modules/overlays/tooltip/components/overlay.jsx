@@ -25,7 +25,7 @@ const TooltipOverlay = props => {
 
 TooltipOverlay.propTypes = {
   id: T.string,
-  tip: T.string.isRequired,
+  tip: T.node.isRequired,
   disabled: T.bool,
   /**
    * ATTENTION: children need to be able to receive a React ref (either by being a class component or by using `forwardRef`).

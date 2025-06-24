@@ -24,7 +24,6 @@ class DropCommentVoter extends AbstractVoter
         switch ($attributes[0]) {
             case self::CREATE:
             case self::OPEN:
-            case self::VIEW:
             case self::EDIT:
             case self::DELETE:
                 return $this->canEditResource($object) || $this->isOwner($token, $object) ?
@@ -42,7 +41,7 @@ class DropCommentVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::VIEW, self::CREATE, self::EDIT, self::DELETE];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE];
     }
 
     private function canEditResource(DropComment $comment): bool

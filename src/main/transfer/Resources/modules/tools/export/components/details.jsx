@@ -37,7 +37,7 @@ const ExportDetails = props => {
           icon: 'fa fa-fw fa-refresh',
           label: trans('refresh', {}, 'actions'),
           callback: () => props.refresh(props.exportFile.id),
-          disabled: !props.exportFile || !hasPermission('refresh', props.exportFile) || 'in_progress' === props.exportFile.status
+          disabled: !props.exportFile || !hasPermission('follow', props.exportFile) || 'in_progress' === props.exportFile.status
         }
       ]}
     >

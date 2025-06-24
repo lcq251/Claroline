@@ -6,10 +6,10 @@ use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Resource\ResourceRights;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\CoreBundle\Manager\Resource\ResourceActionManager;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
-use Claroline\CoreBundle\Security\Collection\ResourceCollection;
+use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,17 +19,18 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route(path: '/resource', name: 'apiv2_resource_')]
 class ResourceNodeController extends AbstractCrudController
 {
+    use PermissionCheckerTrait;
+
     public function __construct(
-        private readonly ResourceActionManager $actionManager,
         private readonly RightsManager $rightsManager,
         private readonly TokenStorageInterface $token,
-        private readonly AuthorizationCheckerInterface $authorization
+        AuthorizationCheckerInterface $authorization
     ) {
+        $this->authorization = $authorization;
     }
 
     public static function getName(): string
@@ -44,29 +45,19 @@ class ResourceNodeController extends AbstractCrudController
 
     public function getIgnore(): array
     {
-        return ['list'];
+        return ['list', 'update', 'create'];
     }
 
-    /**
-     * Get the list of rights for a resource node.
-     * This may be directly managed by the standard action system (rights edition already is) instead.
-     */
     #[Route(path: '/{id}/rights', name: 'get_rights', methods: ['GET'])]
     public function getRightsAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         ResourceNode $resourceNode
     ): JsonResponse {
-        // only give access to users which have the right to edit the resource rights
-        $rightsAction = $this->actionManager->get($resourceNode, 'rights');
+        $this->checkPermission('ADMINISTRATE', $resourceNode, [], true);
 
-        $collection = new ResourceCollection([$resourceNode]);
-        if (!$this->actionManager->hasPermission($rightsAction, $collection)) {
-            throw new AccessDeniedException($collection->getErrorsForDisplay());
-        }
-
-        return new JsonResponse(
-            array_values($this->rightsManager->getRights($resourceNode))
-        );
+        return new JsonResponse(array_map(function (ResourceRights $rights) {
+            return $this->serializer->serialize($rights);
+        }, $resourceNode->getRights()->toArray()));
     }
 
     #[Route(path: '/{contextId}/{parent}', name: 'list', defaults: ['contextId' => null, 'parent' => null], methods: ['GET'])]
@@ -112,7 +103,8 @@ class ResourceNodeController extends AbstractCrudController
     #[Route(path: '/{workspace}/removed', name: 'workspace_removed_list', methods: ['GET'])]
     public function listRemovedAction(
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace, Request $request
+        Workspace $workspace,
+        Request $request
     ): JsonResponse {
         return new JsonResponse(
             $this->crud->list(ResourceNode::class,

@@ -2,8 +2,6 @@ plugin:
     tools:
         - name: badges
           icon: trophy
-          tool_rights:
-              - grant
 
     data_sources:
         - name: badges

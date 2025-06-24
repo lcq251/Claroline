@@ -2,9 +2,6 @@ plugin:
     tools:
         - name: community
           icon: users
-          tool_rights:
-              - register
-              - show_activity
 
         - name: organizations
           icon: building

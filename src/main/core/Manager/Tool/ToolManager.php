@@ -33,7 +33,7 @@ class ToolManager
 
     public function getCurrentPermissions(OrderedTool $orderedTool): array
     {
-        $decoders = $this->toolMaskManager->getMaskDecodersByTool($orderedTool->getName());
+        $decoders = $this->toolMaskManager->getDecoders($orderedTool->getName());
 
         // certainly not the optimal way to generate it, but it avoids to replicate logic from OrderedToolVoter
         $perms = [];
@@ -53,7 +53,7 @@ class ToolManager
 
         $mask = 0 < count($toolRights) ? $toolRights[0]->getMask() : 0;
 
-        return $this->toolMaskManager->decodeMask($mask, $orderedTool->getName());
+        return $this->toolMaskManager->decodeMask($orderedTool->getName(), $mask);
     }
 
     /**
@@ -61,7 +61,7 @@ class ToolManager
      */
     public function setPermissions(array $perms, OrderedTool $orderedTool, Role $role): void
     {
-        $mask = $this->toolMaskManager->encodeMask($perms, $orderedTool->getName());
+        $mask = $this->toolMaskManager->encodeMask($orderedTool->getName(), $perms);
         $this->toolRightsManager->setToolRights($orderedTool, $role, $mask);
     }
 

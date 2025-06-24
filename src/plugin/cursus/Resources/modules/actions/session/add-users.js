@@ -13,7 +13,7 @@ export default declareAction((sessions, refresher) => {
     type: MODAL_BUTTON,
     icon: 'fa fa-fw fa-user-plus',
     label: trans('register_users'),
-    displayed: hasPermission('register', sessions[0]),
+    displayed: hasPermission('follow', sessions[0]),
     modal: [MODAL_USERS, {
       selectAction: (selected) => ({
         type: ASYNC_BUTTON,

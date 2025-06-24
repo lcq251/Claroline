@@ -11,7 +11,7 @@ import {hasPermission} from '#/main/app/security'
  * Community tool.
  *
  * It is available for the Desktop and Workspace contexts.
- * It is used to manage users registrations and other user related entities (eg. groups, roles, organizations).
+ * It is used to manage user registrations and other user related entities (e.g., groups, roles, organizations).
  */
 export default declareTool(CommunityTool, (tool, contextType, contextData, contextRoles) => {
   return new CommandPalette('community')
@@ -78,3 +78,12 @@ export default declareTool(CommunityTool, (tool, contextType, contextData, conte
       }
     ])
 })
+  .addPermissions({
+    follow: {
+      order: 5,
+      actions: [
+        'Inscrire des utilisateurs',
+        'Voir le tableau de bord de l\'outil'
+      ]
+    }
+  })

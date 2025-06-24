@@ -2,4 +2,3 @@ plugin:
     resources:
         - name: hevinci_url
           class: HeVinci\UrlBundle\Entity\Url
-          exportable: false

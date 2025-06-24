@@ -3,15 +3,14 @@ import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
+import {trans} from '#/main/app/intl'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {makeCancelable} from '#/main/app/api'
-import {hasPermission} from '#/main/app/security'
 import {useReducer} from '#/main/app/store/reducer'
 import {Routes, RouteTypes, RedirectTypes} from '#/main/app/router'
 
 import {ToolEditor} from '#/main/core/tool/editor/containers/main'
 import {actions, reducer, selectors} from '#/main/core/tool/store'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
 import {PageContext} from '#/main/app/page/context'
 
 const ToolMain = (props) => {
@@ -20,8 +19,8 @@ const ToolMain = (props) => {
   const toolPath = useSelector(selectors.path)
   const contextType = useSelector(selectors.contextType)
   const contextId = useSelector(selectors.contextId)
-  const canEdit = useSelector((state) => hasPermission('edit', selectors.toolData(state)))
-  const canFollow = useSelector((state) => hasPermission('edit', selectors.toolData(state)))
+  const canEdit = useSelector((state) => selectors.hasPermission('edit', state))
+  const canFollow = useSelector((state) => selectors.hasPermission('follow', state))
 
   const dispatch = useDispatch()
 

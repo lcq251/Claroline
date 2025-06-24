@@ -28,7 +28,7 @@ class EventPresenceVoter extends AbstractVoter
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $isManager = $this->isGranted('EDIT', $object->getEvent()) || $this->isGranted('REGISTER', $object->getEvent());
+        $isManager = $this->isGranted(self::FOLLOW, $object->getEvent()) || $this->isGranted(self::FOLLOW, $object->getEvent());
 
         switch ($attributes[0]) {
             case self::ADMINISTRATE:

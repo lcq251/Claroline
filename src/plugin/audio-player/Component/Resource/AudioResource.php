@@ -11,13 +11,11 @@
 
 namespace Claroline\AudioPlayerBundle\Component\Resource;
 
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AudioPlayerBundle\Entity\Resource\Audio;
 use Claroline\AudioPlayerBundle\Entity\Resource\Section;
 use Claroline\AudioPlayerBundle\Manager\AudioPlayerManager;
-use Claroline\AudioPlayerBundle\Manager\EvaluationManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
@@ -37,8 +35,7 @@ class AudioResource extends ResourceComponent implements DownloadableResourceInt
         private readonly SerializerProvider $serializer,
         private readonly FileManager $fileManager,
         private readonly ObjectManager $om,
-        private readonly AudioPlayerManager $manager,
-        private readonly EvaluationManager $evaluationManager
+        private readonly AudioPlayerManager $manager
     ) {
     }
 
@@ -92,10 +89,6 @@ class AudioResource extends ResourceComponent implements DownloadableResourceInt
 
         return [
             'resource' => $audioData,
-            /*'userEvaluation' => $user instanceof User ? $this->serializer->serialize(
-                $this->evaluationManager->getResourceUserEvaluation($resource->getResourceNode(), $user),
-                [SerializerInterface::SERIALIZE_MINIMAL]
-            ) : null,*/
         ];
     }
 

@@ -42,7 +42,6 @@ class ChapterVoter extends AbstractVoter
                     return VoterInterface::ACCESS_DENIED;
 
                 case self::OPEN: // member of organization & OPEN right on tool
-                case self::VIEW:
                     if ($this->isGranted('OPEN', $parentNode)) {
                         return VoterInterface::ACCESS_GRANTED;
                     }

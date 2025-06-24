@@ -1,8 +1,16 @@
 import {param} from '#/main/app/config'
-import {getActions as getPluginsActions} from '#/main/app/plugins'
+import {getActions as getPluginsActions, getApp, getApps} from '#/main/app/plugins'
 
 function getTypes() {
   return param('resources.types')
+}
+
+function getResources() {
+  return getApps('resources')
+}
+
+function getResource(name) {
+  return getApp('resources', name)()
 }
 
 /**
@@ -64,6 +72,8 @@ function getDefaultAction(resourceNode, nodesRefresher, path, currentUser = null
 }
 
 export {
+  getResources,
+  getResource,
   getType,
   getTypes,
   supportEvaluation,

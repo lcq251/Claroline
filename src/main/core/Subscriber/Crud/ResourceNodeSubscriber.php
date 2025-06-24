@@ -126,7 +126,7 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
         $this->crud->delete($resource, array_merge([], $options, $event->isSoftDelete() ? [Options::SOFT_DELETE] : []));
 
         // we check softDelete flag from custom event because some resource can force it
-        // if they don't want to be removed (e.g. quizzes with papers attached on it)
+        // if they don't want to be removed (e.g., quizzes with papers attached on it)
         if ($event->isSoftDelete()) {
             $node->setActive(false);
             $this->om->persist($node);
@@ -155,7 +155,7 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
 
         $resource = $this->resourceManager->getResourceFromNode($node);
         if (!$resource) {
-            // if something is malformed in production, try to not break everything if we don't need to. Just return null.
+            // If something is malformed in production, try to not break everything if we don't need to. Just return null.
             return;
         }
 
@@ -172,7 +172,7 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
             $newNode->setCreator($user);
         }
 
-        // link new node to its parent
+        // link the new node to its parent
         if (!empty($event->getExtra()) && !empty($event->getExtra()['parent'])) {
             /** @var ResourceNode $newParent */
             $newParent = $event->getExtra()['parent'];
@@ -215,19 +215,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
 
         if ($newNode->getThumbnail()) {
             $this->fileManager->linkFile(ResourceNode::class, $newNode->getUuid(), $newNode->getThumbnail());
-        }
-
-        // TODO : move this in the Directory listener
-        if ('directory' === $node->getResourceType()->getName()) {
-            // this is needed because otherwise I don't get the new node rights.
-            // rights are directly created/updated in DB so the ResourceNode::getRights returns outdated data for now
-            $this->om->refresh($newNode);
-
-            foreach ($node->getChildren() as $child) {
-                if ($child->isActive()) {
-                    $this->crud->copy($child, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS], ['parent' => $newNode]);
-                }
-            }
         }
     }
 }

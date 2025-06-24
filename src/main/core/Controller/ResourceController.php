@@ -11,29 +11,38 @@
 
 namespace Claroline\CoreBundle\Controller;
 
+use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\ResourceProvider;
-use Claroline\CoreBundle\Entity\Resource\MenuAction;
+use Claroline\CoreBundle\Entity\Resource\AbstractResource;
+use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Resource\ResourceRights;
+use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
+use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
+use Claroline\CoreBundle\Event\Resource\UpdateResourceEvent;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
-use Claroline\CoreBundle\Manager\Resource\ResourceActionManager;
 use Claroline\CoreBundle\Manager\Resource\ResourceRestrictionsManager;
+use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Manager\ResourceManager;
 use Claroline\CoreBundle\Security\Collection\ResourceCollection;
+use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\PlatformRoles;
+use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Manages platform resources.
@@ -43,17 +52,21 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ResourceController
 {
     use RequestDecoderTrait;
+    use PermissionCheckerTrait;
 
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly SerializerProvider $serializer,
         private readonly ResourceProvider $resourceProvider,
         private readonly ResourceManager $manager,
-        private readonly ResourceActionManager $actionManager,
         private readonly ResourceRestrictionsManager $restrictionsManager,
         private readonly ObjectManager $om,
-        private readonly AuthorizationCheckerInterface $authorization
+        AuthorizationCheckerInterface $authorization,
+        private readonly Crud $crud,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly RightsManager $rightsManager
     ) {
+        $this->authorization = $authorization;
     }
 
     /**
@@ -87,6 +100,75 @@ class ResourceController
             'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
             'accessErrors' => $accessErrors,
         ], 403);
+    }
+
+    #[Route(path: '/publish', name: 'claro_resource_publish', methods: ['PUT'])]
+    public function publishAction(
+        Request $request
+    ): JsonResponse {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $data = $this->decodeRequest($request);
+
+        $processed = [];
+
+        $resourceNodes = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $data]);
+        foreach ($resourceNodes as $resourceNode) {
+            if ($this->authorization->isGranted('EDIT', $resourceNode) && !$resourceNode->isPublished()) {
+                $processed[] = $this->crud->update($resourceNode, [
+                    'id' => $resourceNode->getUuid(),
+                    'meta' => ['published' => true],
+                ], [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION]);
+            }
+        }
+
+        return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
+            return $this->serializer->serialize($resourceNode);
+        }, $processed));
+    }
+
+    #[Route(path: '/unpublish', name: 'claro_resource_unpublish', methods: ['PUT'])]
+    public function unpublishAction(
+        Request $request
+    ): JsonResponse {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $resourceIds = $this->decodeRequest($request);
+
+        $processed = [];
+
+        $resourceNodes = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $resourceIds]);
+        foreach ($resourceNodes as $resourceNode) {
+            if ($this->authorization->isGranted('EDIT', $resourceNode) && $resourceNode->isPublished()) {
+                $processed[] = $this->crud->update($resourceNode, [
+                    'id' => $resourceNode->getUuid(),
+                    'meta' => ['published' => false],
+                ], [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION]);
+            }
+        }
+
+        return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
+            return $this->serializer->serialize($resourceNode);
+        }, $processed));
+    }
+
+    #[Route(path: '/', name: 'claro_resource_delete', methods: ['DELETE'])]
+    public function deleteBulkAction(Request $request): JsonResponse
+    {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $resourceIds = $this->decodeRequest($request);
+        $resourceNodes = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $resourceIds]);
+
+        $this->om->startFlushSuite();
+
+        foreach ($resourceNodes as $resourceNode) {
+            $this->crud->delete($resourceNode);
+        }
+
+        $this->om->endFlushSuite();
+
+        return new JsonResponse(null, 204);
     }
 
     /**
@@ -150,6 +232,8 @@ class ResourceController
     #[Route(path: '/check/file', name: 'claro_resource_check_file', methods: ['POST'])]
     public function checkFileAction(Request $request): JsonResponse
     {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
         $files = $request->files->all();
 
         foreach ($files as $file) {
@@ -170,6 +254,8 @@ class ResourceController
     #[Route(path: '/check/url', name: 'claro_resource_check_url', methods: ['POST'])]
     public function checkUrlAction(Request $request): JsonResponse
     {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
         $urls = $this->decodeRequest($request);
 
         foreach ($urls as $url) {
@@ -184,80 +270,220 @@ class ResourceController
         return new JsonResponse(null, 404);
     }
 
-    /**
-     * Executes an action on a collection of resources.
-     */
-    #[Route(path: '/collection/{action}', name: 'claro_resource_collection_action', methods: ['GET', 'PUT', 'POST', 'DELETE'])]
-    public function executeCollectionAction(string $action, Request $request): JsonResponse
-    {
-        /** @var ResourceNode[] $resourceNodes */
-        $resourceNodes = $this->decodeIdsString($request, ResourceNode::class);
+    #[Route(path: '/copy/{destinationId}', name: 'claro_resource_copy', methods: ['POST'])]
+    public function copyAction(
+        #[MapEntity(mapping: ['destinationId' => 'uuid'])]
+        ResourceNode $destination,
+        Request $request
+    ): JsonResponse {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
-        $responses = [];
+        $processed = [];
 
-        // read request and get user query
-        $parameters = $request->query->all();
-        $content = $this->decodeRequest($request);
-        $files = $request->files->all();
+        $resourceIds = $this->decodeRequest($request);
+        $toCopy = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $resourceIds]);
+
+        foreach ($toCopy as $resource) {
+            // checks if the current user can copy the selected resource AND can create in the target directory
+            $collection = new ResourceCollection([$destination], ['type' => $resource->getType()]);
+
+            if ($this->checkPermission('COPY', $resource) && $this->checkPermission('CREATE', $collection)) {
+                $processed[] = $this->crud->copy($resource, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS], ['parent' => $destination]);
+            }
+        }
+
+        return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
+            return $this->serializer->serialize($resourceNode);
+        }, $processed));
+    }
+
+    #[Route(path: '/move/{destinationId}', name: 'claro_resource_move', methods: ['PUT'])]
+    public function moveAction(
+        #[MapEntity(mapping: ['destinationId' => 'uuid'])]
+        ResourceNode $destination,
+        Request $request
+    ): JsonResponse {
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $processed = [];
+
+        $resourceIds = $this->decodeRequest($request);
+        $toMove = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $resourceIds]);
+
+        foreach ($toMove as $resource) {
+            // checks if the current user can copy the selected resource AND can create in the target directory
+            $collection = new ResourceCollection([$destination], ['type' => $resource->getType()]);
+
+            if ($this->checkPermission('ADMINISTRATE', $resource) && $this->checkPermission('CREATE', $collection)) {
+                $processed[] = $this->manager->move($resource, $destination);
+            }
+        }
+
+        return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
+            return $this->serializer->serialize($resourceNode);
+        }, $processed));
+    }
+
+    #[Route(path: '/{parentId}', name: 'claro_resource_create', methods: ['POST'])]
+    public function createAction(
+        #[MapEntity(mapping: ['parentId' => 'uuid'])]
+        ResourceNode $parent,
+        Request $request
+    ): JsonResponse {
+        $data = $this->decodeRequest($request);
+        $nodeData = $data['resourceNode'];
+        $resourceData = !empty($data['resource']) ? $data['resource'] : [];
+
+        // checks if the current user can add
+        $collection = new ResourceCollection([$parent], ['type' => $nodeData['meta']['type']]);
+        $this->checkPermission('CREATE', $collection, [], true);
 
         $this->om->startFlushSuite();
 
-        foreach ($resourceNodes as $resourceNode) {
-            // check the requested action exists
-            if (!$this->actionManager->support($resourceNode, $action, $request->getMethod())) {
-                // undefined action
-                throw new NotFoundHttpException(sprintf('The action %s with method [%s] does not exist for resource type %s.', $action, $request->getMethod(), $resourceNode->getResourceType()->getName()));
-            }
+        // initialize resource node Entity
+        try {
+            $resourceNode = new ResourceNode();
+            $resourceNode->setParent($parent);
+            $resourceNode->setWorkspace($parent->getWorkspace());
 
-            // check current user rights
-            $this->checkAccess($this->actionManager->get($resourceNode, $action), [$resourceNode], $parameters);
+            $this->crud->create($resourceNode, $nodeData, [Options::NO_RIGHTS, Options::PERSIST_TAG]);
+        } catch (InvalidDataException $e) {
+            // for resource creation we submit the resourceNode and resource data at once
+            // we need to update the errors path for correct rendering in form
+            $errors = array_map(function (array $error) {
+                return [
+                    'path' => 'resourceNode/'.ltrim($error['path'], '/'),
+                    'message' => $error['message'],
+                ];
+            }, $e->getErrors());
 
-            // dispatch action event
-            $responses[] = $this->actionManager->execute($resourceNode, $action, $parameters, $content, $files);
+            throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
+        }
+
+        // initialize custom resource Entity
+        $resourceClass = $resourceNode->getResourceType()->getClass();
+
+        try {
+            /** @var AbstractResource $resource */
+            $resource = new $resourceClass();
+            $resource->setResourceNode($resourceNode);
+
+            $this->crud->create($resource, $resourceData, [Options::PERSIST_TAG]);
+        } catch (InvalidDataException $e) {
+            // for resource creation we submit the resourceNode and resource data at once
+            // we need to update the errors path for correct rendering in form
+            $errors = array_map(function (array $error) {
+                return [
+                    'path' => 'resource/'.ltrim($error['path'], '/'),
+                    'message' => $error['message'],
+                ];
+            }, $e->getErrors());
+
+            throw new InvalidDataException(sprintf('%s is not valid', $resourceClass), $errors);
         }
 
         $this->om->endFlushSuite();
 
-        return new JsonResponse(array_map(function (Response $response) {
-            return json_decode($response->getContent(), true);
-        }, $responses));
-    }
+        $createResource = new CreateResourceEvent($resource, [
+            'resourceNode' => $nodeData,
+            'resource' => $resourceData,
+        ]);
+        $this->eventDispatcher->dispatch($createResource, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
 
-    /**
-     * Executes an action on one resource.
-     */
-    #[Route(path: '/{action}/{id}', name: 'claro_resource_action', methods: ['GET', 'PUT', 'POST', 'DELETE'])]
-    public function executeAction(string $action, #[MapEntity(mapping: ['id' => 'uuid'])]
-        ResourceNode $resourceNode, Request $request): Response
-    {
-        // check the requested action exists
-        if (!$this->actionManager->support($resourceNode, $action, $request->getMethod())) {
-            // undefined action
-            throw new NotFoundHttpException(sprintf('The action %s with method [%s] does not exist for resource type %s.', $action, $request->getMethod(), $resourceNode->getResourceType()->getName()));
+        // initialize resource rights
+        if (!empty($nodeData['rights'])) {
+            foreach ($nodeData['rights'] as $rights) {
+                /** @var Role $role */
+                $role = $this->om->getRepository(Role::class)->findOneBy(['name' => $rights['name']]);
+
+                $creation = [];
+                if (!empty($rights['permissions']['create']) && $resource instanceof Directory) {
+                    // only forward creation rights to resource which can handle it (only directories atm)
+                    $creation = $rights['permissions']['create'];
+                }
+                $this->rightsManager->update($rights['permissions'], $role, $resourceNode, false, $creation);
+            }
+        } else {
+            // copy parent rights on the new resource
+            $this->rightsManager->copy($parent, $resourceNode);
         }
 
-        // read request and get user query
-        $parameters = $request->query->all();
-        $content = $this->decodeRequest($request);
-        $files = $request->files->all();
-
-        // check current user rights
-        $this->checkAccess($this->actionManager->get($resourceNode, $action), [$resourceNode], $parameters);
-
-        // dispatch action event
-        return $this->actionManager->execute($resourceNode, $action, $parameters, $content, $files);
+        return new JsonResponse([
+            'resourceNode' => $this->serializer->serialize($resourceNode),
+            'resource' => $this->serializer->serialize($resource),
+        ], 201);
     }
 
-    /**
-     * Checks the current user can execute the action on the requested nodes.
-     */
-    private function checkAccess(MenuAction $action, array $resourceNodes, array $attributes = []): void
-    {
-        $collection = new ResourceCollection($resourceNodes);
-        $collection->setAttributes($attributes);
+    #[Route(path: '/{id}', name: 'claro_resource_update', methods: ['PUT'])]
+    public function updateAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        ResourceNode $resourceNode,
+        Request $request
+    ): JsonResponse {
+        $this->checkPermission('EDIT', $resourceNode, [], true);
 
-        if (!$this->actionManager->hasPermission($action, $collection)) {
-            throw new AccessDeniedException($collection->getErrorsForDisplay());
+        $resource = $this->om
+            ->getRepository($resourceNode->getClass())
+            ->findOneBy(['resourceNode' => $resourceNode]);
+
+        $data = $this->decodeRequest($request);
+
+        $isManager = $this->authorization->isGranted('ADMINISTRATE', $resourceNode);
+        if (!empty($data)) {
+            $this->om->startFlushSuite();
+
+            if (!empty($data['resourceNode'])) {
+                try {
+                    $this->crud->update($resourceNode, $data['resourceNode'], [Options::PERSIST_TAG]);
+                } catch (InvalidDataException $e) {
+                    // for resource edit we submit the resourceNode and resource data at once
+                    // we need to update the errors path for correct rendering in form
+                    $errors = array_map(function (array $error) {
+                        return [
+                            'path' => 'resourceNode/'.ltrim($error['path'], '/'),
+                            'message' => $error['message'],
+                        ];
+                    }, $e->getErrors());
+
+                    throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
+                }
+            }
+
+            if (!empty($data['resource'])) {
+                try {
+                    $this->crud->update($resource, $data['resource'], [Options::PERSIST_TAG]);
+                } catch (InvalidDataException $e) {
+                    // for resource edit we submit the resourceNode and resource data at once
+                    // we need to update the errors path for correct rendering in form
+                    $errors = array_map(function (array $error) {
+                        return [
+                            'path' => 'resource/'.ltrim($error['path'], '/'),
+                            'message' => $error['message'],
+                        ];
+                    }, $e->getErrors());
+
+                    throw new InvalidDataException(sprintf('%s is not valid', get_class($resource)), $errors);
+                }
+            }
+
+            if (!empty($data['rights']) && $isManager) {
+                $this->crud->update($resourceNode, ['rights' => $data['rights']]);
+            }
+
+            $this->om->endFlushSuite();
         }
+
+        $updateResource = new UpdateResourceEvent($resource, $data);
+        $this->eventDispatcher->dispatch($updateResource, ResourceEvents::getEventName(ResourceEvents::UPDATE, $resourceNode->getResourceType()->getName()));
+
+        $this->om->refresh($resourceNode);
+
+        return new JsonResponse(array_merge([], $updateResource->getResponse(), [
+            'resource' => $this->serializer->serialize($resource),
+            'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
+            'rights' => !empty($data['rights']) && $isManager ? array_map(function (ResourceRights $rights) {
+                return $this->serializer->serialize($rights);
+            }, $resourceNode->getRights()->toArray()) : [],
+        ]));
     }
 }

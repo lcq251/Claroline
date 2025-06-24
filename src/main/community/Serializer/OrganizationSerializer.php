@@ -77,8 +77,9 @@ class OrganizationSerializer
             'meta' => [
                 'description' => $organization->getDescription(),
                 'default' => $organization->isDefault(),
+                'public' => $organization->isPublic(),
             ],
-            'restrictions' => [
+            'restrictions' => [ // deprecated
                 'public' => $organization->isPublic(),
             ],
         ];
@@ -103,7 +104,8 @@ class OrganizationSerializer
         $this->sipe('poster', 'setPoster', $data, $organization);
         $this->sipe('thumbnail', 'setThumbnail', $data, $organization);
         $this->sipe('meta.description', 'setDescription', $data, $organization);
-        $this->sipe('restrictions.public', 'setPublic', $data, $organization);
+        $this->sipe('meta.public', 'setPublic', $data, $organization);
+        $this->sipe('meta.default', 'setDefault', $data, $organization);
         $this->sipe('phone', 'setPhone', $data, $organization);
 
         if (isset($data['address'])) {

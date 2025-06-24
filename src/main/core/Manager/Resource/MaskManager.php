@@ -13,84 +13,25 @@ namespace Claroline\CoreBundle\Manager\Resource;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
-use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
-use Claroline\CoreBundle\Repository\Resource\ResourceMaskDecoderRepository;
-use Doctrine\Persistence\ObjectRepository;
 
 class MaskManager
 {
-    /**
-     * @var array
-     *
-     * @deprecated this action are now managed like all others
-     */
-    private static $defaultActions = ['open', 'copy', 'export', 'delete', 'edit', 'administrate'];
+    private array $maskDecoders = [];
 
-    /** @var ObjectManager */
-    private $om;
-
-    /** @var ResourceMaskDecoderRepository */
-    private $maskRepo;
-
-    /** @var ObjectRepository */
-    private $menuRepo;
-
-    public function __construct(ObjectManager $om)
-    {
-        $this->om = $om;
-
-        $this->maskRepo = $om->getRepository(MaskDecoder::class);
-        $this->menuRepo = $om->getRepository(MenuAction::class);
-    }
-
-    public function createDecoder($action, ResourceType $resourceType = null)
-    {
-        /** @var ResourceType[] $resourceTypes */
-        $resourceTypes = [];
-        if (empty($resourceType)) {
-            // we will need to create mask decoder for all resource types
-            $resourceTypes = $this->om->getRepository(ResourceType::class)->findAll();
-        } else {
-            $resourceTypes[] = $resourceType;
-        }
-
-        $updated = false;
-        foreach ($resourceTypes as $type) {
-            // check if the mask already exists
-            $decoder = $this->getDecoder($type, $action);
-            if (empty($decoder)) {
-                $existingDecoders = $this->maskRepo->findBy(['resourceType' => $type]);
-                $exp = count($existingDecoders);
-
-                $decoder = new MaskDecoder();
-                $decoder->setName($action);
-                $decoder->setResourceType($type);
-                $decoder->setValue(pow(2, $exp));
-
-                $this->om->persist($decoder);
-                $updated = true;
-            }
-        }
-
-        if ($updated) {
-            $this->om->flush();
-        }
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
     }
 
     /**
      * Returns an array containing the permission for a mask and a resource type.
-     *
-     * @param int $mask
-     *
-     * @return array
      */
-    public function decodeMask($mask, ResourceType $type)
+    public function decodeMask(int $mask, ResourceType $type): array
     {
-        /** @var MaskDecoder[] $decoders */
-        $decoders = $this->maskRepo->findBy(['resourceType' => $type]);
         $perms = [];
 
+        $decoders = $this->getDecoders($type);
         foreach ($decoders as $decoder) {
             $perms[$decoder->getName()] = ($mask & $decoder->getValue()) ? true : false;
         }
@@ -99,17 +40,15 @@ class MaskManager
     }
 
     /**
-     * Encode a mask for an array of permission and a resource type.
-     * The array of permissions should be defined that way:.
+     * Encode a mask for an array of permission.
      *
-     * array('open' => true, 'edit' => false, ...)
+     * @param array $perms The list of permissions in the format [ACTION_NAME => true|false]
      */
     public function encodeMask(array $perms, ResourceType $type): int
     {
-        /** @var MaskDecoder[] $decoders */
-        $decoders = $this->maskRepo->findBy(['resourceType' => $type]);
         $mask = 0;
 
+        $decoders = $this->getDecoders($type);
         foreach ($decoders as $decoder) {
             if (isset($perms[$decoder->getName()])) {
                 $mask += $perms[$decoder->getName()] ? $decoder->getValue() : 0;
@@ -120,115 +59,90 @@ class MaskManager
     }
 
     /**
-     * Retrieves and removes a mask decoder.
-     *
-     * @param string $name
+     * @return MaskDecoder[]
      */
-    public function removeMask(ResourceType $resourceType, $name)
+    public function getDecoders(ResourceType $type): array
     {
-        $toRemove = $this->getDecoder($resourceType, $name);
-        if (!empty($toRemove)) {
-            $this->om->remove($toRemove);
+        return $this->om->getRepository(MaskDecoder::class)->findBy(['resourceType' => $type]);
+    }
+
+    public function getDecoder(ResourceType $resourceType, string $name): ?MaskDecoder
+    {
+        $resourceDecoders = $this->getDecoders($resourceType);
+        foreach ($resourceDecoders as $resourceDecoder) {
+            if (strtolower($resourceDecoder->getName()) === strtolower($name)) {
+                return $resourceDecoder;
+            }
         }
+
+        return null;
     }
 
     /**
-     * Retrieves and renames a mask decoder.
-     *
-     * @param string $currentName
-     * @param string $newName
+     * Create a specific mask decoder for a resource type.
      */
-    public function renameMask(ResourceType $resourceType, $currentName, $newName)
+    public function createResourceMaskDecoder(ResourceType $resourceType, string $action, int $value): void
     {
-        $toRename = $this->getDecoder($resourceType, $currentName);
-        if (!empty($toRename)) {
-            $toRename->setName($newName);
-            $this->om->persist($toRename);
+        $maskDecoder = new MaskDecoder();
+        $maskDecoder->setResourceType($resourceType);
+        $maskDecoder->setName($action);
+        $maskDecoder->setValue($value);
+
+        if (empty($this->maskDecoders[$resourceType->getName()])) {
+            $this->maskDecoders[$resourceType->getName()] = [];
         }
+        $this->maskDecoders[$resourceType->getName()][] = $maskDecoder;
+
+        $this->om->persist($maskDecoder);
+        $this->om->flush();
     }
 
-    /**
-     * Returns an array containing the possible permission for a resource type.
-     */
-    public function getPermissionMap(ResourceType $type): array
+    public function removeResourceMaskDecoder(ResourceType $resourceType, string $action): void
     {
-        /** @var MaskDecoder[] $decoders */
-        $decoders = $this->maskRepo->findBy(['resourceType' => $type]);
-        $permsMap = [];
+        $resourceDecoders = $this->getDecoders($resourceType);
+        foreach ($resourceDecoders as $resourceDecoder) {
+            if ($resourceDecoder->getName() === $action) {
+                $resourceType->removeMaskDecoder($resourceDecoder);
 
-        foreach ($decoders as $decoder) {
-            $permsMap[$decoder->getValue()] = $decoder->getName();
+                return;
+            }
         }
-
-        return $permsMap;
-    }
-
-    /**
-     * @param string $action
-     *
-     * @return MaskDecoder
-     */
-    public function getDecoder(ResourceType $type, $action)
-    {
-        /** @var MaskDecoder $decoder */
-        $decoder = $this->maskRepo->findOneBy(['resourceType' => $type, 'name' => $action]);
-
-        return $decoder;
     }
 
     /**
      * Adds the default action to a resource type.
-     *
-     * @todo reworks to avoid the use of self::$defaultActions
      */
-    public function addDefaultPerms(ResourceType $type)
+    public function createDefaultResourceMaskDecoders(ResourceType $type): void
     {
-        /** @var MaskDecoder[] $decoders */
-        $decoders = $this->maskRepo->findBy(['resourceType' => $type]);
-
-        $actionNames = [];
-        foreach ($decoders as $decoder) {
-            $actionNames[] = $decoder->getName();
+        foreach (MaskDecoder::DEFAULT_ACTIONS as $action) {
+            $maskDecoder = $this->getDecoder($type, $action);
+            if (empty($maskDecoder)) {
+                $this->createResourceMaskDecoder($type, $action, MaskDecoder::DEFAULT_VALUES[$action]);
+            }
         }
-
-        // Add only non-existent default actions
-        $defaultActions = array_diff(self::$defaultActions, $actionNames);
-
-        foreach ($defaultActions as $i => $action) {
-            $maskDecoder = new MaskDecoder();
-            $maskDecoder->setValue(pow(2, $i));
-            $maskDecoder->setName($action);
-            $maskDecoder->setResourceType($type);
-
-            $this->om->persist($maskDecoder);
-        }
-
-        $this->om->flush();
     }
 
-    /**
-     * Checks if a resource type has any menu actions.
-     */
-    public function hasMenuAction(ResourceType $type): bool
+    public function createCustomResourceMaskDecoders(ResourceType $resourceType, array $customRights): void
     {
-        $menuActions = $this->menuRepo->findBy(['resourceType' => $type]);
+        $decoders = $this->om->getRepository(MaskDecoder::class)->findBy([
+            'resourceType' => $resourceType,
+        ]);
 
-        return count($menuActions) > 0;
-    }
+        $nb = count($decoders);
+        foreach ($customRights as $right) {
+            $maskDecoder = null;
+            foreach ($decoders as $decoder) {
+                if ($decoder->getName() === $right) {
+                    $maskDecoder = $decoder;
+                    break;
+                }
+            }
 
-    public static function getDefaultActions()
-    {
-        return self::$defaultActions;
-    }
-
-    public function getDefaultResourceActionsMask()
-    {
-        $actions = [];
-        foreach (self::$defaultActions as $action) {
-            $actionName = strtoupper($action);
-            $actions[$action] = constant(MaskDecoder::class.'::'.$actionName);
+            if (empty($maskDecoder)) {
+                $value = pow(2, $nb);
+                $this->createResourceMaskDecoder($resourceType, $right, $value);
+                ++$nb;
+            }
         }
-
-        return $actions;
     }
 }

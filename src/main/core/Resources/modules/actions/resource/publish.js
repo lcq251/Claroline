@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 
 import {trans} from '#/main/app/intl/translation'
@@ -21,12 +20,10 @@ export default declareAction((resourceNodes, nodesRefresher) => ({
   displayed: -1 !== resourceNodes.findIndex(node => !!node.parent && !get(node, 'meta.published') && hasPermission('edit', node)),
   request: {
     type: 'publish',
-    url: url(
-      ['claro_resource_collection_action', {action: 'publish'}],
-      {ids: resourceNodes.map(resourceNode => resourceNode.id)}
-    ),
+    url: ['claro_resource_publish'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(resourceNodes.map(resourceNode => resourceNode.id))
     },
     success: (response) => nodesRefresher.update(response)
   },

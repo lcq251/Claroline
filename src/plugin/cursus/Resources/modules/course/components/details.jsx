@@ -169,7 +169,7 @@ const CourseDetails = (props) => {
           }, {
             name: 'participants',
             title: trans('participants'),
-            displayed: hasPermission('register', props.course),
+            displayed: hasPermission('follow', props.course),
             render: () => {
               return (
                 <CourseParticipants
@@ -182,7 +182,7 @@ const CourseDetails = (props) => {
             name: 'stats',
             title: trans('Suivi'),
             onEnter: () => props.loadStats(props.course.id),
-            displayed: !isEmpty(get(props.course, 'registration.form')) && hasPermission('register', props.course),
+            displayed: !isEmpty(get(props.course, 'registration.form')) && hasPermission('follow', props.course),
             render: () => (
               <CourseStats
                 course={props.course}

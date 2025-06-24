@@ -11,8 +11,12 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {selectors} from '#/main/core/modals/resources/store'
 import {ResourceList} from '#/main/core/resource/components/list'
 import {ModalTabbed} from '#/main/app/overlays/modal/components/tabbed'
+import {actions as listActions} from '#/main/app/content/list'
+import {useDispatch} from 'react-redux'
 
 const ResourcesModal = (props) => {
+  const dispatch = useDispatch()
+
   const [initialized, setInitialized] = useState(false)
   const [section, changeSection] = useState(props.contextId ? 'current': 'all')
   const selectAction = props.selectAction(props.selected)
@@ -33,6 +37,7 @@ const ResourcesModal = (props) => {
       onEntering={() => {
         if (props.current) {
           props.setCurrent(props.current, props.filters)
+          dispatch(listActions.resetFilters(selectors.LIST_NAME, props.filters || []))
         }
 
         setInitialized(true)

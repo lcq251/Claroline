@@ -1,100 +1,17 @@
 plugin:
-    resource_actions:
-        # Opens a resource
-        - name: open
-          decoder: open
-          scope: [object]
-          default: true # This is the default action of the resource (it SHOULD NOT be overridden)
-          api: [GET]
-
-        # Downloads the underlying resource file
-        - name: download
-          decoder: open
-          #group: transfer
-          api: [GET]
-
-        # Publishes one ore more resources
-        - name: publish
-          decoder: edit
-          group: management
-          scope: [object, collection]
-          api: [PUT]
-
-        # Unpublishes one or more resources
-        - name: unpublish
-          decoder: edit
-          group: management
-          scope: [object, collection]
-          api: [PUT]
-
-        # Deletes one or more resources
-        - name: delete
-          decoder: delete
-          group: management
-          scope: [object, collection] # The action can be executed on multiple resources at once.
-          api: [DELETE]
-          recursive: true
-
-        # Restores one or more soft deleted resources
-        - name: restore
-          decoder: delete
-          group: management
-          scope: [object, collection] # The action can be executed on multiple resources at once.
-          api: [POST]
-          recursive: true
-
-        # Changes common resources info (the one from the node) for one or more resources
-        - name: configure
-          decoder: edit
-          group: management
-          scope: [object]
-          api: [PUT]
-          recursive: true
-
-        # Creates a copy of one or more resources
-        - name: copy
-          decoder: copy
-          group: management
-          scope: [object, collection] # The action can be executed on multiple resources at once.
-          api: [POST]
-          recursive: true
-
-        # Changes the parent of one or more resources
-        - name: move
-          decoder: administrate
-          group: management
-          scope: [object, collection] # The action can be executed on multiple resources at once.
-          api: [PUT]
-          recursive: true
-
     resources:
         - name: file
           class: Claroline\CoreBundle\Entity\Resource\File
-          tags: [content]
-          exportable: true
 
         - name: directory
           class: Claroline\CoreBundle\Entity\Resource\Directory
-          tags: [structure]
-          exportable: true
-          actions:
-              # Creates a new resource in the directory
-              - name: add
-                decoder: create
-                group: management
-                api: [POST]
-
-              # Creates one or several File resources in the directory
-              - name: add_files
-                decoder: create
-                group: management
-                api: [POST]
 
     tools:
         - name: workspaces
           icon: book
           tool_rights:
               - archive
+              - create
 
         - name: resources
           icon: folder

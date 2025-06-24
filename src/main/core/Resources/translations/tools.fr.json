@@ -14,5 +14,8 @@
     "integration": "Intégration",
     "workspaces": "Espaces d'activités",
     "locations": "Lieux",
-    "tool_history_desc": "Retrouvez toutes les modifications effectuées sur l'outil et son contenu."
+    "tool_history_desc": "Retrouvez toutes les modifications effectuées sur l'outil et son contenu.",
+    "make_tool_public": "Rendre l'outil public",
+    "make_tool_public_help": "Les outils publics sont accessibles par tous les utilisateurs de la plateforme.",
+    "make_tool_public_workspace_help": "Les outils publics sont accessibles par tous les membres de l'espace d'activités."
 }

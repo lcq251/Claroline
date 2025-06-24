@@ -1,21 +1,25 @@
-import React, {forwardRef} from 'react'
+import React, {forwardRef, Fragment, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
+import {Collapse} from 'react-bootstrap'
 import classes from 'classnames'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 import merge from 'lodash/merge'
-import uniq from 'lodash/uniq'
 
 import {trans}  from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON, ModalButton, MenuButton} from '#/main/app/buttons'
+import {CALLBACK_BUTTON, MenuButton, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {constants} from '#/main/community/constants'
 import {MODAL_ROLES} from '#/main/community/modals/roles'
-import {isStandardRole, hasCustomRoles, roleWorkspace} from '#/main/community/permissions'
+import {roleWorkspace} from '#/main/community/permissions'
 
 import {Menu, MenuHeader} from '#/main/app/overlays/menu'
 import {Checkbox} from '#/main/app/input/components/checkbox'
+import {DataMicro} from '#/main/app/data/components/micro'
+import {Badge} from '#/main/app/components/badge'
+import {TooltipOverlay} from '#/main/app/overlays/tooltip/components/overlay'
 
 const CreateMenu = forwardRef((props, ref) =>
   <ul
@@ -73,106 +77,125 @@ CreateMenu.propTypes = {
 }
 
 const CreatePermission = props =>
-  <td key="create-cell" className="create-cell">
-    <span className="align-top" style={{fontSize: 0}} role="presentation">
-      <MenuButton
-        id={`${props.id}-rights-creation`}
-        className="btn btn-link"
-        size="sm"
-        menu={
-          <Menu
-            id={props.id}
-            as={CreateMenu}
-            align="end"
-            permission={props.permission}
-            editable={props.editable}
-            creatable={props.creatable}
-            onChange={props.onChange}
-          />
-        }
-      >
-        <span className={classes('badge', {
-          'text-bg-primary': props.permission && 0 < props.permission.length,
-          'text-bg-secondary': !props.permission || 0 === props.permission.length
-        })}>
-          {props.permission.length || '0'}
-        </span>
-      </MenuButton>
-    </span>
-  </td>
+  <MenuButton
+    id={`${props.id}-rights-creation`}
+    className={classes('py-1 px-2 border focus-ring btn btn-text-body', {
+      'border-primary text-primary-emphasis bg-primary-subtle': props.permission && 0 < props.permission.length
+    })}
+    size="sm"
+    disabled={!props.editable}
+    menu={
+      <Menu
+        id={props.id}
+        as={CreateMenu}
+        align="end"
+        permission={props.permission}
+        editable={props.editable}
+        creatable={props.creatable}
+        onChange={props.onChange}
+      />
+    }
+  >
+    {trans('create', {}, 'actions')}
+
+    <Badge variant={isEmpty(props.permission) ? 'secondary' : 'primary'} className="ms-1 p-1">
+      {props.permission ? props.permission.length : 0}
+    </Badge>
+  </MenuButton>
 
 CreatePermission.propTypes = {
   id: T.string.isRequired,
   creatable: T.object.isRequired,
   editable: T.bool.isRequired,
-  permission: T.oneOfType([T.array, T.bool]).isRequired,
+  permission: T.array,
   onChange: T.func.isRequired
 }
 
-const RolePermissions = props =>
-  <tr>
-    <th scope="row">
-      {props.translationKey}
-    </th>
+const RolePermissions = props => {
+  const allPerms = Object.keys(props.permissions)
+    .sort((permA, permB) => {
+      if (get(props.permissions, permA+'.order') > get(props.permissions, permB+'.order')) {
+        return 1
+      }
+      if (get(props.permissions, permB+'.order') > get(props.permissions, permA+'.order')) {
+        return -1
+      }
 
-    {Object.keys(props.permissions).map(permission =>
-      ('create' !== permission || isEmpty(props.creatable)) ?
-        <td
-          key={permission}
-          className={classes({
-            'checkbox-cell': 'create' !== permission,
-            'create-cell': 'create' === permission
-          })}
-        >
-          <div className="form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={props.permissions[permission]}
-              disabled={!props.editable}
-              onChange={() => props.update(merge({}, props.permissions, {[permission]: !props.permissions[permission]}))}
+      return 0
+    })
+
+  return (
+  <li className="list-group-item d-flex flex-row flex-wrap gap-3 px-0">
+    <DataMicro object={{
+      name: trans(props.translationKey)
+    }} />
+
+    <div className="ms-auto gap-1 d-flex flex-row fs-sm">
+      {allPerms.map((permission) =>
+        <TooltipOverlay key={permission} tip={(
+          <ul className="w-100 text-start mb-0 ps-2">
+            {props.permissions[permission].actions.map(action =>
+              <li key={action}>{action}</li>
+            )}
+          </ul>
+        )}>
+          {('create' !== permission || isEmpty(props.creatable)) ?
+            <div role="presentation">
+              <input
+                className="btn-check"
+                type="checkbox"
+                id={`${permission}-${props.name}`}
+                checked={props.currentPermissions[permission]}
+                disabled={!props.editable}
+                onChange={() => props.update(merge({}, props.currentPermissions, {[permission]: !props.currentPermissions[permission]}))}
+              />
+
+              <label
+                className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
+                  'border-primary text-primary-emphasis bg-primary-subtle': props.permissions[permission]
+                })}
+                htmlFor={`${permission}-${props.name}`}
+              >
+                {trans(permission, {}, 'actions')}
+              </label>
+            </div>
+            :
+            <CreatePermission
+              key={permission}
+              id={props.name}
+              permission={props.currentPermissions[permission]}
+              editable={props.editable}
+              creatable={props.creatable}
+              onChange={(creationPerms) => {
+                const newPerms = merge({}, props.currentPermissions)
+                newPerms.create = creationPerms
+
+                props.update(newPerms)
+              }}
             />
-          </div>
-        </td>
-        :
-        <CreatePermission
-          key={permission}
-          id={props.name}
-          permission={props.permissions[permission]}
-          editable={props.editable}
-          creatable={props.creatable}
-          onChange={(creationPerms) => {
-            const newPerms = merge({}, props.permissions)
-            newPerms.create = creationPerms
+          }
+        </TooltipOverlay>
+      )}
+    </div>
 
-            props.update(newPerms)
-          }}
-        />
-    )}
-
-    {props.hasNonStandardPerms &&
-      <td className="delete-cell">
-        {props.deletable &&
-          <Button
-            variant="btn-text"
-            type={CALLBACK_BUTTON}
-            icon="fa fa-fw fa-trash"
-            label={trans('delete', {}, 'actions')}
-            tooltip="left"
-            callback={props.delete}
-            dangerous={true}
-          />
-        }
-      </td>
-    }
-  </tr>
+    <Button
+      variant="btn btn-link mx-n2"
+      type={CALLBACK_BUTTON}
+      label={trans('remove', {}, 'actions')}
+      callback={props.delete}
+      disabled={!props.editable}
+      size="sm"
+    />
+  </li>
+  )
+}
 
 RolePermissions.propTypes = {
   name: T.string.isRequired,
   translationKey: T.string.isRequired,
+  // the available permissions
   permissions: T.object.isRequired,
-  hasNonStandardPerms: T.bool,
-  deletable: T.bool,
+  currentPermissions: T.object.isRequired,
   editable: T.bool,
   creatable: T.object,
   update: T.func.isRequired,
@@ -180,47 +203,91 @@ RolePermissions.propTypes = {
 }
 
 const ContentRights = props => {
-  const allPerms = uniq(props.rights
-    .reduce((accumulator, current) => accumulator.concat(
-      Object.keys(current.permissions)
-    ), []))
+  const [showHelp, setShowHelp] = useState(false)
 
+  const allPerms = Object.keys(props.permissions)
+    .sort((permA, permB) => {
+      if (get(props.permissions, permA+'.order') > get(props.permissions, permB+'.order')) {
+        return 1
+      }
+      if (get(props.permissions, permB+'.order') > get(props.permissions, permA+'.order')) {
+        return -1
+      }
+
+      return 0
+    })
   const defaultPerms = allPerms.reduce((acc, perm) => Object.assign(acc, {
     [perm]: false
   }), {})
 
-  const hasNonStandardPerms = hasCustomRoles(props.rights, props.workspace)
-
   return (
     <>
-      <table className="table table-striped table-hover content-rights-advanced">
-        <thead>
-          <tr>
-            <th scope="col">{trans('role')}</th>
+      <div className="d-flex flex-row gap-1" role="presentation">
+        <Button
+          className="btn btn-primary"
+          type={MODAL_BUTTON}
+          label={trans('add_roles', {}, 'actions')}
+          modal={[MODAL_ROLES, {
+            url: !isEmpty(props.workspace) ?
+              ['apiv2_workspace_list_roles', {id: props.workspace.id}] :
+              ['apiv2_role_list'],
+            filters: !isEmpty(props.workspace) ? [] : [
+              {property: 'type', value: constants.ROLE_PLATFORM}
+            ],
+            selectAction: (selectedRoles) => ({
+              type: CALLBACK_BUTTON,
+              callback: () => props.updateRights([].concat(props.rights, selectedRoles.map(role => ({
+                name: role.name,
+                translationKey: role.translationKey,
+                role: role,
+                permissions: {}
+              }))))
+            })
+          }]}
+        />
 
+        <Button
+          className="btn btn-text-body focus-ring"
+          type={CALLBACK_BUTTON}
+          icon="fa fa-fw fa-question-circle"
+          label={trans(showHelp ? 'hide_help' : 'show_help', {}, 'actions')}
+          callback={() => setShowHelp(!showHelp)}
+        />
+      </div>
+
+      {props.permissions &&
+        <Collapse in={showHelp}>
+          <dl className="p-3 mb-0 bg-body-tertiary rounded-3 gap-0">
             {allPerms.map(permission =>
-              <th key={`${permission}-header`} scope="col">
-                <div className="permission-name-container">
-                  <span className="permission-name">{trans(permission, {}, 'actions')}</span>
-                </div>
-              </th>
+              <Fragment key={permission}>
+                <dt className="text-uppercase fw-bolder fs-base text-body">{trans(permission, {}, 'actions')}</dt>
+                <dd className="mb-3">
+                  <ul className="list-unstyled mb-0">
+                    {props.permissions[permission].actions.map(action =>
+                      <li key={action}>{action}</li>
+                    )}
+                  </ul>
+                </dd>
+              </Fragment>
             )}
+          </dl>
+        </Collapse>
+      }
 
-            {hasNonStandardPerms &&
-              <td scope="col" />
-            }
-          </tr>
-        </thead>
-
-        <tbody>
+      {!isEmpty(props.rights) &&
+        <ul className="list-group list-group-flush">
           {[]
             // create new array to be able to modify it
             .concat(props.rights)
             // move workspace manager role to the top of the list
             .sort((a, b) => props.workspace && roleWorkspace(props.workspace, true) === b.name ? 1 : 0)
             .map((rolePerm) => {
-              const workspaceCode = rolePerm.workspace ? rolePerm.workspace.code : null
-              const displayName = trans(rolePerm.translationKey) + (workspaceCode ? ' (' + workspaceCode + ')' : '')
+              let workspaceName
+              if (props.workspace && rolePerm.workspace && rolePerm.workspace.id !== props.workspace.id) {
+                workspaceName = rolePerm.workspace ? rolePerm.workspace.name : null
+              }
+
+              const displayName = trans(rolePerm.translationKey) + (workspaceName ? ' (' + workspaceName + ')' : '')
               let managerRole = null
               if (props.workspace) {
                 managerRole = roleWorkspace(props.workspace, true)
@@ -231,11 +298,10 @@ const ContentRights = props => {
                   key={rolePerm.id || rolePerm.name}
                   name={rolePerm.name}
                   translationKey={displayName}
-                  permissions={Object.assign({}, defaultPerms, rolePerm.permissions)}
-                  deletable={!isStandardRole(rolePerm.name, props.workspace)}
+                  permissions={props.permissions}
+                  currentPermissions={Object.assign({}, defaultPerms, rolePerm.permissions)}
                   creatable={props.creatable}
                   editable={!managerRole || rolePerm.name !== managerRole}
-                  hasNonStandardPerms={hasNonStandardPerms}
                   update={(permissions) => {
                     const newPerms = merge([], props.rights)
                     const rights = newPerms.find(perm => perm.name === rolePerm.name)
@@ -257,30 +323,8 @@ const ContentRights = props => {
               )
             })
           }
-        </tbody>
-      </table>
-
-      <ModalButton
-        className="btn btn-primary w-100"
-        modal={[MODAL_ROLES, {
-          url: !isEmpty(props.workspace) ?
-            ['apiv2_workspace_list_roles', {id: props.workspace.id}] :
-            ['apiv2_role_list'],
-          filters: !isEmpty(props.workspace) ? [] : [
-            {property: 'type', value: constants.ROLE_PLATFORM}
-          ],
-          selectAction: (selectedRoles) => ({
-            type: CALLBACK_BUTTON,
-            callback: () => props.updateRights([].concat(props.rights, selectedRoles.map(role => ({
-              name: role.name,
-              translationKey: role.translationKey,
-              permissions: {}
-            }))))
-          })
-        }]}
-      >
-        {trans('add_rights')}
-      </ModalButton>
+        </ul>
+      }
     </>
   )
 }
@@ -295,7 +339,8 @@ ContentRights.propTypes = {
     translationKey: T.string.isRequired,
     permissions: T.object.isRequired
   })).isRequired,
-  updateRights: T.func.isRequired
+  updateRights: T.func.isRequired,
+  permissions: T.object.isRequired
 }
 
 export {

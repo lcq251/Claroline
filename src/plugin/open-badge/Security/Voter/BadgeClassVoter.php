@@ -21,8 +21,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class BadgeClassVoter extends AbstractVoter
 {
-    public const GRANT = 'GRANT';
-
     public function __construct(
         private readonly ObjectManager $om
     ) {
@@ -65,9 +63,9 @@ class BadgeClassVoter extends AbstractVoter
 
                 return VoterInterface::ACCESS_DENIED;
 
-            case self::GRANT:
+            case self::FOLLOW:
                 // has grant rights on the tool
-                if ($this->isToolGranted(self::GRANT, 'badges', $object->getWorkspace() ?? null)) {
+                if ($this->isToolGranted(self::FOLLOW, 'badges', $object->getWorkspace() ?? null)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
@@ -88,6 +86,6 @@ class BadgeClassVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::ADMINISTRATE, self::EDIT, self::DELETE, self::GRANT];
+        return [self::OPEN, self::CREATE, self::ADMINISTRATE, self::EDIT, self::DELETE, self::FOLLOW];
     }
 }

@@ -1,4 +1,3 @@
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {trans} from '#/main/app/intl/translation'
@@ -10,7 +9,7 @@ import {hasPermission} from '#/main/app/security'
  * Moves resource nodes to the destination chosen by the user.
  *
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
- * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
+ * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => {
   const processable = resourceNodes.filter(resourceNode => !!resourceNode.parent && hasPermission('administrate', resourceNode))
@@ -28,15 +27,10 @@ export default declareAction((resourceNodes, nodesRefresher) => {
         type: ASYNC_BUTTON,
         label: trans('select', {}, 'actions'),
         request: {
-          url: url(['claro_resource_collection_action', {action: 'move'}], {
-            parent: selected[0] ? selected[0].id : null, // required for correct rights check in API
-            ids: processable.map(resourceNode => resourceNode.id)
-          }),
+          url: ['claro_resource_move', {destinationId: selected[0] ? selected[0].id : null}],
           request: {
             method: 'PUT',
-            body: JSON.stringify({
-              destination: selected[0]
-            })
+            body: JSON.stringify(processable.map(resourceNode => resourceNode.id))
           },
           success: (response) => {
             nodesRefresher.delete(resourceNodes)

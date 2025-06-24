@@ -44,10 +44,7 @@ const ResourceEditor = (props) => {
       title={get(editedNode, 'name') || (resourceType && trans(resourceType, {}, 'resource')) || trans('resource')}
       styles={props.styles}
       name={resourceSelectors.EDITOR_NAME}
-      target={['claro_resource_action', {
-        action: 'configure',
-        id: get(resourceNode, 'id')
-      }]}
+      target={['claro_resource_update', {id: get(resourceNode, 'id')}]}
       thumbnail={
         <Thumbnail
           className="rounded-1"
@@ -70,7 +67,7 @@ const ResourceEditor = (props) => {
           title: trans('parameters'),
           help: trans('Activez le suivi pédagogique pour enregistrer et suivre la progression des utilisateurs.'),
           component: ResourceEditorEvaluation,
-          disabled: !supportEvaluation(editedNode),
+          disabled: !resourceLoaded || !supportEvaluation(resourceNode),
           group: trans('evaluation')
         }, {
           name: 'sequences',
@@ -78,7 +75,7 @@ const ResourceEditor = (props) => {
           help: trans('Retrouver tous les scénarios pédagogiques utilisant cette ressource.'),
           component: ResourceEditorSequences,
           displayed: false,
-          disabled: !supportEvaluation(editedNode),
+          disabled: !resourceLoaded || !supportEvaluation(resourceNode),
           group: trans('evaluation')
         }
       ].concat(props.pages || [])}

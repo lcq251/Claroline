@@ -110,7 +110,7 @@ class ResourceNode implements CrudEntityInterface
     /**
      * @var Collection<int, ResourceRights>
      */
-    #[ORM\OneToMany(targetEntity: ResourceRights::class, mappedBy: 'resourceNode', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ResourceRights::class, mappedBy: 'resourceNode', fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $rights;
 
     #[ORM\Column(name: 'mime_type', nullable: true)]

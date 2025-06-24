@@ -2,6 +2,8 @@ plugin:
     tools:
         - name: announcement
           icon: bullhorn
+          tool_rights:
+            - create
 
     data_sources:
         - name: announcements

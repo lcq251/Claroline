@@ -343,7 +343,7 @@ class CourseController extends AbstractCrudController
     #[Route(path: '/{id}/stats', name: 'stats', methods: ['GET'])]
     public function getStatsAction(#[MapEntity(mapping: ['id' => 'uuid'])] Course $course): JsonResponse
     {
-        $this->checkPermission('REGISTER', $course, [], true);
+        $this->checkPermission('FOLLOW', $course, [], true);
 
         $stats = $this->om->getRepository(Course::class)->getRegistrationStats($course);
 

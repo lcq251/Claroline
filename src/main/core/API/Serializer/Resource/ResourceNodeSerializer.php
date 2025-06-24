@@ -66,7 +66,6 @@ class ResourceNodeSerializer
                 'meta' => [
                     'description' => $resourceNode->getDescription(),
                     'published' => $resourceNode->isPublished(), // not required but nice to have
-                    // move outside meta
                     'type' => $resourceNode->getType(), // try to remove. use mimeType instead
                     'mimeType' => $resourceNode->getMimeType(),
                 ],

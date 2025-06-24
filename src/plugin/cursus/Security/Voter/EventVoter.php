@@ -18,8 +18,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class EventVoter extends AbstractVoter
 {
-    public const REGISTER = 'REGISTER';
-
     public function getClass(): string
     {
         return Event::class;
@@ -36,35 +34,27 @@ class EventVoter extends AbstractVoter
         }
 
         switch ($attributes[0]) {
-            case self::CREATE: // EDIT right on tool
-                if ($this->isToolGranted('EDIT', 'training_events', $workspace)
-                    || $this->isToolGranted('EDIT', 'trainings')) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                return VoterInterface::ACCESS_DENIED;
-
+            case self::CREATE:
             case self::EDIT:
             case self::DELETE:
             case self::PATCH:
-                if ($this->isToolGranted('EDIT', 'training_events', $workspace)
-                    || ($object->getSession() && $this->isGranted('EDIT', $object->getSession()))) {
+                if ($this->isToolGranted(self::EDIT, 'trainings', $workspace)
+                    || ($object->getSession() && $this->isGranted(self::EDIT, $object->getSession()))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;
             case self::OPEN:
-            case self::VIEW:
-                if ($this->isToolGranted('OPEN', 'training_events', $workspace)
-                    || ($object->getSession() && $this->isGranted('OPEN', $object->getSession()))) {
+                if ($this->isToolGranted(self::OPEN, 'trainings', $workspace)
+                    || ($object->getSession() && $this->isGranted(self::OPEN, $object->getSession()))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;
 
-            case self::REGISTER:
-                if ($this->isToolGranted('REGISTER', 'training_events', $workspace)
-                    || ($object->getSession() && $this->isGranted('REGISTER', $object->getSession()))) {
+            case self::FOLLOW:
+                if ($this->isToolGranted(self::FOLLOW, 'trainings', $workspace)
+                    || ($object->getSession() && $this->isGranted(self::FOLLOW, $object->getSession()))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

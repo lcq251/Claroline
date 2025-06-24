@@ -32,5 +32,11 @@ trait RemoveToolTrait
         );
         $orderedTools->bindValue(1, $toolName);
         $orderedTools->executeQuery();
+
+        $maskDecoders = $this->connection->prepare(
+            'DELETE FROM claro_tool_mask_decoder WHERE tool_name = ?'
+        );
+        $maskDecoders->bindValue(1, $toolName);
+        $maskDecoders->executeQuery();
     }
 }

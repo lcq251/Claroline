@@ -48,7 +48,7 @@ class ActivityController
     #[Route(path: '/count/{contextId}', name: 'apiv2_community_activity', methods: ['GET'])]
     public function openAction(string $contextId = null): JsonResponse
     {
-        if (!$this->checkToolAccess('SHOW_ACTIVITY', $contextId)) {
+        if (!$this->checkToolAccess('FOLLOW', $contextId)) {
             throw new AccessDeniedException();
         }
 
@@ -84,7 +84,7 @@ class ActivityController
         #[MapQueryString]
         ?FinderQuery $finderQuery = new FinderQuery()
     ): StreamedJsonResponse {
-        if (!$this->checkToolAccess('SHOW_ACTIVITY', $contextId)) {
+        if (!$this->checkToolAccess('FOLLOW', $contextId)) {
             throw new AccessDeniedException();
         }
 

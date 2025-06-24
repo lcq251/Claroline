@@ -118,7 +118,7 @@ class CourseSerializer
             $serialized['permissions'] = [
                 'open' => $admin || $this->authorization->isGranted('OPEN', $course),
                 'edit' => $admin || $this->authorization->isGranted('EDIT', $course),
-                'register' => $admin || $this->authorization->isGranted('REGISTER', $course),
+                'follow' => $admin || $this->authorization->isGranted('FOLLOW', $course),
                 'administrate' => $admin || $this->authorization->isGranted('ADMINISTRATE', $course),
                 'delete' => $admin || $this->authorization->isGranted('DELETE', $course),
             ];

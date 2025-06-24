@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
@@ -30,9 +29,10 @@ export default declareAction((workspaces, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_workspace_archive'], {ids: processable.map(workspace => workspace.id)}),
+      url: ['apiv2_workspace_archive'],
       request: {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify(processable.map(workspace => workspace.id))
       },
       success: (response) => refresher.update(response)
     },

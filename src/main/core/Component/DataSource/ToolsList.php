@@ -37,8 +37,10 @@ class ToolsList extends ListSourceComponent
     {
         $finderQuery = parent::getQuery($context, $contextSubject, $request);
 
-        $finderQuery->addFilter('context', $context);
-        $finderQuery->addFilter('contextId', $contextSubject->getContextIdentifier());
+        $finderQuery->addFilter('contextName', $context);
+        if ($contextSubject) {
+            $finderQuery->addFilter('contextId', $contextSubject->getContextIdentifier());
+        }
 
         // filter the tool list by current user if he is not an admin
         $context = $this->contextProvider->getContext($context);

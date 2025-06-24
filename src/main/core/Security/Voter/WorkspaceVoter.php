@@ -24,6 +24,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
 {
+    public const ARCHIVE = 'ARCHIVE';
+
     public function __construct(
         private readonly WorkspaceManager $workspaceManager,
         private readonly WorkspaceRestrictionsManager $restrictionsManager
@@ -48,9 +50,11 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
     {
         $collection = isset($options['collection']) ? $options['collection'] : null;
 
+        if ($this->isToolGranted('ADMINISTRATE', 'workspaces')) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
         switch ($attributes[0]) {
-            case self::VIEW:
-                return $this->checkView($token, $object);
             case self::CREATE:
                 return $this->checkCreation($token);
             case self::EDIT:
@@ -59,11 +63,13 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
                 return $this->checkEdit($token, $object);
             case self::DELETE:
                 return $this->checkDelete($token, $object);
+            case self::ARCHIVE:
+                return $this->checkArchive();
             case self::PATCH:
                 return $this->checkPatch($token, $object, $collection);
         }
 
-        if ($this->isToolGranted('ADMINISTRATE', 'workspaces') || $this->isWorkspaceManaged($token, $object)) {
+        if ($this->isWorkspaceManaged($token, $object)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -97,32 +103,32 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function checkEdit($token, Workspace $workspace): int
+    private function checkEdit(TokenInterface $token, Workspace $workspace): int
     {
-        if (!$this->isToolGranted('ADMINISTRATE', 'workspaces') && !$this->isWorkspaceManaged($token, $workspace)) {
+        if (!$this->isToolGranted('EDIT', 'workspaces') && !$this->isWorkspaceManaged($token, $workspace)) {
             return VoterInterface::ACCESS_DENIED;
         }
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function checkDelete($token, Workspace $workspace): int
+    private function checkArchive(): int
+    {
+        if (!$this->isToolGranted(self::ARCHIVE, 'workspaces')) {
+            return VoterInterface::ACCESS_DENIED;
+        }
+
+        return VoterInterface::ACCESS_GRANTED;
+    }
+
+    private function checkDelete(TokenInterface $token, Workspace $workspace): int
     {
         // disallow deleting default models
         if (in_array($workspace->getCode(), ['default_personal', 'default_workspace'])) {
             return VoterInterface::ACCESS_DENIED;
         }
 
-        if (!$this->isWorkspaceManaged($token, $workspace)) {
-            return VoterInterface::ACCESS_DENIED;
-        }
-
-        return VoterInterface::ACCESS_GRANTED;
-    }
-
-    private function checkView($token, Workspace $workspace): int
-    {
-        if (!$this->isWorkspaceManaged($token, $workspace)) {
+        if (!$this->isToolGranted(self::EDIT, 'workspaces') && !$this->isWorkspaceManaged($token, $workspace)) {
             return VoterInterface::ACCESS_DENIED;
         }
 

@@ -49,8 +49,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 #[Route(path: '/workspace', name: 'apiv2_workspace_')]
 class WorkspaceController extends AbstractCrudController
 {
-    use HasGroupsTrait; // to remove : only the list endpoint is used
-    use HasRolesTrait; // to remove : only the list endpoint is used
+    use HasGroupsTrait; // to remove: only the list endpoint is used
+    use HasRolesTrait; // to remove: only the list endpoint is used
     use HasOrganizationsTrait;
     use PermissionCheckerTrait;
 
@@ -133,9 +133,10 @@ class WorkspaceController extends AbstractCrudController
             $options[] = Options::AS_MODEL;
         }
 
-        $toCopy = $this->decodeIdsString($request, Workspace::class);
+        $workspaceIds = $this->decodeRequest($request);
 
-        foreach ($toCopy as $workspace) {
+        foreach ($workspaceIds as $workspaceId) {
+            $workspace = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $workspaceId]);
             if ($this->checkPermission('COPY', $workspace)) {
                 $this->messageBus->dispatch(new CopyWorkspace(
                     $workspace->getId(),

@@ -14,39 +14,20 @@ namespace Claroline\CoreBundle\Listener\Resource\Types;
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\AppBundle\API\Utils\FileBag;
+use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
-use Claroline\CoreBundle\Entity\File\PublicFile;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\Directory;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Entity\Role;
-use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
-use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
-use Claroline\CoreBundle\Manager\FileManager;
-use Claroline\CoreBundle\Manager\Resource\ResourceActionManager;
-use Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager;
-use Claroline\CoreBundle\Manager\Resource\RightsManager;
-use Claroline\CoreBundle\Manager\ResourceManager;
-use Claroline\CoreBundle\Security\Collection\ResourceCollection;
-use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Integrates the "Directory" resource.
  */
-class DirectoryListener extends ResourceComponent
+class DirectoryListener extends ResourceComponent implements DownloadableResourceInterface
 {
     public function __construct(
-        private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
-        private readonly FileManager $fileManager,
-        private readonly ResourceManager $resourceManager,
-        private readonly ResourceActionManager $actionManager,
-        private readonly ResourceLifecycleManager $lifecycleManager,
-        private readonly RightsManager $rightsManager
     ) {
     }
 
@@ -55,190 +36,40 @@ class DirectoryListener extends ResourceComponent
         return 'directory';
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return array_merge([], parent::getSubscribedEvents(), [
-            'resource.directory.add' => 'onAdd',
-            'resource.directory.add_files' => 'onAddFiles',
-            'resource.directory.delete' => 'onDelete',
-        ]);
-    }
-
     /** @param Directory $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [
             'resource' => $this->serializer->serialize($resource),
-            'storageLock' => $this->fileManager->isStorageFull(),
         ];
     }
 
     /** @param Directory $resource */
-    public function update(AbstractResource $resource, array $data): ?array
-    {
-        return [
-            'resource' => $this->serializer->serialize($resource),
-        ];
-    }
-
-    /**
-     * Adds a new resource inside a directory.
-     */
-    public function onAdd(ResourceActionEvent $event): void
-    {
-        $data = $event->getData();
-        $parent = $event->getResourceNode();
-
-        $add = $this->actionManager->get($parent, 'add');
-
-        // checks if the current user can add
-        $collection = new ResourceCollection([$parent], ['type' => $data['resourceNode']['meta']['type']]);
-        if (!$this->actionManager->hasPermission($add, $collection)) {
-            throw new AccessDeniedException($collection->getErrorsForDisplay());
-        }
-
-        // create the resource node
-        $created = $this->createResource($parent, $data['resourceNode'], !empty($data['resource']) ? $data['resource'] : [], $event->getOptions());
-
-        $event->setResponse(new JsonResponse([
-            'resourceNode' => $this->serializer->serialize($created->getResourceNode()),
-            'resource' => $this->serializer->serialize($created),
-        ], 201));
-    }
-
-    /**
-     * Adds multiple files inside a directory.
-     */
-    public function onAddFiles(ResourceActionEvent $event): void
-    {
-        $files = $event->getFiles();
-        $parent = $event->getResourceNode();
-
-        $add = $this->actionManager->get($parent, 'add');
-
-        $collection = new ResourceCollection([$parent], ['type' => 'file']);
-        if (!$this->actionManager->hasPermission($add, $collection)) {
-            throw new AccessDeniedException($collection->getErrorsForDisplay());
-        }
-
-        $publicFiles = [];
-        foreach ($files as $file) {
-            $publicFiles[] = $this->crud->create(PublicFile::class, [], ['file' => $file]);
-        }
-
-        $this->om->startFlushSuite();
-
-        $resourceType = $this->resourceManager->getResourceTypeByName('file');
-        $resources = [];
-        foreach ($publicFiles as $publicFile) {
-            $extension = pathinfo($publicFile->getFilename(), PATHINFO_EXTENSION);
-            // clean up filename to generate the resource name
-            $resourceName = str_replace('.'.$extension, '', $publicFile->getFilename());
-            $resourceName = str_replace('_', ' ', $resourceName);
-            $resourceName = ucfirst($resourceName);
-
-            $created = $this->createResource($parent, [
-                'name' => $resourceName,
-                'meta' => [
-                    'type' => $resourceType->getName(),
-                    'mimeType' => $publicFile->getMimeType(),
-                ],
-            ], [
-                'size' => $publicFile->getSize(),
-                'hashName' => $publicFile->getUrl(),
-            ], $event->getOptions());
-
-            $resources[] = $created->getResourceNode();
-        }
-        $this->om->endFlushSuite();
-
-        $event->setResponse(new JsonResponse(array_map(function (ResourceNode $fileNode) {
-            return $this->serializer->serialize($fileNode);
-        }, $resources)));
-    }
-
-    public function onDelete(DeleteResourceEvent $event): void
+    public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         // delete all children of the current directory
         // this may be interesting to put it in the messenger bus
-        $resourceNode = $event->getResource()->getResourceNode();
+        $resourceNode = $resource->getResourceNode();
 
         if (!empty($resourceNode->getChildren())) {
-            $this->crud->deleteBulk($resourceNode->getChildren()->toArray(), $event->isSoftDelete() ? [Options::SOFT_DELETE] : []);
+            $this->crud->deleteBulk($resourceNode->getChildren()->toArray(), $softDelete ? [Options::SOFT_DELETE] : []);
         }
+
+        return true;
     }
 
-    private function createResource(ResourceNode $parent, array $nodeData, ?array $resourceData = [], ?array $options = []): AbstractResource
+    /** @param Directory $original */
+    public function copy(AbstractResource $original, AbstractResource $copy): void
     {
-        $this->om->startFlushSuite();
-
-        // initialize resource node Entity
-        try {
-            $resourceNode = new ResourceNode();
-            $resourceNode->setParent($parent);
-            $resourceNode->setWorkspace($parent->getWorkspace());
-
-            $this->crud->create($resourceNode, $nodeData, array_merge([Options::NO_RIGHTS, Options::PERSIST_TAG], $options));
-        } catch (InvalidDataException $e) {
-            // for resource creation we submit the resourceNode and resource data at once
-            // we need to update the errors path for correct rendering in form
-            $errors = array_map(function (array $error) {
-                return [
-                    'path' => 'resourceNode/'.ltrim($error['path'], '/'),
-                    'message' => $error['message'],
-                ];
-            }, $e->getErrors());
-
-            throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
+        $resourceNode = $original->getResourceNode();
+        if (empty($resourceNode->getChildren())) {
+            return;
         }
 
-        // initialize custom resource Entity
-        $resourceClass = $resourceNode->getResourceType()->getClass();
-
-        try {
-            /** @var AbstractResource $resource */
-            $resource = new $resourceClass();
-            $resource->setResourceNode($resourceNode);
-
-            $this->crud->create($resource, $resourceData, array_merge([Options::PERSIST_TAG], $options));
-        } catch (InvalidDataException $e) {
-            // for resource creation we submit the resourceNode and resource data at once
-            // we need to update the errors path for correct rendering in form
-            $errors = array_map(function (array $error) {
-                return [
-                    'path' => 'resource/'.ltrim($error['path'], '/'),
-                    'message' => $error['message'],
-                ];
-            }, $e->getErrors());
-
-            throw new InvalidDataException(sprintf('%s is not valid', $resourceClass), $errors);
-        }
-
-        $this->om->endFlushSuite();
-
-        $this->lifecycleManager->create($resourceNode, [
-            'resourceNode' => $nodeData,
-            'resource' => $resourceData,
-        ]);
-
-        // initialize resource rights
-        if (!empty($nodeData['rights'])) {
-            foreach ($nodeData['rights'] as $rights) {
-                /** @var Role $role */
-                $role = $this->om->getRepository(Role::class)->findOneBy(['name' => $rights['name']]);
-
-                $creation = [];
-                if (!empty($rights['permissions']['create']) && $resource instanceof Directory) {
-                    // only forward creation rights to resource which can handle it (only directories atm)
-                    $creation = $rights['permissions']['create'];
-                }
-                $this->rightsManager->update($rights['permissions'], $role, $resourceNode, false, $creation);
+        foreach ($resourceNode->getChildren() as $child) {
+            if ($child->isActive()) {
+                $this->crud->copy($child, [Options::NO_RIGHTS, Crud::NO_PERMISSIONS], ['parent' => $copy->getResourceNode()]);
             }
-        } else {
-            // copy parent rights on the new resource
-            $this->rightsManager->copy($parent, $resourceNode);
         }
-
-        return $resource;
     }
 }

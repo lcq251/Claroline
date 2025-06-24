@@ -105,14 +105,10 @@ class SessionSerializer
                     null,
                 'created' => DateNormalizer::normalize($session->getCreatedAt()),
                 'updated' => DateNormalizer::normalize($session->getUpdatedAt()),
-                // 'duration' => $session->getCourse() ? $session->getCourse()->getDefaultSessionDuration() : null,
                 'default' => $session->isDefaultSession(),
                 'canceled' => $session->isCanceled(),
                 'cancelReason' => $session->getCancelReason(),
             ],
-            /*'display' => [
-                'order' => $session->getOrder(),
-            ],*/
             'registration' => [
                 'selfRegistration' => $session->getPublicRegistration(),
                 'autoRegistration' => $session->getAutoRegistration(),
@@ -138,7 +134,7 @@ class SessionSerializer
                 'open' => $this->authorization->isGranted('OPEN', $session),
                 'edit' => $this->authorization->isGranted('EDIT', $session),
                 'administrate' => $this->authorization->isGranted('ADMINISTRATE', $session),
-                'register' => $this->authorization->isGranted('REGISTER', $session),
+                'follow' => $this->authorization->isGranted('FOLLOW', $session),
             ];
         }
 

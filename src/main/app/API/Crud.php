@@ -300,6 +300,8 @@ class Crud
         if ($this->dispatch(CrudEvents::PRE_DELETE, $className, $event)) {
             if (!in_array(Options::SOFT_DELETE, $options)) {
                 $this->om->remove($object);
+            } else {
+                $this->om->persist($object);
             }
 
             if (!in_array(Options::FORCE_FLUSH, $options)) {
@@ -453,7 +455,7 @@ class Crud
 
         if (!in_array(static::NO_PERMISSIONS, $options)) {
             // add the options to pass on here
-            $this->checkPermission('PATCH', $object, [], true);
+            $this->checkPermission('EDIT', $object, [], true);
             // we'll need to pass the $action and $data here as well later
         }
 

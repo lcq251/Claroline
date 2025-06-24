@@ -2,8 +2,6 @@ plugin:
     resources:
         - name: audio
           class: Claroline\AudioPlayerBundle\Entity\Resource\Audio
-          tags: [ content ]
-          exportable: false
 
     resource_icons:
         - name: res_audio

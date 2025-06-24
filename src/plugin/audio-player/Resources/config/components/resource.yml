@@ -7,4 +7,3 @@ services:
             - '@Claroline\CoreBundle\Manager\FileManager'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AudioPlayerBundle\Manager\AudioPlayerManager'
-            - '@Claroline\AudioPlayerBundle\Manager\EvaluationManager'

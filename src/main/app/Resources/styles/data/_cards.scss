@@ -161,7 +161,7 @@
 
     &.data-card-col:before {
         width: 100%;
-        height: $nav-underline-border-width;
+        height: .25rem;
 
         @include border-top-radius($data-card-border-radius);
     }

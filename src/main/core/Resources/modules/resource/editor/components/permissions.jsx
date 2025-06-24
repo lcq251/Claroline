@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -9,14 +9,23 @@ import {EditorPage} from '#/main/app/editor'
 import {ContentRights} from '#/main/app/content/components/rights'
 
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
-import {supportDownload} from '#/main/core/resource/utils'
+import {supportDownload, getResource} from '#/main/core/resource/utils'
 
 const restrictedByDates = (formData) => get(formData, 'resourceNode.restrictions.enableDates') || !isEmpty(get(formData, 'resourceNode.restrictions.dates'))
 const restrictedByCode = (formData) => get(formData, 'resourceNode.restrictions.enableCode') || !!get(formData, 'resourceNode.restrictions.code')
 
 const ResourceEditorPermissions = (props) => {
+  const [permissions, setPermissions] = useState({})
+
   useEffect(() => {
-    props.loadRights(props.resourceNode)
+    if (!isEmpty(props.resourceNode)) {
+      // load tool configuration to get the list of implemented permissions
+      getResource(get(props.resourceNode, 'meta.type')).then((resourceModule) => {
+        setPermissions(resourceModule.default.permissions)
+      })
+
+      props.loadRights(props.resourceNode)
+    }
   }, [get(props.resourceNode, 'id')])
 
   return (
@@ -30,7 +39,7 @@ const ResourceEditorPermissions = (props) => {
           icon: 'fa fa-fw fa-download',
           title: trans('download'),
           primary: true,
-          displayed: supportDownload(props.resourceNode),
+          displayed: !isEmpty(props.resourceNode) && supportDownload(props.resourceNode),
           fields: [
             {
               name: 'resourceNode.meta.downloadable',
@@ -48,6 +57,7 @@ const ResourceEditorPermissions = (props) => {
           render: () => props.rights && (
             <ContentRights
               workspace={props.resourceNode.workspace}
+              permissions={permissions}
               creatable={param('resources.types').reduce((resourceTypes, current) => Object.assign(resourceTypes, {
                 [current.name]: trans(current.name, {}, 'resource')
               }), {})}

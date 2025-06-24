@@ -11,26 +11,29 @@
 
 namespace Claroline\CoreBundle\Entity\Resource;
 
-use Doctrine\DBAL\Types\Types;
-use Claroline\CoreBundle\Repository\Resource\ResourceMaskDecoderRepository;
 use Claroline\AppBundle\Entity\Identifier\Id;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Table(name: 'claro_resource_mask_decoder')]
 #[Index(name: 'value', columns: ['value'])]
 #[Index(name: 'name', columns: ['name'])]
-#[ORM\Entity(repositoryClass: ResourceMaskDecoderRepository::class, readOnly: true)]
+#[ORM\Entity(readOnly: true)]
 class MaskDecoder
 {
     use Id;
 
-    public const OPEN = 1;
-    public const COPY = 2;
-    public const EXPORT = 4;
-    public const DELETE = 8;
-    public const EDIT = 16;
-    public const ADMINISTRATE = 32;
+    public const DEFAULT_ACTIONS = ['open', 'contribute', 'export', /* 'follow', */ 'delete', 'edit', 'administrate'];
+    public const DEFAULT_VALUES = [
+        'open' => 1,
+        'contribute' => 2,
+        'export' => 4,
+        'delete' => 8,
+        'edit' => 16,
+        'administrate' => 32,
+        // 'follow' => 8,
+    ];
 
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $value = 0;
@@ -38,7 +41,7 @@ class MaskDecoder
     #[ORM\Column]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: ResourceType::class, cascade: ['persist'], inversedBy: 'maskDecoders')]
+    #[ORM\ManyToOne(targetEntity: ResourceType::class, inversedBy: 'maskDecoders')]
     #[ORM\JoinColumn(name: 'resource_type_id', nullable: false, onDelete: 'CASCADE')]
     private ?ResourceType $resourceType = null;
 
@@ -62,14 +65,17 @@ class MaskDecoder
         return $this->name;
     }
 
-    public function setResourceType(ResourceType $resourceType): void
+    public function setResourceType(?ResourceType $resourceType = null): void
     {
-        if ($this->resourceType instanceof ResourceType) {
+        if (!empty($this->resourceType)) {
             $this->resourceType->removeMaskDecoder($this);
         }
 
         $this->resourceType = $resourceType;
-        $this->resourceType->addMaskDecoder($this);
+
+        if ($resourceType) {
+            $this->resourceType->addMaskDecoder($this);
+        }
     }
 
     public function getResourceType(): ?ResourceType

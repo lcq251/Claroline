@@ -9,16 +9,13 @@ import {actions} from '#/main/core/tool/editor/store'
 const ToolEditorPermissions = connect(
   (state) => ({
     name: toolSelectors.name(state),
-    //loaded: toolSelectors.loaded(state),
     contextType: toolSelectors.contextType(state),
     contextData: toolSelectors.contextData(state),
     rights: formSelectors.value(formSelectors.form(state, toolSelectors.EDITOR_NAME), 'rights')
   }),
   (dispatch) => ({
-    load(toolName, contextType, contextId) {
-      return dispatch(actions.fetchRights(toolName, contextType, contextId)).then((rights) => {
-        dispatch(formActions.load(toolSelectors.EDITOR_NAME, {rights: rights}))
-      })
+    loadRights(toolName, contextType, contextId) {
+      return dispatch(actions.fetchRights(toolName, contextType, contextId))
     },
     updateRights(perms) {
       dispatch(formActions.updateProp(toolSelectors.EDITOR_NAME, 'rights', perms))

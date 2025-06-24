@@ -2,5 +2,3 @@ plugin:
     resources:
         - name: pdf
           class: Claroline\PdfPlayerBundle\Entity\Pdf
-          tags: [ content ]
-          exportable: false

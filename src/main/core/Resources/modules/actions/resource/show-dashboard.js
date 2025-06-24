@@ -14,7 +14,7 @@ export default declareAction((resourceNodes, nodesRefresher, path) => ({
   icon: 'fa fa-fw fa-gauge',
   label: trans('show_dashboard', {}, 'actions'),
   target: `${route(resourceNodes[0], path)}/dashboard`,
-  displayed: -1 !== resourceNodes.findIndex(resourceNode => hasPermission('edit', resourceNode)),
+  displayed: -1 !== resourceNodes.findIndex(resourceNode => hasPermission('follow', resourceNode)),
   scope: ['object'],
   set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

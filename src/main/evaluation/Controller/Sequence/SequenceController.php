@@ -122,8 +122,8 @@ class SequenceController extends AbstractCrudController
 
         $sequences = $this->om->getRepository(Sequence::class)->findBy(['uuid' => $data]);
         foreach ($sequences as $sequence) {
-            if ($this->authorization->isGranted('EDIT', $sequence)) {
-                $this->crud->update($sequence, [
+            if ($this->authorization->isGranted('EDIT', $sequence) && !$sequence->isPublished()) {
+                $processed[] = $this->crud->update($sequence, [
                     'id' => $sequence->getUuid(),
                     'meta' => ['published' => true],
                 ], [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION]);
@@ -147,8 +147,8 @@ class SequenceController extends AbstractCrudController
 
         $sequences = $this->om->getRepository(Sequence::class)->findBy(['uuid' => $data]);
         foreach ($sequences as $sequence) {
-            if ($this->authorization->isGranted('EDIT', $sequence)) {
-                $this->crud->update($sequence, [
+            if ($this->authorization->isGranted('EDIT', $sequence) && $sequence->isPublished()) {
+                $processed[] = $this->crud->update($sequence, [
                     'id' => $sequence->getUuid(),
                     'meta' => ['published' => false],
                 ], [Crud::NO_PERMISSIONS, Crud::NO_VALIDATION]);
@@ -161,9 +161,12 @@ class SequenceController extends AbstractCrudController
     }
 
     #[Route(path: '/copy', name: 'copy', methods: ['POST'])]
-    public function copyAction(Request $request, #[MapQueryParameter] bool $copyResources = false): JsonResponse
+    public function copyAction(Request $request, #[MapQueryParameter] ?bool $copyResources = false): JsonResponse
     {
-        $toCopy = $this->decodeIdsString($request, Sequence::class);
+        $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
+
+        $sequenceIds = $this->decodeRequest($request);
+        $toCopy = $this->om->getRepository(Sequence::class)->findBy(['uuid' => $sequenceIds]);
 
         $options = [Crud::NO_PERMISSIONS];
         if ($copyResources) {

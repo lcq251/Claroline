@@ -52,7 +52,7 @@ const OrganizationListComponent = props => {
           type: 'email',
           label: trans('email')
         }, {
-          name: 'restrictions.public',
+          name: 'meta.public',
           alias: 'public',
           type: 'boolean',
           label: trans('public')

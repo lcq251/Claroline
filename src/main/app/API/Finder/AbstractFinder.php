@@ -72,11 +72,11 @@ abstract class AbstractFinder
         // Lets the whole app knows we are doing a search with an event
         // ATTENTION : This needs to be done first because if a listener manage a filter (like Tags),
         // it needs to be removed from list of filters to avoid the finder implementation to process it
-        $event = new SearchObjectsEvent($qb, static::getClass(), 'obj', $filters, $sortBy, $page, $limit);
-        $this->eventDispatcher->dispatch($event, 'objects.search');
+        /*$event = new SearchObjectsEvent($qb, static::getClass(), 'obj', $filters, $sortBy, $page, $limit);
+        $this->eventDispatcher->dispatch($event, 'objects.search');*/
 
         // filter query - lets the finder implementation process the filters to configure query
-        $qb = $this->configureQueryBuilder($qb, $event->getFilters(), $sortBy, $page, $limit);
+        $qb = $this->configureQueryBuilder($qb, $filters, $sortBy, $page, $limit);
 
         // order query if implementation has not done it
         $this->sortResults($qb, $sortBy);

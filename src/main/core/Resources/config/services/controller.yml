@@ -25,11 +25,17 @@ services:
             - '@security.authorization_checker'
             - '@Claroline\CoreBundle\Manager\ResourceManager'
 
+    Claroline\CoreBundle\Controller\Resource\ArchiveController:
+        arguments:
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@Claroline\AppBundle\API\Crud'
+
     Claroline\CoreBundle\Controller\Resource\ResourceNodeController:
         parent: Claroline\AppBundle\Controller\AbstractCrudController
         public: true
         arguments:
-            - '@Claroline\CoreBundle\Manager\Resource\ResourceActionManager'
             - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
             - '@security.token_storage'
             - '@security.authorization_checker'
@@ -131,10 +137,12 @@ services:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
             - '@Claroline\CoreBundle\Manager\ResourceManager'
-            - '@Claroline\CoreBundle\Manager\Resource\ResourceActionManager'
             - '@Claroline\CoreBundle\Manager\Resource\ResourceRestrictionsManager'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@security.authorization_checker'
+            - '@Claroline\AppBundle\API\Crud'
+            - '@event_dispatcher'
+            - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
 
     Claroline\CoreBundle\Controller\SearchController:
         arguments:

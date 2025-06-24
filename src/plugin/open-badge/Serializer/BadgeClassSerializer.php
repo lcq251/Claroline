@@ -234,7 +234,7 @@ class BadgeClassSerializer
 
         return [
             'open' => $administrate || $this->authorization->isGranted('OPEN', $badge),
-            'grant' => $administrate || $this->authorization->isGranted('GRANT', $badge),
+            'follow' => $administrate || $this->authorization->isGranted('FOLLOW', $badge),
             'edit' => $administrate || $this->authorization->isGranted('EDIT', $badge),
             'administrate' => $administrate || $this->authorization->isGranted('ADMINISTRATE', $badge),
             'delete' => $administrate || $this->authorization->isGranted('DELETE', $badge),
