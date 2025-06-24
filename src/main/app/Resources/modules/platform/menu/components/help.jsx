@@ -96,24 +96,6 @@ const HelpMenu = (props) => {
         />
 
         <div className="list-group mb-4">
-          {availableContexts
-            .filter(appContext => 'workspace' !== appContext.name)
-            .map(appContext =>
-              <Button
-                key={appContext.name}
-                className="list-group-item list-group-item-action"
-                type={LINK_BUTTON}
-                icon={`fa fa-fw fa-${appContext.icon}`}
-                label={trans(appContext.name, {}, 'context')}
-                exact={true}
-                target={route(appContext.name)}
-                onClick={props.closeMenu}
-              />
-            )
-          }
-        </div>
-
-        <div className="list-group mb-4">
           {links
             .filter(link => undefined === link.displayed || link.displayed)
             .map((link) => (

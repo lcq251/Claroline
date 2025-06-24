@@ -14,13 +14,14 @@ import {Menu} from '#/main/app/overlays/menu'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {constants as userConst} from '#/main/app/user/constants'
 import {displayUsername} from '#/main/community/utils'
-import {selectors} from '#/main/app/context'
+import {route, selectors as contextSelectors} from '#/main/app/context'
 import {selectors as securitySelectors} from '#/main/app/security/store'
-import {actions} from '#/main/app/platform/store'
+import {actions, selectors} from '#/main/app/platform/store'
 import {CloseButton} from 'react-bootstrap'
 
 const UserMenu = (props) => {
   const dispatch = useDispatch()
+  const availableContexts = useSelector(selectors.availableContexts)
 
   const accountLinks = [
     {
@@ -35,13 +36,7 @@ const UserMenu = (props) => {
       icon: 'fa fa-fw fa-sliders',
       label: trans('parameters'),
       target: '/account'
-    }/*, {
-      name: 'appearance',
-      type: CALLBACK_BUTTON,
-      icon: 'fa fa-fw fa-swatchbook',
-      label: trans('appearance', {}, 'tools'),
-      callback: () => true
-    }*/
+    }
   ]
 
   const changeStatus = useCallback((status) => {
@@ -98,6 +93,24 @@ const UserMenu = (props) => {
           </Button>
         </div>
 
+        <div className="list-group mb-3 mx-3">
+          {availableContexts
+            .filter(appContext => 'workspace' !== appContext.name)
+            .map(appContext =>
+              <Button
+                key={appContext.name}
+                className="list-group-item list-group-item-action"
+                type={LINK_BUTTON}
+                icon={`fa fa-fw fa-${appContext.icon}`}
+                label={trans(appContext.name, {}, 'context')}
+                exact={true}
+                target={route(appContext.name)}
+                onClick={props.closeMenu}
+              />
+            )
+          }
+        </div>
+
         <div className="list-group mx-3 mb-3">
           {accountLinks.map((accountLink) => (
             <Button
@@ -150,7 +163,7 @@ UserMenu.propTypes = {
 const PlatformMenuUser = (props) => {
   const currentUser = useSelector(securitySelectors.currentUser)
   const impersonated = useSelector(securitySelectors.isImpersonated)
-  const path = useSelector(selectors.path)
+  const path = useSelector(contextSelectors.path)
 
   const [menuOpened, setMenuOpened] = useState(false)
 

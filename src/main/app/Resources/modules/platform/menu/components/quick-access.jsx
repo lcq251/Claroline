@@ -7,7 +7,7 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {goToContent, goToContextMenu, goToToolMenu} from '#/main/app/platform/nav'
 
 /**
- * Shortcut links appearing on focus to access the main section of the app :
+ * Shortcut links appearing on focus to access the main section of the app:
  *    - Go to context menu
  *    - Go to tool menu
  *    - Go to page content
