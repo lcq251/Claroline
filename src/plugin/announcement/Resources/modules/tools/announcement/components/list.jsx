@@ -134,10 +134,15 @@ const AnnouncementList = () => {
             title={trans('no_announcement', {}, 'announcement')}
             description={trans('no_announcement_help', {}, 'announcement')}
             primaryAction={{
-              type: LINK_BUTTON,
+              type: MODAL_BUTTON,
               label: trans('add_announcement', {}, 'actions'),
-              target: `${toolPath}/add`,
-              displayed: hasPermission('edit', tool)
+              displayed: hasPermission('edit', tool),
+              modal: [MODAL_ANNOUNCEMENT_FORM, {
+                isNew: true,
+                onSave: (announcement) => {
+                  dispatch(actions.addAnnounce(announcement))
+                }
+              }]
             }}
             secondaryAction={{
               type: LINK_BUTTON,
@@ -179,7 +184,6 @@ const AnnouncementList = () => {
                 type: MODAL_BUTTON,
                 icon: 'fa fa-fw fa-plus',
                 label: trans('add_announcement', {}, 'actions'),
-                target: `${toolPath}/add`,
                 modal: [MODAL_ANNOUNCEMENT_FORM, {
                   isNew: true,
                   onSave: (announcement) => {
