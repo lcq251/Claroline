@@ -2,9 +2,9 @@
 
 namespace Claroline\FlashcardBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_flashcard_card')]
@@ -29,7 +29,6 @@ class Flashcard
     #[ORM\Column(type: Types::STRING)]
     private string $hiddenContentType;
 
-    
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: FlashcardDeck::class, inversedBy: 'cards')]
     private FlashcardDeck $deck;
