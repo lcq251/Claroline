@@ -9,16 +9,13 @@ import {selectors} from '#/main/app/content/list/store/selectors'
 
 export const actions = {}
 
-// filters (remap default search action for retro-compatibility)
-// maybe remove it later
+// filters
 actions.updateText = searchActions.updateText
 actions.addFilter = searchActions.addFilter
 actions.removeFilter = searchActions.removeFilter
 actions.resetFilters = searchActions.resetFilters
 
-
-// pagination (remap default pagination action for retro-compatibility)
-// maybe remove it later
+// pagination
 actions.changePage     = paginationActions.changePage
 actions.updatePageSize = paginationActions.updatePageSize
 

@@ -45,7 +45,7 @@ const GridData = props => {
               label={<span className="d-none d-sm-block ms-2">{trans(!hasSelection ? 'list_select_all':'list_deselect_all')}</span>}
               checked={hasSelection}
               onChange={() => {
-                if (hasSelection) {
+                if (!hasSelection) {
                   props.selection.toggleAll(props.data)
                 } else {
                   props.selection.toggleAll([])
