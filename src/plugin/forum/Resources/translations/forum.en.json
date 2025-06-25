@@ -29,5 +29,6 @@
     "subject": "Topic",
     "subjects": "Topics",
     "unstick": "Unpin",
-    "unflag": "Do not report again"
+    "unflag": "Do not report again",
+    "back_to_subjects": "Back to subject"
 }

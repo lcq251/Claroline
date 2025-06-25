@@ -42,9 +42,11 @@ class MessageController extends AbstractCrudController
     }
 
     #[Route(path: '/{id}/comment', name: 'create_comment', methods: ['POST'])]
-    public function createComment(#[MapEntity(mapping: ['id' => 'uuid'])]
-        Message $message, Request $request): JsonResponse
-    {
+    public function createComment(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Message $message,
+        Request $request
+    ): JsonResponse {
         $options = static::getOptions();
 
         $comment = new Message();

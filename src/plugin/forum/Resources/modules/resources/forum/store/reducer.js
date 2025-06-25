@@ -29,7 +29,7 @@ const reducer = combineReducers({
       [SUBJECT_LOAD]: (state, action) => action.subject
     }),
     messages: makeListReducer(`${selectors.STORE_NAME}.subjects.messages`, {
-      pageSize: 10,
+      pagination: {pageSize: -1},
       sortBy: {property: 'creationDate', direction : 1}
     }, {
       invalidated: makeReducer(false, {

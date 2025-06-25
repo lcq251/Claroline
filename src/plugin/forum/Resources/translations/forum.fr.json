@@ -33,5 +33,7 @@
     "close_subject_confirm": "Êtes-vous sûr(e) de vouloir fermer ce sujet ?",
     "close_subject_confirm_additional": "Les utilisateurs ne pourront plus poster de réponses pour ce sujet.",
     "open_subject_confirm": "Êtes-vous sûr(e) de vouloir ouvrir ce sujet ?",
-    "open_subject_confirm_additional": "Les utilisateurs pourront de nouveau poster des réponses pour ce sujet."
+    "open_subject_confirm_additional": "Les utilisateurs pourront de nouveau poster des réponses pour ce sujet.",
+    "back_to_subjects": "Retour aux sujets",
+    "subject_name": "Sujet: %name%"
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import classes from 'classnames'
 import get from 'lodash/get'
@@ -12,11 +12,12 @@ import {ButtonSticky} from '#/main/app/button'
 
 import {ResourceOverview, selectors as resourceSelectors} from '#/main/core/resource'
 
-import {selectors} from '#/plugin/forum/resources/forum/store'
+import {actions, selectors} from '#/plugin/forum/resources/forum/store'
 import {Subjects} from '#/plugin/forum/resources/forum/components/subjects'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 
 const ForumOverview = () => {
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const resourcePath = useSelector(resourceSelectors.path)
@@ -47,7 +48,10 @@ const ForumOverview = () => {
               displayed: hasPermission('post', resourceNode),
               modal: [MODAL_SUBJECT, {
                 forumId: forumId,
-                onSave: (subject) => history.push(`${resourcePath}/subjects/${subject.id}`)
+                onSave: (subject) => {
+                  dispatch(actions.invalidateSubjects())
+                  history.push(`${resourcePath}/subjects/${subject.id}`)
+                }
               }]
             }}
           />

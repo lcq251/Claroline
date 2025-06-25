@@ -19,9 +19,6 @@ const SubjectModal = (props) =>
     isNew={!props.subject}
     data={props.subject}
     saveLabel={trans(!props.subject ? 'add_subject' : 'save_subject', {}, 'actions')}
-    onSave={() => {
-
-    }}
     definition={[
       {
         title: trans('general'),

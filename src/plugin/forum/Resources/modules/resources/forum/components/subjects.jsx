@@ -41,7 +41,6 @@ const SubjectsList = (props) =>
       url: ['apiv2_forum_subject_delete'],
       displayed: (rows) => -1 !== rows.findIndex(row => canEdit(row, props.moderator, props.currentUser))
     }}
-    addAction={props.addAction}
     primaryAction={(subject) => ({
       type: LINK_BUTTON,
       target: `${props.path}/subjects/${subject.id}`,

@@ -33,7 +33,7 @@ const SubjectCard = (props) =>
         </Badge>
       </div>
     }
-    contentText={props.data.content}
+    contentText={get(props.data, 'content') || <em className="text-body-tertiary">{trans('no_description')}</em>}
   />
 
 export {

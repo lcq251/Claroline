@@ -13,6 +13,36 @@ import {route} from '#/main/community/user/routing'
 import {UserAvatar} from '#/main/app/user/components/avatar'
 import {displayUsername} from '#/main/community/utils'
 import {Datetime} from '#/main/app/components/date'
+import {ThumbnailSkeleton} from '#/main/app/components/thumbnail'
+import {TextSkeleton} from '#/main/app/components/placeholder'
+
+const ContentMessageSkeleton = ({className, position = 'left'}) => {
+  return (
+    <article className={classes('user-message-container', className, {
+      'user-message-left': 'left' === position,
+      'user-message-right': 'right' === position
+    })}>
+      <span className="user-message-sender">
+        <ThumbnailSkeleton
+          size="sm"
+          square={true}
+        />
+      </span>
+      <div className="user-message p-3" role="presentation">
+        <div className="user-message-meta fs-sm mb-3 d-flex flex-row gap-2 align-items-center" role="presentation">
+          <span className="fw-bold placeholder w-25" role="presentation" />
+        </div>
+
+        <TextSkeleton rows={3} />
+      </div>
+    </article>
+  )
+}
+
+ContentMessageSkeleton.propsTypes = {
+  className: T.string,
+  position: T.oneOf(['left', 'right'])
+}
 
 /**
  * Representation of a User message.
@@ -87,7 +117,7 @@ ContentMessage.propTypes = {
   date: T.string,
 
   /**
-   * The user who have sent the message.
+   * The user who has sent the message.
    *
    * @type {object}
    */
@@ -125,5 +155,6 @@ ContentMessage.defaultProps = {
 }
 
 export {
-  ContentMessage
+  ContentMessage,
+  ContentMessageSkeleton
 }

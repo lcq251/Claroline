@@ -8,7 +8,7 @@ import {Tags} from '#/main/app/components/tags'
 import {ContentPublicationSkeleton} from '#/main/app/content/components/publication'
 import {TextSkeleton} from '#/main/app/components/placeholder'
 
-const ContentSkeleton = ({meta}) =>
+const ContentSkeleton = ({meta, length = 3}) =>
   <>
     {meta &&
       <div className="mb-4" role="presentation">
@@ -16,13 +16,14 @@ const ContentSkeleton = ({meta}) =>
       </div>
     }
 
-    <TextSkeleton className="content-text" rows={4} />
-    <TextSkeleton className="content-text" rows={5} />
-    <TextSkeleton className="content-text" rows={3} />
+    {[4, 5, 3].slice(0, length).map((i) =>
+      <TextSkeleton key={i} className="content-text" rows={i} />
+    )}
   </>
 
 ContentSkeleton.propTypes = {
-  meta: T.bool
+  meta: T.bool,
+  length: T.number
 }
 
 const Content = (props) =>

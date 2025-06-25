@@ -30,6 +30,7 @@ actions.stopNotify = (forum, user) => (dispatch) => dispatch({
   }
 })
 
+actions.invalidateSubjects = () => listActions.invalidateData(selectors.STORE_NAME+'.subjects.list')
 actions.loadSubject = makeActionCreator(SUBJECT_LOAD, 'subject')
 actions.fetchSubject = (id) => (dispatch) => dispatch({
   [API_REQUEST]: {

@@ -1,25 +1,21 @@
-import React, {createElement} from 'react'
+import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import merge from 'lodash/merge'
 
 import {Action as ActionTypes} from '#/main/app/action/prop-types'
 import {User as UserTypes} from '#/main/community/prop-types'
-import {ContentHtml} from '#/main/app/content/components/html'
+import {Html} from '#/main/app/components/html'
 import {ContentMessage} from '#/main/app/content/components/message'
 
-const UserMessage = props =>
+const UserMessage = ({className, user, date, content, position = 'left', actions = []}) =>
   <ContentMessage
-    className={props.className}
-    user={props.user}
-    date={props.date}
-    position={props.position}
-    actions={props.actions}
+    className={className}
+    user={user}
+    date={date}
+    position={position}
+    actions={actions}
   >
-    {createElement(
-      props.allowHtml ? ContentHtml : 'div',
-      {className: 'user-message-content'},
-      props.content
-    )}
+    <Html>{content}</Html>
   </ContentMessage>
 
 UserMessage.propTypes = {
@@ -33,7 +29,7 @@ UserMessage.propTypes = {
   date: T.string,
 
   /**
-   * The user who have sent the message.
+   * The user who has sent the message.
    *
    * @type {object}
    */
@@ -77,12 +73,6 @@ UserMessage.propTypes = {
       displayed: T.bool.isRequired
     }))
   )
-}
-
-UserMessage.defaultProps = {
-  allowHtml: false,
-  position: 'left',
-  actions: []
 }
 
 export {

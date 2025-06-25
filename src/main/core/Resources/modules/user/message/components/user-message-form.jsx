@@ -1,6 +1,5 @@
 import React, {useState, useId} from 'react'
 import {PropTypes as T} from 'prop-types'
-import classes from 'classnames'
 
 import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
@@ -17,14 +16,14 @@ const UserMessageForm = (props) => {
 
   return (
     <ContentMessage
-      className={classes('user-message-form-container', props.className)}
+      className={props.className}
       user={props.user}
       date={props.date}
       position={props.position}
     >
       <DataInput
         id={inputId}
-        type={props.allowHtml ? 'html' : 'string'}
+        type="html"
         label={trans('message')}
         value={content}
         required={true}
@@ -37,7 +36,7 @@ const UserMessageForm = (props) => {
         }}
       />
 
-      <div className="d-flex align-items-center justify-content-end gap-1" role="presentation">
+      <div className="d-flex align-items-center justify-content-end gap-1 mt-3" role="presentation">
         {props.cancel &&
           <Button
             type={CALLBACK_BUTTON}
@@ -89,13 +88,6 @@ UserMessageForm.propTypes = {
   content: T.string,
 
   /**
-   * Allow (or not) HTML in message content.
-   *
-   * @type {bool}
-   */
-  allowHtml: T.bool,
-
-  /**
    * The position of the User avatar.
    *
    * @type {string}
@@ -111,7 +103,6 @@ UserMessageForm.defaultProps = {
   className: '',
   user: {},
   content: '',
-  allowHtml: false,
   position: 'left',
   submitLabel: trans('create', {}, 'actions')
 }

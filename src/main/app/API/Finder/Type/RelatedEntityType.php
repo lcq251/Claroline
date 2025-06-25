@@ -16,15 +16,25 @@ class RelatedEntityType extends AbstractType
         $resolver
             ->define('joinQuery')
             ->allowedTypes('callable');
+
+        $resolver
+            ->define('nullable')
+            ->allowedTypes('boolean')
+            ->default(false);
     }
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
     {
-        if (null !== $finder->getFilterValue()) {
+        if (null !== $finder->getFilterValue() || $options['nullable']) {
             if (isset($options['joinQuery'])) {
                 $options['joinQuery']($queryBuilder, $finder, $options);
             } else {
-                $queryBuilder->join($finder->getQueryPath(false), $finder->getAlias());
+                $queryBuilder->leftJoin($finder->getQueryPath(false), $finder->getAlias());
+            }
+
+            if (is_null($finder->getFilterValue())) {
+                $queryBuilder->andWhere("{$finder->getAlias()} IS NULL");
+                return;
             }
 
             if (is_array($finder->getFilterValue())) {
