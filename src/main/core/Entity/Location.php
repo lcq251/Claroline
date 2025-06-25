@@ -23,11 +23,12 @@ use Claroline\AppBundle\Entity\Meta\Description;
 use Claroline\CommunityBundle\Model\HasOrganizations;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Finder\LocationType;
+use Claroline\CoreBundle\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
 #[ORM\Table(name: 'claro__location')]
 #[CrudEntity(finderClass: LocationType::class)]
 class Location implements CrudEntityInterface
@@ -47,8 +48,8 @@ class Location implements CrudEntityInterface
     /**
      * @var Collection<int, Organization>
      */
-    #[ORM\JoinTable(name: 'claro__location_organization')]
     #[ORM\ManyToMany(targetEntity: Organization::class)]
+    #[ORM\JoinTable(name: 'claro__location_organization')]
     private Collection $organizations;
 
     public function __construct()

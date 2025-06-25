@@ -137,17 +137,15 @@ class WorkspaceRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByCodes(array $codes): array
+    public function findWithNoOrganization(): iterable
     {
-        $dql = '
-            SELECT w
-            FROM Claroline\\CoreBundle\\Entity\\Workspace\\Workspace w
-            WHERE w.code IN (:codes)
-        ';
-
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('codes', $codes);
-
-        return $query->getResult();
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT DISTINCT w
+                FROM Claroline\CoreBundle\Entity\Workspace\Workspace AS w
+                LEFT JOIN w.organizations AS o
+                WHERE o IS NULL
+            ')
+            ->toIterable();
     }
 }

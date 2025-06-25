@@ -57,7 +57,7 @@ class Group extends AbstractRoleSubject implements CrudEntityInterface
     protected Collection $roles;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Organization $organization = null;
 
     public function __construct()

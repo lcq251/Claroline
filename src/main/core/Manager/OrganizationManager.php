@@ -23,7 +23,7 @@ class OrganizationManager
     }
 
     /**
-     * Check if the user is manager of at least one of the organizations.
+     * Check if the user is a manager of at least one of the organizations.
      */
     public function isManager(User $user, iterable $organizations): bool
     {
@@ -40,7 +40,7 @@ class OrganizationManager
     }
 
     /**
-     * Check if the user is member of at least one of the organizations.
+     * Check if the user is a member of at least one of the organizations.
      */
     public function isMember(User $user, iterable $organizations): bool
     {
@@ -63,19 +63,14 @@ class OrganizationManager
             ->findOneBy(['default' => true]);
 
         if ($createIfEmpty && null === $defaultOrganization) {
-            $defaultOrganization = $this->createDefault(true);
+            $defaultOrganization = $this->createDefault();
         }
 
         return $defaultOrganization;
     }
 
-    private function createDefault(?bool $force = false): ?Organization
+    private function createDefault(): Organization
     {
-        $default = $this->getDefault();
-        if (!$force && $default) {
-            return $default;
-        }
-
         $organization = new Organization();
         $organization->setName('default');
         $organization->setCode('default');

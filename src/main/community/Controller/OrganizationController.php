@@ -12,6 +12,7 @@
 namespace Claroline\CommunityBundle\Controller;
 
 use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
@@ -108,5 +109,12 @@ class OrganizationController extends AbstractCrudController
 
         // show all to admins
         return [];
+    }
+
+    public static function getOptions(): array
+    {
+        return array_merge(parent::getOptions(), [
+            'delete' => [Options::FORCE_FLUSH],
+        ]);
     }
 }

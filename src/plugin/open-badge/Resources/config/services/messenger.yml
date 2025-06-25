@@ -12,3 +12,8 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\OpenBadgeBundle\Component\BadgeRule\RuleProvider'
             - '@Claroline\OpenBadgeBundle\Manager\AssertionManager'
+
+    Claroline\OpenBadgeBundle\Messenger\ReassignOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

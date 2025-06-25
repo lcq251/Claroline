@@ -26,6 +26,7 @@ use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\OpenBadgeBundle\Finder\BadgeType;
+use Claroline\OpenBadgeBundle\Repository\BadgeClassRepository;
 use Claroline\TemplateBundle\Model\HasTemplate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Represents an obtainable badge.
  */
 #[ORM\Table(name: 'claro__open_badge_badge_class')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BadgeClassRepository::class)]
 #[CrudEntity(finderClass: BadgeType::class)]
 class BadgeClass implements CrudEntityInterface
 {
@@ -68,6 +69,7 @@ class BadgeClass implements CrudEntityInterface
     private Collection $rules;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Organization $issuer = null;
 
     #[ORM\ManyToOne(targetEntity: Workspace::class)]

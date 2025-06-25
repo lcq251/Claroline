@@ -40,26 +40,6 @@ class GroupRepository extends EntityRepository
             ->getResult();
     }
 
-    /**
-     * @return Group[]
-     */
-    public function findByOrganizations(array $organizations = []): array
-    {
-        if (!empty($organizations)) {
-            return $this->getEntityManager()
-                ->createQuery('
-                    SELECT g
-                    FROM Claroline\CoreBundle\Entity\Group g
-                    JOIN g.organizations AS og
-                    WHERE og IN (:organizations)
-               ')
-                ->setParameter('organizations', $organizations)
-                ->getResult();
-        }
-
-        return $this->findAll();
-    }
-
     public function findByRole(Role $role): array
     {
         return $this->getEntityManager()
@@ -71,23 +51,5 @@ class GroupRepository extends EntityRepository
             ')
             ->setParameter('roleId', $role->getId())
             ->getResult();
-    }
-
-    /**
-     * Returns groups by their names.
-     *
-     * @return Group[]
-     */
-    public function findByNames(array $names): array
-    {
-        $dql = '
-            SELECT g FROM Claroline\CoreBundle\Entity\Group g
-            WHERE g.name IN (:names)
-        ';
-
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('names', $names);
-
-        return $query->getResult();
     }
 }

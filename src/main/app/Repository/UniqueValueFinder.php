@@ -2,15 +2,17 @@
 
 namespace Claroline\AppBundle\Repository;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Helper to search if a string value is used and will increment it till the value is not used anymore.
  * This is useful to generate unique names or codes.
  */
 trait UniqueValueFinder
 {
-    abstract protected function getEntityManager();
+    abstract protected function getEntityManager(): EntityManagerInterface;
 
-    abstract protected function getEntityName();
+    abstract protected function getEntityName(): string;
 
     /**
      * Generates a unique value from given one by iterating it.

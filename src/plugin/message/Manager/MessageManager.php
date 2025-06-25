@@ -62,7 +62,7 @@ class MessageManager
 
         if (count($receivers['groups']) > 0) {
             /** @var Group[] $groupReceivers */
-            $groupReceivers = $this->groupRepo->findByNames($receivers['groups']);
+            $groupReceivers = $this->groupRepo->findBy(['name' => $receivers['groups']]);
             foreach ($groupReceivers as $groupReceiver) {
                 $userReceivers = array_merge($userReceivers, $this->userRepo->findByGroup($groupReceiver));
             }
@@ -70,7 +70,7 @@ class MessageManager
 
         if (count($receivers['workspaces']) > 0) {
             /** @var Workspace[] $workspaceReceivers */
-            $workspaceReceivers = $this->workspaceRepo->findByCodes($receivers['workspaces']);
+            $workspaceReceivers = $this->workspaceRepo->findBy(['code' => $receivers['workspaces']]);
             if (!empty($workspaceReceivers)) {
                 $userReceivers = array_merge($userReceivers, $this->userRepo->findByWorkspaces($workspaceReceivers));
             }

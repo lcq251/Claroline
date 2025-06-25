@@ -40,6 +40,7 @@ const ImportEditor = (props) => {
         {
           name:'format',
           title: trans('format'),
+          displayed: false,
           render: () => (
             <ImportEditorFormat
               schema={get(props.explanation, entity+'.'+action, {})}

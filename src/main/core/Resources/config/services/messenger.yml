@@ -20,3 +20,13 @@ services:
         arguments:
             - '@event_dispatcher'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CoreBundle\Messenger\ReassignLocationOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CoreBundle\Messenger\ReassignWorkspaceOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

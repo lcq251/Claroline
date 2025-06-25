@@ -6,7 +6,17 @@ services:
             - '@Claroline\AppBundle\API\Crud'
 
     Claroline\CommunityBundle\Messenger\DisableInactiveUsersHandler:
-        tags: [messenger.message_handler]
+        tags: [ messenger.message_handler ]
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\UserManager'
+
+    Claroline\CommunityBundle\Messenger\ReassignGroupOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CommunityBundle\Messenger\ReassignUserOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

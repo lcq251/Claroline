@@ -87,8 +87,8 @@ class MessageSerializer
             $receivers = $message->getReceivers();
 
             $users = $this->userRepo->findByUsernames($receivers['users']);
-            $groups = $this->groupRepo->findByNames($receivers['groups']);
-            $workspaces = $this->workspaceRepo->findByCodes($receivers['workspaces']);
+            $groups = $this->groupRepo->findBy(['name' => $receivers['groups']]);
+            $workspaces = $this->workspaceRepo->findBy(['code' => $receivers['workspaces']]);
 
             $data['receivers'] = [
                 'users' => array_map(function (User $user) {

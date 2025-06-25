@@ -5,8 +5,6 @@ services:
     Claroline\CommunityBundle\Controller\ActivityController:
         arguments:
             - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\Tool\ToolManager'
             - '@Claroline\AppBundle\API\Crud'
 

@@ -137,6 +137,18 @@ class CourseRepository extends EntityRepository
         ];
     }
 
+    public function findWithNoOrganization(): iterable
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT DISTINCT c
+                FROM Claroline\CursusBundle\Entity\Course AS c
+                LEFT JOIN c.organizations AS o
+                WHERE o IS NULL
+            ')
+            ->toIterable();
+    }
+
     private function getRegistrationFieldStats(FieldFacet $field, Course $course, Session $session = null): array
     {
         $dql = '

@@ -1,0 +1,5 @@
+services:
+    Claroline\CursusBundle\Messenger\ReassignOrganizationHandler:
+        tags: [ messenger.message_handler ]
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

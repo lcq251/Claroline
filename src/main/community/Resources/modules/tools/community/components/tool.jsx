@@ -6,7 +6,7 @@ import {trans} from '#/main/app/intl'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Tool, constants as toolConstants} from '#/main/core/tool'
 
-import {CommunityDashboard} from '#/main/community/tools/community/dashboard/containers/main'
+import {CommunityDashboard} from '#/main/community/tools/community/dashboard/components/main'
 import {UserMain} from '#/main/community/tools/community/user/containers/main'
 import {GroupMain} from '#/main/community/tools/community/group/containers/main'
 import {RoleMain} from '#/main/community/tools/community/role/containers/main'

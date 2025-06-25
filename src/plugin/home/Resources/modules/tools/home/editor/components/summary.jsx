@@ -125,7 +125,7 @@ const HomeEditorSummary = (props) => {
 
       <Button
         type={MODAL_BUTTON}
-        className={classes('btn btn-primary w-100 mt-3', {
+        className={classes('btn btn-primary w-100', {
           'btn-wave': isEmpty(tabs)
         })}
         label={trans('add_tab', {}, 'home')}

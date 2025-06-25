@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityRepository;
 
 class EvidenceRepository extends EntityRepository
 {
-    public function findByUserAndBadge(User $user, BadgeClass $badge): array
+    public function findByUserAndBadge(User $user, BadgeClass $badge): iterable
     {
         return $this->createQueryBuilder('e')
             ->leftJoin('e.rule', 'r')
@@ -27,6 +27,6 @@ class EvidenceRepository extends EntityRepository
             ->setParameter('user', $user)
             ->setParameter('badge', $badge)
             ->getQuery()
-            ->getResult();
+            ->toIterable();
     }
 }

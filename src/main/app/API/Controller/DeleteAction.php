@@ -19,7 +19,7 @@ trait DeleteAction
 
         $this->getCrud()->deleteBulk(
             $this->decodeIdsString($request, static::getClass()),
-            $options['deleteBulk'] ?? []
+            $options['delete'] ?? []
         );
 
         return new JsonResponse(null, 204);

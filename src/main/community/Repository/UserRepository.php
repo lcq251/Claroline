@@ -259,4 +259,16 @@ class UserRepository extends EntityRepository implements UserProviderInterface, 
             ->getQuery()
             ->getResult();
     }
+
+    public function findWithNoOrganization(): iterable
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT DISTINCT u
+                FROM Claroline\CoreBundle\Entity\User AS u
+                LEFT JOIN u.userOrganizationReferences AS o
+                WHERE o IS NULL
+            ')
+            ->toIterable();
+    }
 }

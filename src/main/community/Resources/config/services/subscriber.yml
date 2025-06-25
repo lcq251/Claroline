@@ -24,7 +24,9 @@ services:
     Claroline\CommunityBundle\Subscriber\Crud\OrganizationSubscriber:
         arguments:
             - '@security.token_storage'
+            - '@messenger.default_bus'
             - '@Claroline\CoreBundle\Manager\FileManager'
+            - '@Claroline\CoreBundle\Manager\OrganizationManager'
 
     Claroline\CommunityBundle\Subscriber\Crud\RoleSubscriber:
         arguments:

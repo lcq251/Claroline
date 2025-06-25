@@ -12,7 +12,7 @@ use Claroline\OpenBadgeBundle\Messenger\Message\GrantRule;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
- * Creates an evidence when a user meet a Badge rule and checks if the user is granted the badge.
+ * Creates evidence when a user meets a Badge rule and checks if the user is granted the badge.
  */
 #[AsMessageHandler]
 class GrantRuleHandler

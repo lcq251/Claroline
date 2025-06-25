@@ -6,17 +6,23 @@ use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\AppBundle\Event\Crud\DeleteEvent;
 use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
+use Claroline\AuthenticationBundle\Messenger\Stamp\AuthenticationStamp;
 use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Manager\FileManager;
+use Claroline\CoreBundle\Manager\OrganizationManager;
+use Claroline\CoreBundle\Messenger\Message\ReassignOrganization;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class OrganizationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly FileManager $fileManager
+        private readonly MessageBusInterface $messageBus,
+        private readonly FileManager $fileManager,
+        private readonly OrganizationManager $organizationManager
     ) {
     }
 
@@ -97,5 +103,10 @@ final class OrganizationSubscriber implements EventSubscriberInterface
         if ($organization->getThumbnail()) {
             $this->fileManager->unlinkFile(Organization::class, $organization->getUuid(), $organization->getThumbnail());
         }
+
+        $this->messageBus->dispatch(
+            new ReassignOrganization($this->organizationManager->getDefault()),
+            [new AuthenticationStamp($this->tokenStorage->getToken()?->getUser()->getId())]
+        );
     }
 }
