@@ -45,7 +45,7 @@ class SubjectComponent extends Component {
   render() {
     return (
       <ResourcePage
-        title={trans('subject_name', {name: get(this.props.subject, 'title', trans('loading'))}, 'community')}
+        title={trans('subject_name', {name: get(this.props.subject, 'title', trans('loading'))}, 'forum')}
       >
         {!this.props.loaded &&
           <PageContent className="placeholder-glow">
