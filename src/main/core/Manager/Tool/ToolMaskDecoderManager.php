@@ -21,18 +21,6 @@ class ToolMaskDecoderManager
     public function __construct(
         private readonly ObjectManager $om
     ) {
-        try {
-            // loads all mask decoders only once
-            // they cannot be changed at the runtime for now and it will save some DB calls
-            $maskDecoders = $this->om->getRepository(ToolMaskDecoder::class)->findAll();
-            foreach ($maskDecoders as $maskDecoder) {
-                if (empty($this->maskDecoders[$maskDecoder->getTool()])) {
-                    $this->maskDecoders[$maskDecoder->getTool()] = [];
-                }
-                $this->maskDecoders[$maskDecoder->getTool()][] = $maskDecoder;
-            }
-        } catch (\Exception $e) {
-        }
     }
 
     /**
@@ -143,7 +131,7 @@ class ToolMaskDecoderManager
      */
     public function getDecoders(string $toolName): array
     {
-        return $this->maskDecoders[$toolName] ?? [];
+        return $this->om->getRepository(ToolMaskDecoder::class)->findBy(['tool' => $toolName]);
     }
 
     public function getDecoder(string $toolName, string $name): ?ToolMaskDecoder
