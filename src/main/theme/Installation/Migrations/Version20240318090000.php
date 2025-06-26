@@ -10,8 +10,8 @@ final class Version20240318090000 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('
-            INSERT INTO claro_ordered_tool (uuid, context_name, tool_name, entity_order)
-            VALUES ((SELECT UUID()), "administration", "appearance", 2)
+            INSERT INTO claro_ordered_tool (uuid, context_name, tool_name, entity_order, is_public)
+            VALUES ((SELECT UUID()), "administration", "appearance", 2, 0)
         ');
     }
 
