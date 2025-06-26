@@ -25,6 +25,13 @@ export default declareTool(BadgeTool, () => new CommandPalette('badges')
     }
   ])
 ).addPermissions({
+  follow: {
+    order: 5,
+    actions: [
+      'Attribuer des badges',
+      'Voir la liste des détenteurs des badges'
+    ]
+  },
   edit: {
     order: 10,
     actions: [
