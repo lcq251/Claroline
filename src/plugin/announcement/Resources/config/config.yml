@@ -3,7 +3,7 @@ plugin:
         - name: announcement
           icon: bullhorn
           tool_rights:
-            - create
+              - create
 
     data_sources:
         - name: announcements

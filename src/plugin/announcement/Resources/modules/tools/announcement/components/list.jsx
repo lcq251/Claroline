@@ -3,6 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import {Fade} from 'react-bootstrap'
 import classes from 'classnames'
+import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
@@ -115,6 +116,7 @@ Announce.propTypes = {
 const AnnouncementList = () => {
   const dispatch = useDispatch()
 
+  const contextData = useSelector(contextSelectors.data)
   const contextPath = useSelector(contextSelectors.path)
   const toolPath = useSelector(toolSelectors.path)
   const loaded = useSelector(toolSelectors.loaded)
@@ -139,6 +141,7 @@ const AnnouncementList = () => {
               displayed: hasPermission('edit', tool),
               modal: [MODAL_ANNOUNCEMENT_FORM, {
                 isNew: true,
+                announcement: {workspace: cloneDeep(contextData)},
                 onSave: (announcement) => {
                   dispatch(actions.addAnnounce(announcement))
                 }
@@ -186,6 +189,7 @@ const AnnouncementList = () => {
                 label: trans('add_announcement', {}, 'actions'),
                 modal: [MODAL_ANNOUNCEMENT_FORM, {
                   isNew: true,
+                  announcement: {workspace: cloneDeep(contextData)},
                   onSave: (announcement) => {
                     dispatch(actions.addAnnounce(announcement))
                   }

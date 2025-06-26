@@ -13,6 +13,7 @@ use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
 use Claroline\CoreBundle\API\Serializer\Workspace\WorkspaceSerializer;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\GenericDataEvent;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
@@ -74,10 +75,8 @@ class AnnouncementSerializer
         ];
     }
 
-    public function deserialize(array $data, Announcement $announce = null, array $options = []): Announcement
+    public function deserialize(array $data, Announcement $announce, array $options = []): Announcement
     {
-        $announce = $announce ?: new Announcement();
-
         if (!in_array(Options::REFRESH_UUID, $options)) {
             $this->sipe('id', 'setUuid', $data, $announce);
         } else {
@@ -88,6 +87,12 @@ class AnnouncementSerializer
 
         $announce->setTitle($data['title']);
         $announce->setContent($data['content']);
+
+        if (isset($data['workspace'])) {
+            /** @var Workspace $workspace */
+            $workspace = $this->om->getObject($data['workspace'], Workspace::class);
+            $announce->setWorkspace($workspace);
+        }
 
         if (isset($data['meta']) && !empty($data['meta']['creator'])) {
             /** @var User $creator */

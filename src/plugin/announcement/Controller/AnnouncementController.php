@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Manages announces of an announcement resource.
+ * Manages announcements of an announcement resource.
  */
 #[Route(path: '/announcement', options: ['expose' => true])]
 class AnnouncementController
@@ -71,8 +71,11 @@ class AnnouncementController
      * Updates an existing announcement.
      */
     #[Route(path: '/{id}', name: 'claro_announcement_update', methods: ['PUT'])]
-    public function updateAction(#[MapEntity(mapping: ['id' => 'uuid'])] Announcement $announcement, Request $request): JsonResponse
-    {
+    public function updateAction(
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Announcement $announcement,
+        Request $request
+    ): JsonResponse {
         $this->crud->update($announcement, $this->decodeRequest($request), [Options::PERSIST_TAG]);
 
         return new JsonResponse(
