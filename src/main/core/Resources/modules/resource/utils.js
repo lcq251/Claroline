@@ -1,9 +1,8 @@
+import get from 'lodash/get'
+import uniq from 'lodash/uniq'
+
 import {param} from '#/main/app/config'
 import {getActions as getPluginsActions, getApp, getApps} from '#/main/app/plugins'
-
-function getTypes() {
-  return param('resources.types')
-}
 
 function getResources() {
   return getApps('resources')
@@ -11,6 +10,10 @@ function getResources() {
 
 function getResource(name) {
   return getApp('resources', name)()
+}
+
+function getTypes() {
+  return param('resources.types')
 }
 
 /**
@@ -49,10 +52,21 @@ function supportDownload(resourceNode) {
  * @return {Promise.<Array>}
  */
 function getActions(resourceNodes, nodesRefresher, path, currentUser = null, withDefault = false) {
-  return Promise.all([
-    getPluginsActions('resource', resourceNodes, nodesRefresher, path, currentUser, withDefault),
-    // getPluginsActions(contextName, resourceNodes, nodesRefresher, path, currentUser, withDefault)
-  ]).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
+  const actions = [
+    getPluginsActions('resource', resourceNodes, nodesRefresher, path, currentUser, withDefault)
+  ]
+  if (1 === resourceNodes.length) {
+    // add custom actions of the type
+    actions.push(getPluginsActions(get(resourceNodes[0], 'meta.type'), resourceNodes, nodesRefresher, path, currentUser, withDefault))
+  } else {
+    // check if all the selected are of the same type to get their custom actions
+    const types = uniq(resourceNodes.map(resourceNode => get(resourceNode, 'meta.type')))
+    if (1 === types.length && types[0]) {
+      actions.push(getPluginsActions(types[0], resourceNodes, nodesRefresher, path, currentUser, withDefault))
+    }
+  }
+
+  return Promise.all(actions).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
 }
 
 /**

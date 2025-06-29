@@ -22,6 +22,8 @@ import {UserAvatar} from '#/main/app/user/components/avatar'
 import {UserGroups} from '#/main/community/user/components/groups'
 import {UserAbout} from '#/main/community/user/components/about'
 import {UserActivity} from '#/main/community/user/components/activity'
+import {Html} from '#/main/app/components/html'
+import {TextSkeleton} from '#/main/app/components/placeholder'
 
 const UserProfile = (props) => {
   const [profilePages, setProfilePages] = useState([])
@@ -37,8 +39,11 @@ const UserProfile = (props) => {
           <PageToolbarSkeleton toolbar="edit send-message more" />
           <PageHeadingSkeleton
             icon={true}
-            description={true}
           />
+
+          <PageSection className="mb-5">
+            <TextSkeleton />
+          </PageSection>
         </PageContent>
       }
 
@@ -53,10 +58,13 @@ const UserProfile = (props) => {
               <UserAvatar user={props.user} size="lg" border={true} />
             }
             title={get(props.user, 'name')}
-            description={get(props.user, 'meta.description')}
           />
 
           <PageSection className="mb-5">
+            {get(props.user, 'meta.description') &&
+              <Html className="content-text mb-4">{get(props.user, 'meta.description')}</Html>
+            }
+
             <DetailsData
               data={props.user}
               definition={[

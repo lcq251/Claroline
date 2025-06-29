@@ -86,7 +86,7 @@ actions.fromFile = (file) => (dispatch) => {
         method: 'POST',
         body: formData,
         headers: new Headers({
-          //no Content type for automatic detection of boundaries.
+          // no Content type for automatic detection of boundaries.
           'X-Requested-With': 'XMLHttpRequest'
         })
       }
@@ -97,7 +97,6 @@ actions.fromFile = (file) => (dispatch) => {
 actions.fromUrl = (url) => (dispatch) => dispatch({
   [API_REQUEST]: {
     url: ['claro_resource_check_url'],
-    type: 'upload',
     request: {
       method: 'POST',
       body: JSON.stringify([url])

@@ -37,13 +37,14 @@ const CreationUpload = (props) => {
                   autoUpload: false
                 },
                 onChange: (value) => {
-                  // go to next step
+                  // go to the next step
                   props.fromFile(value[0]).then((response) => {
                     props.startCreation(
                       get(response, 'meta.type'),
                       merge({meta: {published: true}}, response),
                       omit(response, 'name', 'meta')
                     )
+                    props.changeStep('info')
                   })
                 }
               }

@@ -18,12 +18,9 @@ use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\ResourceProvider;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
-use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceRights;
-use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
-use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
 use Claroline\CoreBundle\Event\Resource\UpdateResourceEvent;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Manager\Resource\ResourceRestrictionsManager;
@@ -270,6 +267,35 @@ class ResourceController
         return new JsonResponse(null, 404);
     }
 
+    /**
+     * Upload a collection of files and create the correct ressource types for it.
+     */
+    #[Route(path: '/upload/{parentId}', name: 'claro_resource_upload', methods: ['POST'])]
+    public function uploadAction(
+        #[MapEntity(mapping: ['parentId' => 'uuid'])]
+        ResourceNode $parent,
+        Request $request
+    ): JsonResponse {
+        // no need to secure endpoint the manager will do it for us.
+
+        $newFiles = [];
+        $uploadedFiles = $request->files->all();
+        foreach ($uploadedFiles as $uploadedFile) {
+            try {
+                $fileData = $this->resourceProvider->fromFile($uploadedFile);
+                if (!empty($fileData)) {
+                    $newFiles[] = $this->manager->createResource($parent, ['resourceNode' => $fileData, 'resource' => $fileData]);
+                }
+            } catch (\Exception $e) {
+                // do not break the whole process if one ressource fails
+            }
+        }
+
+        return new JsonResponse(array_map(function (AbstractResource $resource) {
+            return $this->serializer->serialize($resource->getResourceNode());
+        }, $newFiles));
+    }
+
     #[Route(path: '/copy/{destinationId}', name: 'claro_resource_copy', methods: ['POST'])]
     public function copyAction(
         #[MapEntity(mapping: ['destinationId' => 'uuid'])]
@@ -330,87 +356,14 @@ class ResourceController
         ResourceNode $parent,
         Request $request
     ): JsonResponse {
+        // no need to secure endpoint the manager will do it for us.
+
         $data = $this->decodeRequest($request);
-        $nodeData = $data['resourceNode'];
-        $resourceData = !empty($data['resource']) ? $data['resource'] : [];
-
-        // checks if the current user can add
-        $collection = new ResourceCollection([$parent], ['type' => $nodeData['meta']['type']]);
-        $this->checkPermission('CREATE', $collection, [], true);
-
-        $this->om->startFlushSuite();
-
-        // initialize resource node Entity
-        try {
-            $resourceNode = new ResourceNode();
-            $resourceNode->setParent($parent);
-            $resourceNode->setWorkspace($parent->getWorkspace());
-
-            $this->crud->create($resourceNode, $nodeData, [Options::NO_RIGHTS, Options::PERSIST_TAG]);
-        } catch (InvalidDataException $e) {
-            // for resource creation we submit the resourceNode and resource data at once
-            // we need to update the errors path for correct rendering in form
-            $errors = array_map(function (array $error) {
-                return [
-                    'path' => 'resourceNode/'.ltrim($error['path'], '/'),
-                    'message' => $error['message'],
-                ];
-            }, $e->getErrors());
-
-            throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
-        }
-
-        // initialize custom resource Entity
-        $resourceClass = $resourceNode->getResourceType()->getClass();
-
-        try {
-            /** @var AbstractResource $resource */
-            $resource = new $resourceClass();
-            $resource->setResourceNode($resourceNode);
-
-            $this->crud->create($resource, $resourceData, [Options::PERSIST_TAG]);
-        } catch (InvalidDataException $e) {
-            // for resource creation we submit the resourceNode and resource data at once
-            // we need to update the errors path for correct rendering in form
-            $errors = array_map(function (array $error) {
-                return [
-                    'path' => 'resource/'.ltrim($error['path'], '/'),
-                    'message' => $error['message'],
-                ];
-            }, $e->getErrors());
-
-            throw new InvalidDataException(sprintf('%s is not valid', $resourceClass), $errors);
-        }
-
-        $this->om->endFlushSuite();
-
-        $createResource = new CreateResourceEvent($resource, [
-            'resourceNode' => $nodeData,
-            'resource' => $resourceData,
-        ]);
-        $this->eventDispatcher->dispatch($createResource, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
-
-        // initialize resource rights
-        if (!empty($nodeData['rights'])) {
-            foreach ($nodeData['rights'] as $rights) {
-                /** @var Role $role */
-                $role = $this->om->getRepository(Role::class)->findOneBy(['name' => $rights['name']]);
-
-                $creation = [];
-                if (!empty($rights['permissions']['create']) && $resource instanceof Directory) {
-                    // only forward creation rights to resource which can handle it (only directories atm)
-                    $creation = $rights['permissions']['create'];
-                }
-                $this->rightsManager->update($rights['permissions'], $role, $resourceNode, false, $creation);
-            }
-        } else {
-            // copy parent rights on the new resource
-            $this->rightsManager->copy($parent, $resourceNode);
-        }
+        $newResource = $this->manager->createResource($parent, $data);
 
         return new JsonResponse([
-            'resourceNode' => $this->serializer->serialize($resourceNode),
-            'resource' => $this->serializer->serialize($resource),
+            'resourceNode' => $this->serializer->serialize($newResource->getResourceNode()),
+            'resource' => $this->serializer->serialize($newResource),
         ], 201);
     }
 

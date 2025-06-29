@@ -42,10 +42,6 @@ const reducer = combineReducers({
     [makeInstanceAction(RESOURCE_LOAD, 'directory')]: (state, action) => action.resourceData.resource
   }),
 
-  storageLock: makeReducer(false, {
-    [makeInstanceAction(RESOURCE_LOAD, 'directory')]: (state, action) => action.resourceData.storageLock || false
-  }),
-
   /**
    * The list of available directories.
    *

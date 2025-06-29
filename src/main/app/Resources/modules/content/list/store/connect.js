@@ -229,7 +229,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     props.filters = {
       mode: ownProps.searchMode,
       currentText: stateProps.searchText,
-      current: stateProps.filters,
+      current: stateProps.filters || [],
       updateText: dispatchProps.updateText,
       onSubmit: () => dispatchProps.invalidateData(),
       addFilter: asyncDecorator(dispatchProps.addFilter),

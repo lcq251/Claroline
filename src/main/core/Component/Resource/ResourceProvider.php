@@ -68,6 +68,7 @@ class ResourceProvider extends AbstractComponentProvider
 
     public function fromFile(UploadedFile $file): ?array
     {
+        // find the correct resource handler for the submitted file
         $fileHandler = null;
         foreach ($this->getRegisteredComponents() as $resourceHandler) {
             if ($resourceHandler instanceof FileAdapterInterface) {

@@ -16,7 +16,7 @@ const UserCard = props =>
     meta={
       <UserStatus user={props.data} variant="badge" />
     }
-    contentText={get(props.data, 'meta.description')}
+    // contentText={get(props.data, 'meta.description')}
     asIcon={true}
     {...props}
   />

@@ -5,7 +5,6 @@ namespace Claroline\AppBundle\Manager;
 use Claroline\AppBundle\Event\Client\ConfigureEvent;
 use Claroline\AppBundle\Event\Client\InjectJavascriptEvent;
 use Claroline\AppBundle\Event\Client\InjectStylesheetEvent;
-use Claroline\AppBundle\Event\Client\UserPreferencesEvent;
 use Claroline\AppBundle\Event\ClientEvents;
 use Claroline\CoreBundle\API\Serializer\Platform\ClientSerializer;
 use Claroline\CoreBundle\Entity\User;

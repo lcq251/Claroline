@@ -31,12 +31,6 @@ registry.add('ClarolineCommunityBundle', {
    * Provides actions for base Claroline objects.
    */
   actions: {
-    workspace: {
-      //'register': () => { return import(/* webpackChunkName: "community-action-workspace-register" */ '#/main/community/actions/workspace/register') },
-      //'register-self'  : () => { return import(/* webpackChunkName: "community-action-workspace-register-self" */   '#/main/community/actions/workspace/register-self') },
-      //'unregister-self': () => { return import(/* webpackChunkName: "community-action-workspace-unregister-self" */ '#/main/community/actions/workspace/unregister-self') }
-    },
-
     user: {
       'open'      : () => { return import(/* webpackChunkName: "community-action-user-open" */    '#/main/community/actions/user/open') },
       'edit'      : () => { return import(/* webpackChunkName: "community-action-user-edit" */    '#/main/community/actions/user/edit') },

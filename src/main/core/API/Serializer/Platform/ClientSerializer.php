@@ -51,11 +51,9 @@ class ClientSerializer
             'community' => $this->config->getParameter('community'),
             'serverUrl' => $this->platformManager->getUrl(),
             'locale' => [
-                // 'default' => $this->localeManager->getDefault(),
                 'current' => $this->localeManager->getUserLocale($request),
                 'available' => $this->localeManager->getAvailableLocales(),
             ],
-            // 'restrictions' => $this->config->getParameter('restrictions'),
             'richTextScript' => $this->config->getParameter('rich_text_script'),
             'resources' => [
                 'types' => array_map(function (ResourceType $resourceType) {

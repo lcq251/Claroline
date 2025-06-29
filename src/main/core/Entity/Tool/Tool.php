@@ -16,7 +16,6 @@ use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Table(name: 'claro_tools')]
 #[ORM\UniqueConstraint(name: 'tool_plugin_unique', columns: ['name', 'plugin_id'])]
 #[ORM\Entity]

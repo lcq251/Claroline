@@ -20,7 +20,7 @@ const TreeItem = ({
       <div className="d-flex flex-row flex-nowrap align-items-center gap-1" role="presentation">
         {!isEmpty(item.children) ?
           <Button
-            className="btn btn-text-body flex-shrink-0 px-1 py-1 focus-ring"
+            className="btn btn-text-body flex-shrink-0 px-1 py-1 focus-ring border-0"
             type={CALLBACK_BUTTON}
             icon={classes({
               'fa fa-fw fa-chevron-right': !expanded,

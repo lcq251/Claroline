@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\DropZoneBundle\Listener\Resource;
+namespace Claroline\DropZoneBundle\Component\Resource;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
@@ -21,7 +21,7 @@ use Claroline\DropZoneBundle\Manager\DropzoneManager;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class DropzoneListener extends ResourceComponent implements EvaluatedResourceInterface
+class DropzoneResource extends ResourceComponent implements EvaluatedResourceInterface
 {
     public function __construct(
         private readonly string $filesDir,

@@ -105,9 +105,12 @@ class RegistrationController
     }
 
     #[Route(path: '/{id}/users/unregister', name: 'apiv2_workspace_unregister_users', methods: ['DELETE'])]
-    public function unregisterUsersAction(Request $request, #[MapEntity(mapping: ['id' => 'uuid'])]
-        Workspace $workspace): JsonResponse
-    {
+    public function unregisterUsersAction(Request $request,
+        #[MapEntity(mapping: ['id' => 'uuid'])]
+        Workspace $workspace
+    ): JsonResponse {
+        // FIXME : ids dans body
+
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
 

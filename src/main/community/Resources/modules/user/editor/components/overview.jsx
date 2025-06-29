@@ -68,7 +68,7 @@ const UserEditorOverview = () => {
               label: trans('Rendre mon profil public'),
               help: [
                 trans('Lorsque votre profil est privé, seuls les gestionnaires peuvent consulter les informations.', {}, 'community'),
-                trans('Lorsque votre profil est public, tous les membres de la plateforme peuvent le consulter (à l\'esception des informations marquées "confidentielles").', {}, 'community'),
+                trans('Lorsque votre profil est public, tous les membres de la plateforme peuvent le consulter (à l\'exception des informations marquées "confidentielles").', {}, 'community'),
                 trans('Tous les membres de la plateforme peuvent voir certaines informations, comme votre nom d\'utilisateur et votre photo de profil.')
               ]
             }*/

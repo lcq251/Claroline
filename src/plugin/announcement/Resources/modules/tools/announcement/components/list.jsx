@@ -156,9 +156,9 @@ const AnnouncementList = () => {
           />
         }
 
-        <PageSection size="xl">
+        <PageSection size="xl" className="d-flex flex-fill">
           {!loaded &&
-            <ul className="list-unstyled placeholder-glow">
+            <ul className="list-unstyled placeholder-glow flex-fill">
               <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />
               <Announce key={2} path={toolPath} announcement={{}} preview={!listFullContent} />
               <Announce key={3} path={toolPath} announcement={{}} preview={!listFullContent} />
@@ -168,7 +168,7 @@ const AnnouncementList = () => {
           }
 
           {(loaded && 0 !== posts.length) &&
-            <ul className="list-unstyled">
+            <ul className="list-unstyled flex-fill">
               {posts.map((post, index) =>
                 <Announce
                   key={index}

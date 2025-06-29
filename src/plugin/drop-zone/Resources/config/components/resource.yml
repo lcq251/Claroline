@@ -1,5 +1,5 @@
 services:
-    Claroline\DropZoneBundle\Listener\Resource\DropzoneListener:
+    Claroline\DropZoneBundle\Component\Resource\DropzoneResource:
         tags: ['claroline.component.resource', 'kernel.event_subscriber']
         arguments:
             - '%claroline.param.files_directory%'

@@ -426,8 +426,6 @@
     "show_all": "Alles weergeven",
     "hide_all": "Alles verbergen",
     "status": "Status",
-    "storage_limit_exceeded": "Uw opslagruimte (%storageLeft%) in uw workspace is overschreden. Uw bestandsgrootte is %fileSize%.",
-    "storage_limit_reached_resources": "Resourcecreatie is uitgeschakeld omdat de opslaglimiet is bereikt.",
     "storage_type": "Opslagtype",
     "storage_used": "Gebruikte opslag",
     "street": "Straat",

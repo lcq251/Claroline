@@ -27,11 +27,6 @@ const directory = (dirs, directoryId) => {
   return null
 }
 
-const storageLock = createSelector(
-  [store],
-  (store) => store.storageLock
-)
-
 const listConfiguration = createSelector(
   [resource],
   (resource) => resource.list || {}
@@ -44,6 +39,5 @@ export const selectors = {
   resource,
   directories,
   directory,
-  storageLock,
   listConfiguration
 }

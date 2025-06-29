@@ -13,6 +13,7 @@ import {CreationStart} from '#/main/core/resource/modals/creation/components/sta
 import {CreationType} from '#/main/core/resource/modals/creation/components/type'
 import {CreationUpload} from '#/main/core/resource/modals/creation/components/upload'
 import {CreationUrl} from '#/main/core/resource/modals/creation/components/url'
+import {CreationAdapter} from '#/main/core/resource/modals/creation/components/adapter'
 
 const ResourceCreationModal = (props) => {
   const [currentStep, setCurrentStep] = useState('start')
@@ -24,9 +25,7 @@ const ResourceCreationModal = (props) => {
         <CreationStart
           contextId={get(props.parent, 'workspace.id', null)}
           changeStep={setCurrentStep}
-          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData).then(() => {
-            setCurrentStep('info')
-          })}
+          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData)}
         />
       )
       break
@@ -36,21 +35,25 @@ const ResourceCreationModal = (props) => {
         <CreationType
           types={props.parent.permissions.create}
           changeStep={setCurrentStep}
-          startCreation={(type, resourceData) => props.startCreation(props.parent, type, resourceData).then(() => {
-            setCurrentStep('info')
-          })}
+          startCreation={(type, resourceData) => props.startCreation(props.parent, type, resourceData)}
         />
       )
       break
 
-    case 'upload':
+    case 'adapter':
+      StepComponent = (
+        <CreationAdapter
+          changeStep={setCurrentStep}
+        />
+      )
+      break
+
+    case 'file':
       StepComponent = (
         <CreationUpload
-          changeStep={setCurrentStep}
           fromFile={props.fromFile}
-          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData).then(() => {
-            setCurrentStep('info')
-          })}
+          changeStep={setCurrentStep}
+          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData)}
         />
       )
       break
@@ -58,11 +61,9 @@ const ResourceCreationModal = (props) => {
     case 'url':
       StepComponent = (
         <CreationUrl
-          changeStep={setCurrentStep}
           fromUrl={props.fromUrl}
-          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData).then(() => {
-            setCurrentStep('info')
-          })}
+          changeStep={setCurrentStep}
+          startCreation={(type, nodeData, resourceData) => props.startCreation(props.parent, type, nodeData, resourceData)}
         />
       )
       break

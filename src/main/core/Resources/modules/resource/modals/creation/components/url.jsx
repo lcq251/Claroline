@@ -63,6 +63,7 @@ const CreationUrl = (props) => {
                 merge({meta: {published: true}}, response),
                 omit(response, 'name', 'meta')
               )
+              props.changeStep('info')
             })
           }}
         />

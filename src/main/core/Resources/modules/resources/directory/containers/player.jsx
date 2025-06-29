@@ -5,7 +5,7 @@ import {actions as listActions} from '#/main/app/content/list/store'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
 import {DirectoryPlayer as DirectoryPlayerComponent} from '#/main/core/resources/directory/components/player'
-import {selectors} from '#/main/core/resources/directory/store'
+import {actions, selectors} from '#/main/core/resources/directory/store'
 
 const DirectoryPlayer = connect(
   (state) => ({
@@ -15,10 +15,12 @@ const DirectoryPlayer = connect(
     currentNode: resourceSelectors.resourceNode(state),
     listName: selectors.LIST_NAME,
     listConfiguration: selectors.listConfiguration(state),
-    storageLock: selectors.storageLock(state),
     isRoot: resourceSelectors.isRoot(state)
   }),
   (dispatch) => ({
+    uploadFiles(parent, files) {
+      return dispatch(actions.uploadFiles(parent, files))
+    },
     updateNodes() {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
     },

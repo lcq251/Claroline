@@ -21,7 +21,7 @@ const PlayerSummary = (props) =>
     {props.showOverview &&
       <Button
         type={LINK_BUTTON}
-        icon="fa fa-fw fa-home fs-sm"
+        icon="fa fa-fw fa-home fs-sm m-1 me-2"
         className="btn btn-text-body mx-n3 focus-ring text-start py-2 d-flex flex-row align-items-center"
         label={trans('resource_overview', {}, 'resource')}
         target={props.path}

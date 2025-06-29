@@ -17,13 +17,14 @@ use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\RoleRepository;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
+use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
-use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
+use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
 use Claroline\CoreBundle\Event\Resource\DownloadResourceEvent;
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
 use Claroline\CoreBundle\Event\Resource\LoadResourceEvent;
@@ -31,11 +32,14 @@ use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
 use Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository;
+use Claroline\CoreBundle\Security\Collection\ResourceCollection;
+use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceManager
 {
@@ -58,6 +62,90 @@ class ResourceManager
         $this->roleRepo = $om->getRepository(Role::class);
     }
 
+    public function createResource(ResourceNode $parent, array $data): AbstractResource
+    {
+        $nodeData = $data['resourceNode'];
+        $resourceData = !empty($data['resource']) ? $data['resource'] : [];
+
+        // checks if the current user can add
+        $collection = new ResourceCollection([$parent], ['type' => $nodeData['meta']['type']]);
+        if (!$this->authorization->isGranted('CREATE', $collection)) {
+            throw new AccessDeniedException('Cannot create resource.');
+        }
+
+        $this->om->startFlushSuite();
+
+        // initialize resource node Entity
+        try {
+            $resourceNode = new ResourceNode();
+            $resourceNode->setParent($parent);
+            $resourceNode->setWorkspace($parent->getWorkspace());
+
+            $this->crud->create($resourceNode, $nodeData, [Options::NO_RIGHTS, Options::PERSIST_TAG]);
+        } catch (InvalidDataException $e) {
+            // for resource creation, we submit the resourceNode and resource data at once
+            // we need to update the errors' path for correct rendering in form
+            $errors = array_map(function (array $error) {
+                return [
+                    'path' => 'resourceNode/'.ltrim($error['path'], '/'),
+                    'message' => $error['message'],
+                ];
+            }, $e->getErrors());
+
+            throw new InvalidDataException(sprintf('%s is not valid', ResourceNode::class), $errors);
+        }
+
+        // initialize custom resource Entity
+        $resourceClass = $resourceNode->getResourceType()->getClass();
+
+        try {
+            /** @var AbstractResource $resource */
+            $resource = new $resourceClass();
+            $resource->setResourceNode($resourceNode);
+
+            $this->crud->create($resource, $resourceData, [Options::PERSIST_TAG]);
+        } catch (InvalidDataException $e) {
+            // for resource creation, we submit the resourceNode and resource data at once
+            // we need to update the errors' path for correct rendering in form
+            $errors = array_map(function (array $error) {
+                return [
+                    'path' => 'resource/'.ltrim($error['path'], '/'),
+                    'message' => $error['message'],
+                ];
+            }, $e->getErrors());
+
+            throw new InvalidDataException(sprintf('%s is not valid', $resourceClass), $errors);
+        }
+
+        $this->om->endFlushSuite();
+
+        $createResource = new CreateResourceEvent($resource, [
+            'resourceNode' => $nodeData,
+            'resource' => $resourceData,
+        ]);
+        $this->eventDispatcher->dispatch($createResource, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
+
+        // initialize resource rights
+        if (!empty($nodeData['rights'])) {
+            foreach ($nodeData['rights'] as $rights) {
+                /** @var Role $role */
+                $role = $this->om->getRepository(Role::class)->findOneBy(['name' => $rights['name']]);
+
+                $creation = [];
+                if (!empty($rights['permissions']['create']) && $resource instanceof Directory) {
+                    // only forward creation rights to resource which can handle it (only directories atm)
+                    $creation = $rights['permissions']['create'];
+                }
+                $this->rightsManager->update($rights['permissions'], $role, $resourceNode, false, $creation);
+            }
+        } else {
+            // copy parent rights on the new resource
+            $this->rightsManager->copy($parent, $resourceNode);
+        }
+
+        return $resource;
+    }
+
     /**
      * Creates a resource.
      *
@@ -65,7 +153,7 @@ class ResourceManager
      * array('ROLE_WS_XXX' => array('open' => true, 'edit' => false, ...
      * 'create' => array('directory', ...), 'role' => $entity))
      *
-     * @deprecated use directory listener: onAdd instead ? I don't know. This is weird.
+     * @deprecated only used by teams
      */
     public function create(
         AbstractResource $resource,
@@ -292,14 +380,6 @@ class ResourceManager
     public function getAllResourceTypes(): array
     {
         return $this->resourceTypeRepo->findAll();
-    }
-
-    public function getById($id): ?ResourceNode
-    {
-        /** @var ResourceNode $resourceNode */
-        $resourceNode = $this->resourceNodeRepo->findOneBy(['id' => $id]);
-
-        return $resourceNode;
     }
 
     /**

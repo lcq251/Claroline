@@ -18,13 +18,11 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class ClarolineLinkExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $locator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new YamlFileLoader($container, $locator);
         $loader->load('services.yml');
+        $loader->load('components.yml');
     }
 }

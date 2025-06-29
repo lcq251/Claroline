@@ -42,7 +42,7 @@ const CreationStart = props =>
           description: trans('Déposez un fichier pour l\'ajouter à  votre espace. Le type de ressource créé dépend du fichier déposé.'),
           action: {
             type: CALLBACK_BUTTON,
-            callback: () => props.changeStep('upload')
+            callback: () => props.changeStep('file')
           },
           group: 'A partir d\'un contenu existant'
         }, {

@@ -43,3 +43,23 @@ actions.toggleDirectoryOpen = (directoryId, opened) => (dispatch, getState) => {
 
   dispatch(actions.setDirectoryOpen(directoryId, opened))
 }
+
+actions.uploadFiles = (parent, files) => {
+  const formData = new FormData()
+  files.forEach((file, index) => formData.append(index, file))
+
+  return ({
+    [API_REQUEST]: {
+      url: ['claro_resource_upload', {parentId: parent.id}],
+      type: 'upload',
+      request: {
+        method: 'POST',
+        body: formData,
+        headers: new Headers({
+          //no Content type for automatic detection of boundaries.
+          'X-Requested-With': 'XMLHttpRequest'
+        })
+      }
+    }
+  })
+}

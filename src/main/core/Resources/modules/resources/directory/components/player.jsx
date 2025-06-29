@@ -7,7 +7,6 @@ import {trans} from '#/main/app/intl/translation'
 import {makeAbsolute} from '#/main/app/action/utils'
 import {ListSource} from '#/main/app/content/list/containers/source'
 import {ListParameters as ListParametersTypes} from '#/main/app/content/list/parameters/prop-types'
-import {Alert} from '#/main/app/components/alert'
 
 import resourcesSource from '#/main/core/data/sources/resources'
 import {ResourceNode as ResourceNodeTypes} from '#/main/core/resource/prop-types'
@@ -54,14 +53,10 @@ const DirectoryPlayer = (props) => {
         <FileDrop
           className="flex-fill"
           size="lg"
-          disabled={props.storageLock || !(get(props.currentNode, 'permissions.create') || []).includes('file')}
-          onDrop={(files) => props.createFiles(props.currentNode, files).then(props.updateNodes)}
+          disabled={!(get(props.currentNode, 'permissions.create') || []).includes('file')}
+          onDrop={(files) => props.uploadFiles(props.currentNode, files).then(props.updateNodes)}
           help={trans('file_drop_help', {}, 'resource')}
         >
-          {props.storageLock &&
-            <Alert type="warning" className="mt-3">{trans('storage_limit_reached_resources')}</Alert>
-          }
-
           <ListSource
             className="mb-5"
             flush={true}
@@ -90,7 +85,6 @@ const DirectoryPlayer = (props) => {
                 update: props.updateNodes,
                 delete: props.deleteNodes
               }, props.path, props.currentUser).then((actions) => actions
-                .filter(action => !props.storageLock || 'copy' !== action.name)
                 .map(action => transformAction(action, resourceNodes, props.embedded)))
             })}
             parameters={props.listConfiguration}
@@ -130,8 +124,8 @@ DirectoryPlayer.propTypes = {
     ListParametersTypes.propTypes
   ),
   isRoot: T.bool,
-  storageLock: T.bool.isRequired,
 
+  uploadFiles: T.func.isRequired,
   updateNodes: T.func.isRequired,
   deleteNodes: T.func.isRequired
 }

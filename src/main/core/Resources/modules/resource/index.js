@@ -13,10 +13,9 @@ import {selectors} from '#/main/core/resource/store'
  * NB1. Resource MUST be registered in the `plugin.js` file of its plugin.
  * NB2. Resource component tree MUST start with the `Resource` component
  */
-function declareResource(ResourceComponent, additional) {
+function declareResource(ResourceComponent) {
   return {
     component: ResourceComponent,
-    ...additional,
     permissions: {
       open: {
         order: 0,
