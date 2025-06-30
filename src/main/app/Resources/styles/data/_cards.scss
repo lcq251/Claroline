@@ -8,11 +8,11 @@
 @mixin data-card-vertical-variant() {
     flex-direction: column;
 
-    .thumbnail {
+    > .thumbnail {
         @include border-radius($data-card-inner-border-radius $data-card-inner-border-radius 0 0);
     }
 
-    .thumbnail-icon {
+    > .thumbnail-icon {
         margin-top: $data-card-spacer-x;
         margin-right: auto;
         margin-left: auto;
