@@ -48,7 +48,7 @@ class ResourceWidgetSerializer
         $resourceNode = null;
 
         $dataSource = $widget->getWidgetInstance()->getDataSource();
-        if (!empty($dataSource) && 'personal_workspace' === $dataSource->getName()) {
+        if (!empty($dataSource) && 'personal_workspace' === $dataSource) {
             if ($user instanceof User && $user->getPersonalWorkspace()) {
                 $resourceNode = $this->nodeRepo->findWorkspaceRoot($user->getPersonalWorkspace());
             }

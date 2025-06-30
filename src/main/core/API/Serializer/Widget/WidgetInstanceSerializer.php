@@ -6,7 +6,6 @@ use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\DataSource;
 use Claroline\CoreBundle\Entity\Widget\Type\AbstractWidget;
 use Claroline\CoreBundle\Entity\Widget\Widget;
 use Claroline\CoreBundle\Entity\Widget\WidgetInstance;
@@ -35,7 +34,6 @@ class WidgetInstanceSerializer
     public function serialize(WidgetInstance $widgetInstance, array $options = []): array
     {
         $widget = $widgetInstance->getWidget();
-        $dataSource = $widgetInstance->getDataSource();
 
         // retrieves the custom configuration of the widget if any
         $parameters = [];
@@ -55,7 +53,7 @@ class WidgetInstanceSerializer
         $serialized = [
             'id' => $widgetInstance->getUuid(),
             'type' => $widget->getName(),
-            'source' => $dataSource ? $dataSource->getName() : null,
+            'source' => $widgetInstance->getDataSource(),
         ];
 
         if (!empty($parameters)) {
@@ -81,6 +79,7 @@ class WidgetInstanceSerializer
         }
 
         $this->sipe('type', 'setType', $data, $widgetInstanceConfig);
+        $this->sipe('source', 'setDataSource', $data, $widgetInstanceConfig);
 
         /** @var Widget $widget */
         $widget = $this->om
@@ -114,15 +113,6 @@ class WidgetInstanceSerializer
                 $this->om->persist($typeParameters);
                 $this->om->persist($widgetInstance);
             }
-        }
-
-        if (!empty($data['source'])) {
-            /** @var DataSource $dataSource */
-            $dataSource = $this->om
-                ->getRepository(DataSource::class)
-                ->findOneBy(['name' => $data['source']]);
-
-            $widgetInstance->setDataSource($dataSource);
         }
 
         return $widgetInstance;

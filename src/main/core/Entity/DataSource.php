@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  * DataSource entity.
  *
  * Describes a DataSource provided by a plugin.
+ *
+ * @deprecated
  */
 #[ORM\Table(name: 'claro_data_source')]
 #[ORM\Entity(repositoryClass: DataSourceRepository::class)]
