@@ -29,7 +29,7 @@ class AnnouncementType extends AbstractType
             ->add('content', TextType::class)
             ->add('creator', CreatorType::class)
             ->add('workspace', WorkspaceType::class)
-            ->add('roles', RoleType::class)
+            ->add('roles', RoleType::class, ['nullable' => true])
         ;
     }
 

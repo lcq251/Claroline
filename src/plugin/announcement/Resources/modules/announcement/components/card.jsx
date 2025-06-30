@@ -1,39 +1,38 @@
 import React from 'react'
+import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {asset} from '#/main/app/config/asset'
 import {getPlainText} from '#/main/app/data/types/html/utils'
-import {displayDate} from '#/main/app/intl/date'
 import {DataCard} from '#/main/app/data/components/card'
 import {UserMicro} from '#/main/core/user/components/micro'
-import {ResourceIcon} from '#/main/core/resource/components/icon'
+import {Datetime} from '#/main/app/components/date'
 
 const AnnouncementCard = (props) =>
   <DataCard
     {...props}
-    icon={<ResourceIcon mimeType="custom/claroline_announcement_aggregate" />}
+    name={props.data.title}
     title={props.data.title}
-    poster={props.data.poster ? asset(props.data.poster) : null}
+    poster={props.data.poster}
+    status={props.loaded && !get(props.data, 'meta.publishedAt') ? {
+      variant: 'secondary',
+      text: trans('not_published')
+    } : undefined}
     contentText={getPlainText(props.data.content)}
-    footer={
-      <span
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
-        {props.data.meta.author ?
-          <UserMicro name={props.data.meta.author} /> :
-          <UserMicro {...props.data.meta.creator} />
-        }
+    meta={
+      <>
+        <UserMicro {...get(props.data, 'meta.creator', {})} className="fs-sm text-body-secondary" />
 
-        {props.data.meta.publishedAt ?
-          trans('published_at', {date: displayDate(props.data.meta.publishedAt, false, true)}) : trans('not_published')
+        {get(props.data, 'meta.publishedAt') &&
+          <>
+            <span className="fs-sm text-body-secondary" aria-hidden={true}>-</span>
+            <Datetime className="fs-sm text-body-secondary" value={get(props.data, 'meta.publishedAt')} time={true} />
+          </>
         }
-      </span>
+      </>
     }
-  />
+  >
+
+  </DataCard>
 
 export {
   AnnouncementCard

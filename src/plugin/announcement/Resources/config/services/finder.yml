@@ -1,4 +1,7 @@
 services:
+    Claroline\AnnouncementBundle\Finder\AnnouncementType:
+        tags: [ claroline.finder.type ]
+
     Claroline\AnnouncementBundle\Finder\AnnouncementFinder:
         parent: Claroline\AppBundle\API\Finder\AbstractFinder
         tags: [ claroline.finder ]

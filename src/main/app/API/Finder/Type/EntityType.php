@@ -27,11 +27,15 @@ class EntityType extends AbstractType
             ->allowedTypes('null', 'array')
             ->default([]);
 
-        // allows to customize the join to the entity when the finder is embedded into another
+        // allows customizing the join to the entity when the finder is embedded into another
         // the callback is called with the QueryBuilder, FinderInterface and resolved options as parameters.
         $resolver
             ->define('joinQuery')
             ->allowedTypes('callable');
+        $resolver
+            ->define('nullable')
+            ->allowedTypes('boolean')
+            ->default(false);
     }
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
@@ -46,13 +50,20 @@ class EntityType extends AbstractType
             $finder->distinct();
 
             if (null !== $finder->getFilterValue()) {
+                $nullableCondition = '';
+                if ($options['nullable']) {
+                    $nullableCondition = "{$finder->getAlias()}.{$options['identifier']} IS NULL OR";
+                }
+
                 $value = is_array($finder->getFilterValue()) ? $finder->getFilterValue() : [$finder->getFilterValue()];
                 if (1 === count($value)) {
-                    $queryBuilder->andWhere("{$finder->getAlias()}.{$options['identifier']} = :{$finder->getAlias()}")
+                    $queryBuilder
+                        ->andWhere("($nullableCondition {$finder->getAlias()}.{$options['identifier']} = :{$finder->getAlias()})")
                         ->setParameter($finder->getAlias(), $value[0]);
                     $finder->distinct(false);
                 } else {
-                    $queryBuilder->andWhere("{$finder->getAlias()}.{$options['identifier']} IN (:{$finder->getAlias()})")
+                    $queryBuilder
+                        ->andWhere("($nullableCondition {$finder->getAlias()}.{$options['identifier']} IN (:{$finder->getAlias()}))")
                         ->setParameter($finder->getAlias(), $value);
                 }
             }

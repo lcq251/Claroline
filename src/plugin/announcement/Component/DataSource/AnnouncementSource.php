@@ -54,10 +54,14 @@ class AnnouncementSource extends ListSourceComponent
 
         if (PublicContext::getName() === $context) {
             // only announcements accessible by anonymous users
-            $roles = ['ROLE_ANONYMOUS'];
+            $roles = [PlatformRoles::ANONYMOUS];
         } else {
             // filter by current user roles
             $roles = $this->tokenStorage->getToken()?->getRoleNames() ?? [PlatformRoles::ANONYMOUS];
+        }
+
+        if (WorkspaceContext::getName() === $context) {
+            $finderQuery->addFilter('workspace', $contextSubject->getUuid());
         }
 
         $finderQuery->addFilter('roles', $roles);
