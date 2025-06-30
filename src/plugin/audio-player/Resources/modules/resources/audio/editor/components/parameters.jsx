@@ -13,7 +13,7 @@ import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
 import {selectors as fileSelect} from '#/main/core/resources/file/store'
-import {selectors as editorSelect} from '#/main/core/resources/file/editor/store/selectors'
+import {selectors as editorSelect} from '#/main/core/resource/editor/store'
 import {selectors as resourceSelect} from '#/main/core/resource/store'
 import {Checkbox} from '#/main/app/input/components/checkbox'
 import {TextGroup}  from '#/main/core/layout/form/components/group/text-group'
@@ -343,12 +343,12 @@ Audio.propTypes = {
 const AudioEditorParameters = connect(
   (state) => ({
     mimeType: fileSelect.mimeType(state),
-    fileForm: formSelectors.data(formSelectors.form(state, editorSelect.FORM_NAME)),
+    fileForm: formSelectors.data(formSelectors.form(state, editorSelect.STORE_NAME)),
     resourceNodeId: resourceSelect.resourceNode(state).id
   }),
   (dispatch) => ({
     update(prop, value) {
-      dispatch(formActions.updateProp(editorSelect.FORM_NAME, prop, value))
+      dispatch(formActions.updateProp(editorSelect.STORE_NAME, prop, value))
     }
   })
 )(Audio)
