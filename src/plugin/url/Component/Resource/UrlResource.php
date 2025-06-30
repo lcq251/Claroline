@@ -28,6 +28,7 @@ class UrlResource extends ResourceComponent implements UrlAdapterInterface
         ];
     }
 
+    /** @param Url $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         return [

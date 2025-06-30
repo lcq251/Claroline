@@ -4,12 +4,10 @@ namespace Claroline\PeerTubeBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Component\Resource\UrlAdapterInterface;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\PeerTubeBundle\Entity\Video;
@@ -38,7 +36,6 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
     {
         return array_merge([], parent::getSubscribedEvents(), [
             'resource.peertube_video.embed' => 'onEmbed',
-            CrudEvents::getEventName(CrudEvents::POST_CREATE, Video::class) => 'onCrudCreate',
         ]);
     }
 
@@ -54,6 +51,12 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
                 [SerializerInterface::SERIALIZE_MINIMAL]
             ) : null,
         ];
+    }
+
+    /** @param Video $resource */
+    public function create(AbstractResource $resource, array $data): void
+    {
+        $this->peerTubeManager->handleThumbnailForVideo($resource);
     }
 
     /** @param Video $resource */
@@ -73,12 +76,6 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
                 'resource' => $event->getResource(),
             ])
         );
-    }
-
-    public function onCrudCreate(CreateEvent $event): void
-    {
-        $video = $event->getObject();
-        $this->peerTubeManager->handleThumbnailForVideo($video);
     }
 
     public function supportsUrl(string $url): int

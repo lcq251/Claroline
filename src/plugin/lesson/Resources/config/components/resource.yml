@@ -8,3 +8,4 @@ services:
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
             - '@Icap\LessonBundle\Manager\ChapterManager'
+            - '@Icap\LessonBundle\Manager\PdfManager'

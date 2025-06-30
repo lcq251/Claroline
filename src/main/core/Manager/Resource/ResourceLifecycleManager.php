@@ -9,7 +9,6 @@ use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
 use Claroline\CoreBundle\Event\Resource\CopyResourceEvent;
 use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
 use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
-use Claroline\CoreBundle\Event\Resource\DownloadResourceEvent;
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,14 +45,6 @@ class ResourceLifecycleManager
     {
         $event = new CopyResourceEvent($originalResource, $copiedResource);
         $this->eventDispatcher->dispatch($event, static::eventName('copy', $copiedResource->getResourceNode()));
-
-        return $event;
-    }
-
-    public function export(ResourceNode $resourceNode): DownloadResourceEvent
-    {
-        $event = new DownloadResourceEvent($this->getResourceFromNode($resourceNode));
-        $this->eventDispatcher->dispatch($event, static::eventName('export', $resourceNode));
 
         return $event;
     }

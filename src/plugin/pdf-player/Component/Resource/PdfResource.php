@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Integrates PDF files into Claroline.
  */
-class PdfResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
+final class PdfResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -60,6 +60,16 @@ class PdfResource extends ResourceComponent implements DownloadableResourceInter
                 [SerializerInterface::SERIALIZE_MINIMAL]
             ) : null,
         ];
+    }
+
+    /** @param Pdf $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        if ($resource->getUrl() && $this->fileManager->exists($resource->getUrl())) {
+            $filePath = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+
+            $fileBag->add($resource->getName().'.pdf', $filePath);
+        }
     }
 
     /** @param Pdf $resource */
@@ -91,17 +101,10 @@ class PdfResource extends ResourceComponent implements DownloadableResourceInter
     }
 
     /** @param Pdf $resource */
-    public function download(AbstractResource $resource): ?string
-    {
-        return $resource->getUrl();
-    }
-
-    /** @param Pdf $resource */
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool
     {
         if (!$softDelete && $this->fileManager->exists($resource->getUrl())) {
-            $pathName = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
-            $fileBag->add($resource->getUrl(), $pathName);
+            $fileBag->add($resource->getUrl(), $this->getAbsolutePath($resource));
         }
 
         return true;
@@ -128,5 +131,20 @@ class PdfResource extends ResourceComponent implements DownloadableResourceInter
     public function fromFile(File $file): ?array
     {
         return [];
+    }
+
+    /** @param Pdf $resource */
+    private function getAbsolutePath(AbstractResource $resource): string
+    {
+        $resourceNode = $resource->getResourceNode();
+        $workspace = $resourceNode->getWorkspace();
+        $workspaceDir = 'WORKSPACE_'.$workspace->getId();
+
+        return implode(DIRECTORY_SEPARATOR, [
+            $this->fileManager->getDirectory(),
+            /*$workspaceDir,
+            'pdf',*/
+            $resource->getUrl(),
+        ]);
     }
 }

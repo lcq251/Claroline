@@ -19,15 +19,17 @@ use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\Directory;
+use Claroline\CoreBundle\Manager\ResourceManager;
 
 /**
  * Integrates the "Directory" resource.
  */
-class DirectoryListener extends ResourceComponent implements DownloadableResourceInterface
+final class DirectoryListener extends ResourceComponent implements DownloadableResourceInterface
 {
     public function __construct(
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
+        private readonly ResourceManager $resourceManager,
     ) {
     }
 
@@ -42,6 +44,22 @@ class DirectoryListener extends ResourceComponent implements DownloadableResourc
         return [
             'resource' => $this->serializer->serialize($resource),
         ];
+    }
+
+    /** @param Directory $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        $childrenBag = new FileBag();
+        $children = $resource->getResourceNode()->getChildren()->toArray();
+        if (!empty($children)) {
+            $this->resourceManager->download($children, $childrenBag);
+        }
+
+        if (0 !== $childrenBag->count()) {
+            foreach ($childrenBag->all() as $fileName => $filePath) {
+                $fileBag->add($resource->getName().'/'.$fileName, $filePath);
+            }
+        }
     }
 
     /** @param Directory $resource */

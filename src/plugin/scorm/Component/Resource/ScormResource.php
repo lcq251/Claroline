@@ -22,6 +22,7 @@ use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
+use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\ScormBundle\Entity\Scorm;
 use Claroline\ScormBundle\Manager\EvaluationManager;
@@ -30,7 +31,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ScormResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
+final class ScormResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -38,6 +39,7 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
         private readonly SerializerProvider $serializer,
         private readonly ScormManager $scormManager,
         private readonly EvaluationManager $evaluationManager,
+        private readonly FileManager $fileManager,
         private readonly string $filesDir,
         private readonly string $uploadDir
     ) {
@@ -85,9 +87,13 @@ class ScormResource extends ResourceComponent implements DownloadableResourceInt
     }
 
     /** @param Scorm $resource */
-    public function download(AbstractResource $resource): ?string
+    public function download(AbstractResource $resource, FileBag $fileBag): void
     {
-        return $this->getScormArchive($resource).'.zip';
+        $filePath = $this->getScormArchive($resource);
+
+        if ($filePath && $this->fileManager->exists($filePath, true)) {
+            $fileBag->add($resource->getName(), $filePath);
+        }
     }
 
     /** @param Scorm $resource */

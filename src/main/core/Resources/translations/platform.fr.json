@@ -553,6 +553,7 @@
     "restrict_by_code": "Restreindre par code",
     "restrict_by_code_help": "Le contenu est accessible une fois que l'utilisateur a saisi le code défini. Le code doit être saisi à chaque session.",
     "restrict_by_roles": "Restreindre par roles",
+    "restrict_by_roles_help": "Le contenu est uniquement accessible aux utilisateurs possédant le(s) rôle(s) définis.",
     "restrict_users_count": "Restreindre le nombre d'utilisateurs",
     "restrict_storage": "Restreindre l'espace de stockage disponible",
     "display_parameters": "Paramètres d'affichage",

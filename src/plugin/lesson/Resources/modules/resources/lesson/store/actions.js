@@ -85,15 +85,6 @@ actions.positionChange = value => (dispatch, getState) => {
   dispatch(actions.positionSelected(value === selectors.tree(getState()).slug))
 }
 
-actions.downloadLessonPdf = (lessonId) => ({
-  [API_REQUEST]: {
-    url: ['icap_lesson_export_pdf', {id: lessonId}],
-    request: {
-      method: 'GET'
-    }
-  }
-})
-
 actions.downloadChapterPdf = (lessonId, chapterId) => ({
   [API_REQUEST]: {
     url: ['icap_lesson_chapter_export_pdf', {lessonId: lessonId, chapter: chapterId}],

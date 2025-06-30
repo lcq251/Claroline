@@ -189,7 +189,6 @@ class FileController
      */
     private function stream(ResourceNode $resourceNode, Request $request): BinaryFileResponse
     {
-        // temporary because otherwise injected resource must have the "open" right
         $this->checkPermission('OPEN', $resourceNode, [], true);
 
         // free the session as soon as possible
@@ -198,7 +197,7 @@ class FileController
 
         /** @var File $file */
         $file = $this->resourceManager->getResourceFromNode($resourceNode);
-        $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$file->getHashName();
+        $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$file->getUrl();
 
         if (!file_exists($path)) {
             throw new NotFoundHttpException('File not found');

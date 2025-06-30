@@ -13,9 +13,12 @@ namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Repository\RoleRepository;
+use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
+use Claroline\CoreBundle\Component\Resource\ResourceProvider;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\Directory;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
@@ -34,9 +37,7 @@ use Claroline\CoreBundle\Repository\Resource\ResourceNodeRepository;
 use Claroline\CoreBundle\Repository\Resource\ResourceTypeRepository;
 use Claroline\CoreBundle\Security\Collection\ResourceCollection;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -54,7 +55,7 @@ class ResourceManager
         private readonly RightsManager $rightsManager,
         private readonly ObjectManager $om,
         private readonly TempFileManager $tempManager,
-        private readonly Security $security,
+        private readonly ResourceProvider $resourceProvider,
         private readonly Crud $crud
     ) {
         $this->resourceTypeRepo = $om->getRepository(ResourceType::class);
@@ -123,6 +124,9 @@ class ResourceManager
             'resourceNode' => $nodeData,
             'resource' => $resourceData,
         ]);
+        // generic event
+        $this->eventDispatcher->dispatch($createResource, ResourceEvents::getEventName(ResourceEvents::DOWNLOAD));
+        // specific event
         $this->eventDispatcher->dispatch($createResource, ResourceEvents::getEventName(ResourceEvents::CREATE, $resourceNode->getResourceType()->getName()));
 
         // initialize resource rights
@@ -180,7 +184,7 @@ class ResourceManager
         if (!empty($creator)) {
             $node->setCreator($creator);
         } else {
-            $node->setCreator($this->security->getUser());
+            $node->setCreator($this->tokenStorage->getToken()?->getUser());
         }
         if (!$workspace && $parent && $parent->getWorkspace()) {
             $workspace = $parent->getWorkspace();
@@ -266,102 +270,58 @@ class ResourceManager
     }
 
     /**
-     * Returns an archive with the required content.
-     *
-     * @param ResourceNode[] $elements - the nodes being exported
+     * @param ResourceNode[] $resourceNodes - the nodes being exported
      */
-    public function download(array $elements, ?bool $forceArchive = false): array
+    public function download(array $resourceNodes, ?FileBag $fileBag = null): ?array
     {
-        $data = [];
+        if (!$fileBag) {
+            $fileBag = new FileBag();
+        }
 
-        if (0 === count($elements)) {
-            throw new \RuntimeException('No resources were selected.');
+        foreach ($resourceNodes as $resourceNode) {
+            if (!$resourceNode->isDownloadable() || !$resourceNode->isActive() || !$this->authorization->isGranted('OPEN', $resourceNode)) {
+                continue;
+            }
+
+            $resourceHandler = $this->resourceProvider->getComponent($resourceNode->getResourceType()->getName());
+            if ($resourceHandler instanceof DownloadableResourceInterface) {
+                $resource = $this->getResourceFromNode($resourceNode);
+
+                $resourceHandler->download($resource, $fileBag);
+
+                $event = new DownloadResourceEvent($resource, $fileBag);
+                // generic event
+                $this->eventDispatcher->dispatch($event, ResourceEvents::getEventName(ResourceEvents::DOWNLOAD));
+                // specific event
+                $this->eventDispatcher->dispatch($event, ResourceEvents::getEventName(ResourceEvents::DOWNLOAD, $resourceNode->getResourceType()->getName()));
+            }
+        }
+
+        if (0 === $fileBag->count()) {
+            return null;
+        } elseif (1 === $fileBag->count()) {
+            $filename = array_keys($fileBag->all())[0];
+
+            return [
+                'filename' => TextNormalizer::toFilename($filename),
+                'path' => $fileBag->get($filename),
+            ];
         }
 
         $pathArch = $this->tempManager->generate();
 
         $archive = new \ZipArchive();
         $archive->open($pathArch, \ZipArchive::CREATE);
-
-        $nodes = $this->expandResources($elements);
-        if (!$forceArchive && 1 === count($nodes)) {
-            $event = $this->eventDispatcher->dispatch(
-                new DownloadResourceEvent($this->getResourceFromNode($this->getRealTarget($nodes[0]))),
-                "download_{$nodes[0]->getResourceType()->getName()}"
-            );
-            $extension = $event->getExtension();
-            $hasExtension = '' !== pathinfo($nodes[0]->getName(), PATHINFO_EXTENSION);
-
-            $mimeTypeGuesser = new MimeTypes();
-
-            if (!$hasExtension) {
-                $guessedExtension = $mimeTypeGuesser->getExtensions($nodes[0]->getMimeType());
-                if (!empty($guessedExtension)) {
-                    $extension = $guessedExtension[0];
-                }
-            }
-
-            $data['name'] = $hasExtension ?
-                $nodes[0]->getName() :
-                $nodes[0]->getName().'.'.$extension;
-            $data['file'] = $event->getItem();
-            $data['mimeType'] = $nodes[0]->getMimeType() ? $nodes[0]->getMimeType() : $mimeTypeGuesser->guessMimeType($event->getItem());
-
-            return $data;
-        }
-
-        $currentDir = null;
-        if (isset($elements[0])) {
-            $currentDir = $elements[0];
-        } else {
-            $archive->addEmptyDir($elements[0]->getName());
-        }
-
-        foreach ($nodes as $node) {
-            // we only download is we can...
-            if ($this->authorization->isGranted('EXPORT', $node)) {
-                $resource = $this->getResourceFromNode($node);
-
-                if ($resource) {
-                    $filename = $this->getRelativePath($currentDir, $node).$node->getName();
-                    $resource = $this->getResourceFromNode($node);
-
-                    // if it's a file, we may have to add the extension back in case someone removed it from the name
-                    if ('file' === $node->getResourceType()->getName()) {
-                        $extension = '.'.pathinfo($resource->getHashName(), PATHINFO_EXTENSION);
-                        if (!preg_match("#$extension#", $filename)) {
-                            $filename .= $extension;
-                        }
-                    }
-
-                    if ('directory' !== $node->getResourceType()->getName()) {
-                        /** @var DownloadResourceEvent $event */
-                        $event = $this->eventDispatcher->dispatch(
-                            new DownloadResourceEvent($resource),
-                            "download_{$node->getResourceType()->getName()}"
-                        );
-
-                        $obj = $event->getItem();
-
-                        if (null !== $obj) {
-                            $archive->addFile($obj, TextNormalizer::toUtf8($filename));
-                        } else {
-                            $archive->addFromString(TextNormalizer::toUtf8($filename), '');
-                        }
-                    } else {
-                        $archive->addEmptyDir(TextNormalizer::toUtf8($filename));
-                    }
-                }
-            }
+        foreach ($fileBag->all() as $fileName => $filePath) {
+            $archive->addFile(TextNormalizer::toUtf8($filePath), TextNormalizer::toFilename($fileName));
         }
 
         $archive->close();
 
-        $data['name'] = 'archive.zip';
-        $data['file'] = $pathArch;
-        $data['mimeType'] = 'application/zip';
-
-        return $data;
+        return [
+            'filename' => 'resources.zip',
+            'path' => $pathArch,
+        ];
     }
 
     public function getWorkspaceRoot(Workspace $workspace): ?ResourceNode
@@ -452,47 +412,6 @@ class ResourceManager
         return $this->rightsManager->isManager($resourceNode);
     }
 
-    /**
-     * @deprecated
-     */
-    private function getRealTarget(ResourceNode $node, bool $throwException = true): ?ResourceNode
-    {
-        if ('Claroline\LinkBundle\Entity\Resource\Shortcut' === $node->getClass()) {
-            /** @var \Claroline\LinkBundle\Entity\Resource\Shortcut $resource */
-            $resource = $this->getResourceFromNode($node);
-            if (null === $resource) {
-                if ($throwException) {
-                    throw new \Exception('The resource was removed.');
-                }
-
-                return null;
-            }
-            $node = $resource->getTarget();
-            if (null === $node) {
-                if ($throwException) {
-                    throw new \Exception('The node target was removed.');
-                }
-
-                return null;
-            }
-        }
-
-        return $node;
-    }
-
-    /**
-     * Gets the relative path between 2 instances (not optimized yet).
-     */
-    private function getRelativePath(ResourceNode $root, ResourceNode $node, ?string $path = ''): string
-    {
-        if ($node->getParent() !== $root->getParent() && null !== $node->getParent()) {
-            $path = $node->getParent()->getName().DIRECTORY_SEPARATOR.$path;
-            $path = $this->getRelativePath($root, $node->getParent(), $path);
-        }
-
-        return $path;
-    }
-
     private function updateWorkspace(ResourceNode $node, Workspace $workspace): void
     {
         $this->om->startFlushSuite();
@@ -548,35 +467,12 @@ class ResourceManager
      * array('ROLE_WS_XXX' => array('open' => true, 'edit' => false, ...
      * 'create' => array('directory', ...), 'role' => $entity))
      */
-    private function setRights(ResourceNode $node, ResourceNode $parent = null, array $rights = []): ResourceNode
+    private function setRights(ResourceNode $node, ResourceNode $parent = null, array $rights = []): void
     {
         if (0 === count($rights) && null !== $parent) {
             $node = $this->rightsManager->copy($parent, $node);
         } else {
             $this->createRights($node, $rights);
         }
-
-        return $node;
-    }
-
-    /**
-     * Returns every child of every resource (includes the start node).
-     *
-     * @param ResourceNode[] $nodes
-     */
-    private function expandResources(array $nodes, bool $onlyActive = false): array
-    {
-        $resources = [];
-        foreach ($nodes as $node) {
-            if (!$onlyActive || ($node->isActive() && $node->isPublished())) {
-                if ('directory' === $node->getResourceType()->getName() && !empty($node->getChildren())) {
-                    $resources = array_merge($resources, $this->expandResources($node->getChildren()->toArray(), true));
-                } else {
-                    $resources[] = $node;
-                }
-            }
-        }
-
-        return $resources;
     }
 }

@@ -119,8 +119,8 @@ class ResourceNode implements CrudEntityInterface
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
     private bool $active = true;
 
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
-    private bool $downloadable = false;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
+    private bool $downloadable = true;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $accesses = [];

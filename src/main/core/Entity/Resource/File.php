@@ -18,12 +18,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class File extends AbstractResource
 {
-    // propose to download raw file when opening the resource
+    // propose to download the raw file when opening the resource
     public const OPENING_DOWNLOAD = 'download';
     // try to use the browser player to display the file
     public const OPENING_BROWSER = 'browser';
-    // use the claroline file player to display the file
-    public const OPENING_PLAYER = 'player';
 
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private ?int $size = null;
@@ -32,7 +30,7 @@ class File extends AbstractResource
     private ?string $hashName = null;
 
     #[ORM\Column]
-    private string $opening = self::OPENING_PLAYER;
+    private string $opening = self::OPENING_DOWNLOAD;
 
     public function getSize(): ?int
     {

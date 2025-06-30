@@ -65,6 +65,17 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
     }
 
     /** @param Image $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        if ($resource->getUrl() && $this->fileManager->exists($resource->getUrl())) {
+            $filePath = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+
+            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+            $fileBag->add($resource->getName().'.'.$ext, $filePath);
+        }
+    }
+
+    /** @param Image $resource */
     public function create(AbstractResource $resource, array $data): void
     {
         $filesystem = new Filesystem();
@@ -90,12 +101,6 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
         $resource->setUrl($finalPath);
         $this->om->persist($resource);
         $this->om->flush();
-    }
-
-    /** @param Image $resource */
-    public function download(AbstractResource $resource): ?string
-    {
-        return $resource->getUrl();
     }
 
     /** @param Image $resource */

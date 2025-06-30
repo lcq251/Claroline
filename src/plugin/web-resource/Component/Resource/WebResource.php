@@ -17,12 +17,14 @@ use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\File;
+use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\WebResourceBundle\Manager\WebResourceManager;
 use Symfony\Component\Filesystem\Filesystem;
 
-class WebResource extends ResourceComponent implements DownloadableResourceInterface
+final class WebResource extends ResourceComponent implements DownloadableResourceInterface
 {
     public function __construct(
+        private readonly FileManager $fileManager,
         private readonly string $filesDir,
         private readonly string $uploadDir,
         private readonly WebResourceManager $webResourceManager,
@@ -57,11 +59,16 @@ class WebResource extends ResourceComponent implements DownloadableResourceInter
     }
 
     /** @param File $resource */
-    public function download(AbstractResource $resource): ?string
+    public function download(AbstractResource $resource, FileBag $fileBag): void
     {
-        return $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.
+        $filePath = $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.
             DIRECTORY_SEPARATOR.$resource->getResourceNode()->getWorkspace()->getUuid().
             DIRECTORY_SEPARATOR.$resource->getUrl();
+
+        if ($resource->getUrl() && $this->fileManager->exists($filePath, true)) {
+            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+            $fileBag->add($resource->getName().'.'.$ext, $filePath);
+        }
     }
 
     /** @param File $resource */

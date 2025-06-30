@@ -2,6 +2,7 @@ services:
   Claroline\WebResourceBundle\Component\Resource\WebResource:
     tags: [ 'claroline.component.resource', 'kernel.event_subscriber' ]
     arguments:
+      - '@Claroline\CoreBundle\Manager\FileManager'
       - '%claroline.param.files_directory%'
       - '%claroline.param.uploads_directory%'
       - '@Claroline\WebResourceBundle\Manager\WebResourceManager'

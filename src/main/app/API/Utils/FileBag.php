@@ -16,6 +16,11 @@ class FileBag
         return $this->files;
     }
 
+    public function count(): int
+    {
+        return count($this->files);
+    }
+
     public function get(string $key): ?string
     {
         // be sure to use unix directory separator

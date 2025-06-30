@@ -10,7 +10,7 @@ trait Url
     private ?string $url;
 
     #[ORM\Column(type: 'string')]
-    private ?String $mode = 'redirect';
+    private ?string $mode = 'redirect';
 
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $ratio = 56.25;

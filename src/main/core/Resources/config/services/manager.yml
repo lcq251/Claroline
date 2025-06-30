@@ -60,7 +60,7 @@ services:
             - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\Manager\File\TempFileManager'
-            - '@security.helper'
+            - '@Claroline\CoreBundle\Component\Resource\ResourceProvider'
             - '@Claroline\AppBundle\API\Crud'
 
     claroline.manager.resource_manager:

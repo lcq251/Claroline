@@ -59,15 +59,12 @@ class FileController extends AbstractCrudController
 
         $this->checkPermission('OPEN', $fileResource->getResourceNode(), [], true);
 
-        $data = $this->resourceManager->download([$fileResource->getResourceNode()], false);
-
-        $file = $data['file'] ?: tempnam('tmp', 'tmp');
-        if (!file_exists($file)) {
+        $file = $this->resourceManager->download([$fileResource->getResourceNode()]);
+        if (empty($file)) {
             return new JsonResponse('File not found.', 500);
         }
-
-        return new BinaryFileResponse($file, 200, [
-            'Content-Disposition' => 'inline',
+        return new BinaryFileResponse($file['path'], 200, [
+            'Content-Disposition' => "inline; filename={$file['filename']}",
         ]);
     }
 }

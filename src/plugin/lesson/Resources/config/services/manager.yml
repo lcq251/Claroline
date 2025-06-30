@@ -4,3 +4,10 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\Crud'
             - '@Icap\LessonBundle\Serializer\ChapterSerializer'
+
+    Icap\LessonBundle\Manager\PdfManager:
+        arguments:
+            - '@twig'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\Manager\PdfManager'
+            - '@Claroline\AppBundle\Manager\File\TempFileManager'

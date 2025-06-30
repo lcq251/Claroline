@@ -8,7 +8,6 @@ use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
 use Claroline\CoreBundle\Event\Resource\CopyResourceEvent;
 use Claroline\CoreBundle\Event\Resource\CreateResourceEvent;
 use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
-use Claroline\CoreBundle\Event\Resource\DownloadResourceEvent;
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
 use Claroline\CoreBundle\Event\Resource\ExportResourceEvent;
 use Claroline\CoreBundle\Event\Resource\ImportResourceEvent;
@@ -20,7 +19,7 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
 {
     public static function getSubscribedEvents(): array
     {
-        $resourceEvents = [
+        return [
             // Read
             ResourceEvents::getEventName(ResourceEvents::OPEN, static::getName()) => 'onOpen',
             ResourceEvents::getEventName(ResourceEvents::EMBED, static::getName()) => 'onEmbed',
@@ -33,12 +32,6 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
             ResourceEvents::getEventName(ResourceEvents::EXPORT, static::getName()) => 'onExport',
             ResourceEvents::getEventName(ResourceEvents::IMPORT, static::getName()) => 'onImport',
         ];
-
-        if (class_implements(static::class, DownloadableResourceInterface::class)) {
-            $resourceEvents[ResourceEvents::getEventName(ResourceEvents::DOWNLOAD, static::getName())] = 'onDownload';
-        }
-
-        return $resourceEvents;
     }
 
     public function onOpen(LoadResourceEvent $event): void
@@ -53,16 +46,6 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
         /*$event->setData(
             $this->embed($event->getResource())
         );*/
-    }
-
-    public function onDownload(DownloadResourceEvent $event): void
-    {
-        $downloadableFilepath = $this->download($event->getResource());
-
-        // not all resources implement the download behavior
-        if ($downloadableFilepath) {
-            $event->setItem($downloadableFilepath);
-        }
     }
 
     public function onCreate(CreateResourceEvent $event): void
@@ -109,11 +92,6 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [];
-    }
-
-    public function download(AbstractResource $resource): ?string
-    {
-        return null;
     }
 
     public function create(AbstractResource $resource, array $data): void

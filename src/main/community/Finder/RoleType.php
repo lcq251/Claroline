@@ -51,13 +51,18 @@ class RoleType extends AbstractType
             $roles = $finder->getFilterValue();
         }
 
-        // if not admin, only return the roles of the current user
-        $tokenRoles = $this->tokenStorage->getToken()?->getRoleNames() ?? [PlatformRoles::ANONYMOUS];
-        $isAdmin = $this->tokenStorage->getToken() && in_array(PlatformRoles::ADMIN, $tokenRoles);
-
         if (!empty($roles)) {
+            $nullableCondition = '';
+            if ($options['nullable']) {
+                $nullableCondition = "{$finder->getAlias()}.{$options['identifier']} IS NULL OR";
+            }
+
+            // if not admin, only return the roles of the current user
+            $tokenRoles = $this->tokenStorage->getToken()?->getRoleNames() ?? [PlatformRoles::ANONYMOUS];
+            $isAdmin = $this->tokenStorage->getToken() && in_array(PlatformRoles::ADMIN, $tokenRoles);
+
             $roleNames = $isAdmin ? $roles : array_intersect($roles, $tokenRoles);
-            $queryBuilder->andWhere("{$finder->getQueryPath()}.name IN (:{$finder->getAlias()})");
+            $queryBuilder->andWhere("($nullableCondition {$finder->getQueryPath()}.name IN (:{$finder->getAlias()}))");
             $queryBuilder->setParameter($finder->getAlias(), $roleNames);
 
             if (1 >= count($roleNames)) {

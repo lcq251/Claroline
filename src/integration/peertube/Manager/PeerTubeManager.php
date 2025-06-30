@@ -56,7 +56,12 @@ class PeerTubeManager
     {
         $parts = parse_url($url);
         if ($parts) {
-            $server = $parts['scheme'].'://'.$parts['host'];
+            if ($parts['scheme']) {
+                $server = $parts['scheme'].'://'.$parts['host'];
+            } else {
+                $server = 'https://'.$parts['host'];
+            }
+
             $id = str_replace('/w/', '', $parts['path']);
             if (!empty($server) && !empty($id)) {
                 return [
@@ -71,9 +76,13 @@ class PeerTubeManager
 
     public function getVideoInfo(string $server, string $shortUuid): ?array
     {
-        $response = $this->curlManager->exec($server.'/api/v1/videos/'.$shortUuid, null, 'GET', [
-            CURLOPT_SSL_VERIFYPEER => 0,
-        ]);
+        try {
+            $response = $this->curlManager->exec($server.'/api/v1/videos/'.$shortUuid, null, 'GET', [
+                CURLOPT_SSL_VERIFYPEER => 0,
+            ]);
+        } catch (\Exception $e) {
+            $response = null;
+        }
 
         if (!empty($response)) {
             return json_decode($response, true);

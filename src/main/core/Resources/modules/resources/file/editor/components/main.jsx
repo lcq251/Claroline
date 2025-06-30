@@ -1,90 +1,24 @@
-import React, {createElement} from 'react'
-import {PropTypes as T} from 'prop-types'
-import get from 'lodash/get'
-import {Helmet} from 'react-helmet'
+import React from 'react'
+import {useSelector} from 'react-redux'
 
-import {theme} from '#/main/theme/config'
-import {trans} from '#/main/app/intl/translation'
-import {LINK_BUTTON} from '#/main/app/buttons'
-import {FormData} from '#/main/app/content/form/containers/data'
-import {FormSections, FormSection} from '#/main/app/content/form/components/sections'
-import {Await} from '#/main/app/components/await'
+import {ResourceEditor} from '#/main/core/resource/editor'
 
-import {getFile, getTypeName} from '#/main/core/files'
-import {constants} from '#/main/core/resources/file/constants'
-import {selectors} from '#/main/core/resources/file/editor/store/selectors'
+import {selectors} from '#/main/core/resources/file/store'
+import {FileEditorAppearance} from '#/main/core/resources/file/editor/components/appearance'
 
-const EditorMain = (props) =>
-  <FormData
-    level={2}
-    className="mt-3"
-    title={trans('parameters')}
-    name={selectors.FORM_NAME}
-    buttons={true}
-    target={['apiv2_resource_file_update', {id: props.file.id}]}
-    cancel={{
-      type: LINK_BUTTON,
-      target: props.path,
-      exact: true
-    }}
-    definition={[
-      {
-        title: trans('general'),
-        primary: true,
-        fields: [
-          {
-            name: 'opening',
-            label: trans('opening_parameters'),
-            type: 'choice',
-            required: true,
-            options: {
-              noEmpty: true,
-              choices: constants.OPENING_TYPES
-            }
-          }
-        ]
-      }
-    ]}
-  >
-    <Await
-      for={getFile(props.mimeType)}
-      then={module => {
-        if (get(module, 'fileType.components.editor')) {
-          return (
-            <FormSections level={3}>
-              <FormSection
-                title={trans(getTypeName(props.mimeType) + '_section')}
-              >
-                {createElement(get(module, 'fileType.components.editor'), {
-                  file: props.file,
-                  path: props.path
-                })}
+const FileEditor = () => {
+  const file = useSelector(selectors.file)
 
-                {get(module, 'fileType.styles') &&
-                  <Helmet>
-                    {get(module, 'fileType.styles').map(style =>
-                      <link key={style} rel="stylesheet" type="text/css" href={theme(style)} />
-                    )}
-                  </Helmet>
-                }
-              </FormSection>
-            </FormSections>
-          )
-        }
-
-        return null
-      }}
+  return (
+    <ResourceEditor
+      additionalData={() => ({
+        resource: file
+      })}
+      appearancePage={FileEditorAppearance}
     />
-  </FormData>
-
-EditorMain.propTypes = {
-  path: T.string.isRequired,
-  mimeType: T.string.isRequired,
-  file: T.shape({
-    id: T.number.isRequired
-  }).isRequired
+  )
 }
 
 export {
-  EditorMain
+  FileEditor
 }

@@ -1,74 +1,50 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
+import {useDispatch, useSelector} from 'react-redux'
+import classes from 'classnames'
 import get from 'lodash/get'
+import merge from 'lodash/merge'
 
-import {trans, fileSize} from '#/main/app/intl'
-import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
-import {Alert} from '#/main/app/components/alert'
-import {Toolbar} from '#/main/app/action'
-import {ContentHtml} from '#/main/app/content/components/html'
-import {route} from '#/main/core/workspace/routing'
-import {ResourcePage} from '#/main/core/resource'
-import {PageContent} from '#/main/app/page'
+import {trans} from '#/main/app/intl'
+import {url} from '#/main/app/api'
+import {PageSection} from '#/main/app/page'
+import {constants} from '#/main/core/resources/file/constants'
+import {FileThumbnail} from '#/main/app/data/types/file/components/thumbnail'
 
-const FileOverview = (props) =>
-  <ResourcePage>
-    <PageContent>
-      {get(props.resourceNode, 'meta.description') &&
-        <div className="card my-3">
-          <ContentHtml className="card-body">{get(props.resourceNode, 'meta.description')}</ContentHtml>
-        </div>
-      }
+import {ResourceOverview, selectors as resourceSelectors} from '#/main/core/resource'
+import {actions, selectors} from '#/main/core/resources/file/store'
 
-      <div className="well well-sm mb-3" style={{marginTop: !get(props.resourceNode, 'meta.description') ? 20 : 0}}>
-        <span className="fa fa-fw fa-file icon-with-text-right" />
-        {props.file.name}
-        <b className="pull-right">
-          {fileSize(props.file.size)}
-        </b>
-      </div>
+const FileOverview = () => {
+  const dispatch = useDispatch()
 
-      <Alert type="info">{trans('auto_download_help', {}, 'file')}</Alert>
+  const file = useSelector(selectors.file)
+  const downloadable = useSelector(resourceSelectors.downloadable)
+  const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const embedded = useSelector(resourceSelectors.embedded)
 
-      <Toolbar
-        className="d-grid gap-1 mb-3"
-        variant="btn"
-        toolbar="download home"
-        actions={[
-          {
-            name: 'download',
-            type: CALLBACK_BUTTON,
-            icon: 'fa fa-fw fa-download',
-            label: trans('download', {}, 'actions'),
-            callback: () => props.download(props.resourceNode),
-            primary: true,
-            size: 'lg'
-          }, {
-            name: 'home',
-            type: URL_BUTTON, // we require a URL_BUTTON here to escape the embedded resource router
-            icon: 'fa fa-fw fa-home',
-            label: trans('return-home', {}, 'actions'),
-            target: '#'+route(props.workspace),
-            displayed: !!props.workspace
-          }
-        ]}
-      />
-    </PageContent>
-  </ResourcePage>
+  if (!embedded && downloadable && constants.OPENING_DOWNLOAD === file.opening) {
+    dispatch(actions.download(resourceNode))
+  } else if (constants.OPENING_BROWSER === file.opening) {
+    window.location.replace(url(['apiv2_resource_file_raw', {file: file.id}]))
+  }
 
-FileOverview.propTypes = {
-  file: T.shape({
-    name: T.string.isRequired,
-    size: T.number
-  }).isRequired,
-  resourceNode: T.shape({
-    name: T.string.isRequired,
-    meta: T.shape({
-      description: T.string
-    })
-  }),
-  workspace: T.object,
-  download: T.func.isRequired
+  return (
+    <ResourceOverview>
+      <PageSection size="lg">
+        <FileThumbnail
+          className={classes(!get(resourceNode, 'meta.description') && !embedded && 'mt-5')}
+          file={merge({}, file, {mimeType: get(resourceNode, 'meta.mimeType')})}
+          downloadUrl={downloadable ? ['apiv2_resource_file_raw', {file: file.id}] : undefined}
+        />
+
+        {downloadable &&
+          <p className="mt-3 text-body-secondary fs-sm">
+            <span className="fa fa-fw fa-info-circle me-2" aria-hidden={true} />
+            {trans('auto_download_help', {}, 'file')}
+          </p>
+        }
+      </PageSection>
+    </ResourceOverview>
+  )
 }
 
 export {

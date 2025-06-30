@@ -4,11 +4,11 @@ services:
         arguments:
             - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\CoreBundle\Manager\ResourceManager'
 
     Claroline\CoreBundle\Listener\Resource\Types\FileListener:
         tags: ['claroline.component.resource', 'kernel.event_subscriber']
         arguments:
-            - '@event_dispatcher'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
@@ -20,7 +20,6 @@ services:
             - '@Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager'
         tags:
             - { name: kernel.event_listener, event: resource.embed, method: embed }
-            - { name: kernel.event_listener, event: resource.export, method: export }
 
     Claroline\CoreBundle\Listener\ViewAsListener:
         arguments:

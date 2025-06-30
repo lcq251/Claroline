@@ -4,8 +4,6 @@ namespace Claroline\YouTubeBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
-use Claroline\AppBundle\Event\Crud\CreateEvent;
-use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Component\Resource\UrlAdapterInterface;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
@@ -29,13 +27,6 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
     public static function getName(): string
     {
         return 'youtube_video';
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return array_merge([], parent::getSubscribedEvents(), [
-            CrudEvents::getEventName(CrudEvents::POST_CREATE, Video::class) => 'onCrudCreate',
-        ]);
     }
 
     public function supportsUrl(string $url): int
@@ -74,6 +65,12 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
     }
 
     /** @param Video $resource */
+    public function create(AbstractResource $resource, array $data): void
+    {
+        $this->youtubeManager->handleThumbnailForVideo($resource);
+    }
+
+    /** @param Video $resource */
     public function update(AbstractResource $resource, array $data): ?array
     {
         $this->youtubeManager->handleThumbnailForVideo($resource);
@@ -81,11 +78,5 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
         return [
             'resource' => $this->serializer->serialize($resource),
         ];
-    }
-
-    public function onCrudCreate(CreateEvent $event): void
-    {
-        $video = $event->getObject();
-        $this->youtubeManager->handleThumbnailForVideo($video);
     }
 }

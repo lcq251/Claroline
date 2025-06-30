@@ -3,7 +3,6 @@
 namespace Claroline\CoreBundle\Listener\Resource;
 
 use Claroline\CoreBundle\Event\Resource\EmbedResourceEvent;
-use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Manager\Resource\ResourceLifecycleManager;
 use Twig\Environment;
 
@@ -42,10 +41,5 @@ class ResourceListener
                 'resource' => $event->getResource(),
             ]));
         }
-    }
-
-    public function export(ResourceActionEvent $event): void
-    {
-        $this->lifecycleManager->export($event->getResourceNode());
     }
 }

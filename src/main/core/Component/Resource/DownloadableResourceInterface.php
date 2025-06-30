@@ -2,6 +2,7 @@
 
 namespace Claroline\CoreBundle\Component\Resource;
 
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 
 /**
@@ -15,5 +16,5 @@ interface DownloadableResourceInterface
      *
      * NB. Not all resource types are able to create a downloadable version.
      */
-    public function download(AbstractResource $resource): ?string;
+    public function download(AbstractResource $resource, FileBag $fileBag): void;
 }

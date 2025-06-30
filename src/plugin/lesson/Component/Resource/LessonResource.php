@@ -16,11 +16,12 @@ use Claroline\CoreBundle\Manager\Template\PlaceholderManager;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
+use Icap\LessonBundle\Manager\PdfManager;
 use Icap\LessonBundle\Serializer\ChapterSerializer;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class LessonResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
+final class LessonResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorization,
@@ -28,7 +29,8 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
         private readonly SerializerProvider $serializer,
         private readonly Crud $crud,
         private readonly PlaceholderManager $placeholderManager,
-        private readonly ChapterManager $chapterManager
+        private readonly ChapterManager $chapterManager,
+        private readonly PdfManager $pdfManager,
     ) {
     }
 
@@ -51,6 +53,14 @@ class LessonResource extends ResourceComponent implements DownloadableResourceIn
                 return $this->serializer->serialize($chapter, $internalNotes ? [ChapterSerializer::INCLUDE_INTERNAL_NOTES] : []);
             }, $chapters),
         ];
+    }
+
+    /** @param Lesson $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        // generate a PDF for the resource
+        $pdfPath = $this->pdfManager->renderLesson($resource, true);
+        $fileBag->add($resource->getName().'.pdf', $pdfPath);
     }
 
     /** @param Lesson $resource */

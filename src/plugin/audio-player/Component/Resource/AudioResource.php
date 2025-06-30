@@ -12,6 +12,7 @@
 namespace Claroline\AudioPlayerBundle\Component\Resource;
 
 use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AudioPlayerBundle\Entity\Resource\Audio;
 use Claroline\AudioPlayerBundle\Entity\Resource\Section;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AudioResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
+final class AudioResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -90,6 +91,17 @@ class AudioResource extends ResourceComponent implements DownloadableResourceInt
         return [
             'resource' => $audioData,
         ];
+    }
+
+    /** @param Audio $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        if ($resource->getUrl() && $this->fileManager->exists($resource->getUrl())) {
+            $filePath = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+
+            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+            $fileBag->add($resource->getName().'.'.$ext, $filePath);
+        }
     }
 
     /** @param Audio $resource */

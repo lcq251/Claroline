@@ -15,20 +15,6 @@ const DirectoryEditor = () => {
         resource: directory
       })}
       appearancePage={DirectoryEditorAppearance}
-      /*sections={[
-        {
-          title: trans('general'),
-          primary: true,
-          fields: [
-            {
-              name: 'uploadDestination',
-              type: 'boolean',
-              label: trans('rich_text_upload_directory'),
-              help: trans('rich_text_upload_directory_help')
-            }
-          ]
-        }
-      ]}*/
     />
   )
 }

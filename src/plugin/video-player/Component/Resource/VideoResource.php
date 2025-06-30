@@ -88,9 +88,14 @@ final class VideoResource extends ResourceComponent implements DownloadableResou
     }
 
     /** @param Video $resource */
-    public function download(AbstractResource $resource): ?string
+    public function download(AbstractResource $resource, FileBag $fileBag): void
     {
-        return $resource->getUrl();
+        if ($resource->getUrl() && $this->fileManager->exists($resource->getUrl())) {
+            $filePath = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+
+            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+            $fileBag->add($resource->getName().'.'.$ext, $filePath);
+        }
     }
 
     /** @param Video $resource */

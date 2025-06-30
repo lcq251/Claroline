@@ -22,7 +22,6 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceRights;
 use Claroline\CoreBundle\Event\CatalogEvents\ResourceEvents;
 use Claroline\CoreBundle\Event\Resource\UpdateResourceEvent;
-use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Manager\Resource\ResourceRestrictionsManager;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Manager\ResourceManager;
@@ -38,7 +37,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -150,7 +148,7 @@ class ResourceController
     }
 
     #[Route(path: '/', name: 'claro_resource_delete', methods: ['DELETE'])]
-    public function deleteBulkAction(Request $request): JsonResponse
+    public function deleteAction(Request $request): JsonResponse
     {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
@@ -185,27 +183,14 @@ class ResourceController
     {
         $nodes = $this->decodeIdsString($request, ResourceNode::class);
 
-        $collection = new ResourceCollection($nodes);
-        if (!$this->authorization->isGranted('EXPORT', $collection)) {
-            throw new AccessDeniedException($collection->getErrorsForDisplay());
+        $download = $this->manager->download($nodes);
+
+        if (empty($download)) {
+            return new JsonResponse(null, 404);
         }
 
-        $data = $this->manager->download($nodes);
-
-        $file = $data['file'];
-        $fileName = $data['name'];
-
-        if (!file_exists($file)) {
-            return new JsonResponse('File not found.', 500);
-        }
-
-        if ($fileName) {
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $fileName = TextNormalizer::toKey(str_replace('.'.$ext, '', $fileName)).'.'.$ext;
-        }
-
-        return new BinaryFileResponse($file, 200, [
-            'Content-Disposition' => "attachment; filename={$fileName}",
+        return new BinaryFileResponse($download['path'], 200, [
+            'Content-Disposition' => "attachment; filename={$download['filename']}",
         ]);
     }
 

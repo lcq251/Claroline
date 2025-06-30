@@ -4,13 +4,13 @@ namespace Icap\LessonBundle\Controller;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\FinderProvider;
-use Claroline\AppBundle\Manager\PdfManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Icap\LessonBundle\Entity\Chapter;
 use Icap\LessonBundle\Entity\Lesson;
 use Icap\LessonBundle\Manager\ChapterManager;
+use Icap\LessonBundle\Manager\PdfManager;
 use Icap\LessonBundle\Repository\ChapterRepository;
 use Icap\LessonBundle\Serializer\ChapterSerializer;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Twig\Environment;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route(path: '/lesson/{lessonId}/chapters')]
 class ChapterController
@@ -32,7 +32,6 @@ class ChapterController
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
-        private readonly Environment $templating,
         private readonly FinderProvider $finder,
         private readonly Crud $crud,
         private readonly ChapterSerializer $chapterSerializer,
@@ -89,7 +88,7 @@ class ChapterController
     }
 
     /**
-     * Create new chapter.
+     * Create a new chapter.
      */
     #[Route(path: '/{slug}', name: 'apiv2_lesson_chapter_create', methods: ['POST'])]
     public function createAction(
@@ -108,7 +107,7 @@ class ChapterController
     }
 
     /**
-     * Update existing chapter.
+     * Update an existing chapter.
      */
     #[Route(path: '/{slug}', name: 'apiv2_lesson_chapter_update', methods: ['PUT'])]
     public function editAction(
@@ -152,17 +151,14 @@ class ChapterController
     ): StreamedResponse {
         $lesson = $chapter->getLesson();
 
-        $this->checkPermission('EXPORT', $lesson->getResourceNode(), [], true);
+        if (!$lesson->getResourceNode()->isDownloadable() || !$this->checkPermission('OPEN', $lesson->getResourceNode())) {
+            throw new AccessDeniedException('Chapter is not downloadable.');
+        }
 
         $fileName = TextNormalizer::toKey($lesson->getResourceNode()->getName().'-'.$chapter->getTitle());
 
-        return new StreamedResponse(function () use ($lesson, $chapter): void {
-            echo $this->pdfManager->fromHtml(
-                $this->templating->render('@IcapLesson/lesson/open.pdf.twig', [
-                    '_resource' => $lesson,
-                    'tree' => $this->chapterRepository->getChapterTree($chapter),
-                ])
-            );
+        return new StreamedResponse(function () use ($chapter): void {
+            echo $this->pdfManager->renderChapter($chapter);
         }, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename='.$fileName.'.pdf',

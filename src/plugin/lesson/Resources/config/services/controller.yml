@@ -6,18 +6,8 @@ services:
         arguments:
           - '@security.authorization_checker'
           - '@Claroline\AppBundle\Persistence\ObjectManager'
-          - '@twig'
           - '@Claroline\AppBundle\API\FinderProvider'
           - '@Claroline\AppBundle\API\Crud'
           - '@Icap\LessonBundle\Serializer\ChapterSerializer'
           - '@Icap\LessonBundle\Manager\ChapterManager'
-          - '@Claroline\AppBundle\Manager\PdfManager'
-
-    Icap\LessonBundle\Controller\LessonController:
-        arguments:
-          - '@security.authorization_checker'
-          - '@Claroline\AppBundle\Persistence\ObjectManager'
-          - '@twig'
-          - '@Claroline\AppBundle\API\Crud'
-          - '@Claroline\AppBundle\API\SerializerProvider'
-          - '@Claroline\AppBundle\Manager\PdfManager'
+          - '@Icap\LessonBundle\Manager\PdfManager'

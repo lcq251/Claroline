@@ -20,14 +20,12 @@ use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\File as FileResource;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Event\Resource\File\LoadFileEvent;
 use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -36,10 +34,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Integrates the File resource into Claroline.
  */
-class FileListener extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
+final class FileListener extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PlatformConfigurationHandler $config,
         private readonly ObjectManager $om,
         private readonly SerializerProvider $serializer,
@@ -55,20 +52,20 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     /** @param FileResource $resource */
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
-        $path = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
-
-        $loadEvent = new LoadFileEvent($resource, $path);
-        $this->eventDispatcher->dispatch($loadEvent, $this->generateEventName($resource->getResourceNode(), 'load'));
-
-        if (!$loadEvent->isPopulated()) {
-            // no listener found, try to dispatch the fallback event
-            $this->eventDispatcher->dispatch($loadEvent, $this->generateEventName($resource->getResourceNode(), 'load', true));
-        }
-
-        return array_merge([], $loadEvent->getData(), [
-            // we put event data first to be sure nobody override the file data
+        return [
             'file' => $this->serializer->serialize($resource),
-        ]);
+        ];
+    }
+
+    /** @param FileResource $resource */
+    public function download(AbstractResource $resource, FileBag $fileBag): void
+    {
+        if ($resource->getUrl() && $this->fileManager->exists($resource->getUrl())) {
+            $filePath = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getUrl();
+
+            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+            $fileBag->add($resource->getName().'.'.$ext, $filePath);
+        }
     }
 
     /** @param FileResource $resource */
@@ -97,16 +94,6 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
         $resource->setUrl($finalPath);
         $this->om->persist($resource);
         $this->om->flush();
-    }
-
-    /** @param FileResource $resource */
-    public function download(AbstractResource $resource): ?string
-    {
-        if ($this->fileManager->exists($resource->getHashName())) {
-            return $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$resource->getHashName();
-        }
-
-        return null;
     }
 
     /** @param FileResource $resource */
@@ -229,22 +216,5 @@ class FileListener extends ResourceComponent implements DownloadableResourceInte
     public function fromFile(File $file): ?array
     {
         return [];
-    }
-
-    private function generateEventName(ResourceNode $node, string $event, bool $useBaseType = false): string
-    {
-        $mimeType = $node->getMimeType();
-
-        if ($useBaseType) {
-            $mimeElements = explode('/', $mimeType);
-            $suffix = strtolower($mimeElements[0]);
-        } else {
-            $suffix = $mimeType;
-        }
-
-        $eventName = strtolower(str_replace('/', '_', $suffix));
-        $eventName = str_replace('"', '', $eventName);
-
-        return 'file.'.$eventName.'.'.$event;
     }
 }

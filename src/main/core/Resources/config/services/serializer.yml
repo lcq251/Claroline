@@ -101,10 +101,6 @@ services:
 
     Claroline\CoreBundle\API\Serializer\Resource\Types\FileSerializer:
         tags: [claroline.serializer]
-        arguments:
-            - '@router'
-            - '%claroline.param.files_directory%'
-            - '@event_dispatcher'
 
     Claroline\CoreBundle\API\Serializer\Resource\Types\DirectorySerializer:
         tags: [claroline.serializer]

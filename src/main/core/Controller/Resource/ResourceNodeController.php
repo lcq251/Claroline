@@ -7,19 +7,20 @@ use Claroline\AppBundle\API\Options;
 use Claroline\AppBundle\Controller\AbstractCrudController;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceRights;
-use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Resource\RightsManager;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\CoreBundle\Security\PlatformRoles;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * @deprecated Merge with ResourceController
+ */
 #[Route(path: '/resource', name: 'apiv2_resource_')]
 class ResourceNodeController extends AbstractCrudController
 {
@@ -45,7 +46,7 @@ class ResourceNodeController extends AbstractCrudController
 
     public function getIgnore(): array
     {
-        return ['list', 'update', 'create'];
+        return ['list', 'update', 'create', 'deleteBulk'];
     }
 
     #[Route(path: '/{id}/rights', name: 'get_rights', methods: ['GET'])]
@@ -98,22 +99,6 @@ class ResourceNodeController extends AbstractCrudController
         $results = $this->crud->search(static::getClass(), $finderQuery, $options['list'] ?? []);
 
         return $results->toResponse();
-    }
-
-    #[Route(path: '/{workspace}/removed', name: 'workspace_removed_list', methods: ['GET'])]
-    public function listRemovedAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        Request $request
-    ): JsonResponse {
-        return new JsonResponse(
-            $this->crud->list(ResourceNode::class,
-                array_merge($request->query->all(), ['hiddenFilters' => [
-                    'workspace' => $workspace->getUuid(),
-                    'active' => false,
-                ]])
-            )
-        );
     }
 
     public static function getOptions(): array
