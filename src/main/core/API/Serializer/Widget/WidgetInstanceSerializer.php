@@ -79,7 +79,7 @@ class WidgetInstanceSerializer
         }
 
         $this->sipe('type', 'setType', $data, $widgetInstanceConfig);
-        $this->sipe('source', 'setDataSource', $data, $widgetInstanceConfig);
+        $this->sipe('source', 'setDataSource', $data, $widgetInstance);
 
         /** @var Widget $widget */
         $widget = $this->om

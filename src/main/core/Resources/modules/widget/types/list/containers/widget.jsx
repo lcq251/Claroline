@@ -10,6 +10,7 @@ import {ListWidget as ListWidgetComponent} from '#/main/core/widget/types/list/c
 import {makeListWidgetReducer, selectors} from '#/main/core/widget/types/list/store'
 
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
+import {constants} from '#/main/app/content/pagination/constants'
 
 class Widget extends Component {
   shouldComponentUpdate(nextProps) {
@@ -18,7 +19,7 @@ class Widget extends Component {
 
   render() {
     const ListWidgetInstance = withReducer(selectors.STORE_NAME, makeListWidgetReducer(selectors.STORE_NAME, {
-      pagination: {pageSize: this.props.pageSize},
+      pagination: {pageSize: this.props.pageSize || constants.DEFAULT_PAGE_SIZE},
       filters: {filters: this.props.filters},
       sortBy: this.props.sorting
     }))(ListWidgetComponent)
