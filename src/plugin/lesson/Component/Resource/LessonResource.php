@@ -201,4 +201,9 @@ final class LessonResource extends ResourceComponent implements DownloadableReso
             ]],
         ];
     }
+
+    public function requireAdapter(): bool
+    {
+        return false;
+    }
 }

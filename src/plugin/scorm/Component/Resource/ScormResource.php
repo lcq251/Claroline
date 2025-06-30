@@ -261,4 +261,9 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         }
         rmdir($dirPath);
     }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
 }

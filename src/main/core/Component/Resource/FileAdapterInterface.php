@@ -4,13 +4,15 @@ namespace Claroline\CoreBundle\Component\Resource;
 
 use Symfony\Component\HttpFoundation\File\File;
 
-interface FileAdapterInterface
+interface FileAdapterInterface extends AdapterInterface
 {
-    public const UNSUPPORTED = 0;
-    public const SUPPORTED_PARTIAL = 1;
-    public const SUPPORTED = 2;
-
+    /**
+     * Check if the resource supports the submitted file.
+     */
     public function supportsFile(File $file): int;
 
+    /**
+     * Extract additional information from the file to populate the ressource at creation if any.
+     */
     public function fromFile(File $file): ?array;
 }

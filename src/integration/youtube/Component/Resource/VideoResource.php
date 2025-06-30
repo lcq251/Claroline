@@ -79,4 +79,9 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
             'resource' => $this->serializer->serialize($resource),
         ];
     }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
 }

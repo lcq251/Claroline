@@ -2,13 +2,15 @@
 
 namespace Claroline\CoreBundle\Component\Resource;
 
-interface UrlAdapterInterface
+interface UrlAdapterInterface extends AdapterInterface
 {
-    public const UNSUPPORTED = 0;
-    public const SUPPORTED_PARTIAL = 1;
-    public const SUPPORTED = 2;
-
+    /**
+     * Check if the resource supports the submitted url.
+     */
     public function supportsUrl(string $url): int;
 
+    /**
+     * Extract additional information from the URL to populate the ressource at creation if any.
+     */
     public function fromUrl(string $url): ?array;
 }

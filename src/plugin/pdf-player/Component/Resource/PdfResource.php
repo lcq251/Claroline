@@ -136,15 +136,14 @@ final class PdfResource extends ResourceComponent implements DownloadableResourc
     /** @param Pdf $resource */
     private function getAbsolutePath(AbstractResource $resource): string
     {
-        $resourceNode = $resource->getResourceNode();
-        $workspace = $resourceNode->getWorkspace();
-        $workspaceDir = 'WORKSPACE_'.$workspace->getId();
-
         return implode(DIRECTORY_SEPARATOR, [
             $this->fileManager->getDirectory(),
-            /*$workspaceDir,
-            'pdf',*/
             $resource->getUrl(),
         ]);
+    }
+
+    public function requireAdapter(): bool
+    {
+        return true;
     }
 }

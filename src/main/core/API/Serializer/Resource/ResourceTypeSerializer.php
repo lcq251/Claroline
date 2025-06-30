@@ -2,6 +2,7 @@
 
 namespace Claroline\CoreBundle\API\Serializer\Resource;
 
+use Claroline\CoreBundle\Component\Resource\AdapterInterface;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceProvider;
@@ -37,12 +38,16 @@ class ResourceTypeSerializer
         $evaluation = $resourceHandler instanceof EvaluatedResourceInterface;
 
         $adapters = [];
-        if ($resourceHandler instanceof FileAdapterInterface) {
-            $adapters[] = 'file';
-        }
+        $requireAdapter = false;
+        if ($resourceHandler instanceof AdapterInterface) {
+            $requireAdapter = $resourceHandler->requireAdapter();
+            if ($resourceHandler instanceof FileAdapterInterface) {
+                $adapters[] = 'file';
+            }
 
-        if ($resourceHandler instanceof UrlAdapterInterface) {
-            $adapters[] = 'url';
+            if ($resourceHandler instanceof UrlAdapterInterface) {
+                $adapters[] = 'url';
+            }
         }
 
         return [
@@ -53,6 +58,7 @@ class ResourceTypeSerializer
             'evaluation' => $evaluation,
             'downloadable' => $download,
             'adapters' => $adapters,
+            'requireAdapter' => $requireAdapter,
         ];
     }
 }

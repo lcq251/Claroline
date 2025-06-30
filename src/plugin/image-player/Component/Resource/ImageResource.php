@@ -141,4 +141,9 @@ final class ImageResource extends ResourceComponent implements DownloadableResou
     {
         return [];
     }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
 }

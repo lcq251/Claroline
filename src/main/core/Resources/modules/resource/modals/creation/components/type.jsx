@@ -48,7 +48,7 @@ const CreationType = props => {
                   type: CALLBACK_BUTTON,
                   callback: () => {
                     props.startCreation(resourceType.name)
-                    if (!isEmpty(resourceType.adapters)) {
+                    if (!isEmpty(resourceType.adapters) && resourceType.requireAdapter) {
                       if (1 === resourceType.adapters.length) {
                         props.changeStep(resourceType.adapters[0])
                       } else {

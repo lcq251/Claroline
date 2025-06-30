@@ -106,4 +106,9 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
 
         return [];
     }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
 }

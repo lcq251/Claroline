@@ -19,8 +19,6 @@ use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\File as FileResource;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
-use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
@@ -29,7 +27,6 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Integrates the File resource into Claroline.
@@ -171,36 +168,8 @@ final class FileListener extends ResourceComponent implements DownloadableResour
             $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$hashName
         );
 
-        $copy->setHashName($hashName);
+        $copy->setUrl($hashName);
         $copy->setSize($original->getSize());
-    }
-
-    /**
-     * Changes actual file associated to File resource.
-     */
-    public function onFileChange(ResourceActionEvent $event): void
-    {
-        /** @var FileResource $file */
-        $file = $event->getResource();
-        $node = $event->getResourceNode();
-        $data = $event->getData();
-
-        if ($file && !empty($data) && !empty($data['file'])) {
-            $file->setUrl($data['file']['url']);
-            $file->setSize($data['file']['size']);
-
-            $file->setMimeType($data['file']['mimeType']);
-            $node->setMimeType($data['file']['mimeType']);
-            $node->setModificationDate(new \DateTime());
-
-            $this->om->persist($file);
-            $this->om->persist($node);
-            $this->om->flush();
-        }
-
-        $event->setResponse(
-            new JsonResponse($this->serializer->serialize($node))
-        );
     }
 
     public function supportsFile(File $file): int
@@ -216,5 +185,10 @@ final class FileListener extends ResourceComponent implements DownloadableResour
     public function fromFile(File $file): ?array
     {
         return [];
+    }
+
+    public function requireAdapter(): bool
+    {
+        return true;
     }
 }

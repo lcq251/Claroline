@@ -48,4 +48,9 @@ class UrlResource extends ResourceComponent implements UrlAdapterInterface
             'raw' => $url,
         ];
     }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
 }
