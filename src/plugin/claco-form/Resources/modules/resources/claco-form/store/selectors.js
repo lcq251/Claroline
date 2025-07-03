@@ -168,7 +168,7 @@ const canAddEntry = createSelector(
   myEntriesCount,
   (resourceNode, managed, params, myEntriesCount) => {
     return managed
-      || (hasPermission('add-entry', resourceNode) && (!params.max_entries || myEntriesCount < params.max_entries))
+      || (hasPermission('contribute', resourceNode) && (!params.max_entries || myEntriesCount < params.max_entries))
   }
 )
 
@@ -201,9 +201,9 @@ const canViewMetadata = createSelector(
 )
 
 
-const canGeneratePdf = createSelector(
-  [resource],
-  (resource) => resource.canGeneratePdf
+const canDownload = createSelector(
+  [resourceSelect.downloadable],
+  (downloadable) => downloadable
 )
 
 const message = createSelector(
@@ -242,7 +242,7 @@ export const selectors = {
   isCategoryManager,
   categories,
   usedCountries,
-  canGeneratePdf,
+  canDownload,
   message,
   listConfiguration,
   showEntryNav,

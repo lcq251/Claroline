@@ -19,7 +19,7 @@ const Entry = withRouter(connect(
     canEdit: selectors.canEditCurrentEntry(state),
     canViewEntry: selectors.canOpenCurrentEntry(state),
     canAdministrate: selectors.canManageCurrentEntry(state),
-    canGeneratePdf: selectors.canGeneratePdf(state),
+    canDownload: selectors.canDownload(state),
 
     fields: selectors.visibleFields(state),
     helpMessage: selectors.params(state).helpMessage,

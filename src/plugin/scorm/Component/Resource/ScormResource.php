@@ -126,7 +126,10 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     public function export(AbstractResource $resource, FileBag $fileBag): ?array
     {
         // get the file path
-        $fileBag->add($resource->getUrl(), $this->getScormArchive($resource));
+        $archivePath = $this->getScormArchive($resource);
+        if ($archivePath && $this->fileManager->exists($archivePath, true)) {
+            $fileBag->add($resource->getUrl(), $archivePath);
+        }
 
         return [];
     }
@@ -184,7 +187,7 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         $event->setResponse(new JsonResponse($this->serializer->serialize($node)));
     }
 
-    private function getScormArchive(Scorm $scorm): string
+    private function getScormArchive(Scorm $scorm): ?string
     {
         $workspace = $scorm->getResourceNode()->getWorkspace();
         $ds = DIRECTORY_SEPARATOR;
@@ -195,6 +198,9 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         }
 
         $uploadArchiveLocation = $this->uploadDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getHashName();
+        if (!file_exists($uploadArchiveLocation)) {
+            return null;
+        }
 
         if (!is_dir($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid())) {
             mkdir($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid());

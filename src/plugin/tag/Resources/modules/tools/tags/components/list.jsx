@@ -74,7 +74,8 @@ const TagList = () => {
               name: 'elements',
               type: 'number',
               label: trans('elements', {}, 'tag'),
-              displayed: true
+              displayed: true,
+              sortable: false
             }
           ]}
           card={TagCard}

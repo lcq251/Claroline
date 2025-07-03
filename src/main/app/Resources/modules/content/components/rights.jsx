@@ -124,69 +124,73 @@ const RolePermissions = props => {
       return 0
     })
 
+  console.log(props.permissions)
+  console.log(allPerms)
+
   return (
-  <li className="list-group-item d-flex flex-row flex-wrap gap-3 px-0">
-    <DataMicro object={{
-      name: trans(props.translationKey)
-    }} />
+    <li className="list-group-item d-flex flex-row flex-wrap gap-3 px-0">
+      <DataMicro object={{
+        name: trans(props.translationKey)
+      }} />
 
-    <div className="ms-auto gap-1 d-flex flex-row fs-sm">
-      {allPerms.map((permission) =>
-        <TooltipOverlay key={permission} tip={(
-          <ul className="w-100 text-start mb-0 ps-2">
-            {props.permissions[permission].actions.map(action =>
-              <li key={action}>{action}</li>
-            )}
-          </ul>
-        )}>
-          {('create' !== permission || isEmpty(props.creatable)) ?
-            <div role="presentation">
-              <input
-                className="btn-check"
-                type="checkbox"
-                id={`${permission}-${props.name}`}
-                checked={props.currentPermissions[permission]}
-                disabled={!props.editable}
-                onChange={() => props.update(merge({}, props.currentPermissions, {[permission]: !props.currentPermissions[permission]}))}
+      <div className="ms-auto gap-1 d-flex flex-row fs-sm">
+        {allPerms.map((permission) => {
+          return (
+          <TooltipOverlay key={permission} tip={(
+            <ul className="w-100 text-start mb-0 ps-2">
+              {props.permissions[permission].actions.map(action =>
+                <li key={action}>{action}</li>
+              )}
+            </ul>
+          )}>
+            {('create' !== permission || isEmpty(props.creatable)) ?
+              <div role="presentation">
+                <input
+                  className="btn-check"
+                  type="checkbox"
+                  id={`${permission}-${props.name}`}
+                  checked={props.currentPermissions[permission]}
+                  disabled={!props.editable}
+                  onChange={() => props.update(merge({}, props.currentPermissions, {[permission]: !props.currentPermissions[permission]}))}
+                />
+
+                <label
+                  className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
+                    'border-primary text-primary-emphasis bg-primary-subtle': props.currentPermissions[permission]
+                  })}
+                  htmlFor={`${permission}-${props.name}`}
+                >
+                  {trans(permission, {}, 'actions')}
+                </label>
+              </div>
+              :
+              <CreatePermission
+                key={permission}
+                id={props.name}
+                permission={props.currentPermissions[permission]}
+                editable={props.editable}
+                creatable={props.creatable}
+                onChange={(creationPerms) => {
+                  const newPerms = merge({}, props.currentPermissions)
+                  newPerms.create = creationPerms
+
+                  props.update(newPerms)
+                }}
               />
+            }
+          </TooltipOverlay>)}
+        )}
+      </div>
 
-              <label
-                className={classes('py-1 px-2 border focus-ring btn btn-text-body btn-sm', {
-                  'border-primary text-primary-emphasis bg-primary-subtle': props.permissions[permission]
-                })}
-                htmlFor={`${permission}-${props.name}`}
-              >
-                {trans(permission, {}, 'actions')}
-              </label>
-            </div>
-            :
-            <CreatePermission
-              key={permission}
-              id={props.name}
-              permission={props.currentPermissions[permission]}
-              editable={props.editable}
-              creatable={props.creatable}
-              onChange={(creationPerms) => {
-                const newPerms = merge({}, props.currentPermissions)
-                newPerms.create = creationPerms
-
-                props.update(newPerms)
-              }}
-            />
-          }
-        </TooltipOverlay>
-      )}
-    </div>
-
-    <Button
-      variant="btn btn-link mx-n2"
-      type={CALLBACK_BUTTON}
-      label={trans('remove', {}, 'actions')}
-      callback={props.delete}
-      disabled={!props.editable}
-      size="sm"
-    />
-  </li>
+      <Button
+        variant="btn btn-link mx-n2"
+        type={CALLBACK_BUTTON}
+        label={trans('remove', {}, 'actions')}
+        callback={props.delete}
+        disabled={!props.editable}
+        size="sm"
+      />
+    </li>
   )
 }
 

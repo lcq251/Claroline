@@ -222,10 +222,7 @@ abstract class RepositoryTestCase extends WebTestCase
         $rights->setRole($role);
         $rights->setResourceNode($resource->getResourceNode());
         $rights->setMask($mask);
-
-        foreach ($creatableResourceTypes as $type) {
-            $rights->addCreatableResourceType($type);
-        }
+        $rights->setCreatableResourceTypes($creatableResourceTypes);
 
         self::create("resource_right/{$role->getName()}-{$resource->getResourceNode()->getName()}", $rights);
     }

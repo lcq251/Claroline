@@ -81,12 +81,11 @@ class DatabaseWriter implements LoggerAwareInterface
             return null;
         }
 
-        $this->em->persist($plugin);
         $this->logger->debug('Configuration was retrieved: updating...');
 
-        $this->em->startFlushSuite();
+        $this->em->persist($plugin);
         $this->updateConfiguration($pluginConfiguration, $plugin, $pluginBundle);
-        $this->em->endFlushSuite();
+        $this->em->flush();
 
         return $plugin;
     }
@@ -377,7 +376,6 @@ class DatabaseWriter implements LoggerAwareInterface
         $this->mm->createDefaultResourceMaskDecoders($resourceType);
 
         $newActions = [];
-
         if (!empty($resourceConfiguration['resource_rights'])) {
             $newActions = $resourceConfiguration['resource_rights'];
             $this->mm->createCustomResourceMaskDecoders($resourceType, $newActions);

@@ -255,7 +255,7 @@ PaperComponent.propTypes = {
 const Paper = withRouter(
   connect(
     (state) => {
-      const admin = hasPermission('edit', resourceSelect.resourceNode(state)) || hasPermission('manage_papers', resourceSelect.resourceNode(state))
+      const admin = hasPermission('edit', resourceSelect.resourceNode(state)) || hasPermission('follow', resourceSelect.resourceNode(state))
       const paper = selectors.currentPaper(state)
 
       return ({

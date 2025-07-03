@@ -15,10 +15,7 @@ const reducer = combineReducers({
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.categories || state,
   }),
   entries: entriesReducer,
-  stats: statsReducer,
-  canGeneratePdf: makeReducer(false, {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.canGeneratePdf || state
-  })
+  stats: statsReducer
 })
 
 export {

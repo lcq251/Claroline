@@ -4,18 +4,14 @@ import omit from 'lodash/omit'
 import cloneDeep from 'lodash/cloneDeep'
 
 import {trans} from '#/main/app/intl/translation'
-import {Button} from '#/main/app/action/components/button'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {FormData} from '#/main/app/content/form/containers/data'
 import {FormGroup} from '#/main/app/content/form/components/group'
 import {DataInput} from '#/main/app/data/components/input'
 import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
 
-import {selectors} from '#/plugin/claco-form/modals/category/store/selectors'
 import {Category as CategoryTypes} from '#/plugin/claco-form/resources/claco-form/prop-types'
+import {FormModal} from '#/main/app/data/modals/form/components/modal'
 
 const supportedTypes = ['number', 'string', 'choice', 'country', 'cascade']
 
@@ -88,9 +84,8 @@ class FieldsValues extends Component {
           onChange={(value) => this.setState({selectedField: value})}
         />
         <CallbackButton
-          className="btn"
+          className="btn btn-body mt-2"
           callback={() => this.addField(this.props.fields.find(f => f.id === this.state.selectedField))}
-          primary={true}
           disabled={!this.state.selectedField}
         >
           {trans('add', {}, 'actions')}
@@ -128,100 +123,90 @@ const CategoryFormModal = props => {
   )
 
   return (
-    <Modal
-      {...omit(props, 'saveEnabled', 'formData', 'fields', 'category', 'loadCategory', 'saveCategory', 'updateProp')}
-      icon="fa fa-fw fa-object-group"
-      title={trans('category')}
-      subtitle={(props.category && props.category.name) || trans('new_category')}
-      onEntering={() => props.loadCategory(props.category)}
-      size="lg"
-    >
-      <FormData
-        name={selectors.STORE_NAME}
-        flush={true}
-        definition={[
-          {
-            id: 'general',
-            title: trans('general'),
-            primary: true,
-            fields: [
-              {
-                name: 'name',
-                type: 'string',
-                label: trans('name'),
-                required: true
-              }, {
-                name: 'managers',
-                label: trans('managers'),
-                type: 'user',
-                options: {multiple: true}
-              }
-            ]
-          }, {
-            id: 'fields',
-            icon: 'fa fa-fw fa-link',
-            title: trans('fields_associations', {}, 'clacoform'),
-            fields: [
-              {
-                name: 'fieldsValues',
-                label: trans('fields_associations', {}, 'clacoform'),
-                hideLabel: true,
-                component: FieldsValuesComponent
-              }
-            ]
-          }, {
-            id: 'notifications',
-            icon: 'fa fa-fw fa-bell',
-            title: trans('notifications'),
-            fields: [
-              {
-                name: 'notifications',
-                label: trans('notified_actions'),
-                type: 'choice',
-                options: {
-                  multiple: true,
-                  inline: false,
-                  choices: {
-                    notify_addition: trans('addition', {}, 'clacoform'),
-                    notify_edition: trans('edition'),
-                    notify_removal: trans('removal', {}, 'clacoform')
-                  }
-                },
-                calculated: (category) => [
-                  'notify_addition',
-                  'notify_edition',
-                  'notify_removal'
-                ].filter(prop => category && category.details && category.details[prop]),
-                onChange: (value) => {
-                  props.updateProp('details.notify_addition', -1 !== value.indexOf('notify_addition'))
-                  props.updateProp('details.notify_edition', -1 !== value.indexOf('notify_edition'))
-                  props.updateProp('details.notify_removal', -1 !== value.indexOf('notify_removal'))
+    <FormModal
+      {...omit(props, 'formData', 'fields', 'category', 'saveCategory', 'updateProp')}
+      name="clacoFormCategoryForm"
+      title={trans(props.isNew ? 'new_category' : 'category', {}, 'clacoform')}
+      subtitle={props.isNew ? trans('new_category_desc', {}, 'clacoform') : undefined}
+      saveLabel={trans(props.isNew ? 'add_category' : 'save_category', {}, 'actions')}
+      data={props.category || {
+        name: '',
+        managers: [],
+        details: {
+          color: '',
+          notify_addition: true,
+          notify_edition: true,
+          notify_removal: true
+        },
+        fieldsValues: []
+      }}
+      definition={[
+        {
+          id: 'general',
+          title: trans('general'),
+          primary: true,
+          fields: [
+            {
+              name: 'name',
+              type: 'string',
+              label: trans('name'),
+              required: true
+            }, {
+              name: 'managers',
+              label: trans('managers'),
+              type: 'user',
+              options: {multiple: true}
+            }
+          ]
+        }, {
+          id: 'fields',
+          icon: 'fa fa-fw fa-link',
+          title: trans('fields_associations', {}, 'clacoform'),
+          fields: [
+            {
+              name: 'fieldsValues',
+              label: trans('fields_associations', {}, 'clacoform'),
+              hideLabel: true,
+              component: FieldsValuesComponent
+            }
+          ]
+        }, {
+          id: 'notifications',
+          icon: 'fa fa-fw fa-bell',
+          title: trans('notifications'),
+          fields: [
+            {
+              name: 'notifications',
+              label: trans('notified_actions'),
+              type: 'choice',
+              options: {
+                multiple: true,
+                inline: false,
+                choices: {
+                  notify_addition: trans('addition', {}, 'clacoform'),
+                  notify_edition: trans('edition'),
+                  notify_removal: trans('removal', {}, 'clacoform')
                 }
+              },
+              calculated: (category) => [
+                'notify_addition',
+                'notify_edition',
+                'notify_removal'
+              ].filter(prop => category && category.details && category.details[prop]),
+              onChange: (value) => {
+                props.updateProp('details.notify_addition', -1 !== value.indexOf('notify_addition'))
+                props.updateProp('details.notify_edition', -1 !== value.indexOf('notify_edition'))
+                props.updateProp('details.notify_removal', -1 !== value.indexOf('notify_removal'))
               }
-            ]
-          }
-        ]}
-      />
-
-      <Button
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        type={CALLBACK_BUTTON}
-        primary={true}
-        label={trans('add', {}, 'actions')}
-        disabled={!props.saveEnabled}
-        callback={() => {
-          props.saveCategory(props.formData)
-          props.fadeModal()
-        }}
-      />
-    </Modal>
+            }
+          ]
+        }
+      ]}
+    />
   )
 }
 
 CategoryFormModal.propTypes = {
-  saveEnabled: T.bool.isRequired,
   formData: T.shape(
     CategoryTypes.propTypes
   ),
@@ -232,8 +217,7 @@ CategoryFormModal.propTypes = {
     // field propTypes
   })),
   updateProp: T.func.isRequired,
-  loadCategory: T.func.isRequired,
-  saveCategory: T.func.isRequired,
+  onSave: T.func.isRequired,
   fadeModal: T.func.isRequired
 }
 

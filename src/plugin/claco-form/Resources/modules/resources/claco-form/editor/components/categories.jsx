@@ -66,13 +66,12 @@ const EditorCategories = () => {
     >
       {isEmpty(categories) &&
         <ContentPlaceholder
-          className="mb-3"
           title={trans('no_category', {}, 'clacoform')}
         />
       }
 
       {!isEmpty(categories) &&
-        <ul className="list-group mb-3">
+        <ul className="list-group mb-0">
           {categories.map(category =>
             <li key={category.id} className="list-group-item d-flex gap-3 justify-content-between align-items-center">
               {category.name}
@@ -84,12 +83,12 @@ const EditorCategories = () => {
                 actions={[
                   {
                     name: 'edit',
-                    label: trans('edit', 'actions'),
+                    label: trans('edit', {}, 'actions'),
                     type: MODAL_BUTTON,
                     modal: [MODAL_CATEGORY_FORM, {
                       category: category,
                       fields: clacoForm.fields,
-                      saveCategory: updateCategory
+                      onSave: updateCategory
                     }]
                   }, {
                     name: 'delete',
@@ -106,12 +105,13 @@ const EditorCategories = () => {
 
       <Button
         type={MODAL_BUTTON}
-        className="btn btn-primary w-100 mb-3"
+        className="btn btn-primary w-100"
         size="lg"
-        label={trans('add_category', {}, 'clacoform')}
+        label={trans('add_category', {}, 'actions')}
         modal={[MODAL_CATEGORY_FORM, {
+          isNew: true,
           fields: clacoForm.fields,
-          saveCategory: addCategory
+          onSave: addCategory
         }]}
         primary={true}
       />

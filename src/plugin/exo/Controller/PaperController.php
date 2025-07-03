@@ -94,7 +94,7 @@ class PaperController
     #[Route(path: '', name: 'ujm_exercise_delete_papers', methods: ['DELETE'])]
     public function deleteAction(#[MapEntity(mapping: ['exerciseId' => 'uuid'])] Exercise $exercise, Request $request): JsonResponse
     {
-        $this->assertHasPermission('MANAGE_PAPERS', $exercise);
+        $this->assertHasPermission('FOLLOW', $exercise);
 
         $papers = $this->decodeIdsString($request, Paper::class);
         $this->paperManager->delete($papers);
@@ -108,7 +108,7 @@ class PaperController
     #[Route(path: '/export/csv', name: 'exercise_papers_export', methods: ['GET'])]
     public function exportCsvAction(#[MapEntity(mapping: ['exerciseId' => 'uuid'])] Exercise $exercise): StreamedResponse
     {
-        $this->assertHasPermission('MANAGE_PAPERS', $exercise);
+        $this->assertHasPermission('FOLLOW', $exercise);
 
         return new StreamedResponse(function () use ($exercise): void {
             $this->exerciseManager->exportPapersToCsv($exercise);
@@ -167,7 +167,7 @@ class PaperController
     private function isAdmin(Exercise $exercise): bool
     {
         return $this->authorization->isGranted('ADMINISTRATE', $exercise->getResourceNode())
-            || $this->authorization->isGranted('MANAGE_PAPERS', $exercise->getResourceNode());
+            || $this->authorization->isGranted('FOLLOW', $exercise->getResourceNode());
     }
 
     private function assertHasPermission($permission, Exercise $exercise): void

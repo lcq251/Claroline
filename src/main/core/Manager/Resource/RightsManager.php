@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Manager\Resource;
 
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\MaskDecoder;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
@@ -32,6 +33,7 @@ class RightsManager
         private readonly Connection $conn,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
+        private readonly SerializerProvider $serializer,
         private readonly MaskManager $maskManager,
         private readonly WorkspaceManager $workspaceManager
     ) {
@@ -92,9 +94,10 @@ class RightsManager
             $new->setRole($originalRight->getRole());
             $new->setResourceNode($node);
             $new->setMask($originalRight->getMask());
-            $new->setCreatableResourceTypes($originalRight->getCreatableResourceTypes()->toArray());
-            $this->om->persist($new);
+            $new->setCreatableResourceTypes($originalRight->getCreatableResourceTypes());
             $node->addRight($new);
+
+            $this->om->persist($new);
         }
         $this->om->endFlushSuite();
 
@@ -111,37 +114,8 @@ class RightsManager
      */
     public function getRights(ResourceNode $resourceNode): array
     {
-        return array_map(function (ResourceRights $rights) use ($resourceNode) {
-            $role = $rights->getRole();
-            $permissions = $this->maskManager->decodeMask($rights->getMask(), $resourceNode->getResourceType());
-
-            if ('directory' === $resourceNode->getResourceType()->getName()) {
-                // ugly hack to only get create rights for directories (it's the only one that can handle it).
-                $permissions = array_merge($permissions, [
-                    'create' => array_map(function (ResourceType $creatableType) {
-                        return $creatableType->getName();
-                    }, $rights->getCreatableResourceTypes()->toArray()),
-                ]);
-            }
-
-            // TODO : do not flatten role data. Use RoleSerializer instead
-            $data = [
-                'id' => $rights->getId(),
-                'name' => $role->getName(),
-                'translationKey' => $role->getTranslationKey(),
-                'permissions' => $permissions,
-                'workspace' => null,
-            ];
-
-            if ($role->getWorkspace()) {
-                $data['workspace'] = [
-                    'id' => $role->getWorkspace()->getUuid(),
-                    'code' => $role->getWorkspace()->getCode(),
-                    'name' => $role->getWorkspace()->getName(),
-                ];
-            }
-
-            return $data;
+        return array_map(function (ResourceRights $rights) {
+            return $this->serializer->serialize($rights);
         }, $resourceNode->getRights()->toArray());
     }
 
@@ -216,63 +190,38 @@ class RightsManager
 
     private function getCreatableTypes(array $roles, ResourceNode $node): array
     {
-        $creationRights = $this->rightsRepo->findCreationRights($roles, $node);
-
-        return array_map(function (array $type) {
-            return $type['name'];
-        }, $creationRights);
+        return $this->rightsRepo->findCreationRights($roles, $node);
     }
 
     private function singleUpdate(ResourceNode $node, Role $role, ?int $mask = 1, ?array $types = []): void
     {
-        $sql = "
-            INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id)
-            VALUES ({$role->getId()}, {$mask}, {$node->getId()})
-            ON DUPLICATE KEY UPDATE mask = {$mask};
-        ";
+        $creationTypes = '';
+        if (!empty($types)) {
+            $allTypes = $this->om->getRepository(ResourceType::class)->findAll();
+            $creationTypes = json_encode(array_reduce($allTypes, function (array $acc, ResourceType $type) use ($types) {
+                if (in_array($type->getName(), $types)) {
+                    $acc[] = $type->getName();
+                }
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->executeQuery();
-
-        $sql = "
-            DELETE list FROM claro_list_type_creation list
-            JOIN claro_resource_rights rights ON list.resource_rights_id = rights.id
-            JOIN claro_role role ON rights.role_id = role.id
-            JOIN claro_resource_node node ON rights.resourceNode_id = node.id
-            WHERE node.id = {$node->getId()}
-            AND role.id = {$role->getId()}
-        ";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->executeQuery();
-
-        if (0 === count($types)) {
-            return;
+                return $acc;
+            }, []), true);
         }
 
-        $typeList = array_map(function ($type) {
-            return $type instanceof ResourceType ? $type->getName() : $type;
-        }, $types);
-
-        $sql = "
-            INSERT INTO claro_list_type_creation (resource_rights_id, resource_type_id)
-                SELECT r.id as rid, t.id as tid FROM (
-                SELECT rights.id
-                FROM claro_resource_rights rights
-                JOIN claro_resource_node node ON rights.resourceNode_id = node.id
-                JOIN claro_role role ON rights.role_id = role.id
-                WHERE node.id = {$node->getId()}
-                AND role.id = {$role->getId()}
-            ) AS r, (
-                SELECT id
-                FROM claro_resource_type
-                WHERE name IN
-                (?)
-            ) AS t GROUP BY tid
-        ";
+        if (!empty($creationTypes)) {
+            $sql = "
+                INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id, creatableTypes)
+                VALUES ({$role->getId()}, $mask, {$node->getId()}, '$creationTypes')
+                ON DUPLICATE KEY UPDATE mask = $mask, creatableTypes = '$creationTypes'
+            ";
+        } else {
+            $sql = "
+                INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id, creatableTypes)
+                VALUES ({$role->getId()}, $mask, {$node->getId()}, NULL)
+                ON DUPLICATE KEY UPDATE mask = $mask, creatableTypes = NULL
+            ";
+        }
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(1, $typeList);
         $stmt->executeQuery();
     }
 
@@ -282,7 +231,19 @@ class RightsManager
         // default actions should be set in stone with that way of doing it
         $fullDirectoryMask = pow(2, count(MaskDecoder::DEFAULT_ACTIONS)) - 1;
 
-        /**
+        $creationTypes = '';
+        if (!empty($types)) {
+            $allTypes = $this->om->getRepository(ResourceType::class)->findAll();
+            $creationTypes = json_encode(array_reduce($allTypes, function (array $acc, ResourceType $type) use ($types) {
+                if (in_array($type->getName(), $types)) {
+                    $acc[] = $type->getName();
+                }
+
+                return $acc;
+            }, []), true);
+        }
+
+        /*
          * For complexes resources the bits look like this.
          *
          * common      | custom
@@ -296,61 +257,26 @@ class RightsManager
          * the php equivalent would be
          *  newMask | oldMask &~ $fullDirectoryMask
          */
-        $sql = "
-            INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id)
-            SELECT {$role->getId()}, {$mask}, node.id FROM claro_resource_node node
-            WHERE node.path LIKE ?
-            ON DUPLICATE KEY UPDATE mask = {$mask} | mask &~ {$fullDirectoryMask};
-        ";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(1, $node->getPath().'%', \PDO::PARAM_STR);
-        $stmt->executeQuery();
-
-        $sql = "
-            DELETE list FROM claro_list_type_creation list
-            JOIN claro_resource_rights rights ON list.resource_rights_id = rights.id
-            JOIN claro_role role ON rights.role_id = role.id
-            JOIN claro_resource_node node ON rights.resourceNode_id = node.id
-            WHERE node.path LIKE ?
-            AND role.id = {$role->getId()}
-        ";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(1, $node->getPath().'%', \PDO::PARAM_STR);
-        $stmt->executeQuery();
-
-        if (0 === count($types)) {
-            return;
+        if (!empty($creationTypes)) {
+            $sql = "
+                INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id, creatableTypes)
+                SELECT {$role->getId()}, {$mask}, node.id, '$creationTypes' AS creatableTypes
+                FROM claro_resource_node node
+                WHERE node.path LIKE ?
+                ON DUPLICATE KEY UPDATE mask = {$mask} | mask &~ {$fullDirectoryMask}, creatableTypes = '$creationTypes';
+            ";
+        } else {
+            $sql = "
+                INSERT INTO claro_resource_rights (role_id, mask, resourceNode_id, creatableTypes)
+                SELECT {$role->getId()}, {$mask}, node.id, NULL AS creatableTypes 
+                FROM claro_resource_node node
+                WHERE node.path LIKE ?
+                ON DUPLICATE KEY UPDATE mask = {$mask} | mask &~ {$fullDirectoryMask}, creatableTypes = NULL;
+            ";
         }
 
-        $typeList = array_map(function ($type) {
-            return $type->getName();
-        }, $types);
-
-        $sql = "
-            INSERT IGNORE INTO claro_list_type_creation (resource_rights_id, resource_type_id)
-                SELECT r.id as rid, t.id as tid 
-                FROM (
-                    SELECT rights.id
-                    FROM claro_resource_rights AS rights
-                    JOIN claro_resource_node AS node ON rights.resourceNode_id = node.id
-                    JOIN claro_role role ON rights.role_id = role.id
-                    JOIN claro_resource_type AS rType on node.resource_type_id = rType.id
-                    WHERE node.path LIKE ?
-                    AND role.id = {$role->getId()}
-                    AND rType.name = 'directory'
-                ) as r, (
-                    SELECT id
-                    FROM claro_resource_type
-                    WHERE name IN
-                    (?)
-                ) as t
-        ";
-
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(1, $node->getPath().'%');
-        $stmt->bindValue(2, $typeList);
+        $stmt->bindValue(1, $node->getPath().'%', \PDO::PARAM_STR);
         $stmt->executeQuery();
     }
 }

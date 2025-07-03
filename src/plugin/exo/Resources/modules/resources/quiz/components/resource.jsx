@@ -47,39 +47,39 @@ const QuizResource = props =>
         target: `${props.path}/papers`,
         exact: true
       }, {
-        name: 'results-cvs',
+        name: 'results-csv',
         type: URL_BUTTON,
         icon: 'fa fa-fw fa-file-csv',
         label: trans('export_csv_results', {}, 'quiz'),
-        displayed: props.papersAdmin,
+        displayed: props.canFollow,
         target: ['exercise_papers_export', {exerciseId: props.quizId}],
         group: trans('transfer')
       }, {
         type: URL_BUTTON,
         icon: 'fa fa-fw fa-file-csv',
         label: trans('export_csv_answers', {}, 'quiz'),
-        displayed: props.papersAdmin,
+        displayed: props.canFollow,
         target: ['exercise_papers_export_csv', {exerciseId: props.quizId}],
         group: trans('transfer')
       }, {
         type: URL_BUTTON,
         icon: 'fa fa-fw fa-file-code',
         label: trans('export_json_answers', {}, 'quiz'),
-        displayed: props.papersAdmin,
+        displayed: props.canFollow,
         target: ['exercise_papers_export_json', {exerciseId: props.quizId}],
         group: trans('transfer')
       }, {
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-check-square',
         label: trans('correct', {}, 'actions'),
-        displayed: props.papersAdmin,
+        displayed: props.canFollow,
         target: `${props.path}/correction`,
         group: trans('management')
       }, {
         type: LINK_BUTTON,
         icon: 'fa fa-fw fa-bar-chart',
         label: trans('show-statistics', {}, 'actions'),
-        displayed: props.papersAdmin && props.showStatistics, // props.docimologyAdmin
+        displayed: props.canFollow && props.showStatistics,
         target: `${props.path}/statistics`
       }
     ]}
@@ -106,11 +106,11 @@ const QuizResource = props =>
       }, {
         path: '/correction',
         component: CorrectionMain,
-        disabled: !props.papersAdmin
+        disabled: !props.canFollow
       }, {
         path: '/statistics',
         component: StatisticsMain,
-        disabled: !props.papersAdmin && !props.showStatistics // !props.docimologyAdmin
+        disabled: !props.canFollow && !props.showStatistics
       }
     ]}
     redirect={[
@@ -128,8 +128,7 @@ QuizResource.propTypes = {
   quizId: T.string,
   empty: T.bool.isRequired,
   editable: T.bool.isRequired,
-  papersAdmin: T.bool.isRequired,
-  docimologyAdmin: T.bool.isRequired,
+  canFollow: T.bool.isRequired,
   showStatistics: T.bool.isRequired,
   registeredUser: T.bool.isRequired,
   hasOverview: T.bool.isRequired,

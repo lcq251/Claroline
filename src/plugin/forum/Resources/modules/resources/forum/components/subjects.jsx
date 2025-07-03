@@ -16,18 +16,7 @@ import {selectors} from '#/plugin/forum/resources/forum/store'
 import {actions} from '#/plugin/forum/resources/forum/store'
 import {SubjectCard} from '#/plugin/forum/data/components/subject-card'
 import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
-
-function canEdit(subject, moderator = false, currentUser = null) {
-  if (moderator) {
-    return true
-  }
-
-  if (!currentUser) {
-    return false
-  }
-
-  return get(subject, 'meta.creator.id') === get(currentUser, 'id')
-}
+import {hasPermission} from '#/main/app/security'
 
 const SubjectsList = (props) =>
   <ListData
@@ -39,7 +28,7 @@ const SubjectsList = (props) =>
     }}
     delete={{
       url: ['apiv2_forum_subject_delete'],
-      displayed: (rows) => -1 !== rows.findIndex(row => canEdit(row, props.moderator, props.currentUser))
+      displayed: (rows) => -1 !== rows.findIndex(row => hasPermission('delete', row))
     }}
     primaryAction={(subject) => ({
       type: LINK_BUTTON,
@@ -129,21 +118,21 @@ const SubjectsList = (props) =>
           subject: rows[0],
           forumId: get(props.forum, 'id')
         }],
-        displayed: canEdit(rows[0], props.moderator, props.currentUser)
+        displayed: hasPermission('edit', rows[0])
       }, {
         name: 'pin',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-thumb-tack',
         label: trans('stick', {}, 'forum'),
         callback: () => props.stickSubject(rows[0]),
-        displayed: !rows[0].meta.sticky && props.moderator
+        displayed: !rows[0].meta.sticky && hasPermission('follow', props.resourceNode)
       }, {
         name: 'unpin',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-thumb-tack',
         label: trans('unstick', {}, 'forum'),
         callback: () => props.unStickSubject(rows[0]),
-        displayed: rows[0].meta.sticky && props.moderator
+        displayed: rows[0].meta.sticky && hasPermission('follow', props.resourceNode)
       }, {
         name: 'flag',
         type: CALLBACK_BUTTON,
@@ -157,7 +146,7 @@ const SubjectsList = (props) =>
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-flag',
         label: trans('unflag', {}, 'forum'),
-        displayed: rows[0].meta.flagged && props.moderator,
+        displayed: rows[0].meta.flagged && hasPermission('follow', props.resourceNode),
         callback: () => props.unFlagSubject(rows[0]),
         scope: ['object']
       }, {
@@ -166,7 +155,7 @@ const SubjectsList = (props) =>
         icon: 'fa fa-fw fa-circle-xmark',
         label: trans('close_subject', {}, 'forum'),
         callback: () => props.closeSubject(rows[0]),
-        displayed: -1 !== rows.findIndex(row => !row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
+        displayed: -1 !== rows.findIndex(row => !row.meta.closed && hasPermission('edit', rows[0])),
         scope: ['object'],
         confirm: {
           message: trans('close_subject_confirm', {}, 'forum'),
@@ -178,7 +167,7 @@ const SubjectsList = (props) =>
         icon: 'fa fa-fw fa-arrow-up-right-from-square',
         label: trans('open_subject', {}, 'forum'),
         callback: () => props.unCloseSubject(rows[0]),
-        displayed: -1 !== rows.findIndex(row => row.meta.closed && canEdit(rows[0], props.moderator, props.currentUser)),
+        displayed: -1 !== rows.findIndex(row => row.meta.closed && hasPermission('edit', rows[0])),
         scope: ['object'],
         confirm: {
           message: trans('open_subject_confirm', {}, 'forum'),
@@ -192,10 +181,10 @@ const SubjectsList = (props) =>
 SubjectsList.propTypes = {
   className: T.string,
   path: T.string.isRequired,
+  resourceNode: T.object,
   currentUser: T.object,
   forum: T.shape(ForumType.propTypes),
   subject: T.shape(SubjectType.propTypes),
-  moderator: T.bool,
   stickSubject: T.func.isRequired,
   unStickSubject: T.func.isRequired,
   closeSubject: T.func.isRequired,
@@ -207,10 +196,10 @@ SubjectsList.propTypes = {
 const Subjects = connect(
   state => ({
     path: resourceSelectors.path(state),
+    resourceNode: resourceSelectors.resourceNode(state),
     currentUser: securitySelectors.currentUser(state),
     forum: selectors.forum(state),
-    subject: selectors.subject(state),
-    moderator: selectors.moderator(state)
+    subject: selectors.subject(state)
   }),
   dispatch => ({
     stickSubject(subject) {

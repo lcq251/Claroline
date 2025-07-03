@@ -416,8 +416,9 @@ class ResourceController
 
         $this->om->refresh($resourceNode);
 
-        return new JsonResponse(array_merge([], $updateResource->getResponse(), [
+        return new JsonResponse(array_merge([
             'resource' => $this->serializer->serialize($resource),
+        ], $updateResource->getResponse(), [
             'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
             'rights' => !empty($data['rights']) && $isManager ? array_map(function (ResourceRights $rights) {
                 return $this->serializer->serialize($rights);

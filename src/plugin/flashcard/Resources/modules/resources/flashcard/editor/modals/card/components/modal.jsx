@@ -38,19 +38,20 @@ const CardModal = props => {
       onExiting={() => props.reset(Object.assign({}, CardTypes.defaultProps, {id: makeId()}), true)}
       size="lg"
     >
-      <div className="flashcard-editor">
+      <div className="content-md p-4 mx-auto text-center" role="presentation">
         <Card
           card={props.formData}
           flipped={isFlipped}
           mode="preview"
         />
         <Button
-          className="btn btn-outline-primary"
+          className="btn btn-body mt-3"
           type={CALLBACK_BUTTON}
           callback={() => setIsFlipped(!isFlipped)}
           label={trans('flip_card', {}, 'flashcard')}
         />
       </div>
+
       <FormData
         level={5}
         flush={true}

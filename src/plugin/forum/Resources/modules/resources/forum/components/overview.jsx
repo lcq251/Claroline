@@ -39,13 +39,12 @@ const ForumOverview = () => {
           className="mb-5"
         />
 
-        {hasPermission('post', resourceNode) &&
+        {hasPermission('contribute', resourceNode) &&
           <ButtonSticky
             {...{
               name: 'create-subject',
               label: trans('add_subject', {}, 'actions'),
               type: MODAL_BUTTON,
-              displayed: hasPermission('post', resourceNode),
               modal: [MODAL_SUBJECT, {
                 forumId: forumId,
                 onSave: (subject) => {

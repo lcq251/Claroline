@@ -114,14 +114,15 @@ class StepSerializer
             $step->emptySecondaryResources();
 
             foreach ($data['secondaryResources'] as $index => $resourceData) {
-                $secondaryResource = new SecondaryResource();
-                $secondaryResource->setOrder($index);
-
                 /** @var ResourceNode $resource */
                 $resource = $this->resourceNodeRepo->findOneBy(['uuid' => $resourceData['id']]);
-                $secondaryResource->setResource($resource);
+                if (!empty($resource)) {
+                    $secondaryResource = new SecondaryResource();
+                    $secondaryResource->setOrder($index);
+                    $secondaryResource->setResource($resource);
 
-                $step->addSecondaryResource($secondaryResource);
+                    $step->addSecondaryResource($secondaryResource);
+                }
             }
         }
 
@@ -134,7 +135,7 @@ class StepSerializer
             // updates steps
             foreach ($data['children'] as $childIndex => $childData) {
                 if ($childData['id']) {
-                    // I need to get step from path to have access to all the steps in order
+                    // I need to get the step from the path to have access to all the steps
                     // to manage steps moving
                     $child = $step->getSequence()->getStep($childData['id']);
                 }
@@ -150,7 +151,7 @@ class StepSerializer
                 $ids[] = $child->getUuid();
             }
 
-            // removes steps which no longer exists
+            // removes steps which no longer exist
             foreach ($currentChildren as $currentStep) {
                 if (!in_array($currentStep->getUuid(), $ids)) {
                     $step->removeChild($currentStep);

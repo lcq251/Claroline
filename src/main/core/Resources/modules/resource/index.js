@@ -1,4 +1,4 @@
-import merge from 'lodash/merge'
+import get from 'lodash/get'
 
 import {route} from '#/main/core/resource/routing'
 import {Resource} from '#/main/core/resource/components/main'
@@ -58,7 +58,13 @@ function declareResource(ResourceComponent) {
     },
 
     addPermissions(permissions) {
-      this.permissions = merge(this.permissions, permissions)
+      const permNames = Object.keys(permissions)
+      permNames.map(perm => {
+        this.permissions[perm] = {
+          order: permissions[perm].order || get(this.permissions[perm], 'order', []),
+          actions: get(this.permissions[perm], 'actions', []).concat(permissions[perm].actions || [])
+        }
+      })
 
       return this
     }

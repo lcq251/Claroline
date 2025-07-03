@@ -37,11 +37,7 @@ class ResourceRightsSerializer
         $permissions = $this->maskManager->decodeMask($resourceRights->getMask(), $resourceNode->getResourceType());
         if ('directory' === $resourceNode->getResourceType()->getName()) {
             // ugly hack to only get create rights for directories (it's the only one that can handle it).
-            $permissions = array_merge($permissions, [
-                'create' => array_map(function (ResourceType $creatableType) {
-                    return $creatableType->getName();
-                }, $resourceRights->getCreatableResourceTypes()->toArray()),
-            ]);
+            $permissions['create'] = $resourceRights->getCreatableResourceTypes();
         }
 
         $serialized = [

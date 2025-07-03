@@ -17,6 +17,7 @@ use Claroline\ForumBundle\Entity\Message;
 use Claroline\ForumBundle\Entity\Subject;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SubjectSerializer
 {
@@ -25,7 +26,7 @@ class SubjectSerializer
     private ObjectRepository $messageRepo;
 
     public function __construct(
-        private readonly FinderProvider $finder,
+        private readonly AuthorizationCheckerInterface $authorization,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PublicFileSerializer $fileSerializer,
         private readonly ObjectManager $om,
@@ -67,12 +68,12 @@ class SubjectSerializer
             'first' => false,
         ]);
 
-        return [
+        $serialized = [
             'id' => $subject->getUuid(),
             'forum' => [
                 'id' => $subject->getForum()->getUuid(),
             ],
-            'poster' => $subject->getPoster() ? $subject->getPoster()->getUrl() : null,
+            'poster' => $subject->getPoster()?->getUrl(),
             'title' => $subject->getTitle(),
             'content' => $first ? $first->getContent() : null,
             'tags' => $this->serializeTags($subject),
@@ -87,6 +88,18 @@ class SubjectSerializer
                 'flagged' => $subject->isFlagged(),
             ],
         ];
+
+        if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
+            $isAdmin = $this->authorization->isGranted('ADMINISTRATE', $subject);
+            $serialized['permissions'] = [
+                'open' => $isAdmin || $this->authorization->isGranted('OPEN', $subject),
+                'edit' => $isAdmin || $this->authorization->isGranted('EDIT', $subject),
+                'administrate' => $isAdmin,
+                'delete' => $isAdmin || $this->authorization->isGranted('DELETE', $subject),
+            ];
+        }
+
+        return $serialized;
     }
 
     /**

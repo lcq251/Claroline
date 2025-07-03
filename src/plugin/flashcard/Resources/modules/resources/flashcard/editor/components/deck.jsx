@@ -54,11 +54,10 @@ const FlashcardEditorCards = () => {
       }
 
       {!isEmpty(cards) &&
-        <ul className="flashcards">
+        <ul className="flashcards list-unstyled gap-3 mb-0">
           {cards.map((card) =>
             <li key={card.id}>
               <Card
-                className="flashcard-hoverable"
                 card={card}
                 mode="edit"
                 actions={(card) => [
@@ -106,7 +105,7 @@ const FlashcardEditorCards = () => {
       }
 
       <Button
-        className="btn btn-primary w-100 my-3"
+        className="btn btn-primary w-100"
         type={MODAL_BUTTON}
         primary={true}
         size="lg"

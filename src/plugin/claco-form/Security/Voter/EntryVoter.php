@@ -79,7 +79,7 @@ class EntryVoter extends AbstractVoter
     {
         $clacoForm = $entry->getClacoForm();
 
-        if ($this->isGranted('ADD-ENTRY', $clacoForm->getResourceNode())) {
+        if ($this->isGranted('CONTRIBUTE', $clacoForm->getResourceNode())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

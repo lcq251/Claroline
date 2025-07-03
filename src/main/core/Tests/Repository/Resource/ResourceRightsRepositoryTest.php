@@ -57,6 +57,6 @@ class ResourceRightsRepositoryTest extends RepositoryTestCase
             self::get('dir_1')->getResourceNode()
         );
         $this->assertEquals(1, count($creationRights));
-        $this->assertEquals('t_dir', $creationRights[0]['name']);
+        $this->assertEquals('t_dir', $creationRights[0]);
     }
 }

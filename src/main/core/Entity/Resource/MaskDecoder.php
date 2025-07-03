@@ -19,12 +19,12 @@ use Doctrine\ORM\Mapping\Index;
 #[ORM\Table(name: 'claro_resource_mask_decoder')]
 #[Index(name: 'value', columns: ['value'])]
 #[Index(name: 'name', columns: ['name'])]
-#[ORM\Entity(readOnly: true)]
+#[ORM\Entity()]
 class MaskDecoder
 {
     use Id;
 
-    public const DEFAULT_ACTIONS = ['open', 'contribute', 'export', /* 'follow', */ 'delete', 'edit', 'administrate'];
+    public const DEFAULT_ACTIONS = ['open', 'contribute', 'export',  'follow',  'delete', 'edit', 'administrate'];
     public const DEFAULT_VALUES = [
         'open' => 1,
         'contribute' => 2,
@@ -32,7 +32,7 @@ class MaskDecoder
         'delete' => 8,
         'edit' => 16,
         'administrate' => 32,
-        // 'follow' => 8,
+        'follow' => 64,
     ];
 
     #[ORM\Column(type: Types::INTEGER)]

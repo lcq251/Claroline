@@ -20,9 +20,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DownloadGeoIpDatabaseCommand extends Command
 {
-    private $maxmindLicenseKey;
-    private $downloader;
-    private $destinationDir;
+    private ?string $maxmindLicenseKey = null;
+    private MaxMindGeoIpDatabaseDownloader $downloader;
+    private string $destinationDir;
 
     public function __construct(PlatformConfigurationHandler $config, MaxMindGeoIpDatabaseDownloader $downloader, string $destinationDir)
     {

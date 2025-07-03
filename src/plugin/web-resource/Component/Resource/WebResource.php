@@ -78,7 +78,9 @@ final class WebResource extends ResourceComponent implements DownloadableResourc
 
         $path = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$resource->getHashName();
 
-        $fileBag->add($resource->getUrl(), $path);
+        if (file_exists($path)) {
+            $fileBag->add($resource->getUrl(), $path);
+        }
 
         return [];
     }
@@ -90,8 +92,11 @@ final class WebResource extends ResourceComponent implements DownloadableResourc
 
         $filesPath = $this->uploadDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$resource->getHashName();
 
-        $fileSystem = new Filesystem();
-        $fileSystem->mirror($fileBag->get($resource->getUrl()), $filesPath);
+        $toCopy = $fileBag->get($resource->getUrl());
+        if (file_exists($toCopy)) {
+            $fileSystem = new Filesystem();
+            $fileSystem->mirror($toCopy, $filesPath);
+        }
     }
 
     /** @param File $resource */

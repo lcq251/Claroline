@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react'
 import {PropTypes as T} from 'prop-types'
 import merge from 'lodash/merge'
 
-/* global videojs */
+import videojs from 'video.js'
 
 const Video = ({
   options,

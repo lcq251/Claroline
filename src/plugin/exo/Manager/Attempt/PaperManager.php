@@ -43,7 +43,7 @@ class PaperManager
     public function serialize(Paper $paper, array $options = []): array
     {
         $isAdmin = $this->authorization->isGranted('ADMINISTRATE', $paper->getExercise()->getResourceNode())
-            || $this->authorization->isGranted('MANAGE_PAPERS', $paper->getExercise()->getResourceNode());
+            || $this->authorization->isGranted('FOLLOW', $paper->getExercise()->getResourceNode());
 
         // Adds user score if available and the method options do not already request it
         if (!in_array(Transfer::INCLUDE_USER_SCORE, $options)

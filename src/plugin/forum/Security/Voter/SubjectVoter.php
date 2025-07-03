@@ -19,8 +19,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SubjectVoter extends AbstractVoter
 {
-    public const POST = 'POST';
-
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
         switch ($attributes[0]) {
@@ -29,6 +27,7 @@ class SubjectVoter extends AbstractVoter
             case self::CREATE:
                 return $this->checkCreate($object);
             case self::EDIT:
+            case self::ADMINISTRATE:
             case self::DELETE:
                 return $this->checkEdit($object, $token);
         }
@@ -51,7 +50,7 @@ class SubjectVoter extends AbstractVoter
     {
         $forum = $subject->getForum();
 
-        if ($this->isGranted(self::POST, $forum->getResourceNode())) {
+        if ($this->isGranted('CONTRIBUTE', $forum->getResourceNode())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -80,6 +79,6 @@ class SubjectVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::POST];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::ADMINISTRATE];
     }
 }

@@ -150,13 +150,7 @@ class ResourceVoter implements VoterInterface
      */
     private function canCreate(array $rightsCreation, string $resourceType): bool
     {
-        foreach ($rightsCreation as $item) {
-            if ($item['name'] === $resourceType) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($resourceType, $rightsCreation);
     }
 
     /**

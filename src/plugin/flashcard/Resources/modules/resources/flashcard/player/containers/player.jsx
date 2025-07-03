@@ -7,8 +7,7 @@ const Player = connect(
   (state) => ({
     flashcardDeck: selectors.flashcardDeck(state),
     draw: selectors.draw(state),
-    attempt: selectors.attempt(state),
-    overview: selectors.showOverview(state)
+    attempt: selectors.attempt(state)
   }),
   (dispatch) => ({
     async updateProgression(cardId, isSuccessful) {

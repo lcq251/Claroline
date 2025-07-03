@@ -161,7 +161,7 @@ Papers.propTypes = {
 const ConnectedPapers = connect(
   (state) => ({
     path: resourceSelectors.path(state),
-    admin: hasPermission('edit', resourceSelectors.resourceNode(state)) || hasPermission('manage_papers', resourceSelectors.resourceNode(state)),
+    admin: hasPermission('edit', resourceSelectors.resourceNode(state)) || hasPermission('follow', resourceSelectors.resourceNode(state)),
     quizId: paperSelectors.quizId(state),
     hasScore: paperSelectors.quizHasScore(state)
   }),

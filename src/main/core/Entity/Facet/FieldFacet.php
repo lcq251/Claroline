@@ -79,7 +79,7 @@ class FieldFacet
     /**
      * @var Collection<int, FieldFacetChoice>
      */
-    #[ORM\OneToMany(targetEntity: FieldFacetChoice::class, mappedBy: 'fieldFacet')]
+    #[ORM\OneToMany(targetEntity: FieldFacetChoice::class, mappedBy: 'fieldFacet', orphanRemoval: true)]
     private Collection $fieldFacetChoices;
 
     #[ORM\Column(name: 'isRequired', type: Types::BOOLEAN)]

@@ -12,7 +12,7 @@ import {hasPermission} from '#/main/app/security'
  * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => {
-  const processable = resourceNodes.filter(resourceNode => hasPermission('copy', resourceNode))
+  const processable = resourceNodes.filter(resourceNode => hasPermission('export', resourceNode))
 
   return ({
     name: 'copy',

@@ -68,20 +68,20 @@ class ResourceRightsRepository extends EntityRepository
         }
 
         $dql = '
-            SELECT DISTINCT rType.name
-            FROM Claroline\CoreBundle\Entity\Resource\ResourceType AS rType
-            JOIN rType.rights right
+            SELECT right.creatableTypes
+            FROM Claroline\CoreBundle\Entity\Resource\ResourceRights AS right
             JOIN right.role role
             JOIN right.resourceNode resource
-            WHERE ';
+            WHERE right.creatableTypes IS NOT NULL
+        ';
 
         $index = 0;
-
         foreach ($roles as $key => $role) {
-            $dql .= 0 !== $index ? ' OR ' : '';
+            $dql .= 0 !== $index ? ' OR ' : ' AND (';
             $dql .= "resource.id = :nodeId AND role.name = :role_{$key}";
             ++$index;
         }
+        $dql .= ')';
 
         $query = $this->getEntityManager()->createQuery($dql);
         $query->setParameter('nodeId', $node->getId());
@@ -90,6 +90,8 @@ class ResourceRightsRepository extends EntityRepository
             $query->setParameter('role_'.$key, $role);
         }
 
-        return $query->getArrayResult();
+        return array_reduce($query->getArrayResult(), function (array $result, array $item) {
+            return array_merge($result, json_decode($item['creatableTypes'], true));
+        }, []);
     }
 }

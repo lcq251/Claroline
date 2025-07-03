@@ -6,13 +6,12 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl/translation'
 import {Toolbar} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {ProgressBar} from '#/main/app/components/progress-bar'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 import {ResourcePage} from '#/main/core/resource'
 
 import {Card} from '#/plugin/flashcard/resources/flashcard/components/card'
 import {FlashcardDeck as FlashcardDeckTypes} from '#/plugin/flashcard/resources/flashcard/prop-types'
-import {PageContent} from '#/main/app/page'
+import {PageContent, PageSection} from '#/main/app/page'
 
 const Player = props => {
   const history = useHistory()
@@ -33,7 +32,7 @@ const Player = props => {
       if (props.flashcardDeck.end.display) {
         history.push(`${match.path}/end`)
       } else {
-        history.push(props.overview ? `${match.path}/overview` : props.path)
+        history.push(props.path)
       }
     }
   }, [get(props.attempt, 'data.cardsSessionIds'), maxCards, get(props.flashcardDeck, 'end.display'), match.path, history])
@@ -67,16 +66,7 @@ const Player = props => {
   return (
     <ResourcePage>
       <PageContent>
-        {props.flashcardDeck.showProgression &&
-          <ProgressBar
-            className="progress-minimal"
-            value={(currentCardIndex+1) / maxCards * 100}
-            size="xs"
-            variant="learning"
-          />
-        }
-
-        <div className="flashcard-player content-md mt-5">
+        <PageSection size="md" className="my-5">
           {props.flashcardDeck.showProgression &&
             <div className="flashcard-counter mb-1">
               <div>
@@ -87,6 +77,7 @@ const Player = props => {
               </div>
             </div>
           }
+
           <div className="flashcard-deck">
             <Card
               card={currentCard}
@@ -107,7 +98,7 @@ const Player = props => {
           </div>
 
           <Toolbar
-            className="flashcard-buttons d-flex gap-1 mt-5 mb-3"
+            className="flashcard-buttons d-flex gap-1 mt-5"
             buttonName="btn"
             size="lg"
             actions={[
@@ -137,7 +128,7 @@ const Player = props => {
               }
             ]}
           />
-        </div>
+        </PageSection>
       </PageContent>
     </ResourcePage>
   )
@@ -150,7 +141,6 @@ Player.propTypes = {
   draw: T.number,
   path: T.string,
   updateProgression: T.func.isRequired,
-  overview: T.bool,
   attempt: T.shape({
     data: T.shape({
       cardsAnsweredIds: T.arrayOf(T.number).isRequired,

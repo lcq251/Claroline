@@ -2,11 +2,10 @@
 
 namespace UJM\ExoBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use stdClass;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -38,7 +37,7 @@ class AnalyticsController
     public function getDocimologyAction(#[MapEntity(mapping: ['id' => 'uuid'])] Exercise $exercise): JsonResponse
     {
         if (!$exercise->hasStatistics()) {
-            $this->checkPermission('VIEW_DOCIMOLOGY', $exercise->getResourceNode(), [], true);
+            $this->checkPermission('FOLLOW', $exercise->getResourceNode(), [], true);
         } else {
             $this->checkPermission('OPEN', $exercise->getResourceNode(), [], true);
         }
@@ -55,7 +54,7 @@ class AnalyticsController
     public function getAnswersAction(#[MapEntity(mapping: ['id' => 'uuid'])] Exercise $exercise): JsonResponse
     {
         if (!$exercise->hasStatistics()) {
-            $this->checkPermission('VIEW_DOCIMOLOGY', $exercise->getResourceNode(), [], true);
+            $this->checkPermission('FOLLOW', $exercise->getResourceNode(), [], true);
         } else {
             $this->checkPermission('OPEN', $exercise->getResourceNode(), [], true);
         }
@@ -66,7 +65,7 @@ class AnalyticsController
         foreach ($exercise->getSteps() as $step) {
             foreach ($step->getQuestions() as $question) {
                 $itemStats = $this->itemManager->getStatistics($question, $exercise, $finishedOnly);
-                $statistics[$question->getUuid()] = !empty($itemStats['solutions']) ? $itemStats['solutions'] : new stdClass();
+                $statistics[$question->getUuid()] = !empty($itemStats['solutions']) ? $itemStats['solutions'] : new \stdClass();
             }
         }
 
@@ -81,7 +80,7 @@ class AnalyticsController
         #[MapEntity(mapping: ['userId' => 'uuid'])]
         User $user = null
     ): JsonResponse {
-        $statsAdmin = $this->checkPermission('VIEW_DOCIMOLOGY', $exercise->getResourceNode());
+        $statsAdmin = $this->checkPermission('FOLLOW', $exercise->getResourceNode());
         if (!$statsAdmin) {
             $this->checkPermission('OPEN', $exercise->getResourceNode(), [], true);
 

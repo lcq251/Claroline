@@ -145,7 +145,7 @@ class ClacoFormResource extends ResourceComponent
     {
         // We will replace UUIDs in the string version of the data,
         // it will be easier to fix relationships this way than creating a mapping.
-        // This may have a huge performances impact because we need to decode the string multiple times.
+        // This may have a huge performance impact because we need to decode the string multiple times.
         $rawData = json_encode($data);
         if (!empty($data['resource']) && !empty($data['resource']['fields'])) {
             foreach ($data['resource']['fields'] as $fieldData) {
@@ -153,7 +153,7 @@ class ClacoFormResource extends ResourceComponent
                 $newField->setClacoForm($resource);
                 $resource->addField($newField);
 
-                // no Crud here. This is managed by the ClacoFormSerializer in the app
+                // No Crud here. This is managed by the ClacoFormSerializer in the app
                 $newField = $this->serializer->deserialize($fieldData, $newField, [Options::REFRESH_UUID]);
 
                 $this->om->persist($newField);

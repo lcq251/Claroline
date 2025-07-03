@@ -22,6 +22,7 @@ import {
 } from '#/plugin/claco-form/resources/claco-form/permissions'
 import {ResourcePage} from '#/main/core/resource'
 import {PageListSection} from '#/main/app/page'
+import {hasPermission} from '#/main/app/security'
 
 const EntriesComponent = props =>
   <ResourcePage
@@ -69,7 +70,7 @@ const EntriesComponent = props =>
               type: CALLBACK_BUTTON,
               icon: 'fa fa-fw fa-file-pdf',
               label: trans('export-pdf', {}, 'actions'),
-              displayed: true,
+              displayed: props.canDownload && -1 !== rows.findIndex(row => hasPermission('open', row)),
               callback: () => {
                 if (1 < rows.length) {
                   // collection
@@ -136,7 +137,7 @@ EntriesComponent.propTypes = {
   canViewMetadata: T.bool.isRequired,
   canAddEntry: T.bool.isRequired,
   isCategoryManager: T.bool.isRequired,
-  canGeneratePdf: T.bool.isRequired,
+  canDownload: T.bool.isRequired,
 
   downloadEntryPdf: T.func.isRequired,
   switchEntriesStatus: T.func.isRequired,
@@ -152,7 +153,7 @@ const Entries = connect(
     canAddEntry: selectors.canAddEntry(state),
     canEdit: selectors.canEdit(state),
     canViewMetadata: selectors.canViewMetadata(state),
-    canGeneratePdf: selectors.canGeneratePdf(state),
+    canDownload: selectors.canDownload(state),
     isCategoryManager: selectors.isCategoryManager(state)
   }),
   (dispatch) => ({

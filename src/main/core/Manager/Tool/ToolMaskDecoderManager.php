@@ -16,8 +16,6 @@ use Claroline\CoreBundle\Entity\Tool\ToolMaskDecoder;
 
 class ToolMaskDecoderManager
 {
-    private array $maskDecoders = [];
-
     public function __construct(
         private readonly ObjectManager $om
     ) {
@@ -42,7 +40,7 @@ class ToolMaskDecoderManager
             'tool' => $toolName,
         ]);
 
-        $nb = count($decoders);
+        $nb = count(ToolMaskDecoder::DEFAULT_ACTIONS);
         foreach ($customRights as $right) {
             $maskDecoder = null;
             foreach ($decoders as $decoder) {
@@ -52,11 +50,14 @@ class ToolMaskDecoderManager
                 }
             }
 
+            $value = pow(2, $nb);
             if (empty($maskDecoder)) {
-                $value = pow(2, $nb);
                 $this->createToolMaskDecoder($toolName, $right, $value);
-                ++$nb;
+            } else {
+                $maskDecoder->setValue($value);
+                $this->om->persist($maskDecoder);
             }
+            ++$nb;
         }
     }
 
@@ -69,11 +70,6 @@ class ToolMaskDecoderManager
         $maskDecoder->setTool($toolName);
         $maskDecoder->setName($action);
         $maskDecoder->setValue($value);
-
-        if (empty($this->maskDecoders[$toolName])) {
-            $this->maskDecoders[$toolName] = [];
-        }
-        $this->maskDecoders[$toolName][] = $maskDecoder;
 
         $this->om->persist($maskDecoder);
         $this->om->flush();

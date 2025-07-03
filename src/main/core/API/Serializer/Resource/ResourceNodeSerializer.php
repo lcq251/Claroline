@@ -9,6 +9,7 @@ use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Serializer\UserSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\Resource\ResourceRights;
 use Claroline\CoreBundle\Entity\Resource\ResourceType;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
@@ -130,8 +131,11 @@ class ResourceNodeSerializer
         }
 
         if (!in_array(Options::NO_RIGHTS, $options)) {
-            // export rights, only used by transfer feature. Should be moved later.
-            $serializedNode['rights'] = array_values($this->rightsManager->getRights($resourceNode));
+            // export rights, only used by transfer feature.
+            // should be moved later.
+            $serializedNode['rights'] = array_map(function (ResourceRights $rights) {
+                return $this->serializer->serialize($rights);
+            }, $resourceNode->getRights()->toArray());
         }
 
         return $serializedNode;
@@ -203,7 +207,7 @@ class ResourceNodeSerializer
         }
 
         if (!in_array(Options::NO_RIGHTS, $options) && isset($data['rights'])) {
-            // only used to be able to directly create a node with rights. Used in transfer feature. To move later
+            // Only used to be able to directly create a node with rights. Used in transfer feature. To move later
             $this->deserializeRights($data['rights'], $resourceNode, $options);
         }
 
@@ -249,7 +253,7 @@ class ResourceNodeSerializer
     /**
      * @internal should not be public
      */
-    public function deserializeRights($rights, ResourceNode $resourceNode, array $options = []): void
+    public function deserializeRights(array $rights, ResourceNode $resourceNode, ?array $options = []): void
     {
         $existingRights = $resourceNode->getRights();
 
@@ -260,14 +264,8 @@ class ResourceNodeSerializer
                 $creationPerms = [];
                 if (isset($right['permissions']['create'])) {
                     if (!empty($right['permissions']['create']) && 'directory' === $resourceNode->getResourceType()->getName()) {
-                        // ugly hack to only get create rights for directories (it's the only one that can handle it).
-                        $creationPerms = array_filter(array_map(function (string $typeName) {
-                            return $this->om
-                                ->getRepository(ResourceType::class)
-                                ->findOneBy(['name' => $typeName]);
-                        }, $right['permissions']['create']), function ($type) {
-                            return !empty($type);
-                        });
+                        // only get creation rights for directories (it's the only one that can handle it).
+                        $creationPerms = $right['permissions']['create'];
                     }
 
                     unset($right['permissions']['create']);
@@ -286,7 +284,7 @@ class ResourceNodeSerializer
             }
         }
 
-        // removes rights which no longer exists
+        // removes rights which no longer exist
         foreach ($existingRights as $existingRight) {
             if (!in_array($existingRight->getRole()->getName(), $roles)) {
                 $resourceNode->removeRight($existingRight);

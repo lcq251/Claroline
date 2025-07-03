@@ -234,7 +234,7 @@ AttemptEndComponent.propTypes = {
 
 const AttemptEnd = connect(
   (state) => {
-    const isAdmin = hasPermission('edit', resourceSelect.resourceNode(state)) || hasPermission('manage_papers', resourceSelect.resourceNode(state))
+    const isAdmin = hasPermission('edit', resourceSelect.resourceNode(state)) || hasPermission('follow', resourceSelect.resourceNode(state))
     const paper = playerSelect.paper(state)
 
     return {

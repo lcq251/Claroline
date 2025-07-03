@@ -204,8 +204,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
 
     public function postCopy(CopyEvent $event): void
     {
-        /** @var ResourceNode $node */
-        $node = $event->getObject();
         /** @var ResourceNode $newNode */
         $newNode = $event->getCopy();
 

@@ -17,8 +17,6 @@ use Claroline\CoreBundle\Entity\Resource\ResourceType;
 
 class MaskManager
 {
-    private array $maskDecoders = [];
-
     public function __construct(
         private readonly ObjectManager $om
     ) {
@@ -88,11 +86,6 @@ class MaskManager
         $maskDecoder->setName($action);
         $maskDecoder->setValue($value);
 
-        if (empty($this->maskDecoders[$resourceType->getName()])) {
-            $this->maskDecoders[$resourceType->getName()] = [];
-        }
-        $this->maskDecoders[$resourceType->getName()][] = $maskDecoder;
-
         $this->om->persist($maskDecoder);
         $this->om->flush();
     }
@@ -128,7 +121,7 @@ class MaskManager
             'resourceType' => $resourceType,
         ]);
 
-        $nb = count($decoders);
+        $nb = count(MaskDecoder::DEFAULT_ACTIONS);
         foreach ($customRights as $right) {
             $maskDecoder = null;
             foreach ($decoders as $decoder) {
@@ -138,11 +131,14 @@ class MaskManager
                 }
             }
 
+            $value = pow(2, $nb);
             if (empty($maskDecoder)) {
-                $value = pow(2, $nb);
                 $this->createResourceMaskDecoder($resourceType, $right, $value);
-                ++$nb;
+            } else {
+                $maskDecoder->setValue($value);
+                $this->om->persist($maskDecoder);
             }
+            ++$nb;
         }
     }
 }

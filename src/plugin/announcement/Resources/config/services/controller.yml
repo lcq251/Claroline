@@ -3,12 +3,12 @@ services:
         public: true # because controller
 
     Claroline\AnnouncementBundle\Controller\AnnouncementController:
-      arguments:
-        - '@security.authorization_checker'
-        - '@Claroline\AppBundle\API\Crud'
-        - '@Claroline\AppBundle\Persistence\ObjectManager'
-        - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
-        - '@Claroline\AppBundle\Manager\PdfManager'
-        - '@Claroline\CoreBundle\Library\RoutingHelper'
-        - '@Claroline\AnnouncementBundle\Manager\AnnouncementManager'
-        - '@Claroline\AnnouncementBundle\Serializer\AnnouncementSerializer'
+        arguments:
+            - '@security.authorization_checker'
+            - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CoreBundle\Manager\Template\TemplateManager'
+            - '@Claroline\AppBundle\Manager\PdfManager'
+            - '@Claroline\CoreBundle\Library\RoutingHelper'
+            - '@Claroline\AnnouncementBundle\Manager\AnnouncementManager'
+            - '@Claroline\AnnouncementBundle\Serializer\AnnouncementSerializer'

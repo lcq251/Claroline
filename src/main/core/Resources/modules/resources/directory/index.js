@@ -6,3 +6,11 @@ import {DirectoryResource} from '#/main/core/resources/directory/containers/reso
  * Directory resource application.
  */
 export default declareResource(DirectoryResource)
+  .addPermissions({
+    create: {
+      order: 1,
+      actions: [
+        'Créer et administrer de nouvelles ressources'
+      ]
+    }
+  })

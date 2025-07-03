@@ -11,7 +11,7 @@ export default (resourceNodes, nodesRefresher, path) => ({
   primary: true,
   target: `${path}/${resourceNodes[0].slug}/entry/form`,
   exact: true,
-  displayed: hasPermission(resourceNodes[0], 'add-entry'),
+  displayed: hasPermission(resourceNodes[0], 'contribute'),
   scope: [constants.ACTION_SCOPE_OBJECT],
   set: [constants.ACTION_SET_DETAILS]
 })

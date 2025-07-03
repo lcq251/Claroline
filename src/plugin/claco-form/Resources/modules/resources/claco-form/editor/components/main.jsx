@@ -6,7 +6,6 @@ import {ResourceEditor} from '#/main/core/resource'
 
 import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
 
-import {EditorParameters} from '#/plugin/claco-form/resources/claco-form/editor/components/parameters'
 import {EditorCategories} from '#/plugin/claco-form/resources/claco-form/editor/components/categories'
 import {EditorList} from '#/plugin/claco-form/resources/claco-form/editor/components/list'
 import {ClacoFormEditorActions} from '#/plugin/claco-form/resources/claco-form/editor/components/actions'
@@ -29,11 +28,6 @@ const ClacoFormEditor = () => {
       actionsPage={ClacoFormEditorActions}
       pages={[
         {
-          name: 'parameters',
-          icon: 'fa fa-fw fa-cog',
-          title: trans('parameters'),
-          component: EditorParameters
-        }, {
           name: 'entries',
           icon: 'fa fa-fw fa-file',
           title: trans('entries', {}, 'clacoform'),

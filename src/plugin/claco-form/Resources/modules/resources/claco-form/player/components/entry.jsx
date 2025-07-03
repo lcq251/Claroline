@@ -24,6 +24,7 @@ import {PageContent, PageHeading, PageSection, PageToolbar} from '#/main/app/pag
 import {Html} from '#/main/app/components/html'
 import {ContentPublication} from '#/main/app/content/components/publication'
 import {Tags} from '#/main/app/components/tags'
+import {hasPermission} from '#/main/app/security'
 
 class Entry extends Component {
   canViewMetadata() {
@@ -98,7 +99,7 @@ class Entry extends Component {
                 icon: 'fa fa-fw fa-file-pdf',
                 label: trans('export-pdf', {}, 'actions'),
                 callback: () => this.props.downloadEntryPdf(this.props.entry.id),
-                displayed: this.props.canGeneratePdf,
+                displayed: this.props.canDownload && hasPermission('open', this.props.entry),
                 group: trans('transfer')
               }, {
                 name: 'publish',
@@ -200,7 +201,7 @@ Entry.propTypes = {
   entryId: T.string,
   canEdit: T.bool.isRequired,
   canAdministrate: T.bool.isRequired,
-  canGeneratePdf: T.bool.isRequired,
+  canDownload: T.bool.isRequired,
   canViewEntry: T.bool,
 
   isOwner: T.bool,

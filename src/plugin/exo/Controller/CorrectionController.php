@@ -75,7 +75,7 @@ class CorrectionController
 
     private function isAdmin(Exercise $exercise): bool
     {
-        if (!$this->authorization->isGranted('MANAGE_PAPERS', $exercise->getResourceNode())) {
+        if (!$this->authorization->isGranted('FOLLOW', $exercise->getResourceNode())) {
             throw new AccessDeniedException();
         }
 

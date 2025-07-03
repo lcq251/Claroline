@@ -14,8 +14,6 @@ namespace Claroline\CoreBundle\Entity\Resource;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Repository\Resource\ResourceRightsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,23 +32,12 @@ class ResourceRights
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Role $role = null;
 
-    #[ORM\ManyToOne(targetEntity: ResourceNode::class, cascade: ['persist'], inversedBy: 'rights')]
+    #[ORM\ManyToOne(targetEntity: ResourceNode::class, inversedBy: 'rights')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?ResourceNode $resourceNode = null;
 
-    /**
-     * @var Collection<int, ResourceType>
-     */
-    #[ORM\ManyToMany(targetEntity: ResourceType::class, inversedBy: 'rights')]
-    #[ORM\JoinTable(name: 'claro_list_type_creation')]
-    #[ORM\JoinColumn(name: 'resource_rights_id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'resource_type_id', onDelete: 'CASCADE')]
-    private Collection $resourceTypes;
-
-    public function __construct()
-    {
-        $this->resourceTypes = new ArrayCollection();
-    }
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $creatableTypes = [];
 
     public function getRole(): ?Role
     {
@@ -82,27 +69,13 @@ class ResourceRights
         $this->mask = $mask;
     }
 
-    public function getCreatableResourceTypes(): Collection
+    public function getCreatableResourceTypes(): ?array
     {
-        return $this->resourceTypes;
+        return $this->creatableTypes;
     }
 
-    public function setCreatableResourceTypes(array $resourceTypes): void
+    public function setCreatableResourceTypes(?array $resourceTypes): void
     {
-        $this->resourceTypes = new ArrayCollection($resourceTypes);
-    }
-
-    public function addCreatableResourceType(ResourceType $resourceType): void
-    {
-        if (!$this->resourceTypes->contains($resourceType)) {
-            $this->resourceTypes->add($resourceType);
-        }
-    }
-
-    public function removeCreatableResourceType(ResourceType $resourceType): void
-    {
-        if ($this->resourceTypes->contains($resourceType)) {
-            $this->resourceTypes->removeElement($resourceType);
-        }
+        $this->creatableTypes = $resourceTypes;
     }
 }

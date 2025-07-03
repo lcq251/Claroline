@@ -21,6 +21,7 @@ import {MODAL_SUBJECT} from '#/plugin/forum/resources/forum/modals/subject'
 import {ForumMessages} from '#/plugin/forum/resources/forum/components/messages'
 import {ContentPublication} from '#/main/app/content/components/publication'
 import {ContentMessageSkeleton} from '#/main/app/content/components/message'
+import {hasPermission} from '#/main/app/security'
 
 class SubjectComponent extends Component {
   constructor(props) {
@@ -87,7 +88,7 @@ class SubjectComponent extends Component {
                   type: MODAL_BUTTON,
                   icon: 'fa fa-fw fa-pencil',
                   label: trans('edit', {}, 'actions'),
-                  displayed: (this.props.currentUser && get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id) || this.props.moderator,
+                  displayed: hasPermission('edit', this.props.subject),
                   modal: [MODAL_SUBJECT, {
                     subject: this.props.subject,
                     forumId: this.props.forum.id
@@ -97,21 +98,21 @@ class SubjectComponent extends Component {
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-thumb-tack',
                   label: trans('stick', {}, 'forum'),
-                  displayed: !(get(this.props.subject, 'meta.sticky', true)) && this.props.moderator,
+                  displayed: !(get(this.props.subject, 'meta.sticky', true)) && hasPermission('follow', this.props.resourceNode),
                   callback: () => this.props.stickSubject(this.props.subject)
                 }, {
                   name: 'unpin',
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-thumb-tack',
                   label: trans('unstick', {}, 'forum'),
-                  displayed: get(this.props.subject, 'meta.sticky', false) && this.props.moderator,
+                  displayed: get(this.props.subject, 'meta.sticky', false) && hasPermission('follow', this.props.resourceNode),
                   callback: () => this.props.unStickSubject(this.props.subject)
                 }, {
                   name: 'close',
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-circle-xmark',
                   label: trans('close_subject', {}, 'forum'),
-                  displayed: !(get(this.props.subject, 'meta.closed', true)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
+                  displayed: !(get(this.props.subject, 'meta.closed', true)) && hasPermission('edit', this.props.subject),
                   callback: () => this.props.closeSubject(this.props.subject),
                   confirm: {
                     message: trans('close_subject_confirm', {}, 'forum'),
@@ -122,7 +123,7 @@ class SubjectComponent extends Component {
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-arrow-up-right-from-square',
                   label: trans('open_subject', {}, 'forum'),
-                  displayed: (get(this.props.subject, 'meta.closed', false)) && this.props.currentUser && (get(this.props.subject, 'meta.creator.id', false) === this.props.currentUser.id || this.props.moderator),
+                  displayed: (get(this.props.subject, 'meta.closed', false)) && hasPermission('edit', this.props.subject),
                   callback: () => this.props.unCloseSubject(this.props.subject),
                   confirm: {
                     message: trans('open_subject_confirm', {}, 'forum'),
@@ -140,14 +141,14 @@ class SubjectComponent extends Component {
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-flag',
                   label: trans('unflag', {}, 'forum'),
-                  displayed: this.props.currentUser && (get(this.props.subject, 'meta.creator.id') !== this.props.currentUser.id) && (get(this.props.subject, 'meta.flagged', false)),
+                  displayed: hasPermission('follow', this.props.resourceNode),
                   callback: () => this.props.unFlagSubject(this.props.subject)
                 }, {
                   name: 'delete',
                   type: CALLBACK_BUTTON,
                   icon: 'fa fa-fw fa-trash',
                   label: trans('delete', {}, 'actions'),
-                  displayed: this.props.currentUser && get(this.props.subject, 'meta.creator.id') === this.props.currentUser.id || this.props.moderator,
+                  displayed: hasPermission('delete', this.props.subject),
                   callback: () => this.deleteSubject(this.props.subject.id),
                   confirm: trans('remove_subject_confirm_message', {}, 'forum'),
                   dangerous: true
@@ -213,6 +214,7 @@ class SubjectComponent extends Component {
 
 SubjectComponent.propTypes = {
   path: T.string.isRequired,
+  resourceNode: T.object,
   currentUser: T.object,
   subject: T.shape(SubjectType.propTypes).isRequired,
   forum: T.shape({
@@ -235,21 +237,20 @@ SubjectComponent.propTypes = {
   reload: T.func.isRequired,
   messages: T.arrayOf(T.shape({})).isRequired,
   totalMessages: T.number.isRequired,
-  history: T.object.isRequired,
-  moderator: T.bool.isRequired
+  history: T.object.isRequired
 }
 
 const ForumSubject =  withRouter(connect(
   state => ({
     path: resourceSelectors.path(state),
+    resourceNode: resourceSelectors.resourceNode(state),
     currentUser: securitySelectors.currentUser(state),
     forum: selectors.forum(state),
     subject: selectors.subject(state),
     messages: selectors.visibleMessages(state),
     totalMessages: listSelectors.totalResults(listSelectors.list(state, `${selectors.STORE_NAME}.subjects.messages`)),
     invalidated: listSelectors.invalidated(listSelectors.list(state, `${selectors.STORE_NAME}.subjects.messages`)),
-    loaded: listSelectors.loaded(listSelectors.list(state, `${selectors.STORE_NAME}.subjects.messages`)),
-    moderator: selectors.moderator(state)
+    loaded: listSelectors.loaded(listSelectors.list(state, `${selectors.STORE_NAME}.subjects.messages`))
   }),
   dispatch => ({
     createMessage(subjectId, content, parentId = null) {

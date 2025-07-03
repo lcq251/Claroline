@@ -2,5 +2,3 @@ plugin:
     resources:
         - class: Claroline\ClacoFormBundle\Entity\ClacoForm
           name: claroline_claco_form
-          resource_rights:
-              - add-entry

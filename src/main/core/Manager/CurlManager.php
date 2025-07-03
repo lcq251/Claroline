@@ -53,6 +53,10 @@ class CurlManager
             curl_close($ch);
         }
 
+        if (0 === $httpCode) {
+            throw new \Exception(curl_error($ch));
+        }
+
         switch ($httpCode) {
             case 401:
             case 403:

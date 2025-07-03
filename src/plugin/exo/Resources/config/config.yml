@@ -2,6 +2,3 @@ plugin:
     resources:
         - name: ujm_exercise
           class: UJM\ExoBundle\Entity\Exercise
-          resource_rights:
-              - manage_papers
-              - view_docimology

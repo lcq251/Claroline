@@ -10,12 +10,9 @@ class FieldSerializer
 {
     use SerializerTrait;
 
-    private FieldFacetSerializer $fieldFacetSerializer;
-
     public function __construct(
-        FieldFacetSerializer $fieldFacetSerializer
+        private readonly FieldFacetSerializer $fieldFacetSerializer
     ) {
-        $this->fieldFacetSerializer = $fieldFacetSerializer;
     }
 
     public function getClass(): string

@@ -20,8 +20,7 @@ const QuizResource = DragNDropContext(
         quizId: selectors.id(state),
         empty: selectors.empty(state),
         editable: hasPermission('edit', resourceSelectors.resourceNode(state)),
-        papersAdmin: hasPermission('manage_papers', resourceSelectors.resourceNode(state)),
-        docimologyAdmin: hasPermission('view_docimology', resourceSelectors.resourceNode(state)),
+        canFollow: hasPermission('follow', resourceSelectors.resourceNode(state)),
         hasOverview: selectors.hasOverview(state),
         showStatistics: selectors.showStatistics(state),
         registeredUser: securitySelectors.isAuthenticated(state)

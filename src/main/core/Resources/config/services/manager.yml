@@ -173,6 +173,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@security.token_storage'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
             - '@Claroline\CoreBundle\Manager\Resource\MaskManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
 

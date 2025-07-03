@@ -11,12 +11,11 @@
 
 namespace Claroline\ClacoFormBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Claroline\ClacoFormBundle\Repository\FieldRepository;
-use BadMethodCallException;
 use Claroline\AppBundle\Entity\Identifier\Id;
+use Claroline\ClacoFormBundle\Repository\FieldRepository;
 use Claroline\CoreBundle\Entity\Facet\FieldFacet;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_clacoformbundle_field')]
@@ -26,20 +25,12 @@ class Field
 {
     use Id;
 
-    /**
-     *
-     * @var ClacoForm
-     */
-    #[ORM\JoinColumn(name: 'claco_form_id', nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ClacoForm::class, inversedBy: 'fields')]
+    #[ORM\JoinColumn(name: 'claco_form_id', nullable: false, onDelete: 'CASCADE')]
     protected ?ClacoForm $clacoForm = null;
 
-    /**
-     *
-     * @var FieldFacet
-     */
-    #[ORM\JoinColumn(name: 'field_facet_id', onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: FieldFacet::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'field_facet_id', onDelete: 'CASCADE')]
     protected ?FieldFacet $fieldFacet = null;
 
     /**
@@ -63,15 +54,15 @@ class Field
             return call_user_func_array([$this->fieldFacet, $method], $arguments);
         }
 
-        throw new BadMethodCallException(sprintf('Undefined method "%s".', $method));
+        throw new \BadMethodCallException(sprintf('Undefined method "%s".', $method));
     }
 
-    public function getClacoForm()
+    public function getClacoForm(): ?ClacoForm
     {
         return $this->clacoForm;
     }
 
-    public function setClacoForm(ClacoForm $clacoForm)
+    public function setClacoForm(ClacoForm $clacoForm): void
     {
         $this->clacoForm = $clacoForm;
     }
@@ -81,12 +72,12 @@ class Field
         return $this->fieldFacet;
     }
 
-    public function setFieldFacet(FieldFacet $fieldFacet)
+    public function setFieldFacet(FieldFacet $fieldFacet): void
     {
         $this->fieldFacet = $fieldFacet;
     }
 
-    public function getFieldChoiceCategories()
+    public function getFieldChoiceCategories(): array
     {
         return $this->fieldChoiceCategories->toArray();
     }
