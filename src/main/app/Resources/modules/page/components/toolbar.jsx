@@ -12,7 +12,7 @@ const PageToolbarSkeleton = ({ toolbar, size = 'lg' }) => {
   const buttons = toolbar.split(' ')
 
   return (
-    <div className={classes('app-page-toolbar', !pageDef.embedded && 'sticky-top z-1', size && `content-${size}`)} role="presentation" style={{height: 0}}>
+    <div className={classes('app-page-toolbar z-1', !pageDef.embedded && 'sticky-top z-1', size && `content-${size}`)} role="presentation" style={{height: 0}}>
       <div className={classes('d-inline-flex flex-column gap-1', {
         'my-5': !pageDef.embedded
       })} role="presentation">
@@ -35,7 +35,7 @@ const PageToolbar = ({ toolbar, actions, size = 'lg' }) => {
   const pageDef = useContext(PageContext)
 
   return (
-    <div className={classes('app-page-toolbar', !pageDef.embedded && 'sticky-top z-1', size && `content-${size}`)} role="presentation" style={{height: 0}}>
+    <div className={classes('app-page-toolbar z-1', !pageDef.embedded && 'sticky-top z-1', size && `content-${size}`)} role="presentation" style={{height: 0}}>
       <Toolbar
         className={classes('d-inline-flex flex-column gap-1', {
           'my-5': !pageDef.embedded
