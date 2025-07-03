@@ -182,5 +182,7 @@
     "all_events": "Toutes les séances",
     "presence": "Présence",
     "confirmed": "Confirmé",
-    "validated": "Validé"
+    "validated": "Validé",
+    "no_registered_training": "Vous n'êtes inscrit à aucune formation",
+    "no_registered_training_help": "Veuillez attendre qu'un gestionnaire vous inscrive à une formation ou parcourez le catalogue pour trouver une formation qui vous intéresse."
 }

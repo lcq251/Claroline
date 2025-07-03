@@ -51,8 +51,8 @@ const MySessionsSection = (props) => {
 
       {isEmpty(filteredSessions) &&
         <ContentPlaceholder
-          title={trans('Vous n\'êtes inscrit à aucune formation', {}, 'cursus')}
-          help={trans('Lorem ipsum dolor sit amet')}
+          title={trans('no_registered_training', {}, 'cursus')}
+          help={trans('no_registered_training_help', {}, 'cursus')}
         />
       }
 
@@ -99,27 +99,6 @@ const TrainingsOverview = () => {
   return (
     <ToolOverview>
       <MySessionsSection contextType={contextType} path={toolPath} />
-
-      <PageSection
-        className="mt-5"
-        title={trans('Mes inscriptions en attente', {}, 'cursus')}
-      >
-        <ul>
-          <li>Inscriptions à des formations sans session</li>
-          <li>Inscriptions en attente de validation par un gestionnaire</li>
-          <li>Inscriptions en attente de confirmation par l'utilisateur</li>
-        </ul>
-      </PageSection>
-
-      <PageSection
-        className="mt-5 mb-5"
-        title={trans('Mes présences', {}, 'cursus')}
-      >
-        <ul>
-          <li>A remplir</li>
-          <li>Absences à justifier</li>
-        </ul>
-      </PageSection>
     </ToolOverview>
   )
 }
