@@ -6,9 +6,15 @@ import {PageSection} from '#/main/app/page'
 import {DetailsData} from '#/main/app/content/details'
 
 import {Location as LocationTypes} from '#/main/core/tools/locations/prop-types'
+import get from 'lodash/get'
+import {Html} from '#/main/app/components/html'
 
 const LocationAbout = (props) =>
   <PageSection className="mb-5">
+    {get(props.location, 'meta.description') &&
+      <Html className="content-text mb-5">{get(props.location, 'meta.description')}</Html>
+    }
+
     <DetailsData
       data={props.location}
       definition={[

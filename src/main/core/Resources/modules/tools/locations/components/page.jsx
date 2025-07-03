@@ -9,7 +9,8 @@ import {ToolPage} from '#/main/core/tool'
 
 import {Location as LocationTypes} from '#/main/core/tools/locations/prop-types'
 import {PageHeading, PageHeadingSkeleton} from '#/main/app/page/components/heading'
-import {PageContent, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
+import {PageContent, PageSection, PageToolbar, PageToolbarSkeleton} from '#/main/app/page'
+import {TextSkeleton} from '#/main/app/components/placeholder'
 
 const LocationPage = (props) =>
   <ToolPage
@@ -19,7 +20,10 @@ const LocationPage = (props) =>
     {isEmpty(props.location) &&
       <PageContent className="placeholder-glow">
         <PageToolbarSkeleton toolbar="edit more" />
-        <PageHeadingSkeleton description={true} />
+        <PageHeadingSkeleton />
+        <PageSection className="mb-5">
+          <TextSkeleton />
+        </PageSection>
       </PageContent>
     }
 
@@ -41,7 +45,6 @@ const LocationPage = (props) =>
 
         <PageHeading
           title={get(props.location, 'name')}
-          description={get(props.location, 'meta.description')}
         />
 
         {props.children}
