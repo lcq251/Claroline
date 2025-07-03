@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
+use Claroline\AppBundle\API\Finder\Type\UuidType;
 use Claroline\TagBundle\Entity\Tag;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +26,7 @@ final class TagType extends AbstractType
     public function buildFinder(FinderBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('id', UuidType::class)
             ->add('name', TextType::class)
             ->add('description', TextType::class)
             ->add('usedBy', ClosureType::class, [

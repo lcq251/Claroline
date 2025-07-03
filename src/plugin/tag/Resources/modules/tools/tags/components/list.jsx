@@ -63,10 +63,15 @@ const TagList = () => {
               displayed: true,
               render: (tag) => <DataMicro object={tag} color={tag.color} />
             }, {
+              name: 'id',
+              type: 'string',
+              label: trans('code'),
+              displayable: true,
+              displayed: true
+            }, {
               name: 'meta.description',
               type: 'string',
               label: trans('description'),
-              displayed: true,
               options: {
                 long: true
               }

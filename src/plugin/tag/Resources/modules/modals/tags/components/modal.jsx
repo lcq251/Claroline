@@ -23,6 +23,12 @@ const TagsModal = props =>
         displayed: true,
         render: (tag) => <DataMicro object={tag} color={tag.color} />
       }, {
+        name: 'id',
+        type: 'string',
+        label: trans('code'),
+        displayable: true,
+        displayed: true
+      }, {
         name: 'meta.description',
         type: 'string',
         label: trans('description'),
@@ -32,7 +38,8 @@ const TagsModal = props =>
       }, {
         name: 'elements',
         type: 'number',
-        label: trans('elements', {}, 'tag')
+        label: trans('elements', {}, 'tag'),
+        sortable: false
       }
     ]}
     card={TagCard}
