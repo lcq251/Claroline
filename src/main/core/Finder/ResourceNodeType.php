@@ -59,6 +59,17 @@ class ResourceNodeType extends AbstractType
             ->add('evaluated', BooleanType::class)
             ->add('creationDate', DateType::class)
             ->add('modificationDate', DateType::class)
+            // to remove with the path plugin
+            ->add('deprecatedPath', ClosureType::class, [
+                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    $alias = $finder->getAlias();
+                    if (!$finder->isRoot()) {
+                        $alias = $finder->getParent()->getAlias();
+                    }
+
+                    $queryBuilder->andWhere("$alias.mimeType != 'custom/innova_path'");
+                },
+            ])
         ;
     }
 
