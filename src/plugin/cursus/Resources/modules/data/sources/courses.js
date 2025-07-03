@@ -56,12 +56,13 @@ export default (contextType, contextData, refresher, currentUser) => ({
       filterable: false,
       sortable: param('pricing.enabled')
     }, {
-      name: 'display.order',
-      alias: 'order',
-      type: 'number',
-      label: trans('order'),
-      displayable: false,
-      filterable: false
+      name: 'restrictions.hidden',
+      label: trans('hidden'),
+      type: 'boolean',
+      alias: 'hidden',
+      filterable: true,
+      sortable: false,
+      displayable: false
     }
   ],
   card: CourseCard

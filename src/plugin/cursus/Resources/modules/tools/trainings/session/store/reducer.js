@@ -20,7 +20,10 @@ export const reducer = combineReducers({
   }),
   participants: makeListReducer(selectors.STORE_NAME+'.participants', {
     sortBy: {property: 'date', direction: -1},
-    filters: {filters: [{property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true}]}
+    filters: {filters: [
+      {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
+      {property: 'session.status', value: 'not_ended'}
+    ]}
   }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false
@@ -31,7 +34,10 @@ export const reducer = combineReducers({
   }),
   tutors: makeListReducer(selectors.STORE_NAME+'.tutors', {
     sortBy: {property: 'date', direction: -1},
-    filters: {filters: [{property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true}]}
+    filters: {filters: [
+      {property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true},
+      {property: 'session.status', value: 'not_ended'}
+    ]}
   }, {
     loaded: makeReducer(false, {
       [CONTEXT_OPEN]: () => false

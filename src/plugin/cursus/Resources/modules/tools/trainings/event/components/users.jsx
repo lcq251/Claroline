@@ -36,7 +36,24 @@ const TrainingsEventUsers = (props) => {
               filterable: true,
               sortable: true,
               order: 2
-            }
+            }, {
+              name: 'event.status',
+              type: 'choice',
+              label: trans('status'),
+              order: 3,
+              displayable: false,
+              sortable: false,
+              filterable: true,
+              options: {
+                noEmpty: true,
+                choices: {
+                  not_started: trans('session_not_started', {}, 'cursus'),
+                  in_progress: trans('session_in_progress', {}, 'cursus'),
+                  ended: trans('session_ended', {}, 'cursus'),
+                  not_ended: trans('session_not_ended', {}, 'cursus')
+                }
+              }
+            },
           ]}
         />
       </PageContentList>

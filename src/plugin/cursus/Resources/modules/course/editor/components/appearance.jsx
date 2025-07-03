@@ -22,15 +22,7 @@ const CourseEditorAppearance = (props) =>
             label: trans('thumbnail'),
             recommended: true,
             type: 'image'
-          }/*, {
-            name: 'display.order',
-            type: 'number',
-            label: trans('order'),
-            required: true,
-            options: {
-              min: 0
-            }
-          }*/
+          }
         ]
       }, {
         title: trans('advanced'),
@@ -38,7 +30,7 @@ const CourseEditorAppearance = (props) =>
         hideTitle: true,
         fields: [
           {
-            name: 'data.restrictions.hidden',
+            name: 'restrictions.hidden',
             type: 'boolean',
             label: trans('restrict_hidden'),
             help: trans('restrict_hidden_help')

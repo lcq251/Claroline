@@ -9,6 +9,7 @@ use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\CreatorType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
+use Claroline\AppBundle\API\Finder\Type\HiddenType;
 use Claroline\AppBundle\API\Finder\Type\NumericType;
 use Claroline\AppBundle\API\Finder\Type\PublicType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
@@ -32,6 +33,7 @@ class CourseType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('code', TextType::class)
+            ->add('hidden', HiddenType::class)
             ->add('description', TextType::class)
             ->add('price', NumericType::class)
             ->add('public', PublicType::class)

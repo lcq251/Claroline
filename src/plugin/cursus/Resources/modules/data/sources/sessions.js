@@ -86,6 +86,14 @@ export default {
         type: 'boolean',
         filterable: true,
         displayable: true
+      }, {
+        name: 'restrictions.hidden',
+        label: trans('hidden'),
+        type: 'boolean',
+        alias: 'hidden',
+        filterable: true,
+        sortable: false,
+        displayable: false
       }
     ],
     card: SessionCard

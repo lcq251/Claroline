@@ -64,6 +64,23 @@ const TrainingsSessionUsers = (props) =>
             sortable: true,
             order: 1
           }, {
+            name: 'session.status',
+            type: 'choice',
+            label: trans('status'),
+            order: 2,
+            displayable: false,
+            sortable: false,
+            filterable: true,
+            options: {
+              noEmpty: true,
+              choices: {
+                not_started: trans('session_not_started', {}, 'cursus'),
+                in_progress: trans('session_in_progress', {}, 'cursus'),
+                ended: trans('session_ended', {}, 'cursus'),
+                not_ended: trans('session_not_ended', {}, 'cursus')
+              }
+            }
+          }, {
             name: 'confirmed',
             label: trans('confirmed', {}, 'cursus'),
             type: 'boolean',

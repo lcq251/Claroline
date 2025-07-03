@@ -10,7 +10,6 @@ import {trans} from '#/main/app/intl/translation'
 import {ListData} from '#/main/app/content/list/containers/data'
 import {actions as listActions} from '#/main/app/content/list/store'
 
-import {constants} from '#/plugin/cursus/constants'
 import {EventCard} from '#/plugin/cursus/event/components/card'
 import {EventStatus} from '#/plugin/cursus/components/event-status'
 import {constants as listConst} from '#/main/app/content/list/constants'

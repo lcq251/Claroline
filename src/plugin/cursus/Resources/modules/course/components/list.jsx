@@ -70,6 +70,14 @@ const CourseList = (props) => {
           filterable: false,
           sortable: param('pricing.enabled')
         }, {
+          name: 'restrictions.hidden',
+          label: trans('hidden'),
+          type: 'boolean',
+          alias: 'hidden',
+          filterable: true,
+          sortable: false,
+          displayable: false
+        }, {
           name: 'tags',
           type: 'tag',
           label: trans('tags'),
@@ -77,14 +85,7 @@ const CourseList = (props) => {
           options: {
             objectClass: 'Claroline\\CursusBundle\\Entity\\Course'
           }
-        }/*, {
-          name: 'display.order',
-          alias: 'order',
-          type: 'number',
-          label: trans('order'),
-          displayable: false,
-          filterable: false
-        }*/
+        }
       ]}
       display={{
         current: listConst.DISPLAY_TILES
