@@ -7,12 +7,8 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Form, FormContent} from '#/main/app/content/form'
 
 import {selectors} from '#/main/core/workspace/modals/creation/store'
-import {useHistory} from 'react-router-dom'
-import {route} from '#/main/core/workspace/routing'
 
 const CreationInfo = (props) => {
-  const history = useHistory()
-
   return (
     <Form
       name={selectors.STORE_NAME}
@@ -64,14 +60,6 @@ const CreationInfo = (props) => {
           callback={() => props.changeStep('type')}
         />
 
-        <Button
-          type={CALLBACK_BUTTON}
-          label={trans('create_and_configure', {}, 'actions')}
-          className="btn btn-link"
-          callback={() => props.create().then((workspace) => {
-            history.push(route(workspace)+'/edit')
-          })}
-        />
         <Button
           type={CALLBACK_BUTTON}
           label={trans('create', {}, 'actions')}
