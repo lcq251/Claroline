@@ -138,6 +138,10 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     public function import(AbstractResource $resource, FileBag $fileBag, array $data = []): void
     {
         $resourceNode = $resource->getResourceNode();
+        $filePath = $fileBag->get($resource->getUrl());
+        if (!file_exists($filePath)) {
+            return;
+        }
 
         try {
             $file = new File($fileBag->get($resource->getUrl()));
