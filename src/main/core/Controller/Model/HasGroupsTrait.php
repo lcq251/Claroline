@@ -3,13 +3,14 @@
 namespace Claroline\CoreBundle\Controller\Model;
 
 use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Finder\FinderQuery;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\CoreBundle\Entity\Group;
-use Claroline\CoreBundle\Entity\Organization\Organization;
-use Claroline\CoreBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /**
  * Manages a group collection on an entity.
@@ -23,29 +24,21 @@ trait HasGroupsTrait
     abstract public static function getName(): string;
 
     #[Route(path: '/{id}/group', name: 'list_groups', methods: ['GET'], priority: 1)]
-    public function listGroupsAction(string $id, #[CurrentUser] ?User $user, Request $request): JsonResponse
-    {
+    public function listGroupsAction(
+        string $id,
+        #[MapQueryString]
+        ?FinderQuery $finderQuery = new FinderQuery()
+    ): StreamedJsonResponse {
         // no need to secure entrypoint, the CRUD will do it for us.
-
         $this->crud->get(static::getClass(), $id);
 
-        $hiddenFilters = [
-            // filter the list by the parent
-            static::getName() => [$id],
-        ];
+        // filter the list by the parent
+        $finderQuery
+            ->addFilter(static::getName(), $id);
 
-        if (!$this->checkPermission('ROLE_ADMIN')) {
-            // only list groups for the current user organizations
-            $hiddenFilters['organizations'] = array_map(function (Organization $organization) {
-                return $organization->getUuid();
-            }, $user ? $user->getOrganizations() : []);
-        }
+        $groups = $this->crud->search(Group::class, $finderQuery, [SerializerInterface::SERIALIZE_LIST]);
 
-        return new JsonResponse(
-            $this->crud->list(Group::class, array_merge($request->query->all(), [
-                'hiddenFilters' => $hiddenFilters,
-            ]))
-        );
+        return $groups->toResponse();
     }
 
     #[Route(path: '/{id}/group', name: 'add_groups', methods: ['PATCH'], priority: 1)]

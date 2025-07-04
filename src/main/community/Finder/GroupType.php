@@ -11,6 +11,7 @@ use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Entity\User;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +40,7 @@ class GroupType extends AbstractType
                         $alias = $finder->getParent()->getAlias();
                     }
 
-                    $queryBuilder->leftJoin(Group::class, $finder->getAlias(), Join::WITH, "$alias MEMBER OF {$finder->getAlias()}.groups");
+                    $queryBuilder->leftJoin(User::class, $finder->getAlias(), Join::WITH, "$alias MEMBER OF {$finder->getAlias()}.groups");
                 },
             ])
             ->add('workspace', ClosureType::class, [
