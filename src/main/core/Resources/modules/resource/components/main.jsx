@@ -13,8 +13,6 @@ import {ResourceRestrictions} from '#/main/core/resource/containers/restrictions
 import {ResourceEditor} from '#/main/core/resource/editor/containers/main'
 import {ResourceDashboard} from '#/main/core/resource/dashboard'
 
-import {ResourceProgression} from '#/main/evaluation/resource/progression'
-
 const Resource = props => {
   const [loaded, setLoaded] = useState(false)
 
@@ -23,7 +21,6 @@ const Resource = props => {
   const accessErrors = useSelector(selectors.accessErrors)
   const canEdit = useSelector(selectors.canEdit)
   const canFollow = useSelector(selectors.canFollow)
-  const hasEvaluation = useSelector(selectors.hasEvaluation)
 
   useEffect(() => {
     props.open(props.type, props.slug)
@@ -64,10 +61,6 @@ const Resource = props => {
               path: '/dashboard',
               component: props.dashboard || ResourceDashboard,
               disabled: !canFollow
-            }, {
-              path: '/progression',
-              component: ResourceProgression,
-              disabled: !hasEvaluation
             }
           ]
             .concat(props.pages || [])
@@ -114,7 +107,6 @@ Resource.propTypes = {
    */
   dashboard: T.elementType
 }
-
 
 export {
   Resource

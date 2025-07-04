@@ -2,6 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 import get from 'lodash/get'
+import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
@@ -11,6 +12,7 @@ import {EvaluationShortcut} from '#/main/evaluation/components/shortcut'
 
 import {getActions} from '#/main/evaluation/sequence/utils'
 import {selectors} from '#/main/evaluation/sequence/store'
+import {MODAL_USER_PROGRESSION} from '#/main/evaluation/sequence/modals/user-progression'
 
 const SequencePage = (props) => {
   const currentUser = useSelector(securitySelectors.currentUser)
@@ -36,9 +38,9 @@ const SequencePage = (props) => {
       menu={{
         children: currentUser && userEvaluation && (
           <EvaluationShortcut
-            {...userEvaluation}
             className="my-auto"
-            target={sequencePath+'/progression'}
+            modal={MODAL_USER_PROGRESSION}
+            evaluation={merge({}, userEvaluation, {user: currentUser, sequence: sequence})}
           />
         ),
         toolbar: 'show-dashboard configure more',

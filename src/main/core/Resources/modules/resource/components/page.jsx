@@ -2,6 +2,7 @@ import React, {useCallback, useContext} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import get from 'lodash/get'
+import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
 import {selectors as securitySelectors} from '#/main/app/security/store'
@@ -13,6 +14,7 @@ import {getActions} from '#/main/core/resource/utils'
 import {selectors, actions} from '#/main/core/resource/store'
 import {route} from '#/main/core/resource/routing'
 import {EvaluationShortcut} from '#/main/evaluation/components/shortcut'
+import {MODAL_USER_PROGRESSION} from '#/main/evaluation/resource/modals/user-progression'
 
 const ResourcePage = (props) => {
   const resourceDef = useContext(PageContext)
@@ -49,9 +51,9 @@ const ResourcePage = (props) => {
       menu={{
         children: hasEvaluation && userEvaluation && (
           <EvaluationShortcut
-            {...userEvaluation}
             className="my-auto"
-            target={resourcePath+'/progression'}
+            evaluation={merge({}, userEvaluation, {user: currentUser, resourceNode: resourceNode})}
+            modal={MODAL_USER_PROGRESSION}
           />
         ),
         nav: resourceDef.menu,

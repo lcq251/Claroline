@@ -11,6 +11,7 @@
 namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\Manager\PlatformManager;
+use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Library\Mailing\Mailer;
 use Claroline\CoreBundle\Library\Mailing\Message;
@@ -33,7 +34,7 @@ class MailManager
         return $this->config->getParameter('mailer.enabled') ?? false;
     }
 
-    public function send($subject, $body, array $users, $from = null, array $extra = [], bool $force = false): bool
+    public function send(string $subject, string $body, array $users, ?User $from = null, ?array $extra = [], ?bool $force = false): bool
     {
         if (!$this->isMailerAvailable()) {
             return false;

@@ -4,7 +4,6 @@ namespace UJM\ExoBundle\Manager\Item;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use UJM\ExoBundle\Entity\Attempt\Answer;
 use UJM\ExoBundle\Entity\Exercise;
 use UJM\ExoBundle\Entity\Item\Item;
@@ -16,24 +15,20 @@ use UJM\ExoBundle\Library\Options\Transfer;
 use UJM\ExoBundle\Library\Options\Validation;
 use UJM\ExoBundle\Manager\Attempt\ScoreManager;
 use UJM\ExoBundle\Repository\AnswerRepository;
-use UJM\ExoBundle\Repository\ItemRepository;
 use UJM\ExoBundle\Serializer\Item\ItemSerializer;
 use UJM\ExoBundle\Validator\JsonSchema\Item\ItemValidator;
 
 class ItemManager
 {
-    private ItemRepository $repository;
     private AnswerRepository $answerRepository;
 
     public function __construct(
-        private readonly AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
         private readonly ScoreManager $scoreManager,
         private readonly ItemValidator $validator,
         private readonly ItemSerializer $serializer,
         private readonly ItemDefinitionsCollection $itemDefinitions
     ) {
-        $this->repository = $this->om->getRepository(Item::class);
         $this->answerRepository = $this->om->getRepository(Answer::class);
     }
 
@@ -48,7 +43,7 @@ class ItemManager
     }
 
     /**
-     * Validates and updates a Item entity with raw data.
+     * Validates and updates an Item entity with raw data.
      *
      * @throws InvalidDataException
      */
@@ -81,7 +76,7 @@ class ItemManager
     /**
      * Serializes a question.
      */
-    public function serialize(Item $question, array $options = []): array
+    public function serialize(Item $question, ?array $options = []): array
     {
         return $this->serializer->serialize($question, $options);
     }
@@ -89,33 +84,15 @@ class ItemManager
     /**
      * Deserializes a question.
      */
-    public function deserialize(array $itemData, Item $item = null, array $options = []): Item
+    public function deserialize(array $itemData, ?Item $item = null, ?array $options = []): Item
     {
         return $this->serializer->deserialize($itemData, $item ?? new Item(), $options);
     }
 
     /**
-     * Deletes a list of Items.
-     */
-    public function deleteBulk(array $questions): void
-    {
-        // Load the list of questions to delete
-        $toDelete = $this->repository->findByUuids($questions);
-
-        $this->om->startFlushSuite();
-        foreach ($toDelete as $question) {
-            if ($this->authorization->isGranted('delete', $question)) {
-                $this->om->remove($questions);
-                $this->om->flush();
-            }
-        }
-        $this->om->endFlushSuite();
-    }
-
-    /**
      * Calculates the score of an answer to a question.
      */
-    public function calculateScore(Item $question, Answer $answer, bool $applyHints = true): ?float
+    public function calculateScore(Item $question, Answer $answer, ?bool $applyHints = true): ?float
     {
         if ($question->hasExpectedAnswers()) {
             // Let the question correct the answer
@@ -197,7 +174,7 @@ class ItemManager
     /**
      * Get question statistics inside an Exercise.
      */
-    public function getStatistics(Item $question, Exercise $exercise = null, $finishedPapersOnly = false): array
+    public function getStatistics(Item $question, ?Exercise $exercise = null, ?bool $finishedPapersOnly = false): array
     {
         $questionStats = [];
 

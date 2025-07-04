@@ -10,7 +10,6 @@ import {SequenceOverview} from '#/main/evaluation/sequence/components/overview'
 import {SequenceEditor} from '#/main/evaluation/sequence/editor'
 import {SequencePlayer} from '#/main/evaluation/sequence/player'
 import {SequenceDashboard} from '#/main/evaluation/sequence/dashboard'
-import {SequenceProgression} from '#/main/evaluation/sequence/components/progression'
 import {PageContent, PageHeadingSkeleton} from '#/main/app/page'
 import {SequencePage} from '#/main/evaluation/sequence/components/page'
 
@@ -37,9 +36,6 @@ const SequenceShow = props => {
             path: '/dashboard',
             disabled: !hasPermission('follow', sequence.sequence),
             component: SequenceDashboard
-          }, {
-            path: '/progression',
-            component: SequenceProgression
           }
         ]}
       />

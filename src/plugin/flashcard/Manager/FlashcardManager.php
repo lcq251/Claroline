@@ -155,13 +155,14 @@ class FlashcardManager
                 $progression->setFlashcard($card);
                 $progression->setSuccessCount(-1);
                 $this->om->persist($progression);
-                $this->om->flush();
             }
 
             if (!in_array($progression, $cards)) {
                 $cards[] = $progression;
             }
         }
+
+        $this->om->flush();
 
         $cardsSession = [];
         foreach ($cards as $cardProgression) {

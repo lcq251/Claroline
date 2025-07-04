@@ -92,7 +92,6 @@ class ServerManager
                         if (empty($tag) || $tag === $platform) {
                             $meetingId = $meetingEl->getElementsByTagName('meetingID')->item(0)->textContent;
 
-                            $moderatorPwd = null;
                             $joinUrl = null;
                             if ($user instanceof User) { // TODO : check against BBB rights
                                 $moderatorPwd = $meetingEl->getElementsByTagName('moderatorPW')->item(0)->textContent;
@@ -134,10 +133,7 @@ class ServerManager
         return $server;
     }
 
-    /**
-     * @param \DOMDocument|\DomElement $meetingXml
-     */
-    public function extractMeetingInfo($meetingXml): array
+    public function extractMeetingInfo(\DOMDocument|\DOMElement $meetingXml): array
     {
         $returnCode = $meetingXml->getElementsByTagName('returncode')->item(0);
         if (!empty($returnCode) && 'failed' === strtolower($returnCode->textContent)) {
