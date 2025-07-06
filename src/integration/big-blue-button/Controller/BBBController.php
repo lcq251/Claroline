@@ -15,6 +15,7 @@ use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Finder\FinderQuery;
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\BigBlueButtonBundle\Entity\BBB;
 use Claroline\BigBlueButtonBundle\Entity\Recording;
 use Claroline\BigBlueButtonBundle\Manager\BBBManager;
@@ -38,6 +39,7 @@ class BBBController
 
     public function __construct(
         AuthorizationCheckerInterface $authorization,
+        private readonly ObjectManager $om,
         private readonly Crud $crud,
         private readonly BBBManager $bbbManager,
         private readonly UrlGeneratorInterface $router,
@@ -120,9 +122,12 @@ class BBBController
     #[Route(path: '/recordings', name: 'apiv2_bbb_meeting_recording_delete', methods: ['DELETE'])]
     public function deleteRecordingsAction(Request $request): JsonResponse
     {
-        $this->crud->deleteBulk(
-            $this->decodeIdsString($request, Recording::class)
-        );
+        // No need to secure endpoint. Crud will do it for us.
+
+        $recordingIds = $this->decodeRequest($request);
+        $recordings = $this->om->getRepository(Recording::class)->findBy(['uuid' => $recordingIds]);
+
+        $this->crud->deleteBulk($recordings);
 
         return new JsonResponse(null, 204);
     }

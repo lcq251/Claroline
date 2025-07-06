@@ -1,5 +1,4 @@
 import {makeActionCreator} from '#/main/app/store/actions'
-import {url} from '#/main/app/api/router'
 
 import {actions as alertActions} from '#/main/app/overlays/alert/store'
 
@@ -72,10 +71,11 @@ actions.uploadFile = (file, uploadUrl = ['apiv2_public_file_upload']) => {
 
 actions.deleteFile = (fileId) => ({
   [constants.API_REQUEST]: {
-    url: url(['apiv2_public_file_delete'], {ids: [fileId]}),
+    url: ['apiv2_public_file_delete'],
     silent: true,
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([fileId])
     }
   }
 })

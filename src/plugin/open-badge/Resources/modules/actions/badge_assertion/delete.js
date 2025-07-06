@@ -2,7 +2,6 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 
@@ -29,9 +28,10 @@ export default (assertions, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_badge_assertion_delete'], {ids: processable.map(assertion => assertion.id)}),
+      url: ['apiv2_badge_assertion_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(assertion => assertion.id))
       },
       success: () => refresher.delete(processable)
     },

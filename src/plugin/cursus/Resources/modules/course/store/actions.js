@@ -1,10 +1,7 @@
-import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {makeActionCreator} from '#/main/app/store/actions'
-import {constants as actionConstants} from '#/main/app/action/constants'
-import {actions as listActions} from '#/main/app/content/list/store/actions'
 
 import {selectors} from '#/plugin/cursus/course/store/selectors'
 
@@ -54,55 +51,10 @@ actions.openSession = (sessionId = null, force = false) => (dispatch, getState) 
 
 actions.addUsers = (sessionId, users, type) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_cursus_session_add_users', {id: sessionId, type: type}], {ids: users.map(user => user.id)}),
+    url: ['apiv2_cursus_session_add_users', {id: sessionId, type: type}],
     request: {
-      method: 'PATCH'
-    }
-  }
-})
-
-actions.inviteUsers = (sessionUsers) => ({
-  [API_REQUEST]: {
-    type: actionConstants.ACTION_SEND,
-    url: url(['apiv2_training_session_user_invite'], {ids: sessionUsers.map(user => user.id)}),
-    request: {
-      method: 'PUT'
-    }
-  }
-})
-
-actions.addPending = (sessionId, users) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_cursus_session_add_pending', {id: sessionId}], {ids: users.map(user => user.id)}),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => dispatch(actions.openSession(sessionId, true))
-  }
-})
-
-actions.confirmPending = (users) => (dispatch, getState) => dispatch({
-  [API_REQUEST]: {
-    url: url(['apiv2_training_session_user_confirm'], {ids: users.map(user => user.id)}),
-    request: {
-      method: 'PUT'
-    },
-    success: () => {
-      const currentSession = selectors.activeSession(getState())
-      dispatch(actions.openSession(currentSession ? currentSession.id : null, true))
-    }
-  }
-})
-
-actions.validatePending = (users) => (dispatch, getState) => dispatch({
-  [API_REQUEST]: {
-    url: url(['apiv2_training_session_user_validate'], {ids: users.map(user => user.id)}),
-    request: {
-      method: 'PUT'
-    },
-    success: () => {
-      const currentSession = selectors.activeSession(getState())
-      dispatch(actions.openSession(currentSession ? currentSession.id : null, true))
+      method: 'PATCH',
+      body: JSON.stringify(users.map(user => user.id))
     }
   }
 })

@@ -80,7 +80,8 @@ class MessageController extends AbstractCrudController
     #[Route(path: '/softdelete', name: 'soft_delete', methods: ['PUT'])]
     public function softDeleteAction(Request $request): JsonResponse
     {
-        $messages = $this->decodeIdsString($request, UserMessage::class);
+        $ids = $this->decodeRequest($request);
+        $messages = $this->om->getRepository(UserMessage::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($messages as $message) {
@@ -96,7 +97,8 @@ class MessageController extends AbstractCrudController
     #[Route(path: '/remove', name: 'hard_delete', methods: ['DELETE'])]
     public function hardDeleteAction(Request $request): JsonResponse
     {
-        $messages = $this->decodeIdsString($request, UserMessage::class);
+        $ids = $this->decodeRequest($request);
+        $messages = $this->om->getRepository(UserMessage::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($messages as $message) {
@@ -110,7 +112,8 @@ class MessageController extends AbstractCrudController
     #[Route(path: '/restore', name: 'restore', methods: ['PUT'])]
     public function restoreAction(Request $request): JsonResponse
     {
-        $messages = $this->decodeIdsString($request, UserMessage::class);
+        $ids = $this->decodeRequest($request);
+        $messages = $this->om->getRepository(UserMessage::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($messages as $message) {
@@ -126,7 +129,8 @@ class MessageController extends AbstractCrudController
     #[Route(path: '/read', name: 'read', methods: ['PUT'])]
     public function readAction(Request $request): JsonResponse
     {
-        $messages = $this->decodeIdsString($request, UserMessage::class);
+        $ids = $this->decodeRequest($request);
+        $messages = $this->om->getRepository(UserMessage::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
 
@@ -144,7 +148,8 @@ class MessageController extends AbstractCrudController
     #[Route(path: '/unread', name: 'unread', methods: ['PUT'])]
     public function unreadAction(Request $request): JsonResponse
     {
-        $messages = $this->decodeIdsString($request, UserMessage::class);
+        $ids = $this->decodeRequest($request);
+        $messages = $this->om->getRepository(UserMessage::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
 

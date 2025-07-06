@@ -53,8 +53,9 @@ trait HasUsersTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
-        $users = $this->decodeIdsString($request, User::class);
         $this->crud->patch($object, 'user', Crud::COLLECTION_ADD, $users);
 
         return new JsonResponse(
@@ -68,8 +69,9 @@ trait HasUsersTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
-        $users = $this->decodeIdsString($request, User::class);
         $this->crud->patch($object, 'user', Crud::COLLECTION_REMOVE, $users);
 
         return new JsonResponse(

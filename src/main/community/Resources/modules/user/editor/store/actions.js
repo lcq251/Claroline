@@ -16,9 +16,10 @@ actions.open = (username) => (dispatch) => dispatch({
 
 actions.addRoles = (id, roles) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_user_add_roles', {id: id}], {ids: roles}),
+    url: ['apiv2_user_add_roles', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(roles)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.roles'))
@@ -28,9 +29,10 @@ actions.addRoles = (id, roles) => (dispatch) => dispatch({
 
 actions.addOrganizations = (id, organizations) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_user_add_organizations', {id: id}], {ids: organizations}),
+    url: ['apiv2_user_add_organizations', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(organizations)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.organizations'))

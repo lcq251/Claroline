@@ -98,11 +98,8 @@ class EventController extends AbstractCrudController
         $this->om->startFlushSuite();
 
         $data = $this->decodeRequest($request);
-
         /** @var Event[] $events */
-        $events = $this->om->getRepository(Event::class)->findBy([
-            'uuid' => $data['ids'],
-        ]);
+        $events = $this->om->getRepository(Event::class)->findBy(['uuid' => $data]);
 
         foreach ($events as $event) {
             if ($this->authorization->isGranted('EDIT', $event)) {
@@ -248,7 +245,9 @@ class EventController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
+
         $nbUsers = count($users);
 
         if (AbstractRegistration::LEARNER === $type && !$this->manager->checkSessionEventCapacity($sessionEvent, $nbUsers)) {
@@ -272,8 +271,10 @@ class EventController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
-        $sessionEventUsers = $this->decodeIdsString($request, EventUser::class);
-        $this->manager->removeUsers($sessionEvent, $sessionEventUsers);
+        $ids = $this->decodeRequest($request);
+        $eventUsers = $this->om->getRepository(EventUser::class)->findBy(['uuid' => $ids]);
+
+        $this->manager->removeUsers($sessionEvent, $eventUsers);
 
         return new JsonResponse(null, 204);
     }
@@ -286,10 +287,12 @@ class EventController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $sessionEvent, [], true);
 
-        $sessionUsers = $this->decodeIdsString($request, EventUser::class);
-        $this->manager->sendSessionEventInvitation($sessionEvent, array_map(function (EventUser $sessionUser) {
-            return $sessionUser->getUser();
-        }, $sessionUsers));
+        $ids = $this->decodeRequest($request);
+        $eventUsers = $this->om->getRepository(EventUser::class)->findBy(['uuid' => $ids]);
+
+        $this->manager->sendSessionEventInvitation($sessionEvent, array_map(function (EventUser $eventUser) {
+            return $eventUser->getUser();
+        }, $eventUsers));
 
         return new JsonResponse(null, 204);
     }

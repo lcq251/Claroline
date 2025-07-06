@@ -1,7 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 
@@ -28,9 +27,10 @@ export default (badges, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_badge_delete'], {ids: processable.map(badge => badge.id)}),
+      url: ['apiv2_badge_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(badge => badge.id))
       },
       success: () => refresher.delete(processable)
     },

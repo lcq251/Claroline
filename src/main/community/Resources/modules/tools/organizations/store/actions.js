@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'
 
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
@@ -19,7 +19,7 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
       return
     }
 
-    // remove previous group if any to avoid displaying it while loading
+    // remove the previous organization if any to avoid displaying it while loading
     dispatch(formActions.resetForm(selectors.FORM_NAME, {}, false))
   }
 
@@ -41,9 +41,10 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
 
 actions.addManagers = (id, users) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_organization_add_managers', {id: id}], {ids: users}),
+    url: ['apiv2_organization_add_managers', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))

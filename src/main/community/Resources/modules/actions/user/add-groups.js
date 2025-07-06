@@ -1,5 +1,4 @@
 import {trans} from '#/main/app/intl/translation'
-import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
@@ -17,9 +16,10 @@ export default declareAction((users, refresher) => ({
       type: ASYNC_BUTTON,
       label: trans('add', {}, 'actions'),
       request: {
-        url: url(['apiv2_user_add_groups', {id: users[0].id}], {ids: groups.map(group => group.id)}),
+        url: ['apiv2_user_add_groups', {id: users[0].id}],
         request: {
-          method: 'PATCH'
+          method: 'PATCH',
+          body: JSON.stringify(groups.map(group => group.id))
         },
         success: () => refresher.update(users[0])
       }

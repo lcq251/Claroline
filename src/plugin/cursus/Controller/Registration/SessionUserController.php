@@ -123,8 +123,8 @@ class SessionUserController extends AbstractCrudController
     #[Route(path: '/confirm', name: 'confirm', methods: ['PUT'])]
     public function confirmAction(Request $request): JsonResponse
     {
-        /** @var SessionUser[] $sessionUsers */
-        $sessionUsers = $this->decodeIdsString($request, SessionUser::class);
+        $ids = $this->decodeRequest($request);
+        $sessionUsers = $this->om->getRepository(SessionUser::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {
@@ -142,8 +142,8 @@ class SessionUserController extends AbstractCrudController
     #[Route(path: '/validate', name: 'validate', methods: ['PUT'])]
     public function validateAction(Request $request): JsonResponse
     {
-        /** @var SessionUser[] $sessionUsers */
-        $sessionUsers = $this->decodeIdsString($request, SessionUser::class);
+        $ids = $this->decodeRequest($request);
+        $sessionUsers = $this->om->getRepository(SessionUser::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {
@@ -164,8 +164,8 @@ class SessionUserController extends AbstractCrudController
     #[Route(path: '/invite', name: 'invite', methods: ['PUT'])]
     public function inviteAction(Request $request): JsonResponse
     {
-        /** @var SessionUser[] $sessionUsers */
-        $sessionUsers = $this->decodeIdsString($request, SessionUser::class);
+        $ids = $this->decodeRequest($request);
+        $sessionUsers = $this->om->getRepository(SessionUser::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($sessionUsers as $sessionUser) {

@@ -1,12 +1,13 @@
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 
 export const actions = {}
 
 actions.addUsers = (sessionId, users, type) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_cursus_session_add_users', {id: sessionId, type: type}], {ids: users.map(user => user.id)}),
+    url: ['apiv2_cursus_session_add_users', {id: sessionId, type: type}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users.map(user => user.id))
     }
   }
 })

@@ -1,4 +1,4 @@
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {makeActionCreator} from '#/main/app/store/actions'
 import {actions as listActions} from '#/main/app/content/list/store/actions'
 
@@ -14,9 +14,10 @@ actions.updateMeetings = makeActionCreator(MEETINGS_UPDATE, 'maxMeetings', 'maxM
 
 actions.endMeetings = (ids) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_bbb_integration_meetings_end'], {ids: ids}),
+    url: ['apiv2_bbb_integration_meetings_end'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(ids)
     },
     success: () => {
       dispatch(actions.fetchInfo())
@@ -39,7 +40,7 @@ actions.fetchInfo = () => (dispatch) => dispatch({
 
 actions.syncRecordings = () => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_bbb_integration_recordings_sync']),
+    url: ['apiv2_bbb_integration_recordings_sync'],
     request: {
       method: 'POST'
     },

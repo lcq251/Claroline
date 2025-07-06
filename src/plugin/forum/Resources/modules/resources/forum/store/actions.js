@@ -53,9 +53,10 @@ actions.openSubject = (id) => (dispatch, getState) => {
 
 actions.deleteSubject = (id, push, path) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: ['apiv2_forum_subject_delete', {ids: id}],
+    url: ['apiv2_forum_subject_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([id])
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME+'.subjects.list'))

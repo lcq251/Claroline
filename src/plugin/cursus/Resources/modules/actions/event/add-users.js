@@ -1,5 +1,4 @@
 
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
@@ -19,9 +18,10 @@ export default declareAction((events, refresher) => {
         type: ASYNC_BUTTON,
         label: trans('register', {}, 'actions'),
         request: {
-          url: url(['apiv2_cursus_event_add_users', {id: events[0].id, type: constants.LEARNER_TYPE}], {ids: selected.map(user => user.id)}),
+          url: ['apiv2_cursus_event_add_users', {id: events[0].id, type: constants.LEARNER_TYPE}],
           request: {
-            method: 'PATCH'
+            method: 'PATCH',
+            body: JSON.stringify(selected.map(user => user.id))
           },
           success: () => refresher.update(events[0])
         }

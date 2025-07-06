@@ -2,7 +2,7 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
 import {makeActionCreator} from '#/main/app/store/actions'
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
@@ -53,9 +53,10 @@ actions.open = (id, contextData = null, reload = false) => (dispatch, getState) 
 
 actions.addUsers = (id, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_role_add_users', {id: id}], {ids: users}),
+    url: ['apiv2_role_add_users', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
@@ -66,9 +67,10 @@ actions.addUsers = (id, users) => (dispatch) => dispatch({
 
 actions.addGroups = (id, groups) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_role_add_groups', {id: id}], {ids: groups}),
+    url: ['apiv2_role_add_groups', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(groups)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))

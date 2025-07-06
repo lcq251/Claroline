@@ -1,4 +1,4 @@
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {actions as formActions} from '#/main/app/content/form/store'
 
@@ -15,7 +15,7 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
       return
     }
 
-    // remove previous group if any to avoid displaying it while loading
+    // remove the previous group if any to avoid displaying it while loading
     dispatch(formActions.reset(selectors.FORM_NAME, {}, false))
   }
 
@@ -34,9 +34,10 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
 
 actions.unregisterGroups = (groups, workspace) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_workspace_unregister_groups', {id: workspace.id}]) + '?'+ groups.map(group => 'ids[]='+group.id).join('&'),
+    url: ['apiv2_workspace_unregister_groups', {id: workspace.id}],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify(groups.map(group => group.id))
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
@@ -47,9 +48,10 @@ actions.unregisterGroups = (groups, workspace) => (dispatch) => dispatch({
 
 actions.addUsers = (id, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_group_add_users', {id: id}], {ids: users}),
+    url: ['apiv2_group_add_users', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
@@ -60,9 +62,10 @@ actions.addUsers = (id, users) => (dispatch) => dispatch({
 
 actions.addRoles = (id, roles) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_group_add_roles', {id: id}], {ids: roles}),
+    url: ['apiv2_group_add_roles', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(roles)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))

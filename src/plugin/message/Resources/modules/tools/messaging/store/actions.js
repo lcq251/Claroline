@@ -39,9 +39,10 @@ actions.sendMessage = (message) => dispatch => dispatch({
 
 actions.deleteMessages = (messages) => ({
   [API_REQUEST]: {
-    url: ['apiv2_message_hard_delete', {ids: messages.map(message => message.meta.umuuid)}],
+    url: ['apiv2_message_hard_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify(messages.map(message => message.meta.umuuid))
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(`${selectors.STORE_NAME}.deletedMessages`))
@@ -51,9 +52,10 @@ actions.deleteMessages = (messages) => ({
 
 actions.removeMessages = (messages, listName) => ({
   [API_REQUEST]: {
-    url: ['apiv2_message_soft_delete', {ids: messages.map(message => message.meta.umuuid)}],
+    url: ['apiv2_message_soft_delete'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(messages.map(message => message.meta.umuuid))
     },
     success: (data, dispatch) => dispatch(listActions.invalidateData(listName))
   }
@@ -61,9 +63,10 @@ actions.removeMessages = (messages, listName) => ({
 
 actions.restoreMessages = (messages) => ({
   [API_REQUEST]: {
-    url: ['apiv2_message_restore', {ids: messages.map(message => message.meta.umuuid)}],
+    url: ['apiv2_message_restore'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(messages.map(message => message.meta.umuuid))
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(`${selectors.STORE_NAME}.deletedMessages`))
@@ -74,18 +77,20 @@ actions.restoreMessages = (messages) => ({
 actions.markedAsReadWhenOpen = (id) => ({
   [API_REQUEST]: {
     silent: true,
-    url: ['apiv2_message_read', {ids: [id]}],
+    url: ['apiv2_message_read'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify([id])
     }
   }
 })
 
 actions.readMessages = (messages) => ({
   [API_REQUEST]: {
-    url: ['apiv2_message_read', {ids: messages.map(message => message.meta.umuuid)}],
+    url: ['apiv2_message_read'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(messages.map(message => message.meta.umuuid))
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(`${selectors.STORE_NAME}.receivedMessages`))
@@ -95,9 +100,10 @@ actions.readMessages = (messages) => ({
 
 actions.unreadMessages = (messages) => ({
   [API_REQUEST]: {
-    url: ['apiv2_message_unread', {ids: messages.map(message => message.meta.umuuid)}],
+    url: ['apiv2_message_unread'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(messages.map(message => message.meta.umuuid))
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(`${selectors.STORE_NAME}.receivedMessages`))

@@ -1,9 +1,8 @@
+import {declareAction} from '#/main/app/action'
 import {trans} from '#/main/app/intl/translation'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
-import {declareAction} from '#/main/app/action'
 
 export default declareAction((roles, refresher) => ({
   name: 'add-groups',
@@ -15,9 +14,10 @@ export default declareAction((roles, refresher) => ({
       type: ASYNC_BUTTON,
       label: trans('add', {}, 'actions'),
       request: {
-        url: url(['apiv2_role_add_groups', {id: roles[0].id}], {ids: groups.map(group => group.id)}),
+        url: ['apiv2_role_add_groups', {id: roles[0].id}],
         request: {
-          method: 'PATCH'
+          method: 'PATCH',
+          body: JSON.stringify(groups.map(group => group.id))
         },
         success: () => refresher.update(roles[0])
       }

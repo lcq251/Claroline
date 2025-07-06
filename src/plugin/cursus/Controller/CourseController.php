@@ -138,12 +138,9 @@ class CourseController extends AbstractCrudController
 
         $this->om->startFlushSuite();
 
-        $data = json_decode($request->getContent(), true);
-
+        $data = $this->decodeRequest($request);
         /** @var Course[] $courses */
-        $courses = $this->om->getRepository(Course::class)->findBy([
-            'uuid' => $data['ids'],
-        ]);
+        $courses = $this->om->getRepository(Course::class)->findBy(['uuid' => $data]);
 
         foreach ($courses as $course) {
             if ($this->authorization->isGranted('ADMINISTRATE', $course) && !$course->isArchived()) {
@@ -166,11 +163,11 @@ class CourseController extends AbstractCrudController
 
         $this->om->startFlushSuite();
 
-        $data = json_decode($request->getContent(), true);
+        $data = $this->decodeRequest($request);
 
         /** @var Course[] $courses */
         $courses = $this->om->getRepository(Course::class)->findBy([
-            'uuid' => $data['ids'],
+            'uuid' => $data,
         ]);
 
         foreach ($courses as $course) {
@@ -196,24 +193,14 @@ class CourseController extends AbstractCrudController
 
         $data = $this->decodeRequest($request);
 
-        $workspaceData = $data['workspace'] ?? null;
-        $workspace = null;
-
-        if ($workspaceData) {
-            $workspace = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $data['workspace']['id']]);
-        }
-
         /** @var Course[] $courses */
         $courses = $this->om->getRepository(Course::class)->findBy([
-            'uuid' => $data['ids'],
+            'uuid' => $data,
         ]);
 
         foreach ($courses as $course) {
             if ($this->authorization->isGranted('ADMINISTRATE', $course)) {
                 $copy = $this->crud->copy($course);
-                if (1 === count($courses) && $workspace) {
-                    $copy->setWorkspace($workspace);
-                }
                 $processed[] = $copy;
             }
         }

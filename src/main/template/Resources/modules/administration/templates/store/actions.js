@@ -1,6 +1,6 @@
 import {makeActionCreator} from '#/main/app/store/actions'
 
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'
 import {selectors} from '#/main/template/administration/templates/store/selectors'
 
@@ -37,8 +37,11 @@ actions.open = (type = null) => (dispatch) => {
 
 actions.deleteTemplate = (templateTypeId, templateId) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_template_delete'], {ids: [templateId]}),
-    request: {method: 'DELETE'},
+    url: ['apiv2_template_delete'],
+    request: {
+      method: 'DELETE',
+      body: JSON.stringify([templateId])
+    },
     success: () => dispatch(actions.open(templateTypeId))
   }
 })

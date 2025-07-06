@@ -27,12 +27,13 @@ export default declareAction((courses, refresher) => {
             type: ASYNC_BUTTON,
             label: trans('register', {}, 'actions'),
             request: {
-              url: url(['apiv2_cursus_session_add_users', {
+              url: ['apiv2_cursus_session_add_users', {
                 id: selectedSessions[0] ? selectedSessions[0].id : null,
                 type: constants.LEARNER_TYPE}
-              ], {ids: selected.map(user => user.id)}),
+              ],
               request: {
-                method: 'PATCH'
+                method: 'PATCH',
+                body: JSON.stringify(selected.map(user => user.id))
               },
               success: () => refresher.update(courses[0])
             }

@@ -2,7 +2,6 @@ import {declareAction} from '#/main/app/action'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl'
-import {url} from '#/main/app/api'
 
 export default declareAction((registrations, refresher) => {
   const processable = registrations.filter(registration => hasPermission('administrate', registration))
@@ -24,9 +23,10 @@ export default declareAction((registrations, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_training_event_user_delete'], {ids: processable.map(registration => registration.id)}),
+      url: ['apiv2_training_event_user_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(registration => registration.id))
       },
       success: () => refresher.delete(processable)
     },

@@ -46,8 +46,8 @@ class TaskController extends AbstractCrudController
     #[Route(path: '/done', name: 'mark_done', methods: ['PUT'])]
     public function markDoneAction(Request $request): JsonResponse
     {
-        /** @var Task[] $tasks */
-        $tasks = $this->decodeIdsString($request, Task::class);
+        $ids = $this->decodeRequest($request);
+        $tasks = $this->om->getRepository(Task::class)->findBy(['uuid' => $ids]);
         foreach ($tasks as $task) {
             if (!$task->isDone() && $this->checkPermission('EDIT', $task)) {
                 $task->setDone(true);
@@ -68,8 +68,8 @@ class TaskController extends AbstractCrudController
     #[Route(path: '/todo', name: 'mark_todo', methods: ['PUT'])]
     public function markTodoAction(Request $request): JsonResponse
     {
-        /** @var Task[] $tasks */
-        $tasks = $this->decodeIdsString($request, Task::class);
+        $ids = $this->decodeRequest($request);
+        $tasks = $this->om->getRepository(Task::class)->findBy(['uuid' => $ids]);
         foreach ($tasks as $task) {
             if ($task->isDone() && $this->checkPermission('EDIT', $task)) {
                 $task->setDone(false);

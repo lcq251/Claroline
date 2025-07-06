@@ -1,9 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
 
 import {makeActionCreator} from '#/main/app/store/actions'
-import {API_REQUEST, url} from '#/main/app/api'
-import {constants as actionConstants} from '#/main/app/action/constants'
-import {actions as listActions} from '#/main/app/content/list/store/actions'
+import {API_REQUEST} from '#/main/app/api'
 import {selectors} from '#/plugin/cursus/event/store/selectors'
 
 export const LOAD_EVENT = 'LOAD_EVENT'
@@ -47,31 +45,11 @@ actions.register = (id) => ({
 
 actions.addUsers = (eventId, users, type) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_cursus_event_add_users', {id: eventId, type: type}], {ids: users.map(user => user.id)}),
+    url: ['apiv2_cursus_event_add_users', {id: eventId, type: type}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users.map(user => user.id))
     },
     success: (data, dispatch) => dispatch(actions.open(eventId, true))
-  }
-})
-
-actions.inviteUsers = (eventId, users) => ({
-  [API_REQUEST]: {
-    type: actionConstants.ACTION_SEND,
-    url: url(['apiv2_cursus_event_invite_users', {id: eventId}], {ids: users.map(user => user.id)}),
-    request: {
-      method: 'PUT'
-    }
-  }
-})
-
-actions.setPresenceStatus = (presences, status) => ({
-  [API_REQUEST]: {
-    url: url(['apiv2_cursus_event_presence_update', {status: status}]),
-    request: {
-      method: 'PUT',
-      body: JSON.stringify(presences.map(presence => presence.id))
-    },
-    success: (response, dispatch) => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.presences'))
   }
 })

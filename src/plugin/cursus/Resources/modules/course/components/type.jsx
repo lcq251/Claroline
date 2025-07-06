@@ -88,10 +88,7 @@ const CreationType = (props) => {
                   url: url(['apiv2_cursus_course_copy']),
                   request: {
                     method: 'POST',
-                    body: JSON.stringify({
-                      ids: selected.length ? [selected[0].id] : [],
-                      workspace: props.contextId
-                    })
+                    body: JSON.stringify(selected.length ? [selected[0].id] : [])
                   },
                   success: (course) => handleNavigation(props, history, null, course[0])
                 }

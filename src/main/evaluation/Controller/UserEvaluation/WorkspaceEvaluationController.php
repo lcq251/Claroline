@@ -115,13 +115,14 @@ class WorkspaceEvaluationController
     #[Route(path: '/', name: 'apiv2_workspace_evaluation_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
+        // no need to secure endpoint Crud will do it for us
+
         $evaluationIds = $this->decodeRequest($request);
+        $evaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
+            'uuid' => $evaluationIds,
+        ]);
 
-        foreach ($evaluationIds as $evaluationId) {
-            $evaluation = $this->om->getRepository(WorkspaceEvaluation::class)->findOneBy([
-                'uuid' => $evaluationId,
-            ]);
-
+        foreach ($evaluations as $evaluation) {
             $this->crud->delete($evaluation);
         }
 

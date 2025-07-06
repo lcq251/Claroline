@@ -15,9 +15,10 @@ export default (badges, refresher) => {
     label: trans('unarchive', {}, 'actions'),
     displayed: 0 !== processable.length,
     request: {
-      url: url(['apiv2_badge_restore'], {ids: processable.map(u => u.id)}),
+      url: ['apiv2_badge_restore'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(u => u.id))
       },
       success: () => refresher.update(processable)
     },

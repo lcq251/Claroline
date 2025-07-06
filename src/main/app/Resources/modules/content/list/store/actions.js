@@ -72,9 +72,10 @@ export const LIST_DATA_DELETE = 'LIST_DATA_DELETE'
 actions.deleteItems = makeInstanceActionCreator(LIST_DATA_DELETE, 'items')
 actions.deleteData = (listName, target, items) => ({
   [API_REQUEST]: {
-    url: url(target, {ids: items.map(item => item.id)}),
+    url: target,
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify(items.map(item => item.id))
     },
     success: (data, dispatch) => {
       dispatch(actions.deleteItems(listName, items))

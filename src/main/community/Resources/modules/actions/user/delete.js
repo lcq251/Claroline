@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {declareAction} from '#/main/app/action'
@@ -29,9 +28,10 @@ export default declareAction((users, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_user_delete'], {ids: processable.map(user=> user.id)}),
+      url: ['apiv2_user_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(user=> user.id))
       },
       success: () => refresher.delete(processable)
     },

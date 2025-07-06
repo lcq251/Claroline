@@ -14,6 +14,7 @@ services:
     Claroline\BigBlueButtonBundle\Controller\BBBController:
         arguments:
             - '@security.authorization_checker'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\BigBlueButtonBundle\Manager\BBBManager'
             - '@router'

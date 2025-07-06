@@ -47,8 +47,9 @@ trait HasGroupsTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $groups = $this->om->getRepository(Group::class)->findBy(['uuid' => $ids]);
 
-        $groups = $this->decodeIdsString($request, Group::class);
         $this->crud->patch($object, 'group', Crud::COLLECTION_ADD, $groups);
 
         return new JsonResponse(
@@ -62,8 +63,9 @@ trait HasGroupsTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $groups = $this->om->getRepository(Group::class)->findBy(['uuid' => $ids]);
 
-        $groups = $this->decodeIdsString($request, Group::class);
         $this->crud->patch($object, 'group', Crud::COLLECTION_REMOVE, $groups);
 
         return new JsonResponse($this->serializer->serialize($object));

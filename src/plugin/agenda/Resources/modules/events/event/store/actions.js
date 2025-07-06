@@ -1,5 +1,5 @@
 import {makeActionCreator} from '#/main/app/store/actions'
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {constants as actionConstants} from '#/main/app/action/constants'
 import {actions as listActions} from '#/main/app/content/list/store/actions'
 
@@ -30,9 +30,10 @@ actions.open = (eventId) => (dispatch) => dispatch({
 
 actions.addParticipants = (eventId, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_event_add_participants', {id: eventId}], {ids: users.map(user => user.id)}),
+    url: ['apiv2_event_add_participants', {id: eventId}],
     request: {
-      method: 'POST'
+      method: 'POST',
+      body: JSON.stringify(users.map(user => user.id))
     },
     success: () => dispatch(listActions.invalidateData(selectors.LIST_NAME))
   }
@@ -41,9 +42,10 @@ actions.addParticipants = (eventId, users) => (dispatch) => dispatch({
 actions.sendInvitations = (eventId, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
     type: actionConstants.ACTION_SEND,
-    url: url(['apiv2_event_send_invitations', {id: eventId}], {ids: users.map(user => user.id)}),
+    url: ['apiv2_event_send_invitations', {id: eventId}],
     request: {
-      method: 'POST'
+      method: 'POST',
+      body: JSON.stringify(users.map(user => user.id))
     },
     success: () => dispatch(listActions.invalidateData(selectors.LIST_NAME))
   }

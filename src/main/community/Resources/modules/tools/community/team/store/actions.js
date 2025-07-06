@@ -45,9 +45,10 @@ actions.open = (id, reload = false) => (dispatch, getState) => {
 
 actions.addUsers = (id, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_team_register', {id: id, role: 'user'}], {ids: users}),
+    url: ['apiv2_team_register', {id: id, role: 'user'}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))
@@ -58,9 +59,10 @@ actions.addUsers = (id, users) => (dispatch) => dispatch({
 
 actions.addManagers = (id, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_team_register', {id: id, role: 'manager'}], {ids: users}),
+    url: ['apiv2_team_register', {id: id, role: 'manager'}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: () => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))

@@ -1,5 +1,5 @@
 
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as listActions} from '#/main/app/content/list/store'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
@@ -15,7 +15,7 @@ actions.open = (username, reload = false) => (dispatch, getState) => {
       return
     }
 
-    // remove previous user if any to avoid displaying it while loading
+    // remove the previous user if any to avoid displaying it while loading
     dispatch(formActions.resetForm(selectors.FORM_NAME, {}, false))
   }
 
@@ -33,9 +33,10 @@ actions.open = (username, reload = false) => (dispatch, getState) => {
 
 actions.unregisterUsers = (users, workspace) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_workspace_unregister_users', {id: workspace.id}]) + '?'+ users.map(user => 'ids[]='+user.id).join('&'),
+    url: ['apiv2_workspace_unregister_users', {id: workspace.id}],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify(users.map(user => user.id))
     },
     success: (data, dispatch) => {
       dispatch(listActions.deleteItems(selectors.LIST_NAME, users))
@@ -45,9 +46,10 @@ actions.unregisterUsers = (users, workspace) => ({
 
 actions.addGroups = (id, groups) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_user_add_groups', {id: id}], {ids: groups}),
+    url: ['apiv2_user_add_groups', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(groups)
     },
     success: (data, dispatch) => {
       dispatch(listActions.invalidateData(selectors.LIST_NAME))

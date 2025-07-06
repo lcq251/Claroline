@@ -40,7 +40,7 @@ class SubjectComponent extends Component {
   }
 
   deleteSubject(subjectId) {
-    this.props.deleteSubject([subjectId], this.props.history.push, this.props.path)
+    this.props.deleteSubject(subjectId, this.props.history.push, this.props.path)
   }
 
   render() {

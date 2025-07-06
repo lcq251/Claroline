@@ -4,9 +4,10 @@ export const actions = {}
 
 actions.delete = (event) => ({
   [API_REQUEST]: {
-    url: ['apiv2_planned_object_delete', {ids: [event.id]}],
+    url: ['apiv2_planned_object_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([event.id])
     }
   }
 })

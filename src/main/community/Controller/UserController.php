@@ -83,8 +83,8 @@ class UserController extends AbstractCrudController
     #[Route(path: '/enable', name: 'enable', methods: ['PUT'])]
     public function enableAction(Request $request): JsonResponse
     {
-        /** @var User[] $users */
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
 
@@ -105,8 +105,8 @@ class UserController extends AbstractCrudController
     #[Route(path: '/disable', name: 'disable', methods: ['PUT'])]
     public function disableAction(Request $request): JsonResponse
     {
-        /** @var User[] $users */
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
 

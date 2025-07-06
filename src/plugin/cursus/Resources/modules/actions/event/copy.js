@@ -25,9 +25,7 @@ export default declareAction((events, refresher) => {
       url: url(['apiv2_cursus_event_copy']),
       request: {
         method: 'POST',
-        body: JSON.stringify({
-          ids: processable.map(row => row.id)
-        })
+        body: JSON.stringify(processable.map(row => row.id))
       },
       success: (response) => refresher.add(response)
     },

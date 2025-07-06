@@ -40,8 +40,9 @@ trait HasOrganizationsTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $organizations = $this->om->getRepository(Organization::class)->findBy(['uuid' => $ids]);
 
-        $organizations = $this->decodeIdsString($request, Organization::class);
         $this->crud->patch($object, 'organization', Crud::COLLECTION_ADD, $organizations);
 
         return new JsonResponse(
@@ -55,8 +56,9 @@ trait HasOrganizationsTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $organizations = $this->om->getRepository(Organization::class)->findBy(['uuid' => $ids]);
 
-        $organizations = $this->decodeIdsString($request, Organization::class);
         $this->crud->patch($object, 'organization', Crud::COLLECTION_REMOVE, $organizations);
 
         return new JsonResponse(

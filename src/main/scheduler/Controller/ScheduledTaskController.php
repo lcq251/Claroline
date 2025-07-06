@@ -44,7 +44,9 @@ class ScheduledTaskController extends AbstractCrudController
     #[Route(path: '/execute', name: 'execute', methods: ['POST'])]
     public function executeAction(Request $request): JsonResponse
     {
-        $tasks = $this->decodeIdsString($request, ScheduledTask::class);
+        $ids = $this->decodeRequest($request);
+        $tasks = $this->om->getRepository(ScheduledTask::class)->findBy(['uuid' => $ids]);
+
         if (empty($tasks)) {
             $tasks = $this->manager->getTasksToExecute();
         }

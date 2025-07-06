@@ -125,9 +125,9 @@ class EventController extends AbstractCrudController
         $invitations = [];
         $this->om->startFlushSuite();
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
         foreach ($users as $user) {
-            // TODO : use crud instead
             $invitations[] = $this->manager->createInvitation($event, $user);
         }
 
@@ -151,9 +151,9 @@ class EventController extends AbstractCrudController
 
         $this->om->startFlushSuite();
 
-        $participants = $this->decodeIdsString($request, EventInvitation::class);
+        $ids = $this->decodeRequest($request);
+        $participants = $this->om->getRepository(EventInvitation::class)->findBy(['id' => $ids]);
         foreach ($participants as $participant) {
-            // TODO : use crud instead
             $this->manager->removeInvitation($participant);
         }
 
@@ -173,7 +173,8 @@ class EventController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('EDIT', $event, [], true);
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
         if (!empty($users)) {
             $this->manager->sendInvitation($event, $users);
         }

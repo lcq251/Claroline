@@ -95,7 +95,8 @@ class TeamController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('EDIT', $team, [], true);
 
-        $users = parent::decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
         $workspace = $team->getWorkspace();
 
         switch ($role) {
@@ -133,7 +134,8 @@ class TeamController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('EDIT', $team, [], true);
 
-        $users = parent::decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
         if ('manager' === $role) {
             $this->teamManager->unregisterManagersFromTeam($team, $users);
@@ -193,7 +195,8 @@ class TeamController extends AbstractCrudController
     #[Route(path: '/teams/fill', name: 'fill', methods: ['PUT'])]
     public function fillAction(Request $request): JsonResponse
     {
-        $teams = parent::decodeIdsString($request, Team::class);
+        $ids = $this->decodeRequest($request);
+        $teams = $this->om->getRepository(Team::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($teams as $team) {
@@ -209,7 +212,8 @@ class TeamController extends AbstractCrudController
     #[Route(path: '/teams/empty', name: 'empty', methods: ['DELETE'])]
     public function emptyAction(Request $request): JsonResponse
     {
-        $teams = parent::decodeIdsString($request, Team::class);
+        $ids = $this->decodeRequest($request);
+        $teams = $this->om->getRepository(Team::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($teams as $team) {

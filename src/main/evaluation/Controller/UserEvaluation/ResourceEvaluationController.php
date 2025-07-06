@@ -116,13 +116,14 @@ class ResourceEvaluationController
     #[Route(path: '/', name: 'apiv2_resource_evaluation_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request): JsonResponse
     {
+        // no need to secure endpoint Crud will do it for us
+
         $evaluationIds = $this->decodeRequest($request);
+        $evaluations = $this->om->getRepository(ResourceEvaluation::class)->findBy([
+            'uuid' => $evaluationIds,
+        ]);
 
-        foreach ($evaluationIds as $evaluationId) {
-            $evaluation = $this->om->getRepository(ResourceEvaluation::class)->findOneBy([
-                'uuid' => $evaluationId,
-            ]);
-
+        foreach ($evaluations as $evaluation) {
             $this->crud->delete($evaluation);
         }
 

@@ -33,13 +33,12 @@ actions.loadCurrentPaper = (quizId, paperId) => (dispatch, getState) => {
 
 actions.deletePapers = (quizId, papers) => ({
   [API_REQUEST]: {
-    url: url(['ujm_exercise_delete_papers', {
+    url: ['ujm_exercise_delete_papers', {
       exerciseId: quizId
-    }], {
-      ids: papers.map(paper => paper.id)
-    }),
+    }],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify(papers.map(paper => paper.id))
     },
     success: (data, dispatch) => dispatch(listActions.invalidateData(selectors.LIST_NAME))
   }

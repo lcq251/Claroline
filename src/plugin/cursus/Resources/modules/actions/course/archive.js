@@ -31,9 +31,7 @@ export default declareAction((courses, refresher) => {
       url: url(['apiv2_cursus_course_archive']),
       request: {
         method: 'POST',
-        body: JSON.stringify({
-          ids: processable.map(course => course.id)
-        })
+        body: JSON.stringify(processable.map(course => course.id))
       },
       success: (response) => refresher.update(response)
     },

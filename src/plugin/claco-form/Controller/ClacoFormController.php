@@ -129,8 +129,9 @@ class ClacoFormController
     #[Route(path: '/entries/lock/{locked}/switch', name: 'claro_claco_form_entries_lock_switch', methods: ['PUT'])]
     public function entriesLockSwitchAction(int $locked, Request $request): JsonResponse
     {
-        /** @var Entry[] $entries */
-        $entries = $this->decodeIdsString($request, Entry::class);
+        $ids = $this->decodeRequest($request);
+        $entries = $this->om->getRepository(Entry::class)->findBy(['uuid' => $ids]);
+
         $clacoForms = [];
 
         foreach ($entries as $entry) {

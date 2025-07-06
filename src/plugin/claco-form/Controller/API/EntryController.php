@@ -146,8 +146,8 @@ class EntryController extends AbstractCrudController
         $entries = [];
         $serializedEntries = [];
 
-        /** @var Entry[] $entriesParams */
-        $entriesParams = $this->decodeIdsString($request, Entry::class);
+        $ids = $this->decodeRequest($request);
+        $entriesParams = $this->om->getRepository(Entry::class)->findBy(['uuid' => $ids]);
         foreach ($entriesParams as $entryParam) {
             if (!$entryParam->isLocked() && $this->checkPermission('ADMINISTRATE', $entryParam)) {
                 $entries[] = $entryParam;

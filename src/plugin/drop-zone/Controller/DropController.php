@@ -11,8 +11,6 @@
 
 namespace Claroline\DropZoneBundle\Controller;
 
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Exception;
 use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
@@ -30,6 +28,7 @@ use Claroline\DropZoneBundle\Manager\DocumentManager;
 use Claroline\DropZoneBundle\Manager\DropManager;
 use Claroline\DropZoneBundle\Manager\DropzoneManager;
 use Claroline\DropZoneBundle\Manager\EvaluationManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -62,7 +61,7 @@ class DropController
 
     #[Route(path: '/drop/{id}', name: 'claro_dropzone_drop_fetch', methods: ['GET'])]
     public function getAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop): JsonResponse
+        Drop $drop): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         /* TODO: checks if current user can edit resource or view this drop */
@@ -73,7 +72,7 @@ class DropController
 
     #[Route(path: '/{id}/drops/search', name: 'claro_dropzone_drops_search', methods: ['GET'])]
     public function listAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Dropzone', mapping: ['id' => 'uuid'])]
-    Dropzone $dropzone, Request $request): JsonResponse
+        Dropzone $dropzone, Request $request): JsonResponse
     {
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
 
@@ -90,8 +89,8 @@ class DropController
      */
     #[Route(path: '/{id}/drops/{teamId}', name: 'claro_dropzone_drop_create', defaults: ['teamId' => null], methods: ['POST'])]
     public function createAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Dropzone', mapping: ['id' => 'uuid'])]
-    Dropzone $dropzone, #[CurrentUser] ?User $user, #[MapEntity(class: 'Claroline\CommunityBundle\Entity\Team', mapping: ['teamId' => 'uuid'])]
-    Team $team = null): JsonResponse
+        Dropzone $dropzone, #[CurrentUser] ?User $user, #[MapEntity(class: 'Claroline\CommunityBundle\Entity\Team', mapping: ['teamId' => 'uuid'])]
+        Team $team = null): JsonResponse
     {
         $this->checkPermission('OPEN', $dropzone->getResourceNode(), [], true);
 
@@ -109,7 +108,7 @@ class DropController
             }
 
             return new JsonResponse($this->serializer->serialize($myDrop));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -119,12 +118,13 @@ class DropController
      */
     #[Route(path: '/{id}/drops', name: 'claro_dropzone_drop_delete', methods: ['DELETE'])]
     public function deleteAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Dropzone', mapping: ['id' => 'uuid'])]
-    Dropzone $dropzone, Request $request): JsonResponse
+        Dropzone $dropzone, Request $request): JsonResponse
     {
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
 
         if (!$dropzone->hasLockDrops()) {
-            $drops = $this->decodeIdsString($request, Drop::class);
+            $ids = $this->decodeRequest($request);
+            $drops = $this->om->getRepository(Drop::class)->findBy(['uuid' => $ids]);
 
             $this->om->startFlushSuite();
             foreach ($drops as $drop) {
@@ -141,7 +141,7 @@ class DropController
      */
     #[Route(path: '/drop/{id}/submit', name: 'claro_dropzone_drop_submit', methods: ['PUT'])]
     public function submitAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop, #[CurrentUser] ?User $user): JsonResponse
+        Drop $drop, #[CurrentUser] ?User $user): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('OPEN', $dropzone->getResourceNode(), [], true);
@@ -153,7 +153,7 @@ class DropController
             $this->evaluationManager->updateDropProgression($dropzone, $drop, $progression);
 
             return new JsonResponse($this->serializer->serialize($drop));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -163,7 +163,7 @@ class DropController
      */
     #[Route(path: '/drop/{id}/submission/cancel', name: 'claro_dropzone_drop_submission_cancel', methods: ['PUT'])]
     public function cancelAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop): JsonResponse
+        Drop $drop): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
@@ -172,7 +172,7 @@ class DropController
             $this->manager->cancelDropSubmission($drop);
 
             return new JsonResponse($this->serializer->serialize($drop));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -182,7 +182,7 @@ class DropController
      */
     #[Route(path: '/drop/{id}/type/{type}', name: 'claro_dropzone_documents_add', methods: ['POST'])]
     public function addDocumentAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop, string $type, #[CurrentUser] ?User $user, Request $request): JsonResponse
+        Drop $drop, string $type, #[CurrentUser] ?User $user, Request $request): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('OPEN', $dropzone->getResourceNode(), [], true);
@@ -212,7 +212,7 @@ class DropController
             }
 
             return new JsonResponse($documents);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -222,7 +222,7 @@ class DropController
      */
     #[Route(path: '/document/{id}', name: 'claro_dropzone_document_delete', methods: ['DELETE'])]
     public function deleteDocumentAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Document', mapping: ['id' => 'uuid'])]
-    Document $document, #[CurrentUser] ?User $user): JsonResponse
+        Document $document, #[CurrentUser] ?User $user): JsonResponse
     {
         $drop = $document->getDrop();
         $dropzone = $drop->getDropzone();
@@ -234,7 +234,7 @@ class DropController
             $this->documentManager->deleteDocument($document);
 
             return new JsonResponse($documentId);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -246,8 +246,8 @@ class DropController
      */
     #[Route(path: '/drop/{id}/revision/{revision}/type/{type}/manager', name: 'claro_dropzone_manager_documents_add', methods: ['POST'])]
     public function addManagerDocumentAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop, #[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Revision', mapping: ['revision' => 'uuid'])]
-    Revision $revision, $type, #[CurrentUser] ?User $user, Request $request): JsonResponse
+        Drop $drop, #[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Revision', mapping: ['revision' => 'uuid'])]
+        Revision $revision, $type, #[CurrentUser] ?User $user, Request $request): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
@@ -273,7 +273,7 @@ class DropController
             }
 
             return new JsonResponse($documents);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -283,7 +283,7 @@ class DropController
      */
     #[Route(path: '/document/{id}/manager', name: 'claro_dropzone_manager_document_delete', methods: ['DELETE'])]
     public function deleteManagerDocumentAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Document', mapping: ['id' => 'uuid'])]
-    Document $document): JsonResponse
+        Document $document): JsonResponse
     {
         $drop = $document->getDrop();
         $dropzone = $drop->getDropzone();
@@ -294,7 +294,7 @@ class DropController
             $this->documentManager->deleteDocument($document);
 
             return new JsonResponse($documentId);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -304,7 +304,7 @@ class DropController
      */
     #[Route(path: '/drop/{id}/unlock', name: 'claro_dropzone_drop_unlock', methods: ['PUT'])]
     public function dropUnlockAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop): JsonResponse
+        Drop $drop): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
@@ -313,7 +313,7 @@ class DropController
             $this->manager->unlockDrop($drop);
 
             return new JsonResponse($this->serializer->serialize($drop));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -323,7 +323,7 @@ class DropController
      */
     #[Route(path: '/drop/{id}/unlock/user', name: 'claro_dropzone_drop_unlock_user', methods: ['PUT'])]
     public function dropUserUnlockAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Drop', mapping: ['id' => 'uuid'])]
-    Drop $drop): JsonResponse
+        Drop $drop): JsonResponse
     {
         $dropzone = $drop->getDropzone();
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
@@ -332,7 +332,7 @@ class DropController
             $this->manager->unlockDropUser($drop);
 
             return new JsonResponse($this->serializer->serialize($drop));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 422);
         }
     }
@@ -343,7 +343,9 @@ class DropController
     #[Route(path: '/drops/download', name: 'claro_dropzone_drops_download', methods: ['GET'])]
     public function downloadAction(Request $request): StreamedResponse
     {
-        $drops = $this->decodeIdsString($request, Drop::class);
+        $ids = $this->decodeRequest($request);
+        $drops = $this->om->getRepository(Drop::class)->findBy(['uuid' => $ids]);
+
         /** @var Dropzone $dropzone */
         $dropzone = $drops[0]->getDropzone();
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
@@ -371,7 +373,7 @@ class DropController
      */
     #[Route(path: '/{id}/drops/csv', name: 'claro_dropzone_drops_csv', methods: ['GET'])]
     public function exportCsvAction(#[MapEntity(class: 'Claroline\DropZoneBundle\Entity\Dropzone', mapping: ['id' => 'uuid'])]
-    Dropzone $dropzone): StreamedResponse
+        Dropzone $dropzone): StreamedResponse
     {
         $this->checkPermission('EDIT', $dropzone->getResourceNode(), [], true);
 

@@ -1,4 +1,3 @@
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
@@ -22,12 +21,10 @@ export default declareAction((courses, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_cursus_course_copy']),
+      url: ['apiv2_cursus_course_copy'],
       request: {
         method: 'POST',
-        body: JSON.stringify({
-          ids: processable.map(course => course.id)
-        })
+        body: JSON.stringify(processable.map(course => course.id))
       },
       success: (response) => refresher.add(response)
     },

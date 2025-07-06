@@ -28,11 +28,10 @@ export default declareAction((sequences, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_evaluation_sequence_delete'], {
-        ids: processable.map(sequence => sequence.id)
-      }),
+      url: ['apiv2_evaluation_sequence_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(sequence => sequence.id))
       },
       success: () => refresher.delete(processable)
     },

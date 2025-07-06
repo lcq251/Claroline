@@ -144,11 +144,11 @@ class SequenceEvaluationController
         // no need to secure endpoint Crud will do it for us
 
         $evaluationIds = $this->decodeRequest($request);
-        foreach ($evaluationIds as $evaluationId) {
-            $evaluation = $this->om->getRepository(SequenceEvaluation::class)->findOneBy([
-                'uuid' => $evaluationId,
-            ]);
+        $evaluations = $this->om->getRepository(SequenceEvaluation::class)->findBy([
+            'uuid' => $evaluationIds,
+        ]);
 
+        foreach ($evaluations as $evaluation) {
             $this->crud->delete($evaluation);
         }
 

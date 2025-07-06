@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 
 import {ASYNC_BUTTON} from '#/main/app/buttons'
-import {url} from '#/main/app/api'
 import {trans, transChoice} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
@@ -16,9 +15,10 @@ export default (badges, refresher) => {
 
     displayed: 0 !== processable.length,
     request: {
-      url: url(['apiv2_badge_archive'], {ids: processable.map(u => u.id)}),
+      url: ['apiv2_badge_archive'],
       request: {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify(processable.map(u => u.id))
       },
       success: () => refresher.update(processable)
     },

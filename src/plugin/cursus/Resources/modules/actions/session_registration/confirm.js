@@ -2,7 +2,6 @@ import {declareAction} from '#/main/app/action'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 
 export default declareAction((registrations, refresher) => {
   const processable = registrations.filter(registration => !registration.confirmed && hasPermission('edit', registration))
@@ -14,9 +13,10 @@ export default declareAction((registrations, refresher) => {
     label: trans('confirm_registration', {}, 'actions'),
     displayed: 0 !== processable.length,
     request: {
-      url: url(['apiv2_training_session_user_confirm'], {ids: processable.map(registration => registration.id)}),
+      url: ['apiv2_training_session_user_confirm'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(registration => registration.id))
       },
       success: refresher.update
     },

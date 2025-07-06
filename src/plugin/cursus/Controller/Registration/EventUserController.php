@@ -81,8 +81,8 @@ class EventUserController extends AbstractCrudController
     #[Route(path: '/invite', name: 'invite', methods: ['PUT'])]
     public function inviteAction(Request $request): JsonResponse
     {
-        /** @var EventUser[] $eventUsers */
-        $eventUsers = $this->decodeIdsString($request, EventUser::class);
+        $ids = $this->decodeRequest($request);
+        $eventUsers = $this->om->getRepository(EventUser::class)->findBy(['uuid' => $ids]);
 
         $this->om->startFlushSuite();
         foreach ($eventUsers as $eventUser) {

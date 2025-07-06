@@ -1,10 +1,9 @@
 import get from 'lodash/get'
 
+import {declareAction} from '#/main/app/action'
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
 
 /**
  * Delete roles action.
@@ -30,9 +29,10 @@ export default declareAction((roles, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_role_delete'], {ids: processable.map(role => role.id)}),
+      url: ['apiv2_role_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(role => role.id))
       },
       success: () => refresher.delete(processable)
     },

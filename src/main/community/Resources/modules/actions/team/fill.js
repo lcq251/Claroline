@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl'
-import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {declareAction} from '#/main/app/action'
@@ -17,9 +16,10 @@ export default declareAction((teams, refresher) => {
     displayed: 0 !== processable.length,
     disabled: !processable.find(team => !get(team, 'restrictions.users') || team.users < get(team, 'restrictions.users')),
     request: {
-      url: url(['apiv2_team_fill'], {ids: processable.map(team => team.id)}),
+      url: ['apiv2_team_fill'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(team => team.id))
       },
       success: () => refresher.update(processable)
     },

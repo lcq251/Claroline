@@ -1,5 +1,4 @@
 import {trans} from '#/main/app/intl/translation'
-import {url} from '#/main/app/api'
 
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_USERS} from '#/main/community/modals/users'
@@ -15,9 +14,10 @@ export default declareAction((roles, refresher) => ({
       type: ASYNC_BUTTON,
       label: trans('add', {}, 'actions'),
       request: {
-        url: url(['apiv2_role_add_users', {id: roles[0].id}], {ids: users.map(user => user.id)}),
+        url: ['apiv2_role_add_users', {id: roles[0].id}],
         request: {
-          method: 'PATCH'
+          method: 'PATCH',
+          body: JSON.stringify(users.map(user => user.id))
         },
         success: () => refresher.update(roles[0])
       }

@@ -160,9 +160,9 @@ function getResponseData(response) {
 
 /**
  * Sends a Request to a backend API.
- * NB. The maim difference with regular `fetch` is the request is managed by Redux.
+ * NB. The main difference with regular `fetch` is the request is managed by Redux.
  *
- * @param {object}   apiRequest - the request to send (@see `ApiRequest` from '#/main/app/api/prop-types" for the expected format).
+ * @param {object}   apiRequest - the request to send (@see `ApiRequest` from '#/main/app/api/prop-types' for the expected format).
  * @param {function} dispatch   - the redux action dispatcher
  */
 function apiFetch(apiRequest, dispatch) {

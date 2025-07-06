@@ -25,9 +25,10 @@ actions.open = (eventId) => (dispatch) => dispatch({
 
 actions.markDone = (eventId) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: ['apiv2_task_mark_done', {ids: [eventId]}],
+    url: ['apiv2_task_mark_done'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify([eventId])
     },
     success: (response) => dispatch(actions.load(response[0]))
   }
@@ -35,9 +36,10 @@ actions.markDone = (eventId) => (dispatch) => dispatch({
 
 actions.markTodo = (eventId) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: ['apiv2_task_mark_todo', {ids: [eventId]}],
+    url: ['apiv2_task_mark_todo'],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify([eventId])
     },
     success: (response) => dispatch(actions.load(response[0]))
   }

@@ -42,8 +42,9 @@ trait HasRolesTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $roles = $this->om->getRepository(Role::class)->findBy(['uuid' => $ids]);
 
-        $roles = $this->decodeIdsString($request, Role::class);
         $this->crud->patch($object, 'role', Crud::COLLECTION_ADD, $roles);
 
         return new JsonResponse(
@@ -57,8 +58,9 @@ trait HasRolesTrait
         // no need to secure entrypoint, the CRUD will do it for us.
 
         $object = $this->crud->get(static::getClass(), $id);
+        $ids = $this->decodeRequest($request);
+        $roles = $this->om->getRepository(Role::class)->findBy(['uuid' => $ids]);
 
-        $roles = $this->decodeIdsString($request, Role::class);
         $this->crud->patch($object, 'role', Crud::COLLECTION_REMOVE, $roles);
 
         return new JsonResponse(

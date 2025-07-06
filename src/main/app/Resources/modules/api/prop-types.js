@@ -37,7 +37,7 @@ const ApiRequest = {
       method: T.oneOf(
         Object.keys(constants.HTTP_ACTIONS)
       ),
-      body: T.oneOfType([T.string, T.object]),
+      body: T.oneOfType([T.string, T.object, T.array]),
       credentials: T.string
     }),
 

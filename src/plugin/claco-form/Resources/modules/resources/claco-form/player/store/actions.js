@@ -1,7 +1,6 @@
-import cloneDeep from 'lodash/cloneDeep'
 
 import {makeActionCreator} from '#/main/app/store/actions'
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 
 import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
@@ -26,9 +25,10 @@ actions.loadUsedCountries = makeActionCreator(USED_COUNTRIES_LOAD, 'countries')
 
 actions.deleteEntry = (entry) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_clacoformentry_delete', {ids: [entry.id]}]),
+    url: ['apiv2_clacoformentry_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([entry.id])
     },
     success: (data, dispatch) => dispatch(listActions.invalidateData(selectors.STORE_NAME+'.entries.list'))
   }
@@ -46,9 +46,10 @@ actions.switchEntryStatus = (entryId) => ({
 
 actions.switchEntriesStatus = (entries, status) => ({
   [API_REQUEST]: {
-    url: url(['apiv2_clacoformentry_change_status_bulk', {status: status, ids: entries.map(e => e.id)}]),
+    url: ['apiv2_clacoformentry_change_status_bulk', {status: status}],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(entries.map(e => e.id))
     },
     success: (data, dispatch) => dispatch(actions.updateEntries(data))
   }
@@ -66,9 +67,10 @@ actions.switchEntryLock = (entryId) => ({
 
 actions.switchEntriesLock = (entries, locked) => ({
   [API_REQUEST]: {
-    url: url(['claro_claco_form_entries_lock_switch', {locked: locked ? 1 : 0, ids: entries.map(e => e.id)}]),
+    url: ['claro_claco_form_entries_lock_switch', {locked: locked ? 1 : 0}],
     request: {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify(entries.map(e => e.id))
     },
     success: (data, dispatch) => dispatch(actions.updateEntries(data))
   }

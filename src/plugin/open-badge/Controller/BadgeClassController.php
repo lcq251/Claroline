@@ -131,7 +131,8 @@ class BadgeClassController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $badge, [], true);
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
 
         foreach ($users as $user) {
             $this->assertionManager->create($badge, $user);
@@ -150,7 +151,8 @@ class BadgeClassController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $badge, [], true);
 
-        $assertions = $this->decodeIdsString($request, Assertion::class);
+        $ids = $this->decodeRequest($request);
+        $assertions = $this->om->getRepository(Assertion::class)->findBy(['uuid' => $ids]);
 
         foreach ($assertions as $assertion) {
             $this->assertionManager->delete($assertion);

@@ -1,5 +1,4 @@
 import {hasPermission} from '#/main/app/security'
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {declareAction} from '#/main/app/action'
@@ -27,9 +26,10 @@ export default declareAction((courses, refresher) => {
       }))
     },
     request: {
-      url: url(['apiv2_cursus_course_delete'], {ids: processable.map(course => course.id)}),
+      url: ['apiv2_cursus_course_delete'],
       request: {
-        method: 'DELETE'
+        method: 'DELETE',
+        body: JSON.stringify(processable.map(course => course.id))
       },
       success: () => refresher.delete(processable)
     },

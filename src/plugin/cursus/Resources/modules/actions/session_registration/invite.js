@@ -1,7 +1,6 @@
 import {constants as actionConstants, declareAction} from '#/main/app/action'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
-import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 
 export default declareAction((registrations) => {
@@ -15,9 +14,10 @@ export default declareAction((registrations) => {
     displayed: 0 !== processable.length,
     request: {
       type: actionConstants.ACTION_SEND,
-      url: url(['apiv2_training_session_user_invite'], {ids: processable.map(user => user.id)}),
+      url: ['apiv2_training_session_user_invite'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(user => user.id))
       }
     },
     scope: ['object', 'collection']

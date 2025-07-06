@@ -96,7 +96,9 @@ class PaperController
     {
         $this->assertHasPermission('FOLLOW', $exercise);
 
-        $papers = $this->decodeIdsString($request, Paper::class);
+        $ids = $this->decodeRequest($request);
+        $papers = $this->om->getRepository(Paper::class)->findBy(['uuid' => $ids]);
+
         $this->paperManager->delete($papers);
 
         return new JsonResponse(null, 204);

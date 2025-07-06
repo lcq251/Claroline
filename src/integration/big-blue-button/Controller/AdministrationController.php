@@ -80,8 +80,9 @@ class AdministrationController
     {
         $this->checkAccess();
 
-        /** @var BBB[] $users */
-        $meetings = $this->decodeIdsString($request, BBB::class);
+        $meetingIds = $this->decodeRequest($request);
+        $meetings = $this->om->getRepository(BBB::class)->findBy(['uuid' => $meetingIds]);
+
         foreach ($meetings as $meeting) {
             $this->bbbManager->endMeeting($meeting);
         }
@@ -114,9 +115,10 @@ class AdministrationController
     {
         $this->checkAccess();
 
-        $this->crud->deleteBulk(
-            $this->decodeIdsString($request, Recording::class)
-        );
+        $recordingIds = $this->decodeRequest($request);
+        $recordings = $this->om->getRepository(Recording::class)->findBy(['uuid' => $recordingIds]);
+
+        $this->crud->deleteBulk($recordings);
 
         return new JsonResponse(null, 204);
     }

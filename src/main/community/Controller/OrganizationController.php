@@ -69,7 +69,9 @@ class OrganizationController extends AbstractCrudController
         Organization $organization,
         Request $request
     ): JsonResponse {
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
+
         $this->crud->patch($organization, 'manager', Crud::COLLECTION_ADD, $users);
 
         return new JsonResponse($this->serializer->serialize($organization));
@@ -84,7 +86,9 @@ class OrganizationController extends AbstractCrudController
         Organization $organization,
         Request $request
     ): JsonResponse {
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
+
         $this->crud->patch($organization, 'manager', Crud::COLLECTION_REMOVE, $users);
 
         return new JsonResponse($this->serializer->serialize($organization));

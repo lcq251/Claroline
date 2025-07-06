@@ -19,9 +19,10 @@ export default declareAction((sessions, refresher) => {
         type: ASYNC_BUTTON,
         label: trans('register', {}, 'actions'),
         request: {
-          url: url(['apiv2_cursus_session_add_users', {id: sessions[0].id, type: constants.LEARNER_TYPE}], {ids: selected.map(user => user.id)}),
+          url: ['apiv2_cursus_session_add_users', {id: sessions[0].id, type: constants.LEARNER_TYPE}],
           request: {
-            method: 'PATCH'
+            method: 'PATCH',
+            body: JSON.stringify(selected.map(user => user.id))
           },
           success: () => refresher.update(sessions[0])
         }

@@ -99,9 +99,7 @@ class SessionController extends AbstractCrudController
         $data = $this->decodeRequest($request);
 
         /** @var Session[] $sessions */
-        $sessions = $this->om->getRepository(Session::class)->findBy([
-            'uuid' => $data['ids'],
-        ]);
+        $sessions = $this->om->getRepository(Session::class)->findBy(['uuid' => $data,]);
 
         foreach ($sessions as $session) {
             if ($this->authorization->isGranted('EDIT', $session)) {
@@ -116,7 +114,7 @@ class SessionController extends AbstractCrudController
         }, $processed));
     }
 
-    #[Route(path: '/{id}/list/canceled', name: 'list_canceled', methods: ['GET'])]
+    #[Route(path: '/{id}/canceled', name: 'list_canceled', methods: ['GET'])]
     public function listCanceledAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Course $course,
@@ -192,7 +190,8 @@ class SessionController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $session, [], true);
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
         $nbUsers = count($users);
 
         if (AbstractRegistration::LEARNER === $type && !$this->manager->checkSessionCapacity($session, $nbUsers)) {
@@ -216,7 +215,8 @@ class SessionController extends AbstractCrudController
     ): JsonResponse {
         $this->checkPermission('FOLLOW', $session, [], true);
 
-        $users = $this->decodeIdsString($request, User::class);
+        $ids = $this->decodeRequest($request);
+        $users = $this->om->getRepository(User::class)->findBy(['uuid' => $ids]);
         $sessionUsers = $this->manager->addUsers($session, $users, AbstractRegistration::LEARNER, false);
 
         return new JsonResponse(array_map(function (SessionUser $sessionUser) {

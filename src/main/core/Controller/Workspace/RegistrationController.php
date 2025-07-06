@@ -22,7 +22,6 @@ use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Entity\Workspace\WorkspaceRegistrationQueue;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceUserQueueManager;
-use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,8 +108,6 @@ class RegistrationController
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace
     ): JsonResponse {
-        // FIXME : ids dans body
-
         $query = $request->query->all();
         $users = $this->om->getRepository(User::class)->findBy(['uuid' => $query['ids']]);
 
@@ -165,7 +162,9 @@ class RegistrationController
     {
         $token = $this->tokenStorage->getToken();
         $user = $token->getUser();
-        $workspaces = $this->decodeIdsString($request, Workspace::class, 'workspaces');
+
+        $ids = $this->decodeRequest($request);
+        $workspaces = $this->om->getRepository(Workspace::class)->findBy(['uuid' => $ids]);
 
         foreach ($workspaces as $workspace) {
             $this->workspaceManager->unregisterUsers([$user], $workspace);

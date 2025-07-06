@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 
-import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
@@ -17,9 +16,10 @@ export default declareAction((users, refresher) => {
     scope: ['object', 'collection'],
     displayed: 0 !== processable.length,
     request: {
-      url: url(['apiv2_user_enable'], {ids: users.map(u => u.id)}),
+      url: ['apiv2_user_enable'],
       request: {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify(processable.map(u => u.id))
       },
       success: (response) => refresher.update(response)
     },

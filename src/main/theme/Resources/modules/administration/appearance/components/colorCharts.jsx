@@ -37,9 +37,10 @@ const AppearanceColorCharts = (props) => {
                   icon: 'fa fa-fw fa-trash',
                   label: trans('delete', {}, 'actions'),
                   request: {
-                    url: ['apiv2_color_collection_delete', {ids: [color.id]}],
+                    url: ['apiv2_color_collection_delete'],
                     request: {
-                      method: 'DELETE'
+                      method: 'DELETE',
+                      body: JSON.stringify([color.id])
                     },
                     success: () => props.removeColorChart(color)
                   },

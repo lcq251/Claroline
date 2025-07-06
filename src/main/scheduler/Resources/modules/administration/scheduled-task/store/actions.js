@@ -1,5 +1,5 @@
 import {now} from '#/main/app/intl/date'
-import {API_REQUEST, url} from '#/main/app/api'
+import {API_REQUEST} from '#/main/app/api'
 import {actions as formActions} from '#/main/app/content/form/store'
 import {actions as listActions} from '#/main/app/content/list/store'
 
@@ -26,9 +26,10 @@ actions.open = (formName, id = null) => (dispatch) => {
 
 actions.addUsers = (id, users) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_scheduled_task_add_users', {id: id}], {ids: users}),
+    url: ['apiv2_scheduled_task_add_users', {id: id}],
     request: {
-      method: 'PATCH'
+      method: 'PATCH',
+      body: JSON.stringify(users)
     },
     success: (data) => {
       dispatch(listActions.invalidateData(selectors.STORE_NAME + '.task'))
@@ -39,9 +40,10 @@ actions.addUsers = (id, users) => (dispatch) => dispatch({
 
 actions.execute = (tasks = null) => (dispatch) => dispatch({
   [API_REQUEST]: {
-    url: url(['apiv2_scheduled_task_execute'], tasks ? {ids: tasks} : null),
+    url: ['apiv2_scheduled_task_execute'],
     request: {
-      method: 'POST'
+      method: 'POST',
+      body: tasks ? JSON.stringify(tasks) : undefined
     },
     success: () => dispatch(listActions.invalidateData(selectors.STORE_NAME + '.tasks'))
   }

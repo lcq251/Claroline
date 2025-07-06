@@ -31,9 +31,10 @@ actions.saveSection = (sections, section, isNew) => ({
 
 actions.deleteSection = (sections, sectionId) => ({
   [API_REQUEST]: {
-    url: ['apiv2_audioresourcesection_delete', {ids: [sectionId]}],
+    url: ['apiv2_audioresourcesection_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([sectionId])
     },
     success: (data, dispatch) => {
       const newSections = cloneDeep(sections)
@@ -68,9 +69,10 @@ actions.saveSectionComment = (sections, sectionId, comment) => ({
 
 actions.deleteSectionComment = (sections, sectionId, commentId) => ({
   [API_REQUEST]: {
-    url: ['apiv2_resource_audio_comment_delete', {ids: [commentId]}],
+    url: ['apiv2_resource_audio_comment_delete'],
     request: {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify([commentId])
     },
     success: (data, dispatch) => {
       const newSections = cloneDeep(sections)
