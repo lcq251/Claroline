@@ -51,13 +51,10 @@ class GroupType extends AbstractType
                             $alias = $finder->getParent()->getAlias();
                         }
 
-                        $queryBuilder->andWhere("EXISTS (
-                            SELECT wsr.id
-                            FROM Claroline\CoreBundle\Entity\Role AS wsr
-                            LEFT JOIN Claroline\CoreBundle\Entity\Group AS wsrg WITH (wsr MEMBER OF wsrg.roles AND wsrg MEMBER OF $alias.groups)
-                            WHERE wsr.workspace = :workspace
-                              AND wsrg IS NOT NULL
-                        )");
+                        $queryBuilder->leftJoin(Role::class, $finder->getAlias(), Join::WITH, "{$finder->getAlias()} MEMBER OF $alias.roles");
+                        $queryBuilder->leftJoin($finder->getAlias().'.workspace', $finder->getAlias().'_workspace');
+                        $queryBuilder->andWhere("{$finder->getAlias()}_workspace.uuid = :workspace");
+
                         $queryBuilder->setParameter('workspace', $finder->getFilterValue());
                     }
                 },
