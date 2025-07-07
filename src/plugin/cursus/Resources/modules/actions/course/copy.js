@@ -2,6 +2,7 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {declareAction} from '#/main/app/action'
+import {constants} from '#/plugin/cursus/constants'
 
 export default declareAction((courses, refresher) => {
   const processable = courses.filter(course => hasPermission('administrate', course))
@@ -29,6 +30,7 @@ export default declareAction((courses, refresher) => {
       success: (response) => refresher.add(response)
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
   }
 })

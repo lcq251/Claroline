@@ -6,7 +6,6 @@ import {trans} from '#/main/app/intl'
 import {Editor} from '#/main/app/editor/components/main'
 import {selectors} from '#/main/transfer/tools/import/store'
 import {ImportEditorFormat} from '#/main/transfer/import/editor/components/format'
-import {ImportEditorActions} from '#/main/transfer/import/editor/components/actions'
 import {ImportEditorPlaning} from '#/main/transfer/import/editor/components/planing'
 import {ImportEditorOverview} from '#/main/transfer/import/editor/components/overview'
 import {ImportEditorExamples} from '#/main/transfer/import/editor/components/examples'
@@ -34,7 +33,6 @@ const ImportEditor = (props) => {
       }}
       close={props.path}
       defaultPage="overview"
-      actionsPage={!props.isNew ? ImportEditorActions : undefined}
       overviewPage={ImportEditorOverview}
       pages={[
         {

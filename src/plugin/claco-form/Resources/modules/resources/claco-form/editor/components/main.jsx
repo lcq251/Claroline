@@ -8,7 +8,6 @@ import {selectors} from '#/plugin/claco-form/resources/claco-form/store'
 
 import {EditorCategories} from '#/plugin/claco-form/resources/claco-form/editor/components/categories'
 import {EditorList} from '#/plugin/claco-form/resources/claco-form/editor/components/list'
-import {ClacoFormEditorActions} from '#/plugin/claco-form/resources/claco-form/editor/components/actions'
 import {ClacoFormEditorEntries} from '#/plugin/claco-form/resources/claco-form/editor/components/entries'
 import {ClacoFormEditorAppearance} from '#/plugin/claco-form/resources/claco-form/editor/components/appearance'
 import {ClacoFormEditorPermissions} from '#/plugin/claco-form/resources/claco-form/editor/components/permissions'
@@ -25,7 +24,6 @@ const ClacoFormEditor = () => {
       })}
       appearancePage={ClacoFormEditorAppearance}
       permissionsPage={ClacoFormEditorPermissions}
-      actionsPage={ClacoFormEditorActions}
       pages={[
         {
           name: 'entries',

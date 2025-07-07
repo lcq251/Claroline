@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Delete users action.
@@ -36,6 +36,10 @@ export default declareAction((users, refresher) => {
       success: () => refresher.delete(processable)
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    managerOnly: true,
+    title: trans('delete_user', {}, 'privacy'),
+    description: trans('delete_user_desc', {}, 'actions')
   }
 })

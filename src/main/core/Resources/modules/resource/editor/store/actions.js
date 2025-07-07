@@ -11,6 +11,8 @@ actions.refresh = (resourceType, resourceData) => (dispatch) => {
   dispatch(resourceActions.loadResourceType(resourceType, resourceData))
 }
 
+actions.reset = (initialData) => formActions.reset(selectors.STORE_NAME, initialData)
+
 actions.update = (value, propPath = null) => {
   if (propPath) {
     return formActions.updateProp(selectors.STORE_NAME, propPath, value)

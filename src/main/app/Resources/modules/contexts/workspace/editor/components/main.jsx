@@ -7,11 +7,10 @@ import {ContextEditor, selectors} from '#/main/app/context/editor'
 
 import {WorkspaceEditorOverview} from '#/main/app/contexts/workspace/editor/components/overview'
 import {WorkspaceEditorAppearance} from '#/main/app/contexts/workspace/editor/components/appearance'
-import {WorkspaceEditorActions} from '#/main/app/contexts/workspace/editor/components/actions'
 import {WorkspaceEditorPermissions} from '#/main/app/contexts/workspace/editor/components/permissions'
 
 const WorkspaceEditor = () => {
-  const context = useSelector(selectors.context)
+  const context = useSelector(selectors.contextData)
 
   return (
     <ContextEditor
@@ -27,7 +26,6 @@ const WorkspaceEditor = () => {
       overviewPage={WorkspaceEditorOverview}
       appearancePage={WorkspaceEditorAppearance}
       permissionsPage={WorkspaceEditorPermissions}
-      actionsPage={WorkspaceEditorActions}
     />
   )
 }

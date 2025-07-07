@@ -3,11 +3,12 @@ import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_BADGE_EVIDENCES} from '#/plugin/open-badge/assertion/modals/evidences'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Show assertion evidences.
  */
-export default (assertions) => ({
+export default declareAction((assertions) => ({
   name: 'show-evidences',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-check-double',
@@ -17,4 +18,4 @@ export default (assertions) => ({
     assertion: assertions[0]
   }],
   scope: ['object']
-})
+}))

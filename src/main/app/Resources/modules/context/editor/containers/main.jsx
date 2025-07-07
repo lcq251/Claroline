@@ -5,7 +5,6 @@ import {withReducer} from '#/main/app/store/reducer'
 import {ContextEditor as ContextEditorComponent} from '#/main/app/context/editor/components/main'
 import {selectors as baseSelectors} from '#/main/app/context/store'
 import {actions, reducer, selectors} from '#/main/app/context/editor/store'
-import {actions as formActions} from '#/main/app/content/form/store'
 
 const ContextEditor = withReducer(selectors.STORE_NAME, reducer)(
   connect(
@@ -15,11 +14,11 @@ const ContextEditor = withReducer(selectors.STORE_NAME, reducer)(
       contextName: baseSelectors.type(state),
       contextId: baseSelectors.id(state),
       tools: baseSelectors.tools(state),
-      formData: selectors.context(state)
+      formData: selectors.contextData(state)
     }),
     (dispatch) => ({
       openEditor(contextData, tools) {
-        dispatch(formActions.reset(selectors.FORM_NAME, {data: contextData, tools: tools}, false))
+        dispatch(actions.reload(contextData, tools))
       },
       getAvailableTools(contextName, contextId) {
         return dispatch(actions.fetchAvailableTools(contextName, contextId))

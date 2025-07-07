@@ -124,9 +124,6 @@ const RolePermissions = props => {
       return 0
     })
 
-  console.log(props.permissions)
-  console.log(allPerms)
-
   return (
     <li className="list-group-item d-flex flex-row flex-wrap gap-3 px-0">
       <DataMicro object={{

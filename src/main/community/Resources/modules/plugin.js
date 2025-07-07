@@ -31,6 +31,9 @@ registry.add('ClarolineCommunityBundle', {
    * Provides actions for base Claroline objects.
    */
   actions: {
+    community: {
+      'disable-inactive': () => { return import(/* webpackChunkName: "community-action-disable-inactive" */ '#/main/community/tools/community/actions/disable-inactive') }
+    },
     user: {
       'open'      : () => { return import(/* webpackChunkName: "community-action-user-open" */    '#/main/community/actions/user/open') },
       'edit'      : () => { return import(/* webpackChunkName: "community-action-user-edit" */    '#/main/community/actions/user/edit') },
@@ -38,7 +41,9 @@ registry.add('ClarolineCommunityBundle', {
       'enable'    : () => { return import(/* webpackChunkName: "community-action-user-enable" */  '#/main/community/actions/user/enable') },
       'view-as'   : () => { return import(/* webpackChunkName: "community-action-user-view-as" */ '#/main/community/actions/user/view-as') },
       'delete'    : () => { return import(/* webpackChunkName: "community-action-user-delete" */  '#/main/community/actions/user/delete') },
-      'add-groups': () => { return import(/* webpackChunkName: "core-action-user-add-groups" */   '#/main/community/actions/user/add-groups') }
+      'add-groups': () => { return import(/* webpackChunkName: "core-action-user-add-groups" */   '#/main/community/actions/user/add-groups') },
+      'export': () => { return import(/* webpackChunkName: "core-action-user-export" */   '#/main/community/actions/user/export') },
+      'request-deletion': () => { return import(/* webpackChunkName: "core-action-user-request-deletion" */   '#/main/community/actions/user/request-deletion') }
     },
 
     group: {

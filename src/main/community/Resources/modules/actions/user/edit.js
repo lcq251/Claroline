@@ -3,7 +3,7 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {route} from '#/main/community/user/routing'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((users, refresher, path) => ({
   name: 'edit',
@@ -14,5 +14,6 @@ export default declareAction((users, refresher, path) => ({
   displayed: hasPermission('edit', users[0]),
   primary: true,
   group: trans('management'),
-  scope: ['object']
+  scope: ['object'],
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

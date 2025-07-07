@@ -39,7 +39,7 @@ const ToolEditor = (props) => {
       appearancePage={props.appearancePage}
       historyPage={props.historyPage}
       permissionsPage={props.permissionsPage}
-      actionsPage={props.actionsPage}
+      actionsPage={ToolEditorActions}
       pages={props.pages || []}
     />
   )
@@ -52,7 +52,6 @@ ToolEditor.propTypes = {
   appearancePage: T.elementType,
   historyPage: T.elementType,
   permissionsPage: T.elementType,
-  actionsPage: T.elementType,
   // custom pages
   pages: T.arrayOf(T.shape({
 
@@ -80,7 +79,6 @@ ToolEditor.defaultProps = {
   appearancePage: ToolEditorAppearance,
   historyPage: ToolEditorHistory,
   permissionsPage: ToolEditorPermissions,
-  actionsPage: ToolEditorActions,
   additionalData: () => ({})
 }
 

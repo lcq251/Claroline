@@ -34,8 +34,7 @@ ToolEditor.propTypes = {
   overviewPage: T.elementType,
   appearancePage: T.elementType,
   historyPage: T.elementType,
-  permissionsPage: T.elementType,
-  actionsPage: T.elementType
+  permissionsPage: T.elementType
 }
 
 export {

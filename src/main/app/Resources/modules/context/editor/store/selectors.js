@@ -8,7 +8,7 @@ const FORM_NAME = STORE_NAME+'.form'
 
 const store = (state) => state[STORE_NAME]
 
-const context = (state) => formSelectors.value(formSelectors.form(state, FORM_NAME), 'data')
+const contextData = (state) => formSelectors.value(formSelectors.form(state, FORM_NAME), 'data')
 
 const availableTools = createSelector(
   [store],
@@ -27,7 +27,7 @@ export const selectors = {
   STORE_NAME,
   FORM_NAME,
 
-  context,
+  contextData,
   availableTools,
   enabledTools
 }

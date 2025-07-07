@@ -40,6 +40,9 @@ class SequenceCertificateController
         $this->authorization = $authorization;
     }
 
+    /**
+     * Download the certificates (in PDF) for a list of sequence evaluations.
+     */
     #[Route(path: '/', name: 'apiv2_sequence_download_certificate', methods: ['POST'])]
     public function downloadAction(Request $request): BinaryFileResponse
     {
@@ -57,6 +60,9 @@ class SequenceCertificateController
         throw new NotFoundHttpException('No sequence evaluation found.');
     }
 
+    /**
+     * Download all the certificates obtained for a sequence.
+     */
     #[Route(path: '/{sequence}/all', name: 'apiv2_sequence_download_all_certificates', methods: ['GET'])]
     public function downloadAllAction(
         #[MapEntity(mapping: ['sequence' => 'uuid'])]
@@ -69,6 +75,9 @@ class SequenceCertificateController
         return $this->downloadCertificates($sequence, $sequenceEvaluations);
     }
 
+    /**
+     * Regenerate the certificates for a list of sequence evaluations.
+     */
     #[Route(path: '/regenerate', name: 'apiv2_sequence_regenerate_certificate', methods: ['POST'])]
     public function regenerateAction(Request $request): BinaryFileResponse
     {
@@ -84,6 +93,9 @@ class SequenceCertificateController
         throw new NotFoundHttpException('No sequence evaluation found.');
     }
 
+    /**
+     * Regenerate all the certificates of a sequence.
+     */
     #[Route(path: '/{sequence}/regenerate', name: 'apiv2_sequence_regenerate_all_certificates', methods: ['PUT'])]
     public function regenerateAllAction(
         #[MapEntity(mapping: ['sequence' => 'uuid'])]

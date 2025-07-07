@@ -4,6 +4,7 @@ import {hasPermission} from '#/main/app/security'
 
 import {route} from '#/plugin/cursus/course/routing'
 import {declareAction} from '#/main/app/action'
+import {constants} from '#/plugin/cursus/constants'
 
 export default declareAction((courses, refresher, path) => ({
   name: 'edit',
@@ -13,5 +14,6 @@ export default declareAction((courses, refresher, path) => ({
   target: route(courses[0], null, path) + '/edit',
   displayed: hasPermission('edit', courses[0]),
   group: trans('management'),
-  scope: ['object']
+  scope: ['object'],
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

@@ -28,6 +28,19 @@ registry.add('ClarolineEvaluationBundle', {
   },
 
   actions: {
+    progression: {
+      'download-certificates': () => { return import(/* webpackChunkName: "evaluation-action-download-certificates" */ '#/main/evaluation/tools/evaluation/actions/download-certificates') },
+      'regenerate-certificates': () => { return import(/* webpackChunkName: "evaluation-action-regenerate-certificates" */ '#/main/evaluation/tools/evaluation/actions/regenerate-certificates') },
+      'init-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-init-evaluations" */ '#/main/evaluation/tools/evaluation/actions/init-evaluations') },
+      'recompute-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-recompute-evaluations" */ '#/main/evaluation/tools/evaluation/actions/recompute-evaluations') },
+      'purge-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-purge-evaluations" */ '#/main/evaluation/tools/evaluation/actions/purge-evaluations') }
+    },
+
+    resource: {
+      'recompute-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-resource-recompute-evaluations" */   '#/main/evaluation/actions/resource/recompute-evaluations') },
+      'purge-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-resource-purge-evaluations" */   '#/main/evaluation/actions/resource/purge-evaluations') }
+    },
+
     sequence: {
       'configure': () => { return import(/* webpackChunkName: "evaluation-action-sequence-configure" */ '#/main/evaluation/actions/sequence/configure') },
       'copy'     : () => { return import(/* webpackChunkName: "evaluation-action-sequence-copy" */      '#/main/evaluation/actions/sequence/copy') },
@@ -35,7 +48,11 @@ registry.add('ClarolineEvaluationBundle', {
       'open'     : () => { return import(/* webpackChunkName: "evaluation-action-sequence-open" */      '#/main/evaluation/actions/sequence/open') },
       'publish'  : () => { return import(/* webpackChunkName: "evaluation-action-sequence-publish" */   '#/main/evaluation/actions/sequence/publish') },
       'unpublish': () => { return import(/* webpackChunkName: "evaluation-action-sequence-unpublish" */ '#/main/evaluation/actions/sequence/unpublish') },
-      'show-dashboard': () => { return import(/* webpackChunkName: "evaluation-action-sequence-dashboard" */   '#/main/evaluation/actions/sequence/show-dashboard') }
+      'show-dashboard': () => { return import(/* webpackChunkName: "evaluation-action-sequence-dashboard" */   '#/main/evaluation/actions/sequence/show-dashboard') },
+      'download-certificates': () => { return import(/* webpackChunkName: "evaluation-action-sequence-download-certificates" */     '#/main/evaluation/actions/sequence/download-certificates') },
+      'regenerate-certificates': () => { return import(/* webpackChunkName: "evaluation-action-sequence-regenerate-certificates" */ '#/main/evaluation/actions/sequence/regenerate-certificates') },
+      'recompute-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-recompute-evaluations" */   '#/main/evaluation/actions/sequence/recompute-evaluations') },
+      'purge-evaluations': () => { return import(/* webpackChunkName: "evaluation-action-purge-evaluations" */   '#/main/evaluation/actions/sequence/purge-evaluations') }
     },
 
     resource_evaluation: {

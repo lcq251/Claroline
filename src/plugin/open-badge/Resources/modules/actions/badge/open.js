@@ -3,11 +3,12 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/plugin/open-badge/badge/routing'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Open badge action.
  */
-export default (badges, refresher, path) => ({
+export default declareAction((badges, refresher, path) => ({
   name: 'open',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-arrow-up-right-from-square',
@@ -16,4 +17,4 @@ export default (badges, refresher, path) => ({
   target: route(badges[0], path),
   scope: ['object'],
   default: true
-})
+}))

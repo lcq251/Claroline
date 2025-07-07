@@ -15,5 +15,13 @@
   "fill": "Remplir",
   "empty": "Vider",
   "show_activity": "Voir l'activité",
-  "choose_role": "Choisir le rôle auquel inscrire les utilisateurs/groupes"
+  "choose_role": "Choisir le rôle auquel inscrire les utilisateurs/groupes",
+  "disable_user": "Désactiver l'utilisateur",
+  "disable_user_desc": "Désactivez un utilisateur pour lui supprimer ses accès à la plateforme tout en conservant ses données.",
+  "enable_user": "Activer l'utilisateur",
+  "enable_user_desc": "Activez un utilisateur pour lui donner accès à la plateforme.",
+  "delete_user": "Supprimer l'utilisateur",
+  "delete_user_desc": "Supprimez définitivement les données de l'utilisateur ainsi que toute son activité. Les données ne pourront pas être récupérées.",
+  "disable_inactive_users": "Désactiver les utilisateurs inactifs",
+  "disable_inactive_users_desc": "Désactivez tous les utilisateurs n'ayant pas eu d'activité sur votre plateforme depuis une date choisie."
 }

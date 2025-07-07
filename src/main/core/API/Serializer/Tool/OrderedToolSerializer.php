@@ -39,6 +39,8 @@ class OrderedToolSerializer
             'name' => $orderedTool->getName(),
             'icon' => $tool::getIcon(),
             'poster' => $orderedTool->getPoster(),
+            'contextType' => $orderedTool->getContextName(),
+            'contextId' => $orderedTool->getContextId(),
             'meta' => [
                 'public' => $orderedTool->isPublic(),
             ],

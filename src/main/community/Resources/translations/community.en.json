@@ -58,7 +58,6 @@
   "new_user": "New user",
   "no_user": "No user.",
   "user_disabled": "Inactive user",
-  "disable_inactive_users": "Disable inactive users",
   "disable_inactive_users_help": "All users who have not connected to the platform since the chosen date will be disabled.",
   "enable_username": "Use custom usernames",
   "username_enabled_help": "If enabled, users will have a unique identifier that can be used to log in to the platform.",

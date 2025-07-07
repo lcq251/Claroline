@@ -4,11 +4,12 @@ import isEmpty from 'lodash/isEmpty'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Delete assertions action.
  */
-export default (assertions, refresher) => {
+export default declareAction((assertions, refresher) => {
   const processable = assertions.filter(assertion => hasPermission('delete', assertion))
 
   return {
@@ -38,4 +39,4 @@ export default (assertions, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

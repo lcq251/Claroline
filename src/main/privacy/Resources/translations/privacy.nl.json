@@ -7,10 +7,8 @@
   "dpo_alert_disabled": "U hebt de contactgegevens van de functionaris voor gegevensbescherming niet ingevoerd",
   "dpo_email_missing_title": "E-mailadres van de FG ontbreekt",
   "dpo_email_missing_content": "Het e-mailadres van de FG is niet ingevuld.<br>Gelieve het in te stellen door te klikken op %link%, rubriek Privacy -> Functionaris voor gegevensbescherming.",
-  "personal_data": "Mijn persoonlijke gegevens",
   "export_data": "Mijn gegevens exporteren",
   "request_deletion": "Verzoek tot verwijdering van mijn account",
-  "delete_account": "Verzoek tot verwijdering van mijn account",
   "delete_account_message": "Weet u zeker dat u wilt verzoeken om uw account te verwijderen?",
   "account_deletion": {
     "subject": "Verzoek tot accountverwijdering",

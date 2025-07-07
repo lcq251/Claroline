@@ -22,5 +22,21 @@
   "add_resources": "Ajouter des ressources",
   "add-favourite": "Ajouter aux favoris",
   "remove-favourite": "Retirer des favoris",
-  "open-directory": "Ouvrir le dossier"
+  "open-directory": "Ouvrir le dossier",
+  "archive_workspace": "Archiver l'espace d'activités",
+  "archive_workspace_desc": "Archivez un espaces d'activités pour le rendre inaccessible aux utilisateurs tout en conservant ses données. Retrouvez les espaces archivés dans les paramètres de l'outil 'Espace d'activités' pour les restaurer ou les supprimer définitivement.",
+  "delete_workspace": "Supprimer l'espace d'activités",
+  "delete_workspace_desc": "Supprimez définitivement l'espace. Toutes les données contenues dans l'espace seront supprimées et ne pourront pas être récupérées.",
+  "export_workspace": "Exporter l'espace d'activités",
+  "export_workspace_desc": "Téléchargez une archive (.zip) qui peut être importée dans une plateforme compatible.",
+  "restore_workspace": "Restaurer l'espace d'activités",
+  "restore_workspace_desc": "Restaurez un espace d'activités pour le rendre de nouveau accessible aux utilisateurs.",
+  "archive_resource": "Archiver la ressource",
+  "archive_resource_desc": "Archivez une ressource pour le rendre inaccessible aux utilisateurs tout en conservant ses données. Retrouvez les ressources archivées dans les paramètres de l'outil 'Ressources' pour les restaurer ou les supprimer définitivement.",
+  "delete_resource": "Supprimer la ressource",
+  "delete_resource_desc": "Supprimez définitivement la ressource. Toutes les données et résultats des utilisateurs seront supprimés et ne pourront pas être récupérés.",
+  "restore_resource": "Restaurer la ressource",
+  "restore_resource_desc": "Restaurez la ressource pour le rendre de nouveau accessible aux utilisateurs.",
+  "move_resource": "Déplacer la ressource",
+  "move_resource_desc": "Changez le dossier de la ressource."
 }

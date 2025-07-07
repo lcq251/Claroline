@@ -31,6 +31,10 @@ export default declareAction((users) => {
       }
     },
     scope: ['object', 'collection'],
-    group: trans('management')
+    group: trans('management'),
+    title: trans('reset-password', {}, 'actions'),
+    description: trans('reset_password_desc', {}, 'actions'),
+    labelShort: trans('reset', {}, 'actions'),
+    managerOnly: true
   }
 })

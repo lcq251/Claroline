@@ -1,11 +1,12 @@
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
+import {declareAction} from '#/main/app/action'
 
 /**
  * Open assertion action.
  */
-export default (assertions) => ({
+export default declareAction((assertions) => ({
   name: 'download',
   type: ASYNC_BUTTON,
   icon: 'fa fa-fw fa-download',
@@ -18,4 +19,4 @@ export default (assertions) => ({
     }
   },
   scope: ['object']
-})
+}))

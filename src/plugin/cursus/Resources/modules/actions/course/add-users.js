@@ -41,6 +41,7 @@ export default declareAction((courses, refresher) => {
         }]
       })
     }],
-    scope: ['object']
+    scope: ['object'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
   }
 })

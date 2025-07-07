@@ -5,9 +5,11 @@ import {selectors as baseSelectors} from '#/main/core/tool/store/selectors'
 
 const STORE_NAME = baseSelectors.EDITOR_NAME
 
-const form = (state) => formSelectors.form(state, STORE_NAME)
-
 const data = (state) => formSelectors.data(formSelectors.form(state, STORE_NAME))
+const tool = createSelector(
+  [data],
+  (formData) => formData.data
+)
 
 const contextType = baseSelectors.contextType
 const contextData = baseSelectors.contextData
@@ -27,5 +29,6 @@ export const selectors = {
   path,
   contextType,
   contextData,
-  data
+  data,
+  tool
 }

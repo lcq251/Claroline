@@ -85,5 +85,11 @@ export default declareTool(CommunityTool, (tool, contextType, contextData, conte
         'Inscrire des utilisateurs',
         'Voir le tableau de bord de l\'outil'
       ]
+    },
+    administrate: {
+      order: 15,
+      actions: [
+        'Désactiver les utilisateurs inactifs'
+      ]
     }
   })

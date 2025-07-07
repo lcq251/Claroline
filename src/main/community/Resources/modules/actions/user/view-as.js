@@ -2,7 +2,7 @@ import {url} from '#/main/app/api'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((users, refresher, path, currentUser) => ({
   name: 'view-as',
@@ -15,5 +15,6 @@ export default declareAction((users, refresher, path, currentUser) => ({
   // if the action is accessible elsewhere, it will redirect to the current user location
   target: url(['claro_index', {_switch: users[0].username}])+(path ? '#'+path.replace('community', '') : ''),
   group: trans('management'),
-  scope: ['object']
+  scope: ['object'],
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

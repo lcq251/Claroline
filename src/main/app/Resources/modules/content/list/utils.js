@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 import {isTypeEnabled} from '#/main/app/data/types'
 
 import {DataListProperty} from '#/main/app/content/list/prop-types'
-import {pickAction} from '#/main/app/action'
+import {constants, pickAction, pickActionSet} from '#/main/app/action'
 
 /**
  * Fills definition with missing default values.
@@ -64,8 +64,10 @@ function getPrimaryAction(item, actionGenerator, actionsGenerator) {
  */
 function getActions(items, actionsGenerator) {
   if (actionsGenerator) {
-    // generates action
-    return actionsGenerator(items)
+    const actions = actionsGenerator(items)
+    if (actions) {
+      return pickActionSet(constants.ACTION_SET_LIST, actionsGenerator(items))
+    }
   }
 
   return []

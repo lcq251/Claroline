@@ -10,10 +10,10 @@ import {trans} from '#/main/app/intl'
 export default declareTool(EvaluationTool, () => new CommandPalette('evaluation')
   .addCommands([
     {
-      name: 'add-lesson-plan',
+      name: 'add-sequence',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-route',
-      label: trans('Ajouter un parcours d\'apprentissage', {}, 'command'),
+      label: trans('Ajouter une séquence', {}, 'command'),
       callback: () => true
     }, {
       name: 'correct-evaluations',
@@ -28,14 +28,19 @@ export default declareTool(EvaluationTool, () => new CommandPalette('evaluation'
     order: 5,
     actions: [
       'Voir le tableau de bord de l\'outil',
-      'Voir le tableau de bord des séquences'
+      'Voir le tableau de bord des séquences',
+      'Initialiser les évaluations',
+      'Recalculer les évaluations',
+      'Télécharger les certificats des utilisateurs',
+      "Régénérer les certificats des utilisateurs"
     ]
   },
   edit: {
     order: 10,
     actions: [
       'Créer des séquences',
-      'Administrer toutes les séquences'
+      'Administrer toutes les séquences',
+      'Purger les évaluations des séquences'
     ]
   }
 })

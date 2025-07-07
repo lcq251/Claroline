@@ -3,12 +3,14 @@ import isEmpty from 'lodash/isEmpty'
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
+import {declareAction} from '#/main/app/action'
+import get from 'lodash/get'
 
 /**
  * Delete badges action.
  */
-export default (badges, refresher) => {
-  const processable = badges.filter(badge => hasPermission('delete', badge))
+export default declareAction((badges, refresher) => {
+  const processable = badges.filter(badge => hasPermission('delete', badge) &&  get(badge, 'meta.archived'))
 
   return {
     name: 'delete',
@@ -37,4 +39,4 @@ export default (badges, refresher) => {
     group: trans('management'),
     scope: ['object', 'collection']
   }
-}
+})

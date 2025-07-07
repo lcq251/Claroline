@@ -23,7 +23,7 @@ const WorkspaceEditorPermissions = () => {
     dispatch(actions.update(value, 'data.'+prop))
   }
 
-  const context = useSelector(selectors.context)
+  const context = useSelector(selectors.contextData)
 
   return (
     <EditorPage

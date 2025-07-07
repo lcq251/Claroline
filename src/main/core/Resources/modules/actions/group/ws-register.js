@@ -3,7 +3,7 @@ import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_WORKSPACES} from '#/main/core/modals/workspaces'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((groups, refresher) => {
   const processable = groups.filter(group => hasPermission('administrate', group))
@@ -32,6 +32,7 @@ export default declareAction((groups, refresher) => {
       })
     }],
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
   }
 })

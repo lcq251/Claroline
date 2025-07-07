@@ -6,7 +6,6 @@ import get from 'lodash/get'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {Editor} from '#/main/app/editor/components/main'
-import {actions as formActions} from '#/main/app/content/form'
 
 import {supportEvaluation} from '#/main/core/resource/utils'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
@@ -34,7 +33,7 @@ const ResourceEditor = (props) => {
   useEffect(() => {
     if (resourceLoaded) {
       const initialData = Object.assign({}, props.additionalData() || {}, {resourceNode: resourceNode})
-      dispatch(formActions.reset(resourceSelectors.EDITOR_NAME, initialData))
+      dispatch(actions.reset(initialData))
     }
   }, [get(resourceNode, 'id'), resourceLoaded])
 
@@ -60,7 +59,7 @@ const ResourceEditor = (props) => {
       appearancePage={props.appearancePage}
       historyPage={props.historyPage}
       permissionsPage={props.permissionsPage}
-      actionsPage={props.actionsPage}
+      actionsPage={ResourceEditorActions}
       pages={[
         {
           name: 'evaluation',
@@ -89,7 +88,6 @@ ResourceEditor.propTypes = {
   appearancePage: T.elementType,
   historyPage: T.elementType,
   permissionsPage: T.elementType,
-  actionsPage: T.elementType,
   // custom pages
   pages: T.arrayOf(T.shape({
 
@@ -107,9 +105,7 @@ ResourceEditor.defaultProps = {
   appearancePage: ResourceEditorAppearance,
   historyPage: ResourceEditorHistory,
   permissionsPage: ResourceEditorPermissions,
-  actionsPage: ResourceEditorActions,
   pages: [],
-  actions: [],
   additionalData: () => ({})
 }
 

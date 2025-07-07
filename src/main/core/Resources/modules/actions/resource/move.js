@@ -41,6 +41,9 @@ export default declareAction((resourceNodes, nodesRefresher) => {
       filters: [{property: 'resourceType', value: 'directory', locked: true}]
     }],
     group: trans('management'),
-    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    managerOnly: true,
+    title: trans('move_resource', {}, 'actions'),
+    description: trans('move_resource_desc', {}, 'actions')
   })
 })

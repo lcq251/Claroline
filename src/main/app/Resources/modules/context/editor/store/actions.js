@@ -9,7 +9,11 @@ export const CONTEXT_LOAD_AVAILABLE_TOOLS = 'CONTEXT_LOAD_AVAILABLE_TOOLS'
 
 export const actions = {}
 
+// refresh edited context in player
 actions.refresh = (contextData) => contextActions.load(contextData)
+
+// reload editor data
+actions.reload = (contextData, tools) => formActions.reset(selectors.FORM_NAME, {data: contextData, tools: tools}, false)
 
 actions.update = (value, propPath = null) => {
   if (propPath) {

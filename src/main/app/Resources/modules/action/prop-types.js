@@ -32,6 +32,9 @@ const Action = {
      */
     label: T.node,
     group: T.string,
+    title: T.string,
+    description: T.string,
+    managerOnly: T.bool,
 
     /**
      * The scope of the action.

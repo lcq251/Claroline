@@ -9,7 +9,7 @@ import {constants, declareAction} from '#/main/app/action'
  * Restores some soft deleted resource nodes.
  *
  * @param {Array}  resourceNodes  - the list of resource nodes on which we want to execute the action.
- * @param {object} nodesRefresher - an object containing methods to update context in response to action (eg. add, update, delete).
+ * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => {
   const processable = resourceNodes.filter(node => !get(node, 'meta.active') && hasPermission('administrate', node))
@@ -36,9 +36,12 @@ export default declareAction((resourceNodes, nodesRefresher) => {
         method: 'POST',
         body: JSON.stringify(processable.map(node => node.id))
       },
-      success: (restoredNodes) => nodesRefresher.update(restoredNodes)
+      success: nodesRefresher.update
     },
     group: trans('management'),
-    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    managerOnly: true,
+    title: trans('restore_resource', {}, 'actions'),
+    description: trans('restore_resource_desc', {}, 'actions'),
   }
 })

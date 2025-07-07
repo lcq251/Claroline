@@ -38,5 +38,12 @@ export default declareTool(BadgeTool, () => new CommandPalette('badges')
       'Créer et administrer de nouveaux badges',
       'Administrer tous les badges'
     ]
+  },
+  administrate: {
+    order: 15,
+    actions: [
+      'Transférer des badges',
+      'Restaurer ou supprimer les archives'
+    ]
   }
 })

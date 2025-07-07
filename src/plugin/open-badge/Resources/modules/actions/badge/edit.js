@@ -3,8 +3,9 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {route} from '#/plugin/open-badge/badge/routing'
+import {declareAction} from '#/main/app/action'
 
-export default (badges, refresher, path) => ({
+export default declareAction((badges, refresher, path) => ({
   name: 'edit',
   type: LINK_BUTTON,
   icon: 'fa fa-fw fa-pencil',
@@ -14,4 +15,4 @@ export default (badges, refresher, path) => ({
   primary: true,
   group: trans('management'),
   scope: ['object']
-})
+}))

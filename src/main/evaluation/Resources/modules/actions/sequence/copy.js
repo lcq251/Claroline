@@ -26,6 +26,6 @@ export default declareAction((sequences, refresher) => {
     }],
     group: trans('management'),
     scope: ['object', 'collection'],
-    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
   })
 })

@@ -6,7 +6,7 @@ import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
 import {selectors as securitySelectors} from '#/main/app/security/store'
-import {route} from '#/main/core/resource'
+import {route} from '#/main/core/resource/routing'
 
 import {UserProgressionModal as BaseProgressionModal} from '#/main/evaluation/modals/user-progression/components/modal'
 import {getActions} from '#/main/evaluation/resource/utils'

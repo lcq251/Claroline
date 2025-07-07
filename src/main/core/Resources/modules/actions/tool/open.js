@@ -2,7 +2,7 @@ import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/main/core/tool/routing'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Open tool action.
@@ -14,5 +14,6 @@ export default declareAction((tools, toolRefresher, path) => ({
   label: trans('open', {}, 'actions'),
   target: route(tools[0].name, path),
   scope: ['object'],
-  default: true
+  default: true,
+  set: [constants.ACTION_SET_LIST]
 }))

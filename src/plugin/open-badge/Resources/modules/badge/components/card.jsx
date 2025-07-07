@@ -27,7 +27,7 @@ BadgeCard.propTypes = {
   className: T.string,
   data: T.shape(
     BadgeTypes.propTypes
-  ).isRequired
+  )
 }
 
 export {

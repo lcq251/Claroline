@@ -1,18 +1,18 @@
 import get from 'lodash/get'
 
 import {ASYNC_BUTTON} from '#/main/app/buttons'
-import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
+import {declareAction} from '#/main/app/action'
 
-export default (badges, refresher) => {
+export default declareAction((badges, refresher) => {
   const processable = badges.filter(badge => hasPermission('edit', badge) && get(badge, 'meta.archived'))
 
   return {
-    name: 'unarchive',
+    name: 'restore',
     type: ASYNC_BUTTON,
-    icon: 'fa fa-fw fa-box-open',
-    label: trans('unarchive', {}, 'actions'),
+    icon: 'fa fa-fw fa-trash-restore-alt',
+    label: trans('restore', {}, 'actions'),
     displayed: 0 !== processable.length,
     request: {
       url: ['apiv2_badge_restore'],
@@ -26,4 +26,4 @@ export default (badges, refresher) => {
     group: trans('management'),
     dangerous: true
   }
-}
+})

@@ -11,7 +11,7 @@ export default declareAction((sequences, refresher, path) => ({
   icon: 'fa fa-fw fa-gauge',
   label: trans('show_dashboard', {}, 'actions'),
   target: route(sequences[0], null, path) + '/dashboard',
-  displayed: -1 !== sequences.findIndex(sequence => hasPermission('edit', sequence)),
+  displayed: -1 !== sequences.findIndex(sequence => hasPermission('follow', sequence)),
   scope: ['object'],
   set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

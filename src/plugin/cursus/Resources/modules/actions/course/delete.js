@@ -1,13 +1,14 @@
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
+import get from 'lodash/get'
 
 /**
  * Delete courses action.
  */
 export default declareAction((courses, refresher) => {
-  const processable = courses.filter(course => hasPermission('administrate', course))
+  const processable = courses.filter(course => hasPermission('administrate', course) && get(course, 'meta.archived'))
 
   return {
     name: 'delete',
@@ -34,6 +35,10 @@ export default declareAction((courses, refresher) => {
       success: () => refresher.delete(processable)
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    title: trans('delete_training', {}, 'actions'),
+    description: trans('delete_training_help', {}, 'actions'),
+    managerOnly: true
   }
 })

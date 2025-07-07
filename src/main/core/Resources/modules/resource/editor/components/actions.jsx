@@ -1,90 +1,68 @@
-import React from 'react'
-import {useSelector} from 'react-redux'
-
-import {trans} from '#/main/app/intl'
-import {ASYNC_BUTTON, CALLBACK_BUTTON} from '#/main/app/buttons'
+import React, {useMemo} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {useHistory} from 'react-router-dom'
+import isEmpty from 'lodash/isEmpty'
+import merge from 'lodash/merge'
+import omit from 'lodash/omit'
 
 import {EditorActions} from '#/main/app/editor'
-import {supportEvaluation} from '#/main/core/resource/utils'
-import {selectors} from '#/main/core/resource/editor/store'
+import {selectors as securitySelectors} from '#/main/app/security'
+import {selectors as toolSelectors} from '#/main/core/tool'
+import {route as workspaceRoute} from '#/main/core/workspace'
 
-const ResourceEditorActions = (props) => {
+import {route} from '#/main/core/resource/routing'
+import {getActions} from '#/main/core/resource/utils'
+import {actions, selectors} from '#/main/core/resource/editor/store'
+
+const ResourceEditorActions = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const currentUser = useSelector(securitySelectors.currentUser)
+  const toolPath = useSelector(toolSelectors.path)
+
+  const formData = useSelector(selectors.data)
   const editedNode = useSelector(selectors.resourceNode)
+
+  const refresher = {
+    add: () => true,
+    update: (resourceNodes) => {
+      // checks if the action has modified the current node
+      const currentNode = resourceNodes.find(node => node.id === editedNode.id)
+      if (currentNode) {
+        dispatch(actions.reset(merge({}, omit(formData, 'resourceNode'), {resourceNode: currentNode})))
+      }
+    },
+    delete: (resourceNodes) => {
+      // checks if the action has deleted the current node
+      const currentNode = resourceNodes.find(node => node.id === editedNode.id)
+      if (currentNode) {
+        let redirect
+        if (currentNode.parent) {
+          redirect = route(currentNode.parent)
+        } else {
+          redirect = workspaceRoute(currentNode.workspace, 'resources')
+        }
+
+        history.push(redirect)
+      }
+    }
+  }
+
+  const resourceActions = useMemo(() => {
+    if (!isEmpty(editedNode)) {
+      return getActions([editedNode], refresher, toolPath, currentUser)
+    }
+
+    return []
+  }, [editedNode])
 
   return (
     <EditorActions
-      actions={[
-        {
-          title: trans('Changer le propriétaire'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-          action: {
-            label: trans('Transférer', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true
-          },
-          managerOnly: true
-        }, {
-          title: trans('recompute_evaluations', {}, 'actions'),
-          help: trans('recompute_resource_evaluations_help', {}, 'actions'),
-          displayed: supportEvaluation(editedNode),
-          action: {
-            label: trans('recalculate', {}, 'actions'),
-            type: ASYNC_BUTTON,
-            request: {
-              url: ['apiv2_resource_evaluation_recompute', {resourceId: editedNode.id}],
-              request: {
-                method: 'PUT'
-              }
-            }
-          }
-        }, {
-          title: trans('purge_evaluations', {}, 'actions'),
-          help: trans('purge_resource_evaluations_help', {}, 'actions'),
-          action: {
-            label: trans('purge', {}, 'actions'),
-            type: ASYNC_BUTTON,
-            confirm: {
-              message: trans('purge_resource_evaluations_confirm', {}, 'actions'),
-              additional: trans('irreversible_action_confirm')
-            },
-            request: {
-              url: ['apiv2_resource_evaluation_purge', {resourceId: editedNode.id}],
-              request: {
-                method: 'DELETE'
-              }
-            }
-          },
-          displayed: supportEvaluation(editedNode),
-          dangerous: true,
-          managerOnly: true
-        }, {
-          title: trans('Archiver la ressource'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-          action: {
-            label: trans('archive', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true
-          },
-          dangerous: true,
-          managerOnly: true
-        }, {
-          title: trans('Supprimer la ressource'),
-          help: trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-          action: {
-            label: trans('delete', {}, 'actions'),
-            type: CALLBACK_BUTTON,
-            callback: () => true
-          },
-          dangerous: true,
-          managerOnly: true
-        }
-      ].concat(props.actions || [])}
+      actions={resourceActions}
     />
   )
 }
-
-ResourceEditorActions.propTypes = EditorActions.propTypes
-ResourceEditorActions.defaultProps = EditorActions.defaultProps
 
 export {
   ResourceEditorActions

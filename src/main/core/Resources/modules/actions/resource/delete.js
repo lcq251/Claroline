@@ -15,9 +15,7 @@ import {constants, declareAction} from '#/main/app/action'
  * @param {object} nodesRefresher - an object containing methods to update context in response to action (e.g., add, update, delete).
  */
 export default declareAction((resourceNodes, nodesRefresher) => {
-  const processable = resourceNodes.filter(node => !isEmpty(node.parent) && hasPermission('administrate', node))
-
-  const archive = -1 === processable.findIndex(node => get(node, 'meta.active'))
+  const processable = resourceNodes.filter(node => !isEmpty(node.parent) && !get(node, 'meta.active', false) && hasPermission('administrate', node))
 
   return {
     name: 'delete',
@@ -36,17 +34,17 @@ export default declareAction((resourceNodes, nodesRefresher) => {
       }))
     },
     request: {
-      url: archive ?
-        ['claro_resource_archive'] :
-        ['claro_resource_delete']
-      ,
+      url: ['claro_resource_delete'],
       request: {
-        method: archive ? 'POST' : 'DELETE',
+        method: 'DELETE',
         body: JSON.stringify(processable.map(resourceNode => resourceNode.id))
       },
       success: () => nodesRefresher.delete(processable)
     },
     group: trans('management'),
-    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    managerOnly: true,
+    title: trans('delete_resource', {}, 'actions'),
+    description: trans('delete_resource_desc', {}, 'actions'),
   }
 })

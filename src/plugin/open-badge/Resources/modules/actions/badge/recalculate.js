@@ -5,8 +5,9 @@ import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {url} from '#/main/app/api'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
+import {declareAction} from '#/main/app/action'
 
-export default (badges, refresher) => ({
+export default declareAction((badges, refresher) => ({
   name: 'recalculate',
   type: ASYNC_BUTTON,
   icon: 'fa fa-fw fa-refresh',
@@ -21,4 +22,4 @@ export default (badges, refresher) => ({
   },
   scope: ['object'],
   group: trans('management')
-})
+}))

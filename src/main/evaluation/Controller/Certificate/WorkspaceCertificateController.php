@@ -13,7 +13,6 @@ namespace Claroline\EvaluationBundle\Controller\Certificate;
 
 use Claroline\AppBundle\Controller\RequestDecoderTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
@@ -21,6 +20,7 @@ use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
 use Claroline\EvaluationBundle\Manager\CertificateManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,6 +40,9 @@ class WorkspaceCertificateController
         $this->authorization = $authorization;
     }
 
+    /**
+     * Download the certificates for a list of workspace evaluations.
+     */
     #[Route(path: '/', name: 'apiv2_workspace_download_certificate', methods: ['POST'])]
     public function downloadCertificateAction(Request $request): BinaryFileResponse
     {
@@ -57,6 +60,9 @@ class WorkspaceCertificateController
         throw new NotFoundHttpException('No workspace evaluation found.');
     }
 
+    /**
+     * Download all the certificates obtained for a workspace.
+     */
     #[Route(path: '/{workspace}/all', name: 'apiv2_workspace_download_all_certificates', methods: ['GET'])]
     public function downloadAllCertificatesAction(
         #[MapEntity(mapping: ['workspace' => 'uuid'])]
@@ -69,31 +75,9 @@ class WorkspaceCertificateController
         return $this->downloadCertificates($workspace, $workspaceEvaluations);
     }
 
-    #[Route(path: '/{workspace}/user/{user}', name: 'apiv2_workspace_download_user_certificate', methods: ['GET'])]
-    public function downloadUserCertificateAction(
-        #[MapEntity(mapping: ['workspace' => 'uuid'])]
-        Workspace $workspace,
-        #[MapEntity(mapping: ['user' => 'uuid'])]
-        User $user
-    ): BinaryFileResponse {
-        $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy([
-            'workspace' => $workspace,
-            'user' => $user,
-        ]);
-
-        return $this->downloadCertificates($workspace, $workspaceEvaluations);
-    }
-
-    #[Route(path: '/{evaluation}/generate', name: 'apiv2_workspace_generate_user_certificate', methods: ['GET'])]
-    public function regenerateUserCertificateAction(
-        #[MapEntity(mapping: ['evaluation' => 'uuid'])]
-        WorkspaceEvaluation $evaluation
-    ): BinaryFileResponse {
-        $this->checkPermission('OPEN', $evaluation, [], true);
-
-        return $this->downloadCertificates($evaluation->getWorkspace(), [$evaluation], true);
-    }
-
+    /**
+     * Regenerate the certificates for a list of workspace evaluations.
+     */
     #[Route(path: '/regenerate', name: 'apiv2_workspace_regenerate_certificate', methods: ['POST'])]
     public function regenerateCertificateAction(Request $request): BinaryFileResponse
     {
@@ -107,6 +91,24 @@ class WorkspaceCertificateController
         }
 
         throw new NotFoundHttpException('No workspace evaluation found.');
+    }
+
+    /**
+     * Regenerate all the certificates of a workspace.
+     */
+    #[Route(path: '/{workspace}/regenerate', name: 'apiv2_workspace_regenerate_all_certificates', methods: ['PUT'])]
+    public function regenerateAllAction(
+        #[MapEntity(mapping: ['sequence' => 'uuid'])]
+        Workspace $workspace
+    ): JsonResponse {
+        $this->checkPermission('EDIT', $workspace, [], true);
+
+        $workspaceEvaluations = $this->om->getRepository(WorkspaceEvaluation::class)->findBy(['sequence' => $workspace]);
+        foreach ($workspaceEvaluations as $workspaceEvaluation) {
+            $this->certificateManager->getCertificate($workspaceEvaluation, true);
+        }
+
+        return new JsonResponse(null, 204);
     }
 
     private function downloadCertificates(Workspace $workspace, array $workspaceEvaluations, bool $regenerate = false): BinaryFileResponse

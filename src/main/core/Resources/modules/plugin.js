@@ -56,6 +56,7 @@ registry.add('ClarolineCoreBundle', {
       'open'          : () => { return import(/* webpackChunkName: "core-action-resource-open" */      '#/main/core/actions/resource/open') },
       'publish'       : () => { return import(/* webpackChunkName: "core-action-resource-publish" */   '#/main/core/actions/resource/publish') },
       'restore'       : () => { return import(/* webpackChunkName: "core-action-resource-restore" */   '#/main/core/actions/resource/restore') },
+      'archive'       : () => { return import(/* webpackChunkName: "core-action-resource-archive" */   '#/main/core/actions/resource/archive') },
       'unpublish'     : () => { return import(/* webpackChunkName: "core-action-resource-unpublish" */ '#/main/core/actions/resource/unpublish') },
       'show-dashboard': () => { return import(/* webpackChunkName: "core-action-resource-dashboard" */ '#/main/core/actions/resource/show-dashboard') },
     },
@@ -69,7 +70,7 @@ registry.add('ClarolineCoreBundle', {
       'copy'     : () => { return import(/* webpackChunkName: "core-action-workspace-copy" */      '#/main/core/actions/workspace/copy') },
       'delete'   : () => { return import(/* webpackChunkName: "core-action-workspace-delete" */    '#/main/core/actions/workspace/delete') },
       'export'   : () => { return import(/* webpackChunkName: "core-action-workspace-export" */    '#/main/core/actions/workspace/export') },
-      'unarchive': () => { return import(/* webpackChunkName: "core-action-workspace-unarchive" */ '#/main/core/actions/workspace/unarchive') }
+      'restore': () => { return import(/* webpackChunkName: "core-action-workspace-restore" */ '#/main/core/actions/workspace/restore') }
     },
 
     user: {
@@ -131,7 +132,6 @@ registry.add('ClarolineCoreBundle', {
       'resources'    : () => { return import(/* webpackChunkName: "core-data-source-resources" */    '#/main/core/data/sources/resources') },
       'workspaces'   : () => { return import(/* webpackChunkName: "core-data-source-workspaces" */   '#/main/core/data/sources/workspaces') },
       'my_workspaces': () => { return import(/* webpackChunkName: "core-data-source-m-workspaces" */ '#/main/core/data/sources/workspaces') },
-      'admin_tools'  : () => { return import(/* webpackChunkName: "core-data-source-admin-tools" */  '#/main/core/data/sources/admin-tools') },
       'tools'        : () => { return import(/* webpackChunkName: "core-data-source-tools" */        '#/main/core/data/sources/tools') }
     }
   }

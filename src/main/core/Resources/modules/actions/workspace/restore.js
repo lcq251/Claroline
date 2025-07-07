@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Unarchives some workspaces.
@@ -15,10 +15,10 @@ export default declareAction((workspaces, refresher) => {
   const processable = workspaces.filter(workspace => hasPermission('archive', workspace) && get(workspace, 'meta.archived'))
 
   return {
-    name: 'unarchive',
+    name: 'restore',
     type: ASYNC_BUTTON,
-    icon: 'fa fa-fw fa-box-open',
-    label: trans('unarchive', {}, 'actions'),
+    icon: 'fa fa-fw fa-trash-restore-alt',
+    label: trans('restore', {}, 'actions'),
     displayed: 0 !== processable.length,
     request: {
       url: ['apiv2_workspace_restore'],
@@ -30,6 +30,10 @@ export default declareAction((workspaces, refresher) => {
     },
     group: trans('management'),
     scope: ['object', 'collection'],
-    dangerous: true
+    dangerous: true,
+    title: trans('restore_workspace', {}, 'actions'),
+    description: trans('restore_workspace_desc', {}, 'actions'),
+    managerOnly: true,
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
 })

@@ -14,13 +14,16 @@ registry.add('ClarolineOpenBadgeBundle', {
   },
 
   actions: {
+    badges: {
+      'transfer-badges': () => { return import(/* webpackChunkName: "badge-action-transfer-badges" */ '#/plugin/open-badge/tools/badges/actions/transfer-badges') },
+    },
     badge: {
       'open'       : () => { return import(/* webpackChunkName: "badge-action-badge-open" */        '#/plugin/open-badge/actions/badge/open') },
       'edit'       : () => { return import(/* webpackChunkName: "badge-action-badge-edit" */        '#/plugin/open-badge/actions/badge/edit') },
       'delete'     : () => { return import(/* webpackChunkName: "badge-action-badge-delete" */      '#/plugin/open-badge/actions/badge/delete') },
       'grant'      : () => { return import(/* webpackChunkName: "badge-action-badge-grant" */       '#/plugin/open-badge/actions/badge/grant') },
-      'archive'    : () => { return import(/* webpackChunkName: "badge-action-badge-enable" */      '#/plugin/open-badge/actions/badge/archive') },
-      'unarchive'  : () => { return import(/* webpackChunkName: "badge-action-badge-disable" */     '#/plugin/open-badge/actions/badge/unarchive') },
+      'archive'    : () => { return import(/* webpackChunkName: "badge-action-badge-archive" */      '#/plugin/open-badge/actions/badge/archive') },
+      'restore'  : () => { return import(/* webpackChunkName: "badge-action-badge-restore" */     '#/plugin/open-badge/actions/badge/restore') },
       'recalculate': () => { return import(/* webpackChunkName: "badge-action-badge-recalculate" */ '#/plugin/open-badge/actions/badge/recalculate') }
     },
     badge_assertion: {

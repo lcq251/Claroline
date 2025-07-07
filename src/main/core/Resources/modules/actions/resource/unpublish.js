@@ -29,5 +29,5 @@ export default declareAction((resourceNodes, nodesRefresher) => ({
     success: (response) => nodesRefresher.update(response)
   },
   group: trans('management'),
-  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

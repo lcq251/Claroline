@@ -6,7 +6,6 @@ import {trans} from '#/main/app/intl'
 import {ToolEditor, selectors as toolSelectors} from '#/main/core/tool'
 
 import {EvaluationEditorOverview} from '#/main/evaluation/tools/evaluation/editor/components/overview'
-import {EvaluationEditorActions} from '#/main/evaluation/tools/evaluation/editor/components/actions'
 import {EvaluationEditorSkill} from '#/main/evaluation/tools/evaluation/editor/skill/containers/main'
 
 const EvaluationEditor = () => {
@@ -18,7 +17,6 @@ const EvaluationEditor = () => {
         evaluation: get(contextData, 'evaluation')
       })}
       overviewPage={EvaluationEditorOverview}
-      actionsPage={EvaluationEditorActions}
       pages={[
         {
           name: 'skills',

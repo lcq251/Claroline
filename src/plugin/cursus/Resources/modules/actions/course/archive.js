@@ -4,7 +4,7 @@ import {url} from '#/main/app/api'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Archive action.
@@ -36,6 +36,10 @@ export default declareAction((courses, refresher) => {
       success: (response) => refresher.update(response)
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    managerOnly: true,
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    title: trans('archive_training', {}, 'actions'),
+    description: trans('archive_training_help', {}, 'actions'),
   }
 })

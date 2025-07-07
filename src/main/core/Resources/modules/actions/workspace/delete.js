@@ -1,7 +1,7 @@
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Delete workspaces action.
@@ -35,6 +35,10 @@ export default declareAction((workspaces, refresher) => {
       success: () => refresher.delete(processable)
     },
     group: trans('management'),
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    title: trans('delete_workspace', {}, 'actions'),
+    description: trans('delete_workspace_desc', {}, 'actions'),
+    managerOnly: true,
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
 })

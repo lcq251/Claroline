@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Restore action.
@@ -27,6 +27,10 @@ export default declareAction((courses, refresher) => {
     },
     group: trans('management'),
     scope: ['object', 'collection'],
-    dangerous: true
+    dangerous: true,
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    title: trans('restore_training', {}, 'actions'),
+    description: trans('restore_training_help', {}, 'actions'),
+    managerOnly: true
   }
 })

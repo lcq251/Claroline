@@ -2,10 +2,7 @@ import {getActions as getPluginsActions, getDefaultAction as getPluginsDefaultAc
 import {NUMBERING_LITERAL, NUMBERING_NONE, NUMBERING_NUMERIC} from '#/main/app/utils/numbering'
 
 function getActions(sequences, refresher = {}, path, currentUser = null, withDefault = false) {
-  return Promise.all([
-    getPluginsActions('sequence', sequences, refresher, path, currentUser, withDefault),
-    getPluginsActions('sequence', sequences, refresher, path, currentUser, withDefault)
-  ]).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
+  return getPluginsActions('sequence', sequences, refresher, path, currentUser, withDefault)
 }
 
 function getDefaultAction(sequence, refresher = {}, path, currentUser = null) {

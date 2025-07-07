@@ -25,5 +25,5 @@ export default declareAction((sequences, refresher) => ({
   },
   group: trans('management'),
   scope: [constants.ACTION_SCOPE_OBJECT, constants.ACTION_SCOPE_COLLECTION],
-  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

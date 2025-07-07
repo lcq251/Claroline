@@ -45,6 +45,7 @@ const CreationType = (props) =>
           icon: 'book',
           label: trans('Créer un espace vide'),
           description: trans('Créez un espace vide pour pouvoir le configurer comme vous le souhaitez.'),
+          displayed: false, // TODO : implement
           action: {
             type: CALLBACK_BUTTON,
             callback: () => props.changeStep('info')

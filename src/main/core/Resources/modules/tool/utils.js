@@ -19,7 +19,16 @@ async function getTool(name, contextType) {
 }
 
 function getActions(tools, toolRefresher, path, currentUser = null, withDefault = false) {
-  return getPluginsActions('tool', tools, toolRefresher, path, currentUser, withDefault)
+  const actions = [
+    getPluginsActions('tool', tools, toolRefresher, path, currentUser, withDefault)
+  ]
+
+  if (1 === tools.length) {
+    // adds the custom actions of the tool
+    actions.push(getPluginsActions(tools[0].name, tools, toolRefresher, path, currentUser, withDefault))
+  }
+
+  return Promise.all(actions).then((loadedActions) => loadedActions.reduce((current, acc) => acc.concat(current), []))
 }
 
 function getDefaultAction(tool, toolRefresher, path, currentUser = null) {

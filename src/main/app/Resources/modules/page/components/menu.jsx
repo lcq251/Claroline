@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl'
-import {Button, Toolbar} from '#/main/app/action'
+import {Button, constants, pickActionSet, Toolbar} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Action, PromisedAction} from '#/main/app/action/prop-types'
 import {selectors as securitySelectors} from '#/main/app/security/store'
@@ -57,6 +57,7 @@ const PageMenu = (props) => {
     displayedNav = props.nav
       .filter(action => undefined === action.displayed || action.displayed)
   }
+  const actions = pickActionSet(constants.ACTION_SET_DETAILS, props.actions)
 
   const toolMenuTitleId = useId()
 
@@ -72,13 +73,13 @@ const PageMenu = (props) => {
 
       {props.children}
 
-      {(!isEmpty(displayedNav) || props.actions) &&
+      {((!isEmpty(displayedNav) && 1 !== displayedNav.length) || actions) &&
         <nav
           className="app-tool-menu ms-auto d-flex flex-nowrap gap-4 fs-sm"
           aria-labelledby={toolMenuTitleId}
         >
           <h2 id={toolMenuTitleId} className="visually-hidden">{trans('tool_menu')}</h2>
-          {!isEmpty(displayedNav) &&
+          {!isEmpty(displayedNav) && 1 !== displayedNav.length &&
             <ul className="nav nav-underline flex-nowrap">
               {displayedNav.map((nav) =>
                 <li className="nav-item" key={nav.name || nav.label}>
@@ -92,13 +93,13 @@ const PageMenu = (props) => {
             </ul>
           }
 
-          {props.actions &&
+          {actions &&
             <Toolbar
               className="d-flex gap-1 mx-n2 my-2"
               buttonName="btn btn-text-body focus-ring py-1 px-2 rounded-1 border-0 fs-sm"
               toolbar={props.toolbar || 'more'}
               tooltip="bottom"
-              actions={props.actions}
+              actions={actions}
               moreIcon="fa-ellipsis-h"
             />
           }

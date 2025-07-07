@@ -6,6 +6,8 @@ import {selectors} from '#/plugin/cursus/course/editor/store/selectors'
 
 export const actions = {}
 
+actions.reset = (course) => formActions.resetForm(selectors.FORM_NAME, course, false)
+
 actions.openForm = (courseSlug = null, defaultProps = {}, workspace = null) => (dispatch) => {
   if (workspace) {
     defaultProps = {

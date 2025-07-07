@@ -4,8 +4,9 @@ import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {MODAL_USERS} from '#/main/community/modals/users'
+import {declareAction} from '#/main/app/action'
 
-export default (badges, refresher) => ({
+export default declareAction((badges, refresher) => ({
   name: 'grant',
   type: MODAL_BUTTON,
   icon: 'fa fa-fw fa-user-plus',
@@ -30,4 +31,4 @@ export default (badges, refresher) => ({
   primary: true,
   scope: ['object'],
   group: trans('management')
-})
+}))

@@ -8,6 +8,7 @@ import {Editor} from '#/main/app/editor/components/main'
 import {selectors} from '#/main/app/context/editor/store'
 import {ContextEditorTools} from '#/main/app/context/editor/components/tools'
 import {ContextEditorHistory} from '#/main/app/context/editor/components/history'
+import {ContextEditorActions} from '#/main/app/context/editor/components/actions'
 
 const ContextEditor = (props) => {
   useEffect(() => {
@@ -31,7 +32,7 @@ const ContextEditor = (props) => {
       overviewPage={props.overviewPage}
       appearancePage={props.appearancePage}
       historyPage={props.historyPage}
-      actionsPage={props.actionsPage}
+      actionsPage={ContextEditorActions}
       permissionsPage={props.permissionsPage}
       defaultPage="overview"
       pages={[
@@ -56,7 +57,6 @@ ContextEditor.propTypes = {
   overviewPage: T.elementType,
   appearancePage: T.elementType,
   historyPage: T.elementType,
-  actionsPage: T.elementType,
   permissionsPage: T.elementType,
   formData: T.object,
   getAvailableTools: T.func.isRequired,

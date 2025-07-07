@@ -3,7 +3,7 @@ import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((users, refresher) => ({
   name: 'add-groups',
@@ -26,5 +26,6 @@ export default declareAction((users, refresher) => ({
     })
   }],
   group: trans('management'),
-  scope: ['object']
+  scope: ['object'],
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

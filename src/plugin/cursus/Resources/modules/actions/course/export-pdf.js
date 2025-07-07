@@ -2,6 +2,7 @@ import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
 import {declareAction} from '#/main/app/action'
+import {constants} from '#/plugin/cursus/constants'
 
 
 /**
@@ -15,5 +16,6 @@ export default declareAction((courses) => ({
   displayed: hasPermission('open', courses[0]),
   target: ['apiv2_cursus_course_download_pdf', {id: courses[0].id}],
   scope: ['object'],
-  group: trans('transfer')
+  group: trans('transfer'),
+  set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
 }))

@@ -10,10 +10,10 @@
   "dpo_email_missing_title": "Adresse e-mail du DPO manquante",
   "dpo_email_missing_content": "L'adresse e-mail du DPO n'est pas renseignée.<br>Veuillez la configurer en cliquant %link%, rubrique Vie privée -> Délégué à la protection des données.",
 
-  "personal_data": "Mes données personnelles",
   "export_data": "Exporter mes données",
+  "export_data_desc": "Téléchargez toutes les données liées à mon compte utilisateur.",
   "request_deletion" : "Demander la suppression de mon compte",
-  "delete_account" : "Demande de suppression de mon compte",
+  "request_deletion_desc": "Envoyez un email au Délégué à la protection des données (DPO) pour demander la suppression de mon compte.",
   "delete_account_message" : "Êtes-vous sûr(e) de vouloir demander la suppression de votre compte ?",
   "account_deletion": {
     "subject": "Demande de suppression de compte",

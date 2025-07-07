@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((users, refresher) => {
   const processable = users.filter(user => hasPermission('administrate', user) && !get(user, 'restrictions.disabled', false))
@@ -29,9 +29,13 @@ export default declareAction((users, refresher) => {
         method: 'PUT',
         body: JSON.stringify(processable.map(u => u.id))
       },
-      success: (response) => refresher.update(response)
+      success: refresher.update
     },
     scope: ['object', 'collection'],
-    group: trans('management')
+    group: trans('management'),
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED],
+    managerOnly: true,
+    title: trans('disable_user', {}, 'actions'),
+    description: trans('disable_user_desc', {}, 'actions')
   }
 })

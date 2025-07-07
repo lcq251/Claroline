@@ -27,5 +27,8 @@
   "purge_sequence_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la séquence ?",
   "purge_resource_evaluations_help": "Supprimez les évaluations de tous les utilisateurs ayant commencé la ressource. La progression des séquences et de l'espace d'activités n'est pas recalculée.",
   "purge_resource_evaluations_confirm": "Êtes-vous sûr(e) de vouloir supprimer <b>toutes les évaluations enregistrées</b> pour la ressource ?",
-  "regenerate_sequence_certificates_help": "Générez les certificats manquants et régénérez les certificats existants pour tous les utilisateurs ayant terminé/réussi la séquence."
+  "regenerate_sequence_certificates_help": "Générez les certificats manquants et régénérez les certificats existants pour tous les utilisateurs ayant terminé/réussi la séquence.",
+  "regenerate_workspace_certificates_help": "Générez les certificats manquants et régénérez les certificats existants pour tous les utilisateurs ayant terminé/réussi l'espace d'activités.",
+  "delete_sequence": "Supprimer la séquence",
+  "delete_sequence_desc": "Supprimez définitivement la séquence. Toutes les données et résultats des utilisateurs seront supprimés et ne pourront pas être récupérés."
 }

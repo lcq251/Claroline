@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Archives some workspaces.
@@ -38,6 +38,10 @@ export default declareAction((workspaces, refresher) => {
     },
     group: trans('management'),
     scope: ['object', 'collection'],
-    dangerous: true
+    dangerous: true,
+    title: trans('archive_workspace', {}, 'actions'),
+    description: trans('archive_workspace_desc', {}, 'actions'),
+    managerOnly: true,
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS, constants.ACTION_SET_ADVANCED]
   }
 })

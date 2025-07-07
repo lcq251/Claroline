@@ -10,10 +10,8 @@
   "dpo_email_missing_title": "Data Protection Officer (DPO) email address is missing",
   "dpo_email_missing_content": "Data Protection Officer (DPO) email is not set.<br>Please set it up by clicking %link%, in Privacy -> Data Protection Officer.",
 
-  "personal_data": "My personal data",
   "export_data": "Export data",
   "request_deletion" : "Request deletion of my account",
-  "delete_account" : "Request to delete my account",
   "delete_account_message" : "Are you sure you want to request the deletion of your account?",
   "account_deletion": {
     "subject": "Account deletion request",
