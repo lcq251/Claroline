@@ -34,7 +34,7 @@ FormData.propTypes = {
   name: T.string.isRequired,
 
   /**
-   * Permits to connect the form on a sub-part of the data.
+   * Permits to connect the form on a subpart of the data.
    * This is useful when the form is broken in multiple steps/pages
    *
    * It MUST be a valid lodash/get selector.
@@ -42,7 +42,7 @@ FormData.propTypes = {
   dataPart: T.string,
 
   /**
-   * Do we need to show the form buttons ?
+   * Do we need to show the form buttons?
    */
   buttons: T.bool,
 
@@ -70,6 +70,8 @@ FormData.propTypes = {
 
   /**
    * A custom cancel action for the form (only used if props.buttons === true).
+   *
+   * @deprecated
    */
   cancel: T.shape({
     type: T.string.isRequired,

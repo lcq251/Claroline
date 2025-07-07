@@ -1,30 +1,24 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
-import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {route} from '#/main/community/organization/routing'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
 const OrganizationFormComponent = props => {
-  const history = useHistory()
-
   return (
     <FormData
       className={props.className}
       level={3}
       name={props.name}
       buttons={true}
-      save={{
-        type: CALLBACK_BUTTON,
-        callback: () => props.save(props.organization, props.isNew, props.name).then(organization => {
-          history.push(route(organization, props.path))
-        })
-      }}
+      target={props.isNew ?
+        ['apiv2_organization_create'] :
+        ['apiv2_organization_update', {id: props.organization.id}]
+      }
       cancel={{
         type: LINK_BUTTON,
         target: props.isNew ? props.path + '/organizations' : route(props.organization, props.path),

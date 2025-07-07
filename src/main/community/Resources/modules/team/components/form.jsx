@@ -1,31 +1,26 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
 import {route} from '#/main/community/team/routing'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {LINK_BUTTON} from '#/main/app/buttons'
 import {FormData} from '#/main/app/content/form/containers/data'
 import {selectors as configSelectors} from '#/main/app/config/store'
 import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
 
 const TeamFormComponent = props => {
-  const history = useHistory()
-
   return (
     <FormData
       className={props.className}
       level={3}
       name={props.name}
       buttons={true}
-      save={{
-        type: CALLBACK_BUTTON,
-        callback: () => props.save(props.team, props.isNew, props.name).then(team => {
-          history.push(route(team, props.path))
-        })
-      }}
+      target={props.isNew ?
+        ['apiv2_team_create'] :
+        ['apiv2_team_update', {id: props.team.id}]
+      }
       cancel={{
         type: LINK_BUTTON,
         target: props.isNew ? props.path + '/teams' : route(props.team, props.path),
@@ -182,7 +177,6 @@ TeamFormComponent.propTypes = {
 
   // from store
   resourceTypes: T.array,
-  save: T.func.isRequired,
   updateProp: T.func.isRequired
 }
 
@@ -193,12 +187,6 @@ const TeamForm = connect(
     team: formSelectors.data(formSelectors.form(state, ownProps.name))
   }),
   (dispatch, ownProps) => ({
-    save(team, isNew, name) {
-      return dispatch( formActions.saveForm(name, isNew ?
-        ['apiv2_team_create'] :
-        ['apiv2_team_update', {id: team.id}])
-      )
-    },
     updateProp(propName, propValue) {
       dispatch(formActions.updateProp(ownProps.name, propName, propValue))
     }

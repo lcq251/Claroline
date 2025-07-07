@@ -17,11 +17,7 @@ const ExampleForm = () =>
         className="my-5"
         name={selectors.FORM_NAME}
         buttons={true}
-        save={{
-          type: CALLBACK_BUTTON,
-          label: trans('save', {}, 'actions'),
-          callback: () => true
-        }}
+        onSave={() => true}
         cancel={{
           type: CALLBACK_BUTTON,
           label: trans('save', {}, 'actions'),

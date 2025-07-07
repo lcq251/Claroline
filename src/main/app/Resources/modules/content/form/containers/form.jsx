@@ -41,31 +41,33 @@ const Form = connect(
     let finalProps = Object.assign({}, ownProps, stateProps, dispatchProps)
 
     if (ownProps.buttons) {
+      const saveAction = ownProps.save ? Object.assign({}, ownProps.save, {
+        // append the api call to the defined action if the target is provided
+        onClick: () => {
+          if (ownProps.target) {
+            dispatchProps.saveForm(url(
+              typeof ownProps.target === 'function' ? ownProps.target(stateProps.data, stateProps.new) : ownProps.target
+            ))
+          }
+        }
+      }) : {
+        type: CALLBACK_BUTTON,
+        callback: () => {
+          if (ownProps.target) {
+            dispatchProps.saveForm(url(
+              typeof ownProps.target === 'function' ? ownProps.target(stateProps.data, stateProps.new) : ownProps.target
+            )).then((response) => {
+              if (ownProps.onSave) {
+                ownProps.onSave(response)
+              }
+            })
+          }
+        }
+      }
+
       // we need to build the form buttons
       finalProps = Object.assign(finalProps, {
-        save: ownProps.save ? Object.assign({}, ownProps.save, {
-          // append the api call to the defined action if the target is provided
-          onClick: () => {
-            if (ownProps.target) {
-              dispatchProps.saveForm(url(
-                typeof ownProps.target === 'function' ? ownProps.target(stateProps.data, stateProps.new) : ownProps.target
-              ))
-            }
-          }
-        }) : {
-          type: CALLBACK_BUTTON,
-          callback: () => {
-            if (ownProps.target) {
-              dispatchProps.saveForm(url(
-                typeof ownProps.target === 'function' ? ownProps.target(stateProps.data, stateProps.new) : ownProps.target
-              )).then((response) => {
-                if (ownProps.onSave) {
-                  ownProps.onSave(response)
-                }
-              })
-            }
-          }
-        },
+        save: saveAction,
         cancel: ownProps.cancel ? Object.assign({}, ownProps.cancel, {
           // append the reset form callback to the defined action
           onClick: () => dispatchProps.cancelForm()

@@ -76,7 +76,7 @@ class Form extends Component {
             pendingChanges={this.props.pendingChanges}
             errors={this.props.errors}
             save={this.props.save}
-            cancel={this.props.cancel}
+            close={this.props.close}
           />
         }
       </FormWrapper>
@@ -90,7 +90,7 @@ Form.propTypes = {
   /**
    * Is the form embed into another?
    *
-   * Permits to know if we use a <form> or a <fieldset> tag.
+   * Permits knowing if we use a <form> or a <fieldset> tag.
    */
   embedded: T.bool,
   flush: T.bool,
@@ -104,9 +104,12 @@ Form.propTypes = {
    */
   alertExit: T.bool,
   children: T.node.isRequired,
+  close: T.string,
 
   /**
    * The save action of the form (if provided, form toolbar will be displayed).
+   *
+   * @deprecated
    */
   save: T.shape({
     type: T.string.isRequired,
@@ -115,6 +118,8 @@ Form.propTypes = {
 
   /**
    * The cancel action of the form (if provided, form toolbar will be displayed).
+   *
+   * @deprecated
    */
   cancel: T.shape({
     type: T.string.isRequired,

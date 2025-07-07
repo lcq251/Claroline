@@ -7,8 +7,7 @@ import {withRouter} from '#/main/app/router'
 import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {PageContent} from '#/main/app/page'
-import {actions as formActions, selectors as formSelectors} from '#/main/app/content/form/store'
-import {CALLBACK_BUTTON, LINK_BUTTON} from '#/main/app/buttons'
+import {selectors as formSelectors} from '#/main/app/content/form/store'
 import {FormData} from '#/main/app/content/form/containers/data'
 
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
@@ -25,21 +24,13 @@ const ChapterFormComponent = props =>
       displayLevel={2}
       name={selectors.CHAPTER_EDIT_FORM_NAME}
       buttons={true}
-      save={{
-        type: CALLBACK_BUTTON,
-        callback: () => props.save(!props.isNew ? ['apiv2_lesson_chapter_update', {
-          lessonId: props.lesson.id,
-          slug: props.slug
-        }] : ['apiv2_lesson_chapter_create', {
-          lessonId: props.lesson.id,
-          slug: props.parentSlug
-        }]).then((response) => props.history.push(props.path + '/' + response.slug))
-      }}
-      cancel={{
-        type: LINK_BUTTON,
-        target: props.path,
-        exact: true
-      }}
+      target={!props.isNew ? ['apiv2_lesson_chapter_update', {
+        lessonId: props.lesson.id,
+        slug: props.slug
+      }] : ['apiv2_lesson_chapter_create', {
+        lessonId: props.lesson.id,
+        slug: props.parentSlug
+      }]}
       definition={[
         {
           id: 'chapter',
@@ -108,11 +99,6 @@ const ChapterForm = withRouter(connect(
     slug: formSelectors.data(formSelectors.form(state, selectors.CHAPTER_EDIT_FORM_NAME)).slug || null,
     parentSlug: formSelectors.data(formSelectors.form(state, selectors.CHAPTER_EDIT_FORM_NAME)).parentSlug || null,
     hasParentSlug: !!formSelectors.data(formSelectors.form(state, selectors.CHAPTER_EDIT_FORM_NAME)).parentSlug,
-  }),
-  (dispatch) => ({
-    save(target) {
-      return dispatch(formActions.save(selectors.CHAPTER_EDIT_FORM_NAME, target))
-    }
   })
 )(ChapterFormComponent))
 

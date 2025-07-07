@@ -29,7 +29,7 @@ const FormSave = (props) => {
           {trans(props.errors ? 'form_errors' : 'form_pending_changes')}
         </span>
 
-        {!props.errors &&
+        {(!props.errors && props.close) &&
           <Button
             {...props.save}
             className="btn btn-link flex-shrink-0 px-3"
