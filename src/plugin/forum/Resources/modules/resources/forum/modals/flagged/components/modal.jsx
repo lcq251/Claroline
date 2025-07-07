@@ -26,7 +26,6 @@ const FlaggedModal = (props) => {
       {...props}
       icon="fa fa-fw fa-flag"
       title={trans('flagged_messages', {}, 'forum')}
-      subtitle={trans('Lorem ipsum dolor sit amet')}
       size="xl"
     >
       <ListData

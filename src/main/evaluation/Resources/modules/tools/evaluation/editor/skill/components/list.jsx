@@ -17,7 +17,6 @@ const EditorSkillList = () => {
   return (
     <EditorPage
       title={trans('skills_frameworks', {}, 'evaluation')}
-      help={trans('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')}
     >
       <ListData
         name={selectors.LIST_NAME}

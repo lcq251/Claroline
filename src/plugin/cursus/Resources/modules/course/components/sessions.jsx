@@ -24,7 +24,6 @@ const CourseSessions = (props) => {
         <ContentPlaceholder
           className="mt-4"
           title={trans('Aucune session n\'est disponible pour cette formation pour le moment.', {}, 'cursus')}
-          help={trans('Lorem ipsum dolor sit amet', {}, 'cursus')}
         />
       }
 
