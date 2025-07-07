@@ -39,6 +39,8 @@ const EvaluationDashboardEvaluations = () => {
       <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
           name={dashboardSelectors.STORE_NAME + '.workspaceEvaluations'}
+          contextType={contextType}
+          contextId={contextId}
           url={['apiv2_workspace_evaluation_list', {workspace: contextId}]}
           primaryAction="open"
           actions={(rows) => getActions(rows, evaluationsRefresher, path, currentUser, true)}

@@ -11,11 +11,15 @@ import {getEvaluationActions} from '#/main/evaluation/sequence/utils'
 import {selectors as sequenceSelectors} from '#/main/evaluation/sequence/store'
 
 import {selectors} from '#/main/evaluation/sequence/dashboard/store'
+import {selectors as toolSelectors} from '#/main/core/tool'
 
 const SequenceDashboardEvaluations = () => {
   const dispatch = useDispatch()
 
   const currentUser = useSelector(securitySelectors.currentUser)
+  const contextType = useSelector(toolSelectors.contextType)
+  const contextId = useSelector(toolSelectors.contextId)
+
   const sequencePath = useSelector(sequenceSelectors.path)
   const sequenceId = useSelector(sequenceSelectors.id)
   const hasScore = useSelector(sequenceSelectors.hasScore)
@@ -36,6 +40,8 @@ const SequenceDashboardEvaluations = () => {
       <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
           name={selectors.STORE_NAME+'.evaluations'}
+          contextType={contextType}
+          contextId={contextId}
           url={['apiv2_sequence_evaluation_list', {sequenceId: sequenceId}]}
           primaryAction="open"
           actions={(rows) => getEvaluationActions(rows, evaluationsRefresher, sequencePath, currentUser, true)}

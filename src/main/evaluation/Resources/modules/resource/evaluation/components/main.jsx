@@ -11,11 +11,15 @@ import {EvaluationList} from '#/main/evaluation/components/list'
 import {getActions} from '#/main/evaluation/resource/utils'
 import {actions as listActions} from '#/main/app/content/list'
 import {selectors as securitySelectors} from '#/main/app/security/store'
+import {selectors as toolSelectors} from '#/main/core/tool'
 
 const ResourceDashboardEvaluations = () => {
   const dispatch = useDispatch()
 
   const currentUser = useSelector(securitySelectors.currentUser)
+  const contextType = useSelector(toolSelectors.contextType)
+  const contextId = useSelector(toolSelectors.contextId)
+
   const resourcePath = useSelector(resourceSelectors.path)
   const resourceId = useSelector(resourceSelectors.id)
   const hasScore = useSelector(resourceSelectors.hasScore)
@@ -36,6 +40,8 @@ const ResourceDashboardEvaluations = () => {
       <PageSection size="full" className="d-flex flex-fill">
         <EvaluationList
           name={selectors.STORE_NAME}
+          contextType={contextType}
+          contextId={contextId}
           url={['apiv2_resource_evaluation_list', {nodeId: resourceId}]}
           primaryAction="open"
           actions={(rows) => getActions(rows, evaluationsRefresher, resourcePath, currentUser, true)}

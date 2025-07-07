@@ -21,7 +21,14 @@ const EvaluationList = (props) => {
           label: trans('user'),
           displayed: true,
           primary: true,
-          order: 1
+          order: 1,
+          options: {
+            picker: {
+              url: 'workspace' === props.contextType ?
+                ['apiv2_user_list', {contextId: props.contextId}] :
+                ['apiv2_user_list']
+            }
+          }
         }, {
           name: 'user.groups',
           type: 'group',
@@ -30,7 +37,12 @@ const EvaluationList = (props) => {
           filterable: true,
           sortable: false,
           options: {
-            multiple: true
+            multiple: true,
+            picker: {
+              url: 'workspace' === props.contextType ?
+                ['apiv2_workspace_list_groups', {id: props.contextId}]:
+                ['apiv2_group_list']
+            }
           }
         }, {
           name: 'startedAt',
@@ -124,6 +136,8 @@ const EvaluationList = (props) => {
 
 EvaluationList.propTypes = {
   name: T.string.isRequired,
+  contextType: T.string.isRequired,
+  contextId: T.string,
   url: T.oneOfType([T.string, T.array]).isRequired,
   autoload: T.bool,
   customDefinition: T.arrayOf(T.shape({
