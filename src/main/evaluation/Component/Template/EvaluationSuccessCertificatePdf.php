@@ -14,6 +14,13 @@ class EvaluationSuccessCertificatePdf extends PdfComponent
     public function getPlaceholders(): array
     {
         return [
+            'certificate_issued_datetime_utc',
+            'certificate_issued_date_utc',
+            'certificate_issued_time_utc',
+            'certificate_issued_datetime',
+            'certificate_issued_date',
+            'certificate_issued_time',
+
             'evaluated_content_name',
             'evaluated_content_code',
             'evaluated_content_description',

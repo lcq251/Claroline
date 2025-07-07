@@ -92,7 +92,10 @@ const ContentMenu = ({
 
   const displayedTypes = items
     .filter(action => undefined === action.displayed || action.displayed)
-    .filter(action => 3 > searchStr.length || action.label.toLowerCase().includes(searchStr.toLowerCase()) || action.description.toLowerCase().includes(searchStr.toLowerCase()))
+    .filter(action => 3 > searchStr.length
+      || action.label.toLowerCase().includes(searchStr.toLowerCase())
+      || (action.description && action.description.toLowerCase().includes(searchStr.toLowerCase()))
+    )
 
   const unclassifiedTypes = displayedTypes
     .filter(action => !action.group)

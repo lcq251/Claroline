@@ -45,7 +45,15 @@ class CertificateManager
             }
         }
 
-        $placeholders = $this->getCommonPlaceholders($evaluation);
+        $certificate = new WorkspaceCertificate();
+        $certificate->setUser($evaluation->getUser());
+        $certificate->setIssueDate(new \DateTime());
+        $certificate->setEvaluation($evaluation);
+        $certificate->setObtentionDate($evaluation->getEndedAt() ?? $evaluation->getLastActivityAt());
+        $certificate->setScore($evaluation->getScore() ?: 0);
+        $certificate->setStatus($evaluation->getStatus());
+
+        $placeholders = $this->getCommonPlaceholders($certificate);
 
         $locale = $evaluation->getUser()->getLocale();
         if (!$locale) {
@@ -58,14 +66,7 @@ class CertificateManager
             $locale
         );
 
-        $certificate = new WorkspaceCertificate();
-        $certificate->setUser($evaluation->getUser());
-        $certificate->setIssueDate(new \DateTime());
-        $certificate->setEvaluation($evaluation);
-        $certificate->setObtentionDate($evaluation->getEndedAt() ?? $evaluation->getLastActivityAt());
-        $certificate->setScore($evaluation->getScore() ?: 0);
         $certificate->setLanguage($locale);
-        $certificate->setStatus($evaluation->getStatus());
         $certificate->setContent($html);
 
         $this->om->persist($certificate);
@@ -104,8 +105,9 @@ class CertificateManager
         return $path;
     }
 
-    private function getCommonPlaceholders(WorkspaceEvaluation $evaluation): array
+    private function getCommonPlaceholders(WorkspaceCertificate $certificate): array
     {
+        $evaluation = $certificate->getEvaluation();
         $workspace = $evaluation->getWorkspace();
         $user = $evaluation->getUser();
 
@@ -127,6 +129,11 @@ class CertificateManager
             'evaluation_score_max' => 100,
             'evaluation_duration' => round($evaluation->getDuration() / 60, 2), // in minutes
             'evaluation_status' => $this->translator->trans('evaluation_'.$evaluation->getStatus().'_status', [], 'workspace'),
-        ], $this->templateManager->formatDatePlaceholder('evaluation', $evaluation->getLastActivityAt()));
+        ],
+            $this->templateManager->formatDatePlaceholder('evaluation_last_activity', $evaluation->getLastActivityAt()),
+            $this->templateManager->formatDatePlaceholder('evaluation_start', $evaluation->getStartedAt()),
+            $this->templateManager->formatDatePlaceholder('evaluation_end', $evaluation->getEndedAt()),
+            $this->templateManager->formatDatePlaceholder('certificate_issued', $certificate->getIssueDate())
+        );
     }
 }

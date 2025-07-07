@@ -47,7 +47,15 @@ class SequenceCertificateManager
             }
         }
 
-        $placeholders = $this->getPlaceholders($evaluation);
+        $certificate = new SequenceCertificate();
+        $certificate->setUser($evaluation->getUser());
+        $certificate->setIssueDate(new \DateTime());
+        $certificate->setEvaluation($evaluation);
+        $certificate->setObtentionDate($evaluation->getEndedAt() ?? $evaluation->getLastActivityAt());
+        $certificate->setScore($evaluation->getScore() ?: 0);
+        $certificate->setStatus($evaluation->getStatus());
+
+        $placeholders = $this->getPlaceholders($certificate);
 
         $locale = $evaluation->getUser()->getLocale();
         if (!$locale) {
@@ -68,14 +76,7 @@ class SequenceCertificateManager
             );
         }
 
-        $certificate = new SequenceCertificate();
-        $certificate->setUser($evaluation->getUser());
-        $certificate->setIssueDate(new \DateTime());
-        $certificate->setEvaluation($evaluation);
-        $certificate->setObtentionDate($evaluation->getEndedAt() ?? $evaluation->getLastActivityAt());
-        $certificate->setScore($evaluation->getScore() ?: 0);
         $certificate->setLanguage($locale);
-        $certificate->setStatus($evaluation->getStatus());
         $certificate->setContent($html);
 
         $this->om->persist($certificate);
@@ -114,8 +115,9 @@ class SequenceCertificateManager
         return $path;
     }
 
-    private function getPlaceholders(SequenceEvaluation $evaluation): array
+    private function getPlaceholders(SequenceCertificate $certificate): array
     {
+        $evaluation = $certificate->getEvaluation();
         $sequence = $evaluation->getSequence();
         $user = $evaluation->getUser();
 
@@ -141,6 +143,7 @@ class SequenceCertificateManager
             $this->templateManager->formatDatePlaceholder('evaluation_last_activity', $evaluation->getLastActivityAt()),
             $this->templateManager->formatDatePlaceholder('evaluation_start', $evaluation->getStartedAt()),
             $this->templateManager->formatDatePlaceholder('evaluation_end', $evaluation->getEndedAt()),
+            $this->templateManager->formatDatePlaceholder('certificate_issued', $certificate->getIssueDate())
         );
     }
 }
