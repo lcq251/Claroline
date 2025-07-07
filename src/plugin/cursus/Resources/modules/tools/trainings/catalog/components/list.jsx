@@ -20,7 +20,7 @@ const CatalogList = (props) =>
         name: 'add',
         type: MODAL_BUTTON,
         icon: 'fa fa-fw fa-plus',
-        label: trans('add_course', {}, 'cursus'),
+        label: trans('add_course', {}, 'actions'),
         modal: [MODAL_COURSE_TYPE_CREATION, {
           path: props.path + '/course'
         }],

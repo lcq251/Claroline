@@ -1,5 +1,13 @@
 services:
-    Claroline\CursusBundle\Component\BadgeRule\PresenceRule:
+    Claroline\CursusBundle\Component\BadgeRule\CoursePresenceRule:
+        parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
+        tags: [ 'claroline.component.badge_rule' ]
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
+    Claroline\CursusBundle\Component\BadgeRule\EventPresenceRule:
         parent: Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent
         tags: [ 'claroline.component.badge_rule' ]
         arguments:

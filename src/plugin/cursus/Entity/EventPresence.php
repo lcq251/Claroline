@@ -8,11 +8,12 @@ use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CursusBundle\Finder\EventPresenceType;
+use Claroline\CursusBundle\Repository\EventPresenceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_cursusbundle_presence_status')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: EventPresenceRepository::class)]
 #[CrudEntity(finderClass: EventPresenceType::class)]
 class EventPresence
 {

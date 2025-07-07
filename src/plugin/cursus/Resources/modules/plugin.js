@@ -102,6 +102,7 @@ registry.add('ClarolineCursusBundle', {
   },
 
   badge_rules: {
+    'training_course_presence': () => { return import(/* webpackChunkName: "training-badge_rule-course_presence" */ '#/plugin/cursus/badge_rules/course_presence') },
     'training_event_presence': () => { return import(/* webpackChunkName: "training-badge_rule-event_presence" */ '#/plugin/cursus/badge_rules/event_presence') }
   }
 })

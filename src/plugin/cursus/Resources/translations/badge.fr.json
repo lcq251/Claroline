@@ -1,4 +1,8 @@
 {
   "training_event_presence": "Être présent à une séance de formation",
-  "training_event_presence_desc": "Être présence à la séance %training_event%"
+  "training_event_presence_desc": "Être présent à la séance %training_event%",
+  "training_course_presence": "Être présent à une ou plusieurs séance(s) d'une formation",
+  "training_course_presence_desc": "Être présent à %count% séances de la formation %course%",
+  "count_training_events": "Nombre de séances",
+  "count_training_events_help": "Définissez le nombre de séances auxquels l'utilisateur doit être présent pour obtenir le badge."
 }

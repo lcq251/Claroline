@@ -56,6 +56,11 @@ class Event extends AbstractPlanned
         return 'training_event';
     }
 
+    public function getCourse(): ?Course
+    {
+        return $this->session->getCourse();
+    }
+
     public function getSession(): ?Session
     {
         return $this->session;

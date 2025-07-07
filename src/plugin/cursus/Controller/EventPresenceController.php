@@ -199,17 +199,14 @@ class EventPresenceController
         }
 
         $presences = $this->om->getRepository(EventPresence::class)->findBy(['uuid' => $data]);
-        $this->om->startFlushSuite();
         foreach ($presences as $presence) {
             $this->checkPermission('EDIT', $presence, [], true);
 
-            $this->crud->update($presence, ['status' => $status], [Crud::NO_PERMISSIONS]);
-
             $presence->setUpdatedBy($this->tokenStorage->getToken()->getUser());
             $presence->setUpdatedAt(new \DateTime());
-        }
 
-        $this->om->endFlushSuite();
+            $this->crud->update($presence, ['status' => $status], [Crud::NO_PERMISSIONS]);
+        }
 
         return new JsonResponse(array_map(function (EventPresence $presence) {
             return $this->serializer->serialize($presence);

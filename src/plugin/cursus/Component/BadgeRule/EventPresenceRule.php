@@ -6,13 +6,17 @@ use Claroline\AppBundle\Event\Crud\CreateEvent;
 use Claroline\AppBundle\Event\Crud\UpdateEvent;
 use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CursusBundle\Entity\EventPresence;
 use Claroline\OpenBadgeBundle\Component\BadgeRule\RuleComponent;
 use Claroline\OpenBadgeBundle\Entity\Rule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PresenceRule extends RuleComponent
+/**
+ * Grant when a user has been present to an event.
+ */
+class EventPresenceRule extends RuleComponent
 {
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -28,7 +32,7 @@ class PresenceRule extends RuleComponent
 
     public function supportsContext(string $context): bool
     {
-        return true;
+        return DesktopContext::getName() === $context;
     }
 
     public static function getSubscribedEvents(): array
