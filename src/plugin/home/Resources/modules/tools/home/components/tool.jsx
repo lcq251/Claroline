@@ -8,6 +8,42 @@ import {HomeEditor} from '#/plugin/home/tools/home/editor/components/main'
 import {flattenTabs, getTabSummary} from '#/plugin/home/tools/home/utils'
 import {HomeTab} from '#/plugin/home/tools/home/containers/tab'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'
+import {PageContent} from '#/main/app/page'
+
+const HomeSkeleton = () =>
+  <ToolPage>
+    <PageContent className="placeholder-glow container-fluid mt-4 gap-4">
+      <div className="row px-2 mb-4">
+        <div className="col-12 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+      </div>
+      <div className="row px-2 mb-4">
+        <div className="col-6 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+        <div className="col-6 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+      </div>
+      <div className="row px-2 mb-4">
+        <div className="col-4 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+        <div className="col-8 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+      </div>
+      <div className="row px-2 mb-4">
+        <div className="col-8 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+        <div className="col-4 d-flex">
+          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
+        </div>
+      </div>
+    </PageContent>
+  </ToolPage>
 
 const HomeTool = props => {
   const tabs = props.tabs
@@ -21,9 +57,9 @@ const HomeTool = props => {
       menu={1 < tabs.length ? tabs : []}
       editor={HomeEditor}
       redirect={[
-        props.tabs[0] && {from: '/', exact: true, to: '/' + props.tabs[0].slug}
+        props.loaded && props.tabs[0] && {from: '/', exact: true, to: '/' + props.tabs[0].slug}
       ].filter(redirect => !!redirect)}
-      pages={[
+      pages={props.loaded ? [
         {
           path: '/:slug',
           onEnter: (params = {}) => props.setCurrentTab(params.slug),
@@ -40,10 +76,10 @@ const HomeTool = props => {
             return null
           }
         }
-      ]}
+      ] : undefined}
     >
       {!props.loaded &&
-        <ToolPage />
+        <HomeSkeleton />
       }
     </Tool>
   )
