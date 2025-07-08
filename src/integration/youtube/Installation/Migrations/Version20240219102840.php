@@ -37,4 +37,9 @@ final class Version20240219102840 extends AbstractMigration
             DROP resume
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

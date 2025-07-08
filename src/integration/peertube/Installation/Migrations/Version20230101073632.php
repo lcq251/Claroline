@@ -45,4 +45,9 @@ final class Version20230101073632 extends AbstractMigration
             DROP TABLE claro_peertube_video
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

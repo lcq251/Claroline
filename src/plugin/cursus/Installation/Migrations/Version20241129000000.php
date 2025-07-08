@@ -2,6 +2,7 @@
 
 namespace Claroline\CursusBundle\Installation\Migrations;
 
+use Claroline\InstallationBundle\Migrations\Helper\ConditionalMigrationTrait;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -12,6 +13,8 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20241129000000 extends AbstractMigration
 {
+    use ConditionalMigrationTrait;
+
     public function up(Schema $schema): void
     {
         $this->addSql('
@@ -25,9 +28,13 @@ final class Version20241129000000 extends AbstractMigration
             ALTER TABLE claro_cursusbundle_presence_status 
             DROP FOREIGN KEY FK_DFE5E1FEEE7B114B
         ');
-        $this->addSql('
-            ALTER TABLE claro_cursusbundle_presence_status CHANGE evidences evidence JSON DEFAULT NULL
-        ');
+
+        if ($this->checkColumnExists('claro_cursusbundle_presence_status', 'evidences', $this->connection)) {
+            $this->addSql('
+                ALTER TABLE claro_cursusbundle_presence_status CHANGE evidences evidence JSON DEFAULT NULL
+            ');
+        }
+
         $this->addSql('
             ALTER TABLE claro_cursusbundle_presence_status 
             ADD CONSTRAINT FK_DFE5E1FEE8DE7170 FOREIGN KEY (updatedBy) 

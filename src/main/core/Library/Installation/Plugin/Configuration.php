@@ -49,7 +49,6 @@ class Configuration implements ConfigurationInterface
         $this->addResourceSection($pluginSection);
         $this->addToolSection($pluginSection);
         $this->addThemeSection($pluginSection);
-        $this->addTemplateSection($pluginSection);
         $this->addResourceIconsSection($pluginSection);
 
         return $treeBuilder;
@@ -228,23 +227,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ->end()->end();
-    }
-
-    private function addTemplateSection(NodeBuilder $pluginSection): void
-    {
-        $pluginSection
-            ->arrayNode('templates')
-                ->prototype('array')
-                    ->children()
-                        ->scalarNode('name')->isRequired()->end()
-                        ->scalarNode('type')->isRequired()->end()
-                        ->arrayNode('placeholders')
-                            ->prototype('scalar')->end()
-                            ->defaultValue([])
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
     }
 
     private function addResourceIconsSection(NodeBuilder $pluginSection): void

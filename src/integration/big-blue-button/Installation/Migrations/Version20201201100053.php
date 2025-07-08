@@ -81,4 +81,9 @@ final class Version20201201100053 extends AbstractMigration
             DROP TABLE claro_bigbluebuttonbundle_recording
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

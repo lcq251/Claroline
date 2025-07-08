@@ -37,8 +37,11 @@ trait ConditionalMigrationTrait
         $stmt = $connection->executeQuery('
             SELECT *
             FROM information_schema.columns
-            WHERE table_name = :tableName AND column_name = :columnName
+            WHERE table_name = :tableName 
+              AND column_name = :columnName
+              AND table_schema = :database
         ', [
+            'database' => $connection->getDatabase(),
             'tableName' => $tableName,
             'columnName' => $columnName,
         ]);

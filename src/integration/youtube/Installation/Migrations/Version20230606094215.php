@@ -43,4 +43,9 @@ final class Version20230606094215 extends AbstractMigration
             DROP TABLE claro_youtube_video
         ');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

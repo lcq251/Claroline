@@ -8,22 +8,3 @@ plugin:
           type: list
           context: [workspace, desktop, public]
           tags: [community]
-
-    templates:
-        - name: forum_new_message
-          type: email
-          placeholders:
-              - forum
-              - forum_url
-              - subject
-              - subject_url
-              - message
-              - post_datetime_utc
-              - post_date_utc
-              - post_time_utc
-              - post_datetime
-              - post_date
-              - post_time
-              - author
-              - workspace
-              - workspace_url

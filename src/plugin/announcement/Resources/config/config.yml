@@ -10,26 +10,3 @@ plugin:
           type: list
           context: [workspace, desktop, public]
           tags: [community]
-
-    templates:
-        - name: email_announcement
-          type: email
-          placeholders:
-              - title
-              - author
-              - content
-              - workspace_name
-              - workspace_code
-              - workspace_url
-              - publication_datetime
-
-        - name: pdf_announcement
-          type: pdf
-          placeholders:
-              - title
-              - author
-              - content
-              - workspace_name
-              - workspace_code
-              - workspace_url
-              - publication_datetime
