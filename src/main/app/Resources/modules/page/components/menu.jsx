@@ -57,7 +57,10 @@ const PageMenu = (props) => {
     displayedNav = props.nav
       .filter(action => undefined === action.displayed || action.displayed)
   }
-  const actions = pickActionSet(constants.ACTION_SET_DETAILS, props.actions)
+  let actions = []
+  if (props.actions) {
+    actions = pickActionSet(constants.ACTION_SET_DETAILS, props.actions)
+  }
 
   const toolMenuTitleId = useId()
 
@@ -109,7 +112,7 @@ const PageMenu = (props) => {
       {!props.embedded && !isAuthenticated &&
         <Button
           className={classes('btn btn-primary my-auto fs-sm me-n3', {
-            'ms-auto': isEmpty(displayedNav) && isEmpty(props.actions)
+            'ms-auto': isEmpty(displayedNav) && isEmpty(actions)
           })}
           type={LINK_BUTTON}
           label={trans('login')}

@@ -20,7 +20,7 @@ const ContextProfile = (props) => {
         }
       ]}
       menu={{
-        nav: [
+        actions: [
           {
             name: 'parameters',
             type: LINK_BUTTON,
