@@ -1,9 +1,12 @@
 services:
     Claroline\AuthenticationBundle\Component\Template\DisabledPasswordEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\AuthenticationBundle\Component\Template\ForgottenPasswordEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\AuthenticationBundle\Component\Template\ResetPasswordEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]

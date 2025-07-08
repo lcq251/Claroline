@@ -16,7 +16,7 @@ services:
             - '@messenger.default_bus'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager'
-            - '@Claroline\EvaluationBundle\Manager\CertificateManager'
+            - '@Claroline\EvaluationBundle\Manager\WorkspaceCertificateManager'
 
     Claroline\EvaluationBundle\Subscriber\Crud\SequenceSubscriber:
         tags: [ 'kernel.event_subscriber' ]

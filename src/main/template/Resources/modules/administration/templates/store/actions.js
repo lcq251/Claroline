@@ -6,14 +6,16 @@ import {selectors} from '#/main/template/administration/templates/store/selector
 
 export const TEMPLATE_TYPE_LOAD = 'TEMPLATE_TYPE_LOAD'
 export const TEMPLATE_ADD = 'TEMPLATE_ADD'
+export const TEMPLATE_UPDATE = 'TEMPLATE_UPDATE'
 
 const actions = {}
 
 actions.loadTemplateType = makeActionCreator(TEMPLATE_TYPE_LOAD, 'templateType', 'templates')
 actions.addTemplate = makeActionCreator(TEMPLATE_ADD, 'template')
+actions.updateTemplate = makeActionCreator(TEMPLATE_UPDATE, 'template')
 actions.loadTemplate = (template) => formActions.resetForm(selectors.STORE_NAME + '.template', template, false)
 
-actions.open = (type = null) => (dispatch) => {
+actions.open = (type = null) => (dispatch, getStore) => {
   if (type) {
     return dispatch({
       [API_REQUEST]: {
@@ -23,7 +25,8 @@ actions.open = (type = null) => (dispatch) => {
 
           let defaultTemplate = response.data.find(template => template.default)
           if (!defaultTemplate) {
-            defaultTemplate = response.data.find(template => template.system)
+            const templateType = selectors.templateType(getStore())
+            defaultTemplate = templateType.system
           }
 
           dispatch(actions.loadTemplate(defaultTemplate))

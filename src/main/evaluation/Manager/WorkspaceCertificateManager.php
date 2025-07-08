@@ -17,7 +17,7 @@ use Claroline\EvaluationBundle\Library\EvaluationStatus;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CertificateManager
+class WorkspaceCertificateManager
 {
     public function __construct(
         private readonly ObjectManager $om,
@@ -61,7 +61,7 @@ class CertificateManager
         }
 
         $html = $this->templateManager->getTemplate(
-            EvaluationStatus::PASSED === $evaluation->getStatus() ? 'workspace_success_certificate' : 'workspace_participation_certificate',
+            EvaluationStatus::PASSED === $evaluation->getStatus() ? 'evaluation_success_certificate' : 'evaluation_participation_certificate',
             $placeholders,
             $locale
         );
@@ -116,10 +116,10 @@ class CertificateManager
         $finalScore = round(($score / $scoreMax) * 100, 2);
 
         return array_merge([
-            'workspace_name' => $workspace->getName(),
-            'workspace_code' => $workspace->getCode(),
-            'workspace_description' => $workspace->getDescription(),
-            'workspace_poster' => $workspace->getPoster() ? '<img src="'.$this->platformManager->getUrl().'/'.$workspace->getPoster().'" style="max-width: 100%;"/>' : '',
+            'evaluated_content_name' => $workspace->getName(),
+            'evaluated_content_code' => $workspace->getCode(),
+            'evaluated_content_description' => $workspace->getDescription(),
+            'evaluated_content_poster' => $workspace->getPoster() ? '<img src="'.$this->platformManager->getUrl().'/'.$workspace->getPoster().'" style="max-width: 100%;"/>' : '',
 
             'user_first_name' => $user->getFirstName(),
             'user_last_name' => $user->getLastName(),

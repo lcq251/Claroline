@@ -3,8 +3,10 @@
 namespace Claroline\OpenBadgeBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class BadgeCertificatePdf extends PdfComponent
+final class BadgeCertificatePdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -29,5 +31,20 @@ class BadgeCertificatePdf extends PdfComponent
             'issuer_name',
             'issuer_email',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Certificate %badge_name%',
+                $this->twig->render('@ClarolineOpenBadge/template/badge_certificate.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Certificat %badge_name%',
+                $this->twig->render('@ClarolineOpenBadge/template/badge_certificate.fr.pdf.twig')
+            );
     }
 }

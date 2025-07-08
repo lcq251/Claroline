@@ -1,27 +1,36 @@
 services:
     Claroline\CursusBundle\Component\Template\CoursePdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\EventInvitationEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\EventPdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\EventPresencePdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\EventPresencesPdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\SessionCanceledEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\SessionConfirmationEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\SessionInvitationEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\CursusBundle\Component\Template\SessionPdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]

@@ -1,3 +1,4 @@
 services:
     Claroline\AgendaBundle\Component\Template\EventInvitationEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]

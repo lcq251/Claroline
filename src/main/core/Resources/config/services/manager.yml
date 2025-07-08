@@ -167,6 +167,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\CoreBundle\Manager\LocaleManager'
             - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
+            - '@Claroline\TemplateBundle\Component\Template\TemplateProvider'
 
     Claroline\CoreBundle\Manager\Resource\RightsManager:
         arguments:

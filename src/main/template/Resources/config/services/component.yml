@@ -3,8 +3,6 @@ services:
         lazy: true
         arguments:
             - !tagged_iterator claroline.component.template
-            - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\CoreBundle\Manager\LocaleManager'
             - '@Claroline\CoreBundle\Manager\Template\PlaceholderManager'
 
     claroline.provider.template:

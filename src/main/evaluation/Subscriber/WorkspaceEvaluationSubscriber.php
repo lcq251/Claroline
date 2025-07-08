@@ -26,7 +26,7 @@ use Claroline\EvaluationBundle\Event\EvaluationEvents;
 use Claroline\EvaluationBundle\Event\SequenceEvaluationEvent;
 use Claroline\EvaluationBundle\Event\WorkspaceEvaluationEvent;
 use Claroline\EvaluationBundle\Library\EvaluationStatus;
-use Claroline\EvaluationBundle\Manager\CertificateManager;
+use Claroline\EvaluationBundle\Manager\WorkspaceCertificateManager;
 use Claroline\EvaluationBundle\Manager\WorkspaceEvaluationManager;
 use Claroline\EvaluationBundle\Messenger\Message\InitializeWorkspaceEvaluations;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,7 +45,7 @@ class WorkspaceEvaluationSubscriber implements EventSubscriberInterface
         private readonly MessageBusInterface $messageBus,
         ObjectManager $om,
         private readonly WorkspaceEvaluationManager $manager,
-        private readonly CertificateManager $certificateManager
+        private readonly WorkspaceCertificateManager $certificateManager
     ) {
         $this->workspaceRepo = $om->getRepository(Workspace::class);
     }

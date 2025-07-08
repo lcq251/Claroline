@@ -41,7 +41,7 @@ class Template implements TemplateInterface
     private bool $default = false;
 
     /**
-     * System templates can not be edited nor deleted by users.
+     * System templates cannot be edited nor deleted by users.
      * They are managed through DataFixtures.
      */
     #[ORM\Column(name: 'is_system', type: Types::BOOLEAN)]

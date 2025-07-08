@@ -23,11 +23,6 @@ class ClarolineEvaluationInstaller extends AdditionalInstaller
         ];
     }
 
-    public function hasFixtures(): bool
-    {
-        return true;
-    }
-
     public function hasMigrations(): bool
     {
         return true;

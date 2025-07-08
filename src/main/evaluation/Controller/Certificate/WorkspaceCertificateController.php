@@ -17,7 +17,7 @@ use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Normalizer\TextNormalizer;
 use Claroline\CoreBundle\Security\PermissionCheckerTrait;
 use Claroline\EvaluationBundle\Entity\UserEvaluation\WorkspaceEvaluation;
-use Claroline\EvaluationBundle\Manager\CertificateManager;
+use Claroline\EvaluationBundle\Manager\WorkspaceCertificateManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ class WorkspaceCertificateController
     public function __construct(
         AuthorizationCheckerInterface $authorization,
         private readonly ObjectManager $om,
-        private readonly CertificateManager $certificateManager
+        private readonly WorkspaceCertificateManager $certificateManager
     ) {
         $this->authorization = $authorization;
     }

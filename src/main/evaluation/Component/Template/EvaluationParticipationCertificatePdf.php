@@ -3,8 +3,10 @@
 namespace Claroline\EvaluationBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class EvaluationParticipationCertificatePdf extends PdfComponent
+final class EvaluationParticipationCertificatePdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -54,5 +56,20 @@ class EvaluationParticipationCertificatePdf extends PdfComponent
             'evaluation_end_date',
             'evaluation_end_time',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Certificate of participation in "%evaluated_content_name%"',
+                $this->twig->render('@ClarolineEvaluation/template/evaluation_participation_certificate.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Certificat de participation à "%evaluated_content_name%"',
+                $this->twig->render('@ClarolineEvaluation/template/evaluation_participation_certificate.fr.pdf.twig')
+            );
     }
 }

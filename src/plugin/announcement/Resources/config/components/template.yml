@@ -1,6 +1,8 @@
 services:
     Claroline\AnnouncementBundle\Component\Template\AnnouncementEmail:
+        parent: Claroline\TemplateBundle\Component\Template\EmailComponent
         tags: [ 'claroline.component.template' ]
 
     Claroline\AnnouncementBundle\Component\Template\AnnouncementPdf:
+        parent: Claroline\TemplateBundle\Component\Template\PdfComponent
         tags: [ 'claroline.component.template' ]

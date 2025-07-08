@@ -3,8 +3,10 @@
 namespace Claroline\ForumBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class ForumNewMessageEmail extends EmailComponent
+final class ForumNewMessageEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -29,5 +31,20 @@ class ForumNewMessageEmail extends EmailComponent
             'workspace',
             'workspace_url',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                '%subject%',
+                $this->twig->render('@ClarolineForum/template/forum_new_message.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                '%subject%',
+                $this->twig->render('@ClarolineForum/template/forum_new_message.fr.html.twig')
+            );
     }
 }

@@ -3,8 +3,10 @@
 namespace Claroline\CursusBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class SessionPdf extends PdfComponent
+final class SessionPdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -37,5 +39,20 @@ class SessionPdf extends PdfComponent
             'session_end_date',
             'session_end_time',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Training session',
+                $this->twig->render('@ClarolineCursus/template/training_session.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Session de formation',
+                $this->twig->render('@ClarolineCursus/template/training_session.fr.pdf.twig')
+            );
     }
 }

@@ -43,40 +43,36 @@ a template (they are used in the template contents with `%` delimiters, aka. `%m
 
 ## System template
 
-Each template type require at least one system templates. 
-
-The system templates are created using DataFixtures and are automatically loaded during the claroline update/install process.
+Each template type requires one system template to be used when no other template is defined by the users. 
 
 ```php
 <?php
 
-// my-plugin/Installation/DataFixtures/Template/MyEmailData.php
+// my-plugin/Component/Template/MyEmail.php
 
-namespace MyVendor\MyPluginBundle\Installation\DataFixtures\Template;
+namespace MyVendor\MyPluginBundle\Component\Template;
 
-use Claroline\CoreBundle\Installation\DataFixtures\AbstractTemplateFixture;
+use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class MyEmailData extends AbstractTemplateFixture
+class MyEmail extends EmailComponent
 {
-    protected static function getTemplateType(): string
-    {
-        return 'my_email_template';
-    }
+    // ...
 
-    protected function getSystemTemplates(): array
+    public function getSystemTemplate(): TemplateInterface
     {
-        return [
-            'Claroline Connect' => [
-                'en' => [
-                    'title' => 'The email object with %my_placeholder%',
-                    'content' => $this->twig->render('@MyVendorMyPlugin/template/my_email.en.html.twig'),
-                ],
-                'fr' => [
-                    'title' => 'L\'objet de l\'email avec %my_placeholder%',
-                    'content' => $this->twig->render('@MyVendorMyPlugin/template/my_email.fr.html.twig'),
-                ],
-            ],
-        ];
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'The email object with %my_placeholder%',
+                $this->twig->render('@MyVendorMyPlugin/template/my_email.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'L\'objet de l\'email avec %my_placeholder%',
+                $this->twig->render('@MyVendorMyPlugin/template/my_email.fr.html.twig')
+            );
     }
 }
 

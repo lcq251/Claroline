@@ -8,11 +8,6 @@ use Claroline\PrivacyBundle\Installation\Updater\Updater142000;
 
 class ClarolinePrivacyInstaller extends AdditionalInstaller
 {
-    public function hasFixtures(): bool
-    {
-        return true;
-    }
-
     public function hasMigrations(): bool
     {
         return true;

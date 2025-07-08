@@ -6,7 +6,7 @@ use Claroline\TemplateBundle\Component\Template\EmailComponent;
 use Claroline\TemplateBundle\Library\SystemTemplate;
 use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class LayoutEmail extends EmailComponent
+final class LayoutEmail extends EmailComponent
 {
     public static function getName(): string
     {

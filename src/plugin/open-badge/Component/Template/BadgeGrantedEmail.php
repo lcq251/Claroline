@@ -3,8 +3,10 @@
 namespace Claroline\OpenBadgeBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class BadgeGrantedEmail extends EmailComponent
+final class BadgeGrantedEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -30,5 +32,20 @@ class BadgeGrantedEmail extends EmailComponent
             'issuer_name',
             'issuer_email',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Awarding of the badge %badge_name%',
+                $this->twig->render('@ClarolineOpenBadge/template/badge_granted.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Attribution du badge %badge_name%',
+                $this->twig->render('@ClarolineOpenBadge/template/badge_granted.fr.html.twig')
+            );
     }
 }

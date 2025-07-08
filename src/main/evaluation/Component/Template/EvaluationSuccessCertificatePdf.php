@@ -3,8 +3,10 @@
 namespace Claroline\EvaluationBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class EvaluationSuccessCertificatePdf extends PdfComponent
+final class EvaluationSuccessCertificatePdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -57,5 +59,20 @@ class EvaluationSuccessCertificatePdf extends PdfComponent
             'evaluation_score',
             'evaluation_score_max',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Certificate of achievement in "%evaluated_content_name%"',
+                $this->twig->render('@ClarolineEvaluation/template/evaluation_success_certificate.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Certificat de réussite à "%evaluated_content_name%"',
+                $this->twig->render('@ClarolineEvaluation/template/evaluation_success_certificate.fr.pdf.twig')
+            );
     }
 }

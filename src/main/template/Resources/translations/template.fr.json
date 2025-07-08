@@ -1,6 +1,5 @@
 {
     "loading": "Nous chargeons votre template...",
-    "template_delete_confirm": "Suppression du template",
     "template_delete_confirm_message": "Êtes-vous sûr(e) de vouloir supprimer ce template ?",
     "no_template_type": "Aucun type de template",
     "no_template": "Aucun template",
@@ -11,5 +10,7 @@
     "available_templates": "Templates disponibles",
     "new_template": "Nouveau template",
     "template_default": "Utiliser par défaut",
-    "template_default_help": "Ce template sera utilisé si aucun autre template n'a été choisi."
+    "template_default_help": "Ce template sera utilisé si aucun autre template n'a été choisi.",
+    "template_system": "Template système",
+    "template_system_desc": "Ce template est utilisé si aucun template par défaut n'est défini."
 }

@@ -3,8 +3,10 @@
 namespace Claroline\CursusBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class EventInvitationEmail extends EmailComponent
+final class EventInvitationEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -51,5 +53,20 @@ class EventInvitationEmail extends EmailComponent
             'event_location_address',
             'event_trainers',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Invitation to a training event',
+                $this->twig->render('@ClarolineCursus/template/training_event_invitation.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Invitation à une séance de formation',
+                $this->twig->render('@ClarolineCursus/template/training_event_invitation.fr.html.twig')
+            );
     }
 }

@@ -38,7 +38,6 @@ class TemplateSerializer
             'type' => $template->getType(),
             'description' => $template->getDescription(),
             'default' => $template->isDefault(),
-            'system' => $template->isSystem(),
         ];
 
         if (!in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {

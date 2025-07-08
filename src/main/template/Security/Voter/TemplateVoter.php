@@ -23,27 +23,11 @@ class TemplateVoter extends AbstractVoter
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        switch ($attributes[0]) {
-            case self::CREATE:
-            case self::OPEN:
-                return $this->hasAdminToolAccess($token, 'templates') ?
-                    VoterInterface::ACCESS_GRANTED :
-                    VoterInterface::ACCESS_DENIED;
-
-            case self::EDIT:
-            case self::DELETE:
-            case self::PATCH:
-                if ($object->isSystem()) {
-                    // system templates are managed through claroline updates, so nobody can modify them
-                    return VoterInterface::ACCESS_DENIED;
-                }
-
-                return $this->hasAdminToolAccess($token, 'templates') ?
-                    VoterInterface::ACCESS_GRANTED :
-                    VoterInterface::ACCESS_DENIED;
+        if ($this->hasAdminToolAccess($token, 'templates')) {
+            return VoterInterface::ACCESS_GRANTED;
         }
 
-        return VoterInterface::ACCESS_ABSTAIN;
+        return VoterInterface::ACCESS_DENIED;
     }
 
     public function getClass(): string
@@ -53,6 +37,6 @@ class TemplateVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::PATCH];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE];
     }
 }

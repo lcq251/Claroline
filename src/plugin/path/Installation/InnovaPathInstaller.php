@@ -8,6 +8,6 @@ class InnovaPathInstaller extends AdditionalInstaller
 {
     public function hasMigrations(): bool
     {
-        return true;
+        return false;
     }
 }

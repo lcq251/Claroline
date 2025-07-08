@@ -3,6 +3,8 @@
 namespace Claroline\AnnouncementBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
 final class AnnouncementPdf extends PdfComponent
 {
@@ -27,5 +29,20 @@ final class AnnouncementPdf extends PdfComponent
             'publication_time',
             'publication_time_utc',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                '%title%',
+                $this->twig->render('@ClarolineAnnouncement/template/pdf_announcement.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                '%title%',
+                $this->twig->render('@ClarolineAnnouncement/template/pdf_announcement.fr.pdf.twig')
+            );
     }
 }

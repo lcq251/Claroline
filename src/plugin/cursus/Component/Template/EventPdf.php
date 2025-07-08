@@ -3,8 +3,10 @@
 namespace Claroline\CursusBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\PdfComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class EventPdf extends PdfComponent
+final class EventPdf extends PdfComponent
 {
     public static function getName(): string
     {
@@ -51,5 +53,20 @@ class EventPdf extends PdfComponent
             'event_location_address',
             'event_trainers',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Training event',
+                $this->twig->render('@ClarolineCursus/template/training_event.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Séance de formation',
+                $this->twig->render('@ClarolineCursus/template/training_event.fr.pdf.twig')
+            );
     }
 }

@@ -19,8 +19,11 @@ const TemplateDetails = connect(
     loadTemplate(template) {
       dispatch(actions.loadTemplate(template))
     },
-    deleteTemplate(templateTypeId, templateId) {
-      return dispatch(actions.deleteTemplate(templateTypeId, templateId))
+    updateTemplate(template) {
+      dispatch(actions.updateTemplate(template))
+    },
+    deleteTemplate(templateTypeId, template) {
+      return dispatch(actions.deleteTemplate(templateTypeId, template.id))
     }
   })
 )(TemplateDetailsComponent)

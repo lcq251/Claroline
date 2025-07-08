@@ -43,10 +43,29 @@ const TemplateDetails = (props) => {
             <div className="d-flex flex-column align-items-stretch align-content-stretch">
               <span className="mb-2 text-body-secondary text-uppercase fw-semibold fs-sm d-inline-block">{trans('available_templates', {}, 'template')}</span>
               <MenuButton
-                className="px-3 py-2 border rounded-2 bg-body text-start fw-light flex-fill mb-5 focus-ring d-flex gap-3 align-items-center"
+                className="px-3 py-2 border rounded-2 bg-body text-start fw-light flex-fill mb-4 focus-ring d-flex gap-3 align-items-center"
                 menu={{
                   className: 'w-100',
-                  items: props.templates.map(template => ({
+                  items: [
+                    {
+                      name: 'system',
+                      type: CALLBACK_BUTTON,
+                      label: (
+                        <div className="d-flex gap-2 align-items-baseline" role="presentation">
+                          {trans('template_system', {}, 'template')}
+                          {-1 === props.templates.findIndex(t => t.default) &&
+                            <Badge variant="primary">{trans('default')}</Badge>
+                          }
+                        </div>
+                      ),
+                      callback: () => props.loadTemplate(props.templateType.system),
+                      active: props.currentTemplate.name === 'system',
+                      children:
+                        <p className={classes('mb-0 fs-sm', props.currentTemplate.name !=='system' && 'text-body-tertiary')}>
+                          {trans('template_system_desc', {}, 'template')}
+                        </p>
+                    }
+                  ].concat(props.templates.map(template => ({
                     name: template.name,
                     type: CALLBACK_BUTTON,
                     label: (
@@ -62,7 +81,7 @@ const TemplateDetails = (props) => {
                     children: template.description ?
                       <p className={classes('mb-0 fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{template.description}</p> :
                       <em className={classes('d-block fs-sm', props.currentTemplate.name !== template.name && 'text-body-tertiary')}>{trans('no_description')}</em>
-                  })).concat([
+                  })), [
                     {
                       name: 'new',
                       type: MODAL_BUTTON,
@@ -83,14 +102,16 @@ const TemplateDetails = (props) => {
               >
                 <div role="presentation">
                   <div className="d-flex gap-2 align-items-baseline" role="presentation">
-                    <b>{props.currentTemplate.name}</b>
+                    <b>{props.currentTemplate.system ? trans('template_system', {}, 'template') : props.currentTemplate.name}</b>
                     {props.currentTemplate.default &&
                       <Badge variant="primary">{trans('default')}</Badge>
                     }
                   </div>
 
-                  {props.currentTemplate.description ?
-                    <p className="text-body-secondary mb-0 fs-sm">{props.currentTemplate.description}</p> :
+                  {(props.currentTemplate.system || props.currentTemplate.description) ?
+                    <p className="text-body-secondary mb-0 fs-sm">
+                      {props.currentTemplate.system ? trans('template_system_desc', {}, 'template') : props.currentTemplate.description}
+                    </p> :
                     <em className="text-body-tertiary d-block fs-sm">{trans('no_description')}</em>
                   }
                 </div>
@@ -101,6 +122,8 @@ const TemplateDetails = (props) => {
             <TemplateShow
               template={props.currentTemplate}
               placeholders={props.templateType.placeholders}
+              update={props.updateTemplate}
+              delete={(template) => props.deleteTemplate(props.templateType.name, template)}
             />
           </PageSection>
         </PageContent>
@@ -119,7 +142,9 @@ TemplateDetails.propTypes = {
   ),
   templates: T.array,
   addTemplate: T.func.isRequired,
-  loadTemplate: T.func.isRequired
+  updateTemplate: T.func.isRequired,
+  loadTemplate: T.func.isRequired,
+  deleteTemplate: T.func.isRequired
 }
 
 export {

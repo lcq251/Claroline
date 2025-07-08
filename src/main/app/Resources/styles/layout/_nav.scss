@@ -65,15 +65,20 @@
   transform: none !important;
 }
 
+.app-main-menu-contexts {
+  overflow: auto;
+  scrollbar-width: none;
+}
+
 .app-main-menu-v {
   flex-direction: column;
+  padding: map-get($spacers, 3) 0;
   width: map-get($icon-sizes, sm) + 1.5rem;
   height: 100%;
   border-right: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 
   .app-main-menu-group {
-    padding: map-get($spacers, 2) 0;
-    margin: map-get($spacers, 2) 0;
+    margin: 0;
     flex-direction: column;
   }
 
@@ -119,14 +124,14 @@
   order: 3;
   flex-direction: row;
   width: 100%;
+  padding: 0 map-get($spacers, 3);
   height: map-get($icon-sizes, sm) + 1.5rem;
   border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
   margin-top: auto;
 
   .app-main-menu-group {
     flex-direction: row;
-    padding: 0 map-get($spacers, 2);
-    margin: 0 map-get($spacers, 2);
+    margin: 0;
   }
 
   .app-context-btn {

@@ -2,12 +2,11 @@
 
 namespace Claroline\TemplateBundle\Component\Template;
 
-use Claroline\TemplateBundle\Model\TemplateInterface;
 use Twig\Environment;
 
 /**
  * Definition for a generic templates.
- * Usually used for templates directly rendered in the Claroline client (e.g. terms of services).
+ * Usually used for templates directly rendered in the Claroline client (e.g., terms of services).
  */
 abstract class TemplateComponent implements TemplateTypeInterface
 {
@@ -34,10 +33,5 @@ abstract class TemplateComponent implements TemplateTypeInterface
     public function getSamples(): array
     {
         return [];
-    }
-
-    public function getSystemTemplate(): TemplateInterface
-    {
-        //return [];
     }
 }

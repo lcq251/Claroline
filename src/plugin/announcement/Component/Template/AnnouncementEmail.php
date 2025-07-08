@@ -3,6 +3,8 @@
 namespace Claroline\AnnouncementBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
 final class AnnouncementEmail extends EmailComponent
 {
@@ -27,5 +29,20 @@ final class AnnouncementEmail extends EmailComponent
             'publication_time',
             'publication_time_utc',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                '%title%',
+                $this->twig->render('@ClarolineAnnouncement/template/email_announcement.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                '%title%',
+                $this->twig->render('@ClarolineAnnouncement/template/email_announcement.fr.html.twig')
+            );
     }
 }

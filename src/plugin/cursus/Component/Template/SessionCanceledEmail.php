@@ -3,8 +3,10 @@
 namespace Claroline\CursusBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class SessionCanceledEmail extends EmailComponent
+final class SessionCanceledEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -37,5 +39,20 @@ class SessionCanceledEmail extends EmailComponent
             'workspace_url',
             'cancel_reason',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Training session cancellation',
+                $this->twig->render('@ClarolineCursus/template/training_session_canceled.en.pdf.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Annulation de session de formation',
+                $this->twig->render('@ClarolineCursus/template/training_session_canceled.fr.pdf.twig')
+            );
     }
 }

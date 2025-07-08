@@ -3,8 +3,10 @@
 namespace Claroline\PrivacyBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\TemplateComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class TermsOfServiceTemplate extends TemplateComponent
+final class TermsOfServiceTemplate extends TemplateComponent
 {
     public static function getName(): string
     {
@@ -14,5 +16,20 @@ class TermsOfServiceTemplate extends TemplateComponent
     public function getPlaceholders(): array
     {
         return [];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Terms of Service',
+                $this->twig->render('@ClarolinePrivacy/template/terms_of_service.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Conditions d\'utilisation',
+                $this->twig->render('@ClarolinePrivacy/template/terms_of_service.fr.html.twig')
+            );
     }
 }

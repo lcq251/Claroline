@@ -12,68 +12,102 @@
 namespace Claroline\CoreBundle\Manager\Template;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Manager\LocaleManager;
-use Doctrine\Persistence\ObjectRepository;
+use Claroline\TemplateBundle\Component\Template\TemplateProvider;
+use Claroline\TemplateBundle\Entity\Template;
+use Claroline\TemplateBundle\Library\CompiledTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
+/**
+ * @todo move in TemplateBundle.
+ */
 class TemplateManager
 {
-    private ObjectRepository $templateRepo;
-
     public function __construct(
-        ObjectManager $om,
+        private readonly ObjectManager $om,
         private readonly LocaleManager $localeManager,
-        private readonly PlaceholderManager $placeholderManager
+        private readonly PlaceholderManager $placeholderManager,
+        private readonly TemplateProvider $templateProvider,
     ) {
-        $this->templateRepo = $om->getRepository(Template::class);
     }
 
-    public function getTemplate(string $templateType, array $placeholders = [], string $locale = null, string $mode = 'content'): string
+    /**
+     * @param string|Template $template - The name of a Template component or a Template entity. If the name of a component is provided, we will retrieve the default template for the type
+     */
+    public function compile(string|TemplateInterface $template, ?array $values = [], ?string $locale = null): CompiledTemplate
     {
-        /** @var Template $template */
-        $template = $this->templateRepo->findOneBy([
-            'type' => $templateType,
-            'default' => true,
-        ]);
-
-        if ($template) {
-            if (!$locale) {
-                $locale = $this->localeManager->getDefault();
-            }
-
-            return $this->getTemplateContent($template, $placeholders, $locale, $mode);
+        if (is_string($template)) {
+            $template = $this->getDefaultTemplate($template);
         }
 
-        return '';
-    }
-
-    public function getTemplateContent(Template $template, array $placeholders = [], string $locale = null, string $mode = 'content'): string
-    {
         $content = null;
         if ($locale) {
             $content = $template->getTemplateContent($locale);
         }
 
-        // content for the requested locale does not exist. Try with platform default locale
+        // The template for the requested locale does not exist. Try with platform default locale
         $defaultLocale = $this->localeManager->getDefault();
         if (empty($content) && $locale !== $defaultLocale) {
             $content = $template->getTemplateContent($defaultLocale);
+            $locale = $defaultLocale;
         }
 
-        if ($content) {
-            switch ($mode) {
-                case 'content':
-                    return $this->placeholderManager->replacePlaceholders($content->getContent() ?? '', $placeholders);
-                case 'title':
-                    return $this->placeholderManager->replacePlaceholders($content->getTitle() ?? '', $placeholders);
-            }
+        return new CompiledTemplate(
+            $locale,
+            $this->placeholderManager->replacePlaceholders($content?->getTitle() ?? '', $values),
+            $this->placeholderManager->replacePlaceholders($content?->getContent() ?? '', $values)
+        );
+    }
+
+    /**
+     * @deprecated use TemplateManager::compile()
+     */
+    public function getTemplate(string $templateType, array $placeholders = [], string $locale = null, string $mode = 'content'): string
+    {
+        $compiledTemplate = $this->compile($templateType, $placeholders, $locale);
+
+        if ('content' === $mode) {
+            return $compiledTemplate->getContent();
         }
 
-        return '';
+        return $compiledTemplate->getTitle();
+    }
+
+    /**
+     * @deprecated use TemplateManager::compile()
+     */
+    public function getTemplateContent(Template $template, array $placeholders = [], string $locale = null, string $mode = 'content'): string
+    {
+        $compiledTemplate = $this->compile($template, $placeholders, $locale);
+
+        if ('content' === $mode) {
+            return $compiledTemplate->getContent();
+        }
+
+        return $compiledTemplate->getTitle();
     }
 
     public function formatDatePlaceholder(string $placeholderPrefix, ?\DateTimeInterface $date): array
     {
         return $this->placeholderManager->formatDatePlaceholder($placeholderPrefix, $date);
+    }
+
+    /**
+     * Get the default Template for a type. If none is defined, it fallbacks on the system template defined by the component.
+     */
+    private function getDefaultTemplate(string $templateType): TemplateInterface
+    {
+        $defaultTemplate = $this->om->getRepository(Template::class)->findOneBy([
+            'type' => $templateType,
+            'default' => true,
+        ]);
+
+        if ($defaultTemplate) {
+            return $defaultTemplate;
+        }
+
+        $component = $this->templateProvider->getTemplate($templateType);
+
+        return $component->getSystemTemplate();
     }
 }

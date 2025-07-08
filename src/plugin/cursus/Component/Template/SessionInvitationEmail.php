@@ -3,8 +3,10 @@
 namespace Claroline\CursusBundle\Component\Template;
 
 use Claroline\TemplateBundle\Component\Template\EmailComponent;
+use Claroline\TemplateBundle\Library\SystemTemplate;
+use Claroline\TemplateBundle\Model\TemplateInterface;
 
-class SessionInvitationEmail extends EmailComponent
+final class SessionInvitationEmail extends EmailComponent
 {
     public static function getName(): string
     {
@@ -36,5 +38,20 @@ class SessionInvitationEmail extends EmailComponent
             'session_trainers',
             'workspace_url',
         ];
+    }
+
+    public function getSystemTemplate(): TemplateInterface
+    {
+        return (new SystemTemplate())
+            ->addTemplateContent(
+                'en',
+                'Invitation to a training session',
+                $this->twig->render('@ClarolineCursus/template/training_session_invitation.en.html.twig')
+            )
+            ->addTemplateContent(
+                'fr',
+                'Invitation à une session de formation',
+                $this->twig->render('@ClarolineCursus/template/training_session_invitation.fr.html.twig')
+            );
     }
 }
