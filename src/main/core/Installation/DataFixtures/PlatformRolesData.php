@@ -34,20 +34,15 @@ class PlatformRolesData extends AbstractFixture implements PreInstallInterface, 
     }
 
     /**
-     * Loads the four base roles commonly used within the platform :
-     * - anonymous user    (fixture ref : role/anonymous)
-     * - registered user   (fixture ref : role/user)
-     * - workspace creator (fixture ref : role/ws_creator)
-     * - administrator     (fixture ref : role/admin).
+     * Loads the four base roles commonly used within the platform:
+     * - anonymous user    (fixture ref: role/anonymous)
+     * - registered user   (fixture ref: role/user)
+     * - administrator     (fixture ref: role/admin).
      */
     public function load(ObjectManager $manager): void
     {
         if (!$this->roleManager->getRoleByName(PlatformRoles::USER)) {
             $this->roleManager->createBaseRole(PlatformRoles::USER, 'user');
-        }
-
-        if (!$this->roleManager->getRoleByName(PlatformRoles::WS_CREATOR)) {
-            $this->roleManager->createBaseRole(PlatformRoles::WS_CREATOR, 'ws_creator');
         }
 
         if (!$this->roleManager->getRoleByName(PlatformRoles::ADMIN)) {

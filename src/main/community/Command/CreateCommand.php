@@ -47,12 +47,6 @@ class CreateCommand extends Command
             ]
         );
         $this->addOption(
-            'ws_creator',
-            'w',
-            InputOption::VALUE_NONE,
-            'When set to true, created user will have the workspace creator role'
-        );
-        $this->addOption(
             'admin',
             'a',
             InputOption::VALUE_NONE,
@@ -74,8 +68,6 @@ class CreateCommand extends Command
 
         if ($input->getOption('admin')) {
             $roleName = PlatformRoles::ADMIN;
-        } elseif ($input->getOption('ws_creator')) {
-            $roleName = PlatformRoles::WS_CREATOR;
         } else {
             $roleName = PlatformRoles::USER;
         }
@@ -87,7 +79,7 @@ class CreateCommand extends Command
             'username' => $input->getArgument('user_username'),
             'email' => $email,
             'plainPassword' => $input->getArgument('user_password'),
-        ]);
+        ], [Crud::NO_PERMISSIONS]);
 
         $role = $this->om->getRepository(Role::class)->findOneBy(['name' => $roleName]);
         $object->addRole($role);

@@ -14,13 +14,11 @@ namespace Claroline\CoreBundle\Security;
 final class PlatformRoles
 {
     public const USER = 'ROLE_USER';
-    public const WS_CREATOR = 'ROLE_WS_CREATOR';
     public const ADMIN = 'ROLE_ADMIN';
     public const ANONYMOUS = 'ROLE_ANONYMOUS';
 
     private static array $roles = [
         self::USER,
-        self::WS_CREATOR,
         self::ADMIN,
         self::ANONYMOUS,
     ];

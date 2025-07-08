@@ -11,7 +11,7 @@
     "The group name": "De naam van de groep",
     "The role id": "De rol-id (uuid/id)",
     "The role name": "De naam van de rol",
-    "The user role": "Rolnaam van de gebruiker. Voor standaardrollen, zie de tabel: Gebruiker -> USER, Werkruimte-maker -> WS_CREATOR, Startpagina-beheerder -> HOME_MANAGER, Competentie-beheerder -> COMPETENCY_MANAGER",
+    "The user role": "Rolnaam van de gebruiker",
     "The organization id": "De organisatie-id (uuid/id)",
     "The organization name": "De naam van de organisatie",
     "The organization code": "De code van de organisatie",

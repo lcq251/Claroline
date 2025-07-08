@@ -56,7 +56,7 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
 
         switch ($attributes[0]) {
             case self::CREATE:
-                return $this->checkCreation($token);
+                return $this->checkCreation();
             case self::EDIT:
             case self::ADMINISTRATE:
             case self::COPY:
@@ -94,9 +94,9 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function checkCreation(TokenInterface $token): int
+    private function checkCreation(): int
     {
-        if ($this->isWorkspaceCreator($token)) {
+        if ($this->isToolGranted(self::CREATE, 'workspaces')) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -154,11 +154,6 @@ class WorkspaceVoter extends AbstractVoter implements CacheableVoterInterface
     private function isWorkspaceManaged(TokenInterface $token, Workspace $workspace): bool
     {
         return $this->workspaceManager->isManager($workspace, $token);
-    }
-
-    private function isWorkspaceCreator(TokenInterface $token): bool
-    {
-        return in_array(PlatformRoles::WS_CREATOR, $token->getRoleNames());
     }
 
     public function getSupportedActions(): ?array

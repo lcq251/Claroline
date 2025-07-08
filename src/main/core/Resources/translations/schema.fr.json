@@ -13,7 +13,7 @@
 
   "The role id": "L'id du rôle (uuid/id)",
   "The role name": "Le nom du rôle",
-  "The user role": "Nom du rôle de l'utilisateur. S'il s'agit d'un rôle par défaut se référer aux valeurs du tableau suivant: Utilisateur -> USER, Créateur d'espaces -> WS_CREATOR, Gestionnaire de l'accueil -> HOME_MANAGER, Gestionnaire de compétences -> COMPETENCY_MANAGER",
+  "The user role": "Nom du rôle de l'utilisateur",
 
   "The organization id": "L'id de l'organisation (uuid/id)",
   "The organization name": "Le nom de l'organisation",
