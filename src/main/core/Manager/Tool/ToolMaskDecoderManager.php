@@ -80,7 +80,6 @@ class ToolMaskDecoderManager
         $toolDecoders = $this->getDecoders($toolName);
         foreach ($toolDecoders as $index => $toolDecoder) {
             if ($toolDecoder->getName() === $action) {
-                unset($this->maskDecoders[$toolName][$index]);
                 $this->om->remove($toolDecoder);
 
                 return;
