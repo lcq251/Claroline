@@ -2,6 +2,7 @@ import {trans} from '#/main/app/intl/translation'
 import {MODAL_BUTTON} from '#/main/app/buttons'
 
 import {MODAL_MESSAGE} from '#/plugin/message/modals/message'
+import {constants} from '#/main/app/action'
 
 export default (users, usersRefresher, path, currentUser) => {
   const processable = users.filter(user => currentUser && user.id !== currentUser.id)
@@ -17,6 +18,7 @@ export default (users, usersRefresher, path, currentUser) => {
       }
     }],
     displayed: 0 !== processable.length,
-    scope: ['object', 'collection']
+    scope: ['object', 'collection'],
+    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
   }
 }
