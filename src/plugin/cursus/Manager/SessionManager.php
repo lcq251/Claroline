@@ -179,7 +179,7 @@ class SessionManager
             $registrationData = [];
             $users = array_map(function (SessionUser $sessionUser) use (&$registrationData) {
                 $serialized = $this->serializer->serialize($sessionUser);
-                if ($serialized['data']) {
+                if (!empty($serialized['data'])) {
                     $registrationData[$sessionUser->getUser()->getUuid()] = $serialized['data'];
                 }
 
@@ -231,7 +231,7 @@ class SessionManager
     }
 
     /**
-     * Gets/generates workspace role for session depending on given role name and type.
+     * Gets/generates workspace roles for session depending on given role name and type.
      */
     public function generateRoleForSession(Workspace $workspace, Role $courseRole = null, ?string $type = 'learner'): Role
     {

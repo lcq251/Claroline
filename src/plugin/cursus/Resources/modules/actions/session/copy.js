@@ -15,6 +15,7 @@ export default declareAction((sessions, refresher) => {
     displayed: 0 !== processable.length,
     confirm: {
       message: transChoice('session_copy_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'cursus'),
+      additional: trans('session_copy_additional', {}, 'cursus'),
       items:  processable.map(item => ({
         thumbnail: item.thumbnail,
         id: item.id,
