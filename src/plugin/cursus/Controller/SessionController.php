@@ -30,7 +30,6 @@ use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\CursusBundle\Manager\SessionManager;
-use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -99,7 +98,7 @@ class SessionController extends AbstractCrudController
         $data = $this->decodeRequest($request);
 
         /** @var Session[] $sessions */
-        $sessions = $this->om->getRepository(Session::class)->findBy(['uuid' => $data,]);
+        $sessions = $this->om->getRepository(Session::class)->findBy(['uuid' => $data]);
 
         foreach ($sessions as $session) {
             if ($this->authorization->isGranted('EDIT', $session)) {

@@ -153,7 +153,6 @@
     "opening_session_default": "Default session",
     "opening_session_help": "Allows automatically logs in when the training is opened.",
     "enable_course_pending_list": "Autoriser les utilisateurs à s'inscrire en liste d'attente si aucune session n'est disponible",
-    "enable_session_pending_list": "Autoriser les utilisateurs à s'inscrire en liste d'attente si la session est complète",
     "course_registration_pending": "You are on the pending list for this training.",
     "course_registration_pending_help": "Please wait till a manager register you to a session.",
     "hide_sessions": "Hide sessions to users",

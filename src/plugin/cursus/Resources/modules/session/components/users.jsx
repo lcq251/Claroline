@@ -58,7 +58,7 @@ const SessionUsers = (props) => {
         ['apiv2_training_session_user_course_list', {id: props.course.id}]
       }
       primaryAction={(row) => getRegistrationDefaultAction(row, refresher, props.path, currentUser)}
-      actions={(rows) => getRegistrationActions(rows, refresher, props.path, currentUser)/*.then((actions) => [].concat(actions, props.customActions(rows)))*/}
+      actions={(rows) => getRegistrationActions(rows, refresher, props.path, currentUser)}
       customDefinition={customDefinition}
     />
   )

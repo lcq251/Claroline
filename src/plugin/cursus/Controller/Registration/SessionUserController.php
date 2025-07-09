@@ -92,7 +92,7 @@ class SessionUserController extends AbstractCrudController
     /**
      * Move user's registration from a session to another.
      */
-    #[Route(path: '/move/{type}/{targetId}', name: 'move', methods: ['PUT'])]
+    #[Route(path: '/move/{type}/{targetId}', name: 'move', defaults: ['targetId' => null], methods: ['PUT'])]
     public function moveAction(
         Request $request,
         string $type,

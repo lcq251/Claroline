@@ -60,13 +60,11 @@ class TrainingsTool extends ToolComponent
             return [
                 'course' => $course ? $this->serializer->serialize($course, [SerializerInterface::SERIALIZE_MINIMAL]) : null,
                 'registrations' => $registrations,
-                'presences' => [],
             ];
         }
 
         return [
             'registrations' => $user ? $this->courseManager->getRegistrations($user) : [],
-            'presences' => [],
         ];
     }
 }

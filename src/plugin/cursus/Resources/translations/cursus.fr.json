@@ -161,7 +161,6 @@
     "opening_session_default": "La session par défaut",
     "opening_session_help": "Permet d'ouvrir automatiquement une session lors de l'ouverture de la formation.",
     "enable_course_pending_list": "Autoriser les utilisateurs à s'inscrire en liste d'attente si aucune session n'est disponible",
-    "enable_session_pending_list": "Autoriser les utilisateurs à s'inscrire en liste d'attente si la session est complète",
     "course_registration_pending": "Vous êtes en liste d'attente pour cette formation.",
     "course_registration_pending_help": "Veuillez patienter le temps qu'un gestionnaire vous inscrive à une session.",
     "hide_sessions": "Cacher les sessions aux utilisateurs",
@@ -183,5 +182,13 @@
     "confirmed": "Confirmé",
     "validated": "Validé",
     "no_registered_training": "Vous n'êtes inscrit à aucune formation",
-    "no_registered_training_help": "Veuillez attendre qu'un gestionnaire vous inscrive à une formation ou parcourez le catalogue pour trouver une formation qui vous intéresse."
+    "no_registered_training_help": "Veuillez attendre qu'un gestionnaire vous inscrive à une formation ou parcourez le catalogue pour trouver une formation qui vous intéresse.",
+    "session_registration_move_pending_confirm": "{1} Êtes-vous sûr(e) de vouloir mettre cet utilisateur dans la liste d'attente ? | [2,Inf[ Êtes-vous sûr(e) de vouloir mettre ces %count% utilisateurs dans la liste d'attente ?",
+    "session_registration_move_pending_additional": "Les utilisateurs seront désinscrits de leur session et placer en liste d'attente de la formation.",
+    "pending_session": "En attente de session",
+    "pending_validation": "En attente de validation",
+    "my_registrations_to_confirm": "Mes inscriptions à confirmer",
+    "my_registrations_to_confirm_desc": "Vous avez des inscriptions en attente de validation de votre part. Veuillez les confirmer pour finaliser vos inscriptions et ainsi pouvoir accéder à vos contenus de formation.",
+    "my_pending_registrations": "Mes inscriptions en attente",
+    "my_pending_registrations_desc": "Vous avez des inscriptions nécessitant l'intervention d'un gestionnaire. Veuillez patientez le temps qu'un gestionnaire valide vos inscriptions ou vous propose une session de formation."
 }

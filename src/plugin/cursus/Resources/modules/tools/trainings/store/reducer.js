@@ -9,6 +9,8 @@ import {reducer as catalogReducer} from '#/plugin/cursus/tools/trainings/catalog
 import {reducer as sessionReducer} from '#/plugin/cursus/tools/trainings/session/store/reducer'
 import {reducer as eventReducer} from '#/plugin/cursus/tools/trainings/event/store/reducer'
 import {reducer as dashboardReducer} from '#/plugin/cursus/tools/trainings/dashboard/store/reducer'
+import {TRAININGS_UPDATE_REGISTRATIONS} from '#/plugin/cursus/tools/trainings/store/actions'
+import cloneDeep from 'lodash/cloneDeep'
 
 const reducer = combineReducers({
   catalog: catalogReducer,
@@ -24,7 +26,16 @@ const reducer = combineReducers({
         return action.toolData.registrations
       }
 
-      return state
+      return []
+    },
+    [TRAININGS_UPDATE_REGISTRATIONS]: (state, action) => {
+      const newState = cloneDeep(state)
+      const pos = newState.findIndex(r => r.id === action.registration.id)
+      if (-1 !== pos) {
+        newState[pos] = action.registration
+      }
+
+      return newState
     }
   }),
   dashboard: dashboardReducer

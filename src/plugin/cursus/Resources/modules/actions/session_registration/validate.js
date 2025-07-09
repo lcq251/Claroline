@@ -1,5 +1,5 @@
 import {declareAction} from '#/main/app/action'
-import {CALLBACK_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
@@ -8,9 +8,9 @@ export default declareAction((registrations, refresher) => {
 
   return ({
     name: 'confirm',
-    type: CALLBACK_BUTTON,
+    type: ASYNC_BUTTON,
     icon: 'fa fa-fw fa-user-check',
-    label: trans('confirm_registration', {}, 'actions'),
+    label: trans('validate_registration', {}, 'actions'),
     displayed: 0 !== processable.length,
     request: {
       url: ['apiv2_training_session_user_validate'],

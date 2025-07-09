@@ -9,7 +9,6 @@ import {CALLBACK_BUTTON} from '#/main/app/buttons'
 const FormSave = (props) => {
   if (props.pendingChanges) {
     const descriptionId = useId()
-
     const saveEnabled = !props.disabled && !props.errors
 
     return (

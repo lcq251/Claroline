@@ -151,7 +151,6 @@
     "opening_session_default": "De standaard sessie",
     "opening_session_help": "Stelt in dat er automatisch een sessie wordt geopend bij het openen van de training.",
     "enable_course_pending_list": "Sta gebruikers toe zich in te schrijven op de wachtlijst als er geen sessie beschikbaar is",
-    "enable_session_pending_list": "Sta gebruikers toe zich in te schrijven op de wachtlijst als de sessie vol is",
     "course_registration_pending": "U staat op de wachtlijst voor deze training.",
     "course_registration_pending_help": "Gelieve te wachten tot een manager u inschrijft voor een sessie.",
     "hide_sessions": "Verberg sessies voor gebruikers",

@@ -42,7 +42,24 @@ const mySessions = createSelector(
 const myPendingRegistrations = createSelector(
   [registrations],
   (registrations) => {
+    return registrations.filter(registration => {
+      if (registration.session) {
+        return !registration.validated
+      }
+      return true
+    })
+  }
+)
 
+const myRegistrationsToConfirm = createSelector(
+  [registrations],
+  (registrations) => {
+    return registrations.filter(registration => {
+      if (registration.session) {
+        return !registration.confirmed
+      }
+      return false
+    })
   }
 )
 
@@ -50,5 +67,7 @@ export const selectors = {
   STORE_NAME,
   store,
   parameters,
-  mySessions
+  mySessions,
+  myPendingRegistrations,
+  myRegistrationsToConfirm
 }
