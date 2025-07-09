@@ -119,6 +119,7 @@ const BadgeDetails = (props) => {
                 name: 'user',
                 type: 'user',
                 label: trans('user'),
+                alias: 'recipient',
                 displayed: true
               }, {
                 name: 'user.email',
