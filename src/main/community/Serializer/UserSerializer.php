@@ -60,24 +60,27 @@ class UserSerializer
     {
         $token = $this->tokenStorage->getToken();
 
+        $showEmailRoles = $this->config->getParameter('profile.show_email') ?? [];
+        $showEmail = empty($showEmailRoles);
+        if ($token && !empty($showEmailRoles)) {
+            $isOwner = $token->getUser() instanceof User && $token->getUser()->getId() === $user->getId();
+            $showEmail = $isOwner || !empty(array_filter($token->getRoleNames(), function (string $role) use ($showEmailRoles) {
+                    return 'ROLE_ADMIN' === $role || in_array($role, $showEmailRoles);
+                }));
+        }
+
         if (in_array(SerializerInterface::SERIALIZE_MINIMAL, $options)) {
             return [
                 'id' => $user->getUuid(),
                 'name' => $user->getFullName(),
                 'status' => $user->getStatus(),
                 'picture' => $user->getPicture(),
-                'username' => $user->getUsername(), // required because used to user profile URL
+                'username' => $user->getUsername(), // required because used by the user profile URL
                 'poster' => $user->getPoster(),
+                'email' => $showEmail ? $user->getEmail() : null, // for export
+                'firstName' => $user->getFirstName(), // for export
+                'lastName' => $user->getLastName(), // for export
             ];
-        }
-
-        $showEmailRoles = $this->config->getParameter('profile.show_email') ?? [];
-        $showEmail = empty($showEmailRoles);
-        if ($token && !empty($showEmailRoles)) {
-            $isOwner = $token->getUser() instanceof User && $token->getUser()->getId() === $user->getId();
-            $showEmail = $isOwner || !empty(array_filter($token->getRoleNames(), function (string $role) use ($showEmailRoles) {
-                return 'ROLE_ADMIN' === $role || in_array($role, $showEmailRoles);
-            }));
         }
 
         $serializedUser = [
