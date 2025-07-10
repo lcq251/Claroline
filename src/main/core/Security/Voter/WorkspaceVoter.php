@@ -16,7 +16,6 @@ use Claroline\AppBundle\Security\Voter\AbstractVoter;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceRestrictionsManager;
-use Claroline\CoreBundle\Security\PlatformRoles;
 use Claroline\CoreBundle\Security\ToolPermissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;

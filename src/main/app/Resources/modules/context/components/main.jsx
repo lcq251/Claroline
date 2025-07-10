@@ -12,7 +12,6 @@ import {ContentForbidden} from '#/main/app/content/components/forbidden'
 import {ContextEditor} from '#/main/app/context/editor/containers/main'
 import {ContextProfile} from '#/main/app/context/profile/containers/main'
 import {getTool} from '#/main/core/tool/utils'
-import {hasPermission} from '#/main/app/security'
 import {useCtrlKeyPress} from '#/main/app/dom/key'
 import {actions as modalActions} from '#/main/app/overlays/modal'
 import {MODAL_COMMAND_PALETTE} from '#/main/app/context/modals/command-palette'
@@ -145,9 +144,9 @@ const ContextMain = (props) => {
               path: '/:toolName',
               onEnter: (params = {}) => {
                 const openedTool = props.tools.find(tool => tool.name === params.toolName)
-                if (isEmpty(openedTool) || !hasPermission('open', openedTool)) {
-                  // tool is disabled (or does not exist) for the context
-                  // let's go to the default opening of the context
+                if (isEmpty(openedTool)) {
+                  // the tool is disabled, or does not exist, or the user has no open right on it
+                  // redirect to the default opening of the context
                   props.history.replace(props.path)
                 }
               },

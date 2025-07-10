@@ -72,7 +72,9 @@ class ContextController
             $this->eventDispatcher->dispatch($openEvent, ContextEvents::OPEN);
 
             $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
-            $contextTools = $this->toolProvider->getEnabledTools($context, $contextSubject);
+            $contextTools = array_filter($this->toolProvider->getEnabledTools($context, $contextSubject), function (OrderedTool $tool) {
+                return $this->authorization->isGranted('OPEN', $tool);
+            });
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
                 'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
@@ -85,13 +87,11 @@ class ContextController
                     return $this->serializer->serialize($organization, [SerializerInterface::SERIALIZE_MINIMAL]);
                 }, $contextOrganizations),
 
-                // get all enabled tools for the context, even those inaccessible to the current user
-                // this will allow the ui to know if a user try to access a closed tool or a non-existent one.
                 'tools' => array_map(function (OrderedTool $orderedTool) use ($context, $contextSubject) {
                     $serializedTool = $this->serializer->serialize($orderedTool, [SerializerInterface::SERIALIZE_MINIMAL]);
 
                     return array_merge([], $serializedTool, [
-                        'status' => $serializedTool['permissions']['open'] ? $this->toolProvider->getStatus($orderedTool->getName(), $context, $contextSubject) : null,
+                        'status' => $this->toolProvider->getStatus($orderedTool->getName(), $context, $contextSubject),
                     ]);
                 }, $contextTools),
             ], $contextHandler->getAdditionalData($contextSubject)));

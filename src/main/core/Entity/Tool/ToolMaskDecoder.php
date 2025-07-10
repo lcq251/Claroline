@@ -34,10 +34,10 @@ class ToolMaskDecoder
     private int $value;
 
     #[ORM\Column]
-    protected string $name;
+    private string $name;
 
     #[ORM\Column(name: 'tool_name', nullable: false)]
-    protected string $tool;
+    private string $tool;
 
     public function getValue(): int
     {

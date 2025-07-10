@@ -269,7 +269,7 @@ const WorkspaceForbidden = (props) => {
           })
         }
 
-        {!isUndefined(restrictions) && 0 === restrictions.length &&
+        {isUndefined(restrictions) || 0 === restrictions.length &&
           <StandardRestrictions {...props} />
         }
       </PageContent>

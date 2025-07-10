@@ -33,7 +33,7 @@ const ContextProfile = (props) => {
       }}
     >
       <UserProfile
-        path={props.path+'/profile'}
+        path={props.path}
         user={props.currentUser}
       />
     </ContextPage>

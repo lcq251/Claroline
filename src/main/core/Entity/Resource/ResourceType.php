@@ -56,18 +56,9 @@ class ResourceType
     #[ORM\Column(name: 'is_enabled', type: Types::BOOLEAN)]
     private bool $isEnabled = true;
 
-    /**
-     * @todo find a way to remove it (it's used in some DQL queries)
-     *
-     * @var Collection<int, ResourceRights>
-     */
-    #[ORM\ManyToMany(targetEntity: ResourceRights::class, mappedBy: 'resourceTypes')]
-    protected Collection $rights;
-
     public function __construct()
     {
         $this->maskDecoders = new ArrayCollection();
-        $this->rights = new ArrayCollection();
     }
 
     public function getName(): string

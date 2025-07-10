@@ -77,7 +77,7 @@ class WorkspaceRepository extends EntityRepository
     /**
      * @deprecated
      */
-    public function checkAccess(Workspace $workspace, array $roleNames, string $toolName = null, ?string $action = 'open'): bool
+    public function checkAccess(Workspace $workspace, array $roleNames, ?string $toolName = null, ?string $action = 'open'): bool
     {
         $dql = '
             SELECT COUNT(ot)
