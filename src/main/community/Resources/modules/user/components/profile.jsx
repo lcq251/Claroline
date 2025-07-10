@@ -114,13 +114,13 @@ const UserProfile = (props) => {
                 name: 'activity',
                 title: trans('activity'),
                 render: () => (
-                  <UserActivity path={props.path} user={props.user} />
+                  <UserActivity user={props.user} />
                 )
               }, {
                 name: 'about',
                 title: trans('about'),
                 render: () => (
-                  <UserAbout path={props.path} user={props.user} />
+                  <UserAbout user={props.user} />
                 )
               }, {
                 name: 'groups',

@@ -10,6 +10,7 @@ import {selectors} from '#/main/app/context'
 
 import {AssertionBadgeCard} from '#/plugin/open-badge/assertion/components/card'
 import {AssertionList} from '#/plugin/open-badge/assertion/components/list'
+import {route} from '#/main/core/tool'
 
 const ProfileBadges = (props) => {
   const listName = 'profileBadges'
@@ -26,7 +27,7 @@ const ProfileBadges = (props) => {
   return (
     <AssertionList
       className="mt-4 mb-5"
-      path={contextPath}
+      path={route('badges', contextPath)}
       name={listName}
       url={['apiv2_badge_assertion_user_list', {
         workspaceId: 'workspace' === contextType ? contextData.id : null,
@@ -62,6 +63,7 @@ const ProfileBadges = (props) => {
 }
 
 ProfileBadges.propTypes = {
+  path: T.string.isRequired,
   user: T.shape(
     UserTypes.propTypes
   ).isRequired

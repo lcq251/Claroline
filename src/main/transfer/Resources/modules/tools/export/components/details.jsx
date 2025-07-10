@@ -10,6 +10,7 @@ import {CALLBACK_BUTTON, URL_BUTTON} from '#/main/app/buttons'
 import {TransferPage} from '#/main/transfer/components/page'
 import {ExportEditor} from '#/main/transfer/export/editor/containers/main'
 import {ExportFile as ExportFileTypes} from '#/main/transfer/tools/export/prop-types'
+import {PageSection} from '#/main/app/page'
 
 const ExportDetails = props => {
 
@@ -42,9 +43,11 @@ const ExportDetails = props => {
       ]}
     >
       {!props.exportFile || 'in_progress' === props.exportFile.status &&
-        <Alert type="info" style={{marginTop: 20}}>
-          {trans('export_in_progress_help', {}, 'transfer')}
-        </Alert>
+        <PageSection size="lg">
+          <Alert type="info" style={{marginTop: 20}}>
+            {trans('export_in_progress_help', {}, 'transfer')}
+          </Alert>
+        </PageSection>
       }
 
       {props.exportFile &&

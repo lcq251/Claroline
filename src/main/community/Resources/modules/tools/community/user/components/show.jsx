@@ -17,7 +17,7 @@ const UserShow = (props) => {
       description={get(props.user, 'meta.description')}
     >
       <UserProfile
-        path={route(props.user, props.path)}
+        path={props.path}
         user={props.user}
         addGroups={props.addGroups}
         primaryAction="send-message"

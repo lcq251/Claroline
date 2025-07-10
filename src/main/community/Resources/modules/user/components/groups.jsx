@@ -1,13 +1,16 @@
 import React, {useMemo} from 'react'
 import {PropTypes as T} from 'prop-types'
+
+import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
+import {useReducer} from '#/main/app/store/hooks/useReducer'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
-import {trans} from '#/main/app/intl'
+import {makeListReducer} from '#/main/app/content/list'
+import {route} from '#/main/core/tool'
+
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
 import {GroupList} from '#/main/community/group/components/list'
-import {makeListReducer} from '#/main/app/content/list'
-import {useReducer} from '#/main/app/store/hooks/useReducer'
 
 const UserGroups = (props) => {
   const listName = 'profileGroups'
@@ -39,7 +42,7 @@ const UserGroups = (props) => {
 
       <GroupList
         className="mt-4 mb-5"
-        path={props.path}
+        path={route('community', props.path)}
         name={listName}
         url={['apiv2_user_list_groups', {id: props.user.id}]}
         autoload={!!props.user.id}
@@ -56,7 +59,7 @@ const UserGroups = (props) => {
 }
 
 UserGroups.propTypes = {
-  path: T.string,
+  path: T.string.isRequired,
   user: T.object,
   addGroups: T.func
 }
