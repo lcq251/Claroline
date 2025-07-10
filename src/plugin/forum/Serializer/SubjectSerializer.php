@@ -130,6 +130,7 @@ class SubjectSerializer
             }
 
             $first->setContent($data['content']);
+            $this->om->persist($first);
         }
 
         if (isset($data['meta'])) {
@@ -178,10 +179,6 @@ class SubjectSerializer
             } else {
                 $this->deserializeTags($subject, $data['tags']);
             }
-        }
-
-        if ($first) {
-            $this->om->persist($first);
         }
 
         return $subject;

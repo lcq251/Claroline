@@ -91,7 +91,8 @@ class SubjectComponent extends Component {
                   displayed: hasPermission('edit', this.props.subject),
                   modal: [MODAL_SUBJECT, {
                     subject: this.props.subject,
-                    forumId: this.props.forum.id
+                    forumId: this.props.forum.id,
+                    onSave: (updatedSubject) => this.props.loadSubject(updatedSubject)
                   }]
                 }, {
                   name: 'pin',
@@ -223,6 +224,7 @@ SubjectComponent.propTypes = {
   createMessage: T.func.isRequired,
   editMessage: T.func.isRequired,
   flag: T.func.isRequired,
+  loadSubject: T.func.isRequired,
   stickSubject: T.func.isRequired,
   unStickSubject: T.func.isRequired,
   closeSubject: T.func.isRequired,
@@ -261,6 +263,9 @@ const ForumSubject =  withRouter(connect(
     },
     deleteMessage(id) {
       dispatch(listActions.deleteData(`${selectors.STORE_NAME}.subjects.messages`, ['apiv2_forum_message_delete'], [{id: id}]))
+    },
+    loadSubject(subject) {
+      dispatch(actions.loadSubject(subject))
     },
     reload(id) {
       dispatch(listActions.fetchData(`${selectors.STORE_NAME}.subjects.messages`, ['apiv2_forum_subject_get_messages', {id}]))
