@@ -11,7 +11,7 @@ import {WorkspaceCard} from '#/main/core/workspace/components/card'
 const WorkspacesModal = (props) =>
   <PickerModal
     {...omit(props)}
-    icon="fa fa-fw fa-book"
+    // icon="fa fa-fw fa-book"
     name="workspacesPicker"
     definition={[
       {

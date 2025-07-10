@@ -23,8 +23,8 @@ const CreationType = (props) =>
           action: {
             type: MODAL_BUTTON,
             modal: [MODAL_WORKSPACES, {
-              icon: 'fa fa-fw fa-stamp',
-              title: trans('workspace_models', {}, 'workspace'),
+              title: trans('new_workspace', {}, 'workspace'),
+              subtitle: trans('Sélectionnez le modèle à utiliser pour préconfigurer votre nouvel espace.'),
               url: ['apiv2_workspace_list_model'],
               multiple: false,
               selectAction: (selected) => ({
@@ -59,6 +59,8 @@ const CreationType = (props) =>
           action: {
             type: MODAL_BUTTON,
             modal: [MODAL_WORKSPACES, {
+              title: trans('new_workspace', {}, 'workspace'),
+              subtitle: trans('Sélectionnez le(s) espace(s) d\'activités que vous souhaitez copier.'),
               multiple: false,
               selectAction: (selected) => ({
                 type: CALLBACK_BUTTON,

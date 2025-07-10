@@ -16,12 +16,13 @@ const ChoiceSearch = (props) =>
     inline={props.inline}
     multiple={false}
     condensed={props.condensed}
+    disabled={props.disabled}
   />
 
 implementPropTypes(ChoiceSearch, DataSearchTypes, {
   choices: T.object.isRequired,
   disabledChoices: T.arrayOf(T.string),
-  multiple: T.bool, // Attention : Finder must be able to handle it
+  multiple: T.bool, // Attention: Finder must be able to handle it
   inline: T.bool,
   condensed: T.bool
 }, {

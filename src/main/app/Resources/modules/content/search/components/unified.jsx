@@ -157,6 +157,8 @@ const SearchUnified = (props) => {
   const [opened, setOpened] = useState(false)
   const [updated, setUpdated] = useState(false)
 
+  const deletableFilters = (props.current || []).filter(filter => !filter.locked)
+
   return (
     <form className="list-search search-unified flex-fill" action="#">
       <div className="d-flex align-items-center" role="presentation">
@@ -184,7 +186,7 @@ const SearchUnified = (props) => {
           />
         }
 
-        {((!isEmpty(props.current) || props.currentText) && props.currentText === currentText) &&
+        {((!isEmpty(deletableFilters) || props.currentText) && props.currentText === currentText) &&
           <Button
             className="btn btn-text-body position-relative px-2 focus-ring focus-ring-secondary"
             type={CALLBACK_BUTTON}
@@ -194,7 +196,9 @@ const SearchUnified = (props) => {
             callback={() => {
               updateText('')
               props.updateText('')
-              props.resetFilters([])
+
+              // only keeps locked filters
+              props.resetFilters((props.current || []).filter(filter => filter.locked))
             }}
           />
         }

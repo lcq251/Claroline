@@ -180,6 +180,8 @@ const DataSearch = {
     search: T.any,
     value: T.any,
     errors: T.oneOfType([T.object, T.array, T.string]),
+    disabled: T.bool,
+
     /**
      * @deprecated use `errors`
      */

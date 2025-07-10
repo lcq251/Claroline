@@ -4,6 +4,7 @@ import {trans} from '#/main/app/intl/translation'
 import {MODAL_RESOURCES} from '#/main/core/modals/resources'
 import {constants, declareAction} from '#/main/app/action'
 import {hasPermission} from '#/main/app/security'
+import get from 'lodash/get'
 
 /**
  * Creates a copy of resource nodes at the destination chosen by the user.
@@ -21,6 +22,7 @@ export default declareAction((resourceNodes, nodesRefresher) => {
     label: trans('copy', {}, 'actions'),
     displayed: 0 !== processable.length,
     modal: [MODAL_RESOURCES, {
+      contextId: get(processable[0], 'workspace.id'),
       icon: 'fa fa-fw fa-clone',
       title: trans('select_target_directory'),
       current: 0 < processable.length && processable[0].parent ? processable[0].parent : null,
