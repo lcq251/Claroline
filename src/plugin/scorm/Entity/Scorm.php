@@ -88,7 +88,7 @@ class Scorm extends AbstractResource
         return $this->ratio;
     }
 
-    public function setRatio(float $ratio): void
+    public function setRatio(?float $ratio): void
     {
         $this->ratio = $ratio;
     }
