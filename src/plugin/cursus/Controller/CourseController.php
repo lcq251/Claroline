@@ -244,40 +244,9 @@ class CourseController extends AbstractCrudController
     {
         $this->checkPermission('OPEN', $course, [], true);
 
-        $defaultSession = null;
-
-        // search for sessions in which the current user is registered
-        $user = $this->tokenStorage->getToken()?->getUser();
-        $registrations = [];
-        if ($user instanceof User) {
-            $registrations = $this->manager->getRegistrations($user, $course);
-        }
-
-        $sessions = $this->om->getRepository(Session::class)->findAvailable($course);
-
-        if (empty($defaultSession)) {
-            // current user is not registered to any session yet
-            // get the default session to open
-            switch ($course->getSessionOpening()) {
-                case 'default':
-                    $defaultSession = $course->getDefaultSession();
-                    break;
-                case 'first_available':
-                    if (!empty($sessions)) {
-                        $defaultSession = $sessions[0];
-                    }
-                    break;
-            }
-        }
-
-        return new JsonResponse([
-            'course' => $this->serializer->serialize($course),
-            'defaultSession' => $defaultSession ? $this->serializer->serialize($defaultSession) : null,
-            'availableSessions' => array_map(function (Session $session) {
-                return $this->serializer->serialize($session, [SerializerInterface::SERIALIZE_LIST]);
-            }, $sessions),
-            'registrations' => $registrations,
-        ]);
+        return new JsonResponse(
+            $this->manager->open($course)
+        );
     }
 
     #[Route(path: '/{id}/pdf', name: 'download_pdf', methods: ['GET'])]

@@ -111,7 +111,7 @@ final class SessionSubscriber implements EventSubscriberInterface
         $session = $event->getObject();
         $oldData = $event->getOldData();
 
-        // Removes default session flag on all other sessions if this one is the default one
+        // Removes the default session flag on all other sessions if this one is the default one
         if ($session->isDefaultSession()) {
             $this->sessionManager->setDefaultSession($session->getCourse(), $session);
         }

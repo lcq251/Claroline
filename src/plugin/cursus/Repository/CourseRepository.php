@@ -41,7 +41,7 @@ class CourseRepository extends EntityRepository
         $dql = '
             SELECT COUNT(DISTINCT c) as count
             FROM Claroline\CursusBundle\Entity\Course AS c
-            WHERE c = :course AND (EXISTS (
+            WHERE c = :course AND EXISTS (
               SELECT su.id
               FROM Claroline\CursusBundle\Entity\Registration\SessionUser AS su
               LEFT JOIN su.session AS s
@@ -50,15 +50,6 @@ class CourseRepository extends EntityRepository
                 AND su.validated = 1
                 AND su.confirmed = 1
             )
-            OR EXISTS (
-              SELECT sg.id
-              FROM Claroline\CursusBundle\Entity\Registration\SessionGroup AS sg
-              LEFT JOIN sg.group AS g
-              LEFT JOIN g.users AS gu
-              LEFT JOIN sg.session AS s2
-              WHERE s2.course = c
-                AND gu = :user
-            ))
         ';
 
         $query = $this->getEntityManager()
@@ -189,35 +180,11 @@ class CourseRepository extends EntityRepository
 
     public function countLearners(Course $course): int
     {
-        $count = $this->countUsers($course, AbstractRegistration::LEARNER);
-
-        // add groups count
-        $sessionGroups = $this->getEntityManager()
-            ->createQuery('
-                SELECT sg 
-                FROM Claroline\CursusBundle\Entity\Registration\SessionGroup AS sg
-                LEFT JOIN sg.session AS s
-                WHERE sg.type = :registrationType
-                  AND s.course = :course
-            ')
-            ->setParameters([
-                'registrationType' => AbstractRegistration::LEARNER,
-                'course' => $course,
-            ])
-            ->getResult();
-
-        foreach ($sessionGroups as $sessionGroup) {
-            $groupUsers = $this->getEntityManager()->getRepository(User::class)->findByGroup($sessionGroup->getGroup());
-            $count += count($groupUsers);
-        }
-
-        return $count;
+        return $this->countUsers($course, AbstractRegistration::LEARNER);
     }
 
     public function countPending(Course $course): int
     {
-        // TODO : add CourseUser
-
         return (int) $this->getEntityManager()
             ->createQuery('
                 SELECT COUNT(DISTINCT su) 

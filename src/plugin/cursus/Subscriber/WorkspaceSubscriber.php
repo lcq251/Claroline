@@ -34,7 +34,7 @@ class WorkspaceSubscriber implements EventSubscriberInterface
     {
         $workspace = $event->getWorkspace();
 
-        // check if the workspace is linked to any course in order to display it to the user
+        // check if the workspace is linked to any course to display it to the user
         // in the place of standard restrictions
         $courses = $this->om->getRepository(Course::class)->findByWorkspace($workspace);
         if (!empty($courses)) {
@@ -58,7 +58,7 @@ class WorkspaceSubscriber implements EventSubscriberInterface
             $sessions = $this->om->getRepository(Session::class)->findAvailable($course);
 
             if (empty($defaultSession)) {
-                // current user is not registered to any session yet
+                // the current user is not registered to any session yet
                 // get the default session to open
                 switch ($course->getSessionOpening()) {
                     case 'default':
@@ -72,14 +72,7 @@ class WorkspaceSubscriber implements EventSubscriberInterface
                 }
             }
 
-            $event->addError('trainings', [
-                'course' => $this->serializer->serialize($course),
-                'defaultSession' => $defaultSession ? $this->serializer->serialize($defaultSession) : null,
-                'availableSessions' => array_map(function (Session $session) {
-                    return $this->serializer->serialize($session);
-                }, $sessions),
-                'registrations' => $registrations,
-            ]);
+            $event->addError('trainings', $this->courseManager->open($course));
         }
     }
 }

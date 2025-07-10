@@ -1,6 +1,7 @@
 services:
     Claroline\CursusBundle\Manager\CourseManager:
         arguments:
+            - '@security.token_storage'
             - '@translator'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'

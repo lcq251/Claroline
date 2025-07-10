@@ -72,9 +72,9 @@ class ContextController
             $this->eventDispatcher->dispatch($openEvent, ContextEvents::OPEN);
 
             $contextOrganizations = $contextHandler->getOrganizations($this->tokenStorage->getToken(), $contextSubject);
-            $contextTools = array_filter($this->toolProvider->getEnabledTools($context, $contextSubject), function (OrderedTool $tool) {
+            $contextTools = array_values(array_filter($this->toolProvider->getEnabledTools($context, $contextSubject), function (OrderedTool $tool) {
                 return $this->authorization->isGranted('OPEN', $tool);
-            });
+            }));
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
                 'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
