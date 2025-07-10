@@ -132,6 +132,11 @@ class Finder implements FinderInterface
         return $this->query->getSearch();
     }
 
+    public function hasFilter(): bool
+    {
+        return $this->query->hasFilter($this->getPropertyPath());
+    }
+
     public function getFilterValue(): mixed
     {
         return $this->query->getFilter($this->getPropertyPath());

@@ -11,21 +11,16 @@ class RelatedEntityType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        // allows to customize the join to the entity when the finder is embedded into another
+        // allows customizing the join to the entity when the finder is embedded into another
         // the callback is called with the QueryBuilder, FinderInterface and resolved options as parameters.
         $resolver
             ->define('joinQuery')
             ->allowedTypes('callable');
-
-        $resolver
-            ->define('nullable')
-            ->allowedTypes('boolean')
-            ->default(false);
     }
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
     {
-        if (null !== $finder->getFilterValue() || $options['nullable']) {
+        if ($finder->hasFilter()) {
             if (isset($options['joinQuery'])) {
                 $options['joinQuery']($queryBuilder, $finder, $options);
             } else {

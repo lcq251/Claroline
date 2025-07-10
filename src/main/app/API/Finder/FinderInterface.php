@@ -27,8 +27,8 @@ interface FinderInterface
     public function getQueryPath(bool $withAliases = true): string;
 
     /**
-     * Tells the Finder if the generated query will require the DISTINCT keyword.
-     * NB. It's required when using One-to-Many / Many-to-Many join which produce duplicated rows.
+     * Tells the Finder if the generated query will require a DISTINCT keyword.
+     * NB. It's required when using One-to-Many / Many-to-Many join which produces duplicated rows.
      */
     public function distinct(bool $flag = true): static;
 
@@ -43,6 +43,11 @@ interface FinderInterface
      * Shortcut to get the current search string {@see FinderQuery}.
      */
     public function getSearchValue(): ?string;
+
+    /**
+     * Shortcut to check if a filter is defined for current finder instance {@see FinderQuery}.
+     */
+    public function hasFilter(): bool;
 
     /**
      * Shortcut to get the filter value for current finder instance {@see FinderQuery}.

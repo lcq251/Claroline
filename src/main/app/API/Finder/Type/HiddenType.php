@@ -26,12 +26,14 @@ class HiddenType extends AbstractType
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
     {
-        $requestValue = filter_var($finder->getFilterValue(), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        $value = null === $requestValue ? $options['default'] : $requestValue;
+        if ($finder->getParent()->isRoot() || null !== $finder->getFilterValue()) {
+            $requestValue = filter_var($finder->getFilterValue(), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
-        if (!$value) {
-            $queryBuilder->andWhere("{$finder->getQueryPath()} = :{$finder->getAlias()}");
-            $queryBuilder->setParameter($finder->getAlias(), $value);
+            $value = null === $requestValue ? $options['default'] : $requestValue;
+            if (!$value) {
+                $queryBuilder->andWhere("{$finder->getQueryPath()} = :{$finder->getAlias()}");
+                $queryBuilder->setParameter($finder->getAlias(), $value);
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ class MessageType extends AbstractType
             ->add('createdAt', DateType::class)
             ->add('updatedAt', DateType::class)
             ->add('subject', RelatedEntityType::class)
-            ->add('parent', RelatedEntityType::class, ['nullable' => true])
+            ->add('parent', RelatedEntityType::class)
             ->add('resourceNode', ResourceNodeType::class, [
                 'joinQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $this->joinResourceNode($queryBuilder, $finder, $finder->getAlias());

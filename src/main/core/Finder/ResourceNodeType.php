@@ -39,7 +39,7 @@ class ResourceNodeType extends AbstractType
             ])
             ->add('hidden', HiddenType::class)
             ->add('creator', CreatorType::class)
-            ->add('parent', RelatedEntityType::class, ['nullable' => true])
+            ->add('parent', RelatedEntityType::class)
             ->add('workspace', WorkspaceType::class)
             ->add('resourceType', ClosureType::class, [
                 'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
