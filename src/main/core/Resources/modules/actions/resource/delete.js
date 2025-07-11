@@ -28,7 +28,7 @@ export default declareAction((resourceNodes, nodesRefresher) => {
       message: transChoice('resources_delete_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'resource'),
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.poster,
         id: item.id,
         name: item.name
       }))

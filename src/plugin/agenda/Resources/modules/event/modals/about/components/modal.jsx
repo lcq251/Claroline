@@ -46,7 +46,7 @@ class AboutModal extends Component {
         icon="fa fa-fw fa-circle-info"
         title={this.props.event.name}
         subtitle={trans('about')}
-        poster={this.props.event.thumbnail ? this.props.event.thumbnail : undefined}
+        poster={this.props.event.poster}
       >
         {this.renderCustomAbout()}
       </Modal>

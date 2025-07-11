@@ -11,7 +11,7 @@ import {Course as CourseTypes} from '#/plugin/cursus/prop-types'
 const CourseCard = (props) =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon="fa fa-graduation-cap"
     name={props.data.name}
     title={

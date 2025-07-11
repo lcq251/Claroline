@@ -3,7 +3,6 @@ import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
 import {displayDateRange} from '#/main/app/intl/date'
-import {asset} from '#/main/app/config/asset'
 import {getPlainText} from '#/main/app/data/types/html/utils'
 import {DataCard} from '#/main/app/data/components/card'
 
@@ -17,7 +16,7 @@ const EventCard = (props) =>
     name={props.data.name}
     title={props.data.name}
     subtitle={displayDateRange(props.data.start, props.data.end)}
-    poster={props.data.thumbnail ? asset(props.data.thumbnail) : null}
+    poster={props.data.poster}
     contentText={getPlainText(props.data.description)}
   />
 

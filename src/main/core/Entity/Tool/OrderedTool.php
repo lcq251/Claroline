@@ -16,7 +16,6 @@ use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Hidden;
 use Claroline\AppBundle\Entity\Display\Order;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\HasContext;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -38,7 +37,6 @@ class OrderedTool implements CrudEntityInterface
     use Uuid;
     use HasContext;
     use IsPublic;
-    use Thumbnail;
     use Poster;
     use Order;
     use Hidden;

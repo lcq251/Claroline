@@ -17,7 +17,7 @@ export default declareAction((events, refresher) => {
       message: transChoice('event_delete_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'cursus'),
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.poster,
         id: item.id,
         name: item.name
       }))

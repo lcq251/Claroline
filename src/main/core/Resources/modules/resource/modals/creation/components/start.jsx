@@ -71,7 +71,6 @@ const CreationStart = props =>
                   props.startCreation('shortcut', {
                     name: selected[0].name,
                     code: selected[0].code,
-                    thumbnail: selected[0].thumbnail,
                     poster: selected[0].poster,
                     meta: {
                       published: true,

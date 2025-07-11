@@ -15,7 +15,6 @@ use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
@@ -50,7 +49,6 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
     use Id;
     use Uuid;
     use Poster;
-    use Thumbnail;
     use Description;
     use Phone;
     use Disabled;

@@ -12,7 +12,7 @@ import {Badge} from '#/main/app/components/badge'
 const ResourceCard = props =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon={
       <ResourceIcon
         mimeType={get(props.data, 'meta.mimeType')}

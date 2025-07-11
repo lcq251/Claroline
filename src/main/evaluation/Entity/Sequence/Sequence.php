@@ -5,7 +5,6 @@ namespace Claroline\EvaluationBundle\Entity\Sequence;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -44,7 +43,6 @@ class Sequence implements CrudEntityInterface
     use Code;
     use Name;
     // meta
-    use Thumbnail;
     use Poster;
     use Description;
     use DescriptionHtml;

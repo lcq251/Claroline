@@ -86,10 +86,6 @@ abstract class AbstractPlannedSubscriber implements EventSubscriberInterface
         if ($object->getPoster()) {
             $this->fileManager->linkFile(PlannedObject::class, $object->getUuid(), $object->getPoster());
         }
-
-        if ($object->getThumbnail()) {
-            $this->fileManager->linkFile(PlannedObject::class, $object->getUuid(), $object->getThumbnail());
-        }
     }
 
     public function preUpdate(UpdateEvent $event): void
@@ -131,13 +127,6 @@ abstract class AbstractPlannedSubscriber implements EventSubscriberInterface
             $object->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        $this->fileManager->updateFile(
-            PlannedObject::class,
-            $object->getUuid(),
-            $object->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
     public function postDelete(DeleteEvent $event): void
@@ -147,10 +136,6 @@ abstract class AbstractPlannedSubscriber implements EventSubscriberInterface
 
         if ($object->getPoster()) {
             $this->fileManager->unlinkFile(PlannedObject::class, $object->getUuid(), $object->getPoster());
-        }
-
-        if ($object->getThumbnail()) {
-            $this->fileManager->unlinkFile(PlannedObject::class, $object->getUuid(), $object->getThumbnail());
         }
     }
 

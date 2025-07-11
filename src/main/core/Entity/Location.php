@@ -16,7 +16,6 @@ use Claroline\AppBundle\Entity\Contact\Address;
 use Claroline\AppBundle\Entity\Contact\Phone;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\Description;
@@ -36,7 +35,6 @@ class Location implements CrudEntityInterface
     use Id;
     use Uuid;
     use Description;
-    use Thumbnail;
     use Poster;
     use Phone;
     use Address;

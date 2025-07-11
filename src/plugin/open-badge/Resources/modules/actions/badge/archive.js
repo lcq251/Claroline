@@ -26,7 +26,7 @@ export default declareAction((badges, refresher) => {
     confirm: {
       message: transChoice('archive_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'badge'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.image,
         id: item.id,
         name: item.name
       }))

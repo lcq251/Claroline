@@ -13,7 +13,7 @@ import {AvailableSeats} from '#/plugin/cursus/components/available-seats'
 const EventCard = props =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     name={props.data.name}
     icon="fa fa-calendar-day"
     title={

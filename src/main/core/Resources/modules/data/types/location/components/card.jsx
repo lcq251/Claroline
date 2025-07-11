@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {asset} from '#/main/app/config/asset'
 import {DataCard} from '#/main/app/data/components/card'
 
 import {getAddressString} from '#/main/app/data/types/address/utils'
@@ -11,7 +10,7 @@ const LocationCard = props =>
   <DataCard
     {...props}
     id={props.data.id}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     title={props.data.name}
     name={props.data.name}
     contentText={getAddressString(props.data.address)}

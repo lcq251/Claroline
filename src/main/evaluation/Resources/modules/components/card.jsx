@@ -11,7 +11,6 @@ import {ProgressBar} from '#/main/app/components/progress-bar'
 import {Datetime} from '#/main/app/components/date'
 import {constants} from '#/main/evaluation/constants'
 import {displayScore} from '#/main/evaluation/data/types/score/utils'
-import {User} from '#/main/community/user/prop-types'
 
 const EvaluationUserCard = (props) => {
   return (
@@ -39,7 +38,7 @@ const EvaluationContentCard = (props) => {
         variant: constants.EVALUATION_STATUS_COLOR[status],
         text: statusText
       }}
-      poster={get(props.content, 'thumbnail')}
+      poster={get(props.content, 'poster')}
       name={get(props.content, 'name')}
       title={get(props.content, 'name')}
       contentText={get(props.content, 'meta.description') || <em className="text-body-tertiary">{trans('no_description')}</em>}

@@ -23,7 +23,6 @@ const ResourceNode = {
     id: T.string.isRequired,
     name: T.string,
     slug: T.string,
-    thumbnail: T.string,
     poster: T.string,
 
     /**

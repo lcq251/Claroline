@@ -18,7 +18,7 @@ const SequenceCopyModal = props => {
       {...omit(props, 'sequences')}
       question={transChoice('copy_sequence_confirm_message', props.sequences.length, {count: '<b class="fw-bold">'+props.sequences.length+'</b>'}, 'evaluation')}
       items={props.sequences.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.poster,
         id: item.id,
         name: item.name
       }))}

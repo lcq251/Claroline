@@ -49,10 +49,6 @@ class LocationSubscriber implements EventSubscriberInterface
         if ($location->getPoster()) {
             $this->fileManager->linkFile(Location::class, $location->getUuid(), $location->getPoster());
         }
-
-        if ($location->getThumbnail()) {
-            $this->fileManager->linkFile(Location::class, $location->getUuid(), $location->getThumbnail());
-        }
     }
 
     public function postUpdate(UpdateEvent $event): void
@@ -67,13 +63,6 @@ class LocationSubscriber implements EventSubscriberInterface
             $location->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        $this->fileManager->updateFile(
-            Location::class,
-            $location->getUuid(),
-            $location->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
 
@@ -84,10 +73,6 @@ class LocationSubscriber implements EventSubscriberInterface
 
         if ($location->getPoster()) {
             $this->fileManager->unlinkFile(Location::class, $location->getUuid(), $location->getPoster());
-        }
-
-        if ($location->getThumbnail()) {
-            $this->fileManager->unlinkFile(Location::class, $location->getUuid(), $location->getThumbnail());
         }
     }
 }

@@ -63,7 +63,7 @@ class ResourceNodeSerializer
                 'slug' => $resourceNode->getSlug(),
                 'name' => $resourceNode->getName(),
                 'code' => $resourceNode->getCode(),
-                'thumbnail' => $resourceNode->getThumbnail(),
+                'poster' => $resourceNode->getPoster(),
                 'meta' => [
                     'description' => $resourceNode->getDescription(),
                     'published' => $resourceNode->isPublished(), // not required but nice to have
@@ -81,7 +81,6 @@ class ResourceNodeSerializer
             'slug' => $resourceNode->getSlug(),
             'name' => $resourceNode->getName(),
             'code' => $resourceNode->getCode(),
-            'thumbnail' => $resourceNode->getThumbnail(),
             'poster' => $resourceNode->getPoster(),
             'estimatedDuration' => $resourceNode->getEstimatedDuration(),
             'meta' => [
@@ -149,7 +148,6 @@ class ResourceNodeSerializer
         $this->sipe('name', 'setName', $data, $resourceNode);
         $this->sipe('code', 'setCode', $data, $resourceNode);
         $this->sipe('poster', 'setPoster', $data, $resourceNode);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $resourceNode);
         $this->sipe('estimatedDuration', 'setEstimatedDuration', $data, $resourceNode);
 
         if (!in_array(SerializerInterface::REFRESH_UUID, $options)) {

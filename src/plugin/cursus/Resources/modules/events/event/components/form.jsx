@@ -22,6 +22,11 @@ const EventForm = (props) =>
           primary: true,
           fields: [
             {
+              name: 'poster',
+              type: 'poster',
+              label: trans('poster'),
+              hideLabel: true
+            }, {
               name: 'name',
               type: 'string',
               label: trans('name'),
@@ -112,14 +117,6 @@ const EventForm = (props) =>
           title: trans('display_parameters'),
           fields: [
             {
-              name: 'poster',
-              type: 'image',
-              label: trans('poster')
-            }, {
-              name: 'thumbnail',
-              type: 'image',
-              label: trans('thumbnail')
-            }, {
               name: 'display.color',
               type: 'color',
               label: trans('color')

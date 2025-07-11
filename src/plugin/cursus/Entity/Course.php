@@ -14,7 +14,6 @@ namespace Claroline\CursusBundle\Entity;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Display\Order;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Meta\Archived;
 use Claroline\AppBundle\Entity\Meta\IsPublic;
 use Claroline\AppBundle\Entity\Meta\Name;
@@ -37,7 +36,6 @@ class Course extends AbstractTraining
     use Name;
     use Order;
     use Poster;
-    use Thumbnail;
     use HasOrganizations;
     use IsPublic;
     use Archived;

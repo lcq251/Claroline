@@ -9,41 +9,7 @@ import {flattenTabs, getTabSummary} from '#/plugin/home/tools/home/utils'
 import {HomeTab} from '#/plugin/home/tools/home/containers/tab'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'
 import {PageContent} from '#/main/app/page'
-
-const HomeSkeleton = () =>
-  <ToolPage>
-    <PageContent className="placeholder-glow container-fluid mt-4 gap-4">
-      <div className="row px-2 mb-4">
-        <div className="col-12 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-      </div>
-      <div className="row px-2 mb-4">
-        <div className="col-6 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-        <div className="col-6 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-      </div>
-      <div className="row px-2 mb-4">
-        <div className="col-4 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-        <div className="col-8 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-      </div>
-      <div className="row px-2 mb-4">
-        <div className="col-8 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-        <div className="col-4 d-flex">
-          <span className="placeholder rounded-3 flex-fill" style={{minHeight: '14rem'}} />
-        </div>
-      </div>
-    </PageContent>
-  </ToolPage>
+import {HomePageSkeleton} from '#/plugin/home/tools/home/components/page'
 
 const HomeTool = props => {
   const tabs = props.tabs
@@ -79,7 +45,7 @@ const HomeTool = props => {
       ] : undefined}
     >
       {!props.loaded &&
-        <HomeSkeleton />
+        <HomePageSkeleton />
       }
     </Tool>
   )

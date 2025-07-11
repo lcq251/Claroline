@@ -97,10 +97,6 @@ final class CourseSubscriber implements EventSubscriberInterface
         if ($course->getPoster()) {
             $this->fileManager->linkFile(Course::class, $course->getUuid(), $course->getPoster());
         }
-
-        if ($course->getThumbnail()) {
-            $this->fileManager->linkFile(Course::class, $course->getUuid(), $course->getThumbnail());
-        }
     }
 
     public function preUpdate(UpdateEvent $event): void
@@ -123,13 +119,6 @@ final class CourseSubscriber implements EventSubscriberInterface
             $course->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        $this->fileManager->updateFile(
-            Course::class,
-            $course->getUuid(),
-            $course->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
     public function postDelete(DeleteEvent $event): void
@@ -139,10 +128,6 @@ final class CourseSubscriber implements EventSubscriberInterface
 
         if ($course->getPoster()) {
             $this->fileManager->unlinkFile(Course::class, $course->getUuid(), $course->getPoster());
-        }
-
-        if ($course->getThumbnail()) {
-            $this->fileManager->unlinkFile(Course::class, $course->getUuid(), $course->getThumbnail());
         }
     }
 
@@ -182,10 +167,6 @@ final class CourseSubscriber implements EventSubscriberInterface
 
         if ($course->getPoster()) {
             $this->fileManager->linkFile(Course::class, $course->getUuid(), $course->getPoster());
-        }
-
-        if ($course->getThumbnail()) {
-            $this->fileManager->linkFile(Course::class, $course->getUuid(), $course->getThumbnail());
         }
 
         if ($course->getWorkspace() && !$course->getWorkspace()->isModel()) {

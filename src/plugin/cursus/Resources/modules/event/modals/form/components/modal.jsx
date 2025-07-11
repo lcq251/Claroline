@@ -55,6 +55,11 @@ const EventFormModal = props => {
           primary: true,
           fields: [
             {
+              name: 'poster',
+              type: 'poster',
+              label: trans('poster'),
+              hideLabel: true
+            }, {
               name: 'name',
               type: 'string',
               label: trans('name'),
@@ -142,12 +147,9 @@ const EventFormModal = props => {
           fields: [
             {
               name: 'poster',
-              type: 'image',
-              label: trans('poster')
-            }, {
-              name: 'thumbnail',
-              type: 'image',
-              label: trans('thumbnail')
+              type: 'poster',
+              label: trans('poster'),
+              hideLabel: true
             }, {
               name: 'display.color',
               type: 'color',

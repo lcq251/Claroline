@@ -84,11 +84,7 @@ final class SessionSubscriber implements EventSubscriberInterface
             $this->fileManager->linkFile(Session::class, $session->getUuid(), $session->getPoster());
         }
 
-        if ($session->getThumbnail()) {
-            $this->fileManager->linkFile(Session::class, $session->getUuid(), $session->getThumbnail());
-        }
-
-        // Removes default session flag on all other sessions if this one is the default one
+        // Removes the default session flag on all other sessions if this one is the default one
         if ($session->isDefaultSession()) {
             $this->sessionManager->setDefaultSession($session->getCourse(), $session);
         }
@@ -123,13 +119,6 @@ final class SessionSubscriber implements EventSubscriberInterface
             $session->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        $this->fileManager->updateFile(
-            Session::class,
-            $session->getUuid(),
-            $session->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
     public function postDelete(DeleteEvent $event): void
@@ -140,10 +129,6 @@ final class SessionSubscriber implements EventSubscriberInterface
         // Manages files
         if ($session->getPoster()) {
             $this->fileManager->unlinkFile(Session::class, $session->getUuid(), $session->getPoster());
-        }
-
-        if ($session->getThumbnail()) {
-            $this->fileManager->unlinkFile(Session::class, $session->getUuid(), $session->getThumbnail());
         }
     }
 
@@ -174,10 +159,6 @@ final class SessionSubscriber implements EventSubscriberInterface
 
         if ($copy->getPoster()) {
             $this->fileManager->linkFile(Session::class, $copy->getUuid(), $copy->getPoster());
-        }
-
-        if ($copy->getThumbnail()) {
-            $this->fileManager->linkFile(Session::class, $copy->getUuid(), $copy->getThumbnail());
         }
 
         // Creates workspace and roles

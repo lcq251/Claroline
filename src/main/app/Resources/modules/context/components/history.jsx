@@ -52,32 +52,29 @@ const ContextHistory = (props) => {
           .sort((a, b) => a.date > b.date ? -1 : 1)
           .map(result => {
             return (
-              /*<li key={result.id}>*/
-                <LinkButton
-                  key={result.id}
-                  className={classes('list-group-item list-group-item-action d-flex flex-row align-items-center gap-3', {
-                    'px-4': props.flush
-                  })}
-                  target={result.target}
-                  onClick={props.onOpen}
-                  exact={true}
-                >
-                  <Thumbnail
-                    thumbnail={result.thumbnail}
-                    name={result.name}
-                    size="sm"
-                    square={true}
-                  />
-                  <div className="overflow-hidden" role="presentation">
-                    <div className="h6 mb-1">{result.name}</div>
-                    {result.description ?
-                      <p className="text-body-secondary line-clamp-1 fs-sm mb-0">{getPlainText(result.description)}</p> :
-                      <em className="fs-sm text-body-tertiary">{trans('no_description')}</em>
-                    }
-                  </div>
-                </LinkButton>
-
-              /*</li>*/
+              <LinkButton
+                key={result.id}
+                className={classes('list-group-item list-group-item-action d-flex flex-row align-items-center gap-3', {
+                  'px-4': props.flush
+                })}
+                target={result.target}
+                onClick={props.onOpen}
+                exact={true}
+              >
+                <Thumbnail
+                  thumbnail={result.thumbnail}
+                  name={result.name}
+                  size="sm"
+                  square={true}
+                />
+                <div className="overflow-hidden" role="presentation">
+                  <div className="h6 mb-1">{result.name}</div>
+                  {result.description ?
+                    <p className="text-body-secondary line-clamp-1 fs-sm mb-0">{getPlainText(result.description)}</p> :
+                    <em className="fs-sm text-body-tertiary">{trans('no_description')}</em>
+                  }
+                </div>
+              </LinkButton>
             )
           })
         }

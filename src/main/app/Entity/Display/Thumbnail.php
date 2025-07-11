@@ -4,6 +4,9 @@ namespace Claroline\AppBundle\Entity\Display;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ */
 trait Thumbnail
 {
     #[ORM\Column(name: 'thumbnail', nullable: true)]

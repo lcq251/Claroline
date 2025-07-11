@@ -72,7 +72,7 @@ class CourseSerializer
                 'name' => $course->getName(),
                 'code' => $course->getCode(),
                 'slug' => $course->getSlug(),
-                'thumbnail' => $course->getThumbnail(),
+                'poster' => $course->getPoster(),
                 'plainDescription' => $course->getPlainDescription(),
             ];
         }
@@ -82,7 +82,7 @@ class CourseSerializer
             'name' => $course->getName(),
             'code' => $course->getCode(),
             'slug' => $course->getSlug(),
-            'thumbnail' => $course->getThumbnail(),
+            'poster' => $course->getPoster(),
             'description' => $course->getDescription(),
             'plainDescription' => $course->getPlainDescription(),
             'meta' => [
@@ -126,7 +126,6 @@ class CourseSerializer
 
         if (!in_array(SerializerInterface::SERIALIZE_LIST, $options)) {
             $serialized = array_merge_recursive($serialized, [
-                'poster' => $course->getPoster(),
                 'display' => [
                     'order' => $course->getOrder(),
                     'hideSessions' => $course->getHideSessions(),
@@ -176,7 +175,6 @@ class CourseSerializer
         $this->sipe('description', 'setDescription', $data, $course);
         $this->sipe('plainDescription', 'setPlainDescription', $data, $course);
         $this->sipe('poster', 'setPoster', $data, $course);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $course);
 
         $this->sipe('display.order', 'setOrder', $data, $course);
         $this->sipe('display.hideSessions', 'setHideSessions', $data, $course);

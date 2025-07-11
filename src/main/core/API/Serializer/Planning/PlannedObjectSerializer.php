@@ -32,7 +32,7 @@ class PlannedObjectSerializer
                 'name' => $plannedObject->getName(),
                 'start' => $plannedObject->getStartDate() ? DateNormalizer::normalize($plannedObject->getStartDate()) : null,
                 'end' => $plannedObject->getEndDate() ? DateNormalizer::normalize($plannedObject->getEndDate()) : null,
-                'thumbnail' => $plannedObject->getThumbnail(),
+                'poster' => $plannedObject->getPoster(),
                 'meta' => [
                     'type' => $plannedObject->getType(),
                     'description' => $plannedObject->getDescription(),
@@ -48,7 +48,6 @@ class PlannedObjectSerializer
             'name' => $plannedObject->getName(),
             'start' => $plannedObject->getStartDate() ? DateNormalizer::normalize($plannedObject->getStartDate()) : null,
             'end' => $plannedObject->getEndDate() ? DateNormalizer::normalize($plannedObject->getEndDate()) : null,
-            'thumbnail' => $plannedObject->getThumbnail(),
             'poster' => $plannedObject->getPoster(),
             'meta' => [
                 'description' => $plannedObject->getDescription(),
@@ -73,7 +72,6 @@ class PlannedObjectSerializer
         $this->sipe('description', 'setDescription', $data, $planned);
         $this->sipe('locationUrl', 'setLocationUrl', $data, $planned);
         $this->sipe('poster', 'setPoster', $data, $planned);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $planned);
 
         if (isset($data['meta'])) {
             if (isset($data['meta']['creator'])) {

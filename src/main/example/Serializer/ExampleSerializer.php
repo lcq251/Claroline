@@ -31,14 +31,13 @@ class ExampleSerializer
             return [
                 'id' => $example->getUuid(),
                 'name' => $example->getName(),
-                'thumbnail' => $example->getThumbnail(),
+                'poster' => $example->getPoster(),
             ];
         }
 
         return [
             'id' => $example->getUuid(),
             'name' => $example->getName(),
-            'thumbnail' => $example->getThumbnail(),
             'poster' => $example->getPoster(),
             'meta' => [
                 'description' => $example->getDescription(),
@@ -55,7 +54,6 @@ class ExampleSerializer
         }
 
         $this->sipe('name', 'setName', $data, $example);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $example);
         $this->sipe('poster', 'setPoster', $data, $example);
 
         if (isset($data['meta'])) {

@@ -70,7 +70,7 @@ class SequenceSerializer
                 'id' => $sequence->getUuid(),
                 'name' => $sequence->getName(),
                 'code' => $sequence->getCode(),
-                'thumbnail' => $sequence->getThumbnail(),
+                'poster' => $sequence->getPoster(),
                 'meta' => [
                     'description' => $sequence->getDescription(),
                     'published' => $sequence->isPublished(), // not required but nice to have
@@ -85,7 +85,6 @@ class SequenceSerializer
             'autoId' => $sequence->getId(),
             'name' => $sequence->getName(),
             'code' => $sequence->getCode(),
-            'thumbnail' => $sequence->getThumbnail(),
             'poster' => $sequence->getPoster(),
             'meta' => [
                 'public' => $sequence->isPublic(),
@@ -171,7 +170,6 @@ class SequenceSerializer
         $this->sipe('name', 'setName', $data, $sequence);
         $this->sipe('code', 'setCode', $data, $sequence);
         $this->sipe('poster', 'setPoster', $data, $sequence);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $sequence);
         $this->sipe('meta.published', 'setPublished', $data, $sequence);
         $this->sipe('meta.description', 'setDescription', $data, $sequence);
         $this->sipe('meta.descriptionHtml', 'setDescriptionHtml', $data, $sequence);

@@ -28,34 +28,19 @@ const LocationForm = props =>
         primary: true,
         fields: [
           {
+            name: 'poster',
+            type: 'poster',
+            label: trans('poster'),
+            hideLabel: true
+          }, {
             name: 'name',
             type: 'string',
             label: trans('name'),
             required: true
-          }
-        ]
-      }, {
-        title: trans('information'),
-        icon: 'fa fa-fw fa-circle-info',
-        fields: [
-          {
+          }, {
             name: 'meta.description',
             type: 'html',
             label: trans('description')
-          }
-        ]
-      }, {
-        icon: 'fa fa-fw fa-desktop',
-        title: trans('display_parameters'),
-        fields: [
-          {
-            name: 'poster',
-            type: 'image',
-            label: trans('poster')
-          }, {
-            name: 'thumbnail',
-            type: 'image',
-            label: trans('thumbnail')
           }
         ]
       }, {

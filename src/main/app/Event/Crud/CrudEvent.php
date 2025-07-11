@@ -11,6 +11,7 @@
 
 namespace Claroline\AppBundle\Event\Crud;
 
+use Doctrine\Persistence\Proxy;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -28,8 +29,9 @@ class CrudEvent extends Event
 
     public function getClass(): string
     {
-        // FIXME : this can return a Doctrine Proxy
-        return get_class($this->object);
+        return $this->object instanceof Proxy ?
+            get_parent_class($this->object) :
+            get_class($this->object);
     }
 
     public function getObject(): mixed

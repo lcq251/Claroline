@@ -19,23 +19,6 @@ const SequenceEditorAppearance = () => {
       help={trans('sequence_appearance_help', {}, 'evaluation')}
       definition={[
         {
-          name: 'images',
-          icon: 'fa fa-fw fa-picture',
-          title: trans('images'),
-          primary: true,
-          fields: [
-            {
-              name: 'poster',
-              label: trans('poster'),
-              type: 'image'
-            }, {
-              name: 'thumbnail',
-              label: trans('thumbnail'),
-              type: 'image',
-              recommended: true
-            }
-          ]
-        }, {
           name: 'numbering',
           icon: 'fa fa-fw fa-desktop',
           title: trans('display_parameters'),

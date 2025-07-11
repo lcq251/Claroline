@@ -66,7 +66,7 @@ class SessionSerializer
                 'id' => $session->getUuid(),
                 'code' => $session->getCode(),
                 'name' => $session->getName(),
-                'thumbnail' => $session->getThumbnail(),
+                'poster' => $session->getPoster(),
                 'plainDescription' => $session->getPlainDescription(),
                 'dates' => DateRangeNormalizer::normalize($session->getStartDate(), $session->getEndDate()),
             ];
@@ -84,7 +84,6 @@ class SessionSerializer
             'id' => $session->getUuid(),
             'code' => $session->getCode(),
             'name' => $session->getName(),
-            'thumbnail' => $session->getThumbnail(),
             'poster' => $session->getPoster(),
             'description' => $session->getDescription(),
             'plainDescription' => $session->getPlainDescription(),

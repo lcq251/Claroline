@@ -86,14 +86,9 @@ class Session extends AbstractTraining implements IdentifiableInterface
         return $this->course?->getName();
     }
 
-    public function getThumbnail(): ?string
-    {
-        return $this->course?->getThumbnail();
-    }
-
     public function getPoster(): ?string
     {
-        return $this->course?->getThumbnail();
+        return $this->course?->getPoster();
     }
 
     public function getPlainDescription(): ?string

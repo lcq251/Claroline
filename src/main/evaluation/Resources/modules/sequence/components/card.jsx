@@ -36,7 +36,7 @@ const SequenceCard = props =>
   <DataCard
     {...props}
     id={props.data.id}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon="fa fa-route"
     name={props.data.name}
     title={props.data.name}

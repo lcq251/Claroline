@@ -32,18 +32,17 @@ const TeamFormComponent = props => {
           primary: true,
           fields: [
             {
+              name: 'poster',
+              type: 'poster',
+              label: trans('poster'),
+              hideLabel: true
+            }, {
               name: 'name',
               type: 'string',
               label: trans('name'),
               required: true,
               disabled: (team) => get(team, 'meta.readOnly')
-            }
-          ]
-        }, {
-          icon: 'fa fa-fw fa-circle-info',
-          title: trans('information'),
-          fields: [
-            {
+            }, {
               name: 'meta.description',
               type: 'string',
               label: trans('description'),
@@ -57,10 +56,6 @@ const TeamFormComponent = props => {
           title: trans('display_parameters'),
           fields: [
             {
-              name: 'poster',
-              type: 'image',
-              label: trans('poster')
-            }, {
               name: 'thumbnail',
               type: 'image',
               label: trans('thumbnail')

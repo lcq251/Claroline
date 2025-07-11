@@ -100,6 +100,7 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
             if (!empty($info)) {
                 return [
                     'name' => $info['name'],
+                    'poster' => !empty($info['thumbnailPath']) ? $peertube['server'].$info['thumbnailPath'] : null,
                 ];
             }
         }

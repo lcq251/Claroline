@@ -40,14 +40,12 @@ class ExampleData extends AbstractFixture implements PreInstallInterface, PreUpd
      */
     public function load(ObjectManager $manager): void
     {
-        // create sample thumbnail & poster
+        // create sample poster
         $poster = $this->createSampleFile('poster.jpg');
-        $thumbnail = $this->createSampleFile('thumbnail.jpg');
 
         for ($i = 0; $i < 60; ++$i) {
             $example = new Example();
             $example->setName("Example {$i}");
-            $example->setThumbnail($thumbnail->getUrl());
             $example->setPoster($poster->getUrl());
             $example->setDescription("Description for the example entity {$i}");
 

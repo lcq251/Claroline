@@ -5,7 +5,6 @@ const Tool = {
     icon: T.string.isRequired,
     name: T.string.isRequired,
     poster: T.string,
-    thumbnail: T.string,
     display: T.shape({
       order: T.number,
       showIcon: T.bool,

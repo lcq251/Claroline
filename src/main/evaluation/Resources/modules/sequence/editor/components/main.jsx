@@ -40,7 +40,7 @@ const SequenceEditor = () => {
       thumbnail={
         <Thumbnail
           className="rounded-1"
-          thumbnail={editedSequence.thumbnail}
+          thumbnail={editedSequence.poster}
           name={editedSequence.name}
           size="sm"
         />

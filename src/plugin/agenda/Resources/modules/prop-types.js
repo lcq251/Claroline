@@ -7,7 +7,7 @@ const Event = {
     start: T.string,
     end: T.string,
     description: T.string,
-    thumbnail: T.string,
+    poster: T.string,
     meta: T.shape({
       type: T.string.isRequired
     }),

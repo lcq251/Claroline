@@ -137,7 +137,7 @@ const BadgeDetails = (props) => {
                   time: true
                 }
               }, {
-                name: 'userDisabled',
+                name: 'recipient.disabled',
                 label: trans('user_disabled', {}, 'community'),
                 type: 'boolean',
                 displayable: false,

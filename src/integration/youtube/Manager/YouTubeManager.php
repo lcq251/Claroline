@@ -58,7 +58,7 @@ class YouTubeManager
         if ($uploadedFile) {
             $publicFile = $this->crud->create(PublicFile::class, [], ['file' => $uploadedFile]);
 
-            $resourceNode->setThumbnail($publicFile->getUrl());
+            $resourceNode->setPoster($publicFile->getUrl());
             $this->om->persist($resourceNode);
 
             $this->fileManager->linkFile(ResourceNode::class, $resourceNode->getUuid(), $publicFile->getUrl());

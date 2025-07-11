@@ -8,7 +8,7 @@ const ToolCard = props =>
   <DataCard
     {...props}
     icon={`fa fa-${props.data.icon}`}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     title={trans(props.data.name, {}, 'tools')}
     asIcon={true}
   />

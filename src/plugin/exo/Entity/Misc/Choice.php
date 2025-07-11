@@ -3,7 +3,7 @@
 namespace UJM\ExoBundle\Entity\Misc;
 
 use Doctrine\DBAL\Types\Types;
-use Claroline\AppBundle\Entity\Meta\Order;
+use Claroline\AppBundle\Entity\Display\Order;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\ItemType\ChoiceQuestion;
 use UJM\ExoBundle\Library\Attempt\AnswerPartInterface;
@@ -16,6 +16,7 @@ use UJM\ExoBundle\Library\Attempt\AnswerPartInterface;
 class Choice extends AbstractChoice implements AnswerPartInterface
 {
     use Order;
+
     /**
      * The choice is part of the expected answer for the question.
      *

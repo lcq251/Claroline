@@ -25,7 +25,7 @@ const EventPage = (props) => {
       description={get(props.event, 'description')}
     >
       {!isEmpty(props.event) &&
-        <PageContent poster={get(props.event, 'thumbnail')}>
+        <PageContent poster={get(props.event, 'poster')}>
           <PageToolbar
             tootlbar="edit show-calendar more"
             actions={[

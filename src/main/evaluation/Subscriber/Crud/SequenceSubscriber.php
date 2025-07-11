@@ -72,10 +72,6 @@ class SequenceSubscriber implements EventSubscriberInterface
         if ($sequence->getPoster()) {
             $this->fileManager->linkFile(Sequence::class, $sequence->getUuid(), $sequence->getPoster());
         }
-
-        if ($sequence->getThumbnail()) {
-            $this->fileManager->linkFile(Sequence::class, $sequence->getUuid(), $sequence->getThumbnail());
-        }
     }
 
     public function preUpdate(UpdateEvent $event): void
@@ -98,13 +94,6 @@ class SequenceSubscriber implements EventSubscriberInterface
             $sequence->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        $this->fileManager->updateFile(
-            Sequence::class,
-            $sequence->getUuid(),
-            $sequence->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
     public function preDelete(DeleteEvent $event): void
@@ -114,10 +103,6 @@ class SequenceSubscriber implements EventSubscriberInterface
 
         if ($sequence->getPoster()) {
             $this->fileManager->unlinkFile(Sequence::class, $sequence->getUuid(), $sequence->getPoster());
-        }
-
-        if ($sequence->getThumbnail()) {
-            $this->fileManager->unlinkFile(Sequence::class, $sequence->getUuid(), $sequence->getThumbnail());
         }
     }
 
@@ -151,10 +136,6 @@ class SequenceSubscriber implements EventSubscriberInterface
 
         if ($newSequence->getPoster()) {
             $this->fileManager->linkFile(Sequence::class, $newSequence->getUuid(), $newSequence->getPoster());
-        }
-
-        if ($newSequence->getThumbnail()) {
-            $this->fileManager->linkFile(Sequence::class, $newSequence->getUuid(), $newSequence->getThumbnail());
         }
 
         if (in_array('copyResources', $options) && $newSequence->hasResources()) {

@@ -75,10 +75,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
         if ($resourceNode->getPoster()) {
             $this->fileManager->linkFile(ResourceNode::class, $resourceNode->getUuid(), $resourceNode->getPoster());
         }
-
-        if ($resourceNode->getThumbnail()) {
-            $this->fileManager->linkFile(ResourceNode::class, $resourceNode->getUuid(), $resourceNode->getThumbnail());
-        }
     }
 
     public function postUpdate(UpdateEvent $event): void
@@ -92,13 +88,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
             $resourceNode->getUuid(),
             $resourceNode->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
-        );
-
-        $this->fileManager->updateFile(
-            ResourceNode::class,
-            $resourceNode->getUuid(),
-            $resourceNode->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
         );
     }
 
@@ -134,10 +123,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
             // remove resource files
             if ($node->getPoster()) {
                 $this->fileManager->unlinkFile(ResourceNode::class, $node->getUuid(), $node->getPoster());
-            }
-
-            if ($node->getThumbnail()) {
-                $this->fileManager->unlinkFile(ResourceNode::class, $node->getUuid(), $node->getThumbnail());
             }
 
             foreach ($event->getFiles() as $file) {
@@ -209,10 +194,6 @@ class ResourceNodeSubscriber implements EventSubscriberInterface
 
         if ($newNode->getPoster()) {
             $this->fileManager->linkFile(ResourceNode::class, $newNode->getUuid(), $newNode->getPoster());
-        }
-
-        if ($newNode->getThumbnail()) {
-            $this->fileManager->linkFile(ResourceNode::class, $newNode->getUuid(), $newNode->getThumbnail());
         }
     }
 }

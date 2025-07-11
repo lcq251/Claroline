@@ -33,7 +33,7 @@ const TrainingsRegistrationsConfirm = () => {
         {pendingRegistrations.map(registration =>
           <li key={registration.id} className="list-group-item d-flex flex-row gap-3 flex-wrap align-items-center">
             <Thumbnail
-              thumbnail={registration.course.thumbnail}
+              thumbnail={registration.course.poster}
               name={registration.course.name}
               size="sm"
               square={true}

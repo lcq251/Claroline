@@ -17,7 +17,7 @@ import {getAddressString} from '#/main/app/data/types/address/utils'
 const SessionCourseCard = props =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon="fa fa-graduation-cap"
     name={props.data.name}
     title={props.data.name}
@@ -30,7 +30,7 @@ const SessionCourseCard = props =>
 const SessionDateCard = (props) =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon="fa fa-calendar-week"
     name={props.data.name}
     title={
@@ -62,7 +62,7 @@ const SessionDateCard = (props) =>
 const SessionCard = props =>
   <DataCard
     {...props}
-    poster={props.data.thumbnail}
+    poster={props.data.poster}
     icon="fa fa-calendar-week"
     name={props.data.name}
     title={

@@ -13,7 +13,6 @@ namespace Claroline\CoreBundle\Entity\Planning;
 
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\AppBundle\Entity\Meta\CreatedAt;
@@ -40,7 +39,6 @@ class PlannedObject
     use Uuid;
     use Name;
     use Poster;
-    use Thumbnail;
 
     #[ORM\Column(name: 'event_type')]
     private ?string $type = null;

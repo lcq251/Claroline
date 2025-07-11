@@ -4,7 +4,7 @@ namespace UJM\ExoBundle\Entity\Misc;
 
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
-use Claroline\AppBundle\Entity\Meta\Order;
+use Claroline\AppBundle\Entity\Display\Order;
 use Doctrine\ORM\Mapping as ORM;
 use UJM\ExoBundle\Entity\ItemType\MatchQuestion;
 use UJM\ExoBundle\Library\Model\ContentTrait;
@@ -30,20 +30,12 @@ class Label
         $this->refreshUuid();
     }
 
-    /**
-     * Get InteractionMatching.
-     *
-     * @return MatchQuestion
-     */
-    public function getInteractionMatching()
+    public function getInteractionMatching(): ?MatchQuestion
     {
         return $this->interactionMatching;
     }
 
-    /**
-     * Set InteractionMatching.
-     */
-    public function setInteractionMatching(MatchQuestion $interactionMatching)
+    public function setInteractionMatching(MatchQuestion $interactionMatching): void
     {
         $this->interactionMatching = $interactionMatching;
     }

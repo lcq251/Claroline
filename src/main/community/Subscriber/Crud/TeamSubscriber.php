@@ -100,7 +100,7 @@ final class TeamSubscriber implements EventSubscriberInterface
 
     private function createDirectoryAndRoles(Team $team, array $data): void
     {
-        // Checks and creates role for team members & team manager if needed.
+        // Checks and creates a role for team members & team manager if needed.
         $teamRole = $team->getRole();
         $teamManagerRole = $team->getManagerRole();
 

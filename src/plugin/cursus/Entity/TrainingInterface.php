@@ -6,8 +6,6 @@ interface TrainingInterface
 {
     public function getName(): ?string;
 
-    public function getThumbnail(): ?string;
-
     public function getPoster(): ?string;
 
     public function getPlainDescription(): ?string;
@@ -38,7 +36,7 @@ interface TrainingInterface
     public function getRegistrationMail(): bool;
 
     /**
-     * The registered user must confirm is registration in order to be fully registered to the training.
+     * The registered user must confirm is registration to be fully registered to the training.
      */
     public function hasConfirmation(): bool;
 

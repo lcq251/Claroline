@@ -16,10 +16,6 @@ const ContextEditorAppearance = (props) =>
         primary: true,
         fields: [
           {
-            name: 'data.poster',
-            label: trans('poster'),
-            type: 'image'
-          }, {
             name: 'data.thumbnail',
             label: trans('thumbnail'),
             type: 'image'

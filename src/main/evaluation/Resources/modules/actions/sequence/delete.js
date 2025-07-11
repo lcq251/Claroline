@@ -22,7 +22,7 @@ export default declareAction((sequences, refresher) => {
       message: transChoice('sequences_delete_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'evaluation'),
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.poster,
         id: item.id,
         name: item.name
       }))

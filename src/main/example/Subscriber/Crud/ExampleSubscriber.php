@@ -53,10 +53,6 @@ class ExampleSubscriber implements EventSubscriberInterface
         if ($example->getPoster()) {
             $this->fileManager->linkFile(Example::class, $example->getUuid(), $example->getPoster());
         }
-
-        if ($example->getThumbnail()) {
-            $this->fileManager->linkFile(Example::class, $example->getUuid(), $example->getThumbnail());
-        }
     }
 
     public function preUpdate(UpdateEvent $event): void
@@ -80,14 +76,6 @@ class ExampleSubscriber implements EventSubscriberInterface
             $example->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
         );
-
-        // update poster if it has changed
-        $this->fileManager->updateFile(
-            Example::class,
-            $example->getUuid(),
-            $example->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
-        );
     }
 
     public function postDelete(DeleteEvent $event): void
@@ -97,10 +85,6 @@ class ExampleSubscriber implements EventSubscriberInterface
 
         if ($example->getPoster()) {
             $this->fileManager->unlinkFile(Example::class, $example->getUuid(), $example->getPoster());
-        }
-
-        if ($example->getThumbnail()) {
-            $this->fileManager->unlinkFile(Example::class, $example->getUuid(), $example->getThumbnail());
         }
     }
 }

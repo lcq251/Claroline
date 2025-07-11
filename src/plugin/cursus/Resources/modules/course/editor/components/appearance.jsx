@@ -9,25 +9,8 @@ const CourseEditorAppearance = (props) =>
     help={trans('course_appearance_help', {}, 'cursus')}
     definition={[
       {
-        icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
         primary: true,
-        fields: [
-          {
-            name: 'poster',
-            label: trans('poster'),
-            type: 'image'
-          }, {
-            name: 'thumbnail',
-            label: trans('thumbnail'),
-            recommended: true,
-            type: 'image'
-          }
-        ]
-      }, {
-        title: trans('advanced'),
-        primary: true,
-        hideTitle: true,
         fields: [
           {
             name: 'restrictions.hidden',

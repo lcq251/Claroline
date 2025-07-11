@@ -3,12 +3,9 @@ import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
-import {trans} from '#/main/app/intl/translation'
-import {ContentLoader} from '#/main/app/content/components/loader'
-
 import {getTab} from '#/plugin/home/home'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'
-import {HomePage} from '#/plugin/home/tools/home/components/page'
+import {HomePage, HomePageSkeleton} from '#/plugin/home/tools/home/components/page'
 import {HomeRestrictions} from '#/plugin/home/tools/home/components/restrictions'
 
 class HomeTab extends Component {
@@ -49,15 +46,7 @@ class HomeTab extends Component {
   render() {
     if (!this.props.loaded) {
       return (
-        <HomePage
-          currentTab={this.props.currentTab}
-          title={this.props.currentTabTitle}
-        >
-          <ContentLoader
-            size="lg"
-            description={trans('loading', {}, 'home')}
-          />
-        </HomePage>
+        <HomePageSkeleton />
       )
     }
 

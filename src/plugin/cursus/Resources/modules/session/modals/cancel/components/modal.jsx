@@ -20,7 +20,7 @@ const SessionCancelModal = props =>
     dangerous={true}
     items={props.sessions.map(session => ({
       name: displayDateRange(get(session, 'dates[0]'), get(session, 'dates[1]')),
-      thumbnail: session.thumbnail
+      thumbnail: session.poster
     }))}
     confirmAction={{
       type: ASYNC_BUTTON,

@@ -15,7 +15,6 @@ use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Hidden;
 use Claroline\AppBundle\Entity\Display\Poster;
-use Claroline\AppBundle\Entity\Display\Thumbnail;
 use Claroline\AppBundle\Entity\Identifier\Code;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
@@ -52,7 +51,6 @@ class ResourceNode implements CrudEntityInterface
     use Uuid;
     use Code;
     // meta
-    use Thumbnail;
     use Poster;
     use Description;
     use DescriptionHtml;

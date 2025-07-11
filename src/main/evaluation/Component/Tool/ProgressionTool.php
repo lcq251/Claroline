@@ -123,10 +123,6 @@ class ProgressionTool extends ToolComponent
 
         return [
             'sequences' => array_map(function (Sequence $sequence) use ($fileBag) {
-                if ($sequence->getThumbnail()) {
-                    $fileBag->add($sequence->getThumbnail(), $sequence->getThumbnail());
-                }
-
                 if ($sequence->getPoster()) {
                     $fileBag->add($sequence->getPoster(), $sequence->getPoster());
                 }

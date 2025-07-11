@@ -119,10 +119,6 @@ final class UserSubscriber implements EventSubscriberInterface
             $this->fileManager->linkFile(User::class, $user->getUuid(), $user->getPoster());
         }
 
-        if ($user->getThumbnail()) {
-            $this->fileManager->linkFile(User::class, $user->getUuid(), $user->getThumbnail());
-        }
-
         if ($user->getPicture()) {
             $this->fileManager->linkFile(User::class, $user->getUuid(), $user->getPicture());
         }
@@ -156,13 +152,6 @@ final class UserSubscriber implements EventSubscriberInterface
             $user->getUuid(),
             $user->getPoster(),
             !empty($oldData['poster']) ? $oldData['poster'] : null
-        );
-
-        $this->fileManager->updateFile(
-            User::class,
-            $user->getUuid(),
-            $user->getThumbnail(),
-            !empty($oldData['thumbnail']) ? $oldData['thumbnail'] : null
         );
 
         $this->fileManager->updateFile(
@@ -232,10 +221,6 @@ final class UserSubscriber implements EventSubscriberInterface
 
         if ($user->getPoster()) {
             $this->fileManager->unlinkFile(User::class, $user->getUuid(), $user->getPoster());
-        }
-
-        if ($user->getThumbnail()) {
-            $this->fileManager->unlinkFile(User::class, $user->getUuid(), $user->getThumbnail());
         }
 
         if ($user->getPicture()) {

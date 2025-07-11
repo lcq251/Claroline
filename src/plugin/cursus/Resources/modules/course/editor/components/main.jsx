@@ -40,7 +40,7 @@ const CourseEditor = (props) => {
       thumbnail={
         <Thumbnail
           className="rounded-1"
-          thumbnail={props.course.thumbnail}
+          thumbnail={props.course.poster}
           name={props.course.name}
           size="sm"
         />

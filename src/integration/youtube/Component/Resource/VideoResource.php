@@ -46,7 +46,7 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
             // snippet.title
             // snippet.description
             // snippet.thumbnails.default|snippet.thumbnails.medium|snippet.thumbnails.high|snippet.thumbnails.standard
-            'thumbnail' => $this->youtubeManager->getThumbnailUrl($url),
+            'poster' => $this->youtubeManager->getThumbnailUrl($url),
         ];
     }
 

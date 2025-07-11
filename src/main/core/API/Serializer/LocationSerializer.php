@@ -39,7 +39,7 @@ class LocationSerializer
             return [
                 'id' => $location->getUuid(),
                 'name' => $location->getName(),
-                'thumbnail' => $location->getThumbnail(),
+                'poster' => $location->getPoster(),
 
                 'address' => [
                     'street1' => $location->getAddressStreet1(),
@@ -58,7 +58,6 @@ class LocationSerializer
             'autoId' => $location->getId(),
             'id' => $location->getUuid(),
             'name' => $location->getName(),
-            'thumbnail' => $location->getThumbnail(),
             'poster' => $location->getPoster(),
             'permissions' => [
                 'open' => $edit || $this->authorization->isGranted('OPEN', $location),
@@ -84,7 +83,6 @@ class LocationSerializer
     {
         $this->sipe('name', 'setName', $data, $location);
         $this->sipe('poster', 'setPoster', $data, $location);
-        $this->sipe('thumbnail', 'setThumbnail', $data, $location);
         $this->sipe('meta.description', 'setDescription', $data, $location);
         $this->sipe('phone', 'setPhone', $data, $location);
 

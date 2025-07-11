@@ -16,7 +16,7 @@ export default declareAction((events, refresher) => {
     confirm: {
       message: transChoice('copy_event_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'actions'),
       items:  processable.map(item => ({
-        thumbnail: item.thumbnail,
+        thumbnail: item.poster,
         id: item.id,
         name: item.name
       }))
