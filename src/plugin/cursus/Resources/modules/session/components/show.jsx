@@ -136,6 +136,7 @@ const SessionShow = (props) => {
                     session={session}
                     course={session.course}
                     name={selectors.STORE_NAME+'.users'}
+                    url={['apiv2_training_session_user_course_list', {id: session.course.id, sessionId: session.id}]}
                   />
                 )
               }

@@ -25,12 +25,12 @@ class SessionVoter extends AbstractVoter
 
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $granted = null;
+        $granted = false;
         switch ($attributes[0]) {
             case self::CREATE:
             case self::EDIT:
             case self::DELETE:
-            case self::PATCH:
+            case self::ADMINISTRATE:
                 $granted = $this->isGranted(self::EDIT, $object->getCourse());
                 break;
             case self::OPEN:
@@ -43,8 +43,6 @@ class SessionVoter extends AbstractVoter
 
         if ($granted) {
             return VoterInterface::ACCESS_GRANTED;
-        } elseif (false === $granted) {
-            return VoterInterface::ACCESS_DENIED;
         }
 
         return VoterInterface::ACCESS_DENIED;
@@ -52,6 +50,6 @@ class SessionVoter extends AbstractVoter
 
     public function getSupportedActions(): array
     {
-        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::FOLLOW];
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::FOLLOW, self::ADMINISTRATE];
     }
 }

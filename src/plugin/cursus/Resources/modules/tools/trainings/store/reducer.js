@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty'
+import cloneDeep from 'lodash/cloneDeep'
 
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
 import {makeInstanceAction} from '#/main/app/store/actions'
@@ -10,12 +11,18 @@ import {reducer as sessionReducer} from '#/plugin/cursus/tools/trainings/session
 import {reducer as eventReducer} from '#/plugin/cursus/tools/trainings/event/store/reducer'
 import {reducer as dashboardReducer} from '#/plugin/cursus/tools/trainings/dashboard/store/reducer'
 import {TRAININGS_UPDATE_REGISTRATIONS} from '#/plugin/cursus/tools/trainings/store/actions'
-import cloneDeep from 'lodash/cloneDeep'
 
 const reducer = combineReducers({
   catalog: catalogReducer,
   session: sessionReducer,
   event: eventReducer,
+
+  /**
+   * The parent course if any in the Workspace context (not used in Desktop).
+   */
+  course: makeReducer(null, {
+    [makeInstanceAction(TOOL_LOAD, selectors.STORE_NAME)]: (state, action) => action.toolData.course || null
+  }),
 
   /**
    * The list of current user registrations.

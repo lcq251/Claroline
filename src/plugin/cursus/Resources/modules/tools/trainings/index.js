@@ -95,6 +95,8 @@ export default declareTool(TrainingsTool, (tool) => new CommandPalette('training
     order: 10,
     actions: [
       'Créer et administrer de nouvelles formations',
+      'Créer et administrer de nouvelles sessions',
+      'Créer et administrer de nouvelles séances',
       'Administrer toutes les formations'
     ]
   }

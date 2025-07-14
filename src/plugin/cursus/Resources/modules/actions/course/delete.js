@@ -18,7 +18,7 @@ export default declareAction((courses, refresher) => {
     displayed: 0 !== processable.length,
     dangerous: true,
     confirm: {
-      message: transChoice('course_delete_confirm_message', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'cursus'),
+      message: transChoice('course_delete_confirm', processable.length, {count: '<b class="fw-bold">'+processable.length+'</b>'}, 'cursus'),
       additional: trans('irreversible_action_confirm'),
       items:  processable.map(item => ({
         thumbnail: item.poster,

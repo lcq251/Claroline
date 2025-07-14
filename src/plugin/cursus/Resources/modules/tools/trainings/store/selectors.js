@@ -7,6 +7,11 @@ const STORE_NAME = 'trainings'
 
 const store = (state) => state[STORE_NAME]
 
+const course = createSelector(
+  [store],
+  (store) => store.course
+)
+
 const parameters = createSelector(
   [store],
   (store) => store.parameters
@@ -66,6 +71,7 @@ const myRegistrationsToConfirm = createSelector(
 export const selectors = {
   STORE_NAME,
   store,
+  course,
   parameters,
   mySessions,
   myPendingRegistrations,

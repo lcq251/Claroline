@@ -53,10 +53,6 @@ const SessionUsers = (props) => {
   return (
     <RegistrationUsers
       {...props}
-      url={props.session ?
-        ['apiv2_training_session_user_course_list', {id: props.course.id, sessionId: props.session.id}] :
-        ['apiv2_training_session_user_course_list', {id: props.course.id}]
-      }
       primaryAction={(row) => getRegistrationDefaultAction(row, refresher, props.path, currentUser)}
       actions={(rows) => getRegistrationActions(rows, refresher, props.path, currentUser)}
       customDefinition={customDefinition}

@@ -2,22 +2,26 @@ import React, {useCallback} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
 
+import {trans} from '#/main/app/intl'
 import {Routes} from '#/main/app/router/components/routes'
-
 import {selectors as toolSelectors} from '#/main/core/tool'
 
 import {TrainingsSessionList} from '#/plugin/cursus/tools/trainings/session/components/list'
 import {SessionShow} from '#/plugin/cursus/session/containers/show'
 import {TrainingsSessionUsers} from '#/plugin/cursus/tools/trainings/session/components/users'
 import {constants} from '#/plugin/cursus/constants'
+import {selectors as trainingSelectors} from '#/plugin/cursus/tools/trainings/store'
 import {selectors} from '#/plugin/cursus/tools/trainings/session/store'
-import {trans} from '#/main/app/intl'
 
 const SessionMain = (props) => {
+  const loaded = useSelector(toolSelectors.loaded)
   const contextType = useSelector(toolSelectors.contextType)
   const contextId = useSelector(toolSelectors.contextId)
   const canRegister = useSelector(state => toolSelectors.hasPermission('follow', state))
   const canCreateSession = useSelector(state => toolSelectors.hasPermission('edit', state))
+  const course = useSelector(trainingSelectors.course)
+
+  console.log(course)
 
   return (
     <Routes
@@ -29,12 +33,13 @@ const SessionMain = (props) => {
           render: useCallback(() => (
             <TrainingsSessionList
               path={props.path}
+              course={course}
               contextType={contextType}
               contextId={contextId}
               invalidateList={props.invalidateList}
               canCreateSession={canCreateSession}
             />
-          ), [props.path])
+          ), [props.path, loaded])
         }, {
           path: '/participants',
           render: useCallback(() => (
@@ -47,7 +52,7 @@ const SessionMain = (props) => {
               name={selectors.STORE_NAME+'.participants'}
               canRegister={canRegister}
             />
-          ), [props.path])
+          ), [props.path, loaded])
         }, {
           path: '/tutors',
           render: useCallback(() => (
@@ -60,12 +65,12 @@ const SessionMain = (props) => {
               name={selectors.STORE_NAME+'.tutors'}
               canRegister={canRegister}
             />
-          ), [props.path])
+          ), [props.path, ])
         }, {
           path: '/:id',
           render: useCallback((routerProps) => (
             <SessionShow path={props.path} id={routerProps.match.params.id} />
-          ), [props.path])
+          ), [props.path, loaded])
         }
       ]}
     />

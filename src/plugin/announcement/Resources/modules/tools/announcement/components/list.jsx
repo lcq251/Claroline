@@ -129,34 +129,34 @@ const AnnouncementList = () => {
   return (
     <ToolPage>
       <PageContent poster={poster} className="d-flex flex-column">
-        {(loaded && 0 === posts.length) &&
-          <EmptyState
-            className="p-4"
-            icon="fa fa-bullhorn"
-            title={trans('no_announcement', {}, 'announcement')}
-            description={trans('no_announcement_help', {}, 'announcement')}
-            primaryAction={{
-              type: MODAL_BUTTON,
-              label: trans('add_announcement', {}, 'actions'),
-              displayed: hasPermission('edit', tool),
-              modal: [MODAL_ANNOUNCEMENT_FORM, {
-                isNew: true,
-                announcement: {workspace: cloneDeep(contextData)},
-                onSave: (announcement) => {
-                  dispatch(actions.addAnnounce(announcement))
-                }
-              }]
-            }}
-            secondaryAction={{
-              type: LINK_BUTTON,
-              icon: 'fa fa-arrow-left',
-              label: trans('back_home', {}, 'actions'),
-              target: contextPath
-            }}
-          />
-        }
-
         <PageSection size="xl" className="d-flex flex-fill">
+          {(loaded && 0 === posts.length) &&
+            <EmptyState
+              className="p-4"
+              icon="fa fa-bullhorn"
+              title={trans('no_announcement', {}, 'announcement')}
+              description={trans('no_announcement_help', {}, 'announcement')}
+              primaryAction={{
+                type: MODAL_BUTTON,
+                label: trans('add_announcement', {}, 'actions'),
+                displayed: hasPermission('edit', tool),
+                modal: [MODAL_ANNOUNCEMENT_FORM, {
+                  isNew: true,
+                  announcement: {workspace: cloneDeep(contextData)},
+                  onSave: (announcement) => {
+                    dispatch(actions.addAnnounce(announcement))
+                  }
+                }]
+              }}
+              secondaryAction={{
+                type: LINK_BUTTON,
+                icon: 'fa fa-arrow-left',
+                label: trans('back_home', {}, 'actions'),
+                target: contextPath
+              }}
+            />
+          }
+
           {!loaded &&
             <ul className="list-unstyled placeholder-glow flex-fill">
               <Announce key={1} path={toolPath} announcement={{}} preview={!listFullContent} />

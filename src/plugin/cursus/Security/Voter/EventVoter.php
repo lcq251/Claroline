@@ -28,39 +28,31 @@ class EventVoter extends AbstractVoter
      */
     public function checkPermission(TokenInterface $token, $object, array $attributes, array $options): int
     {
-        $workspace = null;
-        if ($object->getSession() && $object->getSession()->getWorkspace()) {
-            $workspace = $object->getSession()->getWorkspace();
-        }
-
+        $granted = false;
         switch ($attributes[0]) {
             case self::CREATE:
             case self::EDIT:
+            case self::ADMINISTRATE:
             case self::DELETE:
-            case self::PATCH:
-                if ($this->isToolGranted(self::EDIT, 'trainings', $workspace)
-                    || ($object->getSession() && $this->isGranted(self::EDIT, $object->getSession()))) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                return VoterInterface::ACCESS_DENIED;
+                $granted = $this->isGranted(self::EDIT, $object->getSession());
+                break;
             case self::OPEN:
-                if ($this->isToolGranted(self::OPEN, 'trainings', $workspace)
-                    || ($object->getSession() && $this->isGranted(self::OPEN, $object->getSession()))) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                return VoterInterface::ACCESS_DENIED;
-
+                $granted = $this->isGranted(self::OPEN, $object->getSession());
+                break;
             case self::FOLLOW:
-                if ($this->isToolGranted(self::FOLLOW, 'trainings', $workspace)
-                    || ($object->getSession() && $this->isGranted(self::FOLLOW, $object->getSession()))) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-
-                return VoterInterface::ACCESS_DENIED;
+                $granted = $this->isGranted(self::FOLLOW, $object->getSession());
+                break;
         }
 
-        return VoterInterface::ACCESS_ABSTAIN;
+        if ($granted) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        return VoterInterface::ACCESS_DENIED;
+    }
+
+    public function getSupportedActions(): array
+    {
+        return [self::OPEN, self::CREATE, self::EDIT, self::DELETE, self::FOLLOW, self::ADMINISTRATE];
     }
 }

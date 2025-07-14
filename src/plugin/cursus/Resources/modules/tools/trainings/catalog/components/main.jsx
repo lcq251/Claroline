@@ -18,8 +18,6 @@ const CatalogMain = (props) =>
           <CatalogList
             path={props.path}
             canEdit={props.canEdit}
-            contextType={props.contextType}
-            openForm={props.openForm}
           />
         )
       }, {

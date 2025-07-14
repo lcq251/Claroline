@@ -146,11 +146,6 @@ const EventFormModal = props => {
           title: trans('display_parameters'),
           fields: [
             {
-              name: 'poster',
-              type: 'poster',
-              label: trans('poster'),
-              hideLabel: true
-            }, {
               name: 'display.color',
               type: 'color',
               label: trans('color')

@@ -10,6 +10,8 @@ import {EventStatus} from '#/plugin/cursus/components/event-status'
 
 const SessionsModal = (props) =>
   <PickerModal
+    sortBy={{property: 'startDate', direction: 1}}
+    filters={[{property: 'status', value: 'not_ended'}]}
     {...props}
     name="trainingSessionsPicker"
     definition={[

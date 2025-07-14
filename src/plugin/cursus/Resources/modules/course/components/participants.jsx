@@ -13,6 +13,7 @@ const CourseParticipants = (props) =>
     path={props.path}
     className="mt-4"
     course={props.course}
+    url={['apiv2_training_session_user_course_list', {id: props.course.id}]}
     name={selectors.STORE_NAME+'.sessionUsers'}
     customDefinition={[
       {
@@ -23,13 +24,28 @@ const CourseParticipants = (props) =>
         displayable: true,
         filterable: true,
         options: {
-          course: props.course,
           picker: {
-            url: ['apiv2_cursus_course_list_sessions', {id: get(props.course, 'id')}],
-            filters: [{property: 'status', value: 'not_ended'}]
+            url: ['apiv2_cursus_course_list_sessions', {id: get(props.course, 'id')}]
           }
         }
-      }
+      }, {
+        name: 'session.status',
+        type: 'choice',
+        label: trans('status'),
+        order: 2,
+        displayable: false,
+        sortable: false,
+        filterable: true,
+        options: {
+          noEmpty: true,
+          choices: {
+            not_started: trans('session_not_started', {}, 'cursus'),
+            in_progress: trans('session_in_progress', {}, 'cursus'),
+            ended: trans('session_ended', {}, 'cursus'),
+            not_ended: trans('session_not_ended', {}, 'cursus')
+          }
+        }
+      },
     ]}
   />
 

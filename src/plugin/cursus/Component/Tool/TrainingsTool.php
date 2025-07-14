@@ -2,7 +2,6 @@
 
 namespace Claroline\CursusBundle\Component\Tool;
 
-use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Component\Context\ContextSubjectInterface;
 use Claroline\AppBundle\Component\Tool\ToolComponent;
@@ -58,7 +57,7 @@ class TrainingsTool extends ToolComponent
             }
 
             return [
-                'course' => $course ? $this->serializer->serialize($course, [SerializerInterface::SERIALIZE_MINIMAL]) : null,
+                'course' => $course ? $this->serializer->serialize($course) : null,
                 'registrations' => $registrations,
             ];
         }

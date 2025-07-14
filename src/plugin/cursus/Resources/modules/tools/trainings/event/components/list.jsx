@@ -21,6 +21,7 @@ const EventsList = (props) =>
         type: MODAL_BUTTON,
         label: trans('plan_training_event', {}, 'actions'),
         modal: [MODAL_TRAINING_SESSIONS, {
+          url: ['apiv2_cursus_session_context_list', {context: props.contextType, contextId: props.contextId}],
           multiple: false,
           selectAction: (selected) => ({
             type: MODAL_BUTTON,

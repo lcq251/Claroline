@@ -41,8 +41,7 @@ const CatalogList = (props) =>
 
 CatalogList.propTypes = {
   path: T.string.isRequired,
-  canEdit: T.bool.isRequired,
-  contextType: T.string
+  canEdit: T.bool.isRequired
 }
 
 export {

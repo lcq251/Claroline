@@ -28,7 +28,7 @@
     "course": "Training",
     "courses": "Trainings",
     "course_appearance_help": "Customize your training's advanced display settings.",
-    "course_delete_confirm_message": "{1} Are you sure you want to delete this training? | [2,Inf[ Are you sure you want to delete these %count% trainings?",
+    "course_delete_confirm": "{1} Are you sure you want to delete this training? | [2,Inf[ Are you sure you want to delete these %count% trainings?",
     "course_history_desc": "Find all the changes made to your training courses.",
     "course_long_desc_help": "Describe in detail a description of the content of your training (the detailed description is displayed in the \"About\" view instead of the short description).",
     "course_permissions_help": "Manage your training rights and modifications.",

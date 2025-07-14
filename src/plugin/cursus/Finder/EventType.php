@@ -6,14 +6,10 @@ use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
 use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\ClosureType;
-use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
 use Claroline\AppBundle\API\Finder\Type\TextType;
-use Claroline\CommunityBundle\Entity\Team;
-use Claroline\CoreBundle\Finder\WorkspaceType;
 use Claroline\CursusBundle\Entity\Event;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

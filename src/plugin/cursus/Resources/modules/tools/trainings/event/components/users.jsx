@@ -1,17 +1,51 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useDispatch} from 'react-redux'
 
 import {trans} from '#/main/app/intl'
 import {ToolPage} from '#/main/core/tool'
 import {PageContentList} from '#/main/app/page'
 
 import {EventUsers} from '#/plugin/cursus/event/components/users'
+import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {MODAL_USERS} from '#/main/community/modals/users'
+import {MODAL_TRAINING_EVENTS} from '#/plugin/cursus/modals/events'
+import {actions as listActions} from '#/main/app/content/list'
 
 const TrainingsEventUsers = (props) => {
+  const dispatch = useDispatch()
+
   return (
     <ToolPage title={props.title}>
       <PageContentList
         title={props.title}
+        addAction={{
+          name: 'add_users',
+          type: MODAL_BUTTON,
+          label: trans('register_users'),
+          modal: [MODAL_TRAINING_EVENTS, {
+            url: ['apiv2_cursus_event_list', {workspace: props.contextId}],
+            multiple: false,
+            selectAction: (selectedEvents) => ({
+              type: MODAL_BUTTON,
+              label: trans('select', {}, 'actions'),
+              modal: [MODAL_USERS, {
+                selectAction: (selected) => ({
+                  type: ASYNC_BUTTON,
+                  label: trans('register', {}, 'actions'),
+                  request: {
+                    url: ['apiv2_cursus_event_add_users', {id: selectedEvents[0].id, type: props.type}],
+                    request: {
+                      method: 'PATCH',
+                      body: JSON.stringify(selected.map(user => user.id))
+                    },
+                    success: () => dispatch(listActions.invalidateData(props.name))
+                  }
+                })
+              }]
+            })
+          }]
+        }}
       >
         <EventUsers
           className="mb-5"

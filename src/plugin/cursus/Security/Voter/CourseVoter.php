@@ -37,10 +37,9 @@ class CourseVoter extends AbstractVoter
             case self::ADMINISTRATE:
             case self::CREATE:
             case self::EDIT:
-            case self::PATCH:
             case self::DELETE:
-                if ($this->isToolGranted('ADMINISTRATE', 'trainings')
-                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'trainings', $workspace))) {
+                if ($this->isToolGranted(self::EDIT, 'trainings')
+                    || ($workspace && $this->isToolGranted(self::EDIT, 'trainings', $workspace))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
@@ -48,8 +47,8 @@ class CourseVoter extends AbstractVoter
 
             case self::OPEN: // member of organization & OPEN right on tool
                 if ($object->isPublic()
-                    || $this->isToolGranted('OPEN', 'trainings')
-                    || ($workspace && $this->isToolGranted('OPEN', 'trainings', $workspace))
+                    || $this->isToolGranted(self::OPEN, 'trainings')
+                    || ($workspace && $this->isToolGranted(self::OPEN, 'trainings', $workspace))
                 ) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
@@ -57,8 +56,8 @@ class CourseVoter extends AbstractVoter
                 return VoterInterface::ACCESS_DENIED;
 
             case self::FOLLOW:
-                if ($this->isToolGranted('FOLLOW', 'trainings')
-                    || ($workspace && $this->isToolGranted('ADMINISTRATE', 'trainings', $workspace))) {
+                if ($this->isToolGranted(self::FOLLOW, 'trainings')
+                    || ($workspace && $this->isToolGranted(self::FOLLOW, 'trainings', $workspace))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

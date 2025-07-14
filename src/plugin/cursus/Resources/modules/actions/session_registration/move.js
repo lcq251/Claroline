@@ -18,7 +18,6 @@ export default declareAction((registrations, refresher) => {
     displayed: 0 !== processable,
     modal: [MODAL_TRAINING_SESSIONS, {
       url: ['apiv2_cursus_course_list_sessions', {id: get(processable[0], 'course.id')}],
-      filters: [{property: 'status', value: 'not_ended'}],
       multiple: false,
       selectAction: (selected) => ({
         type: ASYNC_BUTTON,

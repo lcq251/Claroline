@@ -278,9 +278,9 @@ const ContentRights = props => {
       {!isEmpty(props.rights) &&
         <ul className="list-group list-group-flush">
           {[]
-            // create new array to be able to modify it
+            // create a new array to be able to modify it
             .concat(props.rights)
-            // move workspace manager role to the top of the list
+            // move the workspace manager role to the top of the list
             .sort((a, b) => props.workspace && roleWorkspace(props.workspace, true) === b.name ? 1 : 0)
             .map((rolePerm) => {
               let workspaceName

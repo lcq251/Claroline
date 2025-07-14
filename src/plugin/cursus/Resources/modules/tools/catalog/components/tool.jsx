@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {Tool} from '#/main/core/tool'
-import {route} from '#/plugin/cursus/course/routing'
 import {Course} from '#/plugin/cursus/course/containers/main'
 import {CatalogList} from '#/plugin/cursus/tools/catalog/components/list'
 
@@ -20,8 +19,6 @@ const CatalogTool = (props) =>
         onEnter: (params = {}) => props.open(params.slug),
         render: (params = {}) => (
           <Course
-            path={props.course ? route(props.course, null, props.path) : ''}
-            slug={params.slug}
             history={params.history}
           />
         )

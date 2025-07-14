@@ -28,7 +28,7 @@ class SessionUserType extends AbstractType
     {
         $builder
             ->add('user', UserType::class)
-            ->add('session', SessionType::class)
+            ->add('session', SessionType::class, ['nullable' => true])
             ->add('date', DateType::class)
             ->add('confirmed', BooleanType::class)
             ->add('validated', BooleanType::class)

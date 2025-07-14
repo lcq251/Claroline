@@ -1,36 +1,18 @@
-import {createSelector} from 'reselect'
 
 import {makeListReducer} from '#/main/app/content/list/store'
-import {makeReducer, combineReducers} from '#/main/app/store/reducer'
-import {LOAD_COURSE} from '#/plugin/cursus/course/store/actions'
 
 const STORE_NAME = 'catalog'
-const LIST_NAME = STORE_NAME+'.courses'
-
-const store = (state) => state[STORE_NAME] || {}
-
-const course = createSelector(
-  [store],
-  (store) => store.course
-)
+const LIST_NAME = STORE_NAME
 
 const selectors = {
   STORE_NAME,
-  LIST_NAME,
-
-  course
+  LIST_NAME
 }
 
-const reducer = combineReducers({
-  courses: makeListReducer(selectors.LIST_NAME, {
-    sortBy: {property: 'name', direction: 1},
-    filters: []
-  }),
-  course: makeReducer(null, {
-    [LOAD_COURSE]: (state, action) => action.course
-  })
+const reducer = makeListReducer(selectors.LIST_NAME, {
+  sortBy: {property: 'name', direction: 1},
+  filters: []
 })
-
 
 export {
   reducer,

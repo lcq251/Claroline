@@ -18,7 +18,6 @@ export default declareAction((courses, refresher) => {
     displayed: hasPermission('follow', courses[0]),
     modal: [MODAL_TRAINING_SESSIONS, {
       url: ['apiv2_cursus_course_list_sessions', {id: get(courses[0], 'id')}],
-      filters: [{property: 'status', value: 'not_ended'}],
       multiple: false,
       selectAction: (selectedSessions) => ({
         type: MODAL_BUTTON,

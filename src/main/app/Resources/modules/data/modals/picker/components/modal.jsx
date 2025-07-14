@@ -19,6 +19,7 @@ import {constants as listConst} from '#/main/app/content/list'
 const PickerModal = (props) => {
   // append list reducer to the store if not already mounted
   const reducer = useMemo(() => makeListReducer(props.name, {
+    sortBy: props.sortBy || null,
     filters: {filters: props.filters || []}
   }, {
     selected: makeReducer([], {
@@ -121,6 +122,10 @@ PickerModal.propTypes = {
   fadeModal: T.func.isRequired,
   multiple: T.bool,
   filters: T.array,
+  sortBy: T.shape({
+    property: T.string,
+    direction: T.number,
+  }),
   definition: T.arrayOf(T.object),
   card: T.func,
   selectAction: T.func,

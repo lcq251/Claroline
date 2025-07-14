@@ -61,7 +61,7 @@ const EventShow = (props) => {
 
           <PageHeading
             icon={
-              <CalendarIcon square={true} size="lg" date={event.date} />
+              <CalendarIcon square={true} size="lg" date={event.start} />
             }
             title={event.name}
           />

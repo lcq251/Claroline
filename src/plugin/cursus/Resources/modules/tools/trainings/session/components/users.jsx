@@ -1,13 +1,12 @@
 import React, {useMemo} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
-import get from 'lodash/get'
 import merge from 'lodash/merge'
 
 import {trans} from '#/main/app/intl'
 import {ToolPage} from '#/main/core/tool'
 import {PageContentList} from '#/main/app/page'
-import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {selectors as securitySelectors} from '#/main/app/security'
 import {actions as listActions} from '#/main/app/content/list'
@@ -38,17 +37,23 @@ const TrainingsSessionUsers = (props) => {
           type: MODAL_BUTTON,
           label: trans('register_users'),
           modal: [MODAL_TRAINING_SESSIONS, {
-            url: ['apiv2_cursus_course_list_sessions', {id: get(props.course, 'id')}],
-            filters: [{property: 'status', value: 'not_ended'}],
+            url: ['apiv2_cursus_session_context_list', {context: props.contextType, contextId: props.contextId}],
+            multiple: false,
             selectAction: (selectedSessions) => ({
               type: MODAL_BUTTON,
-              label: trans('register', {}, 'actions'),
+              label: trans('select', {}, 'actions'),
               modal: [MODAL_USERS, {
                 selectAction: (selected) => ({
-
-                  type: CALLBACK_BUTTON,
+                  type: ASYNC_BUTTON,
                   label: trans('register', {}, 'actions'),
-                  callback: () => selectedSessions.map(selectedSession => props.addUsers(selectedSession.id, selected, props.type))
+                  request: {
+                    url: ['apiv2_cursus_session_add_users', {id: selectedSessions[0].id, type: props.type}],
+                    request: {
+                      method: 'PATCH',
+                      body: JSON.stringify(selected.map(user => user.id))
+                    },
+                    success: () => dispatch(listActions.invalidateData(props.name))
+                  }
                 })
               }]
             })

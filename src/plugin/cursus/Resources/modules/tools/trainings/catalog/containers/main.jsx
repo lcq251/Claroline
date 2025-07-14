@@ -9,7 +9,6 @@ import {CatalogMain as CatalogMainComponent} from '#/plugin/cursus/tools/trainin
 const CatalogMain = connect(
   (state) => ({
     path: toolSelectors.path(state),
-    contextType: toolSelectors.contextType(state),
     canEdit: hasPermission('edit', toolSelectors.toolData(state))
   }),
   (dispatch) => ({
