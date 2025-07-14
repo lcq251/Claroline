@@ -7,7 +7,7 @@ import {useReducer} from '#/main/app/store/hooks/useReducer'
 import {Button} from '#/main/app/action'
 import {CALLBACK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {makeListReducer} from '#/main/app/content/list'
-import {route} from '#/main/core/tool'
+import {route} from '#/main/core/tool/routing'
 
 import {MODAL_GROUPS} from '#/main/community/modals/groups'
 import {GroupList} from '#/main/community/group/components/list'

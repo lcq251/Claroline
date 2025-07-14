@@ -26,7 +26,7 @@ const ButtonComponent = forwardRef((props, ref) => {
     }
   }
 
-  return createElement(button, merge(omit(props, 'type', 'icon', 'label', 'hideLabel', 'subscript'), {ref: ref}), (
+  return createElement(button, merge(omit(props, 'type', 'icon', 'label', 'hideLabel', 'subscript', 'managerOnly', 'description'), {ref: ref}), (
     <>
       {(props.icon && typeof props.icon === 'string') ?
         <span className={classes('action-icon', props.icon, !props.hideLabel && 'icon-with-text-right')} aria-hidden={true} /> :

@@ -3,8 +3,7 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 
 import {route} from '#/plugin/cursus/course/routing'
-import {declareAction} from '#/main/app/action'
-import {constants} from '#/plugin/cursus/constants'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((courses, refresher, path) => ({
   name: 'edit',

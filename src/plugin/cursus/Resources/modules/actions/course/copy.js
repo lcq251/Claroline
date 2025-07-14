@@ -1,8 +1,7 @@
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans, transChoice} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
-import {constants} from '#/plugin/cursus/constants'
+import {constants, declareAction} from '#/main/app/action'
 
 export default declareAction((courses, refresher) => {
   const processable = courses.filter(course => hasPermission('administrate', course))

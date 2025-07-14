@@ -1,9 +1,7 @@
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {URL_BUTTON} from '#/main/app/buttons'
-import {declareAction} from '#/main/app/action'
-import {constants} from '#/plugin/cursus/constants'
-
+import {constants, declareAction} from '#/main/app/action'
 
 /**
  * Export course into a PDF file.

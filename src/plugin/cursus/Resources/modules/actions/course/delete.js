@@ -1,8 +1,9 @@
+import get from 'lodash/get'
+
 import {hasPermission} from '#/main/app/security'
 import {ASYNC_BUTTON} from '#/main/app/buttons'
 import {trans, transChoice} from '#/main/app/intl/translation'
 import {constants, declareAction} from '#/main/app/action'
-import get from 'lodash/get'
 
 /**
  * Delete courses action.

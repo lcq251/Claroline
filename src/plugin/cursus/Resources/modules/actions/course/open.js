@@ -1,10 +1,9 @@
-import {declareAction} from '#/main/app/action'
+import {constants, declareAction} from '#/main/app/action'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
 import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {route} from '#/plugin/cursus/course/routing'
-import {constants} from '#/plugin/cursus/constants'
 
 /**
  * Open course action.

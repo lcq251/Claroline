@@ -1,10 +1,9 @@
 import get from 'lodash/get'
 
-import {url} from '#/main/app/api'
 import {ASYNC_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
 import {hasPermission} from '#/main/app/security'
 import {trans} from '#/main/app/intl/translation'
-import {declareAction} from '#/main/app/action'
+import {constants as actionConstants, declareAction} from '#/main/app/action'
 import {MODAL_USERS} from '#/main/community/modals/users'
 import {MODAL_TRAINING_SESSIONS} from '#/plugin/cursus/modals/sessions'
 import {constants} from '#/plugin/cursus/constants'
@@ -41,6 +40,6 @@ export default declareAction((courses, refresher) => {
       })
     }],
     scope: ['object'],
-    set: [constants.ACTION_SET_LIST, constants.ACTION_SET_DETAILS]
+    set: [actionConstants.ACTION_SET_LIST, actionConstants.ACTION_SET_DETAILS]
   }
 })
