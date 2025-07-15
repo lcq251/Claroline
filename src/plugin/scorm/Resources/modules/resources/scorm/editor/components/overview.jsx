@@ -5,7 +5,6 @@ import {ResourceEditorOverview} from '#/main/core/resource/editor/components/ove
 const ScormEditorOverview = () =>
   <ResourceEditorOverview
     locked={[
-      'resourceNode.poster',
       'resourceNode.meta.descriptionHtml'
     ]}
   />

@@ -20,7 +20,16 @@ import {actions, selectors} from '#/main/core/resource/editor/store'
 import {ResourceEditorSequences} from '#/main/core/resource/editor/components/sequences'
 import {Thumbnail} from '#/main/app/components/thumbnail'
 
-const ResourceEditor = (props) => {
+const ResourceEditor = ({
+  overviewPage = ResourceEditorOverview,
+  appearancePage = ResourceEditorAppearance,
+  historyPage = ResourceEditorHistory,
+  permissionsPage = ResourceEditorPermissions,
+  evaluationPage = ResourceEditorEvaluation,
+  pages = [],
+  additionalData = () => ({}),
+  styles = []
+}) => {
   const resourcePath = useSelector(resourceSelectors.path)
   const resourceType = useSelector(resourceSelectors.resourceType)
   const resourceLoaded = useSelector(resourceSelectors.loaded)
@@ -32,7 +41,7 @@ const ResourceEditor = (props) => {
 
   useEffect(() => {
     if (resourceLoaded) {
-      const initialData = Object.assign({}, props.additionalData() || {}, {resourceNode: resourceNode})
+      const initialData = Object.assign({}, additionalData() || {}, {resourceNode: resourceNode})
       dispatch(actions.reset(initialData))
     }
   }, [get(resourceNode, 'id'), resourceLoaded])
@@ -41,7 +50,7 @@ const ResourceEditor = (props) => {
     <Editor
       path={resourcePath+'/edit'}
       title={get(editedNode, 'name') || (resourceType && trans(resourceType, {}, 'resource')) || trans('resource')}
-      styles={props.styles}
+      styles={styles}
       name={resourceSelectors.EDITOR_NAME}
       target={['claro_resource_update', {id: get(resourceNode, 'id')}]}
       thumbnail={
@@ -55,17 +64,17 @@ const ResourceEditor = (props) => {
       close={resourcePath}
       onSave={refresh}
       canAdministrate={hasPermission('administrate', resourceNode || {})}
-      overviewPage={props.overviewPage}
-      appearancePage={props.appearancePage}
-      historyPage={props.historyPage}
-      permissionsPage={props.permissionsPage}
+      overviewPage={overviewPage}
+      appearancePage={appearancePage}
+      historyPage={historyPage}
+      permissionsPage={permissionsPage}
       actionsPage={ResourceEditorActions}
       pages={[
         {
           name: 'evaluation',
           title: trans('parameters'),
           help: trans('Activez le suivi pédagogique pour enregistrer et suivre la progression des utilisateurs.'),
-          component: ResourceEditorEvaluation,
+          component: evaluationPage,
           disabled: !resourceLoaded || !supportEvaluation(resourceNode),
           group: trans('evaluation')
         }, {
@@ -77,7 +86,7 @@ const ResourceEditor = (props) => {
           disabled: !resourceLoaded || !supportEvaluation(resourceNode),
           group: trans('evaluation')
         }
-      ].concat(props.pages || [])}
+      ].concat(pages || [])}
     />
   )
 }
@@ -88,9 +97,15 @@ ResourceEditor.propTypes = {
   appearancePage: T.elementType,
   historyPage: T.elementType,
   permissionsPage: T.elementType,
+  evaluationPage: T.elementType,
   // custom pages
   pages: T.arrayOf(T.shape({
-
+    name: T.string.isRequired,
+    title: T.string.isRequired,
+    displayed: T.bool,
+    disabled: T.bool,
+    component: T.elementType,
+    group: T.string
   })),
 
   /**
@@ -98,15 +113,6 @@ ResourceEditor.propTypes = {
    */
   additionalData: T.func,
   styles: T.array
-}
-
-ResourceEditor.defaultProps = {
-  overviewPage: ResourceEditorOverview,
-  appearancePage: ResourceEditorAppearance,
-  historyPage: ResourceEditorHistory,
-  permissionsPage: ResourceEditorPermissions,
-  pages: [],
-  additionalData: () => ({})
 }
 
 export {

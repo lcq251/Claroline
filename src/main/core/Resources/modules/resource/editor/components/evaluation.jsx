@@ -23,7 +23,9 @@ const enableFailureMessage = (formData) => get(formData, 'resourceNode.evaluatio
 const enableAttemptsReachedMessage = (formData) => get(formData, 'resourceNode.evaluation._enableAttemptsReachedMessage')
   || get(formData, 'resourceNode.evaluation.attemptsReachedMessage')
 
-const ResourceEditorEvaluation = (props) => {
+const ResourceEditorEvaluation = ({
+  successConditions = true
+}) => {
   const dispatch = useDispatch()
   const updateProp = (propPath, propValue) => dispatch(actions.updateResourceNode(propValue, propPath))
 
@@ -69,6 +71,7 @@ const ResourceEditorEvaluation = (props) => {
           title: trans('Conditions de réussite'),
           description: trans('Donnez un statut de Réussite ou d\'Échec à vos utilisateurs en fonction des conditions définies. Si aucune condition n\'est définie les utilisateurs obtiennent un statut Terminé une fois qu\'ils ont terminé l\'activité.'),
           primary: true,
+          displayed: successConditions,
           fields: [
             {
               name: 'resourceNode.evaluation._enableSuccess',
@@ -199,14 +202,8 @@ const ResourceEditorEvaluation = (props) => {
           ]
         }
       ]}
-    >
-      {props.children}
-    </EditorPage>
+    />
   )
-}
-
-ResourceEditorEvaluation.propTypes = {
-  children: T.any
 }
 
 export {

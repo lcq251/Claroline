@@ -18,6 +18,7 @@ ResourceEditor.propTypes = {
   historyPage: T.elementType,
   permissionsPage: T.elementType,
   actionsPage: T.elementType,
+  evaluationPage: T.elementType,
   // custom pages
   pages: T.arrayOf(T.shape({
 
