@@ -35,13 +35,18 @@ class UserFinder extends AbstractFinder
         $groupRoleJoin = false;
         $organizationJoin = false;
 
-        $this->addFilter(UserFilter::class, $qb, 'obj', [
-            'disabled' => in_array('isDisabled', array_keys($searches)) && $searches['isDisabled'],
-        ]);
-
+        $disabled = false;
         if (in_array('isDisabled', array_keys($searches))) {
+            $disabled = $searches['isDisabled'];
             unset($searches['isDisabled']);
+        } elseif (in_array('disabled', array_keys($searches))) {
+            $disabled = $searches['disabled'];
+            unset($searches['disabled']);
         }
+
+        $this->addFilter(UserFilter::class, $qb, 'obj', [
+            'disabled' => $disabled,
+        ]);
 
         foreach ($searches as $filterName => $filterValue) {
             switch ($filterName) {
