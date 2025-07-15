@@ -22,7 +22,7 @@ export const reducer = combineReducers({
     sortBy: {property: 'date', direction: -1},
     filters: {filters: [
       {property: 'type', value: constants.LEARNER_TYPE, locked: true, hidden: true},
-      {property: 'session.status', value: 'not_ended'}
+      {property: 'sessionStatus', value: 'not_ended'}
     ]}
   }, {
     loaded: makeReducer(false, {
@@ -36,7 +36,7 @@ export const reducer = combineReducers({
     sortBy: {property: 'date', direction: -1},
     filters: {filters: [
       {property: 'type', value: constants.TEACHER_TYPE, locked: true, hidden: true},
-      {property: 'session.status', value: 'not_ended'}
+      {property: 'sessionStatus', value: 'not_ended'}
     ]}
   }, {
     loaded: makeReducer(false, {

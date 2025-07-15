@@ -42,7 +42,7 @@ class ResourceNodeType extends AbstractType
             ->add('parent', RelatedEntityType::class)
             ->add('workspace', WorkspaceType::class)
             ->add('resourceType', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null !== $finder->getFilterValue()) {
                         $queryBuilder->join($finder->getQueryPath(), 'ort');
                         if (is_array($finder->getFilterValue())) {
@@ -61,7 +61,7 @@ class ResourceNodeType extends AbstractType
             ->add('modificationDate', DateType::class)
             // to remove with the path plugin
             ->add('deprecatedPath', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     $alias = $finder->getAlias();
                     if (!$finder->isRoot()) {
                         $alias = $finder->getParent()->getAlias();

@@ -29,7 +29,7 @@ const CourseParticipants = (props) =>
           }
         }
       }, {
-        name: 'session.status',
+        name: 'sessionStatus',
         type: 'choice',
         label: trans('status'),
         order: 2,
@@ -39,6 +39,7 @@ const CourseParticipants = (props) =>
         options: {
           noEmpty: true,
           choices: {
+            no_session: trans('no_session', {}, 'cursus'),
             not_started: trans('session_not_started', {}, 'cursus'),
             in_progress: trans('session_in_progress', {}, 'cursus'),
             ended: trans('session_ended', {}, 'cursus'),

@@ -4,18 +4,28 @@ namespace Claroline\CursusBundle\Finder\Registration;
 
 use Claroline\AppBundle\API\Finder\AbstractType;
 use Claroline\AppBundle\API\Finder\FinderBuilderInterface;
+use Claroline\AppBundle\API\Finder\FinderInterface;
 use Claroline\AppBundle\API\Finder\Type\BooleanType;
 use Claroline\AppBundle\API\Finder\Type\ChoiceType;
+use Claroline\AppBundle\API\Finder\Type\ClosureType;
 use Claroline\AppBundle\API\Finder\Type\DateType;
 use Claroline\AppBundle\API\Finder\Type\EntityType;
+use Claroline\AppBundle\API\Finder\Type\RelatedEntityType;
 use Claroline\CommunityBundle\Finder\UserType;
 use Claroline\CursusBundle\Entity\Registration\AbstractRegistration;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Finder\SessionType;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SessionUserType extends AbstractType
 {
+    public const NO_SESSION = 'no_session';
+    public const SESSION_NOT_STARTED = 'not_started';
+    public const SESSION_IN_PROGRESS = 'in_progress';
+    public const SESSION_ENDED = 'ended';
+    public const SESSION_NOT_ENDED = 'not_ended';
+
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -28,7 +38,38 @@ class SessionUserType extends AbstractType
     {
         $builder
             ->add('user', UserType::class)
-            ->add('session', SessionType::class, ['nullable' => true])
+            ->add('session', RelatedEntityType::class, ['sortBy' => 'startDate'])
+            ->add('sessionStatus', ClosureType::class, [
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                    if (null !== $finder->getFilterValue()) {
+                        $queryBuilder->leftJoin($finder->getParent()->getAlias().'.session', $finder->getAlias());
+
+                        switch ($finder->getFilterValue()) {
+                            case self::NO_SESSION:
+                                $queryBuilder->andWhere("{$finder->getAlias()} IS NULL");
+                                break;
+                            case self::SESSION_NOT_STARTED:
+                                $queryBuilder->andWhere("{$finder->getAlias()}.startDate > :{$finder->getAlias()}Now");
+                                break;
+                            case self::SESSION_IN_PROGRESS:
+                                $queryBuilder->andWhere("({$finder->getAlias()}.startDate <= :{$finder->getAlias()}Now AND {$finder->getAlias()}.endDate >= :{$finder->getAlias()}Now)");
+                                break;
+                            case self::SESSION_ENDED:
+                                $queryBuilder->andWhere("({$finder->getAlias()}.endDate IS NOT NULL AND {$finder->getAlias()}.endDate < :{$finder->getAlias()}Now)");
+                                break;
+                            case self::SESSION_NOT_ENDED:
+                                $queryBuilder->andWhere("{$finder->getAlias()} IS NOT NULL");
+                                $queryBuilder->andWhere("({$finder->getAlias()}.endDate IS NULL OR {$finder->getAlias()}.endDate >= :{$finder->getAlias()}Now)");
+                                break;
+                        }
+
+                        if (self::NO_SESSION !== $finder->getFilterValue()) {
+                            $queryBuilder->setParameter($finder->getAlias().'Now', new \DateTime());
+                        }
+                    }
+                },
+            ])
+            ->add('course', RelatedEntityType::class)
             ->add('date', DateType::class)
             ->add('confirmed', BooleanType::class)
             ->add('validated', BooleanType::class)

@@ -30,7 +30,7 @@ final class TagType extends AbstractType
             ->add('name', TextType::class)
             ->add('description', TextType::class)
             ->add('usedBy', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null !== $finder->getFilterValue()) {
                         $alias = $finder->getAlias();
                         if (!$finder->isRoot()) {

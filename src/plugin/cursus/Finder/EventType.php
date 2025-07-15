@@ -50,7 +50,7 @@ class EventType extends AbstractType
                 },
             ])
             ->add('capacity', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null === $finder->getFilterValue()) {
                         return;
                     }

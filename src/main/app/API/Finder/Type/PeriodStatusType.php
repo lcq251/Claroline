@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * A filter which check the status of a date period.
+ * A filter that checks the status of a date period.
  */
 class PeriodStatusType extends AbstractType
 {

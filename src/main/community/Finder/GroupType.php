@@ -44,7 +44,7 @@ class GroupType extends AbstractType
                 },
             ])
             ->add('workspace', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder) {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null !== $finder->getFilterValue()) {
                         $alias = $finder->getAlias();
                         if (!$finder->isRoot()) {

@@ -26,7 +26,7 @@ class OperationalLogType extends AbstractType
             ->add('contextName', TextType::class, ['mode' => TextType::MODE_EXACT])
             ->add('contextId', TextType::class, ['mode' => TextType::MODE_EXACT])
             ->add('objectId', ClosureType::class, [
-                'buildQuery' => function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
+                'buildQuery' => static function (QueryBuilder $queryBuilder, FinderInterface $finder): void {
                     if (null !== $finder->getFilterValue()) {
                         $alias = $finder->getAlias();
                         if (!$finder->isRoot()) {

@@ -16,29 +16,40 @@ class RelatedEntityType extends AbstractType
         $resolver
             ->define('joinQuery')
             ->allowedTypes('callable');
+
+        $resolver
+            ->define('sortBy')
+            ->allowedTypes('null', 'string')
+            ->default(null);
     }
 
     public function buildQuery(QueryBuilder $queryBuilder, FinderInterface $finder, array $options): void
     {
-        if ($finder->hasFilter()) {
+        if ($finder->hasFilter() || $finder->getSortValue()) {
             if (isset($options['joinQuery'])) {
                 $options['joinQuery']($queryBuilder, $finder, $options);
             } else {
                 $queryBuilder->leftJoin($finder->getQueryPath(false), $finder->getAlias());
             }
 
-            if (is_null($finder->getFilterValue())) {
-                $queryBuilder->andWhere("{$finder->getAlias()} IS NULL");
-                return;
+            if ($finder->getSortValue() && $options['sortBy']) {
+                $queryBuilder->addOrderBy("{$finder->getAlias()}.{$options['sortBy']}", $finder->getSortValue());
             }
 
-            if (is_array($finder->getFilterValue())) {
-                $queryBuilder->andWhere("{$finder->getAlias()}.uuid = :{$finder->getAlias()}");
-            } else {
-                $queryBuilder->andWhere("{$finder->getAlias()}.uuid IN (:{$finder->getAlias()})");
-            }
+            if ($finder->hasFilter()) {
+                if (is_null($finder->getFilterValue())) {
+                    $queryBuilder->andWhere("{$finder->getAlias()} IS NULL");
+                    return;
+                }
 
-            $queryBuilder->setParameter($finder->getAlias(), $finder->getFilterValue());
+                if (is_array($finder->getFilterValue())) {
+                    $queryBuilder->andWhere("{$finder->getAlias()}.uuid = :{$finder->getAlias()}");
+                } else {
+                    $queryBuilder->andWhere("{$finder->getAlias()}.uuid IN (:{$finder->getAlias()})");
+                }
+
+                $queryBuilder->setParameter($finder->getAlias(), $finder->getFilterValue());
+            }
         }
     }
 }
