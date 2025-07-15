@@ -88,7 +88,6 @@ const ExportList = (props) =>
             displayed: true
           }, {
             name: 'executionDate',
-            alias: 'executedAt',
             type: 'date',
             label: trans('execution_date'),
             displayed: true,

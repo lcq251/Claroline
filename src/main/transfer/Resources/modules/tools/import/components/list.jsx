@@ -94,7 +94,6 @@ const ImportList = props =>
             filterable: false
           }, {
             name: 'executionDate',
-            alias: 'executedAt',
             type: 'date',
             label: trans('execution_date'),
             displayed: true,

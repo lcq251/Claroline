@@ -38,7 +38,7 @@ class ImportFileType extends AbstractType
                 ],
             ])
             ->add('createdAt', DateType::class)
-            ->add('executedAt', DateType::class)
+            ->add('executionDate', DateType::class)
             ->add('workspace', RelatedEntityType::class)
             ->add('creator', CreatorType::class)
         ;
