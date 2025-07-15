@@ -15,6 +15,9 @@ use Claroline\AppBundle\API\Finder\AbstractFinder;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated
+ */
 class OrderedToolFinder extends AbstractFinder
 {
     public static function getClass(): string

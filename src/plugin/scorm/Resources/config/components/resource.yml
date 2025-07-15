@@ -8,5 +8,4 @@ services:
             - '@Claroline\ScormBundle\Manager\ScormManager'
             - '@Claroline\ScormBundle\Manager\EvaluationManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
-            - '%claroline.param.files_directory%'
             - '%claroline.param.uploads_directory%'

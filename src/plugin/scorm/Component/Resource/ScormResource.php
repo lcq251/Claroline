@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Claroline Connect package.
- *
- * (c) Claroline Consortium <consortium@claroline.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Claroline\ScormBundle\Component\Resource;
 
 use Claroline\AppBundle\API\Serializer\SerializerInterface;
@@ -19,16 +10,13 @@ use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
-use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Event\Resource\ResourceActionEvent;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\EvaluationBundle\Component\Resource\EvaluatedResourceInterface;
 use Claroline\ScormBundle\Entity\Scorm;
 use Claroline\ScormBundle\Manager\EvaluationManager;
 use Claroline\ScormBundle\Manager\ScormManager;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class ScormResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
@@ -40,7 +28,6 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         private readonly ScormManager $scormManager,
         private readonly EvaluationManager $evaluationManager,
         private readonly FileManager $fileManager,
-        private readonly string $filesDir,
         private readonly string $uploadDir
     ) {
     }
@@ -103,12 +90,13 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
             return true;
         }
 
-        $workspace = $resource->getResourceNode()->getWorkspace();
-        $hashName = $resource->getHashName();
+        $hashName = $resource->getUrl();
 
-        $nbScorm = (int) $this->om->getRepository(Scorm::class)->findNbScormWithSameSource($hashName, $workspace);
-        if (1 === $nbScorm) {
-            $scormArchiveFile = $this->filesDir.DIRECTORY_SEPARATOR.'scorm'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$hashName;
+        $countUsages = $this->om->getRepository(Scorm::class)->count(['url' => $resource->getUrl()]);
+        if (1 === $countUsages) {
+            $workspace = $resource->getResourceNode()->getWorkspace();
+
+            $scormArchiveFile = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.'scorm'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR.$hashName;
             if (file_exists($scormArchiveFile)) {
                 $fileBag->add($hashName.'-archive', $scormArchiveFile);
             }
@@ -160,42 +148,11 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         $this->scormManager->copy($original, $copy->getResourceNode()->getWorkspace());
     }
 
-    public function onFileChange(ResourceActionEvent $event): void
-    {
-        /** @var ResourceNode $node */
-        $node = $event->getResourceNode();
-        /** @var Scorm $scorm */
-        $scorm = $event->getResource();
-
-        $parameters = $event->getData();
-        $filePath = $parameters['file']['url'];
-
-        if (!empty($filePath)) {
-            $data = $this->scormManager->uploadScormArchive($node->getWorkspace(), new File($this->filesDir.DIRECTORY_SEPARATOR.$filePath));
-            if ($data) {
-                $oldFile = $scorm->getHashName();
-
-                // update scorm
-                $scorm = $this->serializer->deserialize($data, $scorm);
-
-                // remove old zip
-                unlink($this->filesDir.DIRECTORY_SEPARATOR.'scorm'.DIRECTORY_SEPARATOR.$node->getWorkspace()->getUuid().DIRECTORY_SEPARATOR.$oldFile);
-                // remove old unzipped scorm
-                $this->deleteFiles($this->uploadDir.DIRECTORY_SEPARATOR.'scorm'.DIRECTORY_SEPARATOR.$node->getWorkspace()->getUuid().DIRECTORY_SEPARATOR.$oldFile);
-
-                $this->om->persist($scorm);
-                $this->om->flush();
-            }
-        }
-
-        $event->setResponse(new JsonResponse($this->serializer->serialize($node)));
-    }
-
     private function getScormArchive(Scorm $scorm): ?string
     {
         $workspace = $scorm->getResourceNode()->getWorkspace();
         $ds = DIRECTORY_SEPARATOR;
-        $supposedArchiveLocation = $this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getHashName();
+        $supposedArchiveLocation = $this->fileManager->getDirectory().$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getHashName();
 
         if (is_file($supposedArchiveLocation)) {
             return $supposedArchiveLocation;
@@ -206,8 +163,8 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
             return null;
         }
 
-        if (!is_dir($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid())) {
-            mkdir($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid());
+        if (!is_dir($this->fileManager->getDirectory().$ds.'scorm'.$ds.$workspace->getUuid())) {
+            mkdir($this->fileManager->getDirectory().$ds.'scorm'.$ds.$workspace->getUuid());
         }
         // initialize the ZIP archive
         $zip = new \ZipArchive();
@@ -255,21 +212,6 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     private function getRelativePath(string $current, string $hashName, string $wuid): string
     {
         return substr($current, strlen(realpath($this->uploadDir).'/scorm/'.$wuid.'/'.$hashName.'/'));
-    }
-
-    /**
-     * Deletes recursively a directory and its content.
-     */
-    private function deleteFiles(string $dirPath = ''): void
-    {
-        foreach (glob($dirPath.DIRECTORY_SEPARATOR.'{*,.[!.]*,..?*}', GLOB_BRACE) as $content) {
-            if (is_dir($content)) {
-                $this->deleteFiles($content);
-            } else {
-                unlink($content);
-            }
-        }
-        rmdir($dirPath);
     }
 
     public function requireAdapter(): bool

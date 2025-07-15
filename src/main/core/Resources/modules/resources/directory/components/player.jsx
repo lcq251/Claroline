@@ -23,7 +23,7 @@ import {ButtonSticky} from '#/main/app/button'
  * When a directory is embedded, we want all other resources to open their actions in the full app
  * while we want the directory to be browsed directly in the embedded app.
  *
- * NB. Not sure if this is the best way to handle it. But this allows to avoid a hard dependency to directories.
+ * NB. Not sure if this is the best way to handle it. But this allows avoiding a hard dependency on directories.
  *
  * @param {object}  action
  * @param {Array}   resourceNodes

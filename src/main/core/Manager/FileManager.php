@@ -290,6 +290,30 @@ class FileManager implements LoggerAwareInterface
         $this->om->endFlushSuite();
     }
 
+    public function getAbsolutePath(string $filePath): string
+    {
+        return $this->getDirectory().DIRECTORY_SEPARATOR.$filePath;
+    }
+
+    /**
+     * Copies a file into the platform file system.
+     */
+    public function copy(string $originFile, string $targetFile): void
+    {
+        $this->filesystem->copy($originFile, $this->getAbsolutePath($targetFile));
+    }
+
+    /**
+     * Movies a file into the platform file system.
+     */
+    public function move(string $originFile, string $targetFile): void
+    {
+        // make missing directories if needed
+        $this->filesystem->mkdir(dirname($targetFile));
+
+        $this->filesystem->rename($originFile, $this->getAbsolutePath($targetFile));
+    }
+
     /**
      * Checks if a file exists in the filesystem.
      */

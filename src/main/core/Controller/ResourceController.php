@@ -181,7 +181,8 @@ class ResourceController
     #[Route(path: '/download', name: 'claro_resource_download', methods: ['GET'])]
     public function downloadAction(Request $request): JsonResponse|BinaryFileResponse
     {
-        $ids = $this->decodeRequest($request);
+
+        $ids = $request->query->all('ids');
         $nodes = $this->om->getRepository(ResourceNode::class)->findBy(['uuid' => $ids]);
 
         $download = $this->manager->download($nodes);

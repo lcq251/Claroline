@@ -90,7 +90,7 @@ class ResourcesTool extends ToolComponent
 
         // we need to push the resource types with linked resources last, because we need all resources to be created
         // to link them to the new resources.
-        // this should not be done here and as is it doesn't work in all cases (e.g. if we link paths to others paths).
+        // this should not be done here, and as is it doesn't work in all cases.
         $typesWithResourceLinks = ['shortcut'];
         uksort($resources, function (int $a, int $b) use ($resources, $typesWithResourceLinks) {
             if (in_array($resources[$a]['resourceNode']['meta']['type'], $typesWithResourceLinks)) {
