@@ -182,7 +182,7 @@ const CourseDetails = (props) => {
             name: 'stats',
             title: trans('Suivi'),
             onEnter: () => props.loadStats(props.course.id),
-            displayed: !isEmpty(get(props.course, 'registration.form')) && hasPermission('follow', props.course),
+            displayed: !!props.loadStats && !isEmpty(get(props.course, 'registration.form')) && hasPermission('follow', props.course),
             render: () => (
               <CourseStats
                 course={props.course}
@@ -214,7 +214,7 @@ CourseDetails.propTypes = {
   stats: T.object,
   reload: T.func.isRequired,
   register: T.func.isRequired,
-  loadStats: T.func.isRequired
+  loadStats: T.func
 }
 
 CourseDetails.defaultProps = {

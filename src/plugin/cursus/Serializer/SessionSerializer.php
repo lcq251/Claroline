@@ -177,13 +177,6 @@ class SessionSerializer
         }
 
         if (isset($data['registration'])) {
-            $this->sipe('registration.selfRegistration', 'setPublicRegistration', $data, $session);
-            $this->sipe('registration.autoRegistration', 'setAutoRegistration', $data, $session);
-            $this->sipe('registration.selfUnregistration', 'setPublicUnregistration', $data, $session);
-            $this->sipe('registration.validation', 'setRegistrationValidation', $data, $session);
-            $this->sipe('registration.userValidation', 'setUserValidation', $data, $session);
-            $this->sipe('registration.mail', 'setRegistrationMail', $data, $session);
-            $this->sipe('registration.pendingRegistrations', 'setPendingRegistrations', $data, $session);
             $this->sipe('registration.eventRegistrationType', 'setEventRegistrationType', $data, $session);
 
             if (array_key_exists('learnerRole', $data['registration'])) {

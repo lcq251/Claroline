@@ -49,9 +49,9 @@ const TrainingWorkspaceRestrictions = (props) => {
                   availableSessions={availableSessions}
                   registrations={registrations}
                   register={(course, sessionId = null, registrationData = null) => {
-                    dispatch(actions.register(course, sessionId, registrationData).then(() => {
+                    dispatch(actions.register(course, sessionId, registrationData)).then(() => {
                       window.location.reload()
-                    }))
+                    })
                   }}
                 />
               )

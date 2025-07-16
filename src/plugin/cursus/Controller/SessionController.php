@@ -233,7 +233,7 @@ class SessionController extends AbstractCrudController
         $this->checkPermission('OPEN', $session, [], true);
 
         if (!$session->getPublicRegistration() && !$session->getAutoRegistration()) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException('The session is not opened to self registrations.');
         }
 
         $registrationData = $this->decodeRequest($request);

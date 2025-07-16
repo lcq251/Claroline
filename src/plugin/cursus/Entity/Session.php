@@ -222,4 +222,39 @@ class Session extends AbstractTraining implements IdentifiableInterface
     {
         $this->canceledTemplate = $template;
     }
+
+    public function getPublicRegistration(): bool
+    {
+        return $this->course?->getPublicRegistration();
+    }
+
+    public function getAutoRegistration(): bool
+    {
+        return $this->course?->getAutoRegistration();
+    }
+
+    public function getPublicUnregistration(): bool
+    {
+        return $this->course?->getPublicUnregistration();
+    }
+
+    public function hasValidation(): bool
+    {
+        return $this->course?->hasValidation();
+    }
+
+    public function hasConfirmation(): bool
+    {
+        return $this->course?->hasConfirmation();
+    }
+
+    public function getRegistrationMail(): bool
+    {
+        return $this->course?->getRegistrationMail();
+    }
+
+    public function getPendingRegistrations(): bool
+    {
+        return $this->course?->getPendingRegistrations();
+    }
 }
