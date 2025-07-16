@@ -1,5 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
+import {useHistory} from 'react-router-dom'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
@@ -31,6 +32,8 @@ import {CourseAffix} from '#/plugin/cursus/course/components/affix'
 import {CourseStats} from '#/plugin/cursus/course/components/stats'
 
 const CourseDetails = (props) => {
+  const history = useHistory()
+
   const activeSessionRegistration = props.activeSession ? getSessionRegistration(props.activeSession, props.registrations) : null
 
   const registered = !isEmpty(props.registrations)
@@ -61,16 +64,15 @@ const CourseDetails = (props) => {
       callback: () => {
         const workspaceUrl = workspaceRoute(getInfo(props.course, props.activeSession, 'workspace'))
         if (get(props.activeSession, 'registration.autoRegistration') && !isFullyRegistered(activeSessionRegistration)) {
-          props.register(props.course, props.activeSession.id).then(() => props.history.push(workspaceUrl))
+          props.register(props.course, props.activeSession.id).then(() => history.push(workspaceUrl))
         } else {
-          props.history.push(workspaceUrl)
+          history.push(workspaceUrl)
         }
       },
       displayed: (isFullyRegistered(activeSessionRegistration)
           || get(props.activeSession, 'registration.autoRegistration')
           || hasPermission('edit', props.course))
-        && !isEmpty(getInfo(props.course, props.activeSession, 'workspace'))
-      /*&& props.contextType !== 'workspace'*/,
+        && !isEmpty(getInfo(props.course, props.activeSession, 'workspace')),
       primary: !selfRegistration
     }, {
       name: 'download',
@@ -170,14 +172,12 @@ const CourseDetails = (props) => {
             name: 'participants',
             title: trans('participants'),
             displayed: hasPermission('follow', props.course),
-            render: () => {
-              return (
-                <CourseParticipants
-                  path={props.path}
-                  course={props.course}
-                />
-              )
-            }
+            render: () => (
+              <CourseParticipants
+                path={props.path}
+                course={props.course}
+              />
+            )
           }, {
             name: 'stats',
             title: trans('Suivi'),
@@ -208,11 +208,11 @@ CourseDetails.propTypes = {
   availableSessions: T.arrayOf(T.shape(
     SessionTypes.propTypes
   )),
-  contextType: T.string.isRequired,
   registrations: T.arrayOf(T.shape({
     // SessionUser
   })),
   stats: T.object,
+  reload: T.func.isRequired,
   register: T.func.isRequired,
   loadStats: T.func.isRequired
 }

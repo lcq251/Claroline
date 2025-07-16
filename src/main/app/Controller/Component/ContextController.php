@@ -77,7 +77,7 @@ class ContextController
             }));
 
             return new JsonResponse(array_merge($openEvent->getResponse() ?? [], [
-                'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null, // maybe only expose minimal with perms ?
+                'data' => $contextSubject ? $this->serializer->serialize($contextSubject) : null,
 
                 'impersonated' => $isImpersonated,
                 'roles' => array_values(array_map(function (Role $role) {

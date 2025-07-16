@@ -48,7 +48,7 @@ class StandardRestrictions extends Component {
     const displayPlatformRegistrationBtn = !authenticated && !this.props.errors.archived && this.props.platformSelfRegistration && this.props.errors.selfRegistration
 
     return (
-      <>
+      <PageContent poster={get(this.props.workspace, 'poster')}>
         <PageHeading
           title={get(this.props.workspace, 'name')}
           description={get(this.props.workspace, 'meta.description')}
@@ -242,7 +242,7 @@ class StandardRestrictions extends Component {
             </ContentRestriction>
           }
         </PageSection>
-      </>
+      </PageContent>
     )
   }
 }
@@ -258,26 +258,24 @@ const WorkspaceForbidden = (props) => {
 
   return (
     <ContextPage>
-      <PageContent poster={get(props.workspace, 'poster')}>
-        {!isUndefined(restrictions) && 0 !== restrictions.length &&
-          createElement(restrictions[0].component, {
-            workspace: props.workspace,
-            errors: props.errors,
-            managed: props.managed,
-            currentUser: props.currentUser,
-            dismiss: props.dismiss
-          })
-        }
+      {!isUndefined(restrictions) && 0 !== restrictions.length &&
+        createElement(restrictions[0].component, {
+          path: props.path,
+          workspace: props.workspace,
+          errors: props.errors,
+          currentUser: props.currentUser
+        })
+      }
 
-        {isUndefined(restrictions) || 0 === restrictions.length &&
-          <StandardRestrictions {...props} />
-        }
-      </PageContent>
+      {isUndefined(restrictions) || 0 === restrictions.length &&
+        <StandardRestrictions {...props} />
+      }
     </ContextPage>
   )
 }
 
 WorkspaceForbidden.propTypes = {
+  path: T.string.isRequired,
   currentUser: T.object,
   errors: T.shape({
     noRights: T.bool.isRequired,

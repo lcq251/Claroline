@@ -9,6 +9,7 @@ import {actions} from '#/main/app/contexts/workspace/store'
 
 const WorkspaceForbidden = connect(
   (state) => ({
+    path: contextSelectors.path(state),
     errors: contextSelectors.accessErrors(state),
     workspace: contextSelectors.data(state),
     currentUser: securitySelectors.currentUser(state),

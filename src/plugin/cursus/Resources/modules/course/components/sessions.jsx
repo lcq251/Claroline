@@ -7,13 +7,12 @@ import {trans} from '#/main/app/intl/translation'
 import {hasPermission} from '#/main/app/security'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON, MODAL_BUTTON} from '#/main/app/buttons'
+import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {route} from '#/plugin/cursus/course/routing'
 import {MODAL_SESSION_FORM} from '#/plugin/cursus/session/modals/form'
-
 import {SessionDateCard} from '#/plugin/cursus/session/components/card'
-import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
 
 const CourseSessions = (props) => {
   const history = useHistory()
@@ -23,7 +22,7 @@ const CourseSessions = (props) => {
       {isEmpty(props.availableSessions) &&
         <ContentPlaceholder
           className="mt-4"
-          title={trans('Aucune session n\'est disponible pour cette formation pour le moment.', {}, 'cursus')}
+          title={trans('no_available_session', {}, 'cursus')}
         />
       }
 
@@ -53,7 +52,7 @@ const CourseSessions = (props) => {
               modal: [MODAL_SESSION_FORM, {
                 course: props.course,
                 onSave: (newSession) => {
-                  // open created session, but let user on sessions list to allow multiples creations
+                  // open created session, but let user on the list of sessions to allow multiple creations
                   history.push(route(props.course, newSession, props.path) + '/sessions')
                   props.reload(props.course.slug)
                 }

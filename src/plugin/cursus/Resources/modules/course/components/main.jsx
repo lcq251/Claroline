@@ -14,7 +14,6 @@ const Course = (props) =>
   <CoursePage
     path={props.path}
     course={props.course}
-    activeSession={props.activeSession}
   >
     <Routes
       path={props.course ? route(props.course, null, props.path) : props.path}
@@ -32,7 +31,6 @@ const Course = (props) =>
             <CourseDetails
               contextType={props.contextType}
               path={props.path}
-              history={props.history}
               course={props.course}
               activeSession={props.activeSession}
               availableSessions={props.availableSessions}
