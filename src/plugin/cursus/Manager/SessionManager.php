@@ -501,6 +501,10 @@ class SessionManager
     {
         $session = $sessionUser->getSession();
 
+        if (empty($session)) {
+            return;
+        }
+
         // unregister user from the linked workspace
         if ($session->getWorkspace()) {
             $this->workspaceManager->unregisterUsers([$sessionUser->getUser()], $session->getWorkspace(), [Crud::NO_PERMISSIONS]);
