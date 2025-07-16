@@ -15,6 +15,9 @@ final class Version20250716060300 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('
+            UPDATE claro_workspace SET poster = thumbnail WHERE thumbnail IS NOT NULL AND thumbnail != "" AND poster IS NULL
+        ');
+        $this->addSql('
             UPDATE claro_user SET poster = thumbnail WHERE thumbnail IS NOT NULL AND thumbnail != ""
         ');
         $this->addSql('

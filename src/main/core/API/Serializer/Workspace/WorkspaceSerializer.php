@@ -70,6 +70,7 @@ class WorkspaceSerializer
                 'code' => $workspace->getCode(),
                 'slug' => $workspace->getSlug(),
                 'thumbnail' => $workspace->getThumbnail(),
+                'poster' => $workspace->getPoster(),
                 'meta' => [
                     'model' => $workspace->isModel(),
                     'public' => $workspace->isPublic(),
