@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useDispatch} from 'react-redux'
 import get from 'lodash/get'
@@ -20,6 +20,10 @@ const TrainingWorkspaceRestrictions = (props) => {
   const registrations = get(props.errors, 'trainings.registrations')
 
   const [activeSession, setActiveSession] = useState(defaultSession || null)
+
+  useEffect(() => {
+    dispatch(actions.loadCourse(course, defaultSession, availableSessions, registrations))
+  }, [])
 
   return (
     <PageContent poster={get(course, 'poster')}>
