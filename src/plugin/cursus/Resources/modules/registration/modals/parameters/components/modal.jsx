@@ -8,8 +8,8 @@ import {hasPermission} from '#/main/app/security'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {FormData} from '#/main/app/content/form/containers/data'
 import {formatSections} from '#/main/app/content/form/parameters/utils'
+import {Form, FormContent} from '#/main/app/content/form'
 
 import {Course as CourseTypes, Session as SessionTypes} from '#/plugin/cursus/prop-types'
 import {getInfo, isFull} from '#/plugin/cursus/utils'
@@ -24,42 +24,48 @@ const ParametersModal = props => {
   })
 
   const sections = formatSections(get(props.course, 'registration.form', []), allFields, 'data', true, isManager, isManager)
-  // sections[0].defaultOpened = true
+  sections[0].defaultOpened = true
 
   return (
     <Modal
       {...omit(props, 'course', 'session', 'registration', 'formData', 'isNew', 'save', 'reset', 'onSave')}
-      //icon="fa fa-fw fa-user-plus"
       title={trans('registration')}
       subtitle={getInfo(props.course, props.session, 'name')}
-      //poster={getInfo(props.course, props.session, 'poster')}
       onEntering={() => props.reset(props.registration)}
-      //size="lg"
     >
-      <FormData
-        flush={true}
+      <Form
+        className="overflow-hidden"
         name={selectors.STORE_NAME}
-        definition={sections}
+        level={2}
+        displayLevel={5}
+        flush={true}
       >
-        <Button
-          className="modal-btn"
-          type={CALLBACK_BUTTON}
-          variant="btn"
-          size="lg"
-          primary={true}
-          htmlType="submit"
-          label={props.isNew ?
-            trans(!props.session || isFull(props.session) ? 'register_waiting_list' : 'self_register', {}, 'actions') :
-            trans('save', {}, 'actions')
-          }
-          callback={() => {
-            props.save(allFields, props.formData, true, isManager, (data) => {
-              props.onSave(data)
-              props.fadeModal()
-            })
-          }}
+        <FormContent
+          className="modal-body"
+          name={selectors.STORE_NAME}
+          level={2}
+          displayLevel={5}
+          definition={sections}
+          flush={true}
         />
-      </FormData>
+        <div className="modal-footer flex-sm-nowrap gap-2 mt-n5">
+          <Button
+            className="btn btn-primary"
+            type={CALLBACK_BUTTON}
+            htmlType="submit"
+            label={props.isNew ?
+              trans(!props.session || isFull(props.session) ? 'register_waiting_list' : 'self_register', {}, 'actions') :
+              trans('save', {}, 'actions')
+            }
+            callback={() => {
+              props.save(allFields, props.formData, true, isManager, (data) => {
+                props.onSave(data)
+                props.fadeModal()
+              })
+            }}
+          />
+        </div>
+      </Form>
     </Modal>
   )
 }
