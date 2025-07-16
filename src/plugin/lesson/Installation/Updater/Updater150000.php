@@ -46,6 +46,8 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
     private function migrateTexts(ResourceType $resourceType): void
     {
+        $this->logger->info('Migrating text resources into lessons...');
+
         // change node type to the lesson one
         $updateNode = $this->connection->prepare('
             UPDATE claro_resource_node 
@@ -113,6 +115,8 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
     private function migrateBlogs(ResourceType $resourceType): void
     {
+        $this->logger->info('Migrating blog resources into lessons...');
+
         // change node type to the lesson one
         $updateNode = $this->connection->prepare('
             UPDATE claro_resource_node 
@@ -182,6 +186,8 @@ class Updater150000 extends Updater implements NonReplayableUpdaterInterface
 
     private function migrateWikis(ResourceType $resourceType): void
     {
+        $this->logger->info('Migrating wiki resources into lessons...');
+
         // change node type to the lesson one
         $updateNode = $this->connection->prepare('
             UPDATE claro_resource_node 
