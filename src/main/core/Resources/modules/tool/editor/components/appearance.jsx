@@ -11,18 +11,7 @@ const ToolEditorAppearance = (props) =>
     help={trans('Personnalisez les paramètres d\'affichage avancés de votre outil et de son contenu.')}
     definition={[
       {
-        icon: 'fa fa-fw fa-desktop',
         title: trans('display_parameters'),
-        primary: true,
-        fields: [
-          {
-            name: 'data.poster',
-            label: trans('poster'),
-            type: 'image'
-          }
-        ]
-      }, {
-        title: trans('advanced'),
         primary: true,
         hideTitle: true,
         fields: [
