@@ -191,7 +191,7 @@ class WorkspaceController extends AbstractCrudController
     /**
      * Submit access code.
      */
-    #[Route(path: '/unlock/{id}', name: 'apiv2_workspace_unlock', methods: ['POST'])]
+    #[Route(path: '/unlock/{id}', name: 'unlock', methods: ['POST'])]
     public function unlockAction(
         #[MapEntity(mapping: ['id' => 'uuid'])]
         Workspace $workspace,
