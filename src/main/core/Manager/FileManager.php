@@ -308,10 +308,11 @@ class FileManager implements LoggerAwareInterface
      */
     public function move(string $originFile, string $targetFile): void
     {
-        // make missing directories if needed
-        $this->filesystem->mkdir(dirname($targetFile));
+        $absolutePath = $this->getAbsolutePath($targetFile);
 
-        $this->filesystem->rename($originFile, $this->getAbsolutePath($targetFile));
+        // make missing directories if needed
+        $this->filesystem->mkdir(dirname($absolutePath));
+        $this->filesystem->rename($originFile, $absolutePath);
     }
 
     /**
