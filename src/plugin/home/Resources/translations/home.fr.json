@@ -6,7 +6,8 @@
     "new_tab_configure": "2. Configurer l'onglet",
     "new_tab_select": "1. Choisir le type d'onglet à créer",
     "loading": "Nous chargeons votre onglet...",
-
+    "pages": "Pages",
+    "pages_desc": "Créez et organisez les différentes pages de votre accueil.",
     "widgets": "Widgets",
     "widgets_desc": "Permet de créer une grille de différents types de widgets.",
 

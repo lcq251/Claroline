@@ -116,8 +116,8 @@ const HomeEditorSummary = (props) => {
 
   return (
     <EditorPage
-      title={trans('Pages')}
-      help={trans('Créez et organizez les différentes pages de votre accueil.')}
+      title={trans('pages', {}, 'home')}
+      help={trans('pages_desc', {}, 'home')}
     >
       <ContentSummary
         links={tabs.map(getTabSummary)}
