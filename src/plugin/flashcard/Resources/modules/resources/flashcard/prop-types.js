@@ -15,7 +15,12 @@ const Card = {
     visibleContentType: T.string,
     hiddenContentType: T.string
   },
-  defaultProps: {}
+  defaultProps: {
+    visibleContentType: 'text',
+    visibleContent: null,
+    hiddenContentType: 'text',
+    hiddenContent: null
+  }
 }
 
 const FlashcardDeck = {

@@ -6,20 +6,23 @@ const generateInputForType = (prefix, contentType) => {
   if (contentType === 'text') {
     return {
       name: `${prefix}Content`,
-      label: trans(`${prefix}_content`, {}, 'flashcard'),
+      label: trans('text'),
       type: 'html',
+      required: true,
+      hideLabel: true,
       displayed: (card) => card[`${prefix}ContentType`] === 'text'
     }
-  } else {
-    return {
-      name: `${prefix}Content`,
-      type: 'file',
-      label: trans('file'),
-      hideLabel: true,
-      displayed: (card) => card[`${prefix}ContentType`] === contentType,
-      options: {
-        types: [`${contentType}/*`]
-      }
+  }
+
+  return {
+    name: `${prefix}Content`,
+    type: 'file',
+    label: trans(contentType),
+    hideLabel: true,
+    displayed: (card) => card[`${prefix}ContentType`] === contentType,
+    required: true,
+    options: {
+      types: [`${contentType}/*`]
     }
   }
 }

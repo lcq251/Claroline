@@ -65,8 +65,8 @@ const Player = props => {
 
   return (
     <ResourcePage>
-      <PageContent>
-        <PageSection size="md" className="my-5">
+      <PageContent className="d-flex flex-column py-5">
+        <PageSection size="md" className="my-auto">
           {props.flashcardDeck.showProgression &&
             <div className="flashcard-counter mb-1">
               <div>
@@ -78,24 +78,11 @@ const Player = props => {
             </div>
           }
 
-          <div className="flashcard-deck">
-            <Card
-              card={currentCard}
-              flipped={isFlipped}
-              mode="play"
-            />
-
-            { maxCards > 1 && currentCardIndex < maxCards - 1 &&
-              <div className="flashcard flashcard-1">
-                <div className="flashcard-card" />
-              </div>
-            }
-            { maxCards > 2 && currentCardIndex < maxCards - 2 &&
-              <div className="flashcard flashcard-2">
-                <div className="flashcard-card" />
-              </div>
-            }
-          </div>
+          <Card
+            card={currentCard}
+            flipped={isFlipped}
+            mode="play"
+          />
 
           <Toolbar
             className="flashcard-buttons d-flex gap-1 mt-5"

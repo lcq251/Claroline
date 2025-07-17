@@ -12,33 +12,29 @@ import {Html} from '#/main/app/components/html'
 const Card = props => {
   const contentKey = props.flipped ? 'hiddenContent' : 'visibleContent'
 
-  if (props.card === null) {
-    return (
-      <div></div>
-    )
-  }
-
   return (
     <div className={classes('flashcard ratio border rounded-3 shadow-sm bg-body', props.flipped && 'flashcard-flip')} style={{'--bs-aspect-ratio': 'calc(3/5 * 100%)'}}>
-      <div className={classes('flashcard-card p-3 bg-body', props.className)}>
+      <div className={classes('flashcard-card p-3', props.className)}>
         {props.card.question && (
           <h5 className="flashcard-question text-center">
             {props.card.question}
           </h5>
         )}
+
         <div className="flashcard-content">
           {props.card[contentKey+'Type'] === 'text' &&
-            <Html className="content-text m-auto">{props.card[contentKey]}</Html>
+            <Html className="content-text m-auto">{props.card[contentKey] || ''}</Html>
           }
+
           {props.card[contentKey] !== null && props.card[contentKey+'Type'] === 'image' &&
             <img src={asset(props.card[contentKey].url)} alt={props.card.question} className="flashcard-media m-auto" />
           }
+
           {props.card[contentKey] !== null && props.card[contentKey+'Type'] === 'video' && (
             <Video
               className="flashcard-video m-auto"
               options={{
                 controls: true,
-                //responsive: true,
                 fluid: true
               }}
               sources={[{

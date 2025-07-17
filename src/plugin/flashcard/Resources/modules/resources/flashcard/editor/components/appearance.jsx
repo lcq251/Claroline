@@ -26,12 +26,14 @@ const FlashcardEditorAppearance = () =>
                 name: 'resource.rightButtonLabel',
                 type: 'string',
                 label: trans('right_button_label', {}, 'flashcard'),
-                displayed: (flashcardDeck) => get(flashcardDeck, 'customButtons')
+                displayed: (formData) => get(formData, 'resource.customButtons'),
+                placeholder: trans('right_answer', {}, 'flashcard')
               }, {
                 name: 'resource.wrongButtonLabel',
                 type: 'string',
                 label: trans('wrong_button_label', {}, 'flashcard'),
-                displayed: (flashcardDeck) => get(flashcardDeck, 'customButtons')
+                displayed: (formData) => get(formData, 'resource.customButtons'),
+                placeholder: trans('wrong_answer', {}, 'flashcard')
               }
             ]
           }, {

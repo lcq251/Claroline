@@ -59,7 +59,6 @@ const FlashcardEditorCards = () => {
             <li key={card.id}>
               <Card
                 card={card}
-                mode="edit"
                 actions={(card) => [
                   {
                     name: 'edit',
@@ -68,7 +67,7 @@ const FlashcardEditorCards = () => {
                     label: trans('edit', {}, 'actions'),
                     modal: [MODAL_CARD, {
                       card: card,
-                      save: (updated) => {
+                      onSave: (updated) => {
                         const updatedPos = cards.findIndex(current => current.id === updated.id)
                         const newCards = cards.slice(0)
                         newCards[updatedPos] = updated
@@ -91,11 +90,7 @@ const FlashcardEditorCards = () => {
                       }
                     },
                     dangerous: true,
-                    confirm: {
-                      title: trans('card_delete_confirm', {}, 'flashcard'),
-                      message: trans('card_delete_message', {}, 'flashcard'),
-                      button: trans('delete', {}, 'actions')
-                    }
+                    confirm: trans('card_delete_confirm', {}, 'flashcard')
                   }
                 ]}
               />
@@ -109,9 +104,10 @@ const FlashcardEditorCards = () => {
         type={MODAL_BUTTON}
         primary={true}
         size="lg"
-        label={trans('add_card', {}, 'flashcard')}
+        label={trans('add_card', {}, 'actions')}
         modal={[MODAL_CARD, {
-          save: (card) => update([].concat(cards, [card]))
+          isNew: true,
+          onSave: (card) => update([].concat(cards, [card]))
         }]}
       />
     </EditorPage>

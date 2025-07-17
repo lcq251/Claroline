@@ -1,121 +1,120 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {PropTypes as T}  from 'prop-types'
-import classes from 'classnames'
-import get from 'lodash/get'
+import {useDispatch, useSelector} from 'react-redux'
 import omit from 'lodash/omit'
 
 import {trans} from '#/main/app/intl/translation'
 import {makeId} from '#/main/app/utils/id'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
-import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {FormData} from '#/main/app/content/form/containers/data'
+import {FormModal} from '#/main/app/data/modals/form/components/modal'
+import {actions as formActions, selectors as  formSelectors} from '#/main/app/content/form'
 
 import {Card} from '#/plugin/flashcard/resources/flashcard/components/card'
 import {Card as CardTypes} from '#/plugin/flashcard/resources/flashcard/prop-types'
-import {selectors} from '#/plugin/flashcard/resources/flashcard/editor/modals/card/store'
-import { generateInputFields } from '#/plugin/flashcard/resources/flashcard/editor/utils'
+import {generateInputFields} from '#/plugin/flashcard/resources/flashcard/editor/modals/card/utils'
+
+const STORE_NAME = 'flashcardForm'
 
 const CardModal = props => {
+  const dispatch = useDispatch()
   const [isFlipped, setIsFlipped] = useState(false)
 
+  const formData = useSelector((state) => formSelectors.data(formSelectors.form(state, STORE_NAME)))
+
   return (
-    <Modal
-      {...omit(props, 'card', 'formData', 'isNew', 'saveEnabled', 'reset', 'save', 'update')}
-      icon={classes('fa fa-fw', {
-        'fa-plus': props.isNew,
-        'fa-cog': !props.isNew
-      })}
-      title={trans(props.isNew ? 'new_card' : 'card_parameters', {}, 'flashcard')}
-      subtitle={get(props.card, 'meta.title')}
-      onEntering={() => {
-        if (props.card) {
-          props.reset(props.card)
-        } else {
-          props.reset(Object.assign({}, CardTypes.defaultProps, {id: makeId()}), true)
-        }
-      }}
-      onExiting={() => props.reset(Object.assign({}, CardTypes.defaultProps, {id: makeId()}), true)}
-      size="lg"
-    >
-      <div className="content-md p-4 mx-auto text-center" role="presentation">
-        <Card
-          card={props.formData}
-          flipped={isFlipped}
-          mode="preview"
-        />
-        <Button
-          className="btn btn-body mt-3"
-          type={CALLBACK_BUTTON}
-          callback={() => setIsFlipped(!isFlipped)}
-          label={trans('flip_card', {}, 'flashcard')}
-        />
-      </div>
-
-      <FormData
-        level={5}
-        flush={true}
-        name={selectors.STORE_NAME}
-        definition={[{
+    <FormModal
+      {...omit(props, 'card', 'update')}
+      name={STORE_NAME}
+      title={trans(props.isNew ? 'new_card' : 'card', {}, 'flashcard')}
+      data={props.isNew ?
+        Object.assign({}, CardTypes.defaultProps, {id: makeId()}) :
+        props.card
+      }
+      saveLabel={trans(props.isNew ? 'add_card' : 'save_card', {}, 'actions')}
+      definition={[
+        {
           title: trans('general'),
-          fields: [{
-            name: 'question',
-            label: trans('question', {}, 'flashcard'),
-            type: 'string'
-          }, {
-            name: 'visibleContentType',
-            label: trans('visible_content_type', {}, 'flashcard'),
-            type: 'choice',
-            required: true,
-            onChange: () => {
-              props.update('visibleContent', null)
-            },
-            options: {
-              condensed: true,
-              choices: {
-                text: trans('text'),
-                image: trans('image'),
-                video: trans('video'),
-                audio: trans('audio')
+          primary: true,
+          fields: [
+            {
+              name: 'preview',
+              label: trans('preview'),
+              type: 'string',
+              hideLabel: true,
+              render: () => (
+                <div className="content-sm mx-auto text-center" role="presentation">
+                  <Card
+                    card={formData}
+                    flipped={isFlipped}
+                  />
+                  <Button
+                    className="btn btn-body mt-3"
+                    type={CALLBACK_BUTTON}
+                    callback={() => setIsFlipped(!isFlipped)}
+                    label={trans('flip_card', {}, 'flashcard')}
+                  />
+                </div>
+              )
+            }, {
+              name: 'question',
+              label: trans('question', {}, 'flashcard'),
+              type: 'string'
+            }
+          ]
+        }, {
+          title: trans('visible_content', {}, 'flashcard'),
+          description: trans('visible_content_desc', {}, 'flashcard'),
+          primary: true,
+          hideTitle: true,
+          fields: [
+            {
+              name: 'visibleContentType',
+              label: trans('visible_content', {}, 'flashcard'),
+              help: trans('visible_content_desc', {}, 'flashcard'),
+              type: 'choice',
+              required: true,
+              onChange: useCallback(() => dispatch(formActions.updateProp(STORE_NAME, 'visibleContent', null)), [STORE_NAME]),
+              options: {
+                condensed: false,
+                inline: true,
+                choices: {
+                  text: trans('text'),
+                  image: trans('image'),
+                  video: trans('video'),
+                  audio: trans('audio')
+                }
               }
-            },
-            linked: generateInputFields('visible')
-          }, {
-            name: 'hiddenContentType',
-            label: trans('hidden_content_type', {}, 'flashcard'),
-            type: 'choice',
-            required: true,
-            onChange: () => {
-              props.update('hiddenContent', null)
-            },
-            options: {
-              condensed: true,
-              choices: {
-                text: trans('text'),
-                image: trans('image'),
-                video: trans('video'),
-                audio: trans('audio')
+            }
+          ].concat(generateInputFields('visible'))
+        }, {
+          title: trans('hidden_content', {}, 'flashcard'),
+          description: trans('hidden_content_desc', {}, 'flashcard'),
+          primary: true,
+          hideTitle: true,
+          fields: [
+            {
+              name: 'hiddenContentType',
+              label: trans('hidden_content', {}, 'flashcard'),
+              help: trans('hidden_content_desc', {}, 'flashcard'),
+              type: 'choice',
+              required: true,
+              onChange: useCallback(() => dispatch(formActions.updateProp(STORE_NAME, 'hiddenContent', null)), [STORE_NAME]),
+              options: {
+                condensed: false,
+                inline: true,
+                choices: {
+                  text: trans('text'),
+                  image: trans('image'),
+                  video: trans('video'),
+                  audio: trans('audio')
+                }
               }
-            },
-            linked: generateInputFields('hidden')
-          }]
-        }]}
-      />
-
-      <Button
-        className="modal-btn"
-        variant="btn"
-        size="lg"
-        type={CALLBACK_BUTTON}
-        label={trans('save', {}, 'actions')}
-        disabled={!props.saveEnabled}
-        callback={() => {
-          props.save(props.formData)
-          props.fadeModal()
-        }}
-        primary={true}
-      />
-    </Modal>
+            }
+          ].concat(generateInputFields('hidden'))
+        }
+      ]}
+    />
   )
 }
 
@@ -123,14 +122,8 @@ CardModal.propTypes = {
   card: T.shape(
     CardTypes.propTypes
   ),
-  isNew: T.bool.isRequired,
-  saveEnabled: T.bool.isRequired,
-  formData: T.shape(
-    CardTypes.propTypes
-  ).isRequired,
-  reset: T.func.isRequired,
-  save: T.func.isRequired,
-  update: T.func.isRequired,
+  isNew: T.bool,
+  onSave: T.func.isRequired,
   fadeModal: T.func.isRequired
 }
 
