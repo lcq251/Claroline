@@ -29,6 +29,7 @@ class AnnouncementSubscriber implements EventSubscriberInterface
         return [
             CrudEvents::getEventName(CrudEvents::PRE_CREATE, Announcement::class) => 'preCreate',
             CrudEvents::getEventName(CrudEvents::POST_CREATE, Announcement::class) => 'postCreate',
+            CrudEvents::getEventName(CrudEvents::PRE_UPDATE, Announcement::class) => 'preUpdate',
             CrudEvents::getEventName(CrudEvents::POST_UPDATE, Announcement::class) => 'postUpdate',
             CrudEvents::getEventName(CrudEvents::PRE_DELETE, Announcement::class) => 'preDelete',
             CrudEvents::getEventName(CrudEvents::POST_DELETE, Announcement::class) => 'postDelete',
@@ -40,8 +41,8 @@ class AnnouncementSubscriber implements EventSubscriberInterface
         /** @var Announcement $announcement */
         $announcement = $event->getObject();
 
-        /*$announcement->setCreatedAt(new \DateTime());
-        $announcement->setUpdatedAt(new \DateTime());*/
+        $announcement->setCreatedAt(new \DateTime());
+        $announcement->setUpdatedAt(new \DateTime());
 
         if (empty($announcement->getCreator())) {
             $currentUser = $this->tokenStorage->getToken()?->getUser();
@@ -60,6 +61,14 @@ class AnnouncementSubscriber implements EventSubscriberInterface
         if ($announcement->getPoster()) {
             $this->fileManager->linkFile(Announcement::class, $announcement->getUuid(), $announcement->getPoster());
         }
+    }
+
+    public function preUpdate(UpdateEvent $event): void
+    {
+        /** @var Announcement $announcement */
+        $announcement = $event->getObject();
+
+        $announcement->setUpdatedAt(new \DateTime());
     }
 
     public function postUpdate(UpdateEvent $event): void

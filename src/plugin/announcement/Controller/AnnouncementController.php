@@ -134,7 +134,7 @@ class AnnouncementController
     ): StreamedResponse {
         $this->checkPermission('EDIT', $announcement, [], true);
 
-        $publicationDate = $announcement->getPublicationDate() ?? $announcement->getCreationDate();
+        $publicationDate = $announcement->getPublicationDate() ?? $announcement->getCreatedAt();
         $fileName = TextNormalizer::toKey($announcement->getTitle() ?? DateNormalizer::normalize($publicationDate));
 
         $workspace = $announcement->getWorkspace();
@@ -142,7 +142,7 @@ class AnnouncementController
         $placeholders = array_merge([
             'title' => $announcement->getTitle(),
             'content' => $announcement->getContent(),
-            'author' => $announcement->getAnnouncer() ?: $announcement->getCreator()->getFullName(),
+            'author' => $announcement->getCreator()?->getFullName(),
             'workspace_name' => $workspace->getName(),
             'workspace_code' => $workspace->getCode(),
             'workspace_url' => $this->routing->workspaceUrl($workspace),

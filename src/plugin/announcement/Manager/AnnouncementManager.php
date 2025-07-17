@@ -14,9 +14,7 @@ namespace Claroline\AnnouncementBundle\Manager;
 use Claroline\AnnouncementBundle\Entity\Announcement;
 use Claroline\AnnouncementBundle\Messenger\Message\SendAnnouncement;
 use Claroline\AppBundle\API\Crud;
-use Claroline\AppBundle\API\FinderProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
-use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\SchedulerBundle\Entity\ScheduledTask;
@@ -27,7 +25,6 @@ class AnnouncementManager
     public function __construct(
         private readonly MessageBusInterface $messageBus,
         private readonly ObjectManager $om,
-        private readonly FinderProvider $finder,
         private readonly Crud $crud
     ) {
     }
@@ -106,11 +103,7 @@ class AnnouncementManager
      */
     private function getMessage(Announcement $announce, array $roles = []): array
     {
-        $users = $this->finder->fetch(User::class, [
-            'roles' => array_map(function (Role $role) {
-                return $role->getUuid();
-            }, $roles),
-        ]);
+        $users = $this->om->getRepository(User::class)->findByRoles($roles);
 
         return [
             'sender' => $announce->getCreator(),

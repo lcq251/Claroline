@@ -3,7 +3,7 @@
   "groups": "Groupes",
   "group_delete_confirm_message": "{1} Êtes-vous sûr(e) de vouloir supprimer ce groupe ? | [2,Inf[ Êtes-vous sûr(e) de vouloir supprimer ces %count% groupes ?",
   "group_unregister_confirm_message": "{1} Êtes-vous sûr(e) de vouloir désinscrire ce groupe ?|[2,Inf[ Êtes-vous sûr(e) de vouloir désinscrire ces %count% groupes ?",
-  "group_locked": "Ce groupe est vérouillé et ne peut pas être modifié manuellement.",
+  "group_locked": "Ce groupe est verrouillé et ne peut pas être modifié manuellement.",
   "no_group": "Aucun groupe.",
   "new_group": "Nouveau groupe",
   "group_name": "Groupe : %name%",

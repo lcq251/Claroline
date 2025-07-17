@@ -54,10 +54,10 @@ class AnnouncementSerializer
                 $this->wsSerializer->serialize($announce->getWorkspace(), [SerializerInterface::SERIALIZE_MINIMAL]) :
                 null, // used in the announcement DataSource
             'meta' => [
-                'created' => DateNormalizer::normalize($announce->getCreationDate()),
+                'created' => DateNormalizer::normalize($announce->getCreatedAt()),
+                'updatedAt' => DateNormalizer::normalize($announce->getUpdatedAt()),
                 'creator' => $announce->getCreator() ? $this->userSerializer->serialize($announce->getCreator(), [SerializerInterface::SERIALIZE_MINIMAL]) : null,
                 'publishedAt' => DateNormalizer::normalize($announce->getPublicationDate()),
-                'author' => $announce->getAnnouncer(),
                 'notifyUsers' => !empty($announce->getTask()) ? 2 : 0,
                 'notificationDate' => !empty($announce->getTask()) ? DateNormalizer::normalize($announce->getTask()->getScheduledDate()) : null,
             ],

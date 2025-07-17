@@ -1,12 +1,6 @@
 services:
-    _defaults:
-        autowire: false
-        autoconfigure: false
-        public: false
-
     Claroline\AnnouncementBundle\Manager\AnnouncementManager:
         arguments:
             - '@messenger.default_bus'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Claroline\AppBundle\API\FinderProvider'
             - '@Claroline\AppBundle\API\Crud'

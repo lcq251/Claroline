@@ -17,7 +17,9 @@ use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Display\Poster;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
+use Claroline\AppBundle\Entity\Meta\CreatedAt;
 use Claroline\AppBundle\Entity\Meta\Creator;
+use Claroline\AppBundle\Entity\Meta\UpdatedAt;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Model\HasWorkspace;
 use Claroline\SchedulerBundle\Entity\ScheduledTask;
@@ -35,6 +37,8 @@ class Announcement implements CrudEntityInterface
     use Uuid;
     use Poster;
     use Creator;
+    use CreatedAt;
+    use UpdatedAt;
     use HasWorkspace;
 
     #[ORM\Column(nullable: true)]
@@ -48,9 +52,6 @@ class Announcement implements CrudEntityInterface
      */
     #[ORM\Column(nullable: true)]
     private ?string $announcer = null;
-
-    #[ORM\Column(name: 'creation_date', type: Types::DATETIME_MUTABLE, nullable: false)]
-    private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(name: 'publication_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $publicationDate = null;
@@ -79,7 +80,6 @@ class Announcement implements CrudEntityInterface
     {
         $this->refreshUuid();
 
-        $this->creationDate = new \DateTime();
         $this->roles = new ArrayCollection();
     }
 
@@ -106,32 +106,6 @@ class Announcement implements CrudEntityInterface
     public function setContent(?string $content): void
     {
         $this->content = $content;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getAnnouncer(): ?string
-    {
-        return $this->announcer;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setAnnouncer(?string $announcer): void
-    {
-        $this->announcer = $announcer;
-    }
-
-    public function getCreationDate(): ?\DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(\DateTimeInterface $creationDate): void
-    {
-        $this->creationDate = $creationDate;
     }
 
     public function getPublicationDate(): ?\DateTimeInterface
