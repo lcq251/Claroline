@@ -53,7 +53,6 @@ final class Version20241218083015 extends AbstractMigration
                 p.entity_name = n.name,
                 p.description = n.description,
                 p.code = n.code,
-                p.thumbnail = n.thumbnail,
                 p.poster = n.poster,
                 p.createdAt = n.creation_date,
                 p.updatedAt = n.modification_date,
