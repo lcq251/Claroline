@@ -148,7 +148,7 @@ class Workspace implements ContextSubjectInterface, CrudEntityInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $estimatedDuration = null;
 
-    #[ORM\Column(name: 'score_total', type: Types::FLOAT, options: ['default' => 100])]
+    #[ORM\Column(name: 'score_total', type: Types::FLOAT, nullable: true)]
     private ?float $scoreTotal = 100;
 
     public function __construct()
