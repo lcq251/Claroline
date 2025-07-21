@@ -77,9 +77,9 @@ actions.moveTab = (tabs, id, position) => {
 }
 
 actions.createTab = (parent = null, tab) => (dispatch, getState) => {
+  const tabs = selectors.tabs(getState())
   if (parent) {
     const formData = selectors.formData(getState())
-    const tabs = selectors.tabs(getState())
 
     const tabPath = `${getFormDataPart(parent.id, tabs)}.children`
     const children = get(formData, tabPath, [])

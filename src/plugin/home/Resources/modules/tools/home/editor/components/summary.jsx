@@ -126,11 +126,14 @@ const HomeEditorSummary = () => {
         className={classes('btn btn-primary w-100', {
           'btn-wave': isEmpty(tabs)
         })}
-        label={trans('add_tab', {}, 'home')}
+        label={trans('add_home_page', {}, 'actions')}
         size="lg"
         modal={[MODAL_HOME_CREATION, {
           position: tabs.length,
-          create: (tab) => createTab(null, tab)
+          create: (tab) => {
+            console.log(tab)
+            createTab(null, tab)
+          }
         }]}
       />
     </EditorPage>

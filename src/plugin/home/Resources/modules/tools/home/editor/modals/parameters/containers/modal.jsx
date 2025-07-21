@@ -10,17 +10,9 @@ import {reducer, selectors} from '#/plugin/home/tools/home/editor/modals/paramet
 const ParametersModal = withReducer(selectors.STORE_NAME, reducer)(
   connect(
     (state) => ({
-      formData: selectors.data(state),
-      saveEnabled: selectors.saveEnabled(state),
       currentContext: toolSelectors.context(state)
     }),
     (dispatch) => ({
-      update(field, value) {
-        dispatch(formActions.updateProp(selectors.STORE_NAME, field, value))
-      },
-      setErrors(errors) {
-        dispatch(formActions.setErrors(selectors.STORE_NAME, errors))
-      },
       loadTab(tab) {
         dispatch(formActions.resetForm(selectors.STORE_NAME, tab))
       }

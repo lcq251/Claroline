@@ -1,8 +1,6 @@
 {
-    "add_tab": "Add a tab",
-    "tab_add_child": "Add a sub tab",
+    "tab_add_child": "Add a sub page",
     "home_tab_delete_confirm_message": "Are you sure you want to delete this tab ?",
-    "new_tab": "New tab",
     "new_tab_configure": "2. Configure the tab",
     "new_tab_select": "1. Choose the type of tab to create",
     "loading": "We are loading your tab...",

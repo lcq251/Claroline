@@ -6,9 +6,8 @@ import {trans} from '#/main/app/intl/translation'
 import {Button} from '#/main/app/action/components/button'
 import {CALLBACK_BUTTON} from '#/main/app/buttons'
 import {Modal} from '#/main/app/overlays/modal/components/modal'
-import {GridSelection} from '#/main/app/content/grid/components/selection'
+import {ContentMenu} from '#/main/app/content/components/menu'
 
-import {Tab as TabTypes} from '#/plugin/home/prop-types'
 import {getTabs} from '#/plugin/home/home'
 import {TabForm} from '#/plugin/home/tools/home/editor/components/form'
 import {selectors} from '#/plugin/home/tools/home/editor/modals/creation/store'
@@ -52,71 +51,57 @@ class TabCreationModal extends Component {
     switch (this.state.currentStep) {
       case 'type':
         return this.state.loaded && (
-          <GridSelection
-            items={this.state.tabs
-              .map(tab => {
-                return ({
-                  name: tab.name,
-                  icon: tab.icon,
-                  label: trans(tab.name, {}, 'home'),
-                  description: trans(`${tab.name}_desc`, {}, 'home')
-                })
-              })
-            }
-            handleSelect={(selectedTab) => {
-              const newTab = this.state.tabs.find(tab => tab.name === selectedTab.name)
+          <div className="modal-body" role="presentation">
+            <ContentMenu
+              className="mb-3"
+              items={this.state.tabs.map(tab => ({
+                id: tab.name,
+                icon: tab.icon,
+                label: trans(tab.name, {}, 'home'),
+                description: trans(`${tab.name}_desc`, {}, 'home'),
+                action: {
+                  type: CALLBACK_BUTTON,
+                  callback: () => {
+                    const newTab = this.state.tabs.find(current => current.name === tab.name)
 
-              this.props.startCreation(newTab, this.props.position)
-              this.changeStep('parameters')
-            }}
-          />
+                    this.props.startCreation(newTab, this.props.position)
+                    this.changeStep('parameters')
+                  }
+                }
+              }))}
+            />
+          </div>
         )
 
       case 'parameters':
         return (
           <TabForm
-            level={5}
             name={selectors.STORE_NAME}
-            update={this.props.update}
-            setErrors={this.props.setErrors}
-
-            currentTab={this.props.tab}
+            isNew={true}
             currentContext={this.props.currentContext}
+            onSave={(formData) => {
+              this.props.create(formData)
+              this.props.fadeModal()
+            }}
           >
             <Button
-              className="modal-btn"
-              variant="btn"
-              size="lg"
               type={CALLBACK_BUTTON}
-              primary={true}
-              disabled={!this.props.saveEnabled}
-              label={trans('add', {}, 'actions')}
-              htmlType="submit"
-              callback={() => {
-                this.props.create(this.props.tab)
-                this.close()
-              }}
+              label={trans('back')}
+              className="btn btn-text-body me-auto"
+              callback={() => this.changeStep('type')}
             />
           </TabForm>
         )
     }
   }
 
-  close() {
-    this.props.fadeModal()
-    this.changeStep('type')
-    this.props.reset()
-  }
-
   render() {
     return (
       <Modal
-        {...omit(this.props, 'currentUser', 'currentContext', 'position', 'tab', 'saveEnabled', 'update', 'setErrors', 'create', 'startCreation', 'reset')}
-        icon="fa fa-fw fa-plus"
-        title={trans('new_tab', {}, 'home')}
+        {...omit(this.props, 'currentContext', 'position', 'create', 'startCreation', 'reset')}
+        title={trans('new_page', {}, 'home')}
         subtitle={this.renderStepTitle()}
-        fadeModal={() => this.close()}
-        size="lg"
+        onExit={this.props.reset}
       >
         {this.renderStep()}
       </Modal>
@@ -125,20 +110,13 @@ class TabCreationModal extends Component {
 }
 
 TabCreationModal.propTypes = {
-  currentUser: T.object,
   currentContext: T.shape({
     type: T.string.isRequired,
     data: T.object
   }).isRequired,
   position: T.number,
-  tab: T.shape(
-    TabTypes.propTypes
-  ),
-  saveEnabled: T.bool.isRequired,
   create: T.func.isRequired,
   startCreation: T.func.isRequired,
-  update: T.func.isRequired,
-  setErrors: T.func.isRequired,
   reset: T.func,
   fadeModal: T.func.isRequired
 }
