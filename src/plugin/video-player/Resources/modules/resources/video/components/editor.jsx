@@ -1,19 +1,15 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
-
-import {ResourceEditorOverview} from '#/main/core/resource/editor/components/overview'
-import {trans} from '#/main/app/intl'
-import {actions} from '#/main/core/resource/editor'
 import get from 'lodash/get'
 
-const ScormEditorOverview = () => {
+import {trans} from '#/main/app/intl/translation'
+import {actions, ResourceEditor, ResourceEditorOverview} from '#/main/core/resource/editor'
+
+const VideoEditorOverview = () => {
   const dispatch = useDispatch()
 
   return (
     <ResourceEditorOverview
-      locked={[
-        'resourceNode.meta.descriptionHtml'
-      ]}
       definition={[
         {
           title: trans('file'),
@@ -26,12 +22,12 @@ const ScormEditorOverview = () => {
               type: 'file',
               required: true,
               options: {
-                types: ['application/zip', 'application/x-zip-compressed'],
-                uploadUrl: ['claro_resource_check_file', {resourceType: 'claroline_scorm'}]
+                types: ['video/*'],
+                uploadUrl: ['claro_resource_check_file', {resourceType: 'video'}]
               },
               onChange: (file) => {
+                dispatch(actions.updateResourceNode(get(file, 'meta.mimeType'), 'meta.mimeType'))
                 dispatch(actions.updateResource(get(file, 'url'), 'url'))
-                dispatch(actions.updateResource(get(file, 'version'), 'version'))
               },
               calculated: (formData) => {
                 if (formData._file) {
@@ -57,6 +53,11 @@ const ScormEditorOverview = () => {
   )
 }
 
+const VideoEditor = () =>
+  <ResourceEditor
+    overviewPage={VideoEditorOverview}
+  />
+
 export {
-  ScormEditorOverview
+  VideoEditor
 }

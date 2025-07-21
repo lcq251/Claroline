@@ -79,7 +79,7 @@ class BBBListener extends ResourceComponent implements EvaluatedResourceInterfac
     }
 
     /** @param BBB $resource */
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         return [
             'resource' => $this->serializer->serialize($resource),

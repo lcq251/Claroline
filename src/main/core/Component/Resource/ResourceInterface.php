@@ -11,13 +11,13 @@ interface ResourceInterface extends ComponentInterface
     public function open(AbstractResource $resource, bool $embedded = false): ?array;
 
     /**
-     * Embed the resource inside html texts.
+     * Embed the resource inside HTML texts.
      */
     // public function embed(AbstractResource $resource): string;
 
     public function create(AbstractResource $resource, array $data): void;
 
-    public function update(AbstractResource $resource, array $data): ?array;
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array;
 
     public function delete(AbstractResource $resource, FileBag $fileBag, bool $softDelete = true): bool;
 

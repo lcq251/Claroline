@@ -24,7 +24,8 @@ class UpdateResourceEvent extends Event
 
     public function __construct(
         private readonly AbstractResource $resource,
-        private readonly ?array $data = []
+        private readonly ?array $data = [],
+        private readonly ?array $previousData = []
     ) {
     }
 
@@ -44,6 +45,11 @@ class UpdateResourceEvent extends Event
     public function getData(): array
     {
         return $this->data;
+    }
+
+    public function getPreviousData(): array
+    {
+        return $this->previousData;
     }
 
     /**

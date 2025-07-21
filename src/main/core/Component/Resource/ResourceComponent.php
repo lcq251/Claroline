@@ -56,7 +56,7 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
     public function onUpdate(UpdateResourceEvent $event): void
     {
         $event->addResponse(
-            $this->update($event->getResource(), $event->getData()) ?? []
+            $this->update($event->getResource(), $event->getData(), $event->getPreviousData()) ?? []
         );
     }
 
@@ -98,7 +98,7 @@ abstract class ResourceComponent implements ResourceInterface, EventSubscriberIn
     {
     }
 
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         return [];
     }

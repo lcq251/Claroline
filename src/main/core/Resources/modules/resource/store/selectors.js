@@ -18,6 +18,11 @@ const slug = createSelector(
   (store) => store.slug
 )
 
+const resource = createSelector(
+  [store],
+  (store) => store.resource
+)
+
 const resourceNode = createSelector(
   [store],
   (store) => store.resourceNode || {}
@@ -193,12 +198,10 @@ export const selectors = {
   notFound,
   canEdit,
   canFollow,
-  // lifecycle
   resourceLifecycle,
-  // access restrictions
   accessErrors,
-  // node
   resourceNode,
+  resource,
   slug,
   id,
   name,

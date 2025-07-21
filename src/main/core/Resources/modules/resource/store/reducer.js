@@ -7,7 +7,6 @@ import {
   RESOURCE_OPEN,
   RESOURCE_LOAD,
   RESOURCE_SET_LOADED,
-  RESOURCE_UPDATE_NODE,
   RESOURCE_EVALUATION_UPDATE,
   RESOURCE_RESTRICTIONS_DISMISS,
   RESOURCE_NOT_FOUND
@@ -38,15 +37,14 @@ const reducer = combineReducers({
    * Manages the ResourceNode of the resource.
    */
   resourceNode: makeReducer({}, {
-    [RESOURCE_LOAD]: (state, action) => action.resourceData.resourceNode,
+    [RESOURCE_LOAD]: (state, action) => action.resourceData.resourceNode
+  }),
 
-    /**
-     * Updates the ResourceNode data.
-     *
-     * @param {object} state  - the current node data.
-     * @param {object} action - the action. New node data is stored in `resourceNode`
-     */
-    [RESOURCE_UPDATE_NODE]: (state, action) => merge({}, state, action.resourceNode)
+  /**
+   * Manages the ResourceNode of the resource.
+   */
+  resource: makeReducer(null, {
+    [RESOURCE_LOAD]: (state, action) => action.resourceData.resource || null
   }),
 
   /**

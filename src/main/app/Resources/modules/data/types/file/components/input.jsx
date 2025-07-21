@@ -126,6 +126,7 @@ implementPropTypes(FileComponent, DataInputTypes, {
     T.shape({
       id: T.number,
       name: T.string,
+      size: T.number,
       mimeType: T.string.isRequired,
       url: T.string.isRequired
     })

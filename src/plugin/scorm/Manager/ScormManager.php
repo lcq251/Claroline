@@ -47,22 +47,14 @@ class ScormManager
 
         $ds = DIRECTORY_SEPARATOR;
         $hashName = Uuid::uuid4()->toString().'.zip';
-        $scormData = $this->parseScormArchive($file);
+        $data = $this->parseScormArchive($file);
         $this->unzipScormArchive($workspace, $file, $hashName);
         // Move Scorm archive in the files directory
-        $finalFile = $file->move($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid(), $hashName);
+        $file->move($this->filesDir.$ds.'scorm'.$ds.$workspace->getUuid(), $hashName);
 
-        return [
-            'name' => method_exists($file, 'getClientOriginalName') ? $file->getClientOriginalName() : $file->getFilename(), // to follow standard file data format
-
-            'type' => $finalFile->getMimeType(),
-            'size' => filesize($finalFile),
+        return array_merge($data, [
             'url' => $hashName,
-
-            'hashName' => $hashName,
-            'version' => $scormData['version'],
-            'scos' => $scormData['scos'],
-        ];
+        ]);
     }
 
     /**
@@ -89,7 +81,7 @@ class ScormManager
     {
         $workspace = $scorm->getResourceNode()->getWorkspace();
 
-        $hashName = $scorm->getHashName();
+        $hashName = $scorm->getUrl();
 
         if ($workspace->getId() !== $workspaceDest->getId()) {
             $filesystem = new Filesystem();

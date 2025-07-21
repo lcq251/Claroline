@@ -1,34 +1,12 @@
 import {createSelector} from 'reselect'
 
+import {selectors as resourceSelectors} from '#/main/core/resource/store/selectors'
+
 const STORE_NAME = 'directory'
-const LIST_NAME = STORE_NAME+'.resources'
-
-const store = (state) => state[STORE_NAME]
-
-const resource = createSelector(
-  [store],
-  (store) => store.resource
-)
-
-const directories = createSelector(
-  [store],
-  (store) => store.directories
-)
-
-const directory = (dirs, directoryId) => {
-  for (let i = 0; i < dirs.length; i++) {
-    if (dirs[i].id === directoryId) {
-      return dirs[i]
-    } else if (dirs[i].children) {
-      return directory(dirs[i].children, directoryId)
-    }
-  }
-
-  return null
-}
+const LIST_NAME = STORE_NAME
 
 const listConfiguration = createSelector(
-  [resource],
+  [resourceSelectors.resource],
   (resource) => resource.list || {}
 )
 
@@ -36,8 +14,5 @@ export const selectors = {
   STORE_NAME,
   LIST_NAME,
 
-  resource,
-  directories,
-  directory,
   listConfiguration
 }

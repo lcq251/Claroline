@@ -13,6 +13,7 @@ namespace Claroline\CoreBundle\Manager;
 
 use Claroline\AppBundle\API\Crud;
 use Claroline\AppBundle\API\Options;
+use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Manager\File\TempFileManager;
 use Claroline\AppBundle\Persistence\ObjectManager;
@@ -52,6 +53,7 @@ class ResourceManager
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SerializerProvider $serializer,
         private readonly RightsManager $rightsManager,
         private readonly ObjectManager $om,
         private readonly TempFileManager $tempManager,
@@ -382,7 +384,9 @@ class ResourceManager
             $openEvent = new LoadResourceEvent($this->getResourceFromNode($resourceNode), $event->isEmbedded());
             $this->eventDispatcher->dispatch($openEvent, ResourceEvents::getEventName(ResourceEvents::OPEN, $resourceNode->getResourceType()->getName()));
 
-            return array_merge($event->getData(), $openEvent->getData());
+            return array_merge([
+                'resource' => $this->serializer->serialize($resource),
+            ], $event->getData(), $openEvent->getData());
         }
 
         throw new \RuntimeException(sprintf('Cannot load AbstractResource from ResourceNode (%s).', $resourceNode->getUuid()));

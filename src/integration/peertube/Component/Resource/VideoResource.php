@@ -60,7 +60,7 @@ class VideoResource extends ResourceComponent implements UrlAdapterInterface, Ev
     }
 
     /** @param Video $resource */
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         $this->peerTubeManager->handleThumbnailForVideo($resource);
 

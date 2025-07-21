@@ -48,7 +48,7 @@ class DropzoneResource extends ResourceComponent implements EvaluatedResourceInt
     }
 
     /** @param Dropzone $resource */
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         return [
             'resource' => $this->serializer->serialize($resource),

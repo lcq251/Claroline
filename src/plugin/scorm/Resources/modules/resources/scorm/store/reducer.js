@@ -2,9 +2,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import {makeInstanceAction} from '#/main/app/store/actions'
 import {combineReducers, makeReducer} from '#/main/app/store/reducer'
-import {makeFormReducer} from '#/main/app/content/form/store/reducer'
 import {makeListReducer} from '#/main/app/content/list/store'
-import {FORM_SUBMIT_SUCCESS} from '#/main/app/content/form/store/actions'
 
 import {RESOURCE_LOAD} from '#/main/core/resource/store/actions'
 
@@ -12,10 +10,6 @@ import {selectors} from '#/plugin/scorm/resources/scorm/store/selectors'
 import {TRACKING_UPDATE} from '#/plugin/scorm/resources/scorm/store/actions'
 
 const reducer = combineReducers({
-  scorm: makeReducer({}, {
-    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.scorm || state,
-    [FORM_SUBMIT_SUCCESS+'/'+selectors.STORE_NAME+'.scormForm']: (state, action) => action.updatedData
-  }),
   trackings: makeReducer({}, {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.trackings || state,
     [TRACKING_UPDATE]: (state, action) => {
@@ -30,8 +24,7 @@ const reducer = combineReducers({
     invalidated: makeReducer(false, {
       [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: () => true
     })
-  }),
-  scormForm: makeFormReducer(selectors.STORE_NAME+'.scormForm')
+  })
 })
 
 export {

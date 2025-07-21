@@ -13,7 +13,6 @@ const DirectoryPlayer = connect(
     currentUser: securitySelectors.currentUser(state),
     embedded: resourceSelectors.embedded(state),
     currentNode: resourceSelectors.resourceNode(state),
-    listName: selectors.LIST_NAME,
     listConfiguration: selectors.listConfiguration(state),
     isRoot: resourceSelectors.isRoot(state)
   }),

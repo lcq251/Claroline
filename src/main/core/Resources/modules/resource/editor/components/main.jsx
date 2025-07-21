@@ -34,6 +34,7 @@ const ResourceEditor = ({
   const resourceType = useSelector(resourceSelectors.resourceType)
   const resourceLoaded = useSelector(resourceSelectors.loaded)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
+  const resource = useSelector(resourceSelectors.resource)
   const editedNode = useSelector(selectors.resourceNode)
 
   const dispatch = useDispatch()
@@ -41,7 +42,10 @@ const ResourceEditor = ({
 
   useEffect(() => {
     if (resourceLoaded) {
-      const initialData = Object.assign({}, additionalData() || {}, {resourceNode: resourceNode})
+      const initialData = Object.assign({}, additionalData() || {}, {
+        resourceNode: resourceNode,
+        resource: resource
+      })
       dispatch(actions.reset(initialData))
     }
   }, [get(resourceNode, 'id'), resourceLoaded])

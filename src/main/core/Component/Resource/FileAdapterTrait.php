@@ -7,6 +7,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Validator\Exception\InvalidDataException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -23,18 +24,27 @@ trait FileAdapterTrait
 
     public function create(AbstractResource $resource, array $data): void
     {
-        try {
-            $file = new File($resource->getUrl());
-        } catch (FileNotFoundException $e) {
-            throw new InvalidDataException(sprintf('Cannot find the file for "%s" resource.', static::getName()));
+        if (!empty($resource->getUrl())) {
+            $this->saveFile($resource);
+        }
+    }
+
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
+    {
+        if (!empty($resource->getUrl()) && ($previousData['resource']['url'] !== $resource->getUrl())) {
+            $this->saveFile($resource);
+
+            if (!empty($previousData['resource']['url'])) {
+                // check if the file is reused between resources
+                $countUsages = $this->om->getRepository(static::getClass())->count(['url' => $previousData['resource']['url']]);
+                if (0 === $countUsages) {
+                    // file is not used anymore, we can delete if from the filesystem
+                    $this->fileManager->remove($previousData['resource']['url']);
+                }
+            }
         }
 
-        $finalPath = static::getFilePath($resource, $file->guessExtension());
-        $this->fileManager->move($resource->getUrl(), $finalPath);
-        $resource->setUrl($finalPath);
-
-        $this->om->persist($resource);
-        $this->om->flush();
+        return [];
     }
 
     public function download(AbstractResource $resource, FileBag $fileBag): void
@@ -89,6 +99,22 @@ trait FileAdapterTrait
         $workspace = $resourceNode->getWorkspace();
         $workspaceDir = 'WORKSPACE_'.$workspace->getId();
 
-        return $workspaceDir.DIRECTORY_SEPARATOR.static::getName().DIRECTORY_SEPARATOR.$resourceNode->getUuid().'.'.$extension;
+        return $workspaceDir.DIRECTORY_SEPARATOR.static::getName().DIRECTORY_SEPARATOR.Uuid::uuid4()->toString().'.'.$extension;
+    }
+
+    private function saveFile(AbstractResource $resource): void
+    {
+        try {
+            $file = new File($resource->getUrl());
+        } catch (FileNotFoundException $e) {
+            throw new InvalidDataException(sprintf('Cannot find the file for "%s" resource.', static::getName()));
+        }
+
+        $finalPath = static::getFilePath($resource, $file->guessExtension());
+        $this->fileManager->move($resource->getUrl(), $finalPath);
+        $resource->setUrl($finalPath);
+
+        $this->om->persist($resource);
+        $this->om->flush();
     }
 }

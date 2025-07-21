@@ -72,7 +72,7 @@ actions.create = (parent) => formActions.saveForm(selectors.STORE_NAME, ['claro_
   parentId: parent.id
 }])
 
-actions.fromFile = (file) => (dispatch) => {
+actions.fromFile = (file, resourceType = null) => (dispatch) => {
   const formData = new FormData()
   formData.append('file', file)
   formData.append('fileName', file.name)
@@ -80,7 +80,7 @@ actions.fromFile = (file) => (dispatch) => {
 
   return dispatch({
     [API_REQUEST]: {
-      url: ['claro_resource_check_file'],
+      url: ['claro_resource_check_file', {resourceType: resourceType}],
       type: 'upload',
       request: {
         method: 'POST',

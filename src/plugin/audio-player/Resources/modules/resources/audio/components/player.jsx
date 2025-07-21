@@ -12,7 +12,7 @@ import {trans} from '#/main/app/intl/translation'
 import {CALLBACK_BUTTON, CallbackButton} from '#/main/app/buttons'
 import {selectors as securitySelectors} from '#/main/app/security/store'
 import {makeId} from '#/main/app/utils/id'
-import {selectors as resourceSelect} from '#/main/core/resource/store'
+import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {UserMessageForm} from '#/main/core/user/message/components/user-message-form'
 import {UserMessage} from '#/main/core/user/message/components/user-message'
 
@@ -25,7 +25,6 @@ import {ResourceOverview} from '#/main/core/resource'
 import {Toolbar} from '#/main/app/action'
 import {PageSection} from '#/main/app/page'
 
-import {selectors} from '#/plugin/audio-player/resources/audio/store'
 import {Html} from '#/main/app/components/html'
 
 const Transcripts = props =>
@@ -409,9 +408,9 @@ Audio.propTypes = {
 const AudioPlayer = connect(
   (state) => ({
     currentUser: securitySelectors.currentUser(state),
-    resourceNodeId: resourceSelect.id(state),
-    canEdit: hasPermission('edit', resourceSelect.resourceNode(state)),
-    file: selectors.resource(state)
+    resourceNodeId: resourceSelectors.id(state),
+    canEdit: hasPermission('edit', resourceSelectors.resourceNode(state)),
+    file: resourceSelectors.resource(state)
   }),
   (dispatch) => ({
     saveSection(sections, section, isNew) {

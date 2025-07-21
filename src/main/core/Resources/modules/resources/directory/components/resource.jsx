@@ -9,7 +9,13 @@ const DirectoryResource = (props) =>
   <Resource
     {...props}
     editor={DirectoryEditor}
-    overviewPage={DirectoryPlayer}
+    pages={[
+      {
+        path: '/',
+        exact: true,
+        component: DirectoryPlayer
+      }
+    ]}
   />
 
 export {

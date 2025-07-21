@@ -12,7 +12,6 @@ import {FileInput} from '#/main/app/data/types/file/components/input'
 import {CallbackButton} from '#/main/app/buttons'
 
 import {makeId} from '#/main/app/utils/id'
-import {selectors as fileSelect} from '#/main/core/resources/file/store'
 import {selectors as editorSelect} from '#/main/core/resource/editor/store'
 import {selectors as resourceSelect} from '#/main/core/resource/store'
 import {Checkbox} from '#/main/app/input/components/checkbox'
@@ -342,7 +341,7 @@ Audio.propTypes = {
 
 const AudioEditorParameters = connect(
   (state) => ({
-    mimeType: fileSelect.mimeType(state),
+    mimeType: resourceSelect.mimeType(state),
     fileForm: formSelectors.data(formSelectors.form(state, editorSelect.STORE_NAME)),
     resourceNodeId: resourceSelect.resourceNode(state).id
   }),

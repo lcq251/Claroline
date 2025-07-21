@@ -15,9 +15,6 @@ const CreationUpload = (props) => {
   const formData = new FormData()
   formData.append('archive', data.archive) // this is an uploaded file
 
-  console.log(data)
-  console.log(data.archive)
-
   return (
     <Form
       name={selectors.STORE_NAME}

@@ -14,9 +14,6 @@ import {SessionList} from '#/plugin/cursus/session/components/list'
 import {selectors} from '#/plugin/cursus/tools/trainings/session/store'
 
 const TrainingsSessionList = (props) => {
-  console.log(props.course)
-  console.log(props.canCreateSession)
-  console.log(props.contextType)
   return (
     <ToolPage
       title={trans('sessions', {}, 'cursus')}

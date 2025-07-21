@@ -1,23 +1,63 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
+import get from 'lodash/get'
 
-import {ResourceEditor} from '#/main/core/resource/editor'
+import {trans} from '#/main/app/intl'
+import {actions, ResourceEditor, ResourceEditorOverview} from '#/main/core/resource/editor'
 
-import {selectors} from '#/main/core/resources/file/store'
 import {FileEditorAppearance} from '#/main/core/resources/file/editor/components/appearance'
 
-const FileEditor = () => {
-  const file = useSelector(selectors.file)
+const FileEditorOverview = () => {
+  const dispatch = useDispatch()
 
   return (
-    <ResourceEditor
-      additionalData={() => ({
-        resource: file
-      })}
-      appearancePage={FileEditorAppearance}
+    <ResourceEditorOverview
+      definition={[
+        {
+          title: trans('file'),
+          primary: true,
+          hideTitle: true,
+          fields: [
+            {
+              name: '_file',
+              label: trans('file'),
+              type: 'file',
+              required: true,
+              options: {
+                uploadUrl: ['claro_resource_check_file', {resourceType: 'file'}]
+              },
+              onChange: (file) => {
+                dispatch(actions.updateResource(get(file, 'url'), 'url'))
+              },
+              calculated: (formData) => {
+                if (formData._file) {
+                  // newly uploaded file
+                  return formData._file
+                }
+
+                if (formData.resource.url) {
+                  return ({
+                    name: formData.resourceNode.name,
+                    mimeType: formData.resourceNode.meta.mimeType,
+                    url: formData.resource.url
+                  })
+                }
+
+                return null
+              }
+            }
+          ]
+        }
+      ]}
     />
   )
 }
+
+const FileEditor = () =>
+  <ResourceEditor
+    overviewPage={FileEditorOverview}
+    appearancePage={FileEditorAppearance}
+  />
 
 export {
   FileEditor

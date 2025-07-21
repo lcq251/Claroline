@@ -1,31 +1,32 @@
 import React from 'react'
-import {PropTypes as T} from 'prop-types'
+import {useSelector} from 'react-redux'
 
 import {trans} from '#/main/app/intl/translation'
-
-import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {ContentPlaceholder} from '#/main/app/content/components/placeholder'
-import {ResourcePage} from '#/main/core/resource'
 
-const ShortcutPlayer = (props) =>
-  <ResourcePage>
-    {!props.resource &&
-      <ContentPlaceholder
-        size="lg"
-        title={trans('no_resource', {}, 'resource')}
-      />
-    }
+import {ResourcePage, ResourceEmbedded} from '#/main/core/resource'
+import {selectors} from '#/plugin/link/resources/shortcut/store'
 
-    {props.resource &&
-      <ResourceEmbedded
-        resourceNode={props.resource}
-        showHeader={false}
-      />
-    }
-  </ResourcePage>
+const ShortcutPlayer = () => {
+  const embeddedResource = useSelector(selectors.embeddedResource)
 
-ShortcutPlayer.propTypes = {
-  resource: T.object.isRequired
+  return (
+    <ResourcePage>
+      {!embeddedResource &&
+        <ContentPlaceholder
+          size="lg"
+          title={trans('no_resource', {}, 'resource')}
+        />
+      }
+
+      {embeddedResource &&
+        <ResourceEmbedded
+          resourceNode={embeddedResource}
+          showHeader={false}
+        />
+      }
+    </ResourcePage>
+  )
 }
 
 export {

@@ -81,7 +81,7 @@ final class LessonResource extends ResourceComponent implements DownloadableReso
         $this->om->endFlushSuite();
     }
 
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         $chapters = [];
         if (!empty($data['chapters'])) {

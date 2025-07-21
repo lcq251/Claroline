@@ -8,6 +8,7 @@ use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
+use Claroline\CoreBundle\Component\Resource\FileAdapterTrait;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
@@ -21,6 +22,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class ScormResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
+    // use FileAdapterTrait;
+
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,
@@ -35,6 +38,11 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     public static function getName(): string
     {
         return 'claroline_scorm';
+    }
+
+    public static function getClass(): string
+    {
+        return Scorm::class;
     }
 
     /** @param Scorm $resource */
@@ -57,7 +65,6 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
         }
 
         return [
-            'scorm' => $this->serializer->serialize($resource),
             'userEvaluation' => $evaluation,
             'trackings' => $tracking,
         ];
@@ -66,11 +73,46 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     /** @param Scorm $resource */
     public function create(AbstractResource $resource, array $data): void
     {
-        $data = $this->scormManager->uploadScormArchive($resource->getResourceNode()->getWorkspace(), new File($resource->getUrl()));
+        $uploaded = $this->scormManager->uploadScormArchive($resource->getResourceNode()->getWorkspace(), new File($resource->getUrl()));
+        $resource->setUrl($uploaded['url']);
 
-        $resource->setUrl($data['url']);
         $this->om->persist($resource);
         $this->om->flush();
+    }
+
+    /** @param Scorm $resource */
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
+    {
+        if (!empty($resource->getUrl()) && ($previousData['resource']['url'] !== $resource->getUrl())) {
+            $uploaded = $this->scormManager->uploadScormArchive($resource->getResourceNode()->getWorkspace(), new File($resource->getUrl()));
+            $resource->setUrl($uploaded['url']);
+
+            $this->serializer->deserialize($uploaded, $resource);
+
+            $this->om->persist($resource);
+            $this->om->flush();
+
+            if (!empty($previousData['resource']['url'])) {
+                // check if the file is reused between resources
+                $countUsages = $this->om->getRepository(Scorm::class)->count(['hashName' => $previousData['resource']['url']]);
+                if (0 === $countUsages) {
+                    $filePath = 'scorm'.DIRECTORY_SEPARATOR.$resource->getResourceNode()->getWorkspace()->getUuid().DIRECTORY_SEPARATOR.$previousData['resource']['url'];
+
+                    // file is not used anymore, we can delete if from the filesystem
+                    $scormArchiveFile = $this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$filePath;
+                    if (file_exists($scormArchiveFile)) {
+                        $this->fileManager->remove($scormArchiveFile, true);
+                    }
+
+                    $scormResourcesPath = $this->uploadDir.DIRECTORY_SEPARATOR.$filePath;
+                    if (file_exists($scormResourcesPath)) {
+                        $this->fileManager->remove($scormResourcesPath, true);
+                    }
+                }
+            }
+        }
+
+        return [];
     }
 
     /** @param Scorm $resource */
@@ -92,7 +134,7 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
 
         $hashName = $resource->getUrl();
 
-        $countUsages = $this->om->getRepository(Scorm::class)->count(['url' => $resource->getUrl()]);
+        $countUsages = $this->om->getRepository(Scorm::class)->count(['hashName' => $resource->getUrl()]);
         if (1 === $countUsages) {
             $workspace = $resource->getResourceNode()->getWorkspace();
 
@@ -152,13 +194,13 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
     {
         $workspace = $scorm->getResourceNode()->getWorkspace();
         $ds = DIRECTORY_SEPARATOR;
-        $supposedArchiveLocation = $this->fileManager->getDirectory().$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getHashName();
+        $supposedArchiveLocation = $this->fileManager->getDirectory().$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getUrl();
 
         if (is_file($supposedArchiveLocation)) {
             return $supposedArchiveLocation;
         }
 
-        $uploadArchiveLocation = $this->uploadDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getHashName();
+        $uploadArchiveLocation = $this->uploadDir.$ds.'scorm'.$ds.$workspace->getUuid().$ds.$scorm->getUrl();
         if (!file_exists($uploadArchiveLocation)) {
             return null;
         }
@@ -178,7 +220,7 @@ final class ScormResource extends ResourceComponent implements DownloadableResou
             $filePath = $file->getRealPath();
 
             if (file_exists($filePath) && is_file($filePath)) {
-                $rel = $this->getRelativePath($filePath, $scorm->getHashName(), $workspace->getUuid());
+                $rel = $this->getRelativePath($filePath, $scorm->getUrl(), $workspace->getUuid());
                 $zip->addFile($filePath, $rel);
             }
         }

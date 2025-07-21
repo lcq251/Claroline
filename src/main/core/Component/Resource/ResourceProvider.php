@@ -66,21 +66,37 @@ class ResourceProvider extends AbstractComponentProvider
         ], $urlHandler->fromUrl($url) ?? []);
     }
 
-    public function fromFile(UploadedFile $file): ?array
+    public function fromFile(UploadedFile $file, ?string $resourceType = null): ?array
     {
-        // find the correct resource handler for the submitted file
         $fileHandler = null;
-        foreach ($this->getRegisteredComponents() as $resourceHandler) {
+
+        if ($resourceType) {
+            $resourceHandler = $this->getComponent($resourceType);
             if ($resourceHandler instanceof FileAdapterInterface) {
                 // checks if the current resource supports the submitted file
                 $support = $resourceHandler->supportsFile($file);
                 if (FileAdapterInterface::SUPPORTED === $support) {
                     // perfect file match
                     $fileHandler = $resourceHandler;
-                    break;
                 } elseif (FileAdapterInterface::SUPPORTED_PARTIAL === $support) {
                     // only partial support, continue searching to find a perfect support if any
                     $fileHandler = $resourceHandler;
+                }
+            }
+        } else {
+            // find the correct resource handler for the submitted file
+            foreach ($this->getRegisteredComponents() as $resourceHandler) {
+                if ($resourceHandler instanceof FileAdapterInterface) {
+                    // checks if the current resource supports the submitted file
+                    $support = $resourceHandler->supportsFile($file);
+                    if (FileAdapterInterface::SUPPORTED === $support) {
+                        // perfect file match
+                        $fileHandler = $resourceHandler;
+                        break;
+                    } elseif (FileAdapterInterface::SUPPORTED_PARTIAL === $support) {
+                        // only partial support, continue searching to find a perfect support if any
+                        $fileHandler = $resourceHandler;
+                    }
                 }
             }
         }

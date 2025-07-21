@@ -44,7 +44,7 @@ class VideoController
             'resourceNode' => $video,
         ]);
 
-        return new BinaryFileResponse($this->fileManager->getDirectory().DIRECTORY_SEPARATOR.$videoFile->getUrl());
+        return new BinaryFileResponse($this->fileManager->getAbsolutePath($videoFile->getUrl()));
     }
 
     #[Route(path: '/{id}/progression/{currentTime}/{totalTime}', name: 'apiv2_video_progression_update', methods: ['PUT'])]

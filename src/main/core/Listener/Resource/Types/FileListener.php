@@ -44,7 +44,7 @@ final class FileListener extends ResourceComponent implements DownloadableResour
     public function open(AbstractResource $resource, bool $embedded = false): ?array
     {
         return [
-            'file' => $this->serializer->serialize($resource),
+            'resource' => $this->serializer->serialize($resource),
         ];
     }
 

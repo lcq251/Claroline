@@ -5,6 +5,7 @@ import {Resource} from '#/main/core/resource/components/main'
 import {ResourcePage} from '#/main/core/resource/components/page'
 import {ResourceOverview} from '#/main/core/resource/components/overview'
 import {ResourceEditor} from '#/main/core/resource/editor/containers/main'
+import {ResourceEmbedded} from '#/main/core/resource/containers/embedded'
 import {selectors} from '#/main/core/resource/store'
 
 /**
@@ -80,6 +81,7 @@ export {
   ResourceEditor,
   ResourcePage,
   ResourceOverview,
+  ResourceEmbedded,
   selectors,
   declareResource
 }

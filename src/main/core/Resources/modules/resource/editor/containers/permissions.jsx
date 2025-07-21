@@ -19,7 +19,6 @@ const ResourceEditorPermissions = withReducer(selectors.STORE_NAME, reducer)(
         dispatch(actions.updateResourceNode(value, prop))
       },
       updateRights(perms) {
-        console.log(perms)
         dispatch(actions.updateRights(perms))
       }
     })

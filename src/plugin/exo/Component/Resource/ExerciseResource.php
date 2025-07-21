@@ -78,7 +78,7 @@ class ExerciseResource extends ResourceComponent implements EvaluatedResourceInt
     }
 
     /** @param Exercise $resource */
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         // Invalidate unfinished papers
         $this->repository->invalidatePapers($resource);

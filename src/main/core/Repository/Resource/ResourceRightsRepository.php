@@ -91,7 +91,7 @@ class ResourceRightsRepository extends EntityRepository
         }
 
         return array_reduce($query->getArrayResult(), function (array $result, array $item) {
-            return array_merge($result, json_decode($item['creatableTypes'], true));
+            return array_merge($result, $item['creatableTypes']);
         }, []);
     }
 }

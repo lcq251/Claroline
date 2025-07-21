@@ -71,7 +71,7 @@ class VideoResource extends ResourceComponent implements EvaluatedResourceInterf
     }
 
     /** @param Video $resource */
-    public function update(AbstractResource $resource, array $data): ?array
+    public function update(AbstractResource $resource, array $data, array $previousData): ?array
     {
         $this->youtubeManager->handleThumbnailForVideo($resource);
 

@@ -118,7 +118,7 @@ class ResourceController
         }
 
         return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
-            return $this->serializer->serialize($resourceNode);
+            return $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]);
         }, $processed));
     }
 
@@ -143,7 +143,7 @@ class ResourceController
         }
 
         return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
-            return $this->serializer->serialize($resourceNode);
+            return $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]);
         }, $processed));
     }
 
@@ -213,15 +213,15 @@ class ResourceController
     /**
      * Checks if a resource is creatable for the submitted file.
      */
-    #[Route(path: '/check/file', name: 'claro_resource_check_file', methods: ['POST'])]
-    public function checkFileAction(Request $request): JsonResponse
+    #[Route(path: '/check/file/{resourceType}', name: 'claro_resource_check_file', defaults: ['resourceType' => null], methods: ['POST'])]
+    public function checkFileAction(Request $request, ?string $resourceType = null): JsonResponse
     {
         $this->checkPermission('IS_AUTHENTICATED_FULLY', null, [], true);
 
         $files = $request->files->all();
 
         foreach ($files as $file) {
-            $fileData = $this->resourceProvider->fromFile($file);
+            $fileData = $this->resourceProvider->fromFile($file, $resourceType);
             if (empty($fileData)) {
                 return new JsonResponse(null, 404);
             }
@@ -279,7 +279,7 @@ class ResourceController
         }
 
         return new JsonResponse(array_map(function (AbstractResource $resource) {
-            return $this->serializer->serialize($resource->getResourceNode());
+            return $this->serializer->serialize($resource->getResourceNode(), [Options::NO_RIGHTS]);
         }, $newFiles));
     }
 
@@ -306,7 +306,7 @@ class ResourceController
         }
 
         return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
-            return $this->serializer->serialize($resourceNode);
+            return $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]);
         }, $processed));
     }
 
@@ -333,7 +333,7 @@ class ResourceController
         }
 
         return new JsonResponse(array_map(function (ResourceNode $resourceNode) {
-            return $this->serializer->serialize($resourceNode);
+            return $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]);
         }, $processed));
     }
 
@@ -349,7 +349,7 @@ class ResourceController
         $newResource = $this->manager->createResource($parent, $data);
 
         return new JsonResponse([
-            'resourceNode' => $this->serializer->serialize($newResource->getResourceNode()),
+            'resourceNode' => $this->serializer->serialize($newResource->getResourceNode(), [Options::NO_RIGHTS]),
             'resource' => $this->serializer->serialize($newResource),
         ], 201);
     }
@@ -369,6 +369,13 @@ class ResourceController
         $data = $this->decodeRequest($request);
 
         $isManager = $this->authorization->isGranted('ADMINISTRATE', $resourceNode);
+
+        // store data before update to forward it through event
+        $previousData = [
+            'resourceNode' => $this->serializer->serialize($resourceNode, [Options::NO_RIGHTS]),
+            'resource' => $this->serializer->serialize($resource),
+        ];
+
         if (!empty($data)) {
             $this->om->startFlushSuite();
 
@@ -413,7 +420,7 @@ class ResourceController
             $this->om->endFlushSuite();
         }
 
-        $updateResource = new UpdateResourceEvent($resource, $data);
+        $updateResource = new UpdateResourceEvent($resource, $data, $previousData);
         $this->eventDispatcher->dispatch($updateResource, ResourceEvents::getEventName(ResourceEvents::UPDATE, $resourceNode->getResourceType()->getName()));
 
         $this->om->refresh($resourceNode);

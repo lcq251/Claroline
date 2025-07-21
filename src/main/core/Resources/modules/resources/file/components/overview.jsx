@@ -11,12 +11,12 @@ import {constants} from '#/main/core/resources/file/constants'
 import {FileThumbnail} from '#/main/app/data/types/file/components/thumbnail'
 
 import {ResourceOverview, selectors as resourceSelectors} from '#/main/core/resource'
-import {actions, selectors} from '#/main/core/resources/file/store'
+import {actions} from '#/main/core/resources/file/store'
 
 const FileOverview = () => {
   const dispatch = useDispatch()
 
-  const file = useSelector(selectors.file)
+  const file = useSelector(resourceSelectors.resource)
   const downloadable = useSelector(resourceSelectors.downloadable)
   const resourceNode = useSelector(resourceSelectors.resourceNode)
   const embedded = useSelector(resourceSelectors.embedded)

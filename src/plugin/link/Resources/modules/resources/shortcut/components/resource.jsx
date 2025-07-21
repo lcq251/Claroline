@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Resource} from '#/main/core/resource'
 
-import {ShortcutPlayer} from '#/plugin/link/resources/shortcut/containers/player'
+import {ShortcutPlayer} from '#/plugin/link/resources/shortcut/components/player'
 import {ShortcutEditor} from '#/plugin/link/resources/shortcut/components/editor'
 
 const ShortcutResource = (props) =>
@@ -16,8 +16,7 @@ const ShortcutResource = (props) =>
         exact: true
       }
     ]}
-  >
-  </Resource>
+  />
 
 export {
   ShortcutResource

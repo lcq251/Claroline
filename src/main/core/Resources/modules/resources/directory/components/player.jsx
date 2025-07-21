@@ -18,6 +18,8 @@ import {MODAL_RESOURCE_CREATION} from '#/main/core/resource/modals/creation'
 import {PageContent} from '#/main/app/page'
 import {ButtonSticky} from '#/main/app/button'
 
+import {selectors} from '#/main/core/resources/directory/store'
+
 /**
  * Transform resource node actions.
  * When a directory is embedded, we want all other resources to open their actions in the full app
@@ -60,7 +62,7 @@ const DirectoryPlayer = (props) => {
           <ListSource
             className="mb-5"
             flush={true}
-            name={props.listName}
+            name={selectors.LIST_NAME}
             fetch={{
               url: ['apiv2_resource_list', {contextId: get(props.currentNode, 'workspace.id', null), parent: get(props.currentNode, 'id', null)}],
               autoload: true

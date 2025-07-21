@@ -1,11 +1,9 @@
 import {makeActionCreator, makeInstanceActionCreator} from '#/main/app/store/actions'
 import {API_REQUEST} from '#/main/app/api'
 
-import {actions as workspaceActions} from '#/main/app/contexts/workspace/store/actions'
 import {selectors} from '#/main/core/resource/store/selectors'
 
 // actions
-export const RESOURCE_UPDATE_NODE          = 'RESOURCE_UPDATE_NODE'
 export const RESOURCE_EVALUATION_UPDATE    = 'RESOURCE_EVALUATION_UPDATE'
 export const RESOURCE_OPEN                 = 'RESOURCE_OPEN'
 export const RESOURCE_LOAD                 = 'RESOURCE_LOAD'
@@ -49,8 +47,6 @@ actions.fetchResource = (slug, embedded = false) => (dispatch) => dispatch({
     }
   }
 })
-
-actions.updateNode = makeActionCreator(RESOURCE_UPDATE_NODE, 'resourceNode')
 
 actions.triggerLifecycleAction = (action) => (dispatch, getState) => {
   const lifecycleActions = selectors.resourceLifecycle(getState())

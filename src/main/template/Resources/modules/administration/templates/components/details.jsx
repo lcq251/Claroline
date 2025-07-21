@@ -91,7 +91,6 @@ const TemplateDetails = (props) => {
                         isNew: true,
                         template: {type: get(props.templateType, 'name')},
                         onSave: (template) => {
-                          console.log(template)
                           props.addTemplate(template)
                           props.loadTemplate(template)
                         }
