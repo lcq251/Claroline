@@ -17,16 +17,14 @@ import {actions, selectors} from '#/plugin/home/tools/home/editor/store'
 import {MODAL_HOME_CREATION} from '#/plugin/home/tools/home/editor/modals/creation'
 import {getFormDataPart} from '#/plugin/home/tools/home/editor/utils'
 import {MODAL_HOME_POSITION} from '#/plugin/home/tools/home/editor/modals/position'
-import {flattenTabs, getTabTitle} from '#/plugin/home/tools/home/utils'
+import {flattenTabs} from '#/plugin/home/tools/home/utils'
 import {MODAL_HOME_PARAMETERS} from '#/plugin/home/tools/home/editor/modals/parameters'
 
-const HomeEditorSummary = (props) => {
+const HomeEditorSummary = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
   const editorPath = useSelector(editorSelectors.path)
-  const contextData = useSelector(editorSelectors.contextData)
-  const contextType = useSelector(editorSelectors.contextType)
 
   const createTab = useCallback((parent, tab) => {
     dispatch(actions.createTab(parent, tab))
@@ -65,7 +63,7 @@ const HomeEditorSummary = (props) => {
           type: MODAL_BUTTON,
           icon: 'fa fa-fw fa-plus',
           label: trans('tab_add_child', {}, 'home'),
-          //displayed: !child, // only allow one sub-level of tabs
+          displayed: !child, // only allow one sublevel of tabs
           modal: [MODAL_HOME_CREATION, {
             position: tabs.length,
             create: (newTab) => createTab(tab, newTab)
@@ -120,7 +118,7 @@ const HomeEditorSummary = (props) => {
       help={trans('pages_desc', {}, 'home')}
     >
       <ContentSummary
-        links={tabs.map(getTabSummary)}
+        links={tabs.map((tab) => getTabSummary(tab, false))}
       />
 
       <Button

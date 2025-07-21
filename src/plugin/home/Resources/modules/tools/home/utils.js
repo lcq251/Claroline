@@ -53,9 +53,9 @@ function getTabTitle(context, tab) {
   return trans('home')
 }
 
-function getTabSummary(path, tab, showHidden = false) {
+function getTabSummary(path, tab) {
   const children = get(tab, 'children', [])
-    .filter(subTab => showHidden || !get(subTab, 'restrictions.hidden', false))
+    .filter(subTab => !get(subTab, 'restrictions.hidden', false))
 
   if (isEmpty(children)) {
     return {
@@ -74,7 +74,14 @@ function getTabSummary(path, tab, showHidden = false) {
     indicator: true,
     menu: {
       align: 'end',
-      items: children.map((child) => getTabSummary(path, child, showHidden))
+      items: [
+        {
+          type: LINK_BUTTON,
+          icon: tab.icon ? `fa fa-fw fa-${tab.icon}` : undefined,
+          label: tab.title,
+          target: `${path}/${tab.slug}`
+        }
+      ].concat(children.map((child) => getTabSummary(path, child)))
     }
   }
 }

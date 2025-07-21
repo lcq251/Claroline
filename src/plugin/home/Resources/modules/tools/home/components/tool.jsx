@@ -2,19 +2,18 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
-import {Tool, ToolPage} from '#/main/core/tool'
+import {Tool} from '#/main/core/tool'
 
 import {HomeEditor} from '#/plugin/home/tools/home/editor/components/main'
 import {flattenTabs, getTabSummary} from '#/plugin/home/tools/home/utils'
 import {HomeTab} from '#/plugin/home/tools/home/containers/tab'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'
-import {PageContent} from '#/main/app/page'
 import {HomePageSkeleton} from '#/plugin/home/tools/home/components/page'
 
 const HomeTool = props => {
   const tabs = props.tabs
     .filter(tab => props.showHidden || !get(tab, 'restrictions.hidden', false))
-    .map((tab) => getTabSummary(props.path, tab, false))
+    .map((tab) => getTabSummary(props.path, tab))
 
   return (
     <Tool

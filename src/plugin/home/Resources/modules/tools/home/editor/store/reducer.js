@@ -1,16 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import merge from 'lodash/merge'
 
-import {makeInstanceAction} from '#/main/app/store/actions'
 import {makeReducer} from '#/main/app/store/reducer'
 import {makeFormReducer} from '#/main/app/content/form/store/reducer'
-import {TOOL_LOAD} from '#/main/core/tool/store/actions'
 
 import {getTabParent, getFormDataPart} from '#/plugin/home/tools/home/editor/utils'
-import {TABS_LOAD} from '#/plugin/home/tools/home/store/actions'
-import {selectors as baseSelectors} from '#/plugin/home/tools/home/store/selectors'
 import {HOME_MOVE_TAB} from '#/plugin/home/tools/home/editor/store/actions'
 import {selectors} from '#/plugin/home/tools/home/editor/store/selectors'
 
@@ -48,24 +43,6 @@ const reducer = makeFormReducer(selectors.FORM_NAME, {data: [], originalData: []
     [HOME_MOVE_TAB]: () => true
   }),
   data: makeReducer([], {
-    /*[makeInstanceAction(TOOL_LOAD, baseSelectors.STORE_NAME)]: (state, action) => {
-      if (!isEmpty(action.toolData.tabs)) {
-        return action.toolData.tabs
-      }
-
-      return [
-        baseSelectors.defaultTab({tool: {currentContext: action.context}})
-      ]
-    },
-    [TABS_LOAD]: (state, action) => {
-      if (!isEmpty(action.tabs)) {
-        return action.tabs
-      }
-
-      return [
-        baseSelectors.defaultTab({tool: {currentContext: action.context}})
-      ]
-    },*/
     [HOME_MOVE_TAB]: (state, action) => {
       let newState = cloneDeep(state)
 
@@ -92,26 +69,6 @@ const reducer = makeFormReducer(selectors.FORM_NAME, {data: [], originalData: []
       }
 
       return newState
-    }
-  }),
-  originalData: makeReducer([], {
-    [makeInstanceAction(TOOL_LOAD, baseSelectors.STORE_NAME)]: (state, action) => {
-      if (!isEmpty(action.toolData.tabs)) {
-        return action.toolData.tabs
-      }
-
-      return [
-        baseSelectors.defaultTab({tool: {currentContext: action.context}})
-      ]
-    },
-    [TABS_LOAD]: (state, action) => {
-      if (!isEmpty(action.tabs)) {
-        return action.tabs
-      }
-
-      return [
-        baseSelectors.defaultTab({tool: {currentContext: action.context}})
-      ]
     }
   })
 })

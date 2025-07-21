@@ -8,7 +8,6 @@ use Claroline\AppBundle\API\Utils\FileBag;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
 use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
-use Claroline\CoreBundle\Component\Resource\FileAdapterTrait;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\User;
@@ -22,8 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class ScormResource extends ResourceComponent implements DownloadableResourceInterface, EvaluatedResourceInterface, FileAdapterInterface
 {
-    // use FileAdapterTrait;
-
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ObjectManager $om,

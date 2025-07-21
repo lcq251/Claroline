@@ -44,7 +44,6 @@ const HomePageSkeleton = () =>
 
 const HomePage = props =>
   <ToolPage
-    className="home-tool"
     title={props.title}
   >
     <PageContent poster={props.poster || get(props.currentTab, 'poster')}>

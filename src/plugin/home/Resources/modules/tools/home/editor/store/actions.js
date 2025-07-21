@@ -77,12 +77,14 @@ actions.moveTab = (tabs, id, position) => {
 }
 
 actions.createTab = (parent = null, tab) => (dispatch, getState) => {
-  const tabs = selectors.tabs(getState())
   if (parent) {
-    const tabPath = `${getFormDataPart(parent.id, tabs)}.children`
-    const children = get(tabs, tabPath, [])
+    const formData = selectors.formData(getState())
+    const tabs = selectors.tabs(getState())
 
-    return dispatch(formActions.updateProp(selectors.FORM_NAME, `${getFormDataPart(parent.id, tabs)}.children`, [].concat(children, tab)))
+    const tabPath = `${getFormDataPart(parent.id, tabs)}.children`
+    const children = get(formData, tabPath, [])
+
+    return dispatch(formActions.updateProp(selectors.FORM_NAME, `${getFormDataPart(parent.id, tabs)}.children`, [].concat(children, [tab])))
   }
 
   return dispatch(formActions.updateProp(selectors.FORM_NAME, `tabs[${tabs.length}]`, tab))
