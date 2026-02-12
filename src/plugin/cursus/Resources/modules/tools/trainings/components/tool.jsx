@@ -10,6 +10,8 @@ import {CatalogMain} from '#/plugin/cursus/tools/trainings/catalog/containers/ma
 import {SessionMain} from '#/plugin/cursus/tools/trainings/session/containers/main'
 import {TrainingsEditor} from '#/plugin/cursus/tools/trainings/editor/containers/main'
 import {TrainingsOverview} from '#/plugin/cursus/tools/trainings/components/overview'
+import {EventPresence} from '#/plugin/cursus/presence/components/event'
+import {SignPresence} from '#/plugin/cursus/presence/components/signing'
 // import {TrainingsDashboard} from '#/plugin/cursus/tools/trainings/dashboard/components/main'
 
 const TrainingsTool = (props) =>
@@ -102,6 +104,17 @@ const TrainingsTool = (props) =>
       }, {
         path: '/events',
         component: EventMain
+      }, {
+        path: '/presence/:code',
+        render: (routerProps) => (
+          <SignPresence code={routerProps.match.params.code} path={`${props.path}/presence`} />
+        )
+      },
+      {
+        path: '/presence',
+        render: () => (
+          <EventPresence path={`${props.path}/presence`}/>
+        )
       }
     ]}
     redirect={[
