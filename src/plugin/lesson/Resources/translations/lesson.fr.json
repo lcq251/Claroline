@@ -22,5 +22,7 @@
     "no_page": "Aucune page",
     "no_page_help": "Il n'y a actuellement aucun contenu à consulter dans cette connaissance.",
     "no_page_manager_help": "Créez une nouvelle page pour commencer à ajouter du contenu à votre connaissance.",
-    "internal_note": "Note interne"
+    "internal_note": "Note interne",
+    "show_summary": "Afficher le sommaire par défaut",
+    "show_summary_help": "Déployer le sommaire à l'ouverture."
 }

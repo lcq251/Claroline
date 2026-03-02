@@ -20,5 +20,7 @@
     "new_subchapter": "Nieuw subhoofdstuk",
     "subchapter": "Als subhoofdstuk",
     "sibling": "Op hetzelfde niveau",
-    "start_disabled_empty": "De cursus is leeg."
+    "start_disabled_empty": "De cursus is leeg.",
+    "show_summary": "Toon standaardoverzicht",
+    "show_summary_help": "Vouw de inhoudsopgave uit bij het openen van de pagina."
 }

@@ -11,5 +11,7 @@
     "move_relation": "Relation with parent chapter",
     "subchapter": "As sub-chapter",
     "sibling": "At the same level",
-    "add_internal_note": "Add internal note"
+    "add_internal_note": "Add internal note",
+    "show_summary": "Standaard samenvatting weergeven",
+    "show_summary_help": "Expand the summary of contents on opening."
 }
