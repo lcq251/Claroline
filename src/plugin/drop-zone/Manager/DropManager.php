@@ -33,12 +33,11 @@ class DropManager
     /**
      * Gets drops corrected by user|team but that are not finished.
      *
-     * @param User   $user
      * @param string $teamId
      *
      * @return array
      */
-    private function getUnfinishedPeerDrops(Dropzone $dropzone, User $user = null, $teamId = null)
+    private function getUnfinishedPeerDrops(Dropzone $dropzone, ?User $user = null, $teamId = null)
     {
         $drops = [];
 
@@ -89,14 +88,13 @@ class DropManager
     /**
      * Gets a drop for peer evaluation.
      *
-     * @param User   $user
      * @param string $teamId
      * @param string $teamName
      * @param bool   $withCreation
      *
      * @return Drop|null
      */
-    public function getPeerDrop(Dropzone $dropzone, User $user = null, $teamId = null, $teamName = null, $withCreation = true)
+    public function getPeerDrop(Dropzone $dropzone, ?User $user = null, $teamId = null, $teamName = null, $withCreation = true)
     {
         $peerDrop = null;
 
@@ -139,12 +137,11 @@ class DropManager
     /**
      * Gets drops corrected by user|team.
      *
-     * @param User   $user
      * @param string $teamId
      *
      * @return array
      */
-    public function getFinishedPeerDrops(Dropzone $dropzone, User $user = null, $teamId = null)
+    public function getFinishedPeerDrops(Dropzone $dropzone, ?User $user = null, $teamId = null)
     {
         $drops = [];
 
@@ -167,13 +164,12 @@ class DropManager
     /**
      * Gets available drop for peer evaluation.
      *
-     * @param User   $user
      * @param string $teamId
      * @param string $teamName
      *
      * @return Drop|null
      */
-    public function getAvailableDropForPeer(Dropzone $dropzone, User $user = null, $teamId = null, $teamName = null)
+    public function getAvailableDropForPeer(Dropzone $dropzone, ?User $user = null, $teamId = null, $teamName = null)
     {
         $peerDrop = null;
         $drops = [];

@@ -97,9 +97,9 @@ class AttemptController
 
         if (!empty($errors)) {
             return new JsonResponse($errors, 422);
-        } else {
-            return new JsonResponse(null, 204);
         }
+
+        return new JsonResponse(null, 204);
     }
 
     /**
@@ -174,7 +174,7 @@ class AttemptController
     /**
      * Checks whether a User has access to a Paper.
      */
-    private function assertHasPaperAccess(Paper $paper, User $user = null): void
+    private function assertHasPaperAccess(Paper $paper, ?User $user = null): void
     {
         if (!$this->attemptManager->canUpdate($paper, $user)) {
             throw new AccessDeniedException();

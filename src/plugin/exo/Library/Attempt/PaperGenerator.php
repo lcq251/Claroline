@@ -46,7 +46,7 @@ class PaperGenerator
      * @param User     $user          - the user who wants to pass the exercise
      * @param Paper    $previousPaper - the previous paper if one exists
      */
-    public function create(Exercise $exercise, User $user = null, ?Paper $previousPaper = null): Paper
+    public function create(Exercise $exercise, ?User $user = null, ?Paper $previousPaper = null): Paper
     {
         // Create the new Paper entity
         $paper = new Paper();
@@ -251,7 +251,6 @@ class PaperGenerator
      *
      * @param array $collection - the original collection
      * @param int   $count      - the number of items to pick in the collection (if 0, the whole collection is returned)
-     * @param bool  $force
      *
      * @return array - the truncated collection
      */

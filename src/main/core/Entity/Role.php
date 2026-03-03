@@ -135,7 +135,6 @@ class Role implements CrudEntityInterface
         return $this->users;
     }
 
-
     public function hasUser(User $user): bool
     {
         return $user->hasRole($this);
@@ -185,7 +184,7 @@ class Role implements CrudEntityInterface
         $group->removeRole($this);
     }
 
-    public function setWorkspace(Workspace $ws = null): void
+    public function setWorkspace(?Workspace $ws = null): void
     {
         $this->workspace = $ws;
     }

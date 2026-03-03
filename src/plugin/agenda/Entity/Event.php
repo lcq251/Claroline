@@ -14,8 +14,8 @@ namespace Claroline\AgendaBundle\Entity;
 use Claroline\AgendaBundle\Finder\EventType;
 use Claroline\AppBundle\API\Attribute\CrudEntity;
 use Claroline\CoreBundle\Entity\Planning\AbstractPlanned;
-use Claroline\TemplateBundle\Entity\Template;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Claroline\TemplateBundle\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,7 +60,7 @@ class Event extends AbstractPlanned
         return $this->workspace;
     }
 
-    public function setWorkspace(Workspace $workspace = null): void
+    public function setWorkspace(?Workspace $workspace = null): void
     {
         $this->workspace = $workspace;
     }

@@ -16,33 +16,23 @@ use JVal\Exception\Constraint\InvalidTypeException;
 use JVal\Exception\Constraint\NotUniqueException;
 use JVal\Types;
 use JVal\Walker;
-use stdClass;
 
 /**
  * Constraint for the "required" keyword.
  */
 class RequiredConstraint implements Constraint
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function keywords()
+    public function keywords(): array
     {
         return ['required'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($type)
+    public function supports($type): bool
     {
         return Types::TYPE_OBJECT === $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize(stdClass $schema, Context $context, Walker $walker)
+    public function normalize(\stdClass $schema, Context $context, Walker $walker): void
     {
         $context->enterNode('required');
 
@@ -50,7 +40,8 @@ class RequiredConstraint implements Constraint
             throw new InvalidTypeException($context, Types::TYPE_ARRAY);
         }
 
-        if (0 === $requiredCount = count($schema->required)) {
+        $requiredCount = count($schema->required);
+        if (0 === $requiredCount) {
             throw new EmptyArrayException($context);
         }
 
@@ -69,10 +60,7 @@ class RequiredConstraint implements Constraint
         $context->leaveNode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($instance, stdClass $schema, Context $context, Walker $walker)
+    public function apply($instance, \stdClass $schema, Context $context, Walker $walker): void
     {
         foreach ($schema->required as $property) {
             if (!property_exists($instance, $property)) {

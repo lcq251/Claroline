@@ -11,13 +11,12 @@
 
 namespace Claroline\DropZoneBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use DateTime;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'claro_dropzonebundle_revision')]
@@ -53,7 +52,7 @@ class Revision
     public function __construct()
     {
         $this->refreshUuid();
-        $this->setCreationDate(new DateTime());
+        $this->setCreationDate(new \DateTime());
         $this->documents = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -79,20 +78,20 @@ class Revision
         return $this->creator;
     }
 
-    public function setCreator(User $creator = null)
+    public function setCreator(?User $creator = null)
     {
         $this->creator = $creator;
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreationDate()
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(DateTime $creationDate)
+    public function setCreationDate(\DateTime $creationDate)
     {
         $this->creationDate = $creationDate;
     }

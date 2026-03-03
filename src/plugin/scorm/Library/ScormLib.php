@@ -67,9 +67,8 @@ class ScormLib
             }
 
             return $this->parseItemNodes($organization, $resources);
-        } else {
-            throw new InvalidScormArchiveException('no_organization_found_message');
         }
+        throw new InvalidScormArchiveException('no_organization_found_message');
     }
 
     /**
@@ -79,7 +78,7 @@ class ScormLib
      *
      * @throws InvalidScormArchiveException
      */
-    private function parseItemNodes(\DOMNode $source, \DOMNodeList $resources, Sco $parentSco = null): array
+    private function parseItemNodes(\DOMNode $source, \DOMNodeList $resources, ?Sco $parentSco = null): array
     {
         $item = $source->firstChild;
         $scos = [];

@@ -166,7 +166,7 @@ class DocimologyManager
         return $questionStatistics;
     }
 
-    public function getAttemptsScores(Exercise $exercise, bool $finishedOnly = false, User $user = null): array
+    public function getAttemptsScores(Exercise $exercise, bool $finishedOnly = false, ?User $user = null): array
     {
         $data = [
             'total' => [],
@@ -269,7 +269,7 @@ class DocimologyManager
                         $standardDeviationQ = $this->getStandardDeviation($questionsScores[$item['id']]);
                         $n = count($questionProductMarginMark);
                         $nSxSy = $n * $standardDeviationQ * $standardDeviationE;
-                        $coef = $nSxSy === floatval(0) ? 0 : round($sumPenq / ($nSxSy), 3);
+                        $coef = $nSxSy === floatval(0) ? 0 : round($sumPenq / $nSxSy, 3);
 
                         $discriminationCoef[$item['id']] = [
                             'xData' => $itemEntity->getTitle() ? strip_tags($itemEntity->getTitle()) : strip_tags($itemEntity->getContent()),
@@ -296,13 +296,13 @@ class DocimologyManager
         $fillNbData = count($array) > 0 ? count($array) : 1;
 
         return sqrt(
-          array_sum(
-            array_map(
-              $sdSquare,
-              $array,
-              array_fill(0, count($array), (array_sum($array) / $fillNbData))
-            )
-          ) / $nbData
+            array_sum(
+                array_map(
+                    $sdSquare,
+                    $array,
+                    array_fill(0, count($array), array_sum($array) / $fillNbData)
+                )
+            ) / $nbData
         );
     }
 
@@ -310,7 +310,7 @@ class DocimologyManager
      * Get scores for a paper.
      * If $scoreOn is not null then all scores are reported on this value.
      */
-    private function getPapersScores(array $papers, float $scoreOn = null): array
+    private function getPapersScores(array $papers, ?float $scoreOn = null): array
     {
         $scores = [];
         /** @var Paper $paper */
