@@ -12,6 +12,7 @@ import {
   PDFViewer,
   ScrollMode
 } from 'pdfjs-dist/web/pdf_viewer'
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url
@@ -27,12 +28,13 @@ import {Tree} from '#/main/app/components/tree'
 import {Menu} from '#/main/app/overlays/menu'
 import {PageContent} from '#/main/app/page'
 import {ResourcePage} from '#/main/core/resource'
+import {selectors} from '#/plugin/pdf-player/resources/pdf/store'
+import {useSelector} from 'react-redux'
 
 const MIN_SCALE = 10
 const BASE_SCALE = 100
 const MAX_SCALE = 1000
 const DEFAULT_SCALE = 'auto'
-const DEFAULT_SCROLL_MODE = ScrollMode.PAGE
 
 const SCALES = {
   'auto': trans('pdf_zoom_auto', {}, 'resource'),
@@ -246,13 +248,13 @@ PdfMenu.propTypes = {
 class PdfPlayer extends Component {
   constructor(props) {
     super(props)
+    this.viewer = null
 
     this.state = {
-      viewer: null,
       page: 1,
       pages: 1,
       scale: DEFAULT_SCALE,
-      scrollMode: DEFAULT_SCROLL_MODE,
+      scrollMode: props.defaultScrollMode,
       summary: []
     }
 
@@ -310,9 +312,8 @@ class PdfPlayer extends Component {
             this.setState({summary: outline.map(getItem)})
           }
         })
-
+        this.viewer = pdfViewer
         this.setState({
-          pages: pdf.numPages,
           viewer: pdfViewer
         })
       })
@@ -320,12 +321,13 @@ class PdfPlayer extends Component {
   }
 
   resize() {
-    if (!this.state.viewer) {
+    if (!this.viewer) {
       return
     }
 
-    this.state.viewer.scrollMode = this.state.scrollMode
-    this.state.viewer.currentScaleValue = this.state.scale
+    this.viewer.scrollMode = this.state.scrollMode
+    this.viewer.currentScaleValue = this.state.scale
+
   }
 
   renderPage(pageNumber) {
@@ -381,7 +383,7 @@ class PdfPlayer extends Component {
             summary={this.state.summary}
             currentPage={this.state.page}
             pages={this.state.pages}
-            changePage={(newPage) => this.changePage(this.state.viewer, newPage)}
+            changePage={(newPage) => this.changePage(this.viewer, newPage)}
             scaleValue={isNumber(this.state.scale) ? this.state.scale * 100 : this.state.scale}
             zoom={this.zoom}
             scale={this.scale}
@@ -393,7 +395,7 @@ class PdfPlayer extends Component {
           <div
             className="pdf-container position-relative w-100 flex-fill"
             role="presentation"
-            style={{height: get(this.state.viewer, 'container.offsetHeight')}}
+            style={{height: get(this.viewer, 'container.offsetHeight')}}
           >
             <div
               id={'pdf-' + this.props.nodeId}
@@ -420,9 +422,23 @@ PdfPlayer.propTypes = {
   embedded: T.bool,
   updateProgression: T.func.isRequired,
   currentUser: T.object,
-  loadFile: T.func.isRequired
+  loadFile: T.func.isRequired,
+  defaultScrollMode: T.number.isRequired
 }
 
-export {
-  PdfPlayer
+const PdfPlayerContainer = (props) => {
+  const scrollModeName = useSelector(selectors.pdfPlayerScrollMode)
+  const modeValue = ScrollMode[scrollModeName]
+  const defaultScrollMode = (modeValue === undefined || modeValue === null)
+    ? ScrollMode.PAGE
+    : modeValue
+
+  return (
+    <PdfPlayer
+      {...props}
+      defaultScrollMode={defaultScrollMode}
+    />
+  )
 }
+
+export { PdfPlayerContainer as PdfPlayer }
