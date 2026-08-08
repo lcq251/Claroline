@@ -10,4 +10,9 @@ class ClarolineHomeInstaller extends AdditionalInstaller
     {
         return true;
     }
+
+    public function hasFixtures(): bool
+    {
+        return true;
+    }
 }
