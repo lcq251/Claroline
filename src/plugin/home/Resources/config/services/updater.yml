@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        tags: [ 'claroline.platform.updater' ]
+
+    Claroline\HomeBundle\Installation\Updater\Updater150100:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\AppBundle\API\SerializerProvider'
+            - '@translator'
