@@ -129,9 +129,7 @@
             "HeVinci\\UrlBundle\\": "src/plugin/url",
             "Icap\\LessonBundle\\": "src/plugin/lesson",
             "Innova\\PathBundle\\": "src/plugin/path",
-            "UJM\\ExoBundle\\": "src/plugin/exo",
-            "Claroline\\MindMeAiBundle\\": "src/integration/mindme-ai",
-            "Claroline\\MindMeBillingBundle\\": "/src/integration/mindme-billing"
+            "UJM\\ExoBundle\\": "src/plugin/exo"
         }
     },
     "scripts": {
