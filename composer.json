@@ -70,7 +70,8 @@
         "willdurand/js-translation-bundle": "^7.0",
         "league/oauth2-client": "^2.0",
         "league/oauth2-github": "^3.1",
-        "symfony/var-exporter": "^7.4"
+        "symfony/var-exporter": "^7.4",
+        "yansongda/pay": "^3.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -102,6 +103,8 @@
             "Claroline\\ForumBundle\\": "src/plugin/forum",
             "Claroline\\FlashcardBundle\\": "src/plugin/flashcard",
             "Claroline\\GitHubBundle\\": "src/integration/github",
+            "Claroline\\MindMeBillingBundle\\": "src/integration/mindme-billing",
+            "Claroline\\MindMeAiBundle\\": "src/integration/mindme-ai",
             "Claroline\\HomeBundle\\": "src/plugin/home",
             "Claroline\\ImagePlayerBundle\\": "src/plugin/image-player",
             "Claroline\\InstallationBundle\\": "src/main/installation",
@@ -126,7 +129,9 @@
             "HeVinci\\UrlBundle\\": "src/plugin/url",
             "Icap\\LessonBundle\\": "src/plugin/lesson",
             "Innova\\PathBundle\\": "src/plugin/path",
-            "UJM\\ExoBundle\\": "src/plugin/exo"
+            "UJM\\ExoBundle\\": "src/plugin/exo",
+            "Claroline\\MindMeAiBundle\\": "src/integration/mindme-ai",
+            "Claroline\\MindMeBillingBundle\\": "/src/integration/mindme-billing"
         }
     },
     "scripts": {

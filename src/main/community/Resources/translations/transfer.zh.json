@@ -1,0 +1,18 @@
+{
+  "add_user": "添加用户",
+  "remove_user": "删除用户",
+  "add_group": "添加组",
+  "remove_group": "删除组",
+  "add_manager": "添加管理员",
+  "remove_manager": "删除管理员",
+  "set_main_organization": "设置主组织",
+  "group": "组",
+  "user": "用户",
+  "organization": "Organization",
+  "enable": "启用",
+  "disable": "禁用",
+  "list_users": "用户列表",
+  "list_managers": "管理员列表",
+  "list_groups": "组列表",
+  "empty_users": "清空所有用户"
+}

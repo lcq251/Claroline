@@ -1,0 +1,5 @@
+{
+  "shortcut": "快捷方式",
+  "shortcut_desc": "允许创建指向平台内托管资源的快捷方式。",
+  "target_resource": "目标资源"
+}

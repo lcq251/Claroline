@@ -35,7 +35,7 @@ class LocaleManager
      */
     public function getAvailableLocales(): array
     {
-        return ['en', 'fr', 'nl'];
+        return ['en', 'fr', 'nl', 'zh'];
     }
 
     /**

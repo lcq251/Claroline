@@ -1,0 +1,17 @@
+{
+  "pdf": "PDF",
+  "pdf_desc": "嵌入PDF文件。",
+  "count_pages": "{0, 1} %count% 页|]1,Inf[ %count% 页",
+  "pdf_zoom_auto": "自动缩放",
+  "pdf_zoom_actual": "实际大小",
+  "pdf_zoom_fit": "适合页面",
+  "pdf_zoom_width": "适合宽度",
+  "pdf_scroll_mode": "滚动模式",
+  "pdf_scroll_page": "逐页",
+  "pdf_scroll_vertical": "垂直",
+  "pdf_scroll_horizontal": "水平",
+  "scroll_mode": "滚动模式",
+  "scroll_page": "逐页",
+  "scroll_horizontal": "水平",
+  "scroll_vertical": "垂直"
+}

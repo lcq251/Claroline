@@ -8,6 +8,7 @@ use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\AuthenticationBundle\Component\OAuth\OAuth2Interface;
 use Claroline\AuthenticationBundle\Component\OAuth\OAuth2Provider;
 use Claroline\AuthenticationBundle\Entity\OAuthClient;
+use Claroline\AuthenticationBundle\Entity\ThirdPartyUser;
 use Claroline\CoreBundle\Entity\User;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
@@ -32,6 +33,7 @@ class OAuthManager implements LoggerAwareInterface
         private readonly OAuth2Provider $oauthProvider,
         private readonly ObjectManager $om,
         private readonly Crud $crud,
+        private readonly ThirdPartyUserManager $thirdPartyUserManager,
     ) {
     }
 
@@ -130,7 +132,16 @@ class OAuthManager implements LoggerAwareInterface
         // We got an access token, let's now get the user's details
         $resourceOwner = $provider->getResourceOwner($token);
 
-        $user = $this->getUserFromResourceOwner($resourceOwner, $client);
+        $user = null;
+        $serviceProvider = $client->getServiceProvider();
+
+        // Try third-party matching first (for platforms like WeChat without email)
+        $user = $this->getUserFromThirdParty($resourceOwner, $client);
+
+        // Fall back to standard email/username matching
+        if (!$user) {
+            $user = $this->getUserFromResourceOwner($resourceOwner, $client);
+        }
 
         $this->om->startFlushSuite();
         if (!$user) {
@@ -162,14 +173,56 @@ class OAuthManager implements LoggerAwareInterface
         }));
     }
 
+    /**
+     * Try to find an existing User via ThirdPartyUser lookup.
+     *
+     * Used by platforms that don't provide email (e.g., WeChat).
+     * Matches by platform + platform ID (openid).
+     */
+    private function getUserFromThirdParty(ResourceOwnerInterface $resourceOwner, OAuthClient $client): ?User
+    {
+        $serviceProvider = $client->getServiceProvider();
+        $normalizedData = $this->extractResourceOwnerData($resourceOwner, $client);
+
+        // Determine platform ID based on provider
+        $platformId = match ($serviceProvider) {
+            'wechat' => $normalizedData['username'] ?? $normalizedData['openid'] ?? null,
+            default => null,
+        };
+
+        if (empty($platformId)) {
+            return null;
+        }
+
+        $thirdParty = $this->om->getRepository(ThirdPartyUser::class)
+            ->findOneBy([
+                'platform' => $serviceProvider,
+                'platformId' => $platformId,
+            ]);
+
+        return $thirdParty?->getUser();
+    }
+
     private function getUserFromResourceOwner(ResourceOwnerInterface $resourceOwner, OAuthClient $client): ?User
     {
         $normalizedData = $this->extractResourceOwnerData($resourceOwner, $client);
 
         $user = null;
-        try {
-            $user = $this->om->getRepository(User::class)->loadUserByIdentifier($normalizedData['email']);
-        } catch (\Exception $e) {
+
+        // Match by email first (standard OAuth providers)
+        if (!empty($normalizedData['email'])) {
+            try {
+                $user = $this->om->getRepository(User::class)->loadUserByIdentifier($normalizedData['email']);
+            } catch (\Exception $e) {
+            }
+        }
+
+        // Fallback: match by username for providers without email (e.g., WeChat)
+        if (!$user && !empty($normalizedData['username'])) {
+            try {
+                $user = $this->om->getRepository(User::class)->loadUserByIdentifier($normalizedData['username']);
+            } catch (\Exception $e) {
+            }
         }
 
         return $user;
@@ -186,20 +239,45 @@ class OAuthManager implements LoggerAwareInterface
             $user->setMainOrganization($client->getOrganization());
         }
 
+        $serviceProvider = $client->getServiceProvider();
+
+        // For providers without email (e.g., WeChat), use synthetic identifiers
+        if (empty($normalizedData['email'])) {
+            $platformId = $normalizedData['username'] ?? $normalizedData['openid'] ?? uniqid();
+            $username = $serviceProvider.$platformId;
+            $email = $serviceProvider.$platformId.'@placeholder.local';
+            $mailValidated = false;
+        } else {
+            $username = $normalizedData['username'];
+            $email = $normalizedData['email'];
+            $mailValidated = true;
+        }
+
         /** @var User $user */
         $user = $this->crud->create(User::class, [
-            'username' => $normalizedData['username'],
+            'username' => $username,
             'firstName' => $normalizedData['firstName'],
             'lastName' => $normalizedData['lastName'],
-            'email' => $normalizedData['email'],
+            'email' => $email,
             'plainPassword' => uniqid(), // we cannot create a user without a password
             'meta' => [
-                'mailValidated' => true, // because we receive a trusted email
+                'mailValidated' => $mailValidated,
             ],
             'restrictions' => [
                 'disabled' => false,
             ],
         ], [Crud::NO_PERMISSIONS, Options::NO_EMAIL]);
+
+        // Create ThirdPartyUser record for platforms tracked in claro_thirdpart_user
+        if (in_array($serviceProvider, ['wechat'], true)) {
+            $thirdParty = new ThirdPartyUser();
+            $thirdParty->setUser($user);
+            $thirdParty->setPlatform($serviceProvider);
+            $thirdParty->setPlatformId($normalizedData['username'] ?? $normalizedData['openid'] ?? '');
+            $thirdParty->setRawData($resourceOwner->toArray());
+
+            $this->om->persist($thirdParty);
+        }
 
         return $user;
     }

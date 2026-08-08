@@ -1,0 +1,22 @@
+{
+  "event_invitation": "活动邀请",
+  "event_invitation_desc": "用于发送活动邀请的模板。",
+  "event_name": "活动名称",
+  "event_description_desc": "活动描述",
+  "event_poster_desc": "活动海报",
+  "event_join_url": "用户表示将参加活动的URL",
+  "event_maybe_url": "用户表示可能参加活动的URL",
+  "event_decline_url": "用户表示不参加活动的URL",
+  "event_start_datetime_utc_desc": "活动开始日期和时间（UTC）",
+  "event_start_date_utc_desc": "活动开始日期（UTC）",
+  "event_start_time_utc_desc": "活动开始时间（UTC）",
+  "event_start_datetime_desc": "活动开始日期和时间",
+  "event_start_date_desc": "活动开始日期",
+  "event_start_time_desc": "活动开始时间",
+  "event_end_datetime_utc_desc": "活动结束日期和时间（UTC）",
+  "event_end_date_utc_desc": "活动结束日期（UTC）",
+  "event_end_time_utc_desc": "活动结束时间（UTC）",
+  "event_end_datetime_desc": "活动结束日期和时间",
+  "event_end_date_desc": "活动结束日期",
+  "event_end_time_desc": "活动结束时间"
+}

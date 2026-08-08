@@ -1,0 +1,23 @@
+{
+  "users": "用户列表",
+  "users_desc": "允许列出当前用户可见的用户。",
+  "teams": "活动空间团队列表",
+  "teams_desc": "允许列出活动空间的团队。",
+  "my-teams": "我的团队列表",
+  "my-teams_desc": "允许列出我的团队。",
+  "teams-members": "我的团队成员列表",
+  "teams-members_desc": "允许列出我的团队成员。",
+  "team": "团队",
+  "groups": "群组列表",
+  "groups_desc": "允许列出群组。",
+  "my-groups": "我的群组列表",
+  "my-groups_desc": "允许列出我的群组。",
+  "roles": "角色列表",
+  "roles_desc": "允许列出角色。",
+  "my-roles": "我的角色列表",
+  "my-roles_desc": "允许列出我的角色。",
+  "organizations": "组织列表",
+  "organizations_desc": "允许列出组织。",
+  "my-organizations": "我的组织列表",
+  "my-organizations_desc": "允许列出我的组织。"
+}

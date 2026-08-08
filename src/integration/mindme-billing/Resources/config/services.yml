@@ -1,0 +1,40 @@
+services:
+    # Payment Gateways
+    Claroline\MindMeBillingBundle\Payment\WeChatPayGateway:
+        arguments:
+            $wechatConfig:
+                mch_id: '%env(MINDME_WECHAT_MCH_ID)%'
+                mch_secret_key: '%env(MINDME_WECHAT_MCH_SECRET_KEY)%'
+                mch_secret_cert: '%env(MINDME_WECHAT_MCH_SECRET_CERT)%'
+                mch_public_cert_path: '%env(MINDME_WECHAT_MCH_PUBLIC_CERT_PATH)%'
+                wechat_public_cert_path: '%env(MINDME_WECHAT_PUBLIC_CERT_PATH)%'
+                notify_url: '%env(MINDME_WECHAT_NOTIFY_URL)%'
+
+    Claroline\MindMeBillingBundle\Payment\AlipayGateway:
+        arguments:
+            $alipayConfig:
+                app_id: '%env(MINDME_ALIPAY_APP_ID)%'
+                app_secret_cert: '%env(MINDME_ALIPAY_APP_SECRET_CERT)%'
+                app_public_cert_path: '%env(MINDME_ALIPAY_APP_PUBLIC_CERT_PATH)%'
+                alipay_public_cert_path: '%env(MINDME_ALIPAY_PUBLIC_CERT_PATH)%'
+                alipay_root_cert_path: '%env(MINDME_ALIPAY_ROOT_CERT_PATH)%'
+                return_url: '%env(MINDME_ALIPAY_RETURN_URL)%'
+                notify_url: '%env(MINDME_ALIPAY_NOTIFY_URL)%'
+
+    # Default gateway (wechat) — switch to alipay via env
+    Claroline\MindMeBillingBundle\Payment\PaymentGatewayInterface:
+        alias: Claroline\MindMeBillingBundle\Payment\WeChatPayGateway
+
+    # Order Manager
+    Claroline\MindMeBillingBundle\Manager\OrderManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\MindMeBillingBundle\Payment\PaymentGatewayInterface'
+
+    # Controllers
+    Claroline\MindMeBillingBundle\Controller\OrderController:
+        arguments:
+            - '@security.token_storage'
+            - '@Claroline\MindMeBillingBundle\Manager\OrderManager'
+            - '@Claroline\MindMeBillingBundle\Payment\PaymentGatewayInterface'
+        tags: ['controller.service_arguments']

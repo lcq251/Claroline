@@ -18,3 +18,8 @@ services:
             - '@Claroline\AuthenticationBundle\Component\OAuth\OAuth2Provider'
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\Crud'
+            - '@Claroline\AuthenticationBundle\Manager\ThirdPartyUserManager'
+
+    Claroline\AuthenticationBundle\Manager\ThirdPartyUserManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'

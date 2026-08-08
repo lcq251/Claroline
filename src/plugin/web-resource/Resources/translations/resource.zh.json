@@ -1,0 +1,6 @@
+{
+  "claroline_web_resource": "网页资源",
+  "claroline_web_resource_desc": "此资源允许以zip格式上传一个用HTML、CSS和JavaScript编写的“网站”。",
+  "not_a_zip": "文件必须是包含“index.html”或“index.htm”文件的.zip压缩包。",
+  "has_to_be_a_zip": "文件必须是包含“index.html”或“index.htm”文件的.zip压缩包。"
+}

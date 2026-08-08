@@ -1,0 +1,6 @@
+{
+  "import": "导入",
+  "import_desc": "将您的数据导入平台。",
+  "export": "导出",
+  "export_desc": "从平台导出您的数据。"
+}

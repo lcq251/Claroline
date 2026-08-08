@@ -1,0 +1,27 @@
+{
+  "tab_add_child": "添加子页面",
+  "home_tab_delete_confirm_message": "您确定要删除此页面吗？",
+  "new_page": "新页面",
+  "new_tab_configure": "自定义您的新页面。",
+  "new_tab_select": "选择您要创建的页面类型。",
+  "loading": "正在加载您的页面...",
+  "page": "页面",
+  "pages": "页面",
+  "pages_desc": "创建并组织您首页的不同页面。",
+  "widgets": "小工具",
+  "widgets_desc": "允许创建不同类型小工具的网格。",
+  "restricted_access_message": "您无法访问此页面，因为并非所有访问条件都已满足。",
+  "restrictions": {
+    "dismiss_help": "作为管理员，即使访问条件未满足，您仍可访问该页面。",
+    "unlocked": "您已解锁该页面。",
+    "locked": "访问需要密码。",
+    "locked_help": "请输入您收到的密码以访问资源。",
+    "period_opened": "页面的访问时段当前已开启。",
+    "period_opened_help": "该页面可从 %start% 访问至 %end%。",
+    "period_not_limited": "页面的访问时段不受限制。",
+    "not_started": "该页面尚未开放访问。",
+    "not_started_help": "请等待至 %date%。",
+    "ended": "该页面已不再可访问。",
+    "ended_help": "自 %date% 起访问已关闭。"
+  }
+}

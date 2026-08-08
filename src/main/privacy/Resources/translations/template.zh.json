@@ -1,0 +1,18 @@
+{
+  "terms_of_service": "服务条款",
+  "terms_of_service_desc": "用于服务条款的模板",
+  "request_account_deletion": "账户删除请求",
+  "request_account_deletion_desc": "当向平台DPO发送账户删除请求时使用的模板",
+  "privacy": "隐私政策",
+  "privacy_desc": "用于隐私政策的模板",
+  "country_storage_desc": "数据存储国家",
+  "dpo_name_desc": "数据保护官姓名",
+  "dpo_email_desc": "数据保护官邮箱",
+  "dpo_phone_desc": "数据保护官电话",
+  "dpo_address_street1_desc": "数据保护官地址 - 街道1",
+  "dpo_address_street2_desc": "数据保护官地址 - 街道2",
+  "dpo_address_postal_code_desc": "DPO地址 - 邮政编码",
+  "dpo_address_city_desc": "数据保护官所在城市",
+  "dpo_address_state_desc": "数据保护官所在州/省",
+  "dpo_address_country_desc": "数据保护官所在国家"
+}

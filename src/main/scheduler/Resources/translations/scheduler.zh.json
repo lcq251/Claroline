@@ -1,0 +1,17 @@
+{
+  "cron_not_configured": "平台计划任务（CRON）未配置。",
+  "cron_not_configured_help": "无法创建新任务，现有任务也无法自动执行。请联系管理员配置计划任务。",
+  "scheduled_date": "计划日期",
+  "execution_date": "执行日期",
+  "add_scheduled_task": "添加计划任务",
+  "task_pending": "等待中",
+  "task_in_progress": "执行中",
+  "task_success": "已执行",
+  "task_error": "执行失败",
+  "planing": "计划",
+  "schedule": "计划执行",
+  "once": "单次执行",
+  "recurring": "重复执行",
+  "interval": "执行间隔",
+  "new_task": "新建计划任务"
+}

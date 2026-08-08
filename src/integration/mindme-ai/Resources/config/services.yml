@@ -1,0 +1,5 @@
+services:
+    Claroline\MindMeAiBundle\Controller\AiGeneratorController:
+        tags: ['controller.service_arguments']
+    Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:
+        tags: ['claroline.serializer']

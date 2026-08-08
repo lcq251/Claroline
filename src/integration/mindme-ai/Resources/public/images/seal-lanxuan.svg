@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="1140" viewBox="0 0 1140 1140">
+  <!-- 圆形朱文印章: 谰之轩工作室 (传统竖排两列, 右起) -->
+  <circle cx="570" cy="570" r="540" fill="#fdf6ec" stroke="#c0392b" stroke-width="46"/>
+  <circle cx="570" cy="570" r="478" fill="none" stroke="#c0392b" stroke-width="10"/>
+  <!-- 右列: 谰之轩 -->
+  <text x="785" y="310" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">谰</text>
+  <text x="785" y="585" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">之</text>
+  <text x="785" y="860" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">轩</text>
+  <!-- 左列: 工作室 -->
+  <text x="355" y="310" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">工</text>
+  <text x="355" y="585" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">作</text>
+  <text x="355" y="860" font-family="'Noto Serif CJK SC','Source Han Serif SC','Songti SC','SimSun',serif" font-size="252" font-weight="700" fill="#c0392b" text-anchor="middle">室</text>
+</svg>

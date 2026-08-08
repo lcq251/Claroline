@@ -35,6 +35,7 @@ registry.add('ClarolineAuthenticationBundle', {
     'oauth2': () => { return import(/* webpackChunkName: "authentication-sso-oauth2" */ '#/main/authentication/sso/oauth2') }
   },
   oauth: {
-    'generic': () => { return import(/* webpackChunkName: "authentication-oauth-generic" */ '#/main/authentication/oauth/generic') }
+    'generic': () => { return import(/* webpackChunkName: "authentication-oauth-generic" */ '#/main/authentication/oauth/generic') },
+    'wechat': () => { return import(/* webpackChunkName: "authentication-oauth-wechat" */ '#/main/authentication/oauth/wechat') }
   }
 })

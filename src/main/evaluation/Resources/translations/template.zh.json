@@ -1,0 +1,22 @@
+{
+  "workspace_description_desc": "活动空间描述",
+  "workspace_poster_desc": "活动空间海报",
+  "workspace_participation_certificate": "活动空间参与证书",
+  "workspace_participation_certificate_desc": "用于生成用户参与活动空间证书的模板。",
+  "workspace_success_certificate": "活动空间结业证书",
+  "workspace_success_certificate_desc": "用于生成用户完成活动空间证书的模板。",
+  "evaluation_participation_certificate": "序列参与证书",
+  "evaluation_participation_certificate_desc": "用于生成用户参与序列证书的模板。",
+  "evaluation_success_certificate": "序列结业证书",
+  "evaluation_success_certificate_desc": "用于生成用户完成序列证书的模板。",
+  "evaluation_duration_desc": "评估时长",
+  "evaluation_status_desc": "评估状态（未开始、进行中、已通过等）",
+  "evaluation_datetime_desc": "评估的最后活动日期（日期+时间）",
+  "evaluation_date_desc": "评估的最后活动日期（仅日期）",
+  "evaluation_time_desc": "评估的最后活动日期（仅时间）",
+  "evaluation_score_desc": "评估分数",
+  "evaluation_score_max_desc": "评估最高分数",
+  "user_first_name_desc": "用户名字",
+  "user_last_name_desc": "用户姓氏",
+  "user_username_desc": "用户名"
+}

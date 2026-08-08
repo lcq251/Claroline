@@ -1,0 +1,4 @@
+mindme_ai:
+    resource: '@ClarolineMindMeAiBundle/Controller/'
+    type: attribute
+    prefix: /

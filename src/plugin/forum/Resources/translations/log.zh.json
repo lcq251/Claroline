@@ -1,0 +1,18 @@
+{
+  "log_forum_subject-create_shortname": "创建主题",
+  "log_forum_message-unmoderated_shortname": "解锁消息",
+  "log_forum_message-create_shortname": "创建消息",
+  "log_forum_subject-stick_shortname": "置顶主题",
+  "log_forum_subject-flag_shortname": "举报主题",
+  "log_forum_subject-update_shortname": "修改主题",
+  "log_forum_subject-open_shortname": "打开主题",
+  "log_forum_subject-close_shortname": "关闭主题",
+  "log_forum_subject-create_sentence": "在 %resource% 中创建了主题 %subject.title%",
+  "log_forum_message-unmoderated_sentence": "在 %resource% 的主题 %subject.title% 中解锁了一条消息",
+  "log_forum_message-create_sentence": "在 %resource% 的主题 %subject.title% 中创建了一条消息",
+  "log_forum_subject-stick_sentence": "在 %resource% 中置顶了主题 %subject.title%",
+  "log_forum_subject-flag_sentence": "在 %resource% 中举报了主题 %subject.title%",
+  "log_forum_subject-update_sentence": "在 %resource% 中更新了主题 %subject.title%",
+  "log_forum_subject-open_sentence": "在 %resource% 中打开了主题 %subject.title%",
+  "log_forum_subject-close_sentence": "在 %resource% 中关闭了主题 %subject.title%"
+}

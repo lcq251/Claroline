@@ -1,0 +1,4 @@
+{
+  "my_notifications": "我的通知",
+  "notifications_count": "{0} 您没有任何新通知。 | {1} 您有1条新通知。 | ]1,Inf[ 您有%count%条新通知。"
+}

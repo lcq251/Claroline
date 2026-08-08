@@ -1,0 +1,12 @@
+{
+  "history": "历史记录",
+  "history_desc": "查找并管理您的浏览历史记录。",
+  "empty_history_confirm": "您确定要删除历史记录中的所有项目吗？",
+  "enable_history": "启用我的历史记录",
+  "enable_history_help": "启用个人历史记录，以便轻松找到最近浏览的项目。",
+  "no_history_results": "您的历史记录目前为空",
+  "no_history_results_help": "浏览平台内容，之前访问过的项目将显示在此处。",
+  "recent": "最近",
+  "history_unavailable": "您无法访问该用户的个人历史记录",
+  "history_unavailable_help": "历史记录存储在用户设备上，仅对该用户可用。"
+}

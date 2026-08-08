@@ -1,0 +1,240 @@
+{
+  "generic": {
+    "pending": {
+      "title": "加载中",
+      "message": "请耐心等待数据加载。"
+    },
+    "success": {
+      "title": "成功",
+      "message": ""
+    },
+    "warning": {
+      "title": "注意",
+      "message": ""
+    },
+    "unauthorized": {
+      "title": "未授权访问",
+      "message": "您必须登录才能使用此功能。"
+    },
+    "forbidden": {
+      "title": "访问被禁止",
+      "message": "您无权访问此功能。"
+    },
+    "unavailable": {
+      "title": "平台暂时不可用",
+      "message": "请稍后重试或联系管理员。"
+    },
+    "error": {
+      "title": "错误",
+      "message": "请联系管理员。"
+    },
+    "info": {
+      "title": "信息",
+      "message": ""
+    }
+  },
+  "load": {
+    "pending": {
+      "title": "加载中",
+      "message": "请耐心等待数据加载。"
+    },
+    "error": {
+      "title": "加载失败",
+      "message": "我们未能成功加载您的数据。"
+    }
+  },
+  "refresh": {
+    "pending": {
+      "title": "刷新中",
+      "message": "请耐心等待数据刷新。"
+    },
+    "error": {
+      "title": "刷新失败",
+      "message": "我们未能成功刷新您的数据。"
+    }
+  },
+  "save": {
+    "pending": {
+      "title": "保存中",
+      "message": "请耐心等待数据保存。"
+    },
+    "success": {
+      "title": "保存成功",
+      "message": "您的数据已成功保存。"
+    },
+    "warning": {
+      "title": "保存失败",
+      "message": "请修正表单中的错误后重试。"
+    },
+    "error": {
+      "title": "保存失败",
+      "message": "我们未能成功保存您的数据。"
+    },
+    "forbidden": {
+      "title": "保存被禁止",
+      "message": "您没有保存这些数据的必要权限。"
+    }
+  },
+  "create": {
+    "pending": {
+      "title": "创建中",
+      "message": "请耐心等待数据保存。"
+    },
+    "success": {
+      "title": "创建成功",
+      "message": "您的数据已成功保存。"
+    },
+    "warning": {
+      "title": "创建失败",
+      "message": "请修正表单中的错误后重试。"
+    },
+    "error": {
+      "title": "创建失败",
+      "message": "我们未能成功保存您的数据。"
+    },
+    "forbidden": {
+      "title": "创建被禁止",
+      "message": "您没有创建这些数据的必要权限。"
+    }
+  },
+  "update": {
+    "pending": {
+      "title": "更新中",
+      "message": "请耐心等待数据保存。"
+    },
+    "success": {
+      "title": "更新成功",
+      "message": "您的数据已成功保存。"
+    },
+    "warning": {
+      "title": "更新失败",
+      "message": "请修正表单中的错误后重试。"
+    },
+    "error": {
+      "title": "更新失败",
+      "message": "我们未能成功保存您的数据。"
+    },
+    "forbidden": {
+      "title": "更新被禁止",
+      "message": "您没有修改这些数据的必要权限。"
+    }
+  },
+  "delete": {
+    "pending": {
+      "title": "删除中",
+      "message": "请耐心等待数据删除。"
+    },
+    "success": {
+      "title": "删除成功",
+      "message": "您的数据已成功删除。"
+    },
+    "warning": {
+      "title": "删除警告",
+      "message": "可能部分数据未被删除。"
+    },
+    "error": {
+      "title": "删除失败",
+      "message": "我们未能成功删除您的数据。"
+    },
+    "forbidden": {
+      "title": "删除被禁止",
+      "message": "您没有删除这些数据的必要权限。"
+    }
+  },
+  "send": {
+    "pending": {
+      "title": "发送中",
+      "message": "请耐心等待消息发送。"
+    },
+    "success": {
+      "title": "发送成功",
+      "message": "您的消息已成功发送。"
+    },
+    "error": {
+      "title": "发送失败",
+      "message": "我们未能成功发送您的消息。"
+    }
+  },
+  "upload": {
+    "pending": {
+      "title": "上传中",
+      "message": "请耐心等待文件上传。"
+    },
+    "success": {
+      "title": "上传成功",
+      "message": "您的文件已成功上传。"
+    },
+    "warning": {
+      "title": "上传失败",
+      "message": "请使用支持的文件类型后重试。"
+    },
+    "error": {
+      "title": "上传失败",
+      "message": "我们未能成功上传您的文件。"
+    },
+    "forbidden": {
+      "title": "上传被禁止",
+      "message": "您没有上传此文件的必要权限。"
+    }
+  },
+  "publish": {
+    "pending": {
+      "title": "发布中",
+      "message": "请耐心等待内容发布。"
+    },
+    "success": {
+      "title": "发布成功",
+      "message": "您的内容已成功发布，现在可见。"
+    },
+    "error": {
+      "title": "发布失败",
+      "message": "我们未能成功发布您的内容。"
+    }
+  },
+  "unpublish": {
+    "pending": {
+      "title": "取消发布中",
+      "message": "请耐心等待内容取消发布。"
+    },
+    "success": {
+      "title": "取消发布成功",
+      "message": "您的内容已成功取消发布，不再可见。"
+    },
+    "error": {
+      "title": "取消发布失败",
+      "message": "我们未能成功取消发布您的内容。"
+    }
+  },
+  "register": {
+    "pending": {
+      "title": "注册中",
+      "message": "请耐心等待我们创建您的账户。"
+    },
+    "success": {
+      "title": "注册成功",
+      "message": "您的账户已成功创建。"
+    },
+    "warning": {
+      "title": "注册失败",
+      "message": "请修正注册表单中的错误后重试。"
+    },
+    "error": {
+      "title": "注册失败",
+      "message": "我们未能成功创建您的账户。"
+    }
+  },
+  "schedule": {
+    "pending": {
+      "title": "计划中",
+      "message": "请耐心等待我们准备您的任务。"
+    },
+    "info": {
+      "title": "计划成功",
+      "message": "您的任务已成功计划，将尽快执行。"
+    },
+    "error": {
+      "title": "计划失败",
+      "message": "我们未能成功计划您的任务。"
+    }
+  }
+}

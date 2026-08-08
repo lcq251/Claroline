@@ -1,0 +1,10 @@
+plugin:
+    resources:
+        - name: ai_lesson
+          class: Claroline\MindMeAiBundle\Entity\AiLesson
+
+    widgets:
+        - name: dashboard
+          class: Claroline\MindMeAiBundle\Entity\Widget\DashboardWidget
+          context: [desktop,public]
+          tags: [content]

@@ -1,0 +1,4 @@
+mindme_billing:
+    resource: '@ClarolineMindMeBillingBundle/Controller/'
+    type: attribute
+    prefix: /

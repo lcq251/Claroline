@@ -1,0 +1,10 @@
+{
+  "evaluation_not_attempted_status": "您尚未开始活动空间。",
+  "evaluation_unknown_status": "我们不知道您在此活动空间中的进度。",
+  "evaluation_incomplete_status": "您尚未完成该序列。",
+  "evaluation_failed_status": "很遗憾，您未通过该序列。",
+  "evaluation_completed_status": "恭喜！您已完成该序列。",
+  "evaluation_passed_status": "恭喜！您已通过该序列。",
+  "estimated_resource_duration": "路径中所有资源的预估时长：%duration% 分钟。",
+  "use_calculated_duration": "使用此时长"
+}

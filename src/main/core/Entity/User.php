@@ -91,7 +91,7 @@ class User extends AbstractRoleSubject implements UserInterface, EquatableInterf
      * @var Collection<int, Role>
      */
     #[ORM\JoinTable(name: 'claro_user_role')]
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EXTRA_LAZY', cascade: ['persist'])]
     protected Collection $roles;
 
     #[ORM\JoinColumn(name: 'workspace_id', onDelete: 'SET NULL')]

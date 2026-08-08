@@ -1,0 +1,16 @@
+{
+  "playback_help": "自定义视频播放器的行为。",
+  "autoplay": "自动播放",
+  "autoplay_help": "当用户打开资源时自动播放视频。",
+  "controls": "显示控制栏",
+  "controls_help": "显示视频控制按钮，如播放、暂停、全屏等。",
+  "loop": "循环播放",
+  "loop_help": "视频播放完毕后自动重新开始",
+  "resume": "续播",
+  "resume_help": "从用户上次观看的位置继续播放视频。",
+  "timecode_help": "注意：使用时间码可能导致进度计算不准确。",
+  "timecode_start": "起始时间码",
+  "timecode_start_help": "从指定位置开始播放视频",
+  "timecode_end": "结束时间码",
+  "timecode_end_help": "在指定位置停止播放视频"
+}

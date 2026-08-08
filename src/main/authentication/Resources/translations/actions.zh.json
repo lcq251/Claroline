@@ -1,0 +1,6 @@
+{
+  "change_password": "更改密码",
+  "reset-password": "重置密码",
+  "reset_password_desc": "向用户发送一封包含创建新密码链接的电子邮件。",
+  "add_oauth_client": "添加应用程序"
+}
