@@ -38,9 +38,10 @@ const reducer = combineReducers({
       return tabs
     },
     [TAB_UPDATE_VIEWS]: (state, action) => {
+      const tabIndex = state.findIndex(tab => tab.id === action.tabId)
+      if (-1 === tabIndex || !state[tabIndex].meta) return state
       const newState = cloneDeep(state)
-      const tab = state.findIndex(tab => tab.id === action.tabId)
-      newState[tab]['meta'].views = action.nbViews
+      newState[tabIndex].meta.views = action.nbViews
       return newState
     }
   }),
