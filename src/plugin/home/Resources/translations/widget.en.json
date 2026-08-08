@@ -1,0 +1,12 @@
+{
+  "landing-hero": "Hero banner",
+  "landing-hero_desc": "Hero visual with headline, AI-era narrative, quote, login/register CTA and studio seal.",
+  "landing-features": "Core features",
+  "landing-features_desc": "Feature cards for teacher tools, student learning methods and the AI-embedded platform.",
+  "landing-ai": "AI capabilities",
+  "landing-ai_desc": "Showcases AI capabilities: AI foundation and security badge, tutor, auto-grading, content generation and smart recommendations.",
+  "landing-packaging": "Packaging",
+  "landing-packaging_desc": "Showcases packaging targets: mini-program, desktop and native app.",
+  "landing-cta": "Call to action",
+  "landing-cta_desc": "Call-to-action block with login and register entries only."
+}

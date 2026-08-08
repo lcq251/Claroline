@@ -1,0 +1,12 @@
+{
+  "landing-hero": "首页主视觉",
+  "landing-hero_desc": "首屏主视觉：主标题、AI 元年叙事、引用、登录/注册 CTA 与工作室印章。",
+  "landing-features": "核心功能",
+  "landing-features_desc": "三大块功能卡：老师工具、学生学习方法、AI 嵌入式平台。",
+  "landing-ai": "AI 能力",
+  "landing-ai_desc": "AI 能力展示：AI 基座与安全徽章，助教、自动批改、内容生成、智能推荐。",
+  "landing-packaging": "打包环境",
+  "landing-packaging_desc": "打包环境展示：小程序、桌面应用与原生应用。",
+  "landing-cta": "行动号召",
+  "landing-cta_desc": "行动号召区：仅提供登录与注册入口。"
+}
