@@ -8,9 +8,13 @@ export const Parameters = () => ({
 
 /**
  * Landing AI widget application (AI capabilities showcase).
+ *
+ * `styles` loads the landing stylesheet through the theme system
+ * (claroline-distribution-plugin-home-landing.css, built from landing.less).
  */
 export const App = () => ({
-  component: LandingAi
+  component: LandingAi,
+  styles: ['claroline-distribution-plugin-home-landing']
 })
 
 export default declareWidget(LandingAi, LandingAiParameters)
