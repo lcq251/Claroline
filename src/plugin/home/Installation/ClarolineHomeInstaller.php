@@ -3,7 +3,6 @@
 namespace Claroline\HomeBundle\Installation;
 
 use Claroline\HomeBundle\Installation\Updater\Updater150100;
-use Claroline\HomeBundle\Installation\Updater\Updater150101;
 use Claroline\InstallationBundle\Additional\AdditionalInstaller;
 
 class ClarolineHomeInstaller extends AdditionalInstaller
@@ -22,7 +21,6 @@ class ClarolineHomeInstaller extends AdditionalInstaller
     {
         return [
             '15.0.100' => Updater150100::class,
-            '15.0.101' => Updater150101::class,
         ];
     }
 }

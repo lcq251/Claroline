@@ -1,8 +1,7 @@
 {
   "styles": {
     "entry": {
-      "home-tool": "tools/home.scss",
-      "landing": "landing.scss"
+      "home-tool": "tools/home.scss"
     }
   }
 }

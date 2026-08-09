@@ -16,13 +16,7 @@ registry.add('ClarolineHomeBundle', {
   /**
    * Provides new Widgets for homes.
    */
-  widgets: {
-    'landing-hero'     : () => { return import(/* webpackChunkName: "home-landing-hero" */      '#/plugin/home/home/widgets/landing/hero') },
-    'landing-features' : () => { return import(/* webpackChunkName: "home-landing-features" */  '#/plugin/home/home/widgets/landing/features') },
-    'landing-ai'       : () => { return import(/* webpackChunkName: "home-landing-ai" */        '#/plugin/home/home/widgets/landing/ai') },
-    'landing-packaging': () => { return import(/* webpackChunkName: "home-landing-packaging" */ '#/plugin/home/home/widgets/landing/packaging') },
-    'landing-cta'      : () => { return import(/* webpackChunkName: "home-landing-cta" */       '#/plugin/home/home/widgets/landing/cta') }
-  },
+  widgets: {},
 
   /**
    * Provides Desktop and/or Workspace tools.

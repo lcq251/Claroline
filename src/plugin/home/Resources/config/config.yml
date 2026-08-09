@@ -2,29 +2,3 @@ plugin:
     tools:
         - name: home
           icon: home
-
-    widgets:
-        - name: landing-hero
-          class: Claroline\HomeBundle\Entity\Widget\LandingWidget
-          context: [public]
-          tags: [content]
-
-        - name: landing-features
-          class: Claroline\HomeBundle\Entity\Widget\LandingWidget
-          context: [public]
-          tags: [content]
-
-        - name: landing-ai
-          class: Claroline\HomeBundle\Entity\Widget\LandingWidget
-          context: [public]
-          tags: [content]
-
-        - name: landing-packaging
-          class: Claroline\HomeBundle\Entity\Widget\LandingWidget
-          context: [public]
-          tags: [content]
-
-        - name: landing-cta
-          class: Claroline\HomeBundle\Entity\Widget\LandingWidget
-          context: [public]
-          tags: [content]
