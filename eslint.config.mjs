@@ -23,6 +23,7 @@ export default defineConfig([
     stylistic.configs['disable-legacy'],
 
     {
+        files: ['**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs'],
         extends: compat.extends(
           'plugin:react/recommended'
         ),

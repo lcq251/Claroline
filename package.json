@@ -65,8 +65,10 @@
     "package.json"
   ],
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "circular-dependency-plugin": "^5.2.2",
-    "eslint": "^7.15.0",
+    "eslint": "^9.39.5",
     "eslint-plugin-react": "^7.21.5",
     "redux-freeze": "^0.1.7",
     "webpack-dev-server": "^5.2"
