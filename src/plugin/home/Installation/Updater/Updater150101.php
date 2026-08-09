@@ -198,6 +198,15 @@ class Updater150101 extends Updater
                     // only the anchor sentence and the open-ending hook carry the
                     // `.em` / `.em-hook` highlight classes (D-3 §2.3)
                     'story' => '<p>2026 年，有人称为<span class="em">AI 元年</span>。国际竞争、资本推动，将使 AI 发展越来越快，AI 会越来越具备人的特征。未来，AI 将替代人大部分工作，而人将通过 AI 工作、生活、社交，将成为常态。<span class="em-hook">我们对待 AI 的态度……</span></p>',
+                    // narrative visual strip (D-2 / Plan 05): three-element icon
+                    // infographic replacing `story` — icon + short title + one-line
+                    // description. Entry 02 carries three FA classes (space-separated)
+                    // rendered as three small icons in a row (D-2 spec row 02).
+                    'visuals' => [
+                        ['icon' => 'fa-fire', 'title' => '火与工具', 'desc' => 'AI 堪比古人掌握火与工具——历史性变革'],
+                        ['icon' => 'fa-industry fa-plane fa-car', 'title' => '无人工厂 · 无人机 · 无人驾驶', 'desc' => 'AI 正在改变人类工作的方式'],
+                        ['icon' => 'fa-robot', 'title' => '学会使用 AI', 'desc' => 'AI 具类人性质，学会使用 AI 是人人必修'],
+                    ],
                     'cta' => [
                         ['label' => '登录', 'href' => '/login'],
                         ['label' => '注册', 'href' => '/registration'],
@@ -226,6 +235,11 @@ class Updater150101 extends Updater
                         'title' => 'Learn AI with AI — one more companion on your learning journey.',
                         'subtitle' => 'An AI learning platform born from teaching — teacher tools · student learning · AI-embedded platform.',
                         'story' => '<p>2026 — some call it the Year of AI. Driven by international competition and capital, AI will advance faster and faster, growing ever more human-like. In the future, AI will take over most of human work, and working, living, and socializing through AI will become the norm. <span class="em-hook">Our attitude toward AI…</span></p>',
+                        'visuals' => [
+                            ['icon' => 'fa-fire', 'title' => 'Fire & tools', 'desc' => 'AI is like mastering fire and tools — a historic transformation'],
+                            ['icon' => 'fa-industry fa-plane fa-car', 'title' => 'Factories · Drones · Driverless', 'desc' => 'AI is reshaping the way humans work'],
+                            ['icon' => 'fa-robot', 'title' => 'Learn to use AI', 'desc' => 'AI grows ever more human-like — learning to use it is a must for everyone'],
+                        ],
                         'cta' => [
                             ['label' => 'Login', 'href' => '/login'],
                             ['label' => 'Register', 'href' => '/registration'],

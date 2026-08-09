@@ -40,6 +40,73 @@ CtaItem.propTypes = {
   onChange: T.func.isRequired
 }
 
+// Template used by the collection "add visual" button.
+const DEFAULT_VISUAL = {
+  icon: '',
+  title: '',
+  desc: ''
+}
+
+function updateVisualProp(visual, prop, value) {
+  return Object.assign({}, visual, {[prop]: value})
+}
+
+/**
+ * Edits a single visual entry (collection item).
+ * Receives `value` (the visual object) and `onChange` from the collection input.
+ */
+const VisualItem = props => {
+  const visual = props.value || {}
+
+  return (
+    <div className="border rounded p-3 bg-white">
+      <div className="form-group">
+        <label className="form-label">{trans('landing_hero_visuals_icon', {}, 'widget')}</label>
+        <input
+          type="text"
+          className="form-control"
+          value={visual.icon || ''}
+          placeholder="fa-fire"
+          disabled={props.disabled}
+          onChange={(event) => props.onChange(updateVisualProp(visual, 'icon', event.target.value))}
+        />
+      </div>
+
+      <div className="form-group mt-2">
+        <label className="form-label">{trans('landing_hero_visuals_title', {}, 'widget')}</label>
+        <input
+          type="text"
+          className="form-control"
+          value={visual.title || ''}
+          disabled={props.disabled}
+          onChange={(event) => props.onChange(updateVisualProp(visual, 'title', event.target.value))}
+        />
+      </div>
+
+      <div className="form-group mt-2">
+        <label className="form-label">{trans('landing_hero_visuals_desc', {}, 'widget')}</label>
+        <textarea
+          className="form-control"
+          rows={2}
+          value={visual.desc || ''}
+          disabled={props.disabled}
+          onChange={(event) => props.onChange(updateVisualProp(visual, 'desc', event.target.value))}
+        />
+      </div>
+    </div>
+  )
+}
+
+VisualItem.propTypes = {
+  value: T.shape({
+    icon: T.string,
+    title: T.string,
+    desc: T.string
+  }),
+  disabled: T.bool,
+  onChange: T.func.isRequired
+}
+
 /**
  * Hero widget configuration form.
  */
@@ -68,7 +135,19 @@ const LandingHeroParameters = (props) =>
           }, {
             name: 'parameters.story',
             label: trans('landing_hero_story', {}, 'widget'),
-            type: 'html'
+            type: 'html',
+            help: trans('landing_hero_story_help', {}, 'widget')
+          }, {
+            name: 'parameters.visuals',
+            label: trans('landing_hero_visuals', {}, 'widget'),
+            type: 'collection',
+            options: {
+              component: VisualItem,
+              placeholder: trans('landing_hero_visuals_empty', {}, 'widget'),
+              button: trans('landing_hero_visuals_add', {}, 'widget'),
+              defaultItem: DEFAULT_VISUAL
+            },
+            help: trans('landing_hero_visuals_help', {}, 'widget')
           }, {
             name: 'parameters.quote',
             label: trans('landing_hero_quote', {}, 'widget'),

@@ -373,6 +373,57 @@
     }
   }
 
+  // narrative visual strip (D-2 / Plan 05): horizontal three-column icon
+  // infographic (icon + short title + one-line description) that replaces the
+  // `story` paragraph when configured. Flat, B 伴随青系 (accent-soft icon
+  // backdrops, primary icon colour), stacks on narrow screens.
+  .claroline-distribution-plugin-home-landing-hero-visuals {
+    margin-top: var(--landing-space-xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--landing-space-lg);
+    max-width: 960px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-visual {
+    min-width: 0;
+  }
+
+  // icon backdrop: accent-soft tile, primary icon, three small icons in a row
+  // when the entry carries several FA classes (D-2 row 02)
+  .claroline-distribution-plugin-home-landing-hero-visual-icons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--landing-space-md);
+    border-radius: var(--landing-radius-md);
+    background: var(--landing-accent-soft);
+    color: var(--landing-primary-strong);
+    font-size: 1.5rem;
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-visual-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-visual-desc {
+    margin-top: var(--landing-space-xs);
+    color: var(--landing-ink-muted);
+    font-size: 0.9375rem;
+    line-height: 1.8;
+  }
+
   .claroline-distribution-plugin-home-landing-hero-quote {
     margin: var(--landing-space-xl) 0 0;
     padding-left: var(--landing-space-lg);
@@ -511,6 +562,16 @@
       margin-right: auto;
     }
 
+    .claroline-distribution-plugin-home-landing-hero-visuals {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .claroline-distribution-plugin-home-landing-hero-visual-icons {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .claroline-distribution-plugin-home-landing-hero-ctas {
       justify-content: center;
     }
@@ -521,6 +582,14 @@
 
     .claroline-distribution-plugin-home-landing-hero-story,
     .claroline-distribution-plugin-home-landing-hero-quote {
+      margin-left: auto;
+    }
+
+    .claroline-distribution-plugin-home-landing-hero-visuals {
+      margin-left: auto;
+    }
+
+    .claroline-distribution-plugin-home-landing-hero-visual-icons {
       margin-left: auto;
     }
 

@@ -117,6 +117,14 @@ const LandingHero = (props) => {
   // component (same as the simple widget) and is sanitized by the HTML editor
   // on save; never interpolate it as raw JSX text.
   const story = localized.story || parameters.story || defaults.story
+  // visual infographic strip (D-2 / Plan 05): when `visuals` is configured the
+  // narrative is rendered as a horizontal three-column icon strip (icon +
+  // short title + one-line description) instead of the rich-text `story`
+  // paragraph. When no visuals are configured the strip is skipped and the
+  // `story` fallback is rendered — backward compatible with already-deployed
+  // widget instances (their parameters carry no `visuals` key).
+  const visuals = Array.isArray(localized.visuals) ? localized.visuals : (Array.isArray(parameters.visuals) ? parameters.visuals : null)
+  const showVisuals = !isEmpty(visuals)
   const cta = Array.isArray(localized.cta) ? localized.cta : (Array.isArray(parameters.cta) ? parameters.cta : defaults.cta)
   const align = parameters.align || 'center'
 
@@ -188,8 +196,43 @@ const LandingHero = (props) => {
           <p className={`${PREFIX}-subtitle hero-fade`} style={{'--d': '260ms'}}>{subtitle}</p>
         }
 
-        {story &&
-          <Html className={`${PREFIX}-story hero-fade`} style={{'--d': '360ms'}}>{story}</Html>
+        {showVisuals ?
+          <div className={`${PREFIX}-visuals hero-fade`} style={{'--d': '360ms'}}>
+            {visuals.map((item, index) => {
+              if (!item) {
+                return null
+              }
+
+              // a single visual entry may carry several FontAwesome classes
+              // (space-separated, e.g. "fa-industry fa-plane fa-car") — each
+              // one is rendered as its own icon (D-2 spec row 02)
+              const icons = String(item.icon || '')
+                .trim()
+                .split(/\s+/)
+                .filter((icon) => icon && 'fa' !== icon && 'fa-fw' !== icon)
+
+              return (
+                <div key={index} className={`${PREFIX}-visual`}>
+                  {0 !== icons.length &&
+                    <div className={`${PREFIX}-visual-icons`} aria-hidden="true">
+                      {icons.map((icon, iconIndex) =>
+                        <i key={iconIndex} className={`fa fa-fw ${icon}`} />
+                      )}
+                    </div>
+                  }
+                  {item.title &&
+                    <h3 className={`${PREFIX}-visual-title`}>{item.title}</h3>
+                  }
+                  {item.desc &&
+                    <p className={`${PREFIX}-visual-desc`}>{item.desc}</p>
+                  }
+                </div>
+              )
+            })}
+          </div>
+          :
+          story &&
+            <Html className={`${PREFIX}-story hero-fade`} style={{'--d': '360ms'}}>{story}</Html>
         }
 
         {!isEmpty(cta) &&
@@ -259,6 +302,12 @@ LandingHero.propTypes = {
     cta: T.arrayOf(T.shape({
       label: T.string,
       href: T.string
+    })),
+    // visual infographic strip (D-2 / Plan 05): replaces `story` when configured
+    visuals: T.arrayOf(T.shape({
+      icon: T.string,
+      title: T.string,
+      desc: T.string
     })),
     background: T.string,
     align: T.oneOf(['left', 'center', 'right']),
