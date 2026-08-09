@@ -6,7 +6,7 @@ import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
-const PREFIX = 'claroline-distribution-plugin-home-landing-ai'
+const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-ai'
 
 /**
  * Default copy (zh primary + en placeholder, matching the landing design).

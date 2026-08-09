@@ -8,3 +8,28 @@ plugin:
           class: Claroline\MindMeAiBundle\Entity\Widget\DashboardWidget
           context: [desktop,public]
           tags: [content]
+
+        - name: landing-hero
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [public]
+          tags: [content]
+
+        - name: landing-features
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [public]
+          tags: [content]
+
+        - name: landing-ai
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [public]
+          tags: [content]
+
+        - name: landing-packaging
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [public]
+          tags: [content]
+
+        - name: landing-cta
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [public]
+          tags: [content]

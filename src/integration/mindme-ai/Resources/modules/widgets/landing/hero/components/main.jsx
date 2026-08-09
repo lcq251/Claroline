@@ -4,10 +4,10 @@ import {PropTypes as T} from 'prop-types'
 import {locale} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
+import {sanitizeHref} from '#/integration/mindme-ai/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
-const PREFIX = 'claroline-distribution-plugin-home-landing-hero'
+const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-hero'
 
 // Default hero background: B3 深青海报 (C-11 拍板, design doc §1). Applied by
 // the component so the "empty parameter → default gradient" behaviour lives

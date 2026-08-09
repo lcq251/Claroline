@@ -5,10 +5,10 @@ import isEmpty from 'lodash/isEmpty'
 import {locale} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
-import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
+import {sanitizeHref} from '#/integration/mindme-ai/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.less)
-const PREFIX = 'claroline-distribution-plugin-home-landing-cta'
+const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-cta'
 
 /**
  * Default copy (zh + en placeholders).

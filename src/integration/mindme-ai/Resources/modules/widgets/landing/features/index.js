@@ -11,7 +11,7 @@ export const Parameters = () => ({
  */
 export const App = () => ({
   component: LandingFeatures,
-  styles: ['claroline-distribution-plugin-home-landing']
+  styles: ['claroline-distribution-integration-mindme-ai-landing']
 })
 
 export default declareWidget(LandingFeatures, LandingFeaturesParameters)

@@ -6,10 +6,10 @@ import classes from 'classnames'
 import {trans} from '#/main/app/intl/translation'
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
-import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
+import {sanitizeHref} from '#/integration/mindme-ai/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
-const PREFIX = 'claroline-distribution-plugin-home-landing-features'
+const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-features'
 
 // Default section title (zh primary; admin can override it in the widget parameters).
 const DEFAULT_TITLE = '三大块，一个平台'

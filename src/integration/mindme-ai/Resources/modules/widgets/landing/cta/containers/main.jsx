@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
-import {LandingCta as LandingCtaComponent} from '#/plugin/home/home/widgets/landing/cta/components/main'
+import {LandingCta as LandingCtaComponent} from '#/integration/mindme-ai/widgets/landing/cta/components/main'
 
 const LandingCta = connect(
   (state) => ({
