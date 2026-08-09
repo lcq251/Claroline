@@ -1,7 +1,6 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
 
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
@@ -82,7 +81,7 @@ const LandingAi = (props) => {
 
   const title = localized.title || parameters.title || defaults.title
   const badge = localized.badge || parameters.badge || defaults.badge
-  const items = !isEmpty(localized.items) ? localized.items : (isEmpty(parameters.items) ? defaults.items : parameters.items)
+  const items = Array.isArray(localized.items) ? localized.items : (Array.isArray(parameters.items) ? parameters.items : defaults.items)
 
   return (
     <section className={`landing-widget ${PREFIX}`}>

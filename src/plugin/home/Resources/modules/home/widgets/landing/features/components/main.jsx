@@ -2,11 +2,11 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 import classes from 'classnames'
-import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
+import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
 const PREFIX = 'claroline-distribution-plugin-home-landing-features'
@@ -45,32 +45,6 @@ const DEFAULT_CARDS = [
   }
 ]
 
-/**
- * Restricts rendered hrefs to safe URL schemes.
- * Widget parameters are admin-provided, but we still refuse
- * javascript:/data:/vbscript: URLs as a defense-in-depth measure.
- */
-function sanitizeHref(href) {
-  if (typeof href !== 'string') {
-    return undefined
-  }
-
-  const value = href.trim()
-  if (0 === value.length) {
-    return undefined
-  }
-
-  const schemeMatch = value.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):/)
-  if (schemeMatch) {
-    const protocol = schemeMatch[1].toLowerCase()
-    if (-1 === ['http', 'https', 'mailto', 'tel'].indexOf(protocol)) {
-      return undefined
-    }
-  }
-
-  return value
-}
-
 const LandingFeaturesComponent = props => {
   const parameters = props.parameters || {}
   // bilingual seed: the C-8 updater stores the complete English copy under the
@@ -79,7 +53,7 @@ const LandingFeaturesComponent = props => {
   const localized = parameters[locale()] || {}
 
   const title = localized.title || parameters.title || DEFAULT_TITLE
-  const cards = !isEmpty(localized.cards) ? localized.cards : (isEmpty(parameters.cards) ? DEFAULT_CARDS : parameters.cards)
+  const cards = Array.isArray(localized.cards) ? localized.cards : (Array.isArray(parameters.cards) ? parameters.cards : DEFAULT_CARDS)
 
   return (
     <section className={`landing-widget ${PREFIX}`}>

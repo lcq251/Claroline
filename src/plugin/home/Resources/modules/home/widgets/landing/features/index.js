@@ -10,7 +10,8 @@ export const Parameters = () => ({
  * Landing features widget application (teacher tools / student learning / AI embedded platform).
  */
 export const App = () => ({
-  component: LandingFeatures
+  component: LandingFeatures,
+  styles: ['claroline-distribution-plugin-home-landing']
 })
 
 export default declareWidget(LandingFeatures, LandingFeaturesParameters)

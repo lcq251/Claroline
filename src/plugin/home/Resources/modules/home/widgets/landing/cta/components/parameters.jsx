@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {PropTypes as T} from 'prop-types'
 
+import {makeId} from '#/main/app/utils/id'
 import {trans} from '#/main/app/intl/translation'
 import {FormContent} from '#/main/app/content/form/containers/content'
 
@@ -21,6 +22,7 @@ function updateButtonProp(button, prop, value) {
  */
 const CtaButtonEditor = props => {
   const button = props.value || {}
+  const [uid] = useState(() => makeId())
 
   return (
     <div className="border rounded p-3 bg-white">
@@ -54,7 +56,7 @@ const CtaButtonEditor = props => {
 
       <div className="form-check form-switch mt-2">
         <input
-          id="landing-cta-button-primary"
+          id={`landing-cta-button-primary-${uid}`}
           className="form-check-input"
           type="checkbox"
           role="switch"
@@ -62,7 +64,7 @@ const CtaButtonEditor = props => {
           disabled={props.disabled}
           onChange={(event) => props.onChange(updateButtonProp(button, 'primary', event.target.checked))}
         />
-        <label className="form-check-label" htmlFor="landing-cta-button-primary">
+        <label className="form-check-label" htmlFor={`landing-cta-button-primary-${uid}`}>
           {trans('landing_cta_button_primary', {}, 'widget')}
         </label>
       </div>

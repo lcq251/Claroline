@@ -339,6 +339,18 @@
     gap: var(--landing-space-md);
   }
 
+  // hero CTA buttons: override bootstrap btn-primary (blue) with the landing teal
+  .claroline-distribution-plugin-home-landing-hero-cta {
+    background: var(--landing-primary-strong);
+    border-color: var(--landing-primary-strong);
+
+    &:hover,
+    &:focus {
+      background: var(--landing-primary-deep);
+      border-color: var(--landing-primary-deep);
+    }
+  }
+
   // alignment variants
   &.claroline-distribution-plugin-home-landing-hero-align-center .claroline-distribution-plugin-home-landing-hero-content {
     text-align: center;

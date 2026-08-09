@@ -10,7 +10,7 @@ export const Parameters = () => ({
  * Landing AI widget application (AI capabilities showcase).
  *
  * `styles` loads the landing stylesheet through the theme system
- * (claroline-distribution-plugin-home-landing.css, built from landing.less).
+ * (claroline-distribution-plugin-home-landing.css, built from landing.scss).
  */
 export const App = () => ({
   component: LandingAi,

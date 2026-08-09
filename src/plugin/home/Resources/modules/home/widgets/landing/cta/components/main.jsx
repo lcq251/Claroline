@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import {locale} from '#/main/app/intl'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
+import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.less)
 const PREFIX = 'claroline-distribution-plugin-home-landing-cta'
@@ -48,7 +49,7 @@ const LandingCta = (props) => {
 
   const title = localized.title || parameters.title || defaults.title
   const subtitle = localized.subtitle || parameters.subtitle || defaults.subtitle
-  const buttons = !isEmpty(localized.buttons) ? localized.buttons : (isEmpty(parameters.buttons) ? defaults.buttons : parameters.buttons)
+  const buttons = Array.isArray(localized.buttons) ? localized.buttons : (Array.isArray(parameters.buttons) ? parameters.buttons : defaults.buttons)
 
   return (
     <section className={`landing-widget ${PREFIX}`}>
@@ -73,7 +74,7 @@ const LandingCta = (props) => {
                   key={index}
                   type={LINK_BUTTON}
                   className={`${PREFIX}-button ${PREFIX}-button-${button.primary ? 'primary' : 'secondary'} ${button.primary ? 'btn btn-primary' : 'btn btn-outline-primary'}`}
-                  target={button.href}
+                  target={sanitizeHref(button.href)}
                   label={button.label}
                 />
               )

@@ -14,6 +14,7 @@ namespace Claroline\HomeBundle\Tests\Installation\Updater;
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Context\PublicContext;
+use Claroline\CoreBundle\Entity\Widget\Widget;
 use Claroline\CoreBundle\Library\Testing\TransactionalTestCase;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Installation\Updater\Updater150101;
@@ -90,6 +91,11 @@ class Updater150101Test extends TransactionalTestCase
         sort($expected);
 
         $this->assertSame($expected, $types, 'The landing tab should seed the 5 landing widget types.');
+
+        // the 5 landing widgets must be registered in the platform widget table
+        $om = $this->client->getContainer()->get(ObjectManager::class);
+        $registered = $om->getRepository(Widget::class)->findBy(['name' => self::LANDING_WIDGETS]);
+        $this->assertCount(5, $registered, 'The updater should register the 5 landing widgets in claro_widget.');
     }
 
     public function testSkipsCreationWhenLandingTabAlreadyExists(): void

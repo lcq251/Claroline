@@ -7,6 +7,7 @@ import {locale} from '#/main/app/intl'
 import {Html} from '#/main/app/components/html'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
+import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
 
 // className prefix used by the landing stylesheet (see C-8, landing.less)
 const PREFIX = 'claroline-distribution-plugin-home-landing-hero'
@@ -78,7 +79,7 @@ const LandingHero = (props) => {
   // on save; never interpolate it as raw JSX text.
   const story = localized.story || parameters.story || defaults.story
   const quote = localized.quote || parameters.quote || defaults.quote
-  const cta = !isEmpty(localized.cta) ? localized.cta : (isEmpty(parameters.cta) ? defaults.cta : parameters.cta)
+  const cta = Array.isArray(localized.cta) ? localized.cta : (Array.isArray(parameters.cta) ? parameters.cta : defaults.cta)
   const align = parameters.align || 'center'
 
   // background: a color value (hex/rgb/hsl...) or an image URL
@@ -143,7 +144,7 @@ const LandingHero = (props) => {
                   key={index}
                   type={LINK_BUTTON}
                   className={`${PREFIX}-cta btn btn-primary`}
-                  target={item.href}
+                  target={sanitizeHref(item.href)}
                   label={item.label}
                 />
               )

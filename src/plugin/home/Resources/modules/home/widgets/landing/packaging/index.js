@@ -10,7 +10,8 @@ export const Parameters = () => ({
  * Landing packaging widget application (mini-program / desktop / app).
  */
 export const App = () => ({
-  component: LandingPackaging
+  component: LandingPackaging,
+  styles: ['claroline-distribution-plugin-home-landing']
 })
 
 export default declareWidget(LandingPackaging, LandingPackagingParameters)
