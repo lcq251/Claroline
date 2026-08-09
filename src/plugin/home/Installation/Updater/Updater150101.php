@@ -22,7 +22,7 @@ use Claroline\HomeBundle\Entity\Widget\LandingWidget;
 use Claroline\InstallationBundle\Updater\Updater;
 
 /**
- * Seeds the public landing page ("用AI、学AI，学习路上多一个陪伴").
+ * Seeds the public landing page ("用AI学AI，让学习路上多一个陪伴").
  *
  * Creates a `landing` HomeTab in the public context containing the 5 landing
  * widgets (hero / features / ai / packaging / cta) with their full bilingual
@@ -192,10 +192,12 @@ class Updater150101 extends Updater
             'contents' => [[
                 'type' => 'landing-hero',
                 'parameters' => [
-                    'title' => '用AI、学AI，学习路上多一个陪伴',
-                    'subtitle' => '2026 AI 元年 · AI 堪比火与工具 · 学会使用 AI，掌握与 AI 交互的技能',
-                    'story' => '<p>2026 是 AI 元年。AI 堪比古人掌握火与工具——它将改变人类工作的方式：无人工厂、无人机、无人驾驶相继成为现实。</p><p>人与社会的交互越来越多地经由 AI 发生，而 AI 已具备类人的性质。正因如此，学会使用 AI，成了这个时代每个人的必修课。</p>',
-                    'quote' => '2026，AI 元年。',
+                    'title' => '用AI学AI，让学习路上多一个陪伴',
+                    'subtitle' => '源自教学的 AI 学习平台 —— 老师工具 · 学生学习方法 · AI 嵌入式平台',
+                    // user's original narrative, one character unchanged (D-3 §5);
+                    // only the anchor sentence and the open-ending hook carry the
+                    // `.em` / `.em-hook` highlight classes (D-3 §2.3)
+                    'story' => '<p>2026 年，有人称为<span class="em">AI 元年</span>。国际竞争、资本推动，将使 AI 发展越来越快，AI 会越来越具备人的特征。未来，AI 将替代人大部分工作，而人将通过 AI 工作、生活、社交，将成为常态。<span class="em-hook">我们对待 AI 的态度……</span></p>',
                     'cta' => [
                         ['label' => '登录', 'href' => '/login'],
                         ['label' => '注册', 'href' => '/registration'],
@@ -204,12 +206,26 @@ class Updater150101 extends Updater
                         'enabled' => true,
                         'text' => '澜之轩工作室',
                     ],
+                    // WeChat scan-to-login module (display-only, D-3 §3).
+                    // OAuth extension point: when a real WeChat OAuth integration
+                    // lands, extend this tree with `wechat.oauth.{appId, redirectUri, scope}`
+                    // — the secret stays server-side, never in the widget parameters.
+                    'wechat' => [
+                        'enabled' => true,
+                        // QR placeholder, hosted by the mindme-ai bundle (assets:install)
+                        'image' => '/bundles/clarolinemindmeai/images/wechat-qr.png',
+                        'title' => '微信扫码登录',
+                        'hint' => '打开微信扫一扫，即可登录体验 · 请使用手机微信扫描',
+                        'en' => [
+                            'title' => 'WeChat Scan to Sign In',
+                            'hint' => 'Scan with WeChat to start your experience — use the WeChat app on your phone.',
+                        ],
+                    ],
                     // complete English copy (rendered by the hero component for en visitors)
                     'en' => [
-                        'title' => 'Learn AI. Use AI. Your companion on the learning journey.',
-                        'subtitle' => '2026, the Year of AI · AI rivals fire and tools · Learn to use AI, master the skills to interact with it',
-                        'story' => '<p>2026 marks the Year of AI. Just as our ancestors mastered fire and tools, AI is reshaping how we work — automated factories, drones and driverless vehicles are becoming reality.</p><p>Human interaction with society increasingly happens through AI, which now exhibits human-like qualities. That is why learning to use AI has become an essential lesson for everyone in this era.</p>',
-                        'quote' => '2026, the Year of AI.',
+                        'title' => 'Learn AI with AI — one more companion on your learning journey.',
+                        'subtitle' => 'An AI learning platform born from teaching — teacher tools · student learning · AI-embedded platform.',
+                        'story' => '<p>2026 — some call it the Year of AI. Driven by international competition and capital, AI will advance faster and faster, growing ever more human-like. In the future, AI will take over most of human work, and working, living, and socializing through AI will become the norm. <span class="em-hook">Our attitude toward AI…</span></p>',
                         'cta' => [
                             ['label' => 'Login', 'href' => '/login'],
                             ['label' => 'Register', 'href' => '/registration'],

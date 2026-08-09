@@ -126,6 +126,37 @@ const LandingHeroParameters = (props) =>
             ]
           }
         ]
+      }, {
+        title: trans('landing_hero_wechat', {}, 'widget'),
+        fields: [
+          {
+            name: 'parameters.wechat.enabled',
+            label: trans('landing_hero_wechat_enabled', {}, 'widget'),
+            type: 'boolean',
+            linked: [
+              {
+                name: 'parameters.wechat.image',
+                label: trans('landing_hero_wechat_image', {}, 'widget'),
+                type: 'string',
+                help: trans('landing_hero_wechat_image_help', {}, 'widget'),
+                displayed: (data) => !!get(data, 'parameters.wechat.enabled')
+              }, {
+                name: 'parameters.wechat.title',
+                label: trans('landing_hero_wechat_title', {}, 'widget'),
+                type: 'string',
+                displayed: (data) => !!get(data, 'parameters.wechat.enabled')
+              }, {
+                name: 'parameters.wechat.hint',
+                label: trans('landing_hero_wechat_hint', {}, 'widget'),
+                type: 'string',
+                options: {
+                  long: true
+                },
+                displayed: (data) => !!get(data, 'parameters.wechat.enabled')
+              }
+            ]
+          }
+        ]
       }
     ]}
   />

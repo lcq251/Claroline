@@ -9,33 +9,51 @@ import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {sanitizeHref} from '#/plugin/home/home/widgets/landing/sanitize'
 
-// className prefix used by the landing stylesheet (see C-8, landing.less)
+// className prefix used by the landing stylesheet (see C-8, landing.scss)
 const PREFIX = 'claroline-distribution-plugin-home-landing-hero'
 
 // The seal stamp text is a cultural symbol: it stays Chinese on both locales.
 const DEFAULT_STAMP_TEXT = '澜之轩工作室'
 
+// Default hero background: G1 浅青水洗 gradient (D-3 定稿). Applied by the
+// component so the "empty parameter → default gradient" behaviour lives here
+// (the stylesheet only keeps a solid fallback while styles load).
+const DEFAULT_BACKGROUND = 'linear-gradient(180deg, #f0fdfa 0%, #f8fafc 46%, #f8fafc 100%)'
+
+// Default WeChat scan-to-login module values (D-3 §3.2 / §3.3).
+// The QR placeholder image is hosted by the mindme-ai bundle and published
+// through assets:install (see the C-10 seed for the full parameter tree).
+const DEFAULT_WECHAT = {
+  title: '微信扫码登录',
+  hint: '打开微信扫一扫，即可登录体验 · 请使用手机微信扫描',
+  image: '/bundles/clarolinemindmeai/images/wechat-qr.png'
+}
+
 /**
  * Default copy (zh + en placeholders).
  * The real content is seeded in DB by the C-8 updater; these are only
  * fallbacks for freshly created / empty widget instances.
+ *
+ * v2 (C-10): new headline, the user's original narrative (open ending kept),
+ * no more quote block (the narrative itself opens with "有人称为 AI 元年").
+ * The story keeps the `.em` / `.em-hook` highlight spans seeded by the C-10
+ * updater (D-3 §2.3 — keyword restraint: only the anchor sentence and the
+ * open-ending hook are marked).
  */
 const DEFAULT_CONTENT = {
   zh: {
-    title: '用AI、学AI，学习路上多一个陪伴',
-    subtitle: '2026 AI 元年 · AI 堪比火与工具 · 学会使用 AI，掌握与 AI 交互的技能',
-    story: '<p>2026 是 AI 元年。AI 堪比古人掌握火与工具——它将改变人类工作的方式：无人工厂、无人机、无人驾驶相继成为现实。</p><p>人与社会的交互越来越多地经由 AI 发生，而 AI 已具备类人的性质。正因如此，学会使用 AI，成了这个时代每个人的必修课。</p>',
-    quote: '2026，AI 元年。',
+    title: '用AI学AI，让学习路上多一个陪伴',
+    subtitle: '源自教学的 AI 学习平台 —— 老师工具 · 学生学习方法 · AI 嵌入式平台',
+    story: '<p>2026 年，有人称为<span class="em">AI 元年</span>。国际竞争、资本推动，将使 AI 发展越来越快，AI 会越来越具备人的特征。未来，AI 将替代人大部分工作，而人将通过 AI 工作、生活、社交，将成为常态。<span class="em-hook">我们对待 AI 的态度……</span></p>',
     cta: [
       {label: '登录', href: '/login'},
       {label: '注册', href: '/registration'}
     ]
   },
   en: {
-    title: 'Learn AI. Use AI. Your companion on the learning journey.',
-    subtitle: '2026, the Year of AI · AI rivals fire and tools · Learn to use AI, master the skills to interact with it',
-    story: '<p>2026 marks the Year of AI. Just as our ancestors mastered fire and tools, AI is reshaping how we work — automated factories, drones and driverless vehicles are becoming reality.</p><p>Human interaction with society increasingly happens through AI, which now exhibits human-like qualities. That is why learning to use AI has become an essential lesson for everyone in this era.</p>',
-    quote: '2026, the Year of AI.',
+    title: 'Learn AI with AI — one more companion on your learning journey.',
+    subtitle: 'An AI learning platform born from teaching — teacher tools · student learning · AI-embedded platform.',
+    story: '<p>2026 — some call it the Year of AI. Driven by international competition and capital, AI will advance faster and faster, growing ever more human-like. In the future, AI will take over most of human work, and working, living, and socializing through AI will become the norm. <span class="em-hook">Our attitude toward AI…</span></p>',
     cta: [
       {label: 'Login', href: '/login'},
       {label: 'Register', href: '/registration'}
@@ -62,7 +80,28 @@ function splitStampText(text) {
 }
 
 /**
- * Landing hero widget: first-screen visual + AI 元年 narrative + seal stamp.
+ * Highlights the design keywords inside the (zh) title: "AI" (×2) and "陪伴".
+ *
+ * Each occurrence is wrapped in a `.hl` span whose ::after pseudo-element draws
+ * the accent-soft marker under the glyphs — the only scheme that does not clash
+ * with the title's background-clip:text gradient (D-3 §2.3).
+ *
+ * @param {string} title
+ * @return {Array} the title as React children
+ */
+function highlightTitle(title) {
+  return String(title)
+    .split(/(AI|陪伴)/g)
+    .map((part, index) => (
+      -1 !== ['AI', '陪伴'].indexOf(part) ?
+        <span key={index} className="hl">{part}</span> :
+        part
+    ))
+}
+
+/**
+ * Landing hero widget: first-screen visual + AI 元年 narrative + seal stamp
+ * + WeChat scan-to-login module.
  */
 const LandingHero = (props) => {
   const defaults = DEFAULT_CONTENT[locale()] || DEFAULT_CONTENT.zh
@@ -78,27 +117,52 @@ const LandingHero = (props) => {
   // component (same as the simple widget) and is sanitized by the HTML editor
   // on save; never interpolate it as raw JSX text.
   const story = localized.story || parameters.story || defaults.story
-  const quote = localized.quote || parameters.quote || defaults.quote
   const cta = Array.isArray(localized.cta) ? localized.cta : (Array.isArray(parameters.cta) ? parameters.cta : defaults.cta)
   const align = parameters.align || 'center'
 
-  // background: a color value (hex/rgb/hsl...) or an image URL
-  const rootStyle = {}
+  // background: default G1 gradient, or an explicit CSS gradient
+  // (linear-gradient / radial-gradient), a color value (hex/rgb/hsl...),
+  // or an image URL (v2 gradient support, D-3 §1).
+  const rootStyle = {backgroundImage: DEFAULT_BACKGROUND}
   if (parameters.background) {
     const background = String(parameters.background).trim()
-    if (/^(#|rgb\(|rgba\(|hsl\(|hsla\(|hwb\()/i.test(background)) {
+    if (/^(linear-gradient\(|radial-gradient\()/i.test(background)) {
+      // a CSS gradient is used as-is (as background-image)
+      rootStyle.backgroundImage = background
+    } else if (/^(#|rgb\(|rgba\(|hsl\(|hsla\(|hwb\()/i.test(background)) {
+      // a plain color value; drop the default gradient so the color applies
       rootStyle.backgroundColor = background
+      rootStyle.backgroundImage = 'none'
     } else {
-      // assigned through the CSSOM (style attribute), so it cannot break out
-      // of the background-image declaration
+      // image URL, assigned through the CSSOM (style attribute), so it cannot
+      // break out of the background-image declaration
       rootStyle.backgroundImage = `url("${background}")`
     }
   }
 
-  // seal stamp (top-right corner, flat design, styled by landing.less)
+  // seal stamp (top-right corner, flat design, styled by landing.scss)
   const stampEnabled = undefined === get(parameters, 'stamp.enabled') || get(parameters, 'stamp.enabled')
   const stampText = get(parameters, 'stamp.text') || DEFAULT_STAMP_TEXT
   const stampColumns = splitStampText(stampText)
+
+  // WeChat scan-to-login module (CTA 下方, D-3 §3): renders only when a
+  // `wechat` parameter block exists and is not explicitly disabled.
+  //
+  // OAuth extension point (D-3 §3.4): this is display-only today. When a real
+  // WeChat OAuth integration lands, extend the parameter tree with
+  // `wechat.oauth.{appId, redirectUri, scope}` (the secret stays server-side,
+  // never in the widget parameters) and upgrade the interaction from
+  // "scan to view" to "scan to authorize".
+  const wechat = get(parameters, 'wechat')
+  const wechatEnabled = wechat && (undefined === get(wechat, 'enabled') || get(wechat, 'enabled'))
+  const wechatLocalized = wechat && 'en' === locale() ? get(wechat, 'en') : null
+  const wechatTitle = get(wechatLocalized, 'title') || get(wechat, 'title') || DEFAULT_WECHAT.title
+  const wechatHint = get(wechatLocalized, 'hint') || get(wechat, 'hint') || DEFAULT_WECHAT.hint
+  const wechatImage = sanitizeHref(get(wechat, 'image') || DEFAULT_WECHAT.image)
+
+  // the en title renders as plain text (no keyword markers, D-3 §6); the zh /
+  // default title gets the AI / 陪伴 highlight markers
+  const markKeywords = !localized.title
 
   return (
     <section
@@ -115,25 +179,21 @@ const LandingHero = (props) => {
 
       <div className={`${PREFIX}-content`}>
         {title &&
-          <h1 className={`${PREFIX}-title`}>{title}</h1>
+          <h1 className={`${PREFIX}-title hero-fade`} style={{'--d': '160ms'}}>
+            {markKeywords ? highlightTitle(title) : title}
+          </h1>
         }
 
         {subtitle &&
-          <p className={`${PREFIX}-subtitle`}>{subtitle}</p>
+          <p className={`${PREFIX}-subtitle hero-fade`} style={{'--d': '260ms'}}>{subtitle}</p>
         }
 
         {story &&
-          <Html className={`${PREFIX}-story`}>{story}</Html>
-        }
-
-        {quote &&
-          <blockquote className={`${PREFIX}-quote`}>
-            <p>{quote}</p>
-          </blockquote>
+          <Html className={`${PREFIX}-story hero-fade`} style={{'--d': '360ms'}}>{story}</Html>
         }
 
         {!isEmpty(cta) &&
-          <div className={`${PREFIX}-ctas`}>
+          <div className={`${PREFIX}-ctas hero-fade`} style={{'--d': '460ms'}}>
             {cta.map((item, index) => {
               if (!item) {
                 return null
@@ -151,6 +211,41 @@ const LandingHero = (props) => {
             })}
           </div>
         }
+
+        {wechatEnabled && wechatImage &&
+          <div className={`${PREFIX}-qr hero-fade`} style={{'--d': '560ms'}}>
+            <div className={`${PREFIX}-qr-code`} role="img" aria-label={wechatTitle}>
+              {/* placeholder that shows while the QR image loads / after a failure */}
+              <svg className="qr-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="120" height="120" rx="8" fill="#f1f5f9"/>
+                <rect x="10" y="10" width="26" height="26" fill="#cbd5e1"/>
+                <rect x="16" y="16" width="14" height="14" fill="#f1f5f9"/>
+                <rect x="84" y="10" width="26" height="26" fill="#cbd5e1"/>
+                <rect x="84" y="16" width="14" height="14" fill="#f1f5f9"/>
+                <rect x="10" y="84" width="26" height="26" fill="#cbd5e1"/>
+                <rect x="16" y="84" width="14" height="14" fill="#f1f5f9"/>
+                <text x="60" y="56" textAnchor="middle" fontSize="11" fontWeight="600" fill="#94a3b8" fontFamily="system-ui, sans-serif">二维码待上传</text>
+                <text x="60" y="70" textAnchor="middle" fontSize="7" letterSpacing="2" fill="#94a3b8" fontFamily="system-ui, sans-serif">QR CODE PENDING</text>
+              </svg>
+              {/* real QR image; on failure it is removed so the placeholder shows */}
+              <img
+                className="qr-img"
+                src={wechatImage}
+                alt={wechatTitle}
+                onError={(event) => event.currentTarget.remove()}
+              />
+            </div>
+            <div className={`${PREFIX}-qr-info`}>
+              <p className={`${PREFIX}-qr-title`}>
+                <i className="fa-brands fa-weixin" aria-hidden="true" />
+                <span>{wechatTitle}</span>
+              </p>
+              {wechatHint &&
+                <p className={`${PREFIX}-qr-hint`}>{wechatHint}</p>
+              }
+            </div>
+          </div>
+        }
       </div>
     </section>
   )
@@ -161,7 +256,6 @@ LandingHero.propTypes = {
     title: T.string,
     subtitle: T.string,
     story: T.string,
-    quote: T.string,
     cta: T.arrayOf(T.shape({
       label: T.string,
       href: T.string
@@ -171,6 +265,17 @@ LandingHero.propTypes = {
     stamp: T.shape({
       enabled: T.bool,
       text: T.string
+    }),
+    wechat: T.shape({
+      enabled: T.bool,
+      image: T.string,
+      title: T.string,
+      hint: T.string,
+      // OAuth extension point (D-3 §3.4): wechat.oauth.{appId, redirectUri, scope}
+      en: T.shape({
+        title: T.string,
+        hint: T.string
+      })
     })
   })
 }
