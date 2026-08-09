@@ -1,0 +1,747 @@
+/*
+ * Landing page styles (public landing HomeTab, C-8).
+ *
+ * Styling follows the design tokens frozen on 2026-08-09:
+ *   - design/landing/design-tokens.md (design agent)
+ *   - primary colour = B "AI 陪伴青" (teal): #0d9488 / #0f766e / #115e59 / #ccfbf1
+ *   - seal stamp = S1 朱文方印 (flat): #b03a2e + white text + 1.5px white inner frame
+ *
+ * All rules are scoped to the landing widgets (`.landing-widget`) so the
+ * tokens and layouts never leak to the rest of the platform. Every widget
+ * renders with the `claroline-distribution-plugin-home-landing-*` prefix
+ * (hero / features / ai / packaging / cta).
+ */
+
+// ---------- shared tokens (scoped to the landing widgets) ----------
+.landing-widget {
+  // neutrals
+  --landing-ink:           #0f172a;
+  --landing-ink-body:      #334155;
+  --landing-ink-muted:     #64748b;
+  --landing-line:          #e2e8f0;
+  --landing-surface:       #ffffff;
+  --landing-surface-muted: #f8fafc;
+
+  // accent — B AI 陪伴青 (frozen)
+  --landing-primary:        #0d9488;
+  --landing-primary-strong: #0f766e;
+  --landing-primary-deep:   #115e59;
+  --landing-accent-soft:    #ccfbf1;
+  --landing-on-primary:     #ffffff;
+  --landing-link:           #0f766e;
+
+  // seal — S1 朱文方印 (independent, cultural symbol)
+  --landing-seal:        #b03a2e;
+
+  // radii
+  --landing-radius-sm:   8px;
+  --landing-radius-md:   12px;
+  --landing-radius-lg:   16px;
+  --landing-radius-xl:   24px;
+  --landing-radius-pill: 999px;
+
+  // spacing (8pt system)
+  --landing-space-xs: 4px;
+  --landing-space-sm: 8px;
+  --landing-space-md: 16px;
+  --landing-space-lg: 24px;
+  --landing-space-xl: 32px;
+  --landing-space-xxl: 48px;
+  --landing-space-section: 96px;
+
+  // elevation
+  --landing-shadow-card:       0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --landing-shadow-card-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 40px rgba(15, 23, 42, 0.12);
+
+  // fonts (system stack + Chinese candidates, no webfont)
+  --landing-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+                       "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
+                       "Helvetica Neue", Arial, sans-serif;
+
+  font-family: var(--landing-font-sans);
+  color: var(--landing-ink-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  box-sizing: border-box;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4 {
+    margin: 0;
+    color: var(--landing-ink);
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--landing-link);
+  }
+}
+
+// ---------- neutralize the platform widget chrome for landing sections ----------
+.widget:has(.landing-widget) {
+  background: transparent !important;
+  border: 0;
+  margin-bottom: 0;
+
+  .widget-title {
+    display: none;
+  }
+
+  .widget-body {
+    padding: 0;
+
+    .row {
+      margin: 0;
+
+      .widget-col {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// ---------- shared atoms ----------
+// section spacing (large whitespace) + content container (1120px)
+.landing-widget [class$="-content"] {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--landing-space-section) var(--landing-space-lg);
+
+  @media (max-width: 768px) {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+// section heading block (centered, narrow)
+.landing-widget [class$="-head"] {
+  max-width: 720px;
+  margin: 0 auto var(--landing-space-xxl);
+  text-align: center;
+
+  [class$="-kicker"] {
+    display: inline-block;
+    margin-bottom: var(--landing-space-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--landing-primary-strong);
+  }
+
+  [class$="-title"] {
+    font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  [class$="-subtitle"] {
+    margin-top: var(--landing-space-md);
+    color: var(--landing-ink-muted);
+    font-size: 1.125rem;
+  }
+}
+
+// cards (white surface + line border + lg radius + card shadow)
+// `-card` = features / packaging; `-item` = ai capability tiles (same chrome)
+.landing-widget [class$="-card"],
+.landing-widget [class$="-item"] {
+  background: var(--landing-surface);
+  border: 1px solid var(--landing-line);
+  border-radius: var(--landing-radius-lg);
+  box-shadow: var(--landing-shadow-card);
+  padding: var(--landing-space-xl);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--landing-shadow-card-hover);
+    transform: translateY(-2px);
+  }
+}
+
+// English label under cards ("en 占位", bilingual position)
+.landing-widget [class$="-en"] {
+  display: block;
+  margin-top: var(--landing-space-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--landing-ink-muted);
+}
+
+// pill badge ("AI 基座 + 安全")
+.landing-widget [class$="-badge"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+  padding: 6px 14px;
+  border-radius: var(--landing-radius-pill);
+  background: var(--landing-accent-soft);
+  color: var(--landing-primary-deep);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+// text link ("了解更多")
+.landing-widget [class$="-link"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  padding: 4px 0;
+  align-self: flex-start;
+  color: var(--landing-primary-strong);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    color: var(--landing-primary-deep);
+    border-bottom-color: currentColor;
+  }
+}
+
+// card titles / names / descriptions (shared by features / ai / packaging)
+.landing-widget [class$="-name"] {
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.landing-widget [class$="-desc"] {
+  color: var(--landing-ink-muted);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
+// ---------- hero (landing-hero) ----------
+.landing-widget.claroline-distribution-plugin-home-landing-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--landing-surface-muted);
+
+  // subtle grid texture (pure CSS decoration)
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 90% 70% at 60% 20%, #000 30%, transparent 75%);
+    pointer-events: none;
+  }
+
+  // seal stamp — S1 朱文方印 (flat, top-right corner)
+  .claroline-distribution-plugin-home-landing-hero-stamp {
+    position: absolute;
+    top: var(--landing-space-xl);
+    right: var(--landing-space-xl);
+    z-index: 2;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    border-radius: 6px;
+    background: var(--landing-seal);
+    color: #fff;
+    user-select: none;
+    flex-shrink: 0;
+
+    // white fine inner frame, 1.5px, 5px from the edge (flat, no shadow/gradient)
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      border-radius: 3px;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-stamp-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-family: var(--landing-font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+  }
+
+  // main content
+  .claroline-distribution-plugin-home-landing-hero-content {
+    position: relative;
+    z-index: 1;
+    padding-top: calc(var(--landing-space-section) * 1.2);
+    padding-bottom: var(--landing-space-section);
+
+    @media (max-width: 768px) {
+      padding-top: calc(64px * 1.2);
+      padding-bottom: 64px;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-title {
+    font-size: clamp(2.75rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-subtitle {
+    margin-top: var(--landing-space-lg);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--landing-ink-muted);
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-story {
+    margin-top: var(--landing-space-xl);
+    max-width: 720px;
+
+    p + p {
+      margin-top: var(--landing-space-md);
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-quote {
+    margin: var(--landing-space-xl) 0 0;
+    padding-left: var(--landing-space-lg);
+    border-left: 4px solid var(--landing-primary);
+    color: var(--landing-ink);
+
+    p {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-ctas {
+    margin-top: var(--landing-space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--landing-space-md);
+  }
+
+  // alignment variants
+  &.claroline-distribution-plugin-home-landing-hero-align-center .claroline-distribution-plugin-home-landing-hero-content {
+    text-align: center;
+
+    .claroline-distribution-plugin-home-landing-hero-story,
+    .claroline-distribution-plugin-home-landing-hero-quote {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .claroline-distribution-plugin-home-landing-hero-ctas {
+      justify-content: center;
+    }
+  }
+
+  &.claroline-distribution-plugin-home-landing-hero-align-right .claroline-distribution-plugin-home-landing-hero-content {
+    text-align: right;
+
+    .claroline-distribution-plugin-home-landing-hero-story,
+    .claroline-distribution-plugin-home-landing-hero-quote {
+      margin-left: auto;
+    }
+
+    .claroline-distribution-plugin-home-landing-hero-ctas {
+      justify-content: flex-end;
+    }
+  }
+}
+
+// ---------- features (landing-features) ----------
+.landing-widget.claroline-distribution-plugin-home-landing-features {
+  background: var(--landing-surface-muted);
+
+  .claroline-distribution-plugin-home-landing-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--landing-space-lg);
+    align-items: stretch;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-features-card {
+    display: flex;
+    flex-direction: column;
+
+    .claroline-distribution-plugin-home-landing-features-icon {
+      color: var(--landing-primary-strong);
+      font-size: 2rem;
+      margin-bottom: var(--landing-space-md);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-num {
+      margin-bottom: var(--landing-space-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--landing-primary-strong);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-name {
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .claroline-distribution-plugin-home-landing-features-desc {
+      flex: 1;
+      margin-top: var(--landing-space-sm);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-link {
+      margin-top: var(--landing-space-md);
+    }
+  }
+
+  // third card differentiation: deep teal, inverted
+  .claroline-distribution-plugin-home-landing-features-card-dark {
+    background: var(--landing-primary-deep);
+    border-color: var(--landing-primary-deep);
+
+    .claroline-distribution-plugin-home-landing-features-num {
+      color: var(--landing-accent-soft);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-icon {
+      color: var(--landing-accent-soft);
+    }
+
+    h3 {
+      color: #fff;
+    }
+
+    .claroline-distribution-plugin-home-landing-features-desc {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-en {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .claroline-distribution-plugin-home-landing-features-link {
+      color: var(--landing-accent-soft);
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// ---------- ai (landing-ai) ----------
+.landing-widget.claroline-distribution-plugin-home-landing-ai {
+  background: var(--landing-surface-muted);
+
+  .claroline-distribution-plugin-home-landing-ai-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: var(--landing-space-xxl);
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-ai-intro {
+    position: sticky;
+    top: var(--landing-space-lg);
+
+    @media (max-width: 900px) {
+      position: static;
+    }
+
+    .claroline-distribution-plugin-home-landing-ai-title {
+      margin-top: var(--landing-space-md);
+      font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--landing-space-lg);
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-ai-item {
+    display: flex;
+    flex-direction: column;
+
+    .claroline-distribution-plugin-home-landing-ai-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: var(--landing-space-md);
+      border-radius: var(--landing-radius-sm);
+      background: var(--landing-accent-soft);
+      color: var(--landing-primary-deep);
+      font-size: 1.25rem;
+    }
+
+    .claroline-distribution-plugin-home-landing-ai-name {
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .claroline-distribution-plugin-home-landing-ai-desc {
+      margin-top: var(--landing-space-xs);
+    }
+  }
+}
+
+// ---------- packaging (landing-packaging) ----------
+.landing-widget.claroline-distribution-plugin-home-landing-packaging {
+  background: var(--landing-surface-muted);
+
+  .claroline-distribution-plugin-home-landing-packaging-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--landing-space-lg);
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-packaging-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .claroline-distribution-plugin-home-landing-packaging-name {
+      margin-top: var(--landing-space-md);
+    }
+
+    .claroline-distribution-plugin-home-landing-packaging-desc {
+      margin-top: var(--landing-space-xs);
+    }
+  }
+
+  // pure-CSS device icons (flat line-frame, from the design prototype)
+  .dev {
+    position: relative;
+    width: 72px;
+    height: 64px;
+    margin: 0 auto var(--landing-space-md);
+
+    .frame {
+      position: absolute;
+      inset: 0 8px;
+      border: 2px solid var(--landing-primary-strong);
+      border-radius: 8px;
+      background: var(--landing-surface);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 6px;
+      border-radius: 3px;
+      background: var(--landing-accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--landing-primary);
+      }
+    }
+  }
+
+  // desktop: monitor + stand + base
+  .dev--desk {
+    height: 72px;
+
+    .frame {
+      inset: 0 8px 16px;
+    }
+
+    .stand {
+      position: absolute;
+      left: 50%;
+      bottom: 6px;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 10px;
+      border: 2px solid var(--landing-primary-strong);
+      border-top: 0;
+      border-radius: 0 0 3px 3px;
+    }
+
+    .base {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 34px;
+      height: 6px;
+      border: 2px solid var(--landing-primary-strong);
+      border-radius: 3px;
+    }
+  }
+
+  // mobile app: rounded phone frame with app dots
+  .dev--app {
+    width: 44px;
+    height: 72px;
+
+    .frame {
+      inset: 0;
+      border-radius: 10px;
+    }
+
+    .screen {
+      inset: 7px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      align-content: center;
+      justify-items: center;
+      background: var(--landing-accent-soft);
+    }
+  }
+
+  // mini-program: small rounded square
+  .dev--mini {
+    width: 56px;
+    height: 56px;
+
+    .frame {
+      inset: 0;
+      border-radius: 12px;
+    }
+  }
+}
+
+// ---------- cta (landing-cta) ----------
+.landing-widget.claroline-distribution-plugin-home-landing-cta {
+  background: var(--landing-surface-muted);
+
+  .claroline-distribution-plugin-home-landing-cta-content {
+    // deep teal rounded block (xl radius), from the design prototype
+    position: relative;
+    overflow: hidden;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: var(--landing-space-xxl) var(--landing-space-xl);
+    background: var(--landing-primary-deep);
+    border-radius: var(--landing-radius-xl);
+    text-align: center;
+
+    @media (min-width: 768px) {
+      padding: 88px 48px;
+    }
+
+    // soft restrained glow on the deep surface
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -120px;
+      transform: translateX(-50%);
+      width: 480px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .claroline-distribution-plugin-home-landing-cta-title {
+      position: relative;
+      color: #fff;
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      font-weight: 900;
+      letter-spacing: -0.015em;
+    }
+
+    .claroline-distribution-plugin-home-landing-cta-subtitle {
+      position: relative;
+      margin: var(--landing-space-md) auto 0;
+      max-width: 460px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 1.0625rem;
+    }
+
+    .claroline-distribution-plugin-home-landing-cta-buttons {
+      position: relative;
+      margin-top: var(--landing-space-xl);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--landing-space-md);
+      justify-content: center;
+    }
+  }
+
+  // deep-surface button overrides: primary = white bg + deep text (best contrast)
+  .claroline-distribution-plugin-home-landing-cta-button-primary {
+    background: #fff;
+    color: var(--landing-primary-deep);
+    border-color: #fff;
+
+    &:hover,
+    &:focus {
+      background: var(--landing-accent-soft);
+      color: var(--landing-primary-deep);
+      border-color: var(--landing-accent-soft);
+    }
+  }
+
+  .claroline-distribution-plugin-home-landing-cta-button-secondary {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.55);
+
+    &:hover,
+    &:focus {
+      border-color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+// ---------- reduced motion ----------
+@media (prefers-reduced-motion: reduce) {
+  .landing-widget,
+  .landing-widget *,
+  .landing-widget *::before,
+  .landing-widget *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

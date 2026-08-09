@@ -6,6 +6,9 @@ import isEmpty from 'lodash/isEmpty'
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
+// className prefix used by the landing stylesheet (see C-8, landing.scss)
+const PREFIX = 'claroline-distribution-plugin-home-landing-ai'
+
 /**
  * Default copy (zh primary + en placeholder, matching the landing design).
  * The real content is seeded in DB by the C-8 updater; these are only
@@ -82,37 +85,37 @@ const LandingAi = (props) => {
   const items = !isEmpty(localized.items) ? localized.items : (isEmpty(parameters.items) ? defaults.items : parameters.items)
 
   return (
-    <section className="landing-widget landing-ai l-section">
-      <div className="l-container">
-        <div className="ai-layout">
-          <div className="ai-intro">
+    <section className={`landing-widget ${PREFIX}`}>
+      <div className={`${PREFIX}-content`}>
+        <div className={`${PREFIX}-layout`}>
+          <div className={`${PREFIX}-intro`}>
             {badge &&
-              <span className="l-badge">{badge}</span>
+              <span className={`${PREFIX}-badge`}>{badge}</span>
             }
 
             {title &&
-              <h2>{title}</h2>
+              <h2 className={`${PREFIX}-title`}>{title}</h2>
             }
           </div>
 
-          <div className="ai-grid">
+          <div className={`${PREFIX}-grid`}>
             {items.map((item, index) => {
               if (!item) {
                 return null
               }
 
               return (
-                <article key={index} className="l-card ai-item">
+                <article key={index} className={`${PREFIX}-item`}>
                   {item.icon &&
-                    <span className="ic" aria-hidden="true">
+                    <span className={`${PREFIX}-icon`} aria-hidden="true">
                       <i className={item.icon} />
                     </span>
                   }
                   {item.name &&
-                    <h3>{item.name}</h3>
+                    <h3 className={`${PREFIX}-name`}>{item.name}</h3>
                   }
                   {item.desc &&
-                    <p>{item.desc}</p>
+                    <p className={`${PREFIX}-desc`}>{item.desc}</p>
                   }
                 </article>
               )

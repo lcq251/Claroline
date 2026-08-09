@@ -8,6 +8,9 @@ import {trans} from '#/main/app/intl/translation'
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
+// className prefix used by the landing stylesheet (see C-8, landing.scss)
+const PREFIX = 'claroline-distribution-plugin-home-landing-features'
+
 // Default section title (zh primary; admin can override it in the widget parameters).
 const DEFAULT_TITLE = '三大块，一个平台'
 
@@ -79,32 +82,32 @@ const LandingFeaturesComponent = props => {
   const cards = !isEmpty(localized.cards) ? localized.cards : (isEmpty(parameters.cards) ? DEFAULT_CARDS : parameters.cards)
 
   return (
-    <section className="landing-widget landing-features l-section">
-      <div className="l-container">
-        <div className="l-section-head">
-          <h2>{title}</h2>
+    <section className={`landing-widget ${PREFIX}`}>
+      <div className={`${PREFIX}-content`}>
+        <div className={`${PREFIX}-head`}>
+          <h2 className={`${PREFIX}-title`}>{title}</h2>
         </div>
 
-        <div className="feat-grid">
+        <div className={`${PREFIX}-grid`}>
           {cards.map((card, index) => {
             const href = sanitizeHref(card.href)
 
             return (
               <article
                 key={index}
-                className={classes('feat-card', {'feat-card--dark': 'dark' === card.tone})}
+                className={classes(`${PREFIX}-card`, {[`${PREFIX}-card-dark`]: 'dark' === card.tone})}
               >
                 {card.icon &&
-                  <i className={classes('feat-icon', card.icon)} aria-hidden="true" />
+                  <i className={classes(`${PREFIX}-icon`, card.icon)} aria-hidden="true" />
                 }
-                <span className="feat-num">{card.num || `0${index + 1}`}</span>
-                <h3>{card.title}</h3>
-                <p>{card.desc}</p>
+                <span className={`${PREFIX}-num`}>{card.num || `0${index + 1}`}</span>
+                <h3 className={`${PREFIX}-name`}>{card.title}</h3>
+                <p className={`${PREFIX}-desc`}>{card.desc}</p>
                 {card.en &&
-                  <span className="l-en">{card.en}</span>
+                  <span className={`${PREFIX}-en`}>{card.en}</span>
                 }
                 {href &&
-                  <a className="l-btn--text" href={href}>
+                  <a className={`${PREFIX}-link`} href={href}>
                     {trans('landing_features_learn_more', {}, 'widget')} →
                   </a>
                 }

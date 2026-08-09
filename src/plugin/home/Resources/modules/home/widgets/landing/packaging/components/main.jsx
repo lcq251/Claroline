@@ -6,6 +6,9 @@ import isEmpty from 'lodash/isEmpty'
 import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
+// className prefix used by the landing stylesheet (see C-8, landing.scss)
+const PREFIX = 'claroline-distribution-plugin-home-landing-packaging'
+
 /**
  * Default packaging targets (zh main copy, per C-6 card).
  * Shown when the widget instance has no configured platforms yet.
@@ -79,28 +82,28 @@ const LandingPackaging = () => {
     : (Array.isArray(parameters.platforms) ? parameters.platforms : DEFAULT_PLATFORMS)
 
   return (
-    <section className="landing-widget landing-packaging l-section">
-      <div className="l-container">
-        <div className="l-section-head">
-          <span className="l-kicker">Packaging</span>
-          <h2>{title}</h2>
+    <section className={`landing-widget ${PREFIX}`}>
+      <div className={`${PREFIX}-content`}>
+        <div className={`${PREFIX}-head`}>
+          <span className={`${PREFIX}-kicker`}>Packaging</span>
+          <h2 className={`${PREFIX}-title`}>{title}</h2>
           {subtitle &&
-            <p>{subtitle}</p>
+            <p className={`${PREFIX}-subtitle`}>{subtitle}</p>
           }
         </div>
 
         {0 < platforms.length &&
-          <div className="pkg-grid">
+          <div className={`${PREFIX}-grid`}>
             {platforms.map((platform, index) =>
-              <div className="l-card pkg-card" key={index}>
+              <div className={`${PREFIX}-card`} key={index}>
                 <DeviceIcon icon={platform.icon} />
 
-                <h3>{platform.name}</h3>
+                <h3 className={`${PREFIX}-name`}>{platform.name}</h3>
                 {platform.desc &&
-                  <p>{platform.desc}</p>
+                  <p className={`${PREFIX}-desc`}>{platform.desc}</p>
                 }
                 {DEVICE_EN_LABELS[platform.icon] &&
-                  <span className="l-en">{DEVICE_EN_LABELS[platform.icon]}</span>
+                  <span className={`${PREFIX}-en`}>{DEVICE_EN_LABELS[platform.icon]}</span>
                 }
               </div>
             )}
