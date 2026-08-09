@@ -4,7 +4,8 @@
  * Styling follows the design tokens frozen on 2026-08-09:
  *   - design/landing/design-tokens.md (design agent)
  *   - primary colour = B "AI 陪伴青" (teal): #0d9488 / #0f766e / #115e59 / #ccfbf1
- *   - seal stamp = S1 朱文方印 (flat): #b03a2e + white text + 1.5px white inner frame
+ *   - hero = C-11 极简聚焦型: B3 深青海报(反白) × E1 单色等式 × H2 紧凑高度
+ *     (design/landing/minimal-hero-design.md)
  *
  * All rules are scoped to the landing widgets (`.landing-widget`) so the
  * tokens and layouts never leak to the rest of the platform. Every widget
@@ -225,315 +226,170 @@
   line-height: 1.8;
 }
 
-// ---------- hero (landing-hero) ----------
+// ---------- hero (landing-hero, C-11 极简聚焦型) ----------
+// B3 深青海报 × E1 单色等式 × H2 紧凑 —— 首屏仅四元素: 顶栏(品牌 + 年份戳) /
+// 等式标题 / 副标 / 单 CTA。整区反白, 文字与按钮用 --mh-* 深底组变量
+// (design/landing/minimal-hero-design.md §1.2/§2/§3/§4)。
 .landing-widget.claroline-distribution-plugin-home-landing-hero {
+  // deep-bg token group (反白, B3/B4 共用)
+  --mh-ink: #ffffff;
+  --mh-sub: rgba(255, 255, 255, 0.85);
+  --mh-op: rgba(255, 255, 255, 0.65);
+  --mh-muted: rgba(255, 255, 255, 0.72);
+  --mh-alt: #99f6e4;
+  --mh-dot: #99f6e4;
+  --mh-btn-bg: #ffffff;
+  --mh-btn-fg: var(--landing-primary-deep); // #115e59
+  --mh-btn-hover: #ccfbf1;
+  --mh-grid: rgba(255, 255, 255, 0.05);
+
   position: relative;
   overflow: hidden;
-  // G1 浅青水洗 default background (D-3 §1, frozen): the component re-applies
-  // it inline (and overrides it when a background parameter is set), this is
-  // the CSS-level fallback while styles load
-  background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 46%, #f8fafc 100%);
+  // B3 深青海报 default (C-11 拍板): the component re-applies it inline
+  // (and overrides it when a background parameter is set), this is the
+  // CSS-level fallback while styles load
+  background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
 
-  // subtle grid texture (pure CSS decoration)
+  // subtle grid texture (pure CSS decoration, white at .05)
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+      linear-gradient(var(--mh-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--mh-grid) 1px, transparent 1px);
     background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 90% 70% at 60% 20%, #000 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 30%, transparent 75%);
     pointer-events: none;
   }
 
-  // seal stamp — S1 朱文方印 (flat, top-right corner)
-  .claroline-distribution-plugin-home-landing-hero-stamp {
-    position: absolute;
-    top: var(--landing-space-xl);
-    right: var(--landing-space-xl);
-    z-index: 2;
+  // container: max-width 1120px + H2 紧凑高度 (min(520px, 62vh))
+  .claroline-distribution-plugin-home-landing-hero-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    min-height: min(520px, 62vh);
+    padding: 0 var(--landing-space-lg);
     display: flex;
-    width: 60px;
-    height: 60px;
-    padding: 5px;
-    border-radius: 6px;
-    background: var(--landing-seal);
-    color: #fff;
-    user-select: none;
-    flex-shrink: 0;
+    flex-direction: column;
+  }
 
-    // white fine inner frame, 1.5px, 5px from the edge (flat, no shadow/gradient)
+  // topbar: 品牌(左) + 2026 年份戳(右), 海报式两端对齐
+  .claroline-distribution-plugin-home-landing-hero-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--landing-space-lg) 0;
+  }
+
+  .claroline-distribution-plugin-home-landing-hero-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--landing-space-sm);
+    color: var(--mh-ink);
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.5;
+
+    // brand dot (陪伴青亮阶, 深底可见)
     &::before {
       content: "";
-      position: absolute;
-      inset: 5px;
-      border: 1.5px solid rgba(255, 255, 255, 0.85);
-      border-radius: 3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--mh-dot);
+      flex: none;
     }
   }
 
-  .claroline-distribution-plugin-home-landing-hero-stamp-column {
+  .claroline-distribution-plugin-home-landing-hero-year {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mh-muted);
+    white-space: nowrap;
+  }
+
+  // main area: 垂直居中单列 (标题 → 副标 → 单 CTA)
+  .claroline-distribution-plugin-home-landing-hero-main {
     flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     text-align: center;
-    font-family: var(--landing-font-sans);
-    font-size: 1.05rem;
-    font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: 0.06em;
+    padding: var(--landing-space-xl) 0; // H2 主区上下内边距 32px
   }
 
-  // main content
-  .claroline-distribution-plugin-home-landing-hero-content {
-    position: relative;
-    z-index: 1;
-    padding-top: calc(var(--landing-space-section) * 1.2);
-    padding-bottom: var(--landing-space-section);
-
-    @media (max-width: 768px) {
-      padding-top: calc(64px * 1.2);
-      padding-bottom: 64px;
-    }
-  }
-
+  // 等式标题 (E1 单色层级): flex 行 + wrap, AI 微放大, = / + 弱化
   .claroline-distribution-plugin-home-landing-hero-title {
-    font-size: clamp(2.75rem, 6vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.04em 0.18em;
+    font-size: clamp(2.05rem, 5.2vw, 3.4rem); // H2 紧凑
     font-weight: 900;
-    line-height: 1.15;
+    line-height: 1.12;
     letter-spacing: -0.02em;
+    color: var(--mh-ink);
 
-    // v2 title effect: teal gradient text (background-clip:text) + soft glow (D-3 §2.1/2.2)
-    background: linear-gradient(120deg, #134e4a 0%, #0f766e 38%, #0d9488 62%, #14b8a6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    // restrained glow: 1px white highlight edge + 10px teal halo (alpha .22)
-    text-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.55),
-      0 10px 30px rgba(13, 148, 136, 0.22);
-  }
-
-  // browsers without background-clip:text fall back to a solid primary colour
-  @supports not ((background-clip: text) or (-webkit-background-clip: text)) {
-    .claroline-distribution-plugin-home-landing-hero-title {
-      background: none;
-      color: var(--landing-primary-strong);
+    .mh-ai {
+      font-size: 1.08em; // AI 微放大作视觉锚点
     }
-  }
 
-  // keyword markers inside the title (AI ×2 / 陪伴, D-3 §2.3): the ::after
-  // pseudo-element sits under the glyphs (z-index -1) so the highlight does not
-  // clash with the title's background-clip:text gradient
-  .claroline-distribution-plugin-home-landing-hero-title .hl {
-    position: relative;
-    white-space: nowrap;
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: -0.08em;
-      right: -0.08em;
-      bottom: 0.06em;
-      height: 0.32em;
-      border-radius: 0.12em;
-      background: var(--landing-accent-soft);
-      opacity: 0.85;
-      z-index: -1;
+    // 符号 (= +): 细字重 + 浅色 + 小一号
+    .mh-op {
+      font-weight: 400;
+      font-size: 0.72em;
+      letter-spacing: 0;
+      color: var(--mh-op);
     }
   }
 
   .claroline-distribution-plugin-home-landing-hero-subtitle {
-    margin-top: var(--landing-space-lg);
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--landing-ink-muted);
+    margin-top: 22px; // H2: 标题↔副标 22px
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--mh-sub);
   }
 
-  .claroline-distribution-plugin-home-landing-hero-story {
-    margin-top: var(--landing-space-xl);
-    max-width: 720px;
-
-    p + p {
-      margin-top: var(--landing-space-md);
-    }
-
-    // narrative keyword highlights (D-3 §2.3, restraint: only the anchor
-    // sentence "AI 元年" and the open-ending hook are marked)
-    .em {
-      color: var(--landing-primary-strong);
-      font-weight: 600;
-    }
-
-    .em-hook {
-      color: var(--landing-primary-strong);
-      font-weight: 700;
-    }
-  }
-
-  // narrative visual strip (D-2 / Plan 05): horizontal three-column icon
-  // infographic (icon + short title + one-line description) that replaces the
-  // `story` paragraph when configured. Flat, B 伴随青系 (accent-soft icon
-  // backdrops, primary icon colour), stacks on narrow screens.
-  .claroline-distribution-plugin-home-landing-hero-visuals {
-    margin-top: var(--landing-space-xl);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--landing-space-lg);
-    max-width: 960px;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      max-width: 100%;
-    }
-  }
-
-  .claroline-distribution-plugin-home-landing-hero-visual {
-    min-width: 0;
-  }
-
-  // icon backdrop: accent-soft tile, primary icon, three small icons in a row
-  // when the entry carries several FA classes (D-2 row 02)
-  .claroline-distribution-plugin-home-landing-hero-visual-icons {
+  // 单 CTA (仅登录/注册, 用户拍板): 海报白底深字, 加大规格
+  .claroline-distribution-plugin-home-landing-hero-cta {
+    margin-top: 26px; // H2: 副标↔CTA 26px
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    width: 64px;
-    height: 64px;
-    margin-bottom: var(--landing-space-md);
+    min-height: 56px;
+    padding: 16px 44px;
     border-radius: var(--landing-radius-md);
-    background: var(--landing-accent-soft);
-    color: var(--landing-primary-strong);
-    font-size: 1.5rem;
-  }
-
-  .claroline-distribution-plugin-home-landing-hero-visual-title {
-    font-size: 1.125rem;
+    background: var(--mh-btn-bg);
+    border: 1px solid var(--mh-btn-bg);
+    color: var(--mh-btn-fg);
+    font-size: 1.1875rem;
     font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: 0;
-  }
-
-  .claroline-distribution-plugin-home-landing-hero-visual-desc {
-    margin-top: var(--landing-space-xs);
-    color: var(--landing-ink-muted);
-    font-size: 0.9375rem;
-    line-height: 1.8;
-  }
-
-  .claroline-distribution-plugin-home-landing-hero-quote {
-    margin: var(--landing-space-xl) 0 0;
-    padding-left: var(--landing-space-lg);
-    border-left: 4px solid var(--landing-primary);
-    color: var(--landing-ink);
-
-    p {
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1.6;
-    }
-  }
-
-  .claroline-distribution-plugin-home-landing-hero-ctas {
-    margin-top: var(--landing-space-xl);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--landing-space-md);
-  }
-
-  // hero CTA buttons: override bootstrap btn-primary (blue) with the landing teal
-  .claroline-distribution-plugin-home-landing-hero-cta {
-    background: var(--landing-primary-strong);
-    border-color: var(--landing-primary-strong);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.08);
+    transition: background 0.18s ease, transform 0.06s ease;
 
     &:hover,
     &:focus {
-      background: var(--landing-primary-deep);
-      border-color: var(--landing-primary-deep);
-    }
-  }
-
-  // WeChat scan-to-login module (CTA 下方, D-3 §3): white card, QR at 112px
-  .claroline-distribution-plugin-home-landing-hero-qr {
-    margin-top: var(--landing-space-lg);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--landing-space-md);
-    padding: var(--landing-space-md);
-    background: var(--landing-surface);
-    border: 1px solid var(--landing-line);
-    border-radius: var(--landing-radius-lg);
-    box-shadow: var(--landing-shadow-card);
-    max-width: 360px;
-    text-align: left;
-
-    .claroline-distribution-plugin-home-landing-hero-qr-code {
-      position: relative;
-      flex: none;
-      width: 112px;
-      height: 112px;
-      border-radius: var(--landing-radius-sm);
-      overflow: hidden;
-      background: #f1f5f9;
-      border: 1px solid var(--landing-line);
-
-      // placeholder SVG sits underneath; the real image covers it once loaded
-      .qr-fallback {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-
-      img.qr-img {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
+      background: var(--mh-btn-hover);
+      border-color: var(--mh-btn-hover);
+      color: var(--mh-btn-fg);
     }
 
-    .claroline-distribution-plugin-home-landing-hero-qr-info {
-      min-width: 0;
+    &:focus-visible {
+      outline: 2px solid var(--mh-alt);
+      outline-offset: 2px;
     }
 
-    .claroline-distribution-plugin-home-landing-hero-qr-title {
-      display: flex;
-      align-items: center;
-      gap: var(--landing-space-sm);
-      color: var(--landing-ink);
-      font-weight: 700;
-      font-size: 1.0625rem;
-      line-height: 1.4;
-
-      // WeChat brand green — single external colour, brand-identifier exemption
-      i.fa-weixin {
-        color: #07c160;
-        font-size: 1.15em;
-      }
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-qr-hint {
-      margin-top: 6px;
-      color: var(--landing-ink-muted);
-      font-size: 0.875rem;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 520px) {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      max-width: 100%;
-
-      .claroline-distribution-plugin-home-landing-hero-qr-title {
-        justify-content: center;
-      }
+    &:active {
+      transform: translateY(1px);
     }
   }
 
@@ -552,49 +408,16 @@
     }
   }
 
-  // alignment variants
-  &.claroline-distribution-plugin-home-landing-hero-align-center .claroline-distribution-plugin-home-landing-hero-content {
-    text-align: center;
-
-    .claroline-distribution-plugin-home-landing-hero-story,
-    .claroline-distribution-plugin-home-landing-hero-quote {
-      margin-left: auto;
-      margin-right: auto;
+  // responsive: ≤520px 单 CTA 收缩 + 年份戳字距放松
+  @media (max-width: 520px) {
+    .claroline-distribution-plugin-home-landing-hero-year {
+      letter-spacing: 0.1em;
     }
 
-    .claroline-distribution-plugin-home-landing-hero-visuals {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-visual-icons {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-ctas {
-      justify-content: center;
-    }
-  }
-
-  &.claroline-distribution-plugin-home-landing-hero-align-right .claroline-distribution-plugin-home-landing-hero-content {
-    text-align: right;
-
-    .claroline-distribution-plugin-home-landing-hero-story,
-    .claroline-distribution-plugin-home-landing-hero-quote {
-      margin-left: auto;
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-visuals {
-      margin-left: auto;
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-visual-icons {
-      margin-left: auto;
-    }
-
-    .claroline-distribution-plugin-home-landing-hero-ctas {
-      justify-content: flex-end;
+    .claroline-distribution-plugin-home-landing-hero-cta {
+      min-height: 52px;
+      padding: 14px 36px;
+      font-size: 1.125rem;
     }
   }
 }
