@@ -66,15 +66,19 @@ function splitStampText(text) {
 const LandingHero = (props) => {
   const defaults = DEFAULT_CONTENT[locale()] || DEFAULT_CONTENT.zh
   const parameters = props.parameters || {}
+  // bilingual seed: the C-8 updater stores the complete English copy under the
+  // `en` key; prefer it when the visitor locale matches, fall back to the flat
+  // (zh primary, admin-editable) parameters then to the component defaults.
+  const localized = parameters[locale()] || {}
 
-  const title = parameters.title || defaults.title
-  const subtitle = parameters.subtitle || defaults.subtitle
+  const title = localized.title || parameters.title || defaults.title
+  const subtitle = localized.subtitle || parameters.subtitle || defaults.subtitle
   // NB. `story` is rich HTML. It is rendered through the platform `Html`
   // component (same as the simple widget) and is sanitized by the HTML editor
   // on save; never interpolate it as raw JSX text.
-  const story = parameters.story || defaults.story
-  const quote = parameters.quote || defaults.quote
-  const cta = isEmpty(parameters.cta) ? defaults.cta : parameters.cta
+  const story = localized.story || parameters.story || defaults.story
+  const quote = localized.quote || parameters.quote || defaults.quote
+  const cta = !isEmpty(localized.cta) ? localized.cta : (isEmpty(parameters.cta) ? defaults.cta : parameters.cta)
   const align = parameters.align || 'center'
 
   // background: a color value (hex/rgb/hsl...) or an image URL

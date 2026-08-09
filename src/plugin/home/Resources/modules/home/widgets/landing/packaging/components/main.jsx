@@ -1,7 +1,9 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {useSelector} from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
+import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
 /**
@@ -62,15 +64,19 @@ DeviceIcon.propTypes = {
  * (mini-program / desktop / mobile app) as configurable platform cards.
  */
 const LandingPackaging = () => {
-  const parameters = useSelector(contentSelectors.parameters)
+  const parameters = useSelector(contentSelectors.parameters) || {}
+  // bilingual seed: the C-8 updater stores the complete English copy under the
+  // `en` key; prefer it when the visitor locale matches, fall back to the flat
+  // (zh primary, admin-editable) parameters then to the component defaults.
+  const localized = parameters[locale()] || {}
 
-  const title = parameters.title || DEFAULT_TITLE
-  const subtitle = parameters.subtitle || DEFAULT_SUBTITLE
+  const title = localized.title || parameters.title || DEFAULT_TITLE
+  const subtitle = localized.subtitle || parameters.subtitle || DEFAULT_SUBTITLE
 
   // undefined platforms -> preset showcase; explicit empty array -> no cards
-  const platforms = Array.isArray(parameters.platforms)
-    ? parameters.platforms
-    : DEFAULT_PLATFORMS
+  const platforms = !isEmpty(localized.platforms)
+    ? localized.platforms
+    : (Array.isArray(parameters.platforms) ? parameters.platforms : DEFAULT_PLATFORMS)
 
   return (
     <section className="landing-widget landing-packaging l-section">

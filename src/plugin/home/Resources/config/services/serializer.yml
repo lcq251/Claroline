@@ -4,6 +4,9 @@ services:
     autoconfigure: false
     public: true
 
+  Claroline\HomeBundle\Serializer\LandingWidgetSerializer:
+    tags: [claroline.serializer]
+
   Claroline\HomeBundle\Serializer\HomeTabSerializer:
     tags: [claroline.serializer]
     arguments:

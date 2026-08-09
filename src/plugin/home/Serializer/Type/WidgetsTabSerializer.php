@@ -61,6 +61,8 @@ class WidgetsTabSerializer
 
             // update containers
             foreach ($data['widgets'] as $position => $widgetContainerData) {
+                $widgetContainer = null;
+
                 if (isset($widgetContainerData['id'])) {
                     $widgetContainer = $tab->getWidgetContainer($widgetContainerData['id']);
                 }

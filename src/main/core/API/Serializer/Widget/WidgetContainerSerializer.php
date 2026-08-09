@@ -102,6 +102,8 @@ class WidgetContainerSerializer
             // updates instances
             foreach ($data['contents'] as $index => $content) {
                 if ($content) {
+                    $widgetInstance = null;
+
                     if (isset($content['id'])) {
                         $widgetInstance = $widgetContainer->getInstance($content['id']);
                     }

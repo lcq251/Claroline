@@ -72,10 +72,14 @@ const DEFAULT_CONTENT = {
 const LandingAi = (props) => {
   const defaults = DEFAULT_CONTENT[locale()] || DEFAULT_CONTENT.zh
   const parameters = props.parameters || {}
+  // bilingual seed: the C-8 updater stores the complete English copy under the
+  // `en` key; prefer it when the visitor locale matches, fall back to the flat
+  // (zh primary, admin-editable) parameters then to the component defaults.
+  const localized = parameters[locale()] || {}
 
-  const title = parameters.title || defaults.title
-  const badge = parameters.badge || defaults.badge
-  const items = isEmpty(parameters.items) ? defaults.items : parameters.items
+  const title = localized.title || parameters.title || defaults.title
+  const badge = localized.badge || parameters.badge || defaults.badge
+  const items = !isEmpty(localized.items) ? localized.items : (isEmpty(parameters.items) ? defaults.items : parameters.items)
 
   return (
     <section className="landing-widget landing-ai l-section">

@@ -41,10 +41,14 @@ const DEFAULT_CONTENT = {
 const LandingCta = (props) => {
   const defaults = DEFAULT_CONTENT[locale()] || DEFAULT_CONTENT.zh
   const parameters = props.parameters || {}
+  // bilingual seed: the C-8 updater stores the complete English copy under the
+  // `en` key; prefer it when the visitor locale matches, fall back to the flat
+  // (zh primary, admin-editable) parameters then to the component defaults.
+  const localized = parameters[locale()] || {}
 
-  const title = parameters.title || defaults.title
-  const subtitle = parameters.subtitle || defaults.subtitle
-  const buttons = isEmpty(parameters.buttons) ? defaults.buttons : parameters.buttons
+  const title = localized.title || parameters.title || defaults.title
+  const subtitle = localized.subtitle || parameters.subtitle || defaults.subtitle
+  const buttons = !isEmpty(localized.buttons) ? localized.buttons : (isEmpty(parameters.buttons) ? defaults.buttons : parameters.buttons)
 
   return (
     <section className={`landing-widget ${PREFIX}`}>

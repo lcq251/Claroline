@@ -2,8 +2,10 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 import classes from 'classnames'
+import isEmpty from 'lodash/isEmpty'
 
 import {trans} from '#/main/app/intl/translation'
+import {locale} from '#/main/app/intl'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
 // Default section title (zh primary; admin can override it in the widget parameters).
@@ -67,13 +69,20 @@ function sanitizeHref(href) {
 }
 
 const LandingFeaturesComponent = props => {
-  const cards = props.parameters.cards || DEFAULT_CARDS
+  const parameters = props.parameters || {}
+  // bilingual seed: the C-8 updater stores the complete English copy under the
+  // `en` key; prefer it when the visitor locale matches, fall back to the flat
+  // (zh primary, admin-editable) parameters then to the component defaults.
+  const localized = parameters[locale()] || {}
+
+  const title = localized.title || parameters.title || DEFAULT_TITLE
+  const cards = !isEmpty(localized.cards) ? localized.cards : (isEmpty(parameters.cards) ? DEFAULT_CARDS : parameters.cards)
 
   return (
     <section className="landing-widget landing-features l-section">
       <div className="l-container">
         <div className="l-section-head">
-          <h2>{props.parameters.title || DEFAULT_TITLE}</h2>
+          <h2>{title}</h2>
         </div>
 
         <div className="feat-grid">
