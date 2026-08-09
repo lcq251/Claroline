@@ -8,12 +8,20 @@ use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Entity\Type\WidgetsTab;
 use Claroline\InstallationBundle\Additional\AdditionalInstaller;
+use Claroline\MindMeAiBundle\Installation\Updater\Updater150100;
 
 class ClarolineMindMeAiInstaller extends AdditionalInstaller
 {
     public function hasMigrations(): bool
     {
         return true;
+    }
+
+    public static function getUpdaters(): array
+    {
+        return [
+            '15.0.100' => Updater150100::class,
+        ];
     }
 
     public function postInstall(): void
