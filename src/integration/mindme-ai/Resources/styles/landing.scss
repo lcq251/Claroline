@@ -9,7 +9,7 @@
  *
  * All rules are scoped to the landing widgets (`.landing-widget`) so the
  * tokens and layouts never leak to the rest of the platform. Every widget
- * renders with the `claroline-distribution-plugin-home-landing-*` prefix
+ * renders with the `claroline-distribution-integration-mindme-ai-landing-*` prefix
  * (hero / features / ai / packaging / cta).
  */
 
@@ -230,7 +230,7 @@
 // B3 深青海报 × E1 单色等式 × H2 紧凑 —— 首屏仅四元素: 顶栏(品牌 + 年份戳) /
 // 等式标题 / 副标 / 单 CTA。整区反白, 文字与按钮用 --mh-* 深底组变量
 // (design/landing/minimal-hero-design.md §1.2/§2/§3/§4)。
-.landing-widget.claroline-distribution-plugin-home-landing-hero {
+.landing-widget.claroline-distribution-integration-mindme-ai-landing-hero {
   // deep-bg token group (反白, B3/B4 共用)
   --mh-ink: #ffffff;
   --mh-sub: rgba(255, 255, 255, 0.85);
@@ -264,7 +264,7 @@
   }
 
   // container: max-width 1120px + H2 紧凑高度 (min(520px, 62vh))
-  .claroline-distribution-plugin-home-landing-hero-container {
+  .claroline-distribution-integration-mindme-ai-landing-hero-container {
     position: relative;
     z-index: 1;
     max-width: 1120px;
@@ -276,14 +276,14 @@
   }
 
   // topbar: 品牌(左) + 2026 年份戳(右), 海报式两端对齐
-  .claroline-distribution-plugin-home-landing-hero-topbar {
+  .claroline-distribution-integration-mindme-ai-landing-hero-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: var(--landing-space-lg) 0;
   }
 
-  .claroline-distribution-plugin-home-landing-hero-brand {
+  .claroline-distribution-integration-mindme-ai-landing-hero-brand {
     display: inline-flex;
     align-items: center;
     gap: var(--landing-space-sm);
@@ -303,7 +303,7 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-hero-year {
+  .claroline-distribution-integration-mindme-ai-landing-hero-year {
     font-size: 0.8125rem;
     font-weight: 600;
     letter-spacing: 0.14em;
@@ -313,7 +313,7 @@
   }
 
   // main area: 垂直居中单列 (标题 → 副标 → 单 CTA)
-  .claroline-distribution-plugin-home-landing-hero-main {
+  .claroline-distribution-integration-mindme-ai-landing-hero-main {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -324,7 +324,7 @@
   }
 
   // 等式标题 (E1 单色层级): flex 行 + wrap, AI 微放大, = / + 弱化
-  .claroline-distribution-plugin-home-landing-hero-title {
+  .claroline-distribution-integration-mindme-ai-landing-hero-title {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -349,7 +349,7 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-hero-subtitle {
+  .claroline-distribution-integration-mindme-ai-landing-hero-subtitle {
     margin-top: 22px; // H2: 标题↔副标 22px
     font-size: clamp(1.125rem, 2vw, 1.375rem);
     font-weight: 500;
@@ -358,7 +358,7 @@
   }
 
   // 单 CTA (仅登录/注册, 用户拍板): 海报白底深字, 加大规格
-  .claroline-distribution-plugin-home-landing-hero-cta {
+  .claroline-distribution-integration-mindme-ai-landing-hero-cta {
     margin-top: 26px; // H2: 副标↔CTA 26px
     display: inline-flex;
     align-items: center;
@@ -410,11 +410,11 @@
 
   // responsive: ≤520px 单 CTA 收缩 + 年份戳字距放松
   @media (max-width: 520px) {
-    .claroline-distribution-plugin-home-landing-hero-year {
+    .claroline-distribution-integration-mindme-ai-landing-hero-year {
       letter-spacing: 0.1em;
     }
 
-    .claroline-distribution-plugin-home-landing-hero-cta {
+    .claroline-distribution-integration-mindme-ai-landing-hero-cta {
       min-height: 52px;
       padding: 14px 36px;
       font-size: 1.125rem;
@@ -423,10 +423,10 @@
 }
 
 // ---------- features (landing-features) ----------
-.landing-widget.claroline-distribution-plugin-home-landing-features {
+.landing-widget.claroline-distribution-integration-mindme-ai-landing-features {
   background: var(--landing-surface-muted);
 
-  .claroline-distribution-plugin-home-landing-features-grid {
+  .claroline-distribution-integration-mindme-ai-landing-features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--landing-space-lg);
@@ -437,17 +437,17 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-features-card {
+  .claroline-distribution-integration-mindme-ai-landing-features-card {
     display: flex;
     flex-direction: column;
 
-    .claroline-distribution-plugin-home-landing-features-icon {
+    .claroline-distribution-integration-mindme-ai-landing-features-icon {
       color: var(--landing-primary-strong);
       font-size: 2rem;
       margin-bottom: var(--landing-space-md);
     }
 
-    .claroline-distribution-plugin-home-landing-features-num {
+    .claroline-distribution-integration-mindme-ai-landing-features-num {
       margin-bottom: var(--landing-space-sm);
       font-size: 0.75rem;
       font-weight: 600;
@@ -455,32 +455,32 @@
       color: var(--landing-primary-strong);
     }
 
-    .claroline-distribution-plugin-home-landing-features-name {
+    .claroline-distribution-integration-mindme-ai-landing-features-name {
       font-size: 1.375rem;
       font-weight: 800;
       letter-spacing: -0.01em;
     }
 
-    .claroline-distribution-plugin-home-landing-features-desc {
+    .claroline-distribution-integration-mindme-ai-landing-features-desc {
       flex: 1;
       margin-top: var(--landing-space-sm);
     }
 
-    .claroline-distribution-plugin-home-landing-features-link {
+    .claroline-distribution-integration-mindme-ai-landing-features-link {
       margin-top: var(--landing-space-md);
     }
   }
 
   // third card differentiation: deep teal, inverted
-  .claroline-distribution-plugin-home-landing-features-card-dark {
+  .claroline-distribution-integration-mindme-ai-landing-features-card-dark {
     background: var(--landing-primary-deep);
     border-color: var(--landing-primary-deep);
 
-    .claroline-distribution-plugin-home-landing-features-num {
+    .claroline-distribution-integration-mindme-ai-landing-features-num {
       color: var(--landing-accent-soft);
     }
 
-    .claroline-distribution-plugin-home-landing-features-icon {
+    .claroline-distribution-integration-mindme-ai-landing-features-icon {
       color: var(--landing-accent-soft);
     }
 
@@ -488,15 +488,15 @@
       color: #fff;
     }
 
-    .claroline-distribution-plugin-home-landing-features-desc {
+    .claroline-distribution-integration-mindme-ai-landing-features-desc {
       color: rgba(255, 255, 255, 0.82);
     }
 
-    .claroline-distribution-plugin-home-landing-features-en {
+    .claroline-distribution-integration-mindme-ai-landing-features-en {
       color: rgba(255, 255, 255, 0.7);
     }
 
-    .claroline-distribution-plugin-home-landing-features-link {
+    .claroline-distribution-integration-mindme-ai-landing-features-link {
       color: var(--landing-accent-soft);
 
       &:hover {
@@ -507,10 +507,10 @@
 }
 
 // ---------- ai (landing-ai) ----------
-.landing-widget.claroline-distribution-plugin-home-landing-ai {
+.landing-widget.claroline-distribution-integration-mindme-ai-landing-ai {
   background: var(--landing-surface-muted);
 
-  .claroline-distribution-plugin-home-landing-ai-layout {
+  .claroline-distribution-integration-mindme-ai-landing-ai-layout {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
     gap: var(--landing-space-xxl);
@@ -521,7 +521,7 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-ai-intro {
+  .claroline-distribution-integration-mindme-ai-landing-ai-intro {
     position: sticky;
     top: var(--landing-space-lg);
 
@@ -529,7 +529,7 @@
       position: static;
     }
 
-    .claroline-distribution-plugin-home-landing-ai-title {
+    .claroline-distribution-integration-mindme-ai-landing-ai-title {
       margin-top: var(--landing-space-md);
       font-size: clamp(1.9rem, 3.5vw, 2.5rem);
       font-weight: 800;
@@ -538,7 +538,7 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-ai-grid {
+  .claroline-distribution-integration-mindme-ai-landing-ai-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--landing-space-lg);
@@ -548,11 +548,11 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-ai-item {
+  .claroline-distribution-integration-mindme-ai-landing-ai-item {
     display: flex;
     flex-direction: column;
 
-    .claroline-distribution-plugin-home-landing-ai-icon {
+    .claroline-distribution-integration-mindme-ai-landing-ai-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -565,22 +565,22 @@
       font-size: 1.25rem;
     }
 
-    .claroline-distribution-plugin-home-landing-ai-name {
+    .claroline-distribution-integration-mindme-ai-landing-ai-name {
       font-size: 1.125rem;
       font-weight: 700;
     }
 
-    .claroline-distribution-plugin-home-landing-ai-desc {
+    .claroline-distribution-integration-mindme-ai-landing-ai-desc {
       margin-top: var(--landing-space-xs);
     }
   }
 }
 
 // ---------- packaging (landing-packaging) ----------
-.landing-widget.claroline-distribution-plugin-home-landing-packaging {
+.landing-widget.claroline-distribution-integration-mindme-ai-landing-packaging {
   background: var(--landing-surface-muted);
 
-  .claroline-distribution-plugin-home-landing-packaging-grid {
+  .claroline-distribution-integration-mindme-ai-landing-packaging-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--landing-space-lg);
@@ -590,17 +590,17 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-packaging-card {
+  .claroline-distribution-integration-mindme-ai-landing-packaging-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 
-    .claroline-distribution-plugin-home-landing-packaging-name {
+    .claroline-distribution-integration-mindme-ai-landing-packaging-name {
       margin-top: var(--landing-space-md);
     }
 
-    .claroline-distribution-plugin-home-landing-packaging-desc {
+    .claroline-distribution-integration-mindme-ai-landing-packaging-desc {
       margin-top: var(--landing-space-xs);
     }
   }
@@ -705,10 +705,10 @@
 }
 
 // ---------- cta (landing-cta) ----------
-.landing-widget.claroline-distribution-plugin-home-landing-cta {
+.landing-widget.claroline-distribution-integration-mindme-ai-landing-cta {
   background: var(--landing-surface-muted);
 
-  .claroline-distribution-plugin-home-landing-cta-content {
+  .claroline-distribution-integration-mindme-ai-landing-cta-content {
     // deep teal rounded block (xl radius), from the design prototype
     position: relative;
     overflow: hidden;
@@ -736,7 +736,7 @@
       pointer-events: none;
     }
 
-    .claroline-distribution-plugin-home-landing-cta-title {
+    .claroline-distribution-integration-mindme-ai-landing-cta-title {
       position: relative;
       color: #fff;
       font-size: clamp(1.9rem, 4vw, 2.75rem);
@@ -744,7 +744,7 @@
       letter-spacing: -0.015em;
     }
 
-    .claroline-distribution-plugin-home-landing-cta-subtitle {
+    .claroline-distribution-integration-mindme-ai-landing-cta-subtitle {
       position: relative;
       margin: var(--landing-space-md) auto 0;
       max-width: 460px;
@@ -752,7 +752,7 @@
       font-size: 1.0625rem;
     }
 
-    .claroline-distribution-plugin-home-landing-cta-buttons {
+    .claroline-distribution-integration-mindme-ai-landing-cta-buttons {
       position: relative;
       margin-top: var(--landing-space-xl);
       display: flex;
@@ -763,7 +763,7 @@
   }
 
   // deep-surface button overrides: primary = white bg + deep text (best contrast)
-  .claroline-distribution-plugin-home-landing-cta-button-primary {
+  .claroline-distribution-integration-mindme-ai-landing-cta-button-primary {
     background: #fff;
     color: var(--landing-primary-deep);
     border-color: #fff;
@@ -776,7 +776,7 @@
     }
   }
 
-  .claroline-distribution-plugin-home-landing-cta-button-secondary {
+  .claroline-distribution-integration-mindme-ai-landing-cta-button-secondary {
     background: transparent;
     color: #fff;
     border-color: rgba(255, 255, 255, 0.55);
