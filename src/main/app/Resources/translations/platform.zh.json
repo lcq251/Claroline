@@ -8,7 +8,9 @@
     "us_dollar": "USD",
     "us_dollar_short": "$",
     "chf": "CHF",
-    "chf_short": "CHF"
+    "chf_short": "CHF",
+    "rmb": "人民币",
+    "rmb_short": "¥"
   },
   "loading": "正在加载...",
   "forbidden": "访问被禁止",

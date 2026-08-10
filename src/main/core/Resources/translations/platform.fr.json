@@ -657,7 +657,6 @@
     "external": "Externe",
     "internal": "Interne",
     "no_selection": "Pas de selection",
-
     "register_users": "Inscrire des utilisateurs",
     "register_groups": "Inscrire des groupes",
     "register_users_groups": "Inscrire des utilisateurs/groupes",
@@ -883,5 +882,14 @@
     "about_me": "À propos de moi",
     "count_views": "{0} Aucune vue le <b>%date%</b> | {1} <b>1</b> vue le <b>%date%</b> | ]1,Inf[ <b>%count%</b> vues le <b>%date%</b>",
     "count_visitors": "{0} Aucun visiteur le <b>%date%</b> | {1} <b>1</b> visiteur le <b>%date%</b> | ]1,Inf[ <b>%count%</b> visiteurs le <b>%date%</b>",
-    "count_actions": "{0} Aucune action le <b>%date%</b> | {1} <b>1</b> action le <b>%date%</b> | ]1,Inf[ <b>%count%</b> actions le <b>%date%</b>"
+
+    "count_actions": "{0} Aucune action le <b>%date%</b> | {1} <b>1</b> action le <b>%date%</b> | ]1,Inf[ <b>%count%</b> actions le <b>%date%</b>",
+    "currency.rmb": "CNY",
+    "currency.rmb_short": "¥",
+    "currency.euro": "Euro",
+    "currency.euro_short": "€",
+    "currency.us_dollar": "Dollar US",
+    "currency.us_dollar_short": "$",
+    "currency.chf": "Franc suisse",
+    "currency.chf_short": "CHF"
 }

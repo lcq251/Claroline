@@ -8,7 +8,9 @@
     "us_dollar": "USD",
     "us_dollar_short": "$",
     "chf": "CHF",
-    "chf_short": "CHF"
+    "chf_short": "CHF",
+    "rmb": "RMB",
+    "rmb_short": "¥"
   },
   "not_found": "Content not found",
   "loading": "Loading...",

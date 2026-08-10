@@ -8,7 +8,9 @@
     "us_dollar": "USD",
     "us_dollar_short": "$",
     "chf": "CHF",
-    "chf_short": "CHF"
+    "chf_short": "CHF",
+    "rmb": "CNY",
+    "rmb_short": "¥"
   },
   "loading": "Chargement en cours...",
   "forbidden": "Accès interdit",
