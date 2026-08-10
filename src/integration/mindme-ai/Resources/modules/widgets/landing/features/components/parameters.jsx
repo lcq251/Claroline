@@ -80,6 +80,7 @@ const FeatureCardEditor = props => {
               onChange={(event) => props.onChange(updateCardProp(card, 'tone', event.target.value))}
             >
               <option value="normal">{trans('landing_features_card_tone_normal', {}, 'widget')}</option>
+              <option value="soft">{trans('landing_features_card_tone_soft', {}, 'widget')}</option>
               <option value="dark">{trans('landing_features_card_tone_dark', {}, 'widget')}</option>
             </select>
           </div>
@@ -147,6 +148,11 @@ const LandingFeaturesParameters = props => (
           {
             name: 'parameters.title',
             label: trans('title'),
+            type: 'string'
+          },
+          {
+            name: 'parameters.subtitle',
+            label: trans('landing_features_subtitle', {}, 'widget'),
             type: 'string'
           },
           {

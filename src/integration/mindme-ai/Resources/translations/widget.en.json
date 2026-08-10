@@ -56,7 +56,9 @@
   "landing_features_card_tone": "Card style",
   "landing_features_card_tone_dark": "Dark card (highlight)",
   "landing_features_card_tone_normal": "Light card",
+  "landing_features_card_tone_soft": "Soft card (highlight)",
   "landing_features_cards": "Feature cards",
   "landing_features_learn_more": "Learn more",
-  "landing_features_no_card": "No card yet"
+  "landing_features_no_card": "No card yet",
+  "landing_features_subtitle": "Subtitle"
 }

@@ -423,10 +423,44 @@
 }
 
 // ---------- features (landing-features) ----------
+// C-13 方案 B 深底升级 (design/landing/features-b.html): 整块深青海报底
+// (与 hero B3 同源) + 白色细网格纹理, 标题/副标反白, 卡片白底悬浮
+// (第 3 卡浅青 accent-soft), 72px 圆徽章图标居中。
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-features {
-  background: var(--landing-surface-muted);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+
+  // 白色细网格纹理 (与 hero B3 同款装饰)
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 30%, transparent 75%);
+    pointer-events: none;
+  }
+
+  // 区块标题 / 副标反白 (共享 -head 布局保留, 仅改色)
+  .claroline-distribution-integration-mindme-ai-landing-features-head {
+    position: relative;
+    z-index: 1;
+
+    .claroline-distribution-integration-mindme-ai-landing-features-title {
+      color: #fff;
+    }
+
+    .claroline-distribution-integration-mindme-ai-landing-features-subtitle {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
 
   .claroline-distribution-integration-mindme-ai-landing-features-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--landing-space-lg);
@@ -440,67 +474,62 @@
   .claroline-distribution-integration-mindme-ai-landing-features-card {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--landing-space-md);
+    // 白卡悬浮于海报底: 去线框, 换深色投影 (照 features-b.html)
+    border: 0;
+    box-shadow: 0 8px 24px rgba(2, 32, 28, 0.28), 0 2px 6px rgba(2, 32, 28, 0.16);
 
-    .claroline-distribution-integration-mindme-ai-landing-features-icon {
-      color: var(--landing-primary-strong);
-      font-size: 2rem;
-      margin-bottom: var(--landing-space-md);
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(2, 32, 28, 0.38), 0 3px 8px rgba(2, 32, 28, 0.2);
     }
 
-    .claroline-distribution-integration-mindme-ai-landing-features-num {
-      margin-bottom: var(--landing-space-sm);
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+    // 72px 圆徽章: 浅青底 / 深青图标, 居中
+    .claroline-distribution-integration-mindme-ai-landing-features-icon-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--landing-accent-soft);
       color: var(--landing-primary-strong);
+      flex: none;
+    }
+
+    .claroline-distribution-integration-mindme-ai-landing-features-icon {
+      font-size: 1.875rem; // 30px
     }
 
     .claroline-distribution-integration-mindme-ai-landing-features-name {
-      font-size: 1.375rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
+      color: var(--landing-ink);
     }
 
     .claroline-distribution-integration-mindme-ai-landing-features-desc {
-      flex: 1;
-      margin-top: var(--landing-space-sm);
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-features-link {
-      margin-top: var(--landing-space-md);
+      color: var(--landing-ink-muted);
+      margin: 0;
     }
   }
 
-  // third card differentiation: deep teal, inverted
-  .claroline-distribution-integration-mindme-ai-landing-features-card-dark {
-    background: var(--landing-primary-deep);
-    border-color: var(--landing-primary-deep);
+  // 第 3 卡: 浅青卡 (accent-soft) 差异化 + 徽章反相 (深青底白图标)
+  .claroline-distribution-integration-mindme-ai-landing-features-card-soft {
+    background: var(--landing-accent-soft);
 
-    .claroline-distribution-integration-mindme-ai-landing-features-num {
-      color: var(--landing-accent-soft);
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-features-icon {
-      color: var(--landing-accent-soft);
-    }
-
-    h3 {
+    .claroline-distribution-integration-mindme-ai-landing-features-icon-badge {
+      background: var(--landing-primary-deep);
       color: #fff;
     }
+  }
 
-    .claroline-distribution-integration-mindme-ai-landing-features-desc {
-      color: rgba(255, 255, 255, 0.82);
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-features-en {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-features-link {
-      color: var(--landing-accent-soft);
+  // reduced-motion: 禁用 hover 位移 (spec §7)
+  @media (prefers-reduced-motion: reduce) {
+    .claroline-distribution-integration-mindme-ai-landing-features-card {
+      transition: none;
 
       &:hover {
-        color: #fff;
+        transform: none;
       }
     }
   }
