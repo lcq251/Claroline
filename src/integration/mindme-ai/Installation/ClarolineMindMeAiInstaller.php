@@ -8,30 +8,12 @@ use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Entity\Type\WidgetsTab;
 use Claroline\InstallationBundle\Additional\AdditionalInstaller;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150100;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150101;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150102;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150103;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150104;
-use Claroline\MindMeAiBundle\Installation\Updater\Updater150105;
 
 class ClarolineMindMeAiInstaller extends AdditionalInstaller
 {
     public function hasMigrations(): bool
     {
         return true;
-    }
-
-    public static function getUpdaters(): array
-    {
-        return [
-            '15.0.100' => Updater150100::class,
-            '15.0.101' => Updater150101::class,
-            '15.0.102' => Updater150102::class,
-            '15.0.103' => Updater150103::class,
-            '15.0.104' => Updater150104::class,
-            '15.0.105' => Updater150105::class,
-        ];
     }
 
     public function postInstall(): void
