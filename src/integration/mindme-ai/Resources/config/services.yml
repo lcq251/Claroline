@@ -7,6 +7,10 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\SerializerProvider'
 
+    Claroline\MindMeAiBundle\Installation\Updater\Updater150101:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+
     Claroline\MindMeAiBundle\Controller\AiGeneratorController:
         tags: ['controller.service_arguments']
     Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:
