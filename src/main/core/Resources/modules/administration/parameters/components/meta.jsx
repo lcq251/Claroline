@@ -65,7 +65,8 @@ const Meta = (props) =>
                   choices: {
                     euro: trans('currency.euro'),
                     us_dollar: trans('currency.us_dollar'),
-                    chf: trans('currency.chf')
+                    chf: trans('currency.chf'),
+                    rmb: trans('currency.rmb')
                   }
                 }
               }
