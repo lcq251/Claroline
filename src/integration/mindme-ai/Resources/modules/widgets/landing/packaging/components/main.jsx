@@ -12,9 +12,16 @@ const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-packaging'
 /**
  * Default packaging targets (zh main copy, per C-6 card).
  * Shown when the widget instance has no configured platforms yet.
+ *
+ * C-14 浅色系 (D7 用户拍板): 无英文 kicker, 标题「一处编译，多端访问」+
+ * 副标「一套代码，多端运行」。
  */
-const DEFAULT_TITLE = '一处建设，处处可达'
-const DEFAULT_SUBTITLE = '平台提供打包环境，一套内容，多端分发'
+const DEFAULT_TITLE = '一处编译，多端访问'
+const DEFAULT_SUBTITLE = '一套代码，多端运行'
+
+// English fallbacks (C-14, D7 en 文案)
+const DEFAULT_EN_TITLE = 'Build once, run everywhere'
+const DEFAULT_EN_SUBTITLE = 'One codebase, every device'
 
 const DEFAULT_PLATFORMS = [
   {icon: 'mini', name: '小程序', desc: '轻量即用，随时学习'},
@@ -73,8 +80,12 @@ const LandingPackaging = () => {
   // (zh primary, admin-editable) parameters then to the component defaults.
   const localized = parameters[locale()] || {}
 
-  const title = localized.title || parameters.title || DEFAULT_TITLE
-  const subtitle = localized.subtitle || parameters.subtitle || DEFAULT_SUBTITLE
+  const defaults = 'en' === locale()
+    ? {title: DEFAULT_EN_TITLE, subtitle: DEFAULT_EN_SUBTITLE}
+    : {title: DEFAULT_TITLE, subtitle: DEFAULT_SUBTITLE}
+
+  const title = localized.title || parameters.title || defaults.title
+  const subtitle = localized.subtitle || parameters.subtitle || defaults.subtitle
 
   // undefined platforms -> preset showcase; explicit empty array -> no cards
   const platforms = !isEmpty(localized.platforms)
@@ -85,7 +96,6 @@ const LandingPackaging = () => {
     <section className={`landing-widget ${PREFIX}`}>
       <div className={`${PREFIX}-content`}>
         <div className={`${PREFIX}-head`}>
-          <span className={`${PREFIX}-kicker`}>Packaging</span>
           <h2 className={`${PREFIX}-title`}>{title}</h2>
           {subtitle &&
             <p className={`${PREFIX}-subtitle`}>{subtitle}</p>
