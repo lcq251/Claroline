@@ -15,6 +15,10 @@ services:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
 
+    Claroline\MindMeAiBundle\Installation\Updater\Updater150103:
+        arguments:
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+
     Claroline\MindMeAiBundle\Controller\AiGeneratorController:
         tags: ['controller.service_arguments']
     Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:

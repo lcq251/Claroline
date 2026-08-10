@@ -882,5 +882,13 @@
   "about_me": "关于我",
   "count_views": "{0} 在<b>%date%</b>没有浏览 | {1} 在<b>%date%</b>有<b>1</b>次浏览 | ]1,Inf[ 在<b>%date%</b>有<b>%count%</b>次浏览",
   "count_visitors": "{0} 在<b>%date%</b>没有访客 | {1} 在<b>%date%</b>有<b>1</b>位访客 | ]1,Inf[ 在<b>%date%</b>有<b>%count%</b>位访客",
-  "count_actions": "{0} 在<b>%date%</b>没有操作 | {1} 在<b>%date%</b>有<b>1</b>次操作 | ]1,Inf[ 在<b>%date%</b>有<b>%count%</b>次操作"
+  "count_actions": "{0} 在<b>%date%</b>没有操作 | {1} 在<b>%date%</b>有<b>1</b>次操作 | ]1,Inf[ 在<b>%date%</b>有<b>%count%</b>次操作",
+  "currency.rmb": "人民币",
+  "currency.rmb_short": "¥",
+  "currency.euro": "欧元",
+  "currency.euro_short": "€",
+  "currency.us_dollar": "美元",
+  "currency.us_dollar_short": "$",
+  "currency.chf": "瑞士法郎",
+  "currency.chf_short": "CHF"
 }

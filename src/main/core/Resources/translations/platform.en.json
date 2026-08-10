@@ -850,5 +850,13 @@
     "legal_information": "Legal information",
     "logs": "Logs",
     "dashboard": "Tableau de bord",
-    "registration_date": "Registration date"
+    "registration_date": "Registration date",
+    "currency.rmb": "RMB",
+    "currency.rmb_short": "¥",
+    "currency.euro": "Euro",
+    "currency.euro_short": "€",
+    "currency.us_dollar": "US Dollar",
+    "currency.us_dollar_short": "$",
+    "currency.chf": "Swiss Franc",
+    "currency.chf_short": "CHF"
 }
