@@ -9,23 +9,23 @@ import {sanitizeHref} from '#/integration/mindme-ai/widgets/landing/sanitize'
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
 const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-hero'
 
-// Default hero background: B3 深青海报 (C-11 拍板, design doc §1). Applied by
-// the component so the "empty parameter → default gradient" behaviour lives
-// here (the stylesheet only keeps a solid fallback while styles load).
-const DEFAULT_BACKGROUND = 'linear-gradient(135deg, #134e4a 0%, #0f766e 100%)'
+// Default hero background: C-14 浅色系 white gradient (D2 拍板, 自上而下白色渐变).
+// Applied by the component so the "empty parameter → default gradient" behaviour
+// lives here (the stylesheet only keeps a solid fallback while styles load).
+const DEFAULT_BACKGROUND = 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)'
 
 /**
  * Default copy (zh primary + en block).
- * The real content is seeded in DB by the C-8 updater (C-11 updated the seed);
+ * The real content is seeded in DB by the C-8 updater (C-14 updated the seed);
  * these are only fallbacks for freshly created / empty widget instances.
  *
- * C-11 极简聚焦型 hero: the `title` parameter stores the complete equation
- * string ("AI = 协同 + 伙伴") and the component splits it into the five
- * equation tokens (E1 单色层级: AI 微放大, = / + 符号弱化). Only the four
- * first-screen elements are rendered — topbar (brand + year stamp), equation
- * title, subtitle and the single CTA. story / quote / visuals / wechat /
- * stamp are no longer rendered (params stay backward compatible with older
- * widget data, they are just ignored).
+ * C-14 浅色系改版 (D1-D3): the hero becomes a light poster — white gradient
+ * background, top-left narrative (`topline`), top-right S1 seal (`stamp`,
+ * 朱文方印, brand semantics carried by the seal). The equation title, subtitle
+ * and single CTA are unchanged. The legacy `brand` / `year` parameters stay
+ * backward compatible: brand renders on the left when no topline is set, and
+ * the year stamp renders on the right when the stamp parameter is missing or
+ * disabled.
  */
 const DEFAULT_CONTENT = {
   zh: {
@@ -35,8 +35,13 @@ const DEFAULT_CONTENT = {
       label: '登录 / 注册',
       href: '/login'
     },
-    brand: '澜之轩 · Claroline',
-    year: '2026 · AI 元年'
+    topline: '2026有人称之为元年，学习将由此而变',
+    brand: '',
+    year: '',
+    stamp: {
+      enabled: true,
+      text: '澜之轩'
+    }
   },
   en: {
     title: 'AI = Collaboration + Companion',
@@ -45,8 +50,13 @@ const DEFAULT_CONTENT = {
       label: 'Sign In / Register',
       href: '/login'
     },
-    brand: '澜之轩 · Claroline',
-    year: '2026 · Year of AI'
+    topline: '2026 — the year AI took off',
+    brand: '',
+    year: '',
+    stamp: {
+      enabled: true,
+      text: '澜之轩'
+    }
   }
 }
 
@@ -85,9 +95,10 @@ function splitEquation(title) {
 }
 
 /**
- * Landing hero widget (C-11 极简聚焦型): poster-style first screen with a
- * top bar (brand + 2026 year stamp), a centered equation headline, a subtitle
- * and a single CTA. Background B3 深青海报, whole section inverted (white).
+ * Landing hero widget (C-14 浅色系): light poster-style first screen with a
+ * top bar (top-left narrative + top-right S1 seal), a centered equation
+ * headline, a subtitle and a single CTA. Background white gradient, whole
+ * section dark text on light background.
  */
 const LandingHero = (props) => {
   const defaults = DEFAULT_CONTENT[locale()] || DEFAULT_CONTENT.zh
@@ -99,7 +110,16 @@ const LandingHero = (props) => {
 
   const title = localized.title || parameters.title || defaults.title
   const subtitle = localized.subtitle || parameters.subtitle || defaults.subtitle
+
+  // top-left: the C-14 narrative; legacy instances without `topline` fall back
+  // to the brand text (backward compatibility, D1)
+  const topline = localized.topline || parameters.topline || defaults.topline || ''
   const brand = localized.brand || parameters.brand || defaults.brand
+
+  // top-right: the S1 seal when enabled; legacy instances without a stamp
+  // parameter fall back to the year stamp (backward compatibility)
+  const stamp = localized.stamp || parameters.stamp || defaults.stamp || null
+  const showStamp = stamp && true === stamp.enabled
   const year = localized.year || parameters.year || defaults.year
 
   // single CTA: accept both the legacy array shape (v2 seed: [{label, href}])
@@ -111,7 +131,7 @@ const LandingHero = (props) => {
 
   const align = parameters.align || 'center'
 
-  // background: default B3 deep-teal gradient, or an explicit CSS gradient
+  // background: default white gradient, or an explicit CSS gradient
   // (linear-gradient / radial-gradient), a color value (hex/rgb/hsl...),
   // or an image URL (v2 gradient support, D-3 §1).
   const rootStyle = {backgroundImage: DEFAULT_BACKGROUND}
@@ -138,8 +158,11 @@ const LandingHero = (props) => {
     >
       <div className={`${PREFIX}-container`}>
         <header className={`${PREFIX}-topbar hero-fade`} style={{'--d': '0ms'}}>
-          <span className={`${PREFIX}-brand`}>{brand}</span>
-          <span className={`${PREFIX}-year`}>{year}</span>
+          <span className={`${PREFIX}-topline`}>{topline || brand}</span>
+          {showStamp
+            ? <span className={`${PREFIX}-stamp`}>{stamp.text}</span>
+            : <span className={`${PREFIX}-year`}>{year}</span>
+          }
         </header>
 
         <div className={`${PREFIX}-main`}>
@@ -185,7 +208,15 @@ LandingHero.propTypes = {
         href: T.string
       }))
     ]),
+    // top-left narrative (C-14, D1); legacy `brand` remains as a fallback
+    topline: T.string,
     brand: T.string,
+    // top-right S1 seal (C-14, D1); legacy `year` renders when the stamp is
+    // missing or disabled
+    stamp: T.shape({
+      enabled: T.bool,
+      text: T.string
+    }),
     year: T.string,
     background: T.string,
     align: T.oneOf(['left', 'center', 'right']),
@@ -203,7 +234,12 @@ LandingHero.propTypes = {
           href: T.string
         }))
       ]),
+      topline: T.string,
       brand: T.string,
+      stamp: T.shape({
+        enabled: T.bool,
+        text: T.string
+      }),
       year: T.string
     })
   })

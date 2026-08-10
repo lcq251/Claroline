@@ -226,31 +226,31 @@
   line-height: 1.8;
 }
 
-// ---------- hero (landing-hero, C-11 极简聚焦型) ----------
-// B3 深青海报 × E1 单色等式 × H2 紧凑 —— 首屏仅四元素: 顶栏(品牌 + 年份戳) /
-// 等式标题 / 副标 / 单 CTA。整区反白, 文字与按钮用 --mh-* 深底组变量
-// (design/landing/minimal-hero-design.md §1.2/§2/§3/§4)。
+// ---------- hero (landing-hero, C-14 浅色系) ----------
+// 白渐变底 (D2 拍板) × E1 单色等式 × H2 紧凑 —— 首屏四元素: 顶栏(左上叙事 +
+// 右上 S1 印章) / 等式标题 / 副标 / 单 CTA。整区浅底深字, 文字与按钮用
+// --mh-* 浅底组变量 (design/landing/minimal-hero-design.md §1.2/§2/§3/§4)。
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-hero {
-  // deep-bg token group (反白, B3/B4 共用)
-  --mh-ink: #ffffff;
-  --mh-sub: rgba(255, 255, 255, 0.85);
-  --mh-op: rgba(255, 255, 255, 0.65);
-  --mh-muted: rgba(255, 255, 255, 0.72);
-  --mh-alt: #99f6e4;
-  --mh-dot: #99f6e4;
-  --mh-btn-bg: #ffffff;
-  --mh-btn-fg: var(--landing-primary-deep); // #115e59
-  --mh-btn-hover: #ccfbf1;
-  --mh-grid: rgba(255, 255, 255, 0.05);
+  // light-bg token group (浅底深字, C-14 D2)
+  --mh-ink: var(--landing-ink);
+  --mh-sub: var(--landing-ink-muted);
+  --mh-op: rgba(15, 23, 42, 0.45);
+  --mh-muted: var(--landing-ink-muted);
+  --mh-alt: var(--landing-primary);
+  --mh-dot: var(--landing-primary);
+  --mh-btn-bg: var(--landing-primary-strong);
+  --mh-btn-fg: #ffffff;
+  --mh-btn-hover: var(--landing-primary-deep);
+  --mh-grid: rgba(15, 23, 42, 0.035);
 
   position: relative;
   overflow: hidden;
-  // B3 深青海报 default (C-11 拍板): the component re-applies it inline
+  // 白渐变 default (C-14 D2 拍板): the component re-applies it inline
   // (and overrides it when a background parameter is set), this is the
   // CSS-level fallback while styles load
-  background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 
-  // subtle grid texture (pure CSS decoration, white at .05)
+  // subtle grid texture (pure CSS decoration, deep line at .035)
   &::before {
     content: "";
     position: absolute;
@@ -275,34 +275,47 @@
     flex-direction: column;
   }
 
-  // topbar: 品牌(左) + 2026 年份戳(右), 海报式两端对齐
+  // topbar: 左上叙事 + 右上 S1 印章, 海报式两端对齐
   .claroline-distribution-integration-mindme-ai-landing-hero-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--landing-space-md);
     padding: var(--landing-space-lg) 0;
   }
 
-  .claroline-distribution-integration-mindme-ai-landing-hero-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--landing-space-sm);
+  // 左上叙事 (C-14 D1): 长句 13 字, ≤0.95rem 可换行不溢出
+  .claroline-distribution-integration-mindme-ai-landing-hero-topline {
+    min-width: 0;
     color: var(--mh-ink);
-    font-size: 1.125rem;
-    font-weight: 800;
+    font-size: 0.9375rem;
+    font-weight: 600;
     line-height: 1.5;
-
-    // brand dot (陪伴青亮阶, 深底可见)
-    &::before {
-      content: "";
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--mh-dot);
-      flex: none;
-    }
   }
 
+  // 右上 S1 朱文方印 (C-14 D1, 平移自 design/landing/seal-options.html):
+  // 平涂印泥红底 + 白字, 白细线内框(1.5px), 圆角 6px, 56px, 700 字重, 字距 .06em
+  .claroline-distribution-integration-mindme-ai-landing-hero-stamp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    background: var(--landing-seal); // #b03a2e
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-align: center;
+    user-select: none;
+    flex-shrink: 0;
+    // 白色细线内框 (S1: 1.5px 白线, 距边 5px 的框内线条)
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.85);
+  }
+
+  // 年份落款 (向后兼容: stamp 未启用时回退渲染 year)
   .claroline-distribution-integration-mindme-ai-landing-hero-year {
     font-size: 0.8125rem;
     font-weight: 600;
@@ -423,38 +436,38 @@
 }
 
 // ---------- features (landing-features) ----------
-// C-13 方案 B 深底升级 (design/landing/features-b.html): 整块深青海报底
-// (与 hero B3 同源) + 白色细网格纹理, 标题/副标反白, 卡片白底悬浮
-// (第 3 卡浅青 accent-soft), 72px 圆徽章图标居中。
+// C-14 浅色系 (design/landing/features-a.html light wash): 浅青水洗底
+// (与 hero 白渐变衔接) + 深线淡网格, 标题/副标深字, 卡片白底悬浮
+// (第 3 卡浅青 accent-soft), 48px 圆徽章图标居中 (D6)。
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-features {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+  background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 100%);
 
-  // 白色细网格纹理 (与 hero B3 同款装饰)
+  // 深线淡网格纹理 (浅底上的装饰, 深线 at .035)
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 30%, transparent 75%);
     pointer-events: none;
   }
 
-  // 区块标题 / 副标反白 (共享 -head 布局保留, 仅改色)
+  // 区块标题 / 副标深字 (共享 -head 布局保留, 仅改色)
   .claroline-distribution-integration-mindme-ai-landing-features-head {
     position: relative;
     z-index: 1;
 
     .claroline-distribution-integration-mindme-ai-landing-features-title {
-      color: #fff;
+      color: var(--landing-ink);
     }
 
     .claroline-distribution-integration-mindme-ai-landing-features-subtitle {
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--landing-ink-muted);
     }
   }
 
@@ -477,22 +490,22 @@
     align-items: center;
     text-align: center;
     gap: var(--landing-space-md);
-    // 白卡悬浮于海报底: 去线框, 换深色投影 (照 features-b.html)
+    // 白卡悬浮于浅青水洗底: 去线框, 换柔和深色投影 (照 features-a.html)
     border: 0;
-    box-shadow: 0 8px 24px rgba(2, 32, 28, 0.28), 0 2px 6px rgba(2, 32, 28, 0.16);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 
     &:hover {
       transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(2, 32, 28, 0.38), 0 3px 8px rgba(2, 32, 28, 0.2);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
     }
 
-    // 72px 圆徽章: 浅青底 / 深青图标, 居中
+    // 48px 圆徽章 (D6: 72px→48px): 浅青底 / 深青图标, 居中
     .claroline-distribution-integration-mindme-ai-landing-features-icon-badge {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 72px;
-      height: 72px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: var(--landing-accent-soft);
       color: var(--landing-primary-strong);
@@ -500,7 +513,7 @@
     }
 
     .claroline-distribution-integration-mindme-ai-landing-features-icon {
-      font-size: 1.875rem; // 30px
+      font-size: 1.375rem; // 22px (D6: 30px→22px)
     }
 
     .claroline-distribution-integration-mindme-ai-landing-features-name {
@@ -608,6 +621,11 @@
 // ---------- packaging (landing-packaging) ----------
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-packaging {
   background: var(--landing-surface-muted);
+
+  // C-14 D7 兜底: kicker 已从组件移除, 这里隐藏旧实例参数仍渲染的 kicker
+  .claroline-distribution-integration-mindme-ai-landing-packaging-kicker {
+    display: none;
+  }
 
   .claroline-distribution-integration-mindme-ai-landing-packaging-grid {
     display: grid;
