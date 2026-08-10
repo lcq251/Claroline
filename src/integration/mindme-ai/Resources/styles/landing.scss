@@ -443,7 +443,8 @@
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-features {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 100%);
+  // 纯浅青平涂 (C-16 方案 A D1 拍板): 与 hero 底部白有明显色差, 找回整页层次
+  background: #f0fdfa;
 
   // 深线淡网格纹理 (浅底上的装饰, 深线 at .035)
   &::before {
@@ -491,13 +492,14 @@
     align-items: center;
     text-align: center;
     gap: var(--landing-space-md);
-    // 白卡悬浮于浅青水洗底: 去线框, 换柔和深色投影 (照 features-a.html)
+    // 白卡悬浮于浅青底: 去线框, 换柔和深色投影 (照 features-a.html, C-16 加深
+    // .08→.12 让白卡在纯浅青底上更明显悬浮)
     border: 0;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
 
     &:hover {
       transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
     }
 
     // 48px 圆徽章 (D6: 72px→48px): 浅青底 / 深青图标, 居中
