@@ -241,16 +241,17 @@
   --mh-btn-bg: var(--landing-primary-strong);
   --mh-btn-fg: #ffffff;
   --mh-btn-hover: var(--landing-primary-deep);
-  --mh-grid: rgba(15, 23, 42, 0.035);
+  --mh-grid: rgba(15, 23, 42, 0.05);
 
   position: relative;
   overflow: hidden;
-  // 白渐变 default (C-14 D2 拍板): the component re-applies it inline
-  // (and overrides it when a background parameter is set), this is the
+  // 上青下白渐变 default (C-16 方案 A D1 拍板): the component re-applies it
+  // inline (and overrides it when a background parameter is set), this is the
   // CSS-level fallback while styles load
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
 
-  // subtle grid texture (pure CSS decoration, deep line at .035)
+  // subtle grid texture (pure CSS decoration, deep line at .05 on the
+  // light-teal top so it stays visible, C-16)
   &::before {
     content: "";
     position: absolute;
