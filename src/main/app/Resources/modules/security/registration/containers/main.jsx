@@ -14,7 +14,8 @@ const RegistrationMain = withRouter(
       (state) => ({
         user: formSelectors.data(formSelectors.form(state, selectors.FORM_NAME)),
         termOfService: selectors.termOfService(state),
-        options: selectors.options(state)
+        options: selectors.options(state),
+        sso: selectors.sso(state)
       }),
       (dispatch) => ({
         register(user, onRegister) {
