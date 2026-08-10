@@ -56,7 +56,9 @@
   "landing_features_card_tone": "卡片样式",
   "landing_features_card_tone_dark": "深色卡片（强调）",
   "landing_features_card_tone_normal": "浅色卡片",
+  "landing_features_card_tone_soft": "浅青卡片（强调）",
   "landing_features_cards": "功能卡片",
   "landing_features_learn_more": "了解更多",
-  "landing_features_no_card": "尚未添加卡片"
+  "landing_features_no_card": "尚未添加卡片",
+  "landing_features_subtitle": "副标题"
 }
