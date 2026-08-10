@@ -295,20 +295,26 @@
   }
 
   // 右上 S1 朱文方印 (C-14 D1, 平移自 design/landing/seal-options.html):
-  // 平涂印泥红底 + 白字, 白细线内框(1.5px), 圆角 6px, 56px, 700 字重, 字距 .06em
+  // 平涂印泥红底 + 白字, 白细线内框(1.5px), 圆角 6px, 56×60px。
+  // C-16 方案 A (D2 用户拍板): 文字竖排「澜 / 之 / 轩」— writing-mode
+  // vertical-rl + text-orientation upright (中文竖排标准, 字形不旋转),
+  // letter-spacing .1em 拉开字距, 框内纵向居中不贴边 (朱文方印本意)。
   .claroline-distribution-integration-mindme-ai-landing-hero-stamp {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 56px;
-    height: 56px;
+    height: 60px;
     border-radius: 6px;
     background: var(--landing-seal); // #b03a2e
     color: #fff;
-    font-size: 1rem;
+    // 竖排: 3 字 × 1.125rem + 2 × .1em 字距 = 57.6px, 60px 高框内居中不贴边
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: 0.06em;
+    line-height: 1;
+    letter-spacing: 0.1em;
     text-align: center;
     user-select: none;
     flex-shrink: 0;
