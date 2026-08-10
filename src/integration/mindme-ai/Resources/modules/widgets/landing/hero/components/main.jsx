@@ -9,10 +9,10 @@ import {sanitizeHref} from '#/integration/mindme-ai/widgets/landing/sanitize'
 // className prefix used by the landing stylesheet (see C-8, landing.scss)
 const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-hero'
 
-// Default hero background: C-14 浅色系 white gradient (D2 拍板, 自上而下白色渐变).
+// Default hero background: C-16 方案 A 上青下白渐变 (D1 拍板, 顶部浅青淡出到白).
 // Applied by the component so the "empty parameter → default gradient" behaviour
 // lives here (the stylesheet only keeps a solid fallback while styles load).
-const DEFAULT_BACKGROUND = 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)'
+const DEFAULT_BACKGROUND = 'linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%)'
 
 /**
  * Default copy (zh primary + en block).
