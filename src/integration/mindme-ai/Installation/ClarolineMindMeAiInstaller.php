@@ -10,6 +10,7 @@ use Claroline\HomeBundle\Entity\Type\WidgetsTab;
 use Claroline\InstallationBundle\Additional\AdditionalInstaller;
 use Claroline\MindMeAiBundle\Installation\Updater\Updater150100;
 use Claroline\MindMeAiBundle\Installation\Updater\Updater150101;
+use Claroline\MindMeAiBundle\Installation\Updater\Updater150102;
 
 class ClarolineMindMeAiInstaller extends AdditionalInstaller
 {
@@ -23,6 +24,7 @@ class ClarolineMindMeAiInstaller extends AdditionalInstaller
         return [
             '15.0.100' => Updater150100::class,
             '15.0.101' => Updater150101::class,
+            '15.0.102' => Updater150102::class,
         ];
     }
 
