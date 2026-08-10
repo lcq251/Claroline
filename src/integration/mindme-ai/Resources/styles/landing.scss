@@ -294,32 +294,47 @@
     line-height: 1.5;
   }
 
-  // 右上 S1 朱文方印 (C-14 D1, 平移自 design/landing/seal-options.html):
-  // 平涂印泥红底 + 白字, 白细线内框(1.5px), 圆角 6px, 56×60px。
-  // C-16 方案 A (D2 用户拍板): 文字竖排「澜 / 之 / 轩」— writing-mode
-  // vertical-rl + text-orientation upright (中文竖排标准, 字形不旋转),
-  // letter-spacing .1em 拉开字距, 框内纵向居中不贴边 (朱文方印本意)。
+  // 右上 S1 朱文方印 (C-17 D2 用户拍板): 平涂印泥红底 + 白字, 白细线内框
+  // (1.5px), 圆角 6px, 64×72px。文字「澜之轩工作室」**上下两排** — 上排
+  // 「澜之轩」/ 下排「工作室」: grid 两行 (1fr 1fr), 组件把 text slice 成
+  // 两个 span 入两行, 行内居中; 单行文本 (≤3 字或超长退化) 跨两行垂直居中
+  // (:only-child → grid-row: 1 / -1)。
   .claroline-distribution-integration-mindme-ai-landing-hero-stamp {
-    display: inline-flex;
+    display: grid;
+    grid-template-rows: 1fr 1fr; // 上下两排
     align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 60px;
+    justify-items: center;
+    width: 64px;
+    height: 72px; // 两排需要更高
     border-radius: 6px;
     background: var(--landing-seal); // #b03a2e
     color: #fff;
-    // 竖排: 3 字 × 1.125rem + 2 × .1em 字距 = 57.6px, 60px 高框内居中不贴边
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 1.125rem;
+    // 两排: 3 字/排 (3 × 1rem + 2 × .08em 字距 ≈ 50.6px < 64px 宽), 取消竖排
+    writing-mode: initial;
+    text-orientation: initial;
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-align: center;
     user-select: none;
     flex-shrink: 0;
     // 白色细线内框 (S1: 1.5px 白线, 距边 5px 的框内线条)
     box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.85);
+  }
+
+  // 印章内行: 3 字/排居中; 单行文本 (≤3 字 / 超长退化) 跨两行垂直居中
+  .claroline-distribution-integration-mindme-ai-landing-hero-stamp-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 0;
+    overflow-wrap: anywhere;
+
+    &:only-child {
+      grid-row: 1 / -1;
+    }
   }
 
   // 年份落款 (向后兼容: stamp 未启用时回退渲染 year)

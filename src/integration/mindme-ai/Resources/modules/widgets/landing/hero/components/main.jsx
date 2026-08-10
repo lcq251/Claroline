@@ -40,7 +40,7 @@ const DEFAULT_CONTENT = {
     year: '',
     stamp: {
       enabled: true,
-      text: '澜之轩'
+      text: '澜之轩工作室'
     }
   },
   en: {
@@ -55,7 +55,7 @@ const DEFAULT_CONTENT = {
     year: '',
     stamp: {
       enabled: true,
-      text: '澜之轩'
+      text: '澜之轩工作室'
     }
   }
 }
@@ -92,6 +92,37 @@ function splitEquation(title) {
 
       return {type: 'word', value, key: index}
     })
+}
+
+/**
+ * Splits the S1 seal text into rows for the two-row layout (C-17, D2 上下两排):
+ *   1–3 chars  → single row (rendered centered on both grid rows)
+ *   4–6 chars  → 3 + rest (上排「澜之轩」/ 下排「工作室」for the 6-char brand)
+ *   longer     → single wrapping row (single-column degradation, no 3+3 split)
+ *
+ * The stamp stores one plain string (e.g. 「澜之轩工作室」), the split happens
+ * at render time so admin-edited texts degrade gracefully instead of being
+ * chopped mid-word.
+ *
+ * @param {string} text
+ * @return {Array<string>}
+ */
+function sealRows(text) {
+  const value = String(text || '').trim()
+
+  if (!value) {
+    return []
+  }
+
+  if (value.length <= 3) {
+    return [value]
+  }
+
+  if (value.length <= 6) {
+    return [value.slice(0, 3), value.slice(3)]
+  }
+
+  return [value]
 }
 
 /**
@@ -160,7 +191,11 @@ const LandingHero = (props) => {
         <header className={`${PREFIX}-topbar hero-fade`} style={{'--d': '0ms'}}>
           <span className={`${PREFIX}-topline`}>{topline || brand}</span>
           {showStamp
-            ? <span className={`${PREFIX}-stamp`}>{stamp.text}</span>
+            ? <span className={`${PREFIX}-stamp`}>
+              {sealRows(stamp.text).map((row, index) => (
+                <span key={index} className={`${PREFIX}-stamp-row`}>{row}</span>
+              ))}
+            </span>
             : <span className={`${PREFIX}-year`}>{year}</span>
           }
         </header>
