@@ -10,7 +10,7 @@
  * All rules are scoped to the landing widgets (`.landing-widget`) so the
  * tokens and layouts never leak to the rest of the platform. Every widget
  * renders with the `claroline-distribution-integration-mindme-ai-landing-*` prefix
- * (hero / features / ai / packaging / cta).
+ * (hero / features / packaging).
  */
 
 // ---------- shared tokens (scoped to the landing widgets) ----------
@@ -561,76 +561,6 @@
   }
 }
 
-// ---------- ai (landing-ai) ----------
-.landing-widget.claroline-distribution-integration-mindme-ai-landing-ai {
-  background: var(--landing-surface-muted);
-
-  .claroline-distribution-integration-mindme-ai-landing-ai-layout {
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: var(--landing-space-xxl);
-    align-items: start;
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .claroline-distribution-integration-mindme-ai-landing-ai-intro {
-    position: sticky;
-    top: var(--landing-space-lg);
-
-    @media (max-width: 900px) {
-      position: static;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-ai-title {
-      margin-top: var(--landing-space-md);
-      font-size: clamp(1.9rem, 3.5vw, 2.5rem);
-      font-weight: 800;
-      line-height: 1.25;
-      letter-spacing: -0.015em;
-    }
-  }
-
-  .claroline-distribution-integration-mindme-ai-landing-ai-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--landing-space-lg);
-
-    @media (max-width: 560px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .claroline-distribution-integration-mindme-ai-landing-ai-item {
-    display: flex;
-    flex-direction: column;
-
-    .claroline-distribution-integration-mindme-ai-landing-ai-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      margin-bottom: var(--landing-space-md);
-      border-radius: var(--landing-radius-sm);
-      background: var(--landing-accent-soft);
-      color: var(--landing-primary-deep);
-      font-size: 1.25rem;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-ai-name {
-      font-size: 1.125rem;
-      font-weight: 700;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-ai-desc {
-      margin-top: var(--landing-space-xs);
-    }
-  }
-}
-
 // ---------- packaging (landing-packaging) ----------
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-packaging {
   background: var(--landing-surface-muted);
@@ -760,91 +690,6 @@
     .frame {
       inset: 0;
       border-radius: 12px;
-    }
-  }
-}
-
-// ---------- cta (landing-cta) ----------
-.landing-widget.claroline-distribution-integration-mindme-ai-landing-cta {
-  background: var(--landing-surface-muted);
-
-  .claroline-distribution-integration-mindme-ai-landing-cta-content {
-    // deep teal rounded block (xl radius), from the design prototype
-    position: relative;
-    overflow: hidden;
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: var(--landing-space-xxl) var(--landing-space-xl);
-    background: var(--landing-primary-deep);
-    border-radius: var(--landing-radius-xl);
-    text-align: center;
-
-    @media (min-width: 768px) {
-      padding: 88px 48px;
-    }
-
-    // soft restrained glow on the deep surface
-    &::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -120px;
-      transform: translateX(-50%);
-      width: 480px;
-      height: 300px;
-      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-cta-title {
-      position: relative;
-      color: #fff;
-      font-size: clamp(1.9rem, 4vw, 2.75rem);
-      font-weight: 900;
-      letter-spacing: -0.015em;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-cta-subtitle {
-      position: relative;
-      margin: var(--landing-space-md) auto 0;
-      max-width: 460px;
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 1.0625rem;
-    }
-
-    .claroline-distribution-integration-mindme-ai-landing-cta-buttons {
-      position: relative;
-      margin-top: var(--landing-space-xl);
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--landing-space-md);
-      justify-content: center;
-    }
-  }
-
-  // deep-surface button overrides: primary = white bg + deep text (best contrast)
-  .claroline-distribution-integration-mindme-ai-landing-cta-button-primary {
-    background: #fff;
-    color: var(--landing-primary-deep);
-    border-color: #fff;
-
-    &:hover,
-    &:focus {
-      background: var(--landing-accent-soft);
-      color: var(--landing-primary-deep);
-      border-color: var(--landing-accent-soft);
-    }
-  }
-
-  .claroline-distribution-integration-mindme-ai-landing-cta-button-secondary {
-    background: transparent;
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.55);
-
-    &:hover,
-    &:focus {
-      border-color: #fff;
-      background: rgba(255, 255, 255, 0.08);
     }
   }
 }

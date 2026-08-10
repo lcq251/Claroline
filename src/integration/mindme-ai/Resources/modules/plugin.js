@@ -7,8 +7,6 @@ registry.add('ClarolineMindMeAiBundle', {
   widgets: {
     'landing-hero'     : () => { return import(/* webpackChunkName: "mindme-landing-hero" */      '#/integration/mindme-ai/widgets/landing/hero') },
     'landing-features' : () => { return import(/* webpackChunkName: "mindme-landing-features" */  '#/integration/mindme-ai/widgets/landing/features') },
-    'landing-ai'       : () => { return import(/* webpackChunkName: "mindme-landing-ai" */        '#/integration/mindme-ai/widgets/landing/ai') },
-    'landing-packaging': () => { return import(/* webpackChunkName: "mindme-landing-packaging" */ '#/integration/mindme-ai/widgets/landing/packaging') },
-    'landing-cta'      : () => { return import(/* webpackChunkName: "mindme-landing-cta" */       '#/integration/mindme-ai/widgets/landing/cta') }
+    'landing-packaging': () => { return import(/* webpackChunkName: "mindme-landing-packaging" */ '#/integration/mindme-ai/widgets/landing/packaging') }
   }
 })
