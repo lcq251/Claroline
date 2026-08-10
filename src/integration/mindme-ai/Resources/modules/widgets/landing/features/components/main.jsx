@@ -10,14 +10,14 @@ import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-features'
 
 /**
- * Default copy (zh primary + en block), C-13 方案 B 精简文案.
- * The real content is seeded in DB by the C-8 updater (15.0.101 refreshed the
+ * Default copy (zh primary + en block), C-14 浅色系 三卡.
+ * The real content is seeded in DB by the C-8 updater (15.0.102 refreshed the
  * features instance copy); these are only fallbacks for freshly created /
  * empty widget instances.
  *
- * 方案 B 深底升级 (design/landing/features-b.html): 区块深青海报底反白,
- * 标题「平台特色」+ 副标「三大能力，一个平台」, 3 张精简卡 (icon / title / desc),
- * num / en / link 不再渲染 (旧参数存在时忽略, 向后兼容)。
+ * C-14 浅色系 (design/landing/features-a.html light wash): 浅青水洗底 + 白卡,
+ * 三卡文案 = DIY工具 / AI助学·个性定制 / Idea展示 (D5/D8), icon 徽章缩小为
+ * 48px (D6), 第 3 卡浅青差异化 (tone = soft)。
  */
 const DEFAULT_CONTENT = {
   zh: {
@@ -25,23 +25,23 @@ const DEFAULT_CONTENT = {
     subtitle: '三大能力，一个平台',
     cards: [
       {
-        icon: 'fa fa-fw fa-chalkboard-teacher',
-        title: '老师工具',
-        desc: '备课授课，AI 提效',
+        icon: 'fa fa-fw fa-tools',
+        title: 'DIY工具',
+        desc: '自制工具，动手学习',
         href: '#feature-1',
         tone: 'normal'
       },
       {
-        icon: 'fa fa-fw fa-graduation-cap',
-        title: '学习方法',
-        desc: 'AI 助教，因材施教',
+        icon: 'fa fa-fw fa-robot',
+        title: 'AI助学·个性定制',
+        desc: 'AI 助教，学情适配',
         href: '#feature-2',
         tone: 'normal'
       },
       {
-        icon: 'fa fa-fw fa-cubes',
-        title: 'AI 平台',
-        desc: '基座安全，开箱即用',
+        icon: 'fa fa-fw fa-lightbulb',
+        title: 'Idea展示',
+        desc: '创意激发，作品分享',
         href: '#feature-3',
         tone: 'soft'
       }
@@ -52,23 +52,23 @@ const DEFAULT_CONTENT = {
     subtitle: 'Three capabilities, one platform',
     cards: [
       {
-        icon: 'fa fa-fw fa-chalkboard-teacher',
-        title: 'For Teachers',
-        desc: 'Prep & teach, AI-boosted',
+        icon: 'fa fa-fw fa-tools',
+        title: 'DIY Tools',
+        desc: 'Build your own tools, learn by doing',
         href: '#feature-1',
         tone: 'normal'
       },
       {
-        icon: 'fa fa-fw fa-graduation-cap',
-        title: 'For Learners',
-        desc: 'AI tutor, teach to each',
+        icon: 'fa fa-fw fa-robot',
+        title: 'AI Tutoring, Personalized',
+        desc: 'AI tutor, adapts to your learning',
         href: '#feature-2',
         tone: 'normal'
       },
       {
-        icon: 'fa fa-fw fa-cubes',
-        title: 'AI-Native',
-        desc: 'Safe AI core, out of the box',
+        icon: 'fa fa-fw fa-lightbulb',
+        title: 'Idea Showcase',
+        desc: 'Spark ideas, share your work',
         href: '#feature-3',
         tone: 'soft'
       }
