@@ -10,14 +10,16 @@ import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 const PREFIX = 'claroline-distribution-integration-mindme-ai-landing-features'
 
 /**
- * Default copy (zh primary + en block), C-14 浅色系 三卡.
- * The real content is seeded in DB by the C-8 updater (15.0.102 refreshed the
+ * Default copy (zh primary + en block), C-17 三卡统一.
+ * The real content is seeded in DB by the C-8 updater (15.0.105 refreshed the
  * features instance copy); these are only fallbacks for freshly created /
  * empty widget instances.
  *
- * C-14 浅色系 (design/landing/features-a.html light wash): 浅青水洗底 + 白卡,
- * 三卡文案 = DIY工具 / AI助学·个性定制 / Idea展示 (D5/D8), icon 徽章缩小为
- * 48px (D6), 第 3 卡浅青差异化 (tone = soft)。
+ * C-17 (D4/D5 用户拍板): 三卡新文案且样式统一 (tone 全 normal, 去 soft 差异化) —
+ * 卡1 DIY工具「适配工具，辅助教学」/ 卡2「个性学习」「ai助学，自主可控」/
+ * 卡3 Idea展示「灵感乍现，嵌入支撑」。en 同步: DIY Tools / Personalized
+ * Learning + "AI tutoring, self-controlled" / Idea Showcase + "Inspiration
+ * sparks, embedded support"。
  */
 const DEFAULT_CONTENT = {
   zh: {
@@ -27,23 +29,23 @@ const DEFAULT_CONTENT = {
       {
         icon: 'fa fa-fw fa-tools',
         title: 'DIY工具',
-        desc: '自制工具，动手学习',
+        desc: '适配工具，辅助教学',
         href: '#feature-1',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-robot',
-        title: 'AI助学·个性定制',
-        desc: 'AI 助教，学情适配',
+        title: '个性学习',
+        desc: 'ai助学，自主可控',
         href: '#feature-2',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-lightbulb',
         title: 'Idea展示',
-        desc: '创意激发，作品分享',
+        desc: '灵感乍现，嵌入支撑',
         href: '#feature-3',
-        tone: 'soft'
+        tone: 'normal'
       }
     ]
   },
@@ -54,23 +56,23 @@ const DEFAULT_CONTENT = {
       {
         icon: 'fa fa-fw fa-tools',
         title: 'DIY Tools',
-        desc: 'Build your own tools, learn by doing',
+        desc: 'Adaptable tools, assisted teaching',
         href: '#feature-1',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-robot',
-        title: 'AI Tutoring, Personalized',
-        desc: 'AI tutor, adapts to your learning',
+        title: 'Personalized Learning',
+        desc: 'AI tutoring, self-controlled',
         href: '#feature-2',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-lightbulb',
         title: 'Idea Showcase',
-        desc: 'Spark ideas, share your work',
+        desc: 'Inspiration sparks, embedded support',
         href: '#feature-3',
-        tone: 'soft'
+        tone: 'normal'
       }
     ]
   }
@@ -102,7 +104,9 @@ const LandingFeaturesComponent = props => {
 
         <div className={`${PREFIX}-grid`}>
           {cards.map((card, index) => {
-            // C-13 方案 B: 第 3 卡浅青差异化; legacy `dark` tone (旧 seed) 一并映射
+            // C-13 方案 B 遗留: 旧数据的 soft/dark tone 仍映射 card-soft 类
+            // (向后兼容); C-17 起 SCSS 已删除 .card-soft 差异化样式, 三卡视觉
+            // 完全一致 (D3 去 soft)
             const soft = 'soft' === card.tone || 'dark' === card.tone
 
             return (

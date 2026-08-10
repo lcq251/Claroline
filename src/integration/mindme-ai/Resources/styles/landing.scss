@@ -458,9 +458,8 @@
 }
 
 // ---------- features (landing-features) ----------
-// C-14 浅色系 (design/landing/features-a.html light wash): 浅青水洗底
-// (与 hero 白渐变衔接) + 深线淡网格, 标题/副标深字, 卡片白底悬浮
-// (第 3 卡浅青 accent-soft), 48px 圆徽章图标居中 (D6)。
+// C-17 三卡统一 (D3 用户拍板): 浅青水洗底 (与 hero 白渐变衔接) + 深线淡网格,
+// 标题/副标深字, 三卡**同款**白底悬浮 (去 soft 差异化), 48px 圆徽章图标居中。
 .landing-widget.claroline-distribution-integration-mindme-ai-landing-features {
   position: relative;
   overflow: hidden;
@@ -547,16 +546,6 @@
     .claroline-distribution-integration-mindme-ai-landing-features-desc {
       color: var(--landing-ink-muted);
       margin: 0;
-    }
-  }
-
-  // 第 3 卡: 浅青卡 (accent-soft) 差异化 + 徽章反相 (深青底白图标)
-  .claroline-distribution-integration-mindme-ai-landing-features-card-soft {
-    background: var(--landing-accent-soft);
-
-    .claroline-distribution-integration-mindme-ai-landing-features-icon-badge {
-      background: var(--landing-primary-deep);
-      color: #fff;
     }
   }
 
