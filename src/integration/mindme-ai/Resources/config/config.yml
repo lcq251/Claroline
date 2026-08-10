@@ -4,11 +4,6 @@ plugin:
           class: Claroline\MindMeAiBundle\Entity\AiLesson
 
     widgets:
-        - name: dashboard
-          class: Claroline\MindMeAiBundle\Entity\Widget\DashboardWidget
-          context: [desktop,public]
-          tags: [content]
-
         - name: landing-hero
           class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
           context: [public]
