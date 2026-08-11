@@ -1,7 +1,18 @@
 {
-  "resource": {
-    "meta": {
-      "creator": "AI 教案生成"
-    }
-  }
+  "ai_lesson": "AI 模型资源",
+  "ai_lesson_desc": "AI 模型资源：配置模型名、API 密钥与有效期。",
+  "ai_model_resource": "AI 模型资源配置",
+  "model_name": "模型名",
+  "model_name_placeholder": "如 qwen-max、gpt-4o、deepseek-chat",
+  "api_key": "API 密钥",
+  "api_key_help_set": "已配置密钥（%mask%），留空保持不变。",
+  "api_key_help_empty": "留空表示不修改密钥（未配置则保持未配置）。",
+  "expires_at": "有效期至",
+  "expires_at_help": "留空表示不限制有效期。",
+  "is_default": "设为默认资源",
+  "is_default_help": "平台唯一的默认 AI 资源（设为默认后其他默认实例自动取消）。",
+  "key_status": "API 密钥",
+  "key_not_configured": "未配置",
+  "no_expiration": "不限有效期",
+  "meta.creator": "AI 模型资源"
 }
