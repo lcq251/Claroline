@@ -26,6 +26,10 @@ class AiLesson extends AbstractResource
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isDefault = false;
 
+    /** 试用限额（每次登录用户对该资源的每日调用上限；null = 走平台兜底 mindme_ai.daily_limit） */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $usageLimit = null;
+
     public function getModelName(): ?string
     {
         return $this->modelName;
@@ -64,6 +68,16 @@ class AiLesson extends AbstractResource
     public function setIsDefault(bool $isDefault): void
     {
         $this->isDefault = $isDefault;
+    }
+
+    public function getUsageLimit(): ?int
+    {
+        return $this->usageLimit;
+    }
+
+    public function setUsageLimit(?int $usageLimit): void
+    {
+        $this->usageLimit = $usageLimit;
     }
 
     /**
