@@ -235,16 +235,17 @@
     color: var(--l-ink-muted);
   }
 
-  // horizontal scroll rail (D9: one row of 210px cards, spec §2.3.3)
+  // horizontal scroll rail (D9: one row of 210px cards, spec §2.3.3;
+  // D10: tightened padding so the compressed cards drive the rail height)
   .stat-rail {
     display: flex;
     gap: 16px;
     overflow-x: auto;
-    padding: 2px 4px 12px;
+    padding: 2px 4px 8px;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
-    margin-top: 16px;
+    margin-top: 12px;
 
     // desktop: thin scrollbar as an affordance (spec §2.3.5)
     @media (hover: hover) {
@@ -289,14 +290,14 @@
   }
 }
 
-// ---------- metric card (spec §2.3.4) ----------
+// ---------- metric card (spec §2.3.4, D10: compressed height) ----------
 [class*="mindme-ai-dashboard-dashboard"] {
   .stat-card {
     flex: 0 0 210px;
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 14px;
     text-decoration: none;
     color: inherit;
     min-width: 0;
@@ -304,27 +305,27 @@
     .stat-top {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .stat-ico {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: var(--l-accent-soft);
       color: var(--l-primary-deep);
       flex-shrink: 0;
 
       i {
-        font-size: 20px;
+        font-size: 17px;
       }
     }
 
     .stat-num {
-      font-size: 1.75rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--l-ink);
       line-height: 1.1;
@@ -340,8 +341,9 @@
     }
 
     .stat-label {
-      margin-top: 6px;
-      font-size: 0.875rem;
+      margin-top: 3px;
+      font-size: 0.8125rem;
+      line-height: 1.4;
       color: var(--l-ink-muted);
 
       .en {
@@ -356,8 +358,9 @@
     }
 
     .stat-sub {
-      margin-top: 8px;
+      margin-top: 3px;
       font-size: 0.75rem;
+      line-height: 1.4;
       color: var(--l-ink-muted);
       display: flex;
       align-items: center;
@@ -366,7 +369,7 @@
     }
 
     .stat-bar {
-      margin-top: 12px;
+      margin-top: 6px;
       height: 6px;
       border-radius: 999px;
       background: var(--l-surface-muted);
