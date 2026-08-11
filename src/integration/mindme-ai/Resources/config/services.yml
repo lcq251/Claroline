@@ -1,7 +1,14 @@
 services:
     Claroline\MindMeAiBundle\Controller\AiGeneratorController:
         tags: ['controller.service_arguments']
-    Claroline\MindMeAiBundle\Serializer\LandingWidgetSerializer:
+    Claroline\MindMeAiBundle\Manager\DashboardStatsManager:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.token_storage'
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+    Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:
         tags: ['claroline.serializer']
+        arguments:
+            - '@Claroline\MindMeAiBundle\Manager\DashboardStatsManager'
     Claroline\MindMeAiBundle\Configuration\PlatformDefaults:
         tags: ['claroline.configuration']

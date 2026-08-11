@@ -1,7 +1,8 @@
 {
   "styles": {
     "entry": {
-      "landing": "landing.scss"
+      "landing": "landing.scss",
+      "dashboard": "dashboard.scss"
     }
   }
 }
