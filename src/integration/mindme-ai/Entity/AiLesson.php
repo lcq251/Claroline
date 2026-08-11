@@ -10,45 +10,67 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_mindme_ai_lesson')]
 class AiLesson extends AbstractResource
 {
-    /** AI 生成的内容（JSON：包含标题、讲义、习题、答案等） */
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $content = null;
+    /** AI 模型名（如 gpt-4o / qwen-max） */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $modelName = null;
 
-    /** 生成参数（JSON：subject, grade, difficulty, module 等） */
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $generationParams = null;
-
-    /** 原始 Markdown */
+    /** API key（AES-256-GCM 密文：base64(iv):base64(tag):base64(cipher)，明文绝不落库） */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $rawMarkdown = null;
+    private ?string $apiKey = null;
 
-    public function getContent(): ?array
+    /** 有效期（到期后 AI 调用被拒绝） */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTime $expiresAt = null;
+
+    /** 平台默认资源（全库唯一，Serializer/Manager 保证） */
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isDefault = false;
+
+    public function getModelName(): ?string
     {
-        return $this->content;
+        return $this->modelName;
     }
 
-    public function setContent(?array $content): void
+    public function setModelName(?string $modelName): void
     {
-        $this->content = $content;
+        $this->modelName = $modelName;
     }
 
-    public function getGenerationParams(): ?array
+    public function getApiKey(): ?string
     {
-        return $this->generationParams;
+        return $this->apiKey;
     }
 
-    public function setGenerationParams(?array $params): void
+    public function setApiKey(?string $apiKey): void
     {
-        $this->generationParams = $params;
+        $this->apiKey = $apiKey;
     }
 
-    public function getRawMarkdown(): ?string
+    public function getExpiresAt(): ?\DateTime
     {
-        return $this->rawMarkdown;
+        return $this->expiresAt;
     }
 
-    public function setRawMarkdown(?string $markdown): void
+    public function setExpiresAt(?\DateTime $expiresAt): void
     {
-        $this->rawMarkdown = $markdown;
+        $this->expiresAt = $expiresAt;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): void
+    {
+        $this->isDefault = $isDefault;
+    }
+
+    /**
+     * Whether the resource is past its validity window.
+     */
+    public function isExpired(): bool
+    {
+        return null !== $this->expiresAt && $this->expiresAt < new \DateTime();
     }
 }

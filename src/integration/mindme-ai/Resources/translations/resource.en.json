@@ -1,7 +1,19 @@
 {
-  "resource": {
-    "meta": {
-      "creator": "AI Lesson Generator"
-    }
-  }
+  "ai_lesson": "AI Model Resource",
+  "ai_lesson_desc": "AI model resource: model name, API key and validity period.",
+  "ai_model_resource": "AI model configuration",
+  "model_name": "Model name",
+  "model_name_placeholder": "e.g. qwen-max, gpt-4o, deepseek-chat",
+  "api_key": "API key",
+  "api_key_help_set": "A key is configured (%mask%). Leave empty to keep it.",
+  "api_key_help_empty": "Leave empty to keep the stored key (or to save without a key).",
+  "expires_at": "Expiration date",
+  "expires_at_help": "Leave empty for no time limit.",
+  "is_default": "Default AI resource",
+  "is_default_help": "The platform-wide default AI resource (only one).",
+  "key_status": "API key",
+  "ai_lesson_expired": "This AI model resource has expired. Please contact an administrator.",
+  "key_not_configured": "Not configured",
+  "no_expiration": "No time limit",
+  "meta.creator": "AI Model Resource"
 }
