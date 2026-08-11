@@ -86,7 +86,12 @@ class HomeTabController
         $this->checkPermission('OPEN', $homeTab, [], true);
 
         if (null === $user) {
-            return new JsonResponse(null, 204);
+            // anonymous/stale-token visitors are not recorded, but the client
+            // still expects the {nbViews} payload (an empty 204 body makes the
+            // home tool crash on response.nbViews — C-23 fix, 2026-08-11)
+            return new JsonResponse([
+                'nbViews' => $homeTab->getViews(),
+            ]);
         }
         $this->viewerManager->addView(HomeTabView::class, $homeTab, $user);
 
