@@ -83,7 +83,6 @@ class AiGeneratorController
                 $parsed['grade'] = $grade;
                 $parsed['difficulty'] = $difficulty;
                 $parsed['module'] = $module;
-                $parsed['rawMarkdown'] = $raw;
                 return $parsed;
             }
         }
@@ -91,7 +90,6 @@ class AiGeneratorController
             'title' => $topic, 'subject' => $subject, 'grade' => $grade,
             'difficulty' => $difficulty, 'module' => $module,
             'sections' => [['emoji' => '📖', 'title' => 'AI 生成', 'body' => nl2br($raw)]],
-            'rawMarkdown' => $raw,
         ];
     }
 }
