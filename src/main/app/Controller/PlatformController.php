@@ -129,7 +129,9 @@ class PlatformController
             'short_name' => $this->config->getParameter('name'),
 
             // use it to explain what the application does
-            'description' => $this->config->getParameter('meta.description'),
+            // (the web app manifest spec requires a string; a null value
+            // triggers "Manifest: property 'description' ignored" in browsers)
+            'description' => (string) ($this->config->getParameter('meta.description') ?? ''),
 
             // the preferred URL to be loaded when the user launches the web app
             // (this is just a hint, so user agents can ignore this value)
