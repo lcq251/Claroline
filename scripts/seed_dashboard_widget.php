@@ -20,6 +20,9 @@
  *    keeping the existing `my_workspaces` block below them.
  * 3. Writes the §4 default parameters (incl. the 3 recommendation examples
  *    and the 4 default shortcuts, bilingual: zh flat + `en` keys).
+ * 4. D10: writes the demo fallback rows into already-mounted widgets whose
+ *    parameters lack them — `messages` (notifications) and `fees` — so an
+ *    existing instance gets the demo data without a new container.
  *
  * When no desktop tab exists yet it is created following the
  * LoadDesktopHomeData structure (title = platform translation `information`).
@@ -28,7 +31,8 @@
  *   php scripts/seed_dashboard_widget.php
  *
  * Safe to run multiple times: existing dashboard instances are detected
- * through the serialized tab and left untouched.
+ * through the serialized tab, demo parameters are only filled when missing
+ * (admin edits are never overwritten).
  */
 
 use Claroline\AppBundle\API\SerializerProvider;
@@ -153,8 +157,9 @@ function seedDashboardTab(ObjectManager $om, SerializerProvider $serializer, Tra
         return;
     }
 
-    // existing tab: serialize → prepend missing dashboard widgets → deserialize
-    // (editor save flow: existing containers are matched by their ids)
+    // existing tab: serialize → prepend missing dashboard widgets + fill demo
+    // parameters → deserialize (editor save flow: existing containers are
+    // matched by their ids)
     $tab = $tabs[0];
     $tabData = $serializer->serialize($tab);
 
@@ -167,26 +172,39 @@ function seedDashboardTab(ObjectManager $om, SerializerProvider $serializer, Tra
         }
     }
 
-    if (empty($toInsert)) {
-        echo "Dashboard widgets already mounted: nothing to do.\n";
+    $changed = !empty($toInsert);
+
+    if ($changed) {
+        $tabData['parameters']['widgets'] = array_merge(
+            $toInsert,
+            $tabData['parameters']['widgets']
+        );
+    }
+
+    // D10: fill the demo fallback rows (messages/fees) into already-mounted
+    // widgets whose parameters lack them — idempotent, never overwrites
+    // admin edits, never duplicates containers
+    $changed = ensureDemoParameters($tabData) || $changed;
+
+    if (!$changed) {
+        echo "Dashboard widgets already mounted and demo parameters up to date.\n";
 
         return;
     }
-
-    $tabData['parameters']['widgets'] = array_merge(
-        $toInsert,
-        $tabData['parameters']['widgets']
-    );
 
     $serializer->deserialize($tabData, $tab);
     $om->persist($tab);
     $om->flush();
 
-    $names = array_map(function (array $widgetData) {
-        return $widgetData['contents'][0]['type'];
-    }, $toInsert);
+    if (!empty($toInsert)) {
+        $names = array_map(function (array $widgetData) {
+            return $widgetData['contents'][0]['type'];
+        }, $toInsert);
 
-    echo 'Mounted dashboard widgets at head of desktop HomeTab: '.implode(', ', $names)."\n";
+        echo 'Mounted dashboard widgets at head of desktop HomeTab: '.implode(', ', $names)."\n";
+    } else {
+        echo "Demo fallback rows (messages/fees) written into existing dashboard widgets.\n";
+    }
 }
 
 /**
@@ -207,6 +225,65 @@ function existingDashboardWidgets(array $tabData): array
     }
 
     return $existing;
+}
+
+/**
+ * D10: writes the demo fallback rows into already-mounted widgets whose
+ * parameters lack them.
+ *
+ * Only fills the key when it is absent — an admin-edited list (even an
+ * emptied one) is never overwritten. Also strips the runtime `data` key
+ * (injected by the dashboard serializer at serialize time) so the
+ * deserialize round-trip does not persist a stale CLI snapshot into the
+ * instance parameters. Returns whether anything changed.
+ */
+function ensureDemoParameters(array &$tabData): bool
+{
+    if (!isset($tabData['parameters']['widgets']) || !is_array($tabData['parameters']['widgets'])) {
+        return false;
+    }
+
+    $changed = false;
+
+    foreach ($tabData['parameters']['widgets'] as &$container) {
+        if (!isset($container['contents']) || !is_array($container['contents'])) {
+            continue;
+        }
+
+        foreach ($container['contents'] as &$content) {
+            if (!is_array($content)) {
+                continue;
+            }
+
+            $type = $content['type'] ?? '';
+
+            if (!in_array($type, DASHBOARD_WIDGETS, true)) {
+                continue;
+            }
+
+            $demoKey = match ($type) {
+                'dashboard-notifications' => 'messages',
+                'dashboard-fees' => 'fees',
+                default => null,
+            };
+
+            $parameters = $content['parameters'] ?? [];
+
+            // never persist the serializer's runtime snapshot
+            unset($parameters['data']);
+
+            if (null !== $demoKey && !array_key_exists($demoKey, $parameters)) {
+                $parameters[$demoKey] = dashboardDefaultParameters($type)[$demoKey];
+                $changed = true;
+            }
+
+            $content['parameters'] = $parameters;
+        }
+        unset($content);
+    }
+    unset($container);
+
+    return $changed;
 }
 
 /**
@@ -319,6 +396,37 @@ function dashboardDefaultParameters(string $name): array
         'dashboard-notifications' => [
             'maxItems' => 3,
             'showDescription' => true,
+            // D10 demo fallback rows: rendered only when the serializer has
+            // no real messages (frontend data-first contract)
+            'messages' => [
+                [
+                    'id' => 'msg-1',
+                    'title' => '「数据结构与算法」明天 14:00 开课',
+                    'description' => '课程将于汇学楼 B 座 203 开讲，请提前 10 分钟到场签到。',
+                    'type' => 'course',
+                    'unread' => true,
+                    'time' => '2026-08-11T02:30:00+08:00',
+                    'url' => '#/desktop/catalog',
+                ],
+                [
+                    'id' => 'msg-2',
+                    'title' => '本周线下研讨课地点已变更',
+                    'description' => '地点：汇学楼 B 座 203',
+                    'type' => 'location',
+                    'unread' => true,
+                    'time' => '2026-08-10T09:15:00+08:00',
+                    'url' => '#/desktop/trainings',
+                ],
+                [
+                    'id' => 'msg-3',
+                    'title' => '《Python 数据分析实战》第 2 周作业已发布',
+                    'description' => '截止时间：本周五 23:59，请在课程页提交。',
+                    'type' => 'assignment',
+                    'unread' => false,
+                    'time' => '2026-08-09T18:00:00+08:00',
+                    'url' => '#/desktop/trainings',
+                ],
+            ],
         ],
         'dashboard-shortcuts' => [
             'items' => [
@@ -330,6 +438,31 @@ function dashboardDefaultParameters(string $name): array
         ],
         'dashboard-fees' => [
             'maxItems' => 3,
+            // D10 demo fallback rows: rendered only when the serializer has
+            // no real fees (frontend data-first contract)
+            'fees' => [
+                [
+                    'course' => '「AI 入门」春季班',
+                    'price' => 299,
+                    'currency' => 'CNY',
+                    'status' => 'open',
+                    'url' => '#/desktop/catalog',
+                ],
+                [
+                    'course' => '「数据结构与算法」',
+                    'price' => 199,
+                    'currency' => 'CNY',
+                    'status' => 'started',
+                    'url' => '#/desktop/catalog',
+                ],
+                [
+                    'course' => '「Python 数据分析实战」',
+                    'price' => 399,
+                    'currency' => 'CNY',
+                    'status' => 'soon',
+                    'url' => '#/desktop/catalog',
+                ],
+            ],
         ],
         default => [],
     };
