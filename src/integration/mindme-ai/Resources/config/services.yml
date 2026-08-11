@@ -1,6 +1,9 @@
 services:
     Claroline\MindMeAiBundle\Controller\AiGeneratorController:
         tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@translator'
     Claroline\MindMeAiBundle\Manager\DashboardStatsManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'

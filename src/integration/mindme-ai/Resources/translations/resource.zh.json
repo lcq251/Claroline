@@ -12,6 +12,7 @@
   "is_default": "设为默认资源",
   "is_default_help": "平台唯一的默认 AI 资源（设为默认后其他默认实例自动取消）。",
   "key_status": "API 密钥",
+  "ai_lesson_expired": "当前 AI 模型资源已过期，请联系管理员续期。",
   "key_not_configured": "未配置",
   "no_expiration": "不限有效期",
   "meta.creator": "AI 模型资源"

@@ -2,15 +2,42 @@
 
 namespace Claroline\MindMeAiBundle\Controller;
 
+use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\MindMeAiBundle\Entity\AiLesson;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Legacy AI course-generation endpoint (C-24: the course-generation feature is
+ * deprecated — the frontend no longer calls this route). Kept alive as the AI
+ * call entry point, guarded by the model resource validity window (T6): once
+ * the platform default AiLesson has expired, the call is refused with a 403
+ * and a translated message. No restriction (no default resource, or no
+ * expiry set) → the call passes through.
+ */
 class AiGeneratorController
 {
+    public function __construct(
+        private readonly ObjectManager $om,
+        private readonly TranslatorInterface $translator
+    ) {
+    }
+
     #[Route('/apiv2/mindme_ai/generate', name: 'apiv2_mindme_ai_generate', methods: ['POST'])]
     public function generate(Request $request): JsonResponse
     {
+        // T6: the AI call is refused once the platform default model resource expired.
+        $default = $this->om->getRepository(AiLesson::class)->findOneBy(['isDefault' => true]);
+
+        if ($default && $default->isExpired()) {
+            return new JsonResponse(
+                ['message' => $this->translator->trans('ai_lesson_expired', [], 'resource')],
+                403
+            );
+        }
+
         $data = json_decode($request->getContent(), true);
         $topic      = $data['topic'] ?? '';
         $subject    = $data['subject'] ?? 'math';
@@ -59,7 +86,7 @@ class AiGeneratorController
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey,
+            'Authorization: *** ' . $apiKey,
         ]);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
 

@@ -12,6 +12,7 @@
   "is_default": "Default AI resource",
   "is_default_help": "The platform-wide default AI resource (only one).",
   "key_status": "API key",
+  "ai_lesson_expired": "This AI model resource has expired. Please contact an administrator.",
   "key_not_configured": "Not configured",
   "no_expiration": "No time limit",
   "meta.creator": "AI Model Resource"
