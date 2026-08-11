@@ -124,6 +124,29 @@ class DashboardStatsManagerTest extends MockeryTestCase
         $this->assertSame(342, $teacher['registrations']);
     }
 
+    public function testWorkspaceScopedManagerRoleGetsTeacherStats(): void
+    {
+        // production: getRoles() returns the workspace-scoped variant
+        $this->mockToken($this->mockUser([
+            'ROLE_USER',
+            'ROLE_WS_MANAGER_82aee001-37be-4e1a-b484-4ec7ecc28d0c',
+        ]));
+
+        $this->config->shouldReceive('getParameter')->with('restrictions.storage')->andReturn(null);
+        $this->config->shouldReceive('getParameter')->with('restrictions.used_storage')->andReturn(null);
+        $this->mockRepo(ResourceNode::class, 0);
+        $this->mockRepo(AiLesson::class, 0);
+        $this->mockRepo(Course::class, 0);
+        $this->mockRepo(SessionUser::class, 0);
+
+        $data = $this->createManager()->getBoardData();
+
+        $this->assertSame('dashboard_greeting_teacher_sub', $data['greeting']['sub']);
+        $this->assertNotNull($data['stats']['teacher']);
+        $this->assertNull($data['stats']['student']);
+        $this->assertNull($data['stats']['teacher']['storage_total']);
+    }
+
     public function testCollaboratorRoleGetsStudentStats(): void
     {
         $user = $this->mockUser(['ROLE_USER', 'ROLE_WS_COLLABORATOR']);
@@ -165,6 +188,45 @@ class DashboardStatsManagerTest extends MockeryTestCase
         $this->assertSame(0, $student['apps_published']);
         $this->assertSame(4, $student['badges']);
         $this->assertSame(92, $student['attendance']);
+    }
+
+    public function testWorkspaceScopedCollaboratorRoleGetsStudentStats(): void
+    {
+        // production: getRoles() returns the workspace-scoped variant
+        $user = $this->mockUser([
+            'ROLE_USER',
+            'ROLE_WS_COLLABORATOR_82aee001-37be-4e1a-b484-4ec7ecc28d0c',
+        ]);
+        $this->mockToken($user);
+
+        $sessionUserRepo = $this->mock(EntityRepository::class);
+        $sessionUserRepo->shouldReceive('count')->with(['user' => $user])->andReturn(2);
+        $this->om->shouldReceive('getRepository')->with(SessionUser::class)->andReturn($sessionUserRepo);
+
+        $queryBuilder = $this->mock('Doctrine\\ORM\\QueryBuilder');
+        $query = $this->mock('Doctrine\\ORM\\Query');
+        $queryBuilder->shouldReceive('join')->andReturnSelf();
+        $queryBuilder->shouldReceive('where')->andReturnSelf();
+        $queryBuilder->shouldReceive('andWhere')->andReturnSelf();
+        $queryBuilder->shouldReceive('setParameter')->andReturnSelf();
+        $queryBuilder->shouldReceive('select')->andReturnSelf();
+        $queryBuilder->shouldReceive('getQuery')->andReturn($query);
+        $query->shouldReceive('getSingleScalarResult')->andReturn(1);
+        $sessionUserRepo->shouldReceive('createQueryBuilder')->with('su')->andReturn($queryBuilder);
+
+        $this->mockRepo(ResourceNode::class, 0);
+        $this->mockRepo(Assertion::class, 0);
+
+        $presenceRepo = $this->mock(EntityRepository::class);
+        $presenceRepo->shouldReceive('count')->with(['user' => $user])->andReturn(0);
+        $this->om->shouldReceive('getRepository')->with(EventPresence::class)->andReturn($presenceRepo);
+
+        $data = $this->createManager()->getBoardData();
+
+        $this->assertSame('dashboard_greeting_student_sub', $data['greeting']['sub']);
+        $this->assertNull($data['stats']['teacher']);
+        $this->assertNotNull($data['stats']['student']);
+        $this->assertNull($data['stats']['student']['attendance']);
     }
 
     public function testIncomeIsAlwaysPending(): void
