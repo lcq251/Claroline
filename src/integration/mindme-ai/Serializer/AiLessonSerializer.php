@@ -13,6 +13,7 @@ namespace Claroline\MindMeAiBundle\Serializer;
 
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
 use Claroline\MindMeAiBundle\Security\SecretCipher;
 
@@ -51,12 +52,11 @@ class AiLessonSerializer
 
     public function serialize(AiLesson $lesson, array $options = []): array
     {
-        $expiresAt = $lesson->getExpiresAt();
         $hasKey = null !== $lesson->getApiKey();
 
         return [
             'modelName' => $lesson->getModelName(),
-            'expiresAt' => $expiresAt ? $expiresAt->format(\DateTime::ATOM) : null,
+            'expiresAt' => DateNormalizer::normalize($lesson->getExpiresAt()),
             'isDefault' => $lesson->isDefault(),
             'hasKey' => $hasKey,
             'apiKeyMask' => $hasKey ? self::MASK : '',
@@ -68,7 +68,13 @@ class AiLessonSerializer
         $this->sipe('modelName', 'setModelName', $data, $lesson);
 
         if (isset($data['expiresAt'])) {
-            $lesson->setExpiresAt(!empty($data['expiresAt']) ? new \DateTime($data['expiresAt']) : null);
+            $expiresAt = null;
+
+            if (!empty($data['expiresAt'])) {
+                $expiresAt = DateNormalizer::denormalize($data['expiresAt']) ?? new \DateTime($data['expiresAt']);
+            }
+
+            $lesson->setExpiresAt($expiresAt);
         }
 
         if (isset($data['isDefault'])) {

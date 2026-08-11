@@ -53,7 +53,7 @@ class AiLessonSerializerTest extends MockeryTestCase
         $this->assertSame('qwen-max', $data['modelName']);
         $this->assertTrue($data['hasKey']);
         $this->assertSame(AiLessonSerializer::MASK, $data['apiKeyMask']);
-        $this->assertSame('2026-12-31T23:59:59+00:00', $data['expiresAt']);
+        $this->assertSame('2026-12-31T23:59:59', $data['expiresAt']);
         $this->assertTrue($data['isDefault']);
         $this->assertArrayNotHasKey('apiKey', $data);
         $this->assertStringNotContainsString('sk-plain-secret', json_encode($data));

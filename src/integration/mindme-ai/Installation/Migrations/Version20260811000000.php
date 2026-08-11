@@ -11,19 +11,22 @@ use Doctrine\Migrations\AbstractMigration;
  *
  * Drops the legacy course-content columns (content / generationParams /
  * rawMarkdown — no real data, confirmed) and adds the model-resource
- * columns (model_name / api_key / expires_at / is_default).
+ * columns (modelName / apiKey / expiresAt / isDefault).
+ *
+ * Scalar columns follow the entity mapping (property names, camelCase) —
+ * same convention as the original Version20260717131158 table definition.
  */
 final class Version20260811000000 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE claro_mindme_ai_lesson DROP content, DROP generationParams, DROP rawMarkdown');
-        $this->addSql('ALTER TABLE claro_mindme_ai_lesson ADD model_name VARCHAR(255) DEFAULT NULL, ADD api_key LONGTEXT DEFAULT NULL, ADD expires_at DATETIME DEFAULT NULL, ADD is_default TINYINT(1) DEFAULT 0 NOT NULL');
+        $this->addSql('ALTER TABLE claro_mindme_ai_lesson ADD modelName VARCHAR(255) DEFAULT NULL, ADD apiKey LONGTEXT DEFAULT NULL, ADD expiresAt DATETIME DEFAULT NULL, ADD isDefault TINYINT(1) DEFAULT 0 NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE claro_mindme_ai_lesson DROP is_default, DROP expires_at, DROP api_key, DROP model_name');
+        $this->addSql('ALTER TABLE claro_mindme_ai_lesson DROP isDefault, DROP expiresAt, DROP apiKey, DROP modelName');
         $this->addSql('ALTER TABLE claro_mindme_ai_lesson ADD content JSON DEFAULT NULL, ADD generationParams JSON DEFAULT NULL, ADD rawMarkdown LONGTEXT DEFAULT NULL');
     }
 
