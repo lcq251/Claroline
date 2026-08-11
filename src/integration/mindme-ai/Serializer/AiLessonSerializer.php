@@ -58,6 +58,7 @@ class AiLessonSerializer
             'modelName' => $lesson->getModelName(),
             'expiresAt' => DateNormalizer::normalize($lesson->getExpiresAt()),
             'isDefault' => $lesson->isDefault(),
+            'usageLimit' => $lesson->getUsageLimit(),
             'hasKey' => $hasKey,
             'apiKeyMask' => $hasKey ? self::MASK : '',
         ];
@@ -75,6 +76,13 @@ class AiLessonSerializer
             }
 
             $lesson->setExpiresAt($expiresAt);
+        }
+
+        if (array_key_exists('usageLimit', $data)) {
+            // empty/null clears the resource limit -> platform fallback (mindme_ai.daily_limit)
+            $lesson->setUsageLimit(null === $data['usageLimit'] || '' === $data['usageLimit']
+                ? null
+                : (int) $data['usageLimit']);
         }
 
         if (isset($data['isDefault'])) {

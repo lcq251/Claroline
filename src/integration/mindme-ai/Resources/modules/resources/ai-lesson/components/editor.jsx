@@ -59,6 +59,12 @@ const AiLessonEditorOverview = () => {
               label: trans('is_default', {}, 'resource'),
               type: 'boolean',
               help: trans('is_default_help', {}, 'resource')
+            },
+            {
+              name: 'usageLimit',
+              label: trans('usage_limit', {}, 'resource'),
+              type: 'number',
+              help: trans('usage_limit_help', {}, 'resource')
             }
           ]
         }

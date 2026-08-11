@@ -4,6 +4,8 @@ services:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@translator'
+            - '@security.token_storage'
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
     Claroline\MindMeAiBundle\Manager\DashboardStatsManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'

@@ -13,6 +13,9 @@
   "is_default_help": "The platform-wide default AI resource (only one).",
   "key_status": "API key",
   "ai_lesson_expired": "This AI model resource has expired. Please contact an administrator.",
+  "usage_limit": "Daily trial limit",
+  "usage_limit_help": "Max calls per logged-in user per day (leave empty to use the platform default, 20).",
+  "ai_lesson_quota_exceeded": "You have reached today's trial limit. Please try again tomorrow or contact an administrator.",
   "key_not_configured": "Not configured",
   "no_expiration": "No time limit",
   "meta.creator": "AI Model Resource"

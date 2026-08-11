@@ -93,6 +93,37 @@ class AiLessonSerializerTest extends MockeryTestCase
         $this->assertSame($lesson->getApiKey(), $emptied->getApiKey());
     }
 
+    public function testSerializeExposesUsageLimit(): void
+    {
+        $lesson = new AiLesson();
+        $lesson->setUsageLimit(5);
+
+        $data = $this->createSerializer()->serialize($lesson);
+
+        $this->assertSame(5, $data['usageLimit']);
+
+        $empty = $this->createSerializer()->serialize(new AiLesson());
+
+        $this->assertNull($empty['usageLimit']);
+    }
+
+    public function testDeserializeSetsUsageLimit(): void
+    {
+        $lesson = new AiLesson();
+        $lesson = $this->createSerializer()->deserialize(['usageLimit' => 7], $lesson);
+
+        $this->assertSame(7, $lesson->getUsageLimit());
+    }
+
+    public function testDeserializeEmptyUsageLimitClearsToFallback(): void
+    {
+        $lesson = new AiLesson();
+        $lesson->setUsageLimit(3);
+        $lesson = $this->createSerializer()->deserialize(['usageLimit' => ''], $lesson);
+
+        $this->assertNull($lesson->getUsageLimit());
+    }
+
     public function testDeserializeSettingDefaultUnmarksOthers(): void
     {
         $other = new AiLesson();

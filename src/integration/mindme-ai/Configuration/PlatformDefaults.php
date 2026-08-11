@@ -16,7 +16,9 @@ use Claroline\CoreBundle\Library\Configuration\ParameterProviderInterface;
 /**
  * mindme-ai 平台默认参数（仅默认值语义：键不存在时才生效，管理员可改且不被容器编译重置）。
  *
- *   mindme.wechat.enabled = false  (微信登录总闸，默认关；开通需在 platform_options.json 手动改 true)
+ *   mindme.wechat.enabled  = false  (微信登录总闸，默认关；开通需在 platform_options.json 手动改 true)
+ *   mindme_ai.daily_limit  = 20     (AI 试用每日限额兜底：仅当 AiLesson 资源未设 usageLimit 时生效；
+ *                                    温和默认——禁止加入 MindmeAiPass A1 强制写回)
  */
 class PlatformDefaults implements ParameterProviderInterface
 {
@@ -27,6 +29,9 @@ class PlatformDefaults implements ParameterProviderInterface
                 'wechat' => [
                     'enabled' => false,
                 ],
+            ],
+            'mindme_ai' => [
+                'daily_limit' => 20,
             ],
         ];
     }
