@@ -13,6 +13,9 @@
   "is_default_help": "平台唯一的默认 AI 资源（设为默认后其他默认实例自动取消）。",
   "key_status": "API 密钥",
   "ai_lesson_expired": "当前 AI 模型资源已过期，请联系管理员续期。",
+  "usage_limit": "每日试用次数",
+  "usage_limit_help": "每个登录用户每日可调用次数上限（留空 = 使用平台默认，默认 20）。",
+  "ai_lesson_quota_exceeded": "今日试用次数已用完，请明天再来或联系管理员。",
   "key_not_configured": "未配置",
   "no_expiration": "不限有效期",
   "meta.creator": "AI 模型资源"
