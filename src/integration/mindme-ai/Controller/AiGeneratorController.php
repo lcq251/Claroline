@@ -3,25 +3,38 @@
 namespace Claroline\MindMeAiBundle\Controller;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
+use Claroline\MindMeAiBundle\Entity\AiLessonUsage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Legacy AI course-generation endpoint (C-24: the course-generation feature is
  * deprecated — the frontend no longer calls this route). Kept alive as the AI
- * call entry point, guarded by the model resource validity window (T6): once
- * the platform default AiLesson has expired, the call is refused with a 403
- * and a translated message. No restriction (no default resource, or no
- * expiry set) → the call passes through.
+ * call entry point, guarded by:
+ *
+ *  - T6: the model resource validity window — once the platform default
+ *    AiLesson has expired, the call is refused with a 403 + translated message.
+ *  - C-25 (v2): the daily trial quota — logged-in users are counted per
+ *    default resource per day (AiLessonUsage), the quota comes from the
+ *    resource's usageLimit (platform fallback mindme_ai.daily_limit when the
+ *    resource has none). Only successful AI calls consume the quota.
+ *
+ * Anonymous users (and requests without a default resource) pass through
+ * uncounted — device identification is deferred to a later iteration.
  */
 class AiGeneratorController
 {
     public function __construct(
         private readonly ObjectManager $om,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly PlatformConfigurationHandler $config
     ) {
     }
 
@@ -38,6 +51,21 @@ class AiGeneratorController
             );
         }
 
+        // C-25 (v2): per-user x per-resource daily trial quota (logged-in users only).
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        $usage = null;
+        if ($user instanceof User && $default) {
+            $usage = $this->getOrCreateUsage($user, $default);
+
+            if ($usage->getCount() >= $usage->getLimit()) {
+                return new JsonResponse(
+                    ['message' => $this->translator->trans('ai_lesson_quota_exceeded', [], 'resource')],
+                    403
+                );
+            }
+        }
+
         $data = json_decode($request->getContent(), true);
         $topic      = $data['topic'] ?? '';
         $subject    = $data['subject'] ?? 'math';
@@ -49,7 +77,45 @@ class AiGeneratorController
         $rawContent = $this->callDeepSeek($prompt);
         $structured = $this->parseContent($rawContent, $topic, $subject, $grade, $difficulty, $module);
 
+        // Only successful AI calls consume the quota (raw content non-empty).
+        if ($usage && '' !== $rawContent) {
+            $usage->incrementCount();
+            $this->om->flush();
+        }
+
         return new JsonResponse($structured);
+    }
+
+    /**
+     * Today's usage row for the given user x default resource, created lazily
+     * (new period_date -> new row, count starts at 0; no cron needed).
+     *
+     * The row's limit is a snapshot of the resource usageLimit at creation —
+     * falling back to the platform default (mindme_ai.daily_limit, default 20)
+     * when the resource has none. Changing the resource limit later does not
+     * affect existing rows.
+     */
+    private function getOrCreateUsage(User $user, AiLesson $default): AiLessonUsage
+    {
+        $today = new \DateTime('today');
+
+        $usage = $this->om->getRepository(AiLessonUsage::class)->findOneBy([
+            'userId' => $user->getId(),
+            'aiLessonId' => $default->getId(),
+            'periodDate' => $today,
+        ]);
+
+        if (!$usage) {
+            $usage = new AiLessonUsage();
+            $usage->setUserId($user->getId());
+            $usage->setAiLessonId($default->getId());
+            $usage->setPeriodDate($today);
+            $usage->setCount(0);
+            $usage->setLimit((int) ($default->getUsageLimit() ?? $this->config->getParameter('mindme_ai.daily_limit') ?? 20));
+            $this->om->persist($usage);
+        }
+
+        return $usage;
     }
 
     private function buildPrompt(string $topic, string $subject, string $grade, string $difficulty, string $module): string
@@ -63,7 +129,13 @@ class AiGeneratorController
         return "你是一位{$subj}教育专家。请为{$grd}{$diff}学生生成关于{$topic}的教学内容。请输出有效JSON。";
     }
 
-    private function callDeepSeek(string $prompt): string
+    /**
+     * Calls the DeepSeek chat completion API. Returns the raw content, or ''
+     * on any failure (missing key file, HTTP error, unparsable response).
+     *
+     * Protected (not private) so tests can stub it via an anonymous subclass.
+     */
+    protected function callDeepSeek(string $prompt): string
     {
         $keyFile = '/home/lcq25/.hermes/deepseek_key';
         if (!file_exists($keyFile)) { return ''; }
