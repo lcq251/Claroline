@@ -19,6 +19,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\AppBundle\API\Crud'
             - '@Claroline\AuthenticationBundle\Manager\ThirdPartyUserManager'
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
 
     Claroline\AuthenticationBundle\Manager\ThirdPartyUserManager:
         arguments:
