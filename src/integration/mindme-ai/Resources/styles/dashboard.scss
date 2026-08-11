@@ -91,7 +91,7 @@
   }
 
   // grid/flex children guard against long content (spec §6.4)
-  .stat-rail > *, .rec-grid > *, .quick-grid > *, .fee-income > * {
+  .stat-rail > *, .rec-grid > *, .quick-tabs > *, .fee-income > * {
     min-width: 0;
   }
 }
@@ -235,16 +235,17 @@
     color: var(--l-ink-muted);
   }
 
-  // horizontal scroll rail (D9: one row of 210px cards, spec §2.3.3)
+  // horizontal scroll rail (D9: one row of 210px cards, spec §2.3.3;
+  // D10: tightened padding so the compressed cards drive the rail height)
   .stat-rail {
     display: flex;
     gap: 16px;
     overflow-x: auto;
-    padding: 2px 4px 12px;
+    padding: 2px 4px 8px;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
-    margin-top: 16px;
+    margin-top: 12px;
 
     // desktop: thin scrollbar as an affordance (spec §2.3.5)
     @media (hover: hover) {
@@ -289,14 +290,14 @@
   }
 }
 
-// ---------- metric card (spec §2.3.4) ----------
+// ---------- metric card (spec §2.3.4, D10: compressed height) ----------
 [class*="mindme-ai-dashboard-dashboard"] {
   .stat-card {
     flex: 0 0 210px;
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 14px;
     text-decoration: none;
     color: inherit;
     min-width: 0;
@@ -304,27 +305,27 @@
     .stat-top {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .stat-ico {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: var(--l-accent-soft);
       color: var(--l-primary-deep);
       flex-shrink: 0;
 
       i {
-        font-size: 20px;
+        font-size: 17px;
       }
     }
 
     .stat-num {
-      font-size: 1.75rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--l-ink);
       line-height: 1.1;
@@ -340,8 +341,9 @@
     }
 
     .stat-label {
-      margin-top: 6px;
-      font-size: 0.875rem;
+      margin-top: 3px;
+      font-size: 0.8125rem;
+      line-height: 1.4;
       color: var(--l-ink-muted);
 
       .en {
@@ -356,8 +358,9 @@
     }
 
     .stat-sub {
-      margin-top: 8px;
+      margin-top: 3px;
       font-size: 0.75rem;
+      line-height: 1.4;
       color: var(--l-ink-muted);
       display: flex;
       align-items: center;
@@ -366,7 +369,7 @@
     }
 
     .stat-bar {
-      margin-top: 12px;
+      margin-top: 6px;
       height: 6px;
       border-radius: 999px;
       background: var(--l-surface-muted);
@@ -466,15 +469,51 @@
   }
 }
 
-// ---------- ② recommendations: card grid (spec §2.3.7) ----------
+// ---------- ② recommendations: horizontal scroll rail (spec §2.3.7;
+// D10: 3-col grid -> horizontal rail, same pattern as the board StatRail) ----------
 [class*="mindme-ai-dashboard-dashboard-recommendations"] {
   .rec-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 16px;
+    overflow-x: auto;
+    padding: 2px 4px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+
+    // desktop: thin scrollbar as an affordance (board rail precedent)
+    @media (hover: hover) {
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: var(--l-line);
+
+        &:hover {
+          background: var(--l-primary);
+        }
+      }
+    }
+
+    // touch: hidden scrollbar + snap + peek of the next card
+    @media (max-width: 640px) {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   .rec-card {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -484,14 +523,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 92px;
+    height: 72px;
     background: var(--l-accent-soft);
     color: var(--l-primary-deep);
     background-size: cover;
     background-position: center;
 
     i {
-      font-size: 40px;
+      font-size: 32px;
     }
   }
 
@@ -572,21 +611,30 @@
   }
 }
 
-// ---------- ④ shortcuts: quick tiles (spec §2.3.8) ----------
+// ---------- ④ shortcuts: one row of tab-style labels (spec §2.3.8,
+// D10: 4 tiles -> visual tabs; each tab is a real <a> to its target page) ----------
 [class*="mindme-ai-dashboard-dashboard-shortcuts"] {
-  .quick-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+  .quick-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
-  .quick-tile {
-    display: flex;
+  .quick-tab {
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-    padding: 18px;
-    color: inherit;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--l-surface);
+    border: 1px solid var(--l-line);
+    border-radius: var(--l-radius-md);
+    color: var(--l-ink);
     text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
       border-color: var(--l-accent-soft);
@@ -596,34 +644,28 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--l-accent-soft);
-      color: var(--l-primary-deep);
+      color: var(--l-primary-strong);
+      font-size: 0.9375rem;
       flex-shrink: 0;
 
       i {
-        font-size: 22px;
+        font-size: inherit;
       }
     }
 
-    .qt-text {
+    .qt-name {
       min-width: 0;
     }
 
-    .qt-name {
-      display: block;
-      font-size: 0.9375rem;
-      font-weight: 700;
-      color: var(--l-ink);
-    }
+    // active look (first tab): light accent background + deep accent text
+    &.is-active {
+      background: var(--l-accent-soft);
+      border-color: var(--l-accent-soft);
+      color: var(--l-primary-deep);
 
-    .qt-sub {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--l-ink-muted);
-      margin-top: 2px;
+      .qt-ico {
+        color: var(--l-primary-deep);
+      }
     }
   }
 }
@@ -801,13 +843,8 @@
 
 // ---------- responsive (spec §6.2) ----------
 @media (max-width: 1024px) {
-  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  [class*="mindme-ai-dashboard-dashboard-shortcuts"] .quick-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  // the recommendation rail stays horizontal (D10); no grid fallback
+  // shortcut tabs wrap naturally (flex-wrap) at any width
 
   // the board rail stays horizontal (D9)
 }
@@ -823,20 +860,17 @@
     padding: 0 16px;
   }
 
-  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
-    grid-template-columns: 1fr;
+  // D10: recommendation cards narrow to 220px on small screens, rail stays
+  // horizontal with hidden scrollbar (touch swipe)
+  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-card {
+    flex-basis: 220px;
   }
 
+  // D10: compact tab padding on small screens (tabs still wrap)
   [class*="mindme-ai-dashboard-dashboard-shortcuts"] {
-    .quick-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .quick-tile {
-      padding: 14px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+    .quick-tab {
+      padding: 6px 12px;
+      font-size: 0.8125rem;
     }
   }
 

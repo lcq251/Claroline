@@ -1,9 +1,11 @@
 /*
  * dashboard-fees widget (C-22): course fee list + income/cost sub card.
  *
- * data.fees[] + data.income are injected by the backend serializer. The
- * income card only has two states (D3/U5): `pending` (billing not connected
- * -> empty state, NEVER a fake 0) and `ready` (two numeric cells).
+ * data.fees[] + data.income are injected by the backend serializer. D10
+ * fallback contract: when the serializer returns no fees, parameters.fees
+ * (admin-editable demo rows) are rendered instead. The income card only has
+ * two states (D3/U5): `pending` (billing not connected -> empty state, NEVER
+ * a fake 0) and `ready` (two numeric cells).
  */
 
 import React from 'react'
@@ -103,7 +105,11 @@ IncomeCard.propTypes = {
 const FeesComponent = props => {
   const parameters = props.parameters || {}
   const data = parameters.data || {}
-  const fees = Array.isArray(data.fees) ? data.fees : []
+  // D10 contract: serializer real data wins; when the backend has no
+  // fees the parameters.fees demo rows are the fallback
+  const fees = (Array.isArray(data.fees) && data.fees.length > 0)
+    ? data.fees
+    : (Array.isArray(parameters.fees) ? parameters.fees : [])
   const income = data.income || {status: 'pending', income: null, cost: null}
   const maxItems = parameters.maxItems || 3
   const list = fees.slice(0, maxItems)
@@ -136,6 +142,7 @@ const FeesComponent = props => {
 FeesComponent.propTypes = {
   parameters: T.shape({
     maxItems: T.number,
+    fees: T.arrayOf(T.object),
     data: T.shape({
       fees: T.arrayOf(T.object),
       income: T.object

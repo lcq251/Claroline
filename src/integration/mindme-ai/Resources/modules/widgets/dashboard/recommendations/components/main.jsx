@@ -1,9 +1,12 @@
 /*
  * dashboard-recommendations widget (C-22): hand-picked recommendation cards.
  *
- * v1 is human picks only (U2): items[] come from the widget parameters
- * (admin-configured), the like count is a hard-coded 0 placeholder
- * (showLikes controls visibility). No like interaction is implemented.
+ * D10: the 3-column grid became a horizontal scroll rail (board StatRail
+ * pattern): `.rec-grid` is a flex overflow-x container, cards are fixed
+ * 240px (220px mobile) with scroll-snap. v1 is human picks only (U2):
+ * items[] come from the widget parameters (admin-configured), the like count
+ * is a hard-coded 0 placeholder (showLikes controls visibility). No like
+ * interaction is implemented.
  */
 
 import React from 'react'
@@ -108,7 +111,12 @@ const RecommendationsComponent = props => {
         more={{label: trans('dashboard_more_recommendations', {}, 'widget'), url: '#/desktop/resources'}}
       />
 
-      <div className="rec-grid">
+      <div
+        className="rec-grid"
+        role="region"
+        aria-label={trans('dashboard_block_recommendations', {}, 'widget')}
+        tabIndex={0}
+      >
         {items.map((item, index) => (
           <RecommendationCard key={item.id || index} item={item} showLikes={showLikes} />
         ))}

@@ -3,7 +3,9 @@
  *
  * data.messages[] is injected by the backend serializer (Notification bundle);
  * the widget renders at most `maxItems` rows with unread state and
- * locale-relative timestamps. Empty list keeps the block head and shows a
+ * locale-relative timestamps. D10 fallback contract: when the serializer
+ * returns no messages, parameters.messages (admin-editable demo rows) are
+ * rendered instead. Truly empty list keeps the block head and shows a
  * "no data" row (spec §3.6).
  */
 
@@ -70,7 +72,11 @@ NotificationItem.propTypes = {
 const NotificationsComponent = props => {
   const parameters = props.parameters || {}
   const data = parameters.data || {}
-  const messages = Array.isArray(data.messages) ? data.messages : []
+  // D10 contract: serializer real data wins; when the backend has no
+  // messages the parameters.messages demo rows are the fallback
+  const messages = (Array.isArray(data.messages) && data.messages.length > 0)
+    ? data.messages
+    : (Array.isArray(parameters.messages) ? parameters.messages : [])
   const maxItems = parameters.maxItems || 3
   const showDescription = parameters.showDescription !== false
   const list = messages.slice(0, maxItems)
@@ -99,6 +105,7 @@ NotificationsComponent.propTypes = {
   parameters: T.shape({
     maxItems: T.number,
     showDescription: T.bool,
+    messages: T.arrayOf(T.object),
     data: T.shape({
       messages: T.arrayOf(T.object)
     })

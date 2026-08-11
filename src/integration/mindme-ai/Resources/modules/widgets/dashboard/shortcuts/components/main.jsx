@@ -1,8 +1,10 @@
 /*
- * dashboard-shortcuts widget (C-22): quick-access tiles.
+ * dashboard-shortcuts widget (C-22): quick-access tabs.
  *
- * items[] come from the widget parameters (admin-configured, default 4
- * routes). Empty items -> the whole block is hidden (spec §3.6).
+ * D10: the 4 tiles became a single row of tab-style labels (visual tabs
+ * only — each tab is a real <a href> straight to its target page, no tab
+ * switching). items[] come from the widget parameters (admin-configured,
+ * default 4 routes). Empty items -> the whole block is hidden (spec §3.6).
  */
 
 import React from 'react'
@@ -32,20 +34,15 @@ const ShortcutsComponent = props => {
         en="Shortcuts"
       />
 
-      <div className="quick-grid">
+      <div className="quick-tabs">
         {items.map((item, index) => (
           <a
             key={item.label || index}
-            className="quick-tile"
+            className={'quick-tab' + (0 === index ? ' is-active' : '')}
             href={item.url || '#'}
           >
             <span className="qt-ico" aria-hidden="true"><i className={item.icon || 'fa fa-fw fa-link'} /></span>
-            <span className="qt-text">
-              <span className="qt-name">{item.label}</span>
-              {item.en &&
-                <span className="qt-sub">{item.en}</span>
-              }
-            </span>
+            <span className="qt-name">{item.label}</span>
           </a>
         ))}
       </div>
