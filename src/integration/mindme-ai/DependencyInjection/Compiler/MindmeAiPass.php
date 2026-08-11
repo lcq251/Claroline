@@ -49,7 +49,10 @@ class MindmeAiPass implements CompilerPassInterface
         'intl.dateFormat' => 'Y-m-d',
         'pricing.enabled' => true,
         'pricing.currency' => 'rmb',
+        'registration.self'=>true,
+        'registration.allow_workspace'=>true
     ];
+
 
     public function process(ContainerBuilder $container): void
     {
