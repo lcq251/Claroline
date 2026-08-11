@@ -56,7 +56,7 @@ class DashboardStatsManager
     {
         $user = $this->getCurrentUser();
 
-        if ($user && in_array('ROLE_WS_MANAGER', $user->getRoles())) {
+        if ($user && $this->hasWorkspaceRole($user, 'ROLE_WS_MANAGER')) {
             return [
                 'greeting' => ['sub' => 'dashboard_greeting_teacher_sub'],
                 'stats' => [
@@ -66,7 +66,7 @@ class DashboardStatsManager
             ];
         }
 
-        if ($user && in_array('ROLE_WS_COLLABORATOR', $user->getRoles())) {
+        if ($user && $this->hasWorkspaceRole($user, 'ROLE_WS_COLLABORATOR')) {
             return [
                 'greeting' => ['sub' => 'dashboard_greeting_student_sub'],
                 'stats' => [
@@ -167,6 +167,25 @@ class DashboardStatsManager
         $user = $this->tokenStorage->getToken()?->getUser();
 
         return $user instanceof User ? $user : null;
+    }
+
+    /**
+     * Whether the user holds the given workspace role.
+     *
+     * Real workspace roles are scoped per workspace
+     * (`ROLE_WS_MANAGER_<uuid>`), so a plain `in_array()` on the role name
+     * never matches a live user. Accepts both the plain name (tests /
+     * platform roles) and any of its workspace-scoped variants.
+     */
+    private function hasWorkspaceRole(User $user, string $role): bool
+    {
+        foreach ($user->getRoles() as $userRole) {
+            if ($role === $userRole || str_starts_with($userRole, $role.'_')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
