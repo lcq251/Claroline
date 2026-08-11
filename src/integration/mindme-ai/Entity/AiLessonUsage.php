@@ -28,12 +28,8 @@ use Doctrine\ORM\Mapping as ORM;
  * aiLessonId, periodDate)), no cron needed.
  */
 #[ORM\Entity]
-#[ORM\Table(
-    name: 'claro_mindme_ai_usage',
-    uniqueConstraints: [
-        new ORM\UniqueConstraint(name: 'uniq_user_lesson_date', columns: ['userId', 'aiLessonId', 'periodDate']),
-    ]
-)]
+#[ORM\Table(name: 'claro_mindme_ai_usage')]
+#[ORM\UniqueConstraint(name: 'uniq_user_lesson_date', columns: ['userId', 'aiLessonId', 'periodDate'])]
 class AiLessonUsage
 {
     #[ORM\Id]
