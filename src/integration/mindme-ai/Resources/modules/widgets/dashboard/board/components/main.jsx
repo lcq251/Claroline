@@ -18,7 +18,7 @@ import {useCurrentUser} from '#/main/app/security/hooks/useCurrentUser'
 
 import {getIcon} from '../common/icons'
 
-// className prefix used by dashboard.scss (PREFIX + '-' + widget name)
+// className prefix used by dashboard.scss (section root, PREFIX + '-' + widget name)
 const PREFIX = 'claroline-distribution-integration-mindme-ai-dashboard-dashboard-board'
 
 // hardcoded unit mapping (spec §3.1): GB / % are language-neutral, the
@@ -164,7 +164,7 @@ function studentCards(stats) {
 // single metric card (data-driven, shared by the 12 metrics)
 const StatCard = props => (
   <a
-    className={`${PREFIX}-stat-card`}
+    className="stat-card"
     href="#"
     onClick={(event) => event.preventDefault()}
   >
@@ -179,7 +179,7 @@ const StatCard = props => (
     </div>
     <div className="stat-label">
       {trans(props.label, {}, 'widget')}
-      <span className="en"> {props.en}</span>
+      <span className="en">{props.en}</span>
     </div>
     <div className="stat-sub">{props.sub}</div>
     {null != props.bar &&
@@ -205,7 +205,7 @@ const Greeting = props => {
   const separator = 'zh' === locale() ? '，' : ', '
 
   return (
-    <div className={`${PREFIX}-greeting`}>
+    <div className="greeting">
       <h2 className="greeting-title">{trans(periodKey, {}, 'widget')}{separator}{props.name}</h2>
       {props.sub &&
         <p className="greeting-sub">{trans(props.sub, {}, 'widget')}</p>
@@ -261,7 +261,7 @@ const BoardComponent = props => {
 
   return (
     <section className={PREFIX} aria-label={trans(titleKey, {}, 'widget')}>
-      <div className={`${PREFIX}-head`}>
+      <div className="board-head">
         <span className="role-ico" aria-hidden="true"><i className={`fas fa-fw ${roleIcon}`} /></span>
         <h2>{trans(titleKey, {}, 'widget')}</h2>
         <span className="en">{isTeacher ? 'Teacher Board' : 'Student Board'}</span>
@@ -269,11 +269,11 @@ const BoardComponent = props => {
 
       <Greeting name={currentUser ? currentUser.name : ''} sub={greeting.sub} />
 
-      <div className={`${PREFIX}-stat-rail`}>
+      <div className="stat-rail">
         {cards.map(card => <StatCard key={card.label} {...card} />)}
       </div>
 
-      <span className={`${PREFIX}-rail-hint`} aria-hidden="true">{trans('dashboard_board_rail_hint', {}, 'widget')}</span>
+      <span className="rail-hint" aria-hidden="true">{trans('dashboard_board_rail_hint', {}, 'widget')}</span>
     </section>
   )
 }

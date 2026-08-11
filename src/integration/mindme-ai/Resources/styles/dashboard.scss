@@ -1,0 +1,858 @@
+/*
+ * Desktop dashboard widget styles (C-22).
+ *
+ * One stylesheet shared by the 5 dashboard widgets (styles key
+ * `claroline-distribution-integration-mindme-ai-dashboard`). Every value
+ * comes from the frozen design tokens (design/landing/landing.css `--l-*`
+ * variables, spec dashboard-design §2): the token block below is scoped to
+ * the dashboard widget roots (landing.scss precedent) and re-declares no
+ * color/radius/spacing value outside the token source.
+ *
+ * Component classes follow the approved prototype (dashboard.css, D-7);
+ * review-only elements (proto-bar / chip-u / u5-seg / annotate / dash-note /
+ * dash-loc / role-switch / stat-card--compact / msg-card--tiles / rec-card--alt
+ * / quick-list / split / masonry / stat-grid) are NOT part of the product.
+ */
+
+// ---------- shared tokens (scoped to the dashboard widgets) ----------
+[class*="mindme-ai-dashboard-dashboard"] {
+  // neutrals
+  --l-ink:           #0f172a;
+  --l-ink-body:      #334155;
+  --l-ink-muted:     #64748b;
+  --l-line:          #e2e8f0;
+  --l-surface:       #ffffff;
+  --l-surface-muted: #f8fafc;
+
+  // accent — B AI 陪伴青 (frozen)
+  --l-primary:        #0d9488;
+  --l-primary-strong: #0f766e;
+  --l-primary-deep:   #115e59;
+  --l-accent-soft:    #ccfbf1;
+  --l-on-primary:     #ffffff;
+
+  // seal — notifications / soon pills / human-pick tags
+  --l-seal:      #c43d30;
+  --l-seal-deep: #b03a2e;
+
+  // radii
+  --l-radius-sm:   8px;
+  --l-radius-md:   12px;
+  --l-radius-lg:   16px;
+  --l-radius-pill: 999px;
+
+  // spacing (8pt system)
+  --l-space-xs: 4px;
+  --l-space-sm: 8px;
+  --l-space-md: 16px;
+  --l-space-lg: 24px;
+  --l-space-xl: 32px;
+
+  // elevation
+  --l-shadow-card:       0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --l-shadow-card-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 40px rgba(15, 23, 42, 0.12);
+
+  // fonts
+  --l-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
+                 "Helvetica Neue", Arial, sans-serif;
+
+  font-family: var(--l-font-sans);
+  color: var(--l-ink-body);
+  font-size: 1rem;
+  line-height: 1.75;
+
+  // each dashboard widget is one block of the desktop home flow
+  max-width: 1120px;
+  margin: 0 auto 32px;
+  padding: 0 24px;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4 {
+    margin: 0;
+    color: var(--l-ink);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--l-primary-strong);
+  }
+
+  // focus ring (a11y, spec §7)
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--l-primary);
+    outline-offset: 2px;
+  }
+
+  // grid/flex children guard against long content (spec §6.4)
+  .stat-rail > *, .rec-grid > *, .quick-grid > *, .fee-income > * {
+    min-width: 0;
+  }
+}
+
+// ---------- neutralize the platform widget chrome for dashboard sections ----------
+.widget:has([class*="mindme-ai-dashboard-dashboard"]) {
+  background: transparent !important;
+  border: 0;
+  margin-bottom: 0;
+
+  .widget-title {
+    display: none;
+  }
+
+  .widget-body {
+    padding: 0;
+
+    .row {
+      margin: 0;
+
+      .widget-col {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// ---------- shared atoms ----------
+[class*="mindme-ai-dashboard-dashboard"] {
+  // block head (shared by the 5 widgets, spec §2.3.1)
+  .block-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    gap: 10px;
+    margin-bottom: 14px;
+
+    h2 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--l-ink);
+    }
+
+    .en {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--l-ink-muted);
+    }
+
+    .more {
+      margin-left: auto;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--l-primary-strong);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // empty data row (messages / fees, spec §2.4)
+  .empty-row {
+    padding: 18px 4px;
+    font-size: 0.75rem;
+    color: var(--l-ink-muted);
+    text-align: center;
+  }
+
+  // common card base
+  .stat-card, .msg-card, .rec-card, .quick-tile, .fee-card {
+    background: var(--l-surface);
+    border: 1px solid var(--l-line);
+    border-radius: var(--l-radius-lg);
+    box-shadow: var(--l-shadow-card);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      box-shadow: var(--l-shadow-card-hover);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// ---------- ① board: greeting + horizontal stat rail (D9) ----------
+[class*="mindme-ai-dashboard-dashboard-board"] {
+  // board head (role-ico + h2 + en small label, spec §2.3.11)
+  .board-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+
+    .role-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: var(--l-primary);
+      color: var(--l-on-primary);
+      flex-shrink: 0;
+
+      i {
+        font-size: 17px;
+      }
+    }
+
+    h2 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--l-ink);
+    }
+
+    .en {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--l-ink-muted);
+    }
+  }
+
+  // greeting (spec §2.3.11)
+  .greeting-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--l-ink);
+    line-height: 1.35;
+  }
+
+  .greeting-sub {
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    color: var(--l-ink-muted);
+  }
+
+  // horizontal scroll rail (D9: one row of 210px cards, spec §2.3.3)
+  .stat-rail {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 2px 4px 12px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    margin-top: 16px;
+
+    // desktop: thin scrollbar as an affordance (spec §2.3.5)
+    @media (hover: hover) {
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: var(--l-line);
+
+        &:hover {
+          background: var(--l-primary);
+        }
+      }
+    }
+
+    // touch: hidden scrollbar + snap + peek of the next card (spec §2.3.5)
+    @media (max-width: 640px) {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  // swipe hint: mobile only (spec §5.12 / §6.2)
+  .rail-hint {
+    display: none;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--l-ink-muted);
+
+    @media (max-width: 640px) {
+      display: inline-block;
+    }
+  }
+}
+
+// ---------- metric card (spec §2.3.4) ----------
+[class*="mindme-ai-dashboard-dashboard"] {
+  .stat-card {
+    flex: 0 0 210px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--l-accent-soft);
+      color: var(--l-primary-deep);
+      flex-shrink: 0;
+
+      i {
+        font-size: 20px;
+      }
+    }
+
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--l-ink);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      min-width: 0;
+
+      .unit {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--l-ink-muted);
+        margin-left: 3px;
+      }
+    }
+
+    .stat-label {
+      margin-top: 6px;
+      font-size: 0.875rem;
+      color: var(--l-ink-muted);
+
+      .en {
+        display: inline;
+        margin-left: 6px;
+        font-size: 0.6875rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--l-ink-muted);
+        opacity: 0.8;
+      }
+    }
+
+    .stat-sub {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--l-ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .stat-bar {
+      margin-top: 12px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--l-surface-muted);
+      border: 1px solid var(--l-line);
+      overflow: hidden;
+
+      i {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--l-primary);
+      }
+    }
+  }
+}
+
+// ---------- ③ notifications: message card (spec §2.3.6) ----------
+[class*="mindme-ai-dashboard-dashboard-notifications"] {
+  .msg-card {
+    padding: 8px 20px;
+  }
+
+  .msg-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--l-line);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .msg-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--l-accent-soft);
+      color: var(--l-primary-deep);
+      flex-shrink: 0;
+
+      i {
+        font-size: 18px;
+      }
+    }
+
+    .msg-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .msg-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--l-ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .msg-desc {
+      margin-top: 2px;
+      font-size: 0.8125rem;
+      color: var(--l-ink-muted);
+    }
+
+    .msg-time {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: var(--l-ink-muted);
+    }
+
+    // unread: left bar + soft gradient + red dot + bold title (a11y doubles the
+    // red dot with sr-only "unread" text, spec §7)
+    &.is-unread {
+      background: linear-gradient(90deg, rgba(204, 251, 241, 0.5), transparent 60%);
+      margin: 0 -12px;
+      padding-left: 9px;
+      padding-right: 23px;
+      border-left: 3px solid var(--l-primary);
+
+      .msg-title {
+        font-weight: 700;
+      }
+    }
+  }
+
+  // whole-row link wrapper keeps the same look
+  .msg-item-link {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+  }
+}
+
+// ---------- ② recommendations: card grid (spec §2.3.7) ----------
+[class*="mindme-ai-dashboard-dashboard-recommendations"] {
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .rec-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .rec-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 92px;
+    background: var(--l-accent-soft);
+    color: var(--l-primary-deep);
+    background-size: cover;
+    background-position: center;
+
+    i {
+      font-size: 40px;
+    }
+  }
+
+  .rec-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    flex: 1;
+  }
+
+  .rec-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .rec-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    background: var(--l-accent-soft);
+    color: var(--l-primary-deep);
+    border-radius: 999px;
+    padding: 2px 9px;
+    white-space: nowrap;
+
+    &--human {
+      background: var(--l-seal-deep);
+      color: var(--l-on-primary);
+    }
+  }
+
+  .rec-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--l-ink);
+    line-height: 1.45;
+  }
+
+  .rec-desc {
+    font-size: 0.8125rem;
+    color: var(--l-ink-muted);
+    line-height: 1.6;
+  }
+
+  .rec-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 4px;
+    flex-wrap: wrap;
+
+    .who {
+      font-size: 0.75rem;
+      color: var(--l-ink-muted);
+    }
+
+    .likes {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--l-ink-muted);
+    }
+
+    .go {
+      margin-left: auto;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--l-primary-strong);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ---------- ④ shortcuts: quick tiles (spec §2.3.8) ----------
+[class*="mindme-ai-dashboard-dashboard-shortcuts"] {
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .quick-tile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      border-color: var(--l-accent-soft);
+    }
+
+    .qt-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--l-accent-soft);
+      color: var(--l-primary-deep);
+      flex-shrink: 0;
+
+      i {
+        font-size: 22px;
+      }
+    }
+
+    .qt-text {
+      min-width: 0;
+    }
+
+    .qt-name {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--l-ink);
+    }
+
+    .qt-sub {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--l-ink-muted);
+      margin-top: 2px;
+    }
+  }
+}
+
+// ---------- ⑤ fees: fee card + income sub card (spec §2.3.9 / §2.3.10) ----------
+[class*="mindme-ai-dashboard-dashboard-fees"] {
+  .fee-income {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .fee-card {
+    padding: 20px;
+  }
+
+  .fee-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--l-line);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .fee-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--l-ink);
+      flex: 1;
+      min-width: 0;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .fee-price {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--l-ink);
+      white-space: nowrap;
+    }
+
+    .fee-status {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 9px;
+      white-space: nowrap;
+
+      &--open {
+        background: var(--l-accent-soft);
+        color: var(--l-primary-deep);
+      }
+
+      &--started {
+        background: var(--l-surface-muted);
+        color: var(--l-ink-muted);
+        border: 1px solid var(--l-line);
+      }
+
+      &--soon {
+        background: var(--l-surface);
+        color: var(--l-seal);
+        border: 1px solid var(--l-seal);
+      }
+    }
+  }
+
+  .fee-note {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: var(--l-ink-muted);
+  }
+
+  // income/cost sub card: dashed border hints "awaiting integration" (D3/U5)
+  .income-card {
+    background: var(--l-surface);
+    border: 1px dashed var(--l-line);
+    border-radius: var(--l-radius-lg);
+    padding: 20px;
+
+    .income-head {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--l-ink);
+      margin-bottom: 10px;
+    }
+
+    // pending empty state — never a fake 0 (D3/U5)
+    .income-empty {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+      padding: 18px;
+      border-radius: var(--l-radius-md);
+      background: var(--l-surface-muted);
+
+      .ie-ico {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: var(--l-surface);
+        border: 1px solid var(--l-line);
+        color: var(--l-ink-muted);
+        flex-shrink: 0;
+
+        i {
+          font-size: 22px;
+        }
+      }
+
+      .ie-title {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--l-ink);
+      }
+
+      .ie-desc {
+        margin-top: 2px;
+        font-size: 0.8125rem;
+        color: var(--l-ink-muted);
+      }
+
+      .ie-note {
+        margin-top: 2px;
+        font-size: 0.6875rem;
+        color: var(--l-ink-muted);
+      }
+    }
+
+    // ready state: two numeric cells (spec §3.5)
+    .income-zeros {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .income-zero {
+      padding: 14px 16px;
+      border: 1px solid var(--l-line);
+      border-radius: var(--l-radius-md);
+      background: var(--l-surface-muted);
+
+      .iz-label {
+        font-size: 0.75rem;
+        color: var(--l-ink-muted);
+      }
+
+      .iz-num {
+        margin-top: 4px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--l-ink-muted);
+      }
+
+      .iz-note {
+        margin-top: 2px;
+        font-size: 0.6875rem;
+        color: var(--l-ink-muted);
+      }
+    }
+  }
+}
+
+// ---------- responsive (spec §6.2) ----------
+@media (max-width: 1024px) {
+  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  [class*="mindme-ai-dashboard-dashboard-shortcuts"] .quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // the board rail stays horizontal (D9)
+}
+
+@media (max-width: 900px) {
+  [class*="mindme-ai-dashboard-dashboard-fees"] .fee-income {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  [class*="mindme-ai-dashboard-dashboard"] {
+    padding: 0 16px;
+  }
+
+  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
+    grid-template-columns: 1fr;
+  }
+
+  [class*="mindme-ai-dashboard-dashboard-shortcuts"] {
+    .quick-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quick-tile {
+      padding: 14px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+
+  [class*="mindme-ai-dashboard-dashboard-notifications"] .msg-item .msg-time {
+    display: none;
+  }
+
+  [class*="mindme-ai-dashboard-dashboard-fees"] .income-zeros {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ---------- reduced motion (spec §7) ----------
+@media (prefers-reduced-motion: reduce) {
+  [class*="mindme-ai-dashboard-dashboard"] *,
+  .widget:has([class*="mindme-ai-dashboard-dashboard"]) * {
+    transition: none !important;
+  }
+}
