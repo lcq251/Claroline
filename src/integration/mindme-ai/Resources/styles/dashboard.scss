@@ -469,15 +469,51 @@
   }
 }
 
-// ---------- ② recommendations: card grid (spec §2.3.7) ----------
+// ---------- ② recommendations: horizontal scroll rail (spec §2.3.7;
+// D10: 3-col grid -> horizontal rail, same pattern as the board StatRail) ----------
 [class*="mindme-ai-dashboard-dashboard-recommendations"] {
   .rec-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 16px;
+    overflow-x: auto;
+    padding: 2px 4px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+
+    // desktop: thin scrollbar as an affordance (board rail precedent)
+    @media (hover: hover) {
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: var(--l-line);
+
+        &:hover {
+          background: var(--l-primary);
+        }
+      }
+    }
+
+    // touch: hidden scrollbar + snap + peek of the next card
+    @media (max-width: 640px) {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   .rec-card {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -487,14 +523,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 92px;
+    height: 72px;
     background: var(--l-accent-soft);
     color: var(--l-primary-deep);
     background-size: cover;
     background-position: center;
 
     i {
-      font-size: 40px;
+      font-size: 32px;
     }
   }
 
@@ -804,10 +840,7 @@
 
 // ---------- responsive (spec §6.2) ----------
 @media (max-width: 1024px) {
-  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+  // the recommendation rail stays horizontal (D10); no grid fallback
   [class*="mindme-ai-dashboard-dashboard-shortcuts"] .quick-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -826,8 +859,10 @@
     padding: 0 16px;
   }
 
-  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-grid {
-    grid-template-columns: 1fr;
+  // D10: recommendation cards narrow to 220px on small screens, rail stays
+  // horizontal with hidden scrollbar (touch swipe)
+  [class*="mindme-ai-dashboard-dashboard-recommendations"] .rec-card {
+    flex-basis: 220px;
   }
 
   [class*="mindme-ai-dashboard-dashboard-shortcuts"] {
