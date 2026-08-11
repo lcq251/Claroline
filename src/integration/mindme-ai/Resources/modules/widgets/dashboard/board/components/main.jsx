@@ -16,7 +16,7 @@ import {trans} from '#/main/app/intl/translation'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 import {useCurrentUser} from '#/main/app/security/hooks/useCurrentUser'
 
-import {getIcon} from '../common/icons'
+import {getIcon} from '../../common/icons'
 
 // className prefix used by dashboard.scss (section root, PREFIX + '-' + widget name)
 const PREFIX = 'claroline-distribution-integration-mindme-ai-dashboard-dashboard-board'

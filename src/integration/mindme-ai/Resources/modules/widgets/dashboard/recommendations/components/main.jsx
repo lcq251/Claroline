@@ -14,8 +14,8 @@ import {locale} from '#/main/app/intl'
 import {trans} from '#/main/app/intl/translation'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
-import {BlockHead} from '../common/block'
-import {getIcon} from '../common/icons'
+import {BlockHead} from '../../common/block'
+import {getIcon} from '../../common/icons'
 
 const PREFIX = 'claroline-distribution-integration-mindme-ai-dashboard-dashboard-recommendations'
 

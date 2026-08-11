@@ -12,7 +12,7 @@ import {connect} from 'react-redux'
 import {trans} from '#/main/app/intl/translation'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
 
-import {BlockHead} from '../common/block'
+import {BlockHead} from '../../common/block'
 
 const PREFIX = 'claroline-distribution-integration-mindme-ai-dashboard-dashboard-shortcuts'
 
