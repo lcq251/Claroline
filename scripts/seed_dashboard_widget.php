@@ -213,6 +213,10 @@ function existingDashboardWidgets(array $tabData): array
  * Builds the widget container data of one dashboard widget (or all of them
  * when $name is null).
  *
+ * The container display name is hardcoded zh (landing seed precedent):
+ * the CLI seed runs with the default en locale and `trans()` would write
+ * English block headings on the zh-configured platform.
+ *
  * @return array<mixed>|array<int, array<mixed>>
  */
 function dashboardWidgetData(TranslatorInterface $translator, ?string $name = null): array
@@ -223,8 +227,16 @@ function dashboardWidgetData(TranslatorInterface $translator, ?string $name = nu
         }, DASHBOARD_WIDGETS);
     }
 
+    $containerNames = [
+        'dashboard-board' => '看板',
+        'dashboard-recommendations' => '产品推荐',
+        'dashboard-notifications' => '消息提醒',
+        'dashboard-shortcuts' => '快捷方式',
+        'dashboard-fees' => '费用表况',
+    ];
+
     return [
-        'name' => $translator->trans($name, [], 'widget'),
+        'name' => $containerNames[$name] ?? $translator->trans($name, [], 'widget'),
         'visible' => true,
         'display' => [
             'layout' => [1],
