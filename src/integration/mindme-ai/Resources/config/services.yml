@@ -3,3 +3,5 @@ services:
         tags: ['controller.service_arguments']
     Claroline\MindMeAiBundle\Serializer\LandingWidgetSerializer:
         tags: ['claroline.serializer']
+    Claroline\MindMeAiBundle\Configuration\PlatformDefaults:
+        tags: ['claroline.configuration']

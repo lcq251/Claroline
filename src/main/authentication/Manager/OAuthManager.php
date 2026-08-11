@@ -10,6 +10,7 @@ use Claroline\AuthenticationBundle\Component\OAuth\OAuth2Provider;
 use Claroline\AuthenticationBundle\Entity\OAuthClient;
 use Claroline\AuthenticationBundle\Entity\ThirdPartyUser;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -34,6 +35,7 @@ class OAuthManager implements LoggerAwareInterface
         private readonly ObjectManager $om,
         private readonly Crud $crud,
         private readonly ThirdPartyUserManager $thirdPartyUserManager,
+        private readonly PlatformConfigurationHandler $configHandler,
     ) {
     }
 
@@ -69,15 +71,23 @@ class OAuthManager implements LoggerAwareInterface
             'buttonDisplayed' => true,
         ]);
 
-        return array_map(function (OAuthClient $oauthClient) {
-            return [
+        $buttons = [];
+        foreach ($displayedClients as $oauthClient) {
+            // 微信总闸（mindme-ai, 2026-08-11 Plan 18）: mindme.wechat.enabled 非 true 时不显示微信按钮
+            if ('wechat' === $oauthClient->getServiceProvider() && true !== $this->configHandler->getParameter('mindme.wechat.enabled')) {
+                continue;
+            }
+
+            $buttons[] = [
                 'service' => 'oauth2',
                 'clientId' => $oauthClient->getUuid(),
                 'icon' => 'fa-'.$oauthClient->getButtonIcon(),
                 'label' => $oauthClient->getButtonLabel() ?: $oauthClient->getName(),
                 'confirm' => $oauthClient->getButtonConfirm(),
             ];
-        }, $displayedClients);
+        }
+
+        return $buttons;
     }
 
     public function startAuthentication(Request $request, OAuthClient $client): string
