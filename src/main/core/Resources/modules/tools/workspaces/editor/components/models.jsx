@@ -85,6 +85,7 @@ const EditorModels = () => {
         <WorkspaceList
           url={['apiv2_workspace_list_model']}
           name={selectors.MODELS_LIST_NAME}
+          filters={[{property: 'hidden', value: true}]}
         />
       </div>
     </EditorPage>
