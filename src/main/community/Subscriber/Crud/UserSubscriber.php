@@ -13,8 +13,10 @@ use Claroline\AppBundle\Event\CrudEvents;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CommunityBundle\Manager\MailManager;
 use Claroline\CoreBundle\Configuration\PlatformDefaults;
+use Claroline\CoreBundle\Component\Context\DesktopContext;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
+use Claroline\CoreBundle\Entity\Tool\ToolRights;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\CatalogEvents\SecurityEvents;
@@ -24,6 +26,8 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\CoreBundle\Manager\RoleManager;
+use Claroline\CoreBundle\Manager\Tool\ToolManager;
+use Claroline\CoreBundle\Manager\Tool\ToolRightsManager;
 use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Security\PlatformRoles;
 use Psr\Log\LoggerInterface;
@@ -44,6 +48,8 @@ final class UserSubscriber implements EventSubscriberInterface
         private readonly OrganizationManager $organizationManager,
         private readonly FileManager $fileManager,
         private readonly WorkspaceManager $workspaceManager,
+        private readonly ToolManager $toolManager,
+        private readonly ToolRightsManager $toolRightsManager,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -153,6 +159,53 @@ final class UserSubscriber implements EventSubscriberInterface
                     $this->crud->patch($user, 'role', 'add', [$ws->getDefaultRole()], [Crud::NO_PERMISSIONS]);
                 }
             }
+        }
+
+        // default desktop tools rights for ROLE_USER (2026-08-12 Plan 23)
+        $this->initDefaultDesktopToolRights($user);
+    }
+
+    /**
+     * Grants ROLE_USER open access to the default desktop tools defined by the
+     * `desktop.default_tools` platform parameter. Idempotent and non-overriding:
+     * a tool is skipped when a rights row already exists for the role (e.g. the
+     * administrator customized the mask), and missing tools are ignored.
+     */
+    private function initDefaultDesktopToolRights(User $user): void
+    {
+        if (!$user->hasRole(PlatformRoles::USER)) {
+            return;
+        }
+
+        $defaultTools = $this->config->getParameter('desktop.default_tools') ?? [];
+        if (empty($defaultTools)) {
+            return;
+        }
+
+        $userRole = $this->roleManager->getRoleByName(PlatformRoles::USER);
+        if (empty($userRole)) {
+            return;
+        }
+
+        foreach ($defaultTools as $toolName) {
+            $orderedTool = $this->toolManager->getOrderedTool($toolName, DesktopContext::getName());
+            if (empty($orderedTool)) {
+                // tool not installed or not available in the desktop context
+                continue;
+            }
+
+            // never overwrite an existing rights row (admin may have customized it)
+            $existing = $this->om->getRepository(ToolRights::class)->findOneBy([
+                'role' => $userRole,
+                'orderedTool' => $orderedTool,
+            ]);
+            if (!empty($existing)) {
+                continue;
+            }
+
+            // workspaces: open(1) + create(32); other tools: open(1)
+            $mask = 'workspaces' === $toolName ? 33 : 1;
+            $this->toolRightsManager->setToolRights($orderedTool, $userRole, $mask);
         }
     }
 
