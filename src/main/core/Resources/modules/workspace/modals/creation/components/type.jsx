@@ -33,6 +33,7 @@ const CreationType = (props) => {
                 title: trans('new_workspace', {}, 'workspace'),
                 subtitle: trans('new_workspace_from_model_desc', {}, 'workspace'),
                 url: ['apiv2_workspace_list_model'],
+                filters: [{property: 'hidden', value: true}],
                 multiple: false,
                 selectAction: (selected) => ({
                   type: CALLBACK_BUTTON,
