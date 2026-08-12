@@ -16,6 +16,7 @@ use Claroline\CoreBundle\Configuration\PlatformDefaults;
 use Claroline\CoreBundle\Entity\Group;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Event\CatalogEvents\SecurityEvents;
 use Claroline\CoreBundle\Event\Security\AddRoleEvent;
 use Claroline\CoreBundle\Event\Security\RemoveRoleEvent;
@@ -23,7 +24,9 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\CoreBundle\Manager\OrganizationManager;
 use Claroline\CoreBundle\Manager\RoleManager;
+use Claroline\CoreBundle\Manager\Workspace\WorkspaceManager;
 use Claroline\CoreBundle\Security\PlatformRoles;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -39,7 +42,9 @@ final class UserSubscriber implements EventSubscriberInterface
         private readonly RoleManager $roleManager,
         private readonly MailManager $mailManager,
         private readonly OrganizationManager $organizationManager,
-        private readonly FileManager $fileManager
+        private readonly FileManager $fileManager,
+        private readonly WorkspaceManager $workspaceManager,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -126,6 +131,25 @@ final class UserSubscriber implements EventSubscriberInterface
 
         if (!in_array(Options::NO_EMAIL, $options)) {
             $this->sendNewMessage($user);
+        }
+
+        // personal workspace + public workspace auto-registration (2026-08-12 Plan 22)
+        if ($user->hasRole(PlatformRoles::USER) && empty($user->getPersonalWorkspace())) {
+            try {
+                $this->workspaceManager->createPersonalWorkspace($user);
+            } catch (\Exception $e) {
+                // personal workspace failure must not block the registration
+                $this->logger->error('Personal workspace creation failed for user '.$user->getUsername().': '.$e->getMessage());
+            }
+
+            // public workspace auto-registration (mindme.workspace)
+            $publicWorkspaces = $this->config->getParameter('mindme.workspace') ?? [];
+            foreach ($publicWorkspaces as $wsUuid) {
+                $ws = $this->om->getRepository(Workspace::class)->findOneBy(['uuid' => $wsUuid]);
+                if ($ws && $ws->getDefaultRole()) {
+                    $this->crud->patch($user, 'role', 'add', [$ws->getDefaultRole()], [Crud::NO_PERMISSIONS]);
+                }
+            }
         }
     }
 

@@ -41,6 +41,54 @@ class WorkspaceManager implements LoggerAwareInterface
         $this->workspaceRepo = $om->getRepository(Workspace::class);
     }
 
+    /**
+     * Creates the personal workspace of a user (restored from the upstream logic
+     * removed in 2024-11). The workspace is built from a workspace model (roles,
+     * tools and root resource node are copied) and the user becomes its manager.
+     *
+     * Note: the creator is intentionally not passed in the create payload:
+     *  - WorkspaceSubscriber::postCreate grants the manager role to the creator without
+     *    NO_PERMISSIONS, which would fail during anonymous self-registration;
+     *  - handleNewWorkspace would override the creator with the connected user (e.g. an
+     *    admin creating the user) anyway.
+     * We set the creator afterwards so the personal workspace always belongs to its owner.
+     */
+    public function createPersonalWorkspace(User $user, ?Workspace $model = null): Workspace
+    {
+        if (empty($model)) {
+            // prefer an existing workspace model (first isModel=1), fallback to the default one
+            $model = $this->workspaceRepo->findOneBy(['model' => true]) ?? $this->getDefaultModel(false);
+        }
+
+        /** @var Workspace $workspace */
+        $workspace = $this->crud->create(Workspace::class, [
+            'name' => $user->getUsername(),
+            'code' => $user->getUsername(),
+            'model' => ['id' => $model->getUuid()],
+            'meta' => [
+                'personal' => true,
+            ],
+            // personal workspaces must stay visible (hidden=0); the model copy would
+            // otherwise inherit the model's hidden flag
+            'restrictions' => [
+                'hidden' => false,
+            ],
+        ], [Crud::NO_PERMISSIONS]);
+
+        $workspace->setCreator($user);
+        $user->setPersonalWorkspace($workspace);
+
+        // register target user as manager
+        if ($workspace->getManagerRole()) {
+            $this->crud->patch($user, 'role', 'add', [$workspace->getManagerRole()], [Crud::NO_PERMISSIONS]);
+        }
+
+        $this->om->persist($user);
+        $this->om->flush();
+
+        return $workspace;
+    }
+
     public function export(Workspace $workspace): string
     {
         return $this->transferManager->export($workspace);

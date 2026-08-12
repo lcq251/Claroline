@@ -52,3 +52,5 @@ services:
             - '@Claroline\CommunityBundle\Manager\MailManager'
             - '@Claroline\CoreBundle\Manager\OrganizationManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
+            - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
+            - '@logger'
