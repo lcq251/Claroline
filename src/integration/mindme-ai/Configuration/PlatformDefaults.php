@@ -18,6 +18,7 @@ use Claroline\CoreBundle\Library\Configuration\ParameterProviderInterface;
  *
  *   mindme.wechat.enabled  = false  (微信登录总闸，默认关；开通需在 platform_options.json 手动改 true)
  *   mindme.workspace      = []     (公共空间 uuid 列表，注册时自动加入；管理员可配置)
+ *   mindme.personal_workspace_enabled = true (注册时自动创建个人空间开关，默认开；管理员在 platform_options.json 的 mindme 域改 false 即关闭)
  *   mindme_ai.daily_limit  = 20     (AI 试用每日限额兜底：仅当 AiLesson 资源未设 usageLimit 时生效；
  *                                    温和默认——禁止加入 MindmeAiPass A1 强制写回)
  */
@@ -31,6 +32,7 @@ class PlatformDefaults implements ParameterProviderInterface
                     'enabled' => false,
                 ],
                 'workspace' => [],
+                'personal_workspace_enabled' => true,
             ],
             'mindme_ai' => [
                 'daily_limit' => 20,
