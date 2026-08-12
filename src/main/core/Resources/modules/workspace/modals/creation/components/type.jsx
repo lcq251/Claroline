@@ -41,7 +41,8 @@ const CreationType = (props) => {
                   callback: () => {
                     props.startCreation(merge({}, pick(selected[0], 'name', 'thumbnail', 'poster', 'meta'), {
                       model: selected[0],
-                      meta: {model: props.model, personal: false, archived: false}
+                      meta: {model: props.model, personal: false, archived: false},
+                      ...(!props.model && {restrictions: {hidden: false}})
                     }), 'model')
                     props.changeStep('info')
                   }
@@ -57,7 +58,10 @@ const CreationType = (props) => {
             action: {
               type: CALLBACK_BUTTON,
               callback: () => {
-                props.startCreation({meta: {model: props.model}})
+                props.startCreation({
+                  meta: {model: props.model},
+                  ...(!props.model && {restrictions: {hidden: false}})
+                })
                 props.changeStep('info')
               }
             },
@@ -79,7 +83,8 @@ const CreationType = (props) => {
                   callback: () => {
                     props.startCreation(merge({}, selected[0], {
                       id: makeId(),
-                      meta: {model: props.model, personal: false}
+                      meta: {model: props.model, personal: false},
+                      ...(!props.model && {restrictions: {hidden: false}})
                     }), 'copy')
                     props.changeStep('info')
                   }
@@ -131,7 +136,10 @@ const CreationType = (props) => {
             action: {
               type: CALLBACK_BUTTON,
               callback: () => {
-                props.startCreation({meta: {model: props.model}})
+                props.startCreation({
+                  meta: {model: props.model},
+                  ...(!props.model && {restrictions: {hidden: false}})
+                })
                 props.changeStep('upload')
               }
             },
