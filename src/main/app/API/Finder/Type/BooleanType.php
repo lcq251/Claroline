@@ -18,12 +18,18 @@ class BooleanType extends AbstractType
         $resolver->setAllowedValues('default', [null, true, false]);
     }
 
-    public function submit(mixed $filterValue, array $options): ?bool
+    public function submit(mixed $filterValue, array $options): bool|string|null
     {
-        $requestValue = null;
-        if (null !== $filterValue) {
-            $requestValue = filter_var($filterValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if (null === $filterValue) {
+            return $options['default'];
         }
+
+        // filters[xxx]=any means "do not filter this boolean field" (include both values)
+        if ('any' === $filterValue) {
+            return 'any';
+        }
+
+        $requestValue = filter_var($filterValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
         return null === $requestValue ? $options['default'] : $requestValue;
     }
@@ -34,7 +40,8 @@ class BooleanType extends AbstractType
             $queryBuilder->addOrderBy($finder->getQueryPath(), $finder->getSortValue());
         }
 
-        if (null !== $finder->getFilterValue()) {
+        // 'any' skips the filter: no where clause is generated for this boolean field
+        if (null !== $finder->getFilterValue() && 'any' !== $finder->getFilterValue()) {
             $queryBuilder->andWhere("{$finder->getQueryPath()} = :{$finder->getAlias()}");
             $queryBuilder->setParameter($finder->getAlias(), $finder->getFilterValue());
         }

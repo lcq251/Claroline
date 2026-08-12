@@ -40,6 +40,8 @@ final class MyWorkspacesList extends ListSourceComponent
         $finderRequest = parent::getRequest($context, $contextSubject, $filterSubject, $request);
 
         $finderRequest->addFilter('roles', $this->tokenStorage->getToken()->getRoleNames());
+        // "my workspaces" must include the user's personal workspace (is_personal=1)
+        $finderRequest->addFilter('personal', 'any');
 
         return $finderRequest;
     }

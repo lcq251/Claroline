@@ -96,6 +96,8 @@ class WorkspaceController extends AbstractCrudController
         return $this->crud
             ->search(Workspace::class, $finderRequest->addFilters([
                 'roles' => $userRoles,
+                // "my workspaces" must include the user's personal workspace (is_personal=1)
+                'personal' => 'any',
             ]), [SerializerInterface::SERIALIZE_LIST])
             ->toResponse();
     }
