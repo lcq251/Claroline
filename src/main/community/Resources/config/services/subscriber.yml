@@ -53,4 +53,6 @@ services:
             - '@Claroline\CoreBundle\Manager\OrganizationManager'
             - '@Claroline\CoreBundle\Manager\FileManager'
             - '@Claroline\CoreBundle\Manager\Workspace\WorkspaceManager'
+            - '@Claroline\CoreBundle\Manager\Tool\ToolManager'
+            - '@Claroline\CoreBundle\Manager\Tool\ToolRightsManager'
             - '@logger'

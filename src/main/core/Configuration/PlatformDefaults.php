@@ -110,6 +110,9 @@ class PlatformDefaults implements ParameterProviderInterface
             ],
             'desktop' => [ // to remove
                 'default_tool' => 'home',
+                // default desktop tools granted to ROLE_USER on registration (2026-08-12 Plan 23);
+                // gentle default: administrators can edit the list in the platform options
+                'default_tools' => ['home', 'workspaces', 'community', 'agenda', 'messaging', 'badges', 'progression', 'trainings'],
             ],
             'restrictions' => [
                 'users' => null,
