@@ -20,6 +20,10 @@ services:
         tags: ['claroline.serializer']
         arguments:
             - '@Claroline\MindMeAiBundle\Manager\DashboardStatsManager'
+    Claroline\MindMeAiBundle\Serializer\ResourceReferenceSerializer:
+        tags: ['claroline.serializer']
+        arguments:
+            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
     Claroline\MindMeAiBundle\Security\SecretCipher:
         arguments:
             - '%kernel.secret%'
