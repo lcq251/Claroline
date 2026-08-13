@@ -18,5 +18,10 @@
   "ai_lesson_quota_exceeded": "今日试用次数已用完，请明天再来或联系管理员。",
   "key_not_configured": "未配置",
   "no_expiration": "不限有效期",
-  "meta.creator": "AI 模型资源"
+  "meta.creator": "AI 模型资源",
+  "add_inputs": "添加输入资源",
+  "inputs_help": "选择其他资源作为本资源的输入，顺序即展示顺序。",
+  "resource_deleted": "资源已删除",
+  "move_up": "上移",
+  "move_down": "下移"
 }
