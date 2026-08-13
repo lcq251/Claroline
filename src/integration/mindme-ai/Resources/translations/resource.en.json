@@ -18,5 +18,10 @@
   "ai_lesson_quota_exceeded": "You have reached today's trial limit. Please try again tomorrow or contact an administrator.",
   "key_not_configured": "Not configured",
   "no_expiration": "No time limit",
-  "meta.creator": "AI Model Resource"
+  "meta.creator": "AI Model Resource",
+  "add_inputs": "Add input resources",
+  "inputs_help": "Select resources to use as inputs of this resource. The order defines the display order.",
+  "resource_deleted": "Resource deleted",
+  "move_up": "Move up",
+  "move_down": "Move down"
 }
