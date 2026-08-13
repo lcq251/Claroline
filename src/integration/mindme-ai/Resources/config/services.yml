@@ -24,6 +24,12 @@ services:
         tags: ['claroline.serializer']
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
+    Claroline\MindMeAiBundle\Controller\ResourceReferenceController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\MindMeAiBundle\Serializer\ResourceReferenceSerializer'
+            - '@security.authorization_checker'
     Claroline\MindMeAiBundle\Security\SecretCipher:
         arguments:
             - '%kernel.secret%'
