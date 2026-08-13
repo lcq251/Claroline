@@ -30,6 +30,7 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\MindMeAiBundle\Serializer\ResourceReferenceSerializer'
             - '@security.authorization_checker'
+            - '@security.token_storage'
     Claroline\MindMeAiBundle\Security\SecretCipher:
         arguments:
             - '%kernel.secret%'

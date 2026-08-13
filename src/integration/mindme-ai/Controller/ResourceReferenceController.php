@@ -4,11 +4,13 @@ namespace Claroline\MindMeAiBundle\Controller;
 
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CoreBundle\Entity\User;
 use Claroline\MindMeAiBundle\Entity\Resource\ResourceReference;
 use Claroline\MindMeAiBundle\Serializer\ResourceReferenceSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -28,7 +30,8 @@ class ResourceReferenceController
     public function __construct(
         private readonly ObjectManager $om,
         private readonly ResourceReferenceSerializer $serializer,
-        private readonly AuthorizationCheckerInterface $authorization
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage
     ) {
     }
 
@@ -73,6 +76,15 @@ class ResourceReferenceController
 
         if (!$host) {
             return new JsonResponse(['message' => 'Host resource not found'], 404);
+        }
+
+        // Only logged-in users who can edit the host resource may configure its inputs (D8).
+        // NB: we require a logged-in user first — the upstream ResourceVoter treats nodes with
+        // a NULL creator (seed/model roots) as "created by" the anonymous user, which would
+        // otherwise let anonymous PUT through on such nodes.
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (!$user instanceof User || !$this->authorization->isGranted('EDIT', $host)) {
+            return new JsonResponse(['message' => 'Forbidden'], 403);
         }
 
         $data = json_decode($request->getContent(), true);
