@@ -23,6 +23,5 @@
     "not_started_help": "请等待至 %date%。",
     "ended": "该页面已不再可访问。",
     "ended_help": "自 %date% 起访问已关闭。"
-  },
-  "favorites": "收藏"
+  }
 }

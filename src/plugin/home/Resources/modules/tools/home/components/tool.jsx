@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 import get from 'lodash/get'
 
-import {Tool, constants as toolConstants} from '#/main/core/tool'
+import {Tool} from '#/main/core/tool'
 
 import {HomeEditor} from '#/plugin/home/tools/home/editor/components/main'
 import {flattenTabs, getTabSummary} from '#/plugin/home/tools/home/utils'
@@ -10,7 +10,6 @@ import {HomeTab} from '#/plugin/home/tools/home/containers/tab'
 import {Tab as TabTypes} from '#/plugin/home/prop-types'
 import {HomePageSkeleton} from '#/plugin/home/tools/home/components/page'
 import {HomeDashboard} from '#/plugin/home/tools/home/dashboard/components/main'
-import {WorkspaceMenu} from '#/plugin/home/tools/home/components/workspace-menu'
 
 const HomeTool = props => {
   const tabs = props.tabs
@@ -34,16 +33,7 @@ const HomeTool = props => {
           render: (routeProps) => {
             const flattened = flattenTabs(props.tabs)
             if (flattened.find(tab => tab.slug === routeProps.match.params.slug)) {
-              return (
-                <React.Fragment>
-                  <HomeTab />
-
-                  {/* workspace quick menu only on the desktop home page */}
-                  {props.contextType === toolConstants.TOOL_DESKTOP &&
-                    <WorkspaceMenu favorites={props.favoriteContexts} />
-                  }
-                </React.Fragment>
-              )
+              return <HomeTab />
             }
 
             // tab does not exist
@@ -65,13 +55,6 @@ const HomeTool = props => {
 HomeTool.propTypes = {
   path: T.string.isRequired,
   loaded: T.bool.isRequired,
-  contextType: T.string,
-  favoriteContexts: T.arrayOf(T.shape({
-    id: T.string,
-    slug: T.string,
-    name: T.string,
-    thumbnail: T.string
-  })),
   tabs: T.arrayOf(T.shape(
     TabTypes.propTypes
   )),
