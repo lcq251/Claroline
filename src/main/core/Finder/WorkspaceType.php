@@ -37,7 +37,6 @@ class WorkspaceType extends AbstractType
             ->add('description', TextType::class)
             ->add('model', BooleanType::class, ['default' => false])
             ->add('personal', BooleanType::class, ['default' => false])
-            ->add('selfRegistration', BooleanType::class, ['default' => false])
             ->add('hidden', HiddenType::class)
             ->add('archived', BooleanType::class, ['default' => false])
             ->add('public', PublicType::class)
