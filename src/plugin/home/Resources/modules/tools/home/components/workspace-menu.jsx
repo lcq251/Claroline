@@ -2,6 +2,8 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
+import {useFetch} from '#/main/app/api/fetch'
+import {url} from '#/main/app/api/router'
 import {Button} from '#/main/app/action'
 import {LINK_BUTTON} from '#/main/app/buttons'
 import {Thumbnail} from '#/main/app/components/thumbnail'
@@ -16,15 +18,21 @@ import {route} from '#/main/core/workspace/routing'
  *  - favorites (contextFavorites injected at login)
  */
 const WorkspaceMenu = (props) => {
+  const [myWorkspacesData] = useFetch('workspaceMenu.myWorkspaces', ['apiv2_workspace_list_registered'])
+  const [publicWorkspacesData] = useFetch('workspaceMenu.publicWorkspaces', url(['apiv2_workspace_list'], {filters: {public: true}}))
+
+  const myWorkspaces = myWorkspacesData ? myWorkspacesData.data : []
+  const publicWorkspaces = publicWorkspacesData ? publicWorkspacesData.data : []
+
   const groups = [
     {
       key: 'my-workspaces',
       title: trans('my_workspaces_menu', {}, 'workspace'),
-      workspaces: props.myWorkspaces
+      workspaces: myWorkspaces
     }, {
       key: 'public-workspaces',
       title: trans('public_workspaces_menu', {}, 'workspace'),
-      workspaces: props.publicWorkspaces
+      workspaces: publicWorkspaces
     }, {
       key: 'favorites',
       title: trans('favorites', {}, 'home'),
@@ -67,18 +75,6 @@ const WorkspaceMenu = (props) => {
 }
 
 WorkspaceMenu.propTypes = {
-  myWorkspaces: T.arrayOf(T.shape({
-    id: T.string,
-    slug: T.string,
-    name: T.string,
-    thumbnail: T.string
-  })),
-  publicWorkspaces: T.arrayOf(T.shape({
-    id: T.string,
-    slug: T.string,
-    name: T.string,
-    thumbnail: T.string
-  })),
   favorites: T.arrayOf(T.shape({
     id: T.string,
     slug: T.string,
@@ -88,8 +84,6 @@ WorkspaceMenu.propTypes = {
 }
 
 WorkspaceMenu.defaultProps = {
-  myWorkspaces: [],
-  publicWorkspaces: [],
   favorites: []
 }
 
