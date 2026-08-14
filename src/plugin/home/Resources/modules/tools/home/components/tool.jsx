@@ -40,7 +40,7 @@ const HomeTool = props => {
 
                   {/* workspace quick menu only on the desktop home page */}
                   {props.contextType === toolConstants.TOOL_DESKTOP &&
-                    <WorkspaceMenu />
+                    <WorkspaceMenu favorites={props.favoriteContexts} />
                   }
                 </React.Fragment>
               )
@@ -66,6 +66,12 @@ HomeTool.propTypes = {
   path: T.string.isRequired,
   loaded: T.bool.isRequired,
   contextType: T.string,
+  favoriteContexts: T.arrayOf(T.shape({
+    id: T.string,
+    slug: T.string,
+    name: T.string,
+    thumbnail: T.string
+  })),
   tabs: T.arrayOf(T.shape(
     TabTypes.propTypes
   )),
