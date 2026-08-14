@@ -11,6 +11,7 @@ const HomeTool = withReducer(selectors.STORE_NAME, reducer)(
     (state) => ({
       path: toolSelectors.path(state),
       loaded: toolSelectors.loaded(state),
+      contextType: toolSelectors.contextType(state),
       tabs: selectors.tabs(state),
     }),
     (dispatch) => ({
