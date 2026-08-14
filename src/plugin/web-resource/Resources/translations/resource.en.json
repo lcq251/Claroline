@@ -4,5 +4,6 @@
     "not_a_zip": "The file must be a .zip archive containing an \"index.html\" or \"index.htm\" file.",
     "has_to_be_a_zip": "The file must be a .zip archive containing an \"index.html\" or \"index.htm\" file.",
     "inputs": "Inputs",
-    "no_inputs": "No input resources"
+    "no_inputs": "No input resources",
+    "link_resources": "Link resources"
 }

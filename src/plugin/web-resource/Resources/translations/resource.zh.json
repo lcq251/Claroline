@@ -4,5 +4,6 @@
   "not_a_zip": "文件必须是包含“index.html”或“index.htm”文件的.zip压缩包。",
   "has_to_be_a_zip": "文件必须是包含“index.html”或“index.htm”文件的.zip压缩包。",
   "inputs": "输入",
-  "no_inputs": "暂无输入资源"
+  "no_inputs": "暂无输入资源",
+  "link_resources": "链接资源"
 }
