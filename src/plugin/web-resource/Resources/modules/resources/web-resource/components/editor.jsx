@@ -1,16 +1,18 @@
 import React from 'react'
 
+import {trans} from '#/main/app/intl/translation'
 import {ResourceEditor} from '#/main/core/resource/editor'
+import {LinkResourcesEditor} from '#/plugin/web-resource/resources/web-resource/pages/link-resources-editor'
 
-/**
- * Web resource editor.
- *
- * The "inputs" configuration entry has been moved to the resource top-right
- * menu ("link resources" button) and is no longer an editor tab.
- */
 const WebResourceEditor = () =>
   <ResourceEditor
-    pages={[]}
+    pages={[
+      {
+        name: 'inputs',
+        title: trans('linked_resources', {}, 'resource'),
+        component: LinkResourcesEditor
+      }
+    ]}
   />
 
 export {
