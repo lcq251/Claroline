@@ -2,6 +2,8 @@ plugin:
     resources:
         - name: ai_lesson
           class: Claroline\MindMeAiBundle\Entity\AiLesson
+        - name: mindme_markdown
+          class: Claroline\MindMeAiBundle\Entity\MindmeMarkdown
 
     widgets:
         - name: landing-hero

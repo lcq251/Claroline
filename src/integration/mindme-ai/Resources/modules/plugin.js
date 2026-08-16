@@ -2,7 +2,8 @@ import {registry} from '#/main/app/plugins/registry'
 
 registry.add('ClarolineMindMeAiBundle', {
   resources: {
-    ai_lesson: () => import('#/integration/mindme-ai/resources/ai-lesson')
+    ai_lesson: () => import('#/integration/mindme-ai/resources/ai-lesson'),
+    mindme_markdown: () => import('#/integration/mindme-ai/resources/mindme-markdown')
   },
   widgets: {
     'landing-hero'     : () => { return import(/* webpackChunkName: "mindme-landing-hero" */      '#/integration/mindme-ai/widgets/landing/hero') },
