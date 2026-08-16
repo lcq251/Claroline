@@ -68,9 +68,11 @@ class AiLessonContextController extends AbstractController
         $aiLesson = null;
         foreach ($references as $ref) {
             $targetNode = $ref->getTarget();
-            if ($targetNode instanceof AiLesson) {
-                $aiLesson = $targetNode;
-                break;
+            if ($targetNode instanceof ResourceNode) {
+                $aiLesson = $this->om->getRepository(AiLesson::class)->findOneBy(['resourceNode' => $targetNode]);
+                if ($aiLesson) {
+                    break;
+                }
             }
         }
 
@@ -155,9 +157,11 @@ class AiLessonContextController extends AbstractController
         $aiLesson = null;
         foreach ($references as $ref) {
             $targetNode = $ref->getTarget();
-            if ($targetNode instanceof AiLesson) {
-                $aiLesson = $targetNode;
-                break;
+            if ($targetNode instanceof ResourceNode) {
+                $aiLesson = $this->om->getRepository(AiLesson::class)->findOneBy(['resourceNode' => $targetNode]);
+                if ($aiLesson) {
+                    break;
+                }
             }
         }
 
@@ -218,7 +222,7 @@ class AiLessonContextController extends AbstractController
             $usage->setCount(0);
         }
 
-        ++$usage->getCount();
+        $usage->setCount($usage->getCount() + 1);
         $this->om->flush();
 
         return new JsonResponse([
