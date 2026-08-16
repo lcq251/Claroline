@@ -8,6 +8,7 @@ import {asset} from '#/main/app/config/asset'
 import {selectors} from '#/plugin/web-resource/resources/web-resource/store'
 import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
 import {ResourceInputs} from '#/integration/mindme-ai/resource/inputs'
+import {AiLessonInfo} from '#/plugin/web-resource/resources/web-resource/player/components/ai-lesson-info'
 
 class PlayerComponent extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class PlayerComponent extends Component {
     let contentHeight = this.iframe.contentWindow.document.body.scrollHeight
 
     if (contentHeight === 0) {
-      // dirty, but we need this element if everything is populated through javascript in the iframe...
       contentHeight = document.getElementsByClassName('page-content')[0].clientHeight
     }
 
@@ -38,16 +38,30 @@ class PlayerComponent extends Component {
   }
 
   render() {
+    const ctx = this.props.aiLessonContext
+    const iframeSrc = ctx && ctx.allowed && ctx.aiLesson
+      ? asset(this.props.resourcePath) + '?aiLessonId=' + ctx.aiLesson.id
+      : asset(this.props.resourcePath)
+
     return (
       <ResourcePage>
-        <iframe
-          className="web-resource"
-          ref={el => this.iframe = el}
-          onLoad={this.handleResize()}
-          height={this.state.height}
-          src={asset(this.props.resourcePath)}
-          allowFullScreen={true}
-        />
+        <AiLessonInfo context={ctx} />
+
+        {(!ctx || ctx.allowed) ? (
+          <iframe
+            className="web-resource"
+            ref={el => this.iframe = el}
+            onLoad={this.handleResize()}
+            height={this.state.height}
+            src={iframeSrc}
+            allowFullScreen={true}
+          />
+        ) : (
+          <div className="alert alert-warning m-3">
+            <span className="fa fa-exclamation-triangle" />{' '}
+            {ctx.reason}
+          </div>
+        )}
 
         {this.props.resourceId &&
           <ResourceInputs hostId={this.props.resourceId} />
@@ -59,13 +73,15 @@ class PlayerComponent extends Component {
 
 PlayerComponent.propTypes = {
   resourcePath: T.string.isRequired,
-  resourceId: T.string
+  resourceId: T.string,
+  aiLessonContext: T.object
 }
 
 const Player = connect(
   state => ({
     resourcePath: selectors.path(state),
-    resourceId: get(resourceSelectors.resourceNode(state), 'id')
+    resourceId: get(resourceSelectors.resourceNode(state), 'id'),
+    aiLessonContext: selectors.aiLessonContext(state)
   })
 )(PlayerComponent)
 

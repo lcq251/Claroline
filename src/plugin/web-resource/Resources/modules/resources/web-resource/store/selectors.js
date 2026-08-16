@@ -9,8 +9,14 @@ const path = createSelector(
   (resource) => resource.path
 )
 
+const aiLessonContext = createSelector(
+  [resource],
+  (resource) => resource.aiLessonContext
+)
+
 export const selectors = {
   STORE_NAME,
   resource,
-  path
+  path,
+  aiLessonContext
 }

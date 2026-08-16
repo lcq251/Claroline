@@ -11,6 +11,9 @@ const reducer = combineReducers({
   }),
   file: makeReducer({}, {
     [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.file
+  }),
+  aiLessonContext: makeReducer(null, {
+    [makeInstanceAction(RESOURCE_LOAD, selectors.STORE_NAME)]: (state, action) => action.resourceData.aiLessonContext
   })
 })
 
