@@ -8,5 +8,4 @@ services:
       - '@Claroline\WebResourceBundle\Manager\WebResourceManager'
       - '@Claroline\AppBundle\API\SerializerProvider'
       - '@Claroline\AppBundle\Persistence\ObjectManager'
-      - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
       - '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
