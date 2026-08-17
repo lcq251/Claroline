@@ -883,6 +883,26 @@
   }
 }
 
+// ---------- ⑥ workspace tree (spec workspace-tree-widget) ----------
+[class*="mindme-ai-dashboard-dashboard-workspace-tree"] {
+  .workspace-tree {
+    .tree-item {
+      padding: 5px 8px;
+      border-radius: var(--l-radius-sm);
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: var(--l-surface-muted);
+      }
+    }
+
+    ul ul .tree-item {
+      font-size: 0.8125rem;
+      color: var(--l-ink-muted);
+    }
+  }
+}
+
 // ---------- reduced motion (spec §7) ----------
 @media (prefers-reduced-motion: reduce) {
   [class*="mindme-ai-dashboard-dashboard"] *,

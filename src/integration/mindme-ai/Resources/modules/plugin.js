@@ -13,6 +13,7 @@ registry.add('ClarolineMindMeAiBundle', {
     'dashboard-recommendations': () => { return import(/* webpackChunkName: "mindme-dashboard-recommendations" */ '#/integration/mindme-ai/widgets/dashboard/recommendations') },
     'dashboard-notifications'  : () => { return import(/* webpackChunkName: "mindme-dashboard-notifications" */   '#/integration/mindme-ai/widgets/dashboard/notifications') },
     'dashboard-shortcuts'      : () => { return import(/* webpackChunkName: "mindme-dashboard-shortcuts" */       '#/integration/mindme-ai/widgets/dashboard/shortcuts') },
-    'dashboard-fees'           : () => { return import(/* webpackChunkName: "mindme-dashboard-fees" */            '#/integration/mindme-ai/widgets/dashboard/fees') }
+    'dashboard-fees'           : () => { return import(/* webpackChunkName: "mindme-dashboard-fees" */            '#/integration/mindme-ai/widgets/dashboard/fees') },
+    'dashboard-workspace-tree' : () => { return import(/* webpackChunkName: "mindme-dashboard-workspace-tree" */ '#/integration/mindme-ai/widgets/dashboard/workspace-tree') }
   }
 })
