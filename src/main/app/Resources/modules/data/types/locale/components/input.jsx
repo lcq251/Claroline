@@ -8,6 +8,17 @@ import {Radio} from '#/main/app/input/components/radio'
 import {CountryFlag} from '#/main/app/components/country-flag'
 import {DataInput as DataInputTypes} from '#/main/app/data/types/prop-types'
 
+const localeCountryMap = {
+  en: 'gb',
+  fr: 'fr',
+  es: 'es',
+  de: 'de',
+  nl: 'nl',
+  it: 'it',
+  pt: 'pt',
+  zh: 'cn',
+}
+
 class LocaleInput extends PureComponent {
   constructor(props) {
     super(props)
@@ -51,7 +62,7 @@ class LocaleInput extends PureComponent {
               label={
                 <div className="d-flex flex-row justify-content-between gap-2" role="presentation">
                   {trans(locale)}
-                  <CountryFlag countryCode={'en' === locale ? 'gb' : locale} />
+                  <CountryFlag countryCode={localeCountryMap[locale] || locale} />
                 </div>
               }
               value={locale}

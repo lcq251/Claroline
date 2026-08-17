@@ -44,11 +44,12 @@ class MindmeAiPass implements CompilerPassInterface
 {
     private const TARGET = [
         'home.type' => 'tool',
+        'home.data' => '/#/public/home/default',
         'intl.locale' => 'zh',
         'intl.timezone' => 'Asia/Shanghai',
         'intl.dateFormat' => 'Y-m-d',
         'pricing.enabled' => true,
-        'pricing.currency' => 'rmb',
+        'pricing.currency' => 'RMB',
         'registration.self'=>true,
         'registration.allow_workspace'=>true
     ];

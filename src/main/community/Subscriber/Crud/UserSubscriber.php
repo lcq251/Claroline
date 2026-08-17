@@ -140,16 +140,19 @@ final class UserSubscriber implements EventSubscriberInterface
         }
 
         // personal workspace + public workspace auto-registration (2026-08-12 Plan 22)
-        if ($user->hasRole(PlatformRoles::USER) && empty($user->getPersonalWorkspace())) {
-            // personal workspace auto-creation — switchable via mindme.personal_workspace_enabled (default: true)
-            if ($this->config->getParameter('mindme.personal_workspace_enabled') ?? true) {
-                try {
-                    $this->workspaceManager->createPersonalWorkspace($user);
-                } catch (\Exception $e) {
-                    // personal workspace failure must not block the registration
-                    $this->logger->error('Personal workspace creation failed for user '.$user->getUsername().': '.$e->getMessage());
+        if ($user->getUsername() !=  'claroline-connect') {
+            if ($user->hasRole(PlatformRoles::USER) && empty($user->getPersonalWorkspace())) {
+                // personal workspace auto-creation — switchable via mindme.personal_workspace_enabled (default: true)
+                if ($this->config->getParameter('mindme.personal_workspace_enabled') ?? true) {
+                    try {
+                        $this->workspaceManager->createPersonalWorkspace($user);
+                    } catch (\Exception $e) {
+                        // personal workspace failure must not block the registration
+                        $this->logger->error('Personal workspace creation failed for user '.$user->getUsername().': '.$e->getMessage());
+                    }
                 }
             }
+        
 
             // public workspace auto-registration (mindme.workspace) — independent from the personal workspace switch
             $publicWorkspaces = $this->config->getParameter('mindme.workspace') ?? [];

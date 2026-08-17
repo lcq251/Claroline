@@ -1041,6 +1041,7 @@ t.add("nl", "Nederlands", "platform", "en");
 t.add("es", "Espa\u00f1ol", "platform", "en");
 t.add("it", "Italiano", "platform", "en");
 t.add("de", "Deutsch", "platform", "en");
+t.add("zh", "Chinese", "platform", "en");
 t.add("activate_self_registration", "Enable self-registration", "platform", "en");
 t.add("platform", "Platform", "platform", "en");
 t.add("custom", "Custom", "platform", "en");

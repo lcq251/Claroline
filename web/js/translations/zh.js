@@ -1236,6 +1236,7 @@ t.add("nl", "Nederlands", "platform", "zh");
 t.add("es", "Espa\u00f1ol", "platform", "zh");
 t.add("it", "Italiano", "platform", "zh");
 t.add("de", "Deutsch", "platform", "zh");
+t.add("zh", "中文", "platform", "zh");
 t.add("activate_self_registration", "\u542f\u7528\u81ea\u52a9\u6ce8\u518c", "platform", "zh");
 t.add("platform", "\u5e73\u53f0", "platform", "zh");
 t.add("custom", "\u81ea\u5b9a\u4e49", "platform", "zh");
