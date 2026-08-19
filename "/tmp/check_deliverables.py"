@@ -1,0 +1,38 @@
+import os
+
+# Backend
+be = '/home/liuai/claroline/src/Claroline/src/integration/mindme-ai/Manager/DashboardStatsManager.php'
+print(f'Backend file exists: {os.path.isfile(be)}')
+
+if os.path.isfile(be):
+    with open(be) as f:
+        content = f.read()
+    print(f'  getWorkspaceTree present: {"getWorkspaceTree" in content}')
+    print(f'  Size: {len(content)} bytes')
+
+# Frontend dir
+base = '/home/liuai/claroline/src/Claroline/src/integration/mindme-ai'
+frontend_dir = base + '/Resources/modules/widgets/dashboard/workspace-tree'
+print(f'\nFrontend dir exists: {os.path.isdir(frontend_dir)}')
+
+if os.path.isdir(frontend_dir):
+    for root, dirs, files in os.walk(frontend_dir):
+        for fn in files:
+            fp = os.path.join(root, fn)
+            print(f'  {os.path.relpath(fp, base)} ({os.path.getsize(fp)} bytes)')
+
+# plugin.js
+plugin = base + '/Resources/modules/plugin.js'
+print(f'\nplugin.js: {os.path.isfile(plugin)}')
+if os.path.isfile(plugin):
+    with open(plugin) as f:
+        plugin_content = f.read()
+    print(f'  workspace-tree registration: {"workspace-tree" in plugin_content}')
+
+# SCSS
+scss = base + '/Resources/styles/dashboard.scss'
+print(f'\ndashboard.scss: {os.path.isfile(scss)}')
+if os.path.isfile(scss):
+    with open(scss) as f:
+        scss_content = f.read()
+    print(f'  workspace-tree styles: {"workspace-tree" in scss_content}')

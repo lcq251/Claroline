@@ -21,27 +21,7 @@ plugin:
           context: [public]
           tags: [content]
 
-        - name: dashboard-board
-          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
-          context: [desktop]
-          tags: [content]
-
-        - name: dashboard-recommendations
-          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
-          context: [desktop]
-          tags: [content]
-
-        - name: dashboard-notifications
-          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
-          context: [desktop]
-          tags: [content]
-
-        - name: dashboard-shortcuts
-          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
-          context: [desktop]
-          tags: [content]
-
-        - name: dashboard-fees
+        - name: dashboard-overview
           class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
           context: [desktop]
           tags: [content]

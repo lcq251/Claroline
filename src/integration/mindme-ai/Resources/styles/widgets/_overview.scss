@@ -1,0 +1,128 @@
+/*
+ * Overview block styles — stats cards + announcements panel.
+ */
+
+[class*="mindme-ai-dashboard-overview-block"] {
+
+  .mindme-ai-dashboard-overview-block-stats-row {
+    display: flex;
+    gap: var(--l-space-md, 16px);
+    margin-bottom: var(--l-space-lg, 24px);
+    justify-content: space-between;
+
+    > div {
+      flex: 1;
+      background: var(--l-surface, #fff);
+      border: 1px solid var(--l-line, #e5e7eb);
+      border-radius: var(--l-radius-md, 8px);
+      padding: var(--l-space-lg, 24px);
+      text-align: center;
+      transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+      &:hover {
+        box-shadow: var(--l-shadow-card-hover, 0 4px 12px rgba(0,0,0,0.08));
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .mindme-ai-dashboard-overview-block-stat-icon {
+    font-size: calc(var(--l-space-xl, 32px) * 1.5);
+    color: var(--l-primary, #0d9488);
+    margin-bottom: var(--l-space-sm, 8px);
+  }
+
+  .mindme-ai-dashboard-overview-block-stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--l-ink, #0f172a);
+    margin-bottom: var(--l-space-xs, 4px);
+  }
+
+  .mindme-ai-dashboard-overview-block-stat-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--l-ink-muted, #64748b);
+  }
+
+  .mindme-ai-dashboard-overview-block-announcements {
+    margin-bottom: var(--l-space-lg, 24px);
+    background: var(--l-surface, #fff);
+    border: 1px solid var(--l-line, #e5e7eb);
+    border-radius: var(--l-radius-md, 8px);
+    padding: var(--l-space-lg, 24px);
+
+    h3 {
+      font-size: 1rem;
+      color: var(--l-ink, #0f172a);
+      margin-bottom: var(--l-space-md, 16px);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: var(--l-space-sm, 8px) 0;
+        border-bottom: 1px solid var(--l-line, #e5e7eb);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        a {
+          color: var(--l-primary-strong, #0f766e);
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .mindme-ai-dashboard-overview-block-reviews {
+    background: var(--l-surface, #fff);
+    border: 1px solid var(--l-line, #e5e7eb);
+    border-radius: var(--l-radius-md, 8px);
+    padding: var(--l-space-lg, 24px);
+
+    a {
+      color: var(--l-primary, #0d9488);
+      font-weight: 600;
+    }
+  }
+
+  .mindme-ai-dashboard-overview-block-quick-linkss {
+    background: var(--l-surface-muted, #f8fafc);
+    border: 1px solid var(--l-line, #e5e7eb);
+    border-radius: var(--l-radius-md, 8px);
+    padding: var(--l-space-lg, 24px);
+
+    h3 {
+      font-size: 1rem;
+      color: var(--l-ink, #0f172a);
+      margin-bottom: var(--l-space-sm, 8px);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        a {
+          color: var(--l-primary-strong, #0f766e);
+          padding: var(--l-space-xs, 4px) 0;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}

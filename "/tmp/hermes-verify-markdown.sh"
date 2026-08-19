@@ -1,0 +1,52 @@
+#!/bin/bash
+# Ad-hoc verification: mindme_markdown resource type
+REPO=/home/liuai/claroline/src/Claroline
+PASS=0; FAIL=0
+
+check() { local name="$1" res="$2"
+  if [ "$res" = "0" ]; then echo "  [PASS] $name"; PASS=$((PASS+1))
+  else echo "  [FAIL] $name"; FAIL=$((FAIL+1)); fi
+}
+
+echo "=== 1. All created files exist ==="
+cd "$REPO"
+for f in \
+  src/integration/mindme-ai/Entity/MindmeMarkdown.php \
+  src/integration/mindme-ai/Component/Resource/MindmeMarkdownResource.php \
+  src/integration/mindme-ai/Installation/Migrations/Version20260816000000.php \
+  src/integration/mindme-ai/Resources/config/components/resource.yml \
+  src/integration/mindme-ai/Resources/config/config.yml \
+  src/integration/mindme-ai/Resources/modules/plugin.js \
+  src/integration/mindme-ai/Resources/modules/resources/mindme-markdown/index.js \
+  src/integration/mindme-ai/Resources/modules/resources/mindme-markdown/components/resource.jsx \
+  src/integration/mindme-ai/Resources/modules/resources/mindme-markdown/components/player.jsx \
+  src/integration/mindme-ai/Resources/modules/resources/mindme-markdown/components/editor.jsx; do
+  test -f "$f"; check "exists: $f" $?
+done
+
+echo ""
+echo "=== 2. Config has mindme_markdown ==="
+grep -q "mindme_markdown" src/integration/mindme-ai/Resources/config/config.yml; check "config.yml has resource entry" $?
+grep -q "mindme_markdown" src/integration/mindme-ai/Resources/config/components/resource.yml; check "resource.yml has service entry" $?
+grep -q "mindme_markdown" src/integration/mindme-ai/Resources/modules/plugin.js; check "plugin.js has frontend entry" $?
+grep -q "md-editor-rt" package.json; check "md-editor-rt in package.json" $?
+
+echo ""
+echo "=== 3. PHP Syntax ==="
+docker exec lamp-claro php -l /var/www/html/src/integration/mindme-ai/Entity/MindmeMarkdown.php > /dev/null 2>&1; check "Entity syntax" $?
+docker exec lamp-claro php -l /var/www/html/src/integration/mindme-ai/Component/Resource/MindmeMarkdownResource.php > /dev/null 2>&1; check "Component syntax" $?
+docker exec lamp-claro php -l /var/www/html/src/integration/mindme-ai/Installation/Migrations/Version20260816000000.php > /dev/null 2>&1; check "Migration syntax" $?
+
+echo ""
+echo "=== 4. Webpack Build ==="
+npm run webpack -- --bail --mode production > /tmp/wp-out.log 2>/tmp/wp-err.log
+WC=$?
+grep -q "2546 modules" /tmp/wp-out.log || grep -q "modules" /tmp/wp-out.log; check "webpack completed" $?
+grep -ci "ERROR" /tmp/wp-err.log 2>/dev/null | grep -q "^0$"; check "webpack 0 errors" $?
+
+echo ""
+echo "=== 5. HTTP Status ==="
+curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1/ | grep -q 200; check "homepage 200" $?
+
+echo ""
+echo "=== Results: $PASS passed, $FAIL failed ==="

@@ -16,134 +16,23 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
-use Claroline\CursusBundle\Entity\EventPresence;
-use Claroline\CursusBundle\Entity\Session;
-use Claroline\CursusBundle\Entity\SessionUser;
-use Claroline\NotificationBundle\Entity\Notification;
-use Claroline\OpenBadgeBundle\Entity\Assertion;
+use Claroline\CursusBundle\Entity\Course;
+use Claroline\CursusBundle\Entity\Registration\SessionUser;
+use Claroline\MindMeAiBundle\Entity\AiLesson;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Aggregates the runtime data of the desktop dashboard widgets (C-22).
+ * Provides runtime data for dashboard homepage blocks: workspace-tree, overview, messages.
  */
 class DashboardStatsManager
 {
-    private const BYTES_PER_GB = 1073741824;
-
     public function __construct(
         private readonly ObjectManager $om,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly PlatformConfigurationHandler $config,
         private readonly AuthorizationCheckerInterface $authChecker
     ) {
-    }
-
-    public function getBoardData(): array
-    {
-        $user = $this->getCurrentUser();
-
-        if ($user && $this->hasWorkspaceManagerRole($user)) {
-            return [
-                'greeting' => ['sub' => 'dashboard_greeting_teacher_sub'],
-                'stats' => [
-                    'teacher' => $this->getTeacherStats(),
-                    'student' => null,
-                ],
-            ];
-        }
-
-        if ($user && $this->hasWorkspaceCollaboratorRole($user)) {
-            return [
-                'greeting' => ['sub' => 'dashboard_greeting_student_sub'],
-                'stats' => [
-                    'teacher' => null,
-                    'student' => $this->getStudentStats($user),
-                ],
-            ];
-        }
-
-        return [
-            'greeting' => ['sub' => null],
-            'stats' => [
-                'teacher' => null,
-                'student' => null,
-            ],
-        ];
-    }
-
-    public function getMessages(int $maxItems): array
-    {
-        $user = $this->getCurrentUser();
-
-        if (!$user) {
-            return [];
-        }
-
-        $notifications = $this->om->getRepository(Notification::class)->findBy(
-            ['user' => $user],
-            ['createdAt' => 'DESC'],
-            max($maxItems, 1)
-        );
-
-        return array_map(function (Notification $notification) {
-            return [
-                'id' => (string) $notification->getId(),
-                'title' => $notification->getMessage() ?? '',
-                'description' => null,
-                'type' => 'other',
-                'unread' => true,
-                'time' => $notification->getCreatedAt()?->format('c'),
-                'url' => null,
-            ];
-        }, $notifications);
-    }
-
-    public function getFees(int $maxItems): array
-    {
-        $sessions = $this->om->getRepository(Session::class)->createQueryBuilder('s')
-            ->where('s.publicRegistration = :open OR s.autoRegistration = 1')
-            ->orderBy('s.startDate', 'DESC')
-            ->setMaxResults(max($maxItems, 1))
-            ->setFirstResult(0)
-            ->getQuery()
-            ->getResult();
-
-        $sessionsFiltered = [];
-        foreach ($sessions as $session) {
-            if ($session->getName()) {
-                $sessionsFiltered[] = $session;
-            }
-        }
-
-        $now = new \DateTime();
-
-        return array_map(function (Session $session) use ($now) {
-            $startDate = $session->getStartDate();
-            $status = 'open';
-            if ($startDate && $startDate < $now) {
-                $status = 'started';
-            } elseif ($startDate && $startDate > \DateTime::createFromInterface($now)->modify('+7 days')) {
-                $status = 'soon';
-            }
-
-            return [
-                'course' => $session->getName(),
-                'price' => 0,
-                'currency' => 'CNY',
-                'status' => $status,
-                'url' => null,
-            ];
-        }, array_slice($sessionsFiltered, 0, max($maxItems, 1)));
-    }
-
-    public function getIncome(): array
-    {
-        return [
-            'status' => 'pending',
-            'income' => null,
-            'cost' => null,
-        ];
     }
 
     /**
@@ -162,15 +51,16 @@ class DashboardStatsManager
         $userRoles = $user->getRoles();
 
         $workspaceRepo = $this->om->getRepository(Workspace::class);
-        $workspaces = $workspaceRepo->createQueryBuilder('w')
-            ->join('w.roles', 'r')
-            ->where('r.name IN (:roles)')
-            ->andWhere('w.model = :model')
-            ->setParameter('roles', $userRoles)
-            ->setParameter('model', false)
-            ->orderBy('w.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $workspaces = $workspaceRepo
+            ->createQueryBuilder('w')
+                ->join('w.roles', 'r')
+                ->where('r.name IN (:roles)')
+                ->andWhere('w.model = :model')
+                ->setParameter('roles', $userRoles)
+                ->setParameter('model', false)
+                ->orderBy('w.name', 'ASC')
+                ->getQuery()
+                ->getResult();
 
         $resourceRepo = $this->om->getRepository(ResourceNode::class);
 
@@ -185,26 +75,233 @@ class DashboardStatsManager
             foreach ($rootResources as $res) {
                 if ($this->authChecker->isGranted('OPEN', $res)) {
                     $accessible[] = [
-                        'id' => $res->getUuid(),
-                        'name' => $res->getName(),
-                        'type' => $res->getResourceType()->getName(),
-                        'url' => '/workspace/'.$ws->getSlug().'/resources/'.$res->getSlug(),
+                        'id'    => $res->getUuid(),
+                        'name'  => $res->getName(),
+                        'type'  => $res->getResourceType()->getName(),
+                        'url'   => '/workspace/'.$ws->getSlug().'/resources/'.$res->getSlug(),
                     ];
                 }
             }
 
             $tree[] = [
-                'id' => $ws->getUuid(),
-                'name' => $ws->getName(),
-                'code' => $ws->getCode(),
-                'url' => '/workspace/'.$ws->getSlug(),
+                'id'        => $ws->getUuid(),
+                'name'      => $ws->getName(),
+                'code'      => $ws->getCode(),
+                'url'       => '/workspace/'.$ws->getSlug(),
                 'resources' => $accessible,
             ];
         }
 
         return [
             'maxResources' => $max,
-            'tree' => $tree,
+            'tree'         => $tree,
+        ];
+    }
+
+    public function getOverviewData(): array
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user) {
+            return [
+                'resources' => ['total' => 0, 'published' => 0, 'subscribed' => 0],
+                'courses'   => ['total' => 0, 'published' => 0, 'subscribed' => 0],
+                'tools'     => ['total' => 0, 'published' => 0, 'subscribed' => 0],
+                'subscriptions' => ['resources' => 0, 'courses' => 0, 'tools' => 0, 'total' => 0],
+            ];
+        }
+
+        $resRepo    = $this->om->getRepository(ResourceNode::class);
+        $courseRepo = $this->om->getRepository(Course::class);
+        $lessonRepo = $this->om->getRepository(AiLesson::class);
+
+        $resourcesTotal     = (int) $resRepo->count([]);
+        $resourcesPublished = (int) $resRepo->count(['creator' => $user]);
+
+        $userRoles = $user->getRoles();
+        $wsRepo    = $this->om->getRepository(Workspace::class);
+        $wsIds = $wsRepo->createQueryBuilder('w')
+            ->select('w.id')
+            ->join('w.roles', 'r')
+            ->where('r.name IN (:roles)')
+            ->andWhere('w.model = false')
+            ->setParameter('roles', $userRoles)
+            ->getQuery()
+            ->getScalarResult();
+        $wsIdList = array_column($wsIds, 'id');
+
+        $resourcesSubscribed = 0;
+        if (!empty($wsIdList)) {
+            $resourcesSubscribed = (int) $resRepo->createQueryBuilder('r')
+                ->select('COUNT(r.id)')
+                ->where('r.workspace IN (:ws)')
+                ->setParameter('ws', $wsIdList)
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+        $coursesTotal       = (int) $courseRepo->count([]);
+        $coursesPublished   = (int) $courseRepo->count(['creator' => $user]);
+        $coursesSubscribed  = (int) $this->om->getRepository(SessionUser::class)
+            ->count(['user' => $user]);
+
+        $toolsTotal         = (int) $lessonRepo->count([]);
+        $toolsPublished     = (int) $lessonRepo->count(['creator' => $user]);
+        $toolsSubscribed    = 0;
+
+        $subTotal = $resourcesSubscribed + $coursesSubscribed;
+
+        return [
+            'resources' => [
+                'total'      => $resourcesTotal,
+                'published'  => $resourcesPublished,
+                'subscribed' => $resourcesSubscribed,
+            ],
+            'courses' => [
+                'total'      => $coursesTotal,
+                'published'  => $coursesPublished,
+                'subscribed' => $coursesSubscribed,
+            ],
+            'tools' => [
+                'total'      => $toolsTotal,
+                'published'  => $toolsPublished,
+                'subscribed' => $toolsSubscribed,
+            ],
+            'subscriptions' => [
+                'resources' => $resourcesSubscribed,
+                'courses'   => $coursesSubscribed,
+                'tools'     => $toolsSubscribed,
+                'total'     => $subTotal,
+            ],
+        ];
+    }
+
+    /**
+     * Returns overview block data: stats cards + quick links.    /**
+     * Returns overview block data: stats cards + quick links.
+     *
+     * @return array
+     */
+    public function getOverview(): array
+    {
+        $user = $this?->getCurrentUser();
+        if (!$user) {
+            return [
+                'stats' => [
+                    ['label' => 'workspaces', 'value' => 0, 'icon' => 'fa fa-people'],
+                    ['label' => 'resources',  'value' => 0, 'icon' => 'fa fa-file-text'],
+                    ['label' => 'courses',    'value' => 0, 'icon' => 'fa fa-book'],
+                ],
+                'announcements' => [],
+            ];
+        }
+
+        $userRoles   = $user->getRoles();
+        $wsRepo      = $this->om->getRepository(Workspace::class);
+        $resRepo     = $this->om->getRepository(ResourceNode::class);
+
+        // counts
+        $workspaceCount = (int) $wsRepo
+            ->createQueryBuilder('w')
+                ->join('w.roles', 'r')
+                ->where('r.name IN (:roles)')
+                ->andWhere('w.model = false')
+                ->setParameter('roles', $userRoles)
+                ->count();
+
+        // courses via course workspace relation is heavier; use a query that works on most schemas
+        try {
+            $courseCount = (int) ($this->om->getRepository(\Claroline\CoreBundle\Entity\Course\Course::class))
+                ->createQueryBuilder('c')
+                    ->join('c.mainWorkspace', 'mw')
+                    ->join('mw.roles', 'r')
+                    ->where('r.name IN (:roles)')
+                    ->setParameter('roles', $userRoles)
+                    ->count();
+        } catch (\Throwable $_e) {
+            $courseCount = 0;
+        }
+
+        // recent announcements (platform default)
+        $announcements = [];
+        try {
+            $boardRepo = $this->om->getRepository(\Claroline\ApiBundle\Entity\Api\AnnouncementBoard::class);
+            if (method_exists($boardRepo, 'findBy')) {
+                $boards = $boardRepo->findBy([], ['dateStart' => 'DESC'], 3);
+                foreach ($boards as $b) {
+                    $announcements[] = [
+                        'id'       => $b->getId(),
+                        'title'    => $b->getTitle() ?? 'Announcement',
+                        'url'      => '/api/announcement/' . $b->getSlug(),
+                        'dateStart'=> $b->getDateStart()->format('Y-m-d'),
+                    ];
+                }
+            }
+        } catch (\Throwable $_) {
+            // API entity may not always be available; fall through empty.
+        }
+
+        return [
+            'stats' => [
+                ['label' => 'workspaces', 'value' => $workspaceCount, 'icon' => 'fa fa-people'],
+                ['label' => 'resources',  'value' => (int) $resRepo->count([]), 'icon' => 'fa fa-file-text'],
+                ['label' => 'courses',    'value' => $courseCount, 'icon' => 'fa fa-book'],
+            ],
+            'announcements' => $announcements,
+        ];
+    }
+
+    /**
+     * Returns messages block data: recent platform notifications / messages.
+     *
+     * @return array{items: array, moreUrl?: string}
+     */
+    public function getMessages(): array
+    {
+        $user = $this?->getCurrentUser();
+        if (!$user) {
+            return [
+                'items' => [],
+                'moreUrl' => '/notifications',
+            ];
+        }
+
+        $items = [];
+        try {
+            // Claroline Community Notifications as the primary source
+            $notifRepo = $this->om->getRepository(
+                \Claroline\CoreBundle\Entity\Notification\UserNotification::class ?? null
+            );
+            if ($notifRepo) {
+                $notifs = $notifRepo
+                    ->createQueryBuilder('un')
+                        ->where('un.user = :user')
+                        ->andWhere('un.readable = true')
+                        ->orderBy('un.dateUpdate', 'DESC')
+                        ->setParameter('user', $user->getId())
+                        ->setMaxResults(10)
+                        ->getQuery()
+                        ->getResult();
+
+                foreach ($notifs as $n) {
+                    $items[] = [
+                        'id'     => $n->getId(),
+                        'title'  => $n->getTitle() ?? 'Notification',
+                        'body'   => strip_tags($n->getBody() ?? ''),
+                        'date'   => $n->getDateUpdate()->format('Y-m-d H:i'),
+                        'read'   => (bool) $n->getRead(),
+                        'type'   => $n->getType() ?? 'info',
+                        'url'    => $n->getUrl() ?? '/notifications',
+                    ];
+                }
+            }
+        } catch (\Throwable $_) {
+            // Notification entity/schema not present.
+        }
+
+        return [
+            'items'   => $items,
+            'moreUrl' => '/notifications',
         ];
     }
 
@@ -214,92 +311,20 @@ class DashboardStatsManager
         if (!$token) {
             return null;
         }
+
         $user = $token->getUser();
-        if ($user instanceof \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
-            || $user instanceof User
+        while ($user instanceof \Symfony\Component\Security\Core\User\EquivalentUserInterface) {
+            $user = $user->getDecoratedUser();
+        }
+        // We can only accept User instances because they implement our security layer.
+        if (
+            !$user instanceof PasswordAuthenticatedUserInterface &&
+            !$user instanceof User
         ) {
-            return $user;
-        }
-        return null;
-    }
-
-    private function hasWorkspaceManagerRole(User $user): bool
-    {
-        try {
-            $managed = $this->om->getRepository(Workspace::class)
-                ->findByRoles(['ROLE_WS_MANAGER']);
-            return !empty($managed);
-        } catch (\Throwable $e) {
-            return false;
-        }
-    }
-
-    private function hasWorkspaceCollaboratorRole(User $user): bool
-    {
-        try {
-            $collaborators = $this->om->getRepository(Workspace::class)
-                ->findByRoles(['ROLE_WS_COLLABORATOR']);
-            return !empty($collaborators);
-        } catch (\Throwable $e) {
-            return false;
-        }
-    }
-
-    private function hasWorkspaceRole(User $user, string $role): bool
-    {
-        foreach ($user->getRoles() as $userRole) {
-            if ($role === $userRole || str_starts_with($userRole, $role . '_')) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function getTeacherStats(): array
-    {
-        $user = $this->getCurrentUser();
-        if (!$user) {
-            return ['courses' => null, 'sessions' => null, 'resources' => null];
+            return null;
         }
 
-        $resourceRepo = $this->om->getRepository(ResourceNode::class);
-        $totalResources = (int) $resourceRepo->count(['creator' => $user]);
-
-        return [
-            'courses' => 0,
-            'sessions' => 0,
-            'resources' => $totalResources,
-        ];
-    }
-
-    private function getStudentStats(User $user): array
-    {
-        $sessionsCount = (int) $this->om->createQueryBuilder()
-            ->select('COUNT(su.id)')
-            ->from(SessionUser::class, 'su')
-            ->where('su.user = :userId')
-            ->setParameter('userId', $user->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $resourceRepo = $this->om->getRepository(ResourceNode::class);
-        $totalResources = (int) $resourceRepo->count(['workspace' => $user->getPersonalWorkspaceIdentifier()]);
-
-        $badgesCount = 0;
-        try {
-            $assertionRepo = $this->om->getRepository(Assertion::class);
-            $badgesCount = (int) $assertionRepo->count(['recipient' => $user]);
-        } catch (\Throwable) {
-            $badgesCount = 0;
-        }
-
-        return [
-            'courses_registered' => $sessionsCount,
-            'courses_completed' => 0,
-            'resources_published' => $totalResources,
-            'apps_published' => 0,
-            'badges' => $badgesCount,
-            'attendance' => null,
-        ];
+        return $user;
     }
 }
+

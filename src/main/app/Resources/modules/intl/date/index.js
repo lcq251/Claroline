@@ -14,6 +14,21 @@ import {trans} from '#/main/app/intl/translation'
 // this may be not the better place to do it
 moment.locale(locale())
 
+// Override Chinese locale date formats for consistency
+// moment's default for zh-cn: L='YYYY/MM/DD', ll='YYYY年M月D日'
+// standardised to: short='YYYY-MM-DD', long='YYYY年MM月DD日' (with leading zeros)
+if (locale === 'zh-cn') {
+  moment.updateLocale('zh-cn', {
+    longDateFormat: {
+      L: 'YYYY-MM-DD',
+      ll: 'YYYY年MM月DD日',
+      LL: 'YYYY年MM月DD日',
+      lll: 'YYYY年MM月DD日 HH:mm',
+      LLL: 'YYYY年MM月DD日 HH:mm'
+    }
+  })
+}
+
 /**
  * Gets the date format expected by the server API.
  *

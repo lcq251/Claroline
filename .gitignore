@@ -30,3 +30,4 @@ installed
 !/var/geoip/.gitkeep
 /vendor/
 ###< symfony/framework-bundle ###
+\.worktrees/
