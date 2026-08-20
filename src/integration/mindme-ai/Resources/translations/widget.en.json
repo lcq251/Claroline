@@ -58,5 +58,11 @@
   "dashboard_overview_published": "Published",
   "dashboard_overview_subscribed": "Subscribed",
   "dashboard_overview_unit": "items",
-  "dashboard_overview_unit_course": "courses"
+  "dashboard_overview_unit_course": "courses",
+  "dashboard-messages": "Messages",
+  "dashboard-messages_desc": "Platform messages and notifications list.",
+  "dashboard_messages_head": "Messages",
+  "dashboard_messages_empty": "No new messages",
+  "dashboard_messages_see_all": "See all →",
+  "dashboard_messages_no_title": "(no title)"
 }

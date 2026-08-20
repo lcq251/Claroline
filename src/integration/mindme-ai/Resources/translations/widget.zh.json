@@ -58,5 +58,11 @@
   "dashboard_overview_published": "发布",
   "dashboard_overview_subscribed": "订阅",
   "dashboard_overview_unit": "个",
-  "dashboard_overview_unit_course": "门"
+  "dashboard_overview_unit_course": "门",
+  "dashboard-messages": "消息提醒",
+  "dashboard-messages_desc": "平台内消息与通知提醒列表。",
+  "dashboard_messages_head": "消息提醒",
+  "dashboard_messages_empty": "暂无新消息",
+  "dashboard_messages_see_all": "查看全部 →",
+  "dashboard_messages_no_title": "（无标题）"
 }

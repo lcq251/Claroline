@@ -82,21 +82,112 @@ class HomeTabSerializer
     public function deserialize(array $data, HomeTab $homeTab, array $options = []): HomeTab
     {
         if (!in_array(Options::REFRESH_UUID, $options)) {
-            $this->deserializeProperty($data, 'id', 'setUuid', $homeTab);
+            $this->sipe('id', 'setUuid', $data, $homeTab);
         } else {
             $homeTab->refreshUuid();
         }
 
-        $this->deserializeProperty($data, 'title', 'setName', $homeTab);
-        $this->deserializeProperty($data, 'position', 'setOrder', $homeTab);
-        $this->deserializeProperty($data, 'longTitle', 'setLongTitle', $homeTab);
-        $this->deserializeProperty($data, 'poster', 'setPoster', $homeTab);
-        $this->deserializeProperty($data, 'icon', 'setIcon', $homeTab);
-        $this->deserializeProperty($data, 'type', 'setType', $homeTab);
-        $this->deserializeProperty($data, 'class', 'setClass', $homeTab);
+        $this->sipe('title', 'setName', $data, $homeTab);
+        $this->sipe('position', 'setOrder', $data, $homeTab);
+        $this->sipe('longTitle', 'setLongTitle', $data, $homeTab);
+        $this->sipe('poster', 'setPoster', $data, $homeTab);
+        $this->sipe('icon', 'setIcon', $data, $homeTab);
+        $this->sipe('type', 'setType', $data, $homeTab);
+        $this->sipe('class', 'setClass', $data, $homeTab);
 
         if (isset($data['restrictions'])) {
-            $this->deserializeProperty($data, 'restrictions.hidden', 'setHidden', $homeTab);
+            $this->sipe('restrictions.code', 'setAccessCode', $data, $homeTab);
+            $this->sipe('restrictions.hidden', 'setHidden', $data, $homeTab);
+
+            if (isset($data['restrictions']['dates'])) {
+                $dateRange = DateRangeNormalizer::denormalize($data['restrictions']['dates']);
+
+                $homeTab->setAccessibleFrom($dateRange[0]);
+                $homeTab->setAccessibleUntil($dateRange[1]);
+            }
+
+            if (isset($data['restrictions']['roles'])) {
+                $existingRoles = $homeTab->getRoles()->toArray();
+
+                foreach ($data['restrictions']['roles'] as $roleData) {
+                    /** @var Role $role */
+                    $role = $this->om->getRepository(Role::class)->findOneBy(['uuid' => $roleData['id']]);
+                    if ($role) {
+                        $homeTab->addRole($role);
+                    }
+                }
+
+                $roles = array_map(function (array $role) {
+                    return $role['id'];
+                }, $data['restrictions']['roles']);
+
+                foreach ($existingRoles as $role) {
+                    if (!in_array($role->getUuid(), $roles)) {
+                        // the role no longer exists we can remove it
+                        $homeTab->removeRole($role);
+                    }
+                }
+            }
+        }
+
+        // process custom configuration of the tab if any
+        if ($homeTab->getClass()) {
+            $parametersClass = $homeTab->getClass();
+
+            // loads configuration entity for the current instance
+            $typeParameters = $this->om
+                ->getRepository($parametersClass)
+                ->findOneBy(['tab' => $homeTab]);
+
+            if (!$typeParameters || in_array(Options::REFRESH_UUID, $options)) {
+                // no existing parameters => initialize one
+
+                /** @var AbstractTab $typeParameters */
+                $typeParameters = new $parametersClass();
+            }
+
+            // deserializes custom config and link it to the instance
+            if (isset($data['parameters']) && $this->serializer->has($typeParameters)) {
+                $typeParameters = $this->serializer->deserialize($data['parameters'], $typeParameters, $options);
+            }
+            $typeParameters->setTab($homeTab);
+            $this->om->persist($typeParameters);
+        }
+
+        // Set children tabs
+        // TODO : should no longer be exposed here (still required by update and ws import)
+        if (array_key_exists('children', $data)) {
+            /** @var HomeTab[] $currentChildren */
+            $currentChildren = $homeTab->getChildren()->toArray();
+            $ids = [];
+
+            // updates tabs
+            $childrenData = $data['children'] ?? [];
+            foreach ($childrenData as $childIndex => $childData) {
+                $child = null;
+                if ($childData['id'] && !in_array(Options::REFRESH_UUID, $options)) {
+                    $child = $this->om->getRepository(HomeTab::class)->findOneBy(['uuid' => $childData['id']]);
+                }
+
+                if (empty($child)) {
+                    $child = new HomeTab();
+                }
+
+                $child->setOrder($childIndex);
+                $child->setContextName($homeTab->getContextName());
+                $child->setContextId($homeTab->getContextId());
+                $homeTab->addChild($child);
+
+                $child = $this->deserialize($childData, $child, $options);
+                $ids[] = $child->getUuid();
+            }
+
+            // removes tabs which no longer exist
+            foreach ($currentChildren as $currentTab) {
+                if (!in_array($currentTab->getUuid(), $ids)) {
+                    $homeTab->removeChild($currentTab);
+                }
+            }
         }
 
         return $homeTab;

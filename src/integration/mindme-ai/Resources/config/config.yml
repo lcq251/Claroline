@@ -25,3 +25,13 @@ plugin:
           class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
           context: [desktop]
           tags: [content]
+
+        - name: dashboard-workspace-tree
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [desktop]
+          tags: [content]
+
+        - name: dashboard-messages
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [desktop]
+          tags: [content]

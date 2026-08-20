@@ -46,12 +46,14 @@ class MindmeAiPass implements CompilerPassInterface
         'home.type' => 'tool',
         'home.data' => '/#/public/home/default',
         'intl.locale' => 'zh',
-        'intl.timezone' => 'Asia/Shanghai',
+        'intl.timezone' => 'Asia/Chongqing',
         'intl.dateFormat' => 'Y-m-d',
         'pricing.enabled' => true,
-        'pricing.currency' => 'RMB',
+        'pricing.currency' => 'rmb',
         'registration.self'=>true,
-        'registration.allow_workspace'=>true
+        'registration.allow_workspace'=>true,
+        'display.name' => '澜之轩工作室',
+        'meta.description' => '',
     ];
 
 
@@ -63,7 +65,18 @@ class MindmeAiPass implements CompilerPassInterface
 
         $configHandler = $container->getDefinition(PlatformConfigurationHandler::class);
 
-        foreach (self::TARGET as $key => $value) {
+        // Build target with env var overrides
+        // $_ENV is populated by Symfony's DotEnv component before container compilation
+        $target = self::TARGET;
+
+        // Platform display parameters (read from .env, fallback to hardcoded defaults)
+        $target['display.name'] = $_ENV['PLATFORM_NAME'] ?? (getenv('PLATFORM_NAME') ?: self::TARGET['display.name']);
+        $target['meta.description'] = $_ENV['PLATFORM_DESCRIPTION'] ?? (getenv('PLATFORM_DESCRIPTION') ?: self::TARGET['meta.description']);
+        $target['intl.locale'] = $_ENV['PLATFORM_LOCALE'] ?? (getenv('PLATFORM_LOCALE') ?: self::TARGET['intl.locale']);
+        $target['intl.timezone'] = $_ENV['PLATFORM_TIMEZONE'] ?? (getenv('PLATFORM_TIMEZONE') ?: self::TARGET['intl.timezone']);
+        $target['pricing.currency'] = $_ENV['PLATFORM_CURRENCY'] ?? (getenv('PLATFORM_CURRENCY') ?: self::TARGET['pricing.currency']);
+
+        foreach ($target as $key => $value) {
             $configHandler->addMethodCall('setParameter', [$key, $value]);
         }
     }
