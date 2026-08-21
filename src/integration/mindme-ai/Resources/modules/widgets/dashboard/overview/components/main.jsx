@@ -1,8 +1,6 @@
 /*
  * dashboard-overview: 4 coloured cards with progress bars.
  * 资源/课程/工具/存储  —  each card shows 发布/订阅 (存储: 总额/使用).
- *
- * Context: desktop => "我的看板", workspace => "本空间看板"
  */
 
 import React from 'react'
@@ -12,10 +10,10 @@ import { trans } from '#/main/app/intl'
 const PREFIX = 'overview-block'
 
 const CARD_COLORS = {
-  resources: '#f0fdf4',
-  courses:   '#f0f9ff',
-  tools:     '#faf5ff',
-  storage:   '#f0fdfa',
+  resources: '#dcfce7',
+  courses:   '#dbeafe',
+  tools:     '#f3e8ff',
+  storage:   '#ccfbf1',
 }
 
 const PROGRESS_COLORS = {
@@ -62,7 +60,7 @@ function StatCard({ cardKey, icon, title, data }) {
   const barColor = PROGRESS_COLORS[cardKey] || '#5b9bd5'
 
   // storage card uses total/used labels
-  let label1, label2, val1, val2, max1, max2
+  let label1, label2, val1, val2
   if (cardKey === 'storage') {
     label1 = trans('dashboard_overview_storage_total', {}, 'widget')
     label2 = trans('dashboard_overview_storage_used', {}, 'widget')
@@ -145,9 +143,6 @@ StatCard.propTypes = {
 
 const OverviewBlock = props => {
   const rawData = (props.parameters && props.parameters.data) || {}
-  const contextLabel = 'desktop' === (props.context || 'desktop')
-    ? trans('dashboard_overview_desktop_title', {}, 'widget')
-    : trans('dashboard_overview_workspace_title', {}, 'widget')
 
   const cards = [
     { key: 'resources', icon: 'fa fa-fw fa-file-text', title: trans('dashboard_overview_resources', {}, 'widget') },
@@ -158,13 +153,6 @@ const OverviewBlock = props => {
 
   return (
     <section style={{ padding: '16px' }} aria-label={trans('dashboard_overview_title', {}, 'widget')}>
-      <div style={{
-        fontSize: '13px', color: '#94a3b8',
-        textTransform: 'uppercase', letterSpacing: '0.5px',
-        marginBottom: '12px', paddingLeft: '4px',
-      }}>
-        {contextLabel}
-      </div>
       <div
         className={`${PREFIX}-grid`}
         style={{
