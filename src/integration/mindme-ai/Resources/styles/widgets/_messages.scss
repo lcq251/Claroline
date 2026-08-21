@@ -1,95 +1,92 @@
 /*
- * Messages block styles — list of recent platform notifications/messages.
+ * dashboard-messages widget styles.
+ * Aligned with recommendation card visual style (shared block-head, card tokens).
+ * Uses shared tokens from dashboard.scss.
+ *
+ * NOTE: JSX PREFIX = 'mindme-ai-dashboard-messages-block' -> all descendants
+ * are '-block-<part>'. Keep these class names in sync with main.jsx.
  */
 
-[class*="mindme-ai-dashboard-messages-block"] {
-
+.mindme-ai-dashboard-messages-block {
+  // empty state
   .mindme-ai-dashboard-messages-block-empty {
-    background: var(--l-surface-muted, #f8fafc);
-    border: 2px dashed var(--l-line, #e2e8f0);
-    border-radius: var(--l-radius-md, 8px);
-    padding: var(--l-space-xl, 32px);
+    padding: 24px;
     text-align: center;
 
     p {
-      color: var(--l-ink-muted, #64748b);
+      color: var(--l-ink-muted);
       margin: 0;
       font-size: 0.9375rem;
     }
   }
 
+  // list container - same style as recommendation cards
   .mindme-ai-dashboard-messages-block-list {
     list-style: none;
     padding: 0;
-    margin: 0;
-    background: var(--l-surface, #fff);
-    border: 1px solid var(--l-line, #e5e7eb);
-    border-radius: var(--l-radius-md, 8px);
+    margin: 16px 0;
+    background: var(--l-surface);
+    border: 1px solid var(--l-line);
+    border-radius: var(--l-radius-lg, 12px);
     overflow: hidden;
 
     li {
       &:not(:last-child) .mindme-ai-dashboard-messages-block-item {
-        border-bottom: 1px solid var(--l-line, #e5e7eb);
+        border-bottom: 1px solid var(--l-line);
       }
     }
   }
 
+  // list item - card style
   .mindme-ai-dashboard-messages-block-item {
     display: flex;
     flex-direction: column;
-    padding: var(--l-space-lg, 20px);
+    padding: 16px 20px;
     text-decoration: none;
     transition: background 0.15s ease;
     color: inherit;
 
     &.mindme-ai-dashboard-messages-block-unread {
-      background: var(--l-accent-soft, #ccfbf1);
+      background: var(--l-accent-soft);
     }
 
     &:hover {
-      background: var(--l-surface-muted, #f1f5f9);
+      background: var(--l-surface-muted);
     }
   }
 
+  // item header
   .mindme-ai-dashboard-messages-block-item-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: var(--l-space-sm, 8px);
+    margin-bottom: 8px;
   }
 
   .mindme-ai-dashboard-messages-block-title {
     font-weight: 600;
-    color: var(--l-ink, #0f172a);
+    color: var(--l-ink);
     font-size: 0.9375rem;
   }
 
   .mindme-ai-dashboard-messages-block-date {
     font-size: 0.8125rem;
-    color: var(--l-ink-muted, #64748b);
+    color: var(--l-ink-muted);
     white-space: nowrap;
   }
 
+  // item body
   .mindme-ai-dashboard-messages-block-body {
     margin: 0;
     font-size: 0.875rem;
-    color: var(--l-ink-body, #334155);
+    color: var(--l-ink-body);
     line-height: 1.6;
   }
+}
 
-  .mindme-ai-dashboard-messages-block-more-section {
-    text-align: right;
-    margin-top: var(--l-space-md, 16px);
-
-    a {
-      color: var(--l-primary-strong, #0f766e);
-      font-weight: 600;
-      font-size: 0.875rem;
-      padding: var(--l-space-xs, 4px) var(--l-space-sm, 8px);
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+// ---------- reduced motion ----------
+@media (prefers-reduced-motion: reduce) {
+  .mindme-ai-dashboard-messages-block * {
+    transition: none !important;
   }
 }
