@@ -348,4 +348,20 @@ class ResourceNode implements CrudEntityInterface, UserViewCounterInterface
     {
         $this->slug = $slug;
     }
+
+    /**
+     * @var \Claroline\MindMeAiBundle\Entity\ResourcePricing|null
+     */
+    #[ORM\OneToOne(mappedBy: 'resourceNode', targetEntity: \Claroline\MindMeAiBundle\Entity\ResourcePricing::class, cascade: ['remove'])]
+    private ?\Claroline\MindMeAiBundle\Entity\ResourcePricing $pricing = null;
+
+    public function getPricing(): ?\Claroline\MindMeAiBundle\Entity\ResourcePricing
+    {
+        return $this->pricing;
+    }
+
+    public function setPricing(?\Claroline\MindMeAiBundle\Entity\ResourcePricing $pricing): void
+    {
+        $this->pricing = $pricing;
+    }
 }

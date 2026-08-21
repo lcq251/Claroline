@@ -11,12 +11,13 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@security.token_storage'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
-            - '@security.authorization_checker'
     Claroline\MindMeAiBundle\Serializer\AiLessonSerializer:
         tags: ['claroline.serializer']
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\MindMeAiBundle\Security\SecretCipher'
+    Claroline\MindMeAiBundle\Serializer\ResourcePricingSerializer:
+        tags: ['claroline.serializer']
     Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:
         tags: ['claroline.serializer']
         arguments:
