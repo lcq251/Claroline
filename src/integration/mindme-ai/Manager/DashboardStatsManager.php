@@ -315,7 +315,7 @@ class DashboardStatsManager
             $toolsPublished = (int) $resRepo->createQueryBuilder('r')
                 ->select('COUNT(r.id)')
                 ->where('r.resourceType = :rt AND r.creator = :creator')
-                ->setParameter('resourceType', $typeId)
+                ->setParameter('rt', $typeId)
                 ->setParameter('creator', $user)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -323,7 +323,7 @@ class DashboardStatsManager
                 $toolsSubscribed = (int) $resRepo->createQueryBuilder('r')
                     ->select('COUNT(r.id)')
                     ->where('r.resourceType = :rt AND r.workspace IN (:ws)')
-                    ->setParameter('resourceType', $typeId)
+                    ->setParameter('rt', $typeId)
                     ->setParameter('ws', $wsIds)
                     ->getQuery()
                     ->getSingleScalarResult();

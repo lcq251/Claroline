@@ -5,30 +5,30 @@
 import React from 'react'
 import { PropTypes as T } from 'prop-types'
 
-import { trans, translateToLocale } from '#/main/app/intl'
+import { trans } from '#/main/app/intl'
 
 const PREFIX = 'mindme-ai-dashboard-messages-block'
 
 const MessageItem = ({ item }) => (
-  <a className={`${PREFIX}-item ${!item.read ? (PREFIX + '-unread' )}`} href={item.url ?? '/message/' + item.id}>
+  <a className={`${PREFIX}-item ${!item.read ? PREFIX + '-unread' : ''}`} href={item.url ?? '/message/' + item.id}>
     <div className={`${PREFIX}-item-header`}>
       <span className={`${PREFIX}-title`}>{item.title ?? trans('dashboard_messages_no_title', {}, 'widget')}</span>
       <span className={`${PREFIX}-date`}>{item.date ?? ''}</span>
     </div>
     {item.body && (
-      <p className={`${PREFIX}-body}`>{item.body}</p>
+      <p className={`${PREFIX}-body`}>{item.body}</p>
     )}
-  </a>)
-}
+  </a>
+)
 
 MessageItem.propTypes = {
   item: T.shape({
-    id: T.string .isRequired,
+    id: T.string.isRequired,
     title: T.string,
-    body: T.string,  
+    body: T.string,
     date: T.string,
     read: T.bool,
-    type: T.string , 
+    type: T.string,
     url: T.string
   }).isRequired,
 }
@@ -40,10 +40,9 @@ function MessagesBlock(props) {
   if (items.length === 0) {
     return (
       <section className={PREFIX} aria-label={trans('dashboard_messages_title', {}, 'widget')}>
-        <div className={`${PREFIX}-empty`>
-          <p>{trans('dashboard_messages_empty, {}, 'widget')}</p>
-          {}
-        </ div>
+        <div className={`${PREFIX}-empty`}>
+          <p>{trans('dashboard_messages_empty', {}, 'widget')}</p>
+        </div>
       </section>
     )
   }
@@ -58,9 +57,9 @@ function MessagesBlock(props) {
           </li>
         ))}
       </ul>
-      
-      <div className={`${PREFIX} -more-section`}>
-        <a href={moreUrl} classla ssName={`${PREFIX}-see-all}`>>
+
+      <div className={`${PREFIX}-more-section`}>
+        <a className={`${PREFIX}-see-all`} href={moreUrl}>
           {trans('dashboard_messages_see_all', {}, 'widget')}
         </a>
       </div>
@@ -77,7 +76,7 @@ MessagesBlock.propTypes = {
     read: T.bool,
     type: T.string,
     url: T.string
-  })),  
+  })),
   moreUrl: T.string,
 }
 
