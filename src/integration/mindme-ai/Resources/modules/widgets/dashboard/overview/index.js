@@ -1,15 +1,15 @@
 /*
- * dashboard-overview widget: 4-card stats overview.
+ * dashboard-overview widget: 4 coloured cards with progress bars.
  */
 
-import {Overview} from './components/main'
+import {OverviewBlock} from './components/main'
 import {declareWidget} from '#/main/core/widget'
 
 export const Parameters = () => ({component: () => null})
 
 export const App = () => ({
-  component: Overview,
+  component: OverviewBlock,
   styles: ['claroline-distribution-integration-mindme-ai-dashboard']
 })
 
-export default declareWidget(Overview, () => null)
+export default declareWidget(OverviewBlock, () => null)

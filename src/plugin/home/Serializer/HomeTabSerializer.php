@@ -51,6 +51,9 @@ class HomeTabSerializer
             'icon' => $homeTab->getIcon(),
             'type' => $homeTab->getType(),
             'class' => $homeTab->getClass(),
+            'parameters' => $homeTab->getClass() ? $this->serializer->serialize(
+                $this->om->getRepository($homeTab->getClass())->findOneBy(['tab' => $homeTab])
+            ) : null,
             'meta' => [
                 'views' => $homeTab->getViews(),
             ],
@@ -123,7 +126,6 @@ class HomeTabSerializer
 
                 foreach ($existingRoles as $role) {
                     if (!in_array($role->getUuid(), $roles)) {
-                        // the role no longer exists we can remove it
                         $homeTab->removeRole($role);
                     }
                 }
@@ -155,7 +157,6 @@ class HomeTabSerializer
         }
 
         // Set children tabs
-        // TODO : should no longer be exposed here (still required by update and ws import)
         if (array_key_exists('children', $data)) {
             /** @var HomeTab[] $currentChildren */
             $currentChildren = $homeTab->getChildren()->toArray();
