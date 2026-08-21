@@ -66,5 +66,12 @@
   "dashboard_messages_head": "消息提醒",
   "dashboard_messages_empty": "暂无新消息",
   "dashboard_messages_see_all": "查看全部 →",
-  "dashboard_messages_no_title": "（无标题）"
+  "dashboard_messages_no_title": "（无标题）",
+  "dashboard-recommendations": "产品推荐",
+  "dashboard-recommendations_desc": "有定价的课程与资源推荐卡（后端动态推荐）。",
+  "dashboard_block_recommendations": "产品推荐",
+  "dashboard_rec_tag_course": "课程",
+  "dashboard_rec_tag_resource": "资源",
+  "dashboard_rec_tag_template": "模板",
+  "dashboard_more_recommendations": "更多推荐 →"
 }

@@ -11,6 +11,7 @@ registry.add('ClarolineMindMeAiBundle', {
     'landing-packaging'        : () => { return import(/* webpackChunkName: "mindme-landing-packaging" */      '#/integration/mindme-ai/widgets/landing/packaging') },
     'dashboard-overview'       : () => { return import(/* webpackChunkName: "mindme-dashboard-overview" */     '#/integration/mindme-ai/widgets/dashboard/overview') },
     'dashboard-messages'       : () => { return import(/* webpackChunkName: "mindme-dashboard-messages" */       '#/integration/mindme-ai/widgets/dashboard/messages') },
+    'dashboard-recommendations' : () => { return import(/* webpackChunkName: "mindme-dashboard-recommendations" */ '#/integration/mindme-ai/widgets/dashboard/recommendations') },
     'dashboard-workspace-tree' : () => { return import(/* webpackChunkName: "mindme-dashboard-workspace-tree" */ '#/integration/mindme-ai/widgets/dashboard/workspace-tree') }
   }
 })

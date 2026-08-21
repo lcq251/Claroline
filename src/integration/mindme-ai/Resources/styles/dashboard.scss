@@ -232,6 +232,89 @@
   .ov-card.is-sub .ov-total strong { font-weight: 700; color: var(--l-ink); }
 }
 
+
+// ---------- recommendations: vertical product cards ----------
+[class*="mindme-ai-dashboard-dashboard-recommendations-block"] {
+  .mindme-ai-dashboard-dashboard-recommendations-block-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 1024px) { .mindme-ai-dashboard-dashboard-recommendations-block-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .mindme-ai-dashboard-dashboard-recommendations-block-grid { grid-template-columns: 1fr; } }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--l-surface, #ffffff);
+    border: 1px solid var(--l-line, #e2e8f0);
+    border-radius: var(--l-radius-lg, 16px);
+    box-shadow: var(--l-shadow-card);
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    color: inherit;
+
+    &:hover {
+      box-shadow: var(--l-shadow-card-hover);
+      transform: translateY(-2px);
+    }
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 92px;
+    background: var(--l-accent-soft, #ccfbf1);
+    font-size: 40px;
+    color: var(--l-primary-strong, #0f766e);
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-tag {
+    align-self: flex-start;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--l-primary-strong, #0f766e);
+    background: var(--l-accent-soft, #ccfbf1);
+    border-radius: var(--l-radius-pill, 999px);
+    padding: 2px 10px;
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--l-ink, #0f172a);
+    line-height: 1.4;
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-desc {
+    font-size: 0.8125rem;
+    color: var(--l-ink-muted, #64748b);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mindme-ai-dashboard-dashboard-recommendations-block-more {
+    margin-top: 8px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--l-primary-strong, #0f766e);
+  }
+}
+
 // ---------- reduced motion ----------
 @media (prefers-reduced-motion: reduce) {
   [class*="mindme-ai-dashboard-dashboard"] *,

@@ -35,3 +35,8 @@ plugin:
           class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
           context: [desktop]
           tags: [content]
+
+        - name: dashboard-recommendations
+          class: Claroline\MindMeAiBundle\Entity\Widget\LandingWidget
+          context: [desktop]
+          tags: [content]

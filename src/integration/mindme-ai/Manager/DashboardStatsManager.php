@@ -22,6 +22,7 @@ use Claroline\CursusBundle\Entity\EventPresence;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
+use Claroline\MindMeAiBundle\Entity\ResourcePricing;
 use Claroline\NotificationBundle\Entity\Notification;
 use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -340,6 +341,85 @@ class DashboardStatsManager
             'tools'     => ['published' => $toolsPublished, 'subscribed' => $toolsSubscribed],
             'storage'   => ['total' => $storageTotal, 'used' => $storageUsed],
         ];
+    }
+
+    /**
+     * Recommended products for the current user (dashboard-recommendations).
+     *
+     * Dynamic source: priced courses (Course.price NOT NULL) + priced
+     * resources (ResourcePricing.price NOT NULL -> linked ResourceNode).
+     * Type distinguishes course / resource for the front-end tag mapping.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getRecommendations(int $max = 4): array
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user) {
+            return [];
+        }
+
+        $recommendations = [];
+
+        // priced courses
+        try {
+            $courses = $this->om->getRepository(Course::class)->createQueryBuilder('c')
+                ->where('c.price IS NOT NULL')
+                ->andWhere('c.archived = false')
+                ->setMaxResults($max)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($courses as $course) {
+                $recommendations[] = [
+                    'id' => (string) $course->getUuid(),
+                    'title' => (string) $course->getName(),
+                    'desc' => (string) $course->getDescription() ?? '',
+                    'type' => 'course',
+                    'url' => '/desktop/courses/'.$course->getId(),
+                    'en' => [
+                        'title' => (string) $course->getName(),
+                        'desc' => (string) $course->getDescription() ?? '',
+                    ],
+                ];
+            }
+        } catch (\Throwable $e) {
+            // degrade gracefully
+        }
+
+        // priced resources (via independent ResourcePricing structure)
+        try {
+            $pricings = $this->om->getRepository(ResourcePricing::class)->createQueryBuilder('rp')
+                ->leftJoin('rp.resourceNode', 'rn')
+                ->where('rp.price IS NOT NULL')
+                ->setMaxResults($max)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($pricings as $pricing) {
+                $node = $pricing->getResourceNode();
+                if (!$node) {
+                    continue;
+                }
+
+                $recommendations[] = [
+                    'id' => (string) $node->getUuid(),
+                    'title' => (string) $node->getName(),
+                    'desc' => (string) $pricing->getDescription() ?? '',
+                    'type' => 'resource',
+                    'url' => '/desktop/resources/'.$node->getId(),
+                    'en' => [
+                        'title' => (string) $node->getName(),
+                        'desc' => (string) $pricing->getDescription() ?? '',
+                    ],
+                ];
+            }
+        } catch (\Throwable $e) {
+            // degrade gracefully
+        }
+
+        return array_slice($recommendations, 0, $max);
     }
     private function getStorageTotalGb(): ?float
         {
