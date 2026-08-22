@@ -19,6 +19,7 @@ $kernel->boot();
 $om = $kernel->getContainer()->get(ObjectManager::class);
 
 // 1. Find desktop HomeTab
+/** @var HomeTab|null $homeTab */
 $homeTab = $om->getRepository(HomeTab::class)->findOneBy(['contextName' => 'desktop']);
 if (!$homeTab) {
     fwrite(STDERR, "Desktop HomeTab not found.\n");
@@ -26,33 +27,31 @@ if (!$homeTab) {
 }
 echo "Found Desktop HomeTab #{$homeTab->getId()}\n";
 
-// 2. Find or create WidgetsTab
+// 2. Find WidgetsTab
+/** @var WidgetsTab|null $widgetsTab */
 $widgetsTab = $om->getRepository(WidgetsTab::class)->findOneBy(['tab' => $homeTab]);
 if (!$widgetsTab) {
-    $widgetsTab = new WidgetsTab();
-    $widgetsTab->setTab($homeTab);
-    $om->persist($widgetsTab);
-    $om->flush();
-    echo "Created WidgetsTab entity\n";
+    fwrite(STDERR, "WidgetsTab not found for HomeTab.\n");
+    exit(1);
 }
 
-// 3. Ensure HomeTab.class = WidgetsTab
+// 3. Ensure HomeTab class = WidgetsTab
 $homeTab->setClass(WidgetsTab::class);
 $om->persist($homeTab);
 $om->flush();
 
 // 4. Seed each widget
-$widgetNames = ['dashboard-overview', 'dashboard-workspace-tree', 'dashboard-messages'];
+$widgetNames = ['dashboard-overview', 'dashboard-workspace-tree', 'dashboard-messages', 'dashboard-recommendations'];
 $widgetRepo = $om->getRepository(Widget::class);
 
 foreach ($widgetNames as $name) {
     // Dedup: check if already linked
     $found = false;
-    foreach ($widgetsTab->getWidgetContainers() as $c) {
-        foreach ($c->getInstances() as $inst) {
-            if ($inst->getWidget() && $inst->getWidget()->getName() === $name) {
+    foreach ($widgetsTab->getWidgetContainers() as $container) {
+        foreach ($container->getInstances() as $instance) {
+            if ($instance->getWidget() && $instance->getWidget()->getName() === $name) {
                 $found = true;
-                echo "Skipped {$name} (already linked via container #{$c->getId()})\n";
+                echo "Skipped {$name} (already linked via container #{$container->getId()})\n";
                 break 2;
             }
         }
@@ -72,22 +71,23 @@ foreach ($widgetNames as $name) {
     $instance->refreshUuid();
     $om->persist($instance);
 
-    // Create WidgetContainerConfig
-    $config = new WidgetContainerConfig();
-    $config->setName($name);
-    $config->setVisible(true);
-    $config->setWidgetInstance($instance);
-    $om->persist($config);
-
     // Create WidgetContainer
     $container = new WidgetContainer();
     $container->refreshUuid();
     $container->addInstance($instance);
     $om->persist($container);
 
+    // Create WidgetContainerConfig (with bidirectional links)
+    $config = new WidgetContainerConfig();
+    $config->setName($name);
+    $config->setVisible(true);
+    $config->setWidgetContainer($container);
+    $container->addWidgetContainerConfig($config);
+    $om->persist($config);
+
     // Link to WidgetsTab
     $widgetsTab->addWidgetContainer($container);
-
+    
     echo "Created {$name}: instance #{$instance->getId()}, container #{$container->getId()}\n";
 }
 
