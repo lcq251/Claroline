@@ -16,8 +16,10 @@ final class Version20260816000000 extends AbstractMigration
     {
         $this->addSql('CREATE TABLE claro_mindme_markdown (
             id INT AUTO_INCREMENT NOT NULL,
+            uuid VARCHAR(36) NOT NULL,
             content LONGTEXT DEFAULT NULL,
             resourceNode_id INT DEFAULT NULL,
+            UNIQUE INDEX UNIQ_MD_UUID (uuid),
             UNIQUE INDEX UNIQ_MD_RESOURCE_NODE (resourceNode_id),
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
