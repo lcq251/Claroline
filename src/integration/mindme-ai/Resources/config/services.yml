@@ -16,6 +16,8 @@ services:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Claroline\MindMeAiBundle\Security\SecretCipher'
+    Claroline\MindMeAiBundle\Serializer\MindmeMarkdownSerializer:
+        tags: ['claroline.serializer']
     Claroline\MindMeAiBundle\Serializer\ResourcePricingSerializer:
         tags: ['claroline.serializer']
     Claroline\MindMeAiBundle\Serializer\DashboardWidgetSerializer:
