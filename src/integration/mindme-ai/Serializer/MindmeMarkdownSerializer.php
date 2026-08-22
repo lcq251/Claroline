@@ -11,7 +11,7 @@
 
 namespace Claroline\MindMeAiBundle\Serializer;
 
-use Claroline\AppBundle\Serializer\SerializerTrait;
+use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\MindMeAiBundle\Entity\MindmeMarkdown;
 
 /**
