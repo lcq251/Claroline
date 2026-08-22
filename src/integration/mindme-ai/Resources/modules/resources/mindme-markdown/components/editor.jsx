@@ -3,12 +3,13 @@ import {useSelector, useDispatch} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {actions, ResourceEditor, ResourceEditorOverview} from '#/main/core/resource/editor'
+import {EditorPage} from '#/main/app/editor'
+import {actions, ResourceEditor} from '#/main/core/resource/editor'
 import {selectors as resourceSelectors} from '#/main/core/resource'
 
 const MdEditor = React.lazy(() => import('md-editor-rt').then(m => ({default: m.MdEditor})))
 
-const MindmeMarkdownEditorOverview = () => {
+const MindmeMarkdownEditorContent = () => {
   const dispatch = useDispatch()
   const resource = useSelector(resourceSelectors.resource)
   const editorRef = useRef(null)
@@ -21,24 +22,7 @@ const MindmeMarkdownEditorOverview = () => {
   }, [dispatch])
 
   return (
-    <ResourceEditorOverview
-      definition={[
-        {
-          title: trans('content'),
-          primary: true,
-          hideTitle: true,
-          fields: [
-            {
-              name: '_markdown',
-              label: trans('content'),
-              type: 'html',
-              hideLabel: true,
-              calculated: () => ({content})
-            }
-          ]
-        }
-      ]}
-    >
+    <EditorPage title={trans('content')}>
       <div className="markdown-editor-wrapper" style={{minHeight: 400}}>
         <React.Suspense fallback={<div className="text-center p-5"><span className="fa fa-spinner fa-spin" /></div>}>
           <MdEditor
@@ -52,13 +36,17 @@ const MindmeMarkdownEditorOverview = () => {
           />
         </React.Suspense>
       </div>
-    </ResourceEditorOverview>
+    </EditorPage>
   )
 }
 
 const MindmeMarkdownEditor = () =>
   <ResourceEditor
-    overviewPage={MindmeMarkdownEditorOverview}
+    pages={[{
+      name: 'content',
+      title: trans('content'),
+      component: MindmeMarkdownEditorContent
+    }]}
   />
 
 export {
