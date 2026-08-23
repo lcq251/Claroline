@@ -270,7 +270,7 @@
     z-index: 1;
     max-width: 1120px;
     margin: 0 auto;
-    min-height: min(520px, 62vh);
+    min-height: min(480px, 55vh);
     padding: 0 var(--landing-space-lg);
     display: flex;
     flex-direction: column;
@@ -373,12 +373,13 @@
 
     .mh-ai {
       font-size: 1.08em; // AI 微放大作视觉锚点
+      color: var(--landing-primary); // 品牌青强调（浅底上仍醒目）
     }
 
-    // 符号 (= +): 细字重 + 浅色 + 小一号
+    // 符号 (= +): 细字重 + 浅色 + 稍小一号
     .mh-op {
       font-weight: 400;
-      font-size: 0.72em;
+      font-size: 0.82em;
       letter-spacing: 0;
       color: var(--mh-op);
     }
@@ -425,6 +426,29 @@
 
     &:active {
       transform: translateY(1px);
+    }
+  }
+
+  // 次要 CTA「了解更多 ↓」(ghost 文字链接, 锚点到 #features)
+  .claroline-distribution-integration-mindme-ai-landing-hero-learn {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--mh-muted);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.18s ease;
+
+    span {
+      font-size: 0.85em;
+    }
+
+    &:hover,
+    &:focus {
+      color: var(--landing-primary);
+      text-decoration: underline;
     }
   }
 

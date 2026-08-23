@@ -112,7 +112,7 @@ const LandingPackaging = () => {
                 {platform.desc &&
                   <p className={`${PREFIX}-desc`}>{platform.desc}</p>
                 }
-                {DEVICE_EN_LABELS[platform.icon] &&
+                {'en' === locale() && DEVICE_EN_LABELS[platform.icon] &&
                   <span className={`${PREFIX}-en`}>{DEVICE_EN_LABELS[platform.icon]}</span>
                 }
               </div>

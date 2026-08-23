@@ -29,22 +29,19 @@ const DEFAULT_CONTENT = {
       {
         icon: 'fa fa-fw fa-tools',
         title: 'DIY工具',
-        desc: '适配工具，辅助教学',
-        href: '#feature-1',
+        desc: '适配工具，辅助教学，无需编码',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-robot',
         title: '个性学习',
-        desc: 'ai助学，自主可控',
-        href: '#feature-2',
+        desc: 'AI 助学，自主可控，按需定制',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-lightbulb',
         title: 'Idea展示',
-        desc: '灵感乍现，嵌入支撑',
-        href: '#feature-3',
+        desc: '灵感乍现，嵌入支撑，即学即用',
         tone: 'normal'
       }
     ]
@@ -56,22 +53,19 @@ const DEFAULT_CONTENT = {
       {
         icon: 'fa fa-fw fa-tools',
         title: 'DIY Tools',
-        desc: 'Adaptable tools, assisted teaching',
-        href: '#feature-1',
+        desc: 'Adaptable tools, assisted teaching, no code required',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-robot',
         title: 'Personalized Learning',
-        desc: 'AI tutoring, self-controlled',
-        href: '#feature-2',
+        desc: 'AI tutoring, self-controlled, at your pace',
         tone: 'normal'
       },
       {
         icon: 'fa fa-fw fa-lightbulb',
         title: 'Idea Showcase',
-        desc: 'Inspiration sparks, embedded support',
-        href: '#feature-3',
+        desc: 'Inspiration sparks, embedded support, ready to use',
         tone: 'normal'
       }
     ]
@@ -93,7 +87,7 @@ const LandingFeaturesComponent = props => {
     : (Array.isArray(parameters.cards) ? parameters.cards : defaults.cards)
 
   return (
-    <section className={`landing-widget ${PREFIX}`}>
+    <section id="features" className={`landing-widget ${PREFIX}`}>
       <div className={`${PREFIX}-content`}>
         <div className={`${PREFIX}-head`}>
           <h2 className={`${PREFIX}-title`}>{title}</h2>
@@ -144,7 +138,6 @@ LandingFeaturesComponent.propTypes = {
       title: T.string,
       desc: T.string,
       en: T.string,
-      href: T.string,
       tone: T.string
     })),
     // complete English copy (rendered by the features component for en visitors)

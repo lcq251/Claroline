@@ -160,8 +160,6 @@ const LandingHero = (props) => {
     (rawCta.find((item) => item && item.href) || rawCta[0] || null) :
     rawCta
 
-  const align = parameters.align || 'center'
-
   // background: default white gradient, or an explicit CSS gradient
   // (linear-gradient / radial-gradient), a color value (hex/rgb/hsl...),
   // or an image URL (v2 gradient support, D-3 §1).
@@ -184,7 +182,7 @@ const LandingHero = (props) => {
 
   return (
     <section
-      className={`landing-widget ${PREFIX} ${PREFIX}-align-${align}`}
+      className={`landing-widget ${PREFIX}`}
       style={rootStyle}
     >
       <div className={`${PREFIX}-container`}>
@@ -222,6 +220,15 @@ const LandingHero = (props) => {
               label={cta.label}
             />
           }
+
+          <a
+            className={`${PREFIX}-learn hero-fade`}
+            style={{'--d': '360ms'}}
+            href="#features"
+          >
+            {'en' === locale() ? 'Learn more' : '了解更多'}
+            <span aria-hidden="true">↓</span>
+          </a>
         </div>
       </div>
     </section>
@@ -254,7 +261,6 @@ LandingHero.propTypes = {
     }),
     year: T.string,
     background: T.string,
-    align: T.oneOf(['left', 'center', 'right']),
     // complete English copy (rendered by the hero component for en visitors)
     en: T.shape({
       title: T.string,
