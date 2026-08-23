@@ -7,6 +7,7 @@ use Claroline\CoreBundle\Entity\User;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
 use Claroline\MindMeAiBundle\Entity\AiLessonUsage;
+use Claroline\MindMeAiBundle\Security\SecretCipher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +35,8 @@ class AiGeneratorController
         private readonly ObjectManager $om,
         private readonly TranslatorInterface $translator,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly PlatformConfigurationHandler $config
+        private readonly PlatformConfigurationHandler $config,
+        private readonly SecretCipher $cipher
     ) {
     }
 
@@ -137,9 +139,7 @@ class AiGeneratorController
      */
     protected function callDeepSeek(string $prompt): string
     {
-        $keyFile = '/home/lcq25/.hermes/deepseek_key';
-        if (!file_exists($keyFile)) { return ''; }
-        $apiKey = trim(file_get_contents($keyFile));
+        $apiKey = $this->resolveApiKey();
         if (empty($apiKey)) { return ''; }
 
         $payload = json_encode([
@@ -168,6 +168,21 @@ class AiGeneratorController
 
         $data = json_decode($response, true);
         return $data['choices'][0]['message']['content'] ?? '';
+    }
+
+    private function resolveApiKey(): string
+    {
+        $default = $this->om->getRepository(AiLesson::class)->findOneBy(['isDefault' => true]);
+
+        if (!$default || !$default->getApiKey()) {
+            return '';
+        }
+
+        try {
+            return $this->cipher->decrypt($default->getApiKey());
+        } catch (\RuntimeException) {
+            return '';
+        }
     }
 
     private function parseContent(string $raw, string $topic, string $subject, string $grade, string $difficulty, string $module): array

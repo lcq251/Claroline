@@ -18,6 +18,7 @@ use Claroline\CoreBundle\Library\Testing\MockeryTestCase;
 use Claroline\MindMeAiBundle\Controller\AiGeneratorController;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
 use Claroline\MindMeAiBundle\Entity\AiLessonUsage;
+use Claroline\MindMeAiBundle\Security\SecretCipher;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -38,6 +39,7 @@ class AiGeneratorControllerTest extends MockeryTestCase
     private $translator;
     private $tokenStorage;
     private $config;
+    private $cipher;
 
     protected function setUp(): void
     {
@@ -47,6 +49,7 @@ class AiGeneratorControllerTest extends MockeryTestCase
         $this->translator = $this->mock(TranslatorInterface::class);
         $this->tokenStorage = $this->mock(TokenStorageInterface::class);
         $this->config = $this->mock(PlatformConfigurationHandler::class);
+        $this->cipher = $this->mock(SecretCipher::class);
     }
 
     private function mockDefaultLesson(?AiLesson $lesson): void
@@ -119,7 +122,7 @@ class AiGeneratorControllerTest extends MockeryTestCase
      */
     private function createController(string $aiResponse = ''): AiGeneratorController
     {
-        return new class($this->om, $this->translator, $this->tokenStorage, $this->config, $aiResponse) extends AiGeneratorController {
+        return new class($this->om, $this->translator, $this->tokenStorage, $this->config, $this->cipher, $aiResponse) extends AiGeneratorController {
             private string $aiResponse;
 
             public function __construct(
@@ -127,9 +130,10 @@ class AiGeneratorControllerTest extends MockeryTestCase
                 TranslatorInterface $translator,
                 TokenStorageInterface $tokenStorage,
                 PlatformConfigurationHandler $config,
+                SecretCipher $cipher,
                 string $aiResponse
             ) {
-                parent::__construct($om, $translator, $tokenStorage, $config);
+                parent::__construct($om, $translator, $tokenStorage, $config, $cipher);
                 $this->aiResponse = $aiResponse;
             }
 

@@ -6,6 +6,7 @@ services:
             - '@translator'
             - '@security.token_storage'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+            - '@Claroline\MindMeAiBundle\Security\SecretCipher'
     Claroline\MindMeAiBundle\Manager\DashboardStatsManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
@@ -40,3 +41,23 @@ services:
             - '%kernel.secret%'
     Claroline\MindMeAiBundle\Configuration\PlatformDefaults:
         tags: ['claroline.configuration']
+    Claroline\MindMeAiBundle\Neuron\NeuronAiFactory:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\MindMeAiBundle\Security\SecretCipher'
+    Claroline\MindMeAiBundle\Tools\ListCoursesTool: ~
+    Claroline\MindMeAiBundle\Tools\SearchResourcesTool: ~
+    Claroline\MindMeAiBundle\Tools\GetUserProgressTool: ~
+    Claroline\MindMeAiBundle\Tools\GetResourceContentTool: ~
+    Claroline\MindMeAiBundle\Tools\CreateResourceTool: ~
+    Claroline\MindMeAiBundle\Tools\GradeAssignmentTool: ~
+    Claroline\MindMeAiBundle\Agent\TeachingAgent:
+        arguments:
+            $factory: '@Claroline\MindMeAiBundle\Neuron\NeuronAiFactory'
+            $injectedTools:
+                - '@Claroline\MindMeAiBundle\Tools\ListCoursesTool'
+                - '@Claroline\MindMeAiBundle\Tools\SearchResourcesTool'
+                - '@Claroline\MindMeAiBundle\Tools\GetUserProgressTool'
+                - '@Claroline\MindMeAiBundle\Tools\GetResourceContentTool'
+                - '@Claroline\MindMeAiBundle\Tools\CreateResourceTool'
+                - '@Claroline\MindMeAiBundle\Tools\GradeAssignmentTool'
