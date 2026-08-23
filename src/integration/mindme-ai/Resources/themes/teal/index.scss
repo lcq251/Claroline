@@ -1,0 +1,14 @@
+/**
+ * teal 主题 — 主色 indigo 蓝 #4f46e5，系统字体栈。
+ */
+
+// Theme customizations
+@import "variables";
+
+// Base app styles
+@import "src/main/app/Resources/styles";
+
+// 登录页左侧回退纯色（无背景图，消除 404 请求）
+.auth-page-meta {
+  background-image: none;
+}
