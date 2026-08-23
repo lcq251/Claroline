@@ -22,8 +22,8 @@ const PREFIX = 'claroline-distribution-integration-mindme-ai-dashboard-dashboard
 const WorkspaceTreeComponent = props => {
   const parameters = props.parameters || {}
   const data = parameters.data || {}
-  const tree = Array.isArray(data.tree) ? data.tree : []
-  const maxResources = data.maxResources || 5
+  const tree = Array.isArray(data.tree) && data.tree.length ? data.tree : (parameters.tree ?? [])
+  const maxResources = data.maxResources || parameters.maxResources || 5
 
   // empty tree hide widget
   if (0 === tree.length) {
