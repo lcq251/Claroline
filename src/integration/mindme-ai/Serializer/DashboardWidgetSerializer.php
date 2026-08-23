@@ -31,11 +31,18 @@ class DashboardWidgetSerializer
         $name     = $widget->getWidgetInstance()?->getWidget()?->getName() ?? '';
 
         return match ($name) {
-            'dashboard-workspace-tree' => $params + ['data' => $this->stats->getWorkspaceTree()],
-            'dashboard-overview'       => $params + ['data' => $this->stats->getOverviewData()],
-            'dashboard-messages'       => $params + ['data' => $this->stats->getMessages(4)],
-            'dashboard-recommendations'=> $params + ['data' => $this->stats->getRecommendations(4)],
-            default                    => $params,
+            'dashboard-workspace-tree' => $params + ['data' => [
+                'tree' => $this->stats->getWorkspaceTree()['tree'] ?? [],
+                'maxResources' => $this->stats->getWorkspaceTree()['maxResources'] ?? 5,
+            ]],
+            'dashboard-overview' => $params + ['data' => $this->stats->getOverviewData()],
+            'dashboard-messages' => $params + ['data' => [
+                'messages' => $this->stats->getMessages(4),
+            ]],
+            'dashboard-recommendations' => $params + ['data' => [
+                'recommendations' => $this->stats->getRecommendations(4),
+            ]],
+            default => $params,
         };
     }
 

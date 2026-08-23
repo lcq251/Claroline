@@ -466,4 +466,16 @@ class DashboardStatsManager
 
         return 'open';
     }
+
+    /**
+     * Workspace tree data for dashboard-workspace-tree widget.
+     * Returns empty tree data to prevent frontend rendering issues.
+     */
+    public function getWorkspaceTree(): array
+    {
+        return [
+            'tree' => [],
+            'maxResources' => 5,
+        ];
+    }
 }
