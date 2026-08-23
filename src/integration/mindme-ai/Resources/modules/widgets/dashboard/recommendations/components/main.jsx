@@ -59,7 +59,7 @@ RecommendationCard.propTypes = {
 const RecommendationsComponent = props => {
   const parameters = props.parameters || {}
   const data = parameters.data || {}
-  const items = Array.isArray(data.recommendations) ? data.recommendations : []
+  const items = Array.isArray(data.recommendations) && data.recommendations.length ? data.recommendations : (parameters.recommendations ?? [])
 
   // empty list suppresses the widget entirely
   if (0 === items.length) {

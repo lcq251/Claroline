@@ -39,7 +39,7 @@ function MessagesBlock(props) {
   const items = props.items ?? []
   const parameters = props.parameters || {}
   const data = parameters.data || {}
-  const messages = data.messages ?? []
+  const messages = Array.isArray(data.messages) && data.messages.length ? data.messages : (parameters.messages ?? [])
   
   // Build items from new data structure if available, otherwise use legacy items prop
   const displayItems = Array.isArray(messages) && messages.length > 0 
