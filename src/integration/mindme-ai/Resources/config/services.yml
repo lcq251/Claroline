@@ -7,6 +7,13 @@ services:
             - '@security.token_storage'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
             - '@Claroline\MindMeAiBundle\Security\SecretCipher'
+    Claroline\MindMeAiBundle\Controller\AiLessonChatController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.authorization_checker'
+            - '@Claroline\MindMeAiBundle\Security\SecretCipher'
+            - '@security.token_storage'
     Claroline\MindMeAiBundle\Manager\DashboardStatsManager:
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
@@ -61,3 +68,7 @@ services:
                 - '@Claroline\MindMeAiBundle\Tools\GetResourceContentTool'
                 - '@Claroline\MindMeAiBundle\Tools\CreateResourceTool'
                 - '@Claroline\MindMeAiBundle\Tools\GradeAssignmentTool'
+    Claroline\MindMeAiBundle\Subscriber\PluginSubscriber:
+        tags: ['kernel.event_subscriber']
+        arguments:
+            - '@twig'
