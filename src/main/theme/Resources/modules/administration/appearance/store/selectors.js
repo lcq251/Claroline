@@ -30,8 +30,7 @@ const availableColorCharts = createSelector(
 const currentIconSet = createSelector(
   [parameters, availableIconSets],
   (parameters, availableIconSets) => {
-    return null
-    const currentSetName = get(parameters, 'icons')
+    const currentSetName = get(parameters, 'display.resource_icon_set')
 
     return availableIconSets.find(iconSet => iconSet.name === currentSetName)
   }
