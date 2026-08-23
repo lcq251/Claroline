@@ -5,6 +5,7 @@ use Claroline\CoreBundle\Entity\Widget\Widget;
 use Claroline\CoreBundle\Entity\Widget\WidgetInstance;
 use Claroline\CoreBundle\Entity\Widget\WidgetContainer;
 use Claroline\CoreBundle\Entity\Widget\WidgetContainerConfig;
+use Claroline\CoreBundle\Entity\Widget\WidgetInstanceConfig;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Entity\Type\WidgetsTab;
 use Claroline\KernelBundle\Kernel;
@@ -71,6 +72,13 @@ foreach ($widgetNames as $name) {
     $instance->refreshUuid();
     $om->persist($instance);
 
+    // Create WidgetInstanceConfig (content slot so the widget renders, type=widget name)
+    $instConfig = new WidgetInstanceConfig();
+    $instConfig->setWidgetInstance($instance);
+    $instConfig->setType($name);
+    $instConfig->setWidgetOrder(0);
+    $om->persist($instConfig);
+
     // Create WidgetContainer
     $container = new WidgetContainer();
     $container->refreshUuid();
@@ -81,6 +89,7 @@ foreach ($widgetNames as $name) {
     $config = new WidgetContainerConfig();
     $config->setName($name);
     $config->setVisible(true);
+    $config->setLayout([1]);
     $config->setWidgetContainer($container);
     $container->addWidgetContainerConfig($config);
     $om->persist($config);
