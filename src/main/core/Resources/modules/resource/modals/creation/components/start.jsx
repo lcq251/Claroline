@@ -17,8 +17,8 @@ const CreationStart = props =>
         {
           id: 'create-empty',
           icon: 'plus',
-          label: trans('Créer une ressource'),
-          description: trans('Créez une ressource vide pour pouvoir choisir son type et la configurer comme vous le souhaitez.'),
+          label: trans('create_empty', {}, 'resource'),
+          description: trans('create_empty_desc', {}, 'resource'),
           action: {
             type: CALLBACK_BUTTON,
             callback: () => props.changeStep('type')
@@ -26,8 +26,8 @@ const CreationStart = props =>
         }, {
           id: 'create-directory',
           icon: 'folder',
-          label: trans('Créer un dossier'),
-          description: trans('Créez un dossier pour organiser vos différentes ressources.'),
+          label: trans('create_directory', {}, 'resource'),
+          description: trans('create_directory_desc', {}, 'resource'),
           action: {
             type: CALLBACK_BUTTON,
             callback: () => {
@@ -38,28 +38,28 @@ const CreationStart = props =>
         }, {
           id: 'create-from-file',
           icon: 'file',
-          label: trans('Importer un fichier'),
-          description: trans('Déposez un fichier pour l\'ajouter à  votre espace. Le type de ressource créé dépend du fichier déposé.'),
+          label: trans('create_from_file', {}, 'resource'),
+          description: trans('create_from_file_desc', {}, 'resource'),
           action: {
             type: CALLBACK_BUTTON,
             callback: () => props.changeStep('file')
           },
-          group: 'A partir d\'un contenu existant'
+          group: trans('from_existing_content', {}, 'resource')
         }, {
           id: 'create-from-url',
           icon: 'link',
-          label: trans('Créer à partir d\'une URL'),
-          description: trans('Saisissez une URL pour pouvoir l\'utiliser dans votre espace. Le type de ressource créé dépend de l\'URL saisie.'),
+          label: trans('create_from_url', {}, 'resource'),
+          description: trans('create_from_url_desc', {}, 'resource'),
           action: {
             type: CALLBACK_BUTTON,
             callback: () => props.changeStep('url')
           },
-          group: 'A partir d\'un contenu existant'
+          group: trans('from_existing_content', {}, 'resource')
         }, {
           id: 'create-shortcut',
           icon: 'arrow-up-right-from-square',
-          label: trans('Créer un raccourci'),
-          description: trans('Créez un raccourci vers une autre ressource de la plateforme.'),
+          label: trans('create_shortcut', {}, 'resource'),
+          description: trans('create_shortcut_desc', {}, 'resource'),
           action: {
             type: MODAL_BUTTON,
             modal: [MODAL_RESOURCES, {
@@ -88,8 +88,8 @@ const CreationStart = props =>
         }, {
           id: 'create-from-copy',
           icon: 'clone',
-          label: trans('Copier une ressource existante'),
-          description: trans('Dupliquez une ressource de la plateforme ainsi que tous ses contenus.'),
+          label: trans('create_from_copy', {}, 'resource'),
+          description: trans('create_from_copy_desc', {}, 'resource'),
           action: {
             type: MODAL_BUTTON,
             modal: [MODAL_RESOURCES, {
@@ -104,7 +104,7 @@ const CreationStart = props =>
               })
             }]
           },
-          group: 'A partir d\'un contenu existant'
+          group: trans('from_existing_content', {}, 'resource')
         },
       ]}
     />

@@ -1,6 +1,8 @@
 {
   "ai_lesson": "AI Model Resource",
   "ai_lesson_desc": "AI model resource: model name, API key and validity period.",
+  "mindme_markdown": "Markdown document",
+  "mindme_markdown_desc": "Create a Markdown document resource.",
   "ai_model_resource": "AI model configuration",
   "model_name": "Model name",
   "model_name_placeholder": "e.g. qwen-max, gpt-4o, deepseek-chat",

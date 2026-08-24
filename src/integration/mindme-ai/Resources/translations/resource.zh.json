@@ -1,6 +1,8 @@
 {
   "ai_lesson": "AI 模型资源",
   "ai_lesson_desc": "AI 模型资源：配置模型名、API 密钥与有效期。",
+  "mindme_markdown": "Markdown 文档",
+  "mindme_markdown_desc": "创建一个 Markdown 格式的文档资源。",
   "ai_model_resource": "AI 模型资源配置",
   "model_name": "模型名",
   "model_name_placeholder": "如 qwen-max、gpt-4o、deepseek-chat",
