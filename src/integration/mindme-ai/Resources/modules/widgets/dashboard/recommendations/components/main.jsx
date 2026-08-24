@@ -1,106 +1,66 @@
 /*
- * dashboard-recommendations: recommended products (priced courses + resources).
+ * dashboard-recommendations: product list (route A — full ListData).
  *
- * Rendered as a Claroline list grid (tiles) using the standard DataCard
- * component, aligned with the core list DISPLAY_TILES look (size md / col).
- *
- * data.recommendations[] injected by the backend serializer. Empty list
- * suppresses the widget entirely. Each card exposes a free "enable" action
- * (route B, no payment): clicking it grants the current user access to the
- * product's target; clicking the card body opens the target.
+ * Rendered with the standard Claroline ListData component (same as the
+ * resource list), fetching /apiv2/product through the Finder. Features:
+ *   - top filter bar (filter by type: all / course / resource)
+ *   - sorting (free from ListData)
+ *   - ProductCard tiles with top-right toolbar + bottom meta + enable button
  */
 
-import React, {useState} from 'react'
-import {connect, useDispatch} from 'react-redux'
+import React from 'react'
+import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
-import {selectors as contentSelectors} from '#/main/core/widget/content/store'
-import {apiFetch} from '#/main/app/api/fetch'
-import {DataCard} from '#/main/app/data/components/card'
-import {LINK_BUTTON} from '#/main/app/buttons'
+import {withReducer} from '#/main/app/store/components/withReducer'
+import {ListData} from '#/main/app/content/list/containers/data'
+import {constants as listConst} from '#/main/app/content/list/constants'
+import {selectors as listSelectors} from '#/main/app/content/list/store/selectors'
+import {CALLBACK_BUTTON} from '#/main/app/buttons'
+
+import {ProductCard} from '#/integration/mindme-ai/widgets/dashboard/recommendations/components/card'
+import {reducer, selectors} from '#/integration/mindme-ai/widgets/dashboard/recommendations/store'
 
 import {BlockHead} from '../../common/block'
 
 const PREFIX = 'mindme-ai-dashboard-dashboard-recommendations-block'
 
-const TYPE_MAP = {
-  course: {icon: 'fa fa-fw fa-graduation-cap'},
-  resource: {icon: 'fa fa-fw fa-book'},
-  template: {icon: 'fa fa-fw fa-th-large'},
-}
-
-const RecommendationCard = ({item}) => {
-  const dispatch = useDispatch()
-  const [opened, setOpened] = useState(false)
-  const [enabling, setEnabling] = useState(false)
-
-  const icon = TYPE_MAP[item.type]?.icon || 'fa fa-fw fa-book'
-
-  const enable = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (opened || enabling) {
-      return
-    }
-
-    setEnabling(true)
-    apiFetch({
-      url: `/apiv2/product/${item.id}/enable`,
-      request: {method: 'POST'}
-    }, dispatch)
-      .then(() => setOpened(true))
-      .catch(() => {})
-      .finally(() => setEnabling(false))
-  }
-
-  return (
-    <li className="data-grid-item">
-      <DataCard
-        icon={icon}
-        name={item.title}
-        title={item.title}
-        contentText={item.desc}
-        size="md"
-        orientation="col"
-        primaryAction={item.url && '#' !== item.url ? {
-          type: LINK_BUTTON,
-          target: item.url
-        } : undefined}
-      >
-        <button
-          type="button"
-          className={`btn btn-sm w-100 ${opened ? 'btn-outline-success' : 'btn-primary'}`}
-          disabled={opened || enabling}
-          onClick={enable}
-        >
-          {opened
-            ? trans('dashboard_rec_enabled', {}, 'widget')
-            : trans('dashboard_rec_enable', {}, 'widget')}
-        </button>
-      </DataCard>
-    </li>
-  )
-}
-
-RecommendationCard.propTypes = {
-  item: T.shape({
-    id: T.string,
-    type: T.string,
-    title: T.string,
-    desc: T.string,
-    url: T.string,
-  }).isRequired,
-}
+// top-right toolbar placeholders (route A: UI only, no real feature)
+const cardActions = () => [
+  {
+    name: 'resource',
+    type: CALLBACK_BUTTON,
+    icon: 'fa fa-fw fa-book',
+    label: trans('dashboard_rec_open_resource', {}, 'widget'),
+    callback: () => {},
+  },
+  {
+    name: 'configure',
+    type: CALLBACK_BUTTON,
+    icon: 'fa fa-fw fa-cog',
+    label: trans('dashboard_rec_configure', {}, 'widget'),
+    callback: () => {},
+  },
+  {
+    name: 'move-up',
+    type: CALLBACK_BUTTON,
+    icon: 'fa fa-fw fa-arrow-up',
+    label: trans('dashboard_rec_move_up', {}, 'widget'),
+    callback: () => {},
+  },
+  {
+    name: 'move-down',
+    type: CALLBACK_BUTTON,
+    icon: 'fa fa-fw fa-arrow-down',
+    label: trans('dashboard_rec_move_down', {}, 'widget'),
+    callback: () => {},
+  },
+]
 
 const RecommendationsComponent = props => {
-  const parameters = props.parameters || {}
-  const data = parameters.data || {}
-  const items = Array.isArray(data.recommendations) && data.recommendations.length ? data.recommendations : (parameters.recommendations ?? [])
-
   // empty list suppresses the widget entirely
-  if (0 === items.length) {
+  if (props.listLoaded && 0 === props.listTotalResults) {
     return null
   }
 
@@ -110,36 +70,75 @@ const RecommendationsComponent = props => {
         title={trans('dashboard_block_recommendations', {}, 'widget')}
         en="Recommendations"
       />
-      <div className="data-grid data-grid-md data-grid-col">
-        <ul className="data-grid-content list-unstyled mb-auto">
-          {items.map(item => (
-            <RecommendationCard key={item.id} item={item} />
-          ))}
-        </ul>
-      </div>
+      <ListData
+        name={selectors.STORE_NAME}
+        fetch={{
+          url: '/apiv2/product',
+          autoload: true
+        }}
+        definition={[
+          {
+            name: 'title',
+            label: trans('name'),
+            type: 'string',
+            primary: true,
+            displayed: true
+          }, {
+            name: 'type',
+            alias: 'targetType',
+            label: trans('dashboard_rec_filter_type', {}, 'widget'),
+            type: 'choice',
+            filterable: true,
+            options: {
+              choices: {
+                course: trans('dashboard_rec_filter_course', {}, 'widget'),
+                resource: trans('dashboard_rec_filter_resource', {}, 'widget'),
+              },
+              condensed: true
+            }
+          }, {
+            name: 'price',
+            label: trans('price'),
+            type: 'number',
+            sortable: true,
+            displayed: true
+          }, {
+            name: 'status',
+            label: trans('status'),
+            type: 'string'
+          }
+        ]}
+        card={ProductCard}
+        display={{
+          current: listConst.DISPLAY_TILES
+        }}
+        actions={cardActions}
+        filterable={true}
+        sortable={true}
+        paginated={false}
+        count={false}
+      />
     </section>
   )
 }
 
 RecommendationsComponent.propTypes = {
-  parameters: T.shape({
-    data: T.shape({
-      recommendations: T.arrayOf(T.shape({
-        id: T.string,
-        type: T.string,
-        title: T.string,
-        desc: T.string,
-        url: T.string,
-      })),
-    }),
-  }),
+  listLoaded: T.bool,
+  listTotalResults: T.number,
 }
 
-const RecommendationsBlock = connect(
-  (state) => ({
-    parameters: contentSelectors.parameters(state),
-  })
-)(RecommendationsComponent)
+const RecommendationsBlock = withReducer(selectors.STORE_NAME, reducer)(
+  connect(
+    (state) => {
+      const listState = listSelectors.list(state, selectors.STORE_NAME)
+
+      return {
+        listLoaded: listState ? listSelectors.loaded(listState) : false,
+        listTotalResults: listState ? listSelectors.totalResults(listState) : 0,
+      }
+    }
+  )(RecommendationsComponent)
+)
 
 export {
   RecommendationsBlock,

@@ -3,6 +3,9 @@
 namespace Claroline\MindMeAiBundle\Serializer;
 
 use Claroline\AppBundle\API\Serializer\SerializerTrait;
+use Claroline\AppBundle\Persistence\ObjectManager;
+use Claroline\CoreBundle\Entity\Resource\ResourceNode;
+use Claroline\CursusBundle\Entity\Course;
 use Claroline\MindMeAiBundle\Entity\Product;
 
 /**
@@ -18,10 +21,18 @@ use Claroline\MindMeAiBundle\Entity\Product;
  *   product.creator       = creator user uuid
  *   product.createdAt     = creation timestamp (ISO 8601)
  *   product.updatedAt     = update timestamp (ISO 8601)
+ *   product.type          = targetType alias (for card tag/icon)
+ *   product.title         = resolved target name (course name / resource name)
+ *   product.url           = resolved target URL (or '#')
  */
 class ProductSerializer
 {
     use SerializerTrait;
+
+    public function __construct(
+        private readonly ObjectManager $om
+    ) {
+    }
 
     public function getClass(): string
     {
@@ -46,6 +57,10 @@ class ProductSerializer
             'creator' => $product->getCreator() ? $product->getCreator()->getUuid() : null,
             'createdAt' => $product->getCreatedAt()->format(\DateTimeImmutable::ATOM),
             'updatedAt' => $product->getUpdatedAt()->format(\DateTimeImmutable::ATOM),
+            // card fields (resolved target)
+            'type' => $product->getTargetType(),
+            'title' => $this->resolveTitle($product),
+            'url' => $this->resolveUrl($product),
         ];
     }
 
@@ -59,5 +74,34 @@ class ProductSerializer
         $this->sipe('status', 'setStatus', $data, $product);
 
         return $product;
+    }
+
+    private function resolveTitle(Product $product): ?string
+    {
+        if ('course' === $product->getTargetType()) {
+            $course = $this->om->getRepository(Course::class)->find($product->getTargetId());
+
+            return $course ? (string) $course->getName() : null;
+        }
+
+        $node = $this->om->getRepository(ResourceNode::class)->find($product->getTargetId());
+
+        return $node ? (string) $node->getName() : null;
+    }
+
+    private function resolveUrl(Product $product): string
+    {
+        if ('course' === $product->getTargetType()) {
+            $course = $this->om->getRepository(Course::class)->find($product->getTargetId());
+
+            return $course ? '/desktop/trainings/course/'.$course->getSlug() : '#';
+        }
+
+        $node = $this->om->getRepository(ResourceNode::class)->find($product->getTargetId());
+        if ($node && $node->getWorkspace()) {
+            return '/desktop/workspaces/open/'.$node->getWorkspace()->getSlug().'/resources/'.$node->getSlug();
+        }
+
+        return '#';
     }
 }

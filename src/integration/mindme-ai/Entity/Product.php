@@ -2,6 +2,8 @@
 
 namespace Claroline\MindMeAiBundle\Entity;
 
+use Claroline\AppBundle\API\Attribute\CrudEntity;
+use Claroline\AppBundle\Entity\CrudEntityInterface;
 use Claroline\AppBundle\Entity\Identifier\Id;
 use Claroline\AppBundle\Entity\Identifier\Uuid;
 use Claroline\CoreBundle\Entity\User;
@@ -24,10 +26,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'claro_mindme_ai_product')]
 #[ORM\Index(name: 'idx_product_target', columns: ['target_type', 'target_id'])]
 #[ORM\Index(name: 'idx_product_status', columns: ['status'])]
-class Product
+#[CrudEntity(finderClass: \Claroline\MindMeAiBundle\Finder\ProductType::class)]
+class Product implements CrudEntityInterface
 {
     use Id;
     use Uuid;
+
+    public static function getIdentifiers(): array
+    {
+        return ['code'];
+    }
 
     /** 'resource' | 'course' */
     #[ORM\Column(name: 'target_type', type: Types::STRING, length: 20)]

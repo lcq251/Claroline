@@ -75,5 +75,13 @@
   "dashboard_rec_tag_template": "模板",
   "dashboard_more_recommendations": "更多推荐 →",
   "dashboard_rec_enable": "开通",
-  "dashboard_rec_enabled": "已开通"
+  "dashboard_rec_enabled": "已开通",
+  "dashboard_rec_free": "免费",
+  "dashboard_rec_open_resource": "资源",
+  "dashboard_rec_configure": "配置",
+  "dashboard_rec_move_up": "上移",
+  "dashboard_rec_move_down": "下移",
+  "dashboard_rec_filter_type": "类型",
+  "dashboard_rec_filter_course": "课程",
+  "dashboard_rec_filter_resource": "资源"
 }

@@ -2,6 +2,9 @@
 
 namespace Claroline\MindMeAiBundle\Controller;
 
+use Claroline\AppBundle\API\Crud;
+use Claroline\AppBundle\API\Finder\FinderRequest;
+use Claroline\AppBundle\API\Serializer\SerializerInterface;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Role;
@@ -16,6 +19,8 @@ use Claroline\MindMeAiBundle\Entity\ProductStatus;
 use Claroline\MindMeAiBundle\Serializer\ProductSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -37,21 +42,18 @@ class ProductController
         private readonly RightsManager $rightsManager,
         private readonly RoleManager $roleManager,
         private readonly SessionManager $sessionManager,
+        private readonly Crud $crud,
     ) {
     }
 
     #[Route('/apiv2/product', name: 'apiv2_mindme_product_list', methods: ['GET'])]
-    public function list(): JsonResponse
-    {
-        $products = $this->om->getRepository(Product::class)->findBy(
-            ['status' => ProductStatus::APPROVED],
-            ['createdAt' => 'DESC']
-        );
+    public function list(
+        #[MapQueryString]
+        ?FinderRequest $finderRequest = new FinderRequest()
+    ): StreamedJsonResponse {
+        $results = $this->crud->search(Product::class, $finderRequest, [SerializerInterface::SERIALIZE_LIST]);
 
-        return new JsonResponse(array_map(
-            fn (Product $p) => $this->serializer->serialize($p),
-            $products
-        ));
+        return $results->toResponse();
     }
 
     #[Route('/apiv2/product/{id}', name: 'apiv2_mindme_product_get', methods: ['GET'])]
