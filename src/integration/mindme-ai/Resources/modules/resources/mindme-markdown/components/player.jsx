@@ -24,6 +24,7 @@ const MindmeMarkdownPlayer = () => {
                 <MdPreview
                   editorId="mindme-markdown-preview"
                   modelValue={content}
+                  toc={{enable: true, level: [2, 3]}}
                   // previewTheme="github"
                   // codeTheme="github"
                 />
