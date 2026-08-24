@@ -24,8 +24,8 @@ const MindmeMarkdownPlayer = () => {
                 <MdPreview
                   editorId="mindme-markdown-preview"
                   modelValue={content}
-                  previewTheme="github"
-                  codeTheme="github"
+                  // previewTheme="github"
+                  // codeTheme="github"
                 />
               </div>
             </PageSection>
