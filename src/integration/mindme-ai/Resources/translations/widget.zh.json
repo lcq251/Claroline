@@ -73,5 +73,7 @@
   "dashboard_rec_tag_course": "课程",
   "dashboard_rec_tag_resource": "资源",
   "dashboard_rec_tag_template": "模板",
-  "dashboard_more_recommendations": "更多推荐 →"
+  "dashboard_more_recommendations": "更多推荐 →",
+  "dashboard_rec_enable": "开通",
+  "dashboard_rec_enabled": "已开通"
 }

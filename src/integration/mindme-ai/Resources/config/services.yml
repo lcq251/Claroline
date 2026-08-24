@@ -36,6 +36,8 @@ services:
         tags: ['claroline.serializer']
         arguments:
             - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'
+    Claroline\MindMeAiBundle\Serializer\ProductSerializer:
+        tags: ['claroline.serializer']
     Claroline\MindMeAiBundle\Controller\ResourceReferenceController:
         tags: ['controller.service_arguments']
         arguments:
@@ -43,6 +45,15 @@ services:
             - '@Claroline\MindMeAiBundle\Serializer\ResourceReferenceSerializer'
             - '@security.authorization_checker'
             - '@security.token_storage'
+    Claroline\MindMeAiBundle\Controller\ProductController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\MindMeAiBundle\Serializer\ProductSerializer'
+            - '@security.token_storage'
+            - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
+            - '@Claroline\CoreBundle\Manager\RoleManager'
+            - '@Claroline\CursusBundle\Manager\SessionManager'
     Claroline\MindMeAiBundle\Security\SecretCipher:
         arguments:
             - '%kernel.secret%'

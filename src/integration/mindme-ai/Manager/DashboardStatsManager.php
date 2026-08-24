@@ -22,7 +22,8 @@ use Claroline\CursusBundle\Entity\EventPresence;
 use Claroline\CursusBundle\Entity\Registration\SessionUser;
 use Claroline\CursusBundle\Entity\Session;
 use Claroline\MindMeAiBundle\Entity\AiLesson;
-use Claroline\MindMeAiBundle\Entity\ResourcePricing;
+use Claroline\MindMeAiBundle\Entity\Product;
+use Claroline\MindMeAiBundle\Entity\ProductStatus;
 use Claroline\NotificationBundle\Entity\Notification;
 use Claroline\OpenBadgeBundle\Entity\Assertion;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -346,9 +347,9 @@ class DashboardStatsManager
     /**
      * Recommended products for the current user (dashboard-recommendations).
      *
-     * Dynamic source: priced courses (Course.price NOT NULL) + priced
-     * resources (ResourcePricing.price NOT NULL -> linked ResourceNode).
-     * Type distinguishes course / resource for the front-end tag mapping.
+     * Single source: the unified Product table (status=approved). Each
+     * product resolves its target (Course or ResourceNode) to build the
+     * title/url. Type distinguishes course / resource for the front-end tag.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -362,58 +363,51 @@ class DashboardStatsManager
 
         $recommendations = [];
 
-        // priced courses
         try {
-            $courses = $this->om->getRepository(Course::class)->createQueryBuilder('c')
-                ->where('c.price IS NOT NULL')
-                ->andWhere('c.archived = false')
+            $products = $this->om->getRepository(Product::class)->createQueryBuilder('p')
+                ->where('p.status = :status')
+                ->setParameter('status', ProductStatus::APPROVED)
+                ->orderBy('p.createdAt', 'DESC')
                 ->setMaxResults($max)
                 ->getQuery()
                 ->getResult();
 
-            foreach ($courses as $course) {
-                $recommendations[] = [
-                    'id' => (string) $course->getUuid(),
-                    'title' => (string) $course->getName(),
-                    'desc' => (string) $course->getDescription() ?? '',
-                    'type' => 'course',
-                    'url' => '/desktop/courses/'.$course->getId(),
-                    'en' => [
+            foreach ($products as $product) {
+                if ('course' === $product->getTargetType()) {
+                    $course = $this->om->getRepository(Course::class)->find($product->getTargetId());
+                    if (!$course) {
+                        continue;
+                    }
+
+                    $recommendations[] = [
+                        'id' => (string) $product->getUuid(),
                         'title' => (string) $course->getName(),
-                        'desc' => (string) $course->getDescription() ?? '',
-                    ],
-                ];
-            }
-        } catch (\Throwable $e) {
-            // degrade gracefully
-        }
+                        'desc' => (string) ($product->getDescription() ?? ''),
+                        'type' => 'course',
+                        'url' => '/desktop/trainings/course/'.$course->getSlug(),
+                        'en' => [
+                            'title' => (string) $course->getName(),
+                            'desc' => (string) ($product->getDescription() ?? ''),
+                        ],
+                    ];
+                } else {
+                    $node = $this->om->getRepository(ResourceNode::class)->find($product->getTargetId());
+                    if (!$node) {
+                        continue;
+                    }
 
-        // priced resources (via independent ResourcePricing structure)
-        try {
-            $pricings = $this->om->getRepository(ResourcePricing::class)->createQueryBuilder('rp')
-                ->leftJoin('rp.resourceNode', 'rn')
-                ->where('rp.price IS NOT NULL')
-                ->setMaxResults($max)
-                ->getQuery()
-                ->getResult();
-
-            foreach ($pricings as $pricing) {
-                $node = $pricing->getResourceNode();
-                if (!$node) {
-                    continue;
-                }
-
-                $recommendations[] = [
-                    'id' => (string) $node->getUuid(),
-                    'title' => (string) $node->getName(),
-                    'desc' => (string) $pricing->getDescription() ?? '',
-                    'type' => 'resource',
-                    'url' => '/desktop/resources/'.$node->getId(),
-                    'en' => [
+                    $recommendations[] = [
+                        'id' => (string) $product->getUuid(),
                         'title' => (string) $node->getName(),
-                        'desc' => (string) $pricing->getDescription() ?? '',
-                    ],
-                ];
+                        'desc' => (string) ($product->getDescription() ?? ''),
+                        'type' => 'resource',
+                        'url' => $node->getWorkspace() ? '/desktop/workspaces/open/'.$node->getWorkspace()->getSlug().'/resources/'.$node->getSlug() : '#',
+                        'en' => [
+                            'title' => (string) $node->getName(),
+                            'desc' => (string) ($product->getDescription() ?? ''),
+                        ],
+                    ];
+                }
             }
         } catch (\Throwable $e) {
             // degrade gracefully

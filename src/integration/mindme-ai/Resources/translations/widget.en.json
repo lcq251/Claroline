@@ -73,5 +73,7 @@
   "dashboard_rec_tag_course": "Course",
   "dashboard_rec_tag_resource": "Resource",
   "dashboard_rec_tag_template": "Template",
-  "dashboard_more_recommendations": "More suggestions →"
+  "dashboard_more_recommendations": "More suggestions →",
+  "dashboard_rec_enable": "Enable",
+  "dashboard_rec_enabled": "Enabled"
 }

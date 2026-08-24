@@ -1,48 +1,86 @@
 /*
  * dashboard-recommendations: recommended products (priced courses + resources).
  *
- * Vertical cards aligned with the dashboard card visual language (B teal).
+ * Rendered as a Claroline list grid (tiles) using the standard DataCard
+ * component, aligned with the core list DISPLAY_TILES look (size md / col).
+ *
  * data.recommendations[] injected by the backend serializer. Empty list
- * suppresses the widget entirely (graceful, same as workspace-tree).
+ * suppresses the widget entirely. Each card exposes a free "enable" action
+ * (route B, no payment): clicking it grants the current user access to the
+ * product's target; clicking the card body opens the target.
  */
 
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {useState} from 'react'
+import {connect, useDispatch} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
 import {trans} from '#/main/app/intl/translation'
 import {selectors as contentSelectors} from '#/main/core/widget/content/store'
+import {apiFetch} from '#/main/app/api/fetch'
+import {DataCard} from '#/main/app/data/components/card'
+import {LINK_BUTTON} from '#/main/app/buttons'
 
 import {BlockHead} from '../../common/block'
 
 const PREFIX = 'mindme-ai-dashboard-dashboard-recommendations-block'
 
 const TYPE_MAP = {
-  course: {icon: 'fa fa-fw fa-graduation-cap', tag: 'course'},
-  resource: {icon: 'fa fa-fw fa-book', tag: 'resource'},
-  template: {icon: 'fa fa-fw fa-th-large', tag: 'template'},
+  course: {icon: 'fa fa-fw fa-graduation-cap'},
+  resource: {icon: 'fa fa-fw fa-book'},
+  template: {icon: 'fa fa-fw fa-th-large'},
 }
 
 const RecommendationCard = ({item}) => {
+  const dispatch = useDispatch()
+  const [opened, setOpened] = useState(false)
+  const [enabling, setEnabling] = useState(false)
+
   const icon = TYPE_MAP[item.type]?.icon || 'fa fa-fw fa-book'
-  const tagLabel = TYPE_MAP[item.type]?.tag ? trans('dashboard_rec_tag_' + item.type, {}, 'widget') : ''
+
+  const enable = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (opened || enabling) {
+      return
+    }
+
+    setEnabling(true)
+    apiFetch({
+      url: `/apiv2/product/${item.id}/enable`,
+      request: {method: 'POST'}
+    }, dispatch)
+      .then(() => setOpened(true))
+      .catch(() => {})
+      .finally(() => setEnabling(false))
+  }
 
   return (
-    <a className={`${PREFIX}-card`} href={item.url || '#'}>
-      <div className={`${PREFIX}-cover`}>
-        <span className={icon} />
-      </div>
-      <div className={`${PREFIX}-body`}>
-        {tagLabel && (
-          <span className={`${PREFIX}-tag`}>{tagLabel}</span>
-        )}
-        <div className={`${PREFIX}-title`}>{item.title || ''}</div>
-        {item.desc && <p className={`${PREFIX}-desc`}>{item.desc}</p>}
-        <span className={`${PREFIX}-more`}>
-          {trans('dashboard_more_recommendations', {}, 'widget')}
-        </span>
-      </div>
-    </a>
+    <li className="data-grid-item">
+      <DataCard
+        icon={icon}
+        name={item.title}
+        title={item.title}
+        contentText={item.desc}
+        size="md"
+        orientation="col"
+        primaryAction={item.url && '#' !== item.url ? {
+          type: LINK_BUTTON,
+          target: item.url
+        } : undefined}
+      >
+        <button
+          type="button"
+          className={`btn btn-sm w-100 ${opened ? 'btn-outline-success' : 'btn-primary'}`}
+          disabled={opened || enabling}
+          onClick={enable}
+        >
+          {opened
+            ? trans('dashboard_rec_enabled', {}, 'widget')
+            : trans('dashboard_rec_enable', {}, 'widget')}
+        </button>
+      </DataCard>
+    </li>
   )
 }
 
@@ -72,10 +110,12 @@ const RecommendationsComponent = props => {
         title={trans('dashboard_block_recommendations', {}, 'widget')}
         en="Recommendations"
       />
-      <div className={`${PREFIX}-grid`}>
-        {items.map(item => (
-          <RecommendationCard key={item.id} item={item} />
-        ))}
+      <div className="data-grid data-grid-md data-grid-col">
+        <ul className="data-grid-content list-unstyled mb-auto">
+          {items.map(item => (
+            <RecommendationCard key={item.id} item={item} />
+          ))}
+        </ul>
       </div>
     </section>
   )
