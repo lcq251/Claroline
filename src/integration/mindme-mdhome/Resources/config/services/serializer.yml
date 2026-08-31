@@ -1,0 +1,3 @@
+services:
+    Mindme\MdhomeBundle\Serializer\LandingWidgetSerializer:
+        tags: [claroline.serializer]

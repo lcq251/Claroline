@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * is stored as a single JSON document so each landing widget keeps an
  * arbitrary, admin-editable parameter structure without a dedicated table.
  */
-#[ORM\Table(name: 'claro_mindme_landing_widget')]
+#[ORM\Table(name: 'mindme_mdhome_landing_widget')]
 #[ORM\Entity]
 class LandingWidget extends AbstractWidget
 {
