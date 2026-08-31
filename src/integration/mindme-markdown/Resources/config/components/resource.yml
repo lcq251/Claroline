@@ -1,0 +1,3 @@
+services:
+    Mindme\MarkdownBundle\Component\Resource\MindmeMarkdownResource:
+        tags: ['claroline.component.resource']

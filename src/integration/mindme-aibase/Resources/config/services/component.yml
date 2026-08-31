@@ -1,0 +1,3 @@
+services:
+    Mindme\AibaseBundle\Component\Resource\AibaseResource:
+        tags: ['claroline.component.resource']

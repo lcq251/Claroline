@@ -1,0 +1,6 @@
+services:
+    Mindme\AibaseBundle\Serializer\AibaseSerializer:
+        tags: ['claroline.serializer']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Mindme\AibaseBundle\Security\SecretCipher'

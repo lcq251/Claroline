@@ -1,0 +1,5 @@
+services:
+    Mindme\MarkdownBundle\Subscriber\PluginSubscriber:
+        tags: ['kernel.event_subscriber']
+        arguments:
+            - '@twig'

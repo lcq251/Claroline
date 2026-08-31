@@ -1,0 +1,11 @@
+services:
+    Mindme\BillingBundle\Controller\ProductController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Mindme\BillingBundle\Serializer\ProductSerializer'
+            - '@security.token_storage'
+            - '@Claroline\CoreBundle\Manager\Resource\RightsManager'
+            - '@Claroline\CoreBundle\Manager\RoleManager'
+            - '@Claroline\CursusBundle\Manager\SessionManager'
+            - '@Claroline\AppBundle\API\Crud'

@@ -1,0 +1,4 @@
+plugin:
+    resources:
+        - name: aibase
+          class: Mindme\AibaseBundle\Entity\Aibase

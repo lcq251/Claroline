@@ -1,0 +1,14 @@
+{
+  "publish_products": "发布产品",
+  "publish_products_empty": "该资源尚未发布产品。",
+  "publish_product_new": "发布新产品",
+  "product_code": "产品编码",
+  "product_price": "价格",
+  "product_description": "产品描述",
+  "price": "价格",
+  "free": "免费",
+  "save": "保存",
+  "cancel": "取消",
+  "edit": "编辑",
+  "delete": "删除"
+}

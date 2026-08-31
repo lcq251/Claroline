@@ -1,0 +1,5 @@
+{
+  "markdown": "Markdown 文档",
+  "markdown_desc": "支持 Markdown 格式的内容组件，展示时左侧为目录，右侧为正文。",
+  "table_of_contents": "目录"
+}

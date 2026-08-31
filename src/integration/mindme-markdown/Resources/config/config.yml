@@ -1,0 +1,10 @@
+plugin:
+    resources:
+        - name: mindme_markdown
+          class: Mindme\MarkdownBundle\Entity\MindmeMarkdown
+
+    widgets:
+        - name: markdown
+          class: Mindme\MarkdownBundle\Entity\Widget\MarkdownWidget
+          context: [workspace, desktop, public, administration]
+          tags: [content]

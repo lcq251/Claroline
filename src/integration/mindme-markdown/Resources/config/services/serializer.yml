@@ -1,0 +1,6 @@
+services:
+    Mindme\MarkdownBundle\Serializer\MindmeMarkdownSerializer:
+        tags: [claroline.serializer]
+
+    Mindme\MarkdownBundle\Serializer\MarkdownWidgetSerializer:
+        tags: [claroline.serializer]

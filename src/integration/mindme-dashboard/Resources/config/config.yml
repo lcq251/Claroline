@@ -1,0 +1,21 @@
+plugin:
+    widgets:
+        - name: dashboard-overview
+          class: Mindme\DashboardBundle\Entity\Widget\DashboardWidget
+          context: [desktop]
+          tags: [content]
+
+        - name: dashboard-workspace-tree
+          class: Mindme\DashboardBundle\Entity\Widget\DashboardWidget
+          context: [desktop]
+          tags: [content]
+
+        - name: dashboard-messages
+          class: Mindme\DashboardBundle\Entity\Widget\DashboardWidget
+          context: [desktop]
+          tags: [content]
+
+        - name: dashboard-recommendations
+          class: Mindme\DashboardBundle\Entity\Widget\DashboardWidget
+          context: [desktop]
+          tags: [content]

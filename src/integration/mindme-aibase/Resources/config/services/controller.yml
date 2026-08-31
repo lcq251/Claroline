@@ -1,0 +1,15 @@
+services:
+    Mindme\AibaseBundle\Controller\AibaseChatController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.authorization_checker'
+            - '@Mindme\AibaseBundle\Security\SecretCipher'
+            - '@security.token_storage'
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+
+    Mindme\AibaseBundle\Controller\AibaseContextController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.authorization_checker'

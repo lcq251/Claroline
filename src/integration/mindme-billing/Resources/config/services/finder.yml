@@ -1,0 +1,3 @@
+services:
+    Mindme\BillingBundle\Finder\ProductType:
+        tags: ['claroline.finder.type']

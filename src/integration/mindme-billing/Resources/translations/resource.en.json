@@ -1,0 +1,14 @@
+{
+  "publish_products": "Publish products",
+  "publish_products_empty": "This resource has no published product yet.",
+  "publish_product_new": "Publish a new product",
+  "product_code": "Product code",
+  "product_price": "Price",
+  "product_description": "Product description",
+  "price": "Price",
+  "free": "Free",
+  "save": "Save",
+  "cancel": "Cancel",
+  "edit": "Edit",
+  "delete": "Delete"
+}
