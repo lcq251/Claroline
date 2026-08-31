@@ -1,0 +1,19 @@
+{
+  "loading": "正在加载管理界面...",
+  "platform_unavailable_alert": "平台当前不可用。",
+  "platform_unavailable_title": "平台当前不可用",
+  "platform_unavailable_help": "请稍后再试，或联系管理员了解平台何时恢复访问。",
+  "only_admin_login_help": "仅管理员可以登录。",
+  "platform_offline": "离线",
+  "platform_online": "在线",
+  "why_platform_disabled": "为什么我的平台无法访问？",
+  "platform_disabled_alert": "平台已被禁用。",
+  "platform_disabled_desc": "平台已被管理员手动禁用。",
+  "platform_not_started_alert": "平台尚未开放访问。",
+  "platform_not_started_desc": "平台将于 %date% 起开放。",
+  "platform_ended_alert": "平台已停止访问。",
+  "platform_ended_desc": "平台自 %date% 起已关闭。",
+  "platform_opened": "平台已向用户开放。",
+  "platform_disabled": "平台已禁用，无法访问。",
+  "platform_active_admin": "平台已关闭，仅管理员可访问。"
+}

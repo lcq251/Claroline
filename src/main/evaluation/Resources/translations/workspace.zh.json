@@ -1,0 +1,14 @@
+{
+  "evaluation_not_attempted_status": "您尚未开始活动空间。",
+  "evaluation_unknown_status": "我们无法了解您在此活动空间中的进度。",
+  "evaluation_incomplete_status": "您尚未完成活动空间。",
+  "evaluation_failed_status": "您未通过活动空间。",
+  "evaluation_completed_status": "您已完成活动空间。",
+  "evaluation_passed_status": "您已通过活动空间。",
+  "workspace_certificates_availability_help": "证书在活动空间完成后可用。",
+  "enable_success_condition": "启用成功或失败条件",
+  "enable_success_condition_help": "活动空间完成后，用户将根据定义的条件获得成功或失败状态。",
+  "enable_success_condition_score": "获得最低分数",
+  "enable_success_condition_success": "成功完成一定数量的资源",
+  "enable_success_condition_failed": "未失败一定数量的资源"
+}

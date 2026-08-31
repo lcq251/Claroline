@@ -1,0 +1,14 @@
+{
+  "import": "导入",
+  "export": "导出",
+  "refresh": "刷新数据",
+  "delete_import": "删除导入",
+  "delete_import_help": "允许删除导入",
+  "delete_export": "删除导出",
+  "delete_export_help": "允许删除导出",
+  "unblock": "解除锁定",
+  "unblock_import": "解除导入锁定",
+  "unblock_import_help": "允许在导入仍处于“进行中”状态时解除锁定",
+  "unblock_export": "解除导出锁定",
+  "unblock_export_help": "允许在导出仍处于“进行中”状态时解除锁定"
+}

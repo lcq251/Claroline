@@ -1,0 +1,20 @@
+{
+  "my_course_sessions": "我的培训课程列表",
+  "my_course_sessions_desc": "列出当前用户已注册的课程。",
+  "public_course_sessions": "公开培训课程列表",
+  "public_course_sessions_desc": "列出公开注册的课程。",
+  "course_sessions": "培训课程列表",
+  "course_sessions_desc": "列出培训课程。",
+  "all_courses": "所有培训列表",
+  "all_courses_desc": "列出平台上的所有培训。",
+  "public_courses_desc": "列出所有公开培训。",
+  "training_event": "培训课程",
+  "training_events": "课程列表",
+  "training_events_desc": "列出培训课程。",
+  "my_training_events": "我的培训课程列表",
+  "my_training_events_desc": "列出当前用户已注册的课程。",
+  "event_presences": "出席列表",
+  "event_presences_desc": "列出培训课程的出席情况。",
+  "my_event_presences": "我的出席列表",
+  "my_event_presences_desc": "列出我在培训课程中的出席情况。"
+}

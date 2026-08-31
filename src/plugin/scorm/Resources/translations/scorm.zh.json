@@ -1,0 +1,21 @@
+{
+  "best_score": "最高分",
+  "best_status": "最佳状态",
+  "browsed": "已浏览",
+  "completed": "已完成",
+  "failed": "失败",
+  "incomplete": "未完成",
+  "last_score": "最后得分",
+  "last_session_date": "上次会话日期",
+  "not attempted": "未尝试",
+  "not_attempted": "未尝试",
+  "passed": "通过",
+  "play_scorm": "开始Scorm",
+  "sco": "SCO",
+  "scorm_results": "SCORM结果",
+  "session_time": "上次会话时长",
+  "success_status": "状态",
+  "unknown": "未知",
+  "scorm_12": "Scorm 1.2",
+  "scorm_2004": "Scorm 2004"
+}

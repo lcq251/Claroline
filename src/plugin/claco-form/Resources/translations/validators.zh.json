@@ -1,0 +1,4 @@
+{
+  "entry_field_duplicated": "字段 %field% 不能重复。",
+  "entry_field_required": "字段 %field% 是必填项。"
+}

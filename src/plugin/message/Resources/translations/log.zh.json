@@ -1,0 +1,5 @@
+{
+  "message.send": "发送消息",
+  "message.send_desc": "当用户从平台发送消息时。",
+  "message.send_message": "向 %receiver% 发送了一条消息。"
+}

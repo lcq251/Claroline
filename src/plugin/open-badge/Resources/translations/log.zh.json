@@ -1,0 +1,8 @@
+{
+  "badge.grant": "获得徽章",
+  "badge.grant_desc": "当用户因平台活动或手动授予而获得新徽章时。",
+  "badge.grant_message": "获得了徽章 %badge%。",
+  "badge.revoke": "撤销徽章",
+  "badge.revoke_desc": "当管理员手动移除用户的徽章时。",
+  "badge.revoke_message": "失去了徽章 %badge%。"
+}

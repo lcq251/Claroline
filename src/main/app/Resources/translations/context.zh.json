@@ -1,0 +1,10 @@
+{
+  "public": "首页",
+  "workspace": "活动空间",
+  "administration": "管理",
+  "desktop": "我的桌面",
+  "context_history_desc": "查看对该空间所做的所有修改。",
+  "enabled_tools": "已启用",
+  "disabled_tools": "已禁用",
+  "tools_desc": "根据您需要的功能，选择并配置要启用的工具。"
+}

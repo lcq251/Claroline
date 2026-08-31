@@ -1,0 +1,18 @@
+{
+  "resource_attempts": "资源尝试列表",
+  "resource_attempts_desc": "允许列出用户进行的尝试。",
+  "resource_evaluations": "资源评估列表",
+  "resource_evaluations_desc": "允许列出用户为资源获得的评估。",
+  "my_resource_evaluations": "我的资源评估列表",
+  "my_resource_evaluations_desc": "允许列出我为资源获得的评估。",
+  "workspace_evaluations": "活动空间评估列表",
+  "workspace_evaluations_desc": "允许列出用户为活动空间获得的评估。",
+  "my_workspace_evaluations": "我的活动空间评估列表",
+  "my_workspace_evaluations_desc": "允许列出我为活动空间获得的评估。",
+  "sequences": "序列列表",
+  "sequences_desc": "允许列出当前用户可访问的序列",
+  "sequence_evaluations": "序列评估列表",
+  "sequence_evaluations_desc": "允许列出用户为序列获得的评估。",
+  "my_sequence_evaluations": "我的序列评估列表",
+  "my_sequence_evaluations_desc": "允许列出我为序列获得的评估。"
+}

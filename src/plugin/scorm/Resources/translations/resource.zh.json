@@ -1,0 +1,22 @@
+{
+  "cannot_load_imsmanifest_message": "无法加载文件\"imsmanifest.xml\"",
+  "claroline_scorm": "Scorm",
+  "claroline_scorm_desc": "允许在您的平台中集成Scorm包，这是一种旧的教学资源互操作性限制技术。",
+  "claroline_scorm_12": "Scorm (1.2)",
+  "claroline_scorm_12_resource": "Scorm (1.2)",
+  "claroline_scorm_2004": "Scorm (2004)",
+  "claroline_scorm_2004_resource": "Scorm (2004)",
+  "default_organization_not_found_message": "在存档的\"imsmanifest.xml\"文件中定义的默认组织未找到。",
+  "invalid_scorm_archive_message": "文件必须是包含根目录下\"imsmanifest.xml\"文件的ZIP压缩包。",
+  "invalid_scorm_version_12_message": "存档的\"imsmanifest.xml\"文件中定义的Scorm版本必须为\"1.2\"。",
+  "invalid_scorm_version_2004_message": "存档的\"imsmanifest.xml\"文件中定义的Scorm版本必须为\"CAM 1.3\"或\"2004 3rd Edition\"或\"2004 4th Edition\"。",
+  "invalid_scorm_version_message": "存档的\"imsmanifest.xml\"文件中定义的Scorm版本无效。",
+  "no_organization_found_message": "在\"imsmanifest.xml\"文件中未定义任何组织。",
+  "no_sco_in_scorm_archive_message": "存档的\"imsmanifest.xml\"文件中未定义任何SCO。",
+  "quit": "退出",
+  "sco_resource_without_href_message": "存档的\"imsmanifest.xml\"文件中定义的某个SCO关联了一个空资源。",
+  "sco_with_no_identifier_message": "存档的\"imsmanifest.xml\"文件中定义的某个SCO没有标识符。",
+  "sco_without_resource_message": "存档的\"imsmanifest.xml\"文件中定义的某个SCO未关联任何资源。",
+  "scorm_form_file": "文件",
+  "scorm_form_name": "名称"
+}

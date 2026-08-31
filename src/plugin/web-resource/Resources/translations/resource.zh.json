@@ -1,0 +1,13 @@
+{
+  "claroline_web_resource": "网页资源",
+  "claroline_web_resource_desc": "此资源允许以zip格式上传一个用HTML、CSS和JavaScript编写的\"网站\"。",
+  "not_a_zip": "文件必须是包含\"index.html\"或\"index.htm\"文件的.zip压缩包。",
+  "has_to_be_a_zip": "文件必须是包含\"index.html\"或\"index.htm\"文件的.zip压缩包。",
+  "inputs": "关联资源",
+  "inputs_help": "选择要关联到此资源的其他资源。关联的资源将作为配置参数传递。",
+  "no_inputs": "暂无关联资源",
+  "add_inputs": "添加关联资源",
+  "link_resources": "链接资源",
+  "linked_resources": "已关联资源",
+  "resource_deleted": "资源已删除"
+}

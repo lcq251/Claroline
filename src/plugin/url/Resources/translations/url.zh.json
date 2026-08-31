@@ -1,0 +1,7 @@
+{
+  "button_desc": "显示用于打开URL的按钮",
+  "iframe_desc": "在资源内显示URL",
+  "redirect_desc": "在当前标签页中打开URL",
+  "tab_desc": "在新标签页中打开URL",
+  "https_iframe_help": "URL必须使用HTTPS协议才能正确显示。"
+}

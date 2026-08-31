@@ -1,0 +1,16 @@
+{
+  "admin_tools": "管理工具列表",
+  "admin_tools_desc": "允许列出当前用户可访问的管理工具。",
+  "my_workspaces": "我的活动空间列表",
+  "my_workspaces_desc": "允许列出当前用户已注册的活动空间。",
+  "resources": "资源列表",
+  "resources_desc": "允许列出当前用户可访问的资源。",
+  "tools": "工具列表",
+  "tools_desc": "允许列出当前用户可访问的工具。",
+  "workspaces": "活动空间列表",
+  "workspaces_desc": "允许列出当前用户可见的活动空间。这包括用户管理的、已注册的或可自行注册的空间。",
+  "resource": "选中的资源",
+  "resource_desc": "允许显示选中的资源。",
+  "personal_workspace": "个人空间文件夹",
+  "personal_workspace_desc": "允许显示当前用户个人空间的根文件夹。"
+}

@@ -1,0 +1,8 @@
+{
+  "email_announcement": "发送公告",
+  "email_announcement_desc": "用于发送公告的模板",
+  "publication_datetime_desc": "公告的发布日期",
+  "pdf_announcement": "公告",
+  "pdf_announcement_desc": "用于将公告导出为PDF格式的模板",
+  "title_desc": "公告标题"
+}

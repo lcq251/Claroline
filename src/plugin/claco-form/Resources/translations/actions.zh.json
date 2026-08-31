@@ -1,0 +1,7 @@
+{
+  "add-entry": "添加条目",
+  "add_category": "添加分类",
+  "save_category": "保存分类",
+  "assign_categories": "重新分配分类",
+  "assign_categories_desc": "将所有符合自动关联分类条件的条目分配到相应分类。不再满足条件的条目将从对应分类中移除。"
+}

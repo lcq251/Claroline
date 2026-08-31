@@ -1,0 +1,16 @@
+{
+  "loading": "正在加载您的模板...",
+  "template_delete_confirm_message": "您确定要删除此模板吗？",
+  "no_template_type": "无模板类型",
+  "no_template": "无模板",
+  "configure_email_help": "配置平台发送邮件的外观和内容。",
+  "configure_pdf_help": "配置平台PDF打印输出的外观和内容。",
+  "configure_other_help": "配置平台各种元素的外观和内容。",
+  "template_name": "模板：%name%",
+  "available_templates": "可用模板",
+  "new_template": "新建模板",
+  "template_default": "设为默认",
+  "template_default_help": "如果未选择其他模板，将使用此模板。",
+  "template_system": "系统模板",
+  "template_system_desc": "如果未定义默认模板，则使用此模板。"
+}

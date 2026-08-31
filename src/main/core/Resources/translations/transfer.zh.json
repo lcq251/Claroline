@@ -1,0 +1,21 @@
+{
+  "workspace": "活动空间",
+  "directory": "文件夹",
+  "resource": "资源",
+  "archive": "归档",
+  "unarchive": "取消归档",
+  "empty_role": "清空角色（用户和组）",
+  "remove_all_groups": "删除所有组",
+  "remove_all_users": "删除所有用户",
+  "directory_id": "文件夹ID",
+  "directory_name": "文件夹名称",
+  "directory_open": "打开权限 [默认: 0 (否)]",
+  "directory_delete": "删除权限 [默认: 0 (否)]",
+  "directory_edit": "编辑权限 [默认: 0 (否)]",
+  "directory_copy": "复制权限 [默认: 0 (否)]",
+  "directory_export": "导出权限 [默认: 0 (否)]",
+  "directory_administrate": "协作者的管理权限",
+  "directory_user": "唯一可访问用户的用户名",
+  "directory_role": "角色翻译键（未定义时使用默认角色）",
+  "directory_creation": "允许创建的资源类型列表（逗号分隔）- %types% - 默认: 全部"
+}

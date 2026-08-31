@@ -1,0 +1,8 @@
+{
+  "correct_zone_desc": "蓝色区域 = 预期正确区域",
+  "default_tolerance": "默认容差",
+  "expected_zones": "预期正确区域",
+  "nb_authorized_selection": "允许选择次数",
+  "pick_audio_file": "选择音频文件",
+  "tolerance_zone_desc": "粉色区域 = 容差范围"
+}

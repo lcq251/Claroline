@@ -1,0 +1,18 @@
+{
+  "grant": "授予徽章",
+  "transfer_badges": "转移徽章",
+  "transfer_badges_desc": "将一个用户的所有徽章转移到另一个用户。",
+  "add_badge": "添加徽章",
+  "show_evidences": "查看证据",
+  "grant_users": "授予给用户",
+  "add_rule": "添加规则",
+  "save_rule": "保存规则",
+  "archive_badge": "归档徽章",
+  "archive_badge_desc": "归档徽章以使其对用户不可访问，同时保留其数据。可在“徽章”工具设置中找到已归档的徽章，以恢复或永久删除。",
+  "restore_badge": "恢复徽章",
+  "restore_badge_desc": "恢复徽章以使其重新对用户可访问。",
+  "delete_badge": "删除徽章",
+  "delete_badge_desc": "永久删除徽章。所有用户数据和结果将被删除且无法恢复。",
+  "recompute_assertions": "重新计算授予",
+  "recompute_assertions_desc": "重新计算授予，以自动将徽章授予所有符合已定义规则但尚未拥有该徽章的用户。"
+}

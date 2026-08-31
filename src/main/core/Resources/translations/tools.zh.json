@@ -1,0 +1,22 @@
+{
+  "loading": "正在加载您的工具...",
+  "not_found": "未找到工具",
+  "not_found_desc": "抱歉，我们无法找到您的工具。可能该工具不存在（或已不存在），或者使用的URL不正确。",
+  "forbidden": "无法访问工具",
+  "forbidden_desc": "您没有访问此工具的权限。请联系管理员为您授予必要的权限。",
+  "parameters": "参数",
+  "resources": "资源",
+  "resources_desc": "创建并组织您的数字内容。从YouTube视频到学习路径。",
+  "community": "社区",
+  "technical_settings": "技术设置",
+  "appearance_settings": "外观",
+  "resource_trash": "资源回收站",
+  "integration": "集成",
+  "workspaces": "活动空间",
+  "locations": "地点",
+  "tool_history_desc": "查看对工具及其内容所做的所有修改。",
+  "make_tool_public": "设为公开工具",
+  "make_tool_public_help": "公开工具可供平台所有注册用户访问。",
+  "make_tool_public_workspace_help": "公开工具可供活动空间所有注册用户访问。",
+  "make_tool_public_workspace_warning": "<b>注意：</b>如果活动空间也是公开的，则公开工具无需注册和登录即可访问。"
+}

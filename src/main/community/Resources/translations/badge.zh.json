@@ -1,0 +1,11 @@
+{
+  "evidence_narrative_add_group": "由 %doer% 于 %date% 分配的小组",
+  "evidence_narrative_add_role": "由 %doer% 于 %date% 分配的角色",
+  "evidence_narrative_add_team": "由 %doer% 于 %date% 分配的团队",
+  "in_group": "成为小组成员",
+  "in_group_desc": "成为小组 %group% 的成员",
+  "in_role": "拥有角色",
+  "in_role_desc": "拥有角色 %role%",
+  "in_team": "成为团队成员",
+  "in_team_desc": "成为团队 %team% 的成员"
+}

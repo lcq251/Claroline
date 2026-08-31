@@ -1,0 +1,8 @@
+{
+  "training_event_presence": "参加一次培训课程",
+  "training_event_presence_desc": "参加培训课程 %training_event%",
+  "training_course_presence": "参加一门培训的一个或多个课程",
+  "training_course_presence_desc": "参加培训 %course% 的 %count% 次课程",
+  "count_training_events": "课程数量",
+  "count_training_events_help": "设置用户必须参加多少次课程才能获得该徽章。"
+}

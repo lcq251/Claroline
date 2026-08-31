@@ -1,0 +1,15 @@
+{
+  "forum_new_message": "论坛新消息",
+  "forum_new_message_desc": "用于通知用户论坛中有新消息发布的模板。",
+  "forum_desc": "论坛名称",
+  "forum_url_desc": "论坛URL",
+  "subject_desc": "主题名称",
+  "subject_url_desc": "主题URL",
+  "message_desc": "消息",
+  "post_datetime_utc_desc": "消息的日期和时间（UTC）",
+  "post_date_utc_desc": "消息的日期（UTC）",
+  "post_time_utc_desc": "消息的时间（UTC）",
+  "post_datetime_desc": "消息的日期和时间",
+  "post_date_desc": "消息的日期",
+  "post_time_desc": "消息的时间"
+}

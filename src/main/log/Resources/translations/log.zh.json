@@ -1,0 +1,6 @@
+{
+  "functional": "功能日志",
+  "operational": "操作日志",
+  "security": "安全日志",
+  "message": "发送日志"
+}

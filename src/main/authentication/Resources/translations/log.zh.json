@@ -1,0 +1,20 @@
+{
+  "authentication.forgot_password": "忘记密码",
+  "authentication.forgot_password_desc": "当用户使用“忘记密码”功能请求重置密码时。",
+  "authentication.forgot_password_message": "请求重置账户 %user% 的密码。",
+  "authentication.new_password": "更改密码",
+  "authentication.new_password_desc": "当用户更改账户密码时。",
+  "authentication.new_password_message": "更改了账户 %user% 的密码。",
+  "authentication.user_login": "用户登录",
+  "authentication.user_login_desc": "当用户使用其账户（内部或外部）登录平台时。",
+  "authentication.user_login_message": "已<b>登录</b>。",
+  "authentication.user_login_failed": "登录尝试失败",
+  "authentication.user_login_failed_desc": "当用户无法登录平台时（账户不存在或已禁用、密码错误等）。",
+  "authentication.user_login_failed_message": "登录失败。原因：%error%。",
+  "authentication.user_logout": "用户登出",
+  "authentication.user_logout_desc": "当用户登出平台时。",
+  "authentication.user_logout_message": "已<b>登出</b>。",
+  "authentication.user_switch": "“以…身份查看”模式",
+  "authentication.user_switch_desc": "当管理员使用“以…身份查看”功能以其他用户的账户浏览平台时。",
+  "authentication.user_switch_message": "已<b>冒充</b>账户 %user%。"
+}

@@ -1,0 +1,8 @@
+{
+  "evaluation_not_attempted_status": "您尚未开始该资源。",
+  "evaluation_unknown_status": "我们不知道您在该资源中的进度。",
+  "evaluation_incomplete_status": "您尚未完成该资源。",
+  "evaluation_failed_status": "您未通过该资源。",
+  "evaluation_completed_status": "您已完成该资源。",
+  "evaluation_passed_status": "您已通过该资源。"
+}

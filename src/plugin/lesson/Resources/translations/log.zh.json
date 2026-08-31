@@ -1,0 +1,11 @@
+{
+  "lesson_chapter.create": "创建知识页面",
+  "lesson_chapter.create_desc": "当用户在知识中创建新页面时。",
+  "lesson_chapter.create_message": "已<b>创建</b>页面 %object%。",
+  "lesson_chapter.update": "更新知识页面",
+  "lesson_chapter.update_desc": "当用户在知识中更新页面时。",
+  "lesson_chapter.update_message": "已<b>修改</b>页面 %object%。",
+  "lesson_chapter.delete": "删除知识页面",
+  "lesson_chapter.delete_desc": "当用户在知识中删除页面时。",
+  "lesson_chapter.delete_message": "已<b>删除</b>页面 %object%。"
+}
