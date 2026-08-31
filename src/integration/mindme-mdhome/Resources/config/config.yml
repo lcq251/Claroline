@@ -1,0 +1,19 @@
+plugin:
+    themes:
+        - name: mindme
+
+    widgets:
+        - name: landing-hero
+          class: Mindme\MdhomeBundle\Entity\Widget\LandingWidget
+          context: [public, desktop]
+          tags: [content]
+
+        - name: landing-features
+          class: Mindme\MdhomeBundle\Entity\Widget\LandingWidget
+          context: [public, desktop]
+          tags: [content]
+
+        - name: landing-packaging
+          class: Mindme\MdhomeBundle\Entity\Widget\LandingWidget
+          context: [public, desktop]
+          tags: [content]

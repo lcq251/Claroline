@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        tags: [ 'claroline.platform.updater' ]
+
+    Mindme\MdhomeBundle\Installation\Updater\UpdaterMdhomeDefaults:
+        arguments:
+            - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'

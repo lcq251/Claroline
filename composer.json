@@ -126,7 +126,8 @@
             "HeVinci\\UrlBundle\\": "src/plugin/url",
             "Icap\\LessonBundle\\": "src/plugin/lesson",
             "Innova\\PathBundle\\": "src/plugin/path",
-            "UJM\\ExoBundle\\": "src/plugin/exo"
+            "UJM\\ExoBundle\\": "src/plugin/exo",
+            "Mindme\\MdhomeBundle\\": "src/integration/mindme-mdhome"
         }
     },
     "scripts": {
