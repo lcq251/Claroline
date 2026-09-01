@@ -97,6 +97,14 @@ class WorkspaceSubscriber implements EventSubscriberInterface
             if ($workspaceCode) {
                 $workspace->setCode($workspaceCode);
             }
+
+            // a workspace created from a (possibly hidden) model should not inherit
+            // the hidden flag unless it is explicitly posted or the workspace is a model itself
+            if (!array_key_exists('restrictions', $data) || !array_key_exists('hidden', $data['restrictions'] ?? [])) {
+                if (!in_array(Options::AS_MODEL, $options) && !$workspace->isModel()) {
+                    $workspace->setHidden(false);
+                }
+            }
         }
 
         $this->handleNewWorkspace($workspace);
