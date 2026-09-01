@@ -2,5 +2,12 @@
     "claroline_web_resource": "Web Resource",
     "claroline_web_resource_desc": "This resource allows to upload a \"website\" written in html, css and javascript from a zip file.",
     "not_a_zip": "The file must be a .zip archive containing an \"index.html\" or \"index.htm\" file.",
-    "has_to_be_a_zip": "The file must be a .zip archive containing an \"index.html\" or \"index.htm\" file."
+    "has_to_be_a_zip": "The file must be a .zip archive containing an \"index.html\" or \"index.htm\" file.",
+    "inputs": "Linked Resources",
+    "inputs_help": "Select resources to link to this resource. Linked resources will be passed as configuration parameters.",
+    "no_inputs": "No linked resources",
+    "add_inputs": "Add linked resources",
+    "link_resources": "Link resources",
+    "linked_resources": "Linked Resources",
+    "resource_deleted": "Resource deleted"
 }

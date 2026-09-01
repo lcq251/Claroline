@@ -14,6 +14,7 @@ use Claroline\CoreBundle\Library\Normalizer\DateRangeNormalizer;
 use Claroline\HomeBundle\Entity\HomeTab;
 use Claroline\HomeBundle\Entity\Type\AbstractTab;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class HomeTabSerializer
 {
@@ -44,7 +45,7 @@ class HomeTabSerializer
         $data = [
             'id' => $homeTab->getUuid(),
             'title' => $homeTab->getName(),
-            'slug' => $homeTab->getLongTitle() ? substr(strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $homeTab->getLongTitle()))), 0, 128) : 'new',
+            'slug' => $homeTab->getLongTitle() ? substr((new AsciiSlugger())->slug($homeTab->getLongTitle(), '')->lower()->toString(), 0, 128) : 'new',
             'longTitle' => $homeTab->getLongTitle(),
             'poster' => $homeTab->getPoster(),
             'icon' => $homeTab->getIcon(),

@@ -18,6 +18,7 @@ public/themes/*
 !public/themes/.gitkeep
 .env
 installed
+/web/
 .php-cs-fixer.cache
 .phpunit.result.cache
 ###> symfony/framework-bundle ###

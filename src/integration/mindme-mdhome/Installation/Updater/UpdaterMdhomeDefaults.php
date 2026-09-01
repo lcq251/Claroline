@@ -15,20 +15,18 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Claroline\InstallationBundle\Updater\Updater;
 
 /**
- * mindme-mdhome 温和默认参数（替代 mindme-ai 的 MindmeAiPass 编译期强制写回）。
+ * mindme-mdhome 强制默认参数（替代 mindme-ai 的 MindmeAiPass 编译期强制写回）。
  *
- * MindmeAiPass 原来在每次容器构建时无条件 setParameter 覆盖平台参数（A1 强制策略）。
- * 本 Updater 只在参数**缺席**时才写入默认值（hasParameter 判断），因此：
- *   - 安装第一次运行时其值生效；
- *   - 管理员后续在平台设置中修改后不会被重置（温和默认）。
- *
- * 对应键均已在 core PlatformDefaults 中有默认值，本 bundle 仅负责在平台尚未
- * 为该部署配置值（platform_options.json 缺失该键）时，落地 mdhome/工作室的默认值。
+ * 管理员选择“强制覆盖”：每次运行本更新器（plugin 安装/升级时由
+ * claroline.platform.updater 触发）都会把这些键写入 platform_options.json，
+ * 覆盖任何既有值。这与温和默认的区别是：不判断 hasParameter，始终把 mdhome
+ * 主张的值落地到参数文件（PlatformConfigurationHandler::setParameter 最终
+ * saveParameters() → file_put_contents 写文件）。
  */
 class UpdaterMdhomeDefaults extends Updater
 {
     /**
-     * 目标键 => 默认值。
+     * 目标键 => 默认值。安装时将全部强制写入 platform_options.json。
      */
     private const DEFAULTS = [
         'home.type' => 'tool',
@@ -40,6 +38,7 @@ class UpdaterMdhomeDefaults extends Updater
         'pricing.currency' => 'cny',
         'registration.self' => true,
         'display.name' => '澜之轩工作室',
+        'display.theme' => 'mindme',
     ];
 
     public function __construct(
@@ -50,10 +49,8 @@ class UpdaterMdhomeDefaults extends Updater
     public function postUpdate(): void
     {
         foreach (self::DEFAULTS as $key => $value) {
-            // 温和默认：仅当参数尚未设置（platform_options.json 缺席该键）时写入
-            if (!$this->config->hasParameter($key)) {
-                $this->config->setParameter($key, $value);
-            }
+            // 强制覆盖：无论当前值如何，都写入配置文件
+            $this->config->setParameter($key, $value);
         }
     }
 }

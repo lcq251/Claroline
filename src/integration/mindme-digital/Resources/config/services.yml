@@ -1,4 +1,7 @@
 services:
+    Mindme\DigitalBundle\Component\Resource\DigitalTeacherResource:
+        tags: ['claroline.component.resource']
+
     Mindme\DigitalBundle\Security\SecretCipher:
         arguments:
             - '%kernel.secret%'
