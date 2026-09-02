@@ -3,8 +3,7 @@ import {useSelector} from 'react-redux'
 import get from 'lodash/get'
 
 import {trans} from '#/main/app/intl/translation'
-import {ResourceEditor, ResourceEditorOverview} from '#/main/core/resource/editor'
-import {selectors as resourceSelectors} from '#/main/core/resource'
+import {ResourceEditor, ResourceEditorOverview, selectors as editorSelectors} from '#/main/core/resource/editor'
 
 /**
  * Aibase is now an "AI model resource": the editor is a plain
@@ -14,7 +13,11 @@ import {selectors as resourceSelectors} from '#/main/core/resource'
  * hasKey + apiKeyMask. Leaving the key input empty keeps the stored key.
  */
 const AibaseEditorOverview = () => {
-  const resource = useSelector(resourceSelectors.resource)
+  // form data lives in the resourceEditor store, so we must read the *modified*
+  // version of the resource (not the initial snapshot from the resource store).
+  // Otherwise conditional fields (restrictionType mode, platformType-based help)
+  // never re-render when the user changes the value in the form.
+  const resource = useSelector(editorSelectors.resource)
   const hasKey = get(resource, 'hasKey', false)
   const mask = get(resource, 'apiKeyMask', '')
   const hasTtsToken = get(resource, 'hasTtsToken', false)
