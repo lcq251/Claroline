@@ -57,6 +57,7 @@ class LocaleManager
     public function getUserLocale(Request $request): string
     {
         $locales = $this->getAvailableLocales();
+        $configured = $this->getDefault();
         $preferred = explode('_', $request->getPreferredLanguage());
 
         if ($request->query->get('_locale')) {
@@ -67,10 +68,17 @@ class LocaleManager
             $locale = $this->getCurrentUser()->getLocale();
         } elseif ($request->getSession() && $request->getSession()->get('_locale')) {
             $locale = $request->getSession()->get('_locale');
+        } elseif ($configured) {
+            // Platform has an explicit `intl.locale` — respect it. The
+            // browser's Accept-Language is intentionally NOT consulted here
+            // so the configured default wins for anonymous visitors.
+            $locale = $configured;
         } elseif (count($preferred) > 0 && in_array($preferred[0], $locales)) {
+            // No platform default — fall back to the browser's preferred
+            // language so a fresh install still works for the visitor.
             $locale = $preferred[0];
         } else {
-            $locale = $this->getDefault();
+            $locale = $configured;
         }
 
         return $locale;
