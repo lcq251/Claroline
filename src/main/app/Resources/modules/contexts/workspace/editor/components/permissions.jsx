@@ -61,7 +61,7 @@ const WorkspaceEditorPermissions = () => {
         }, {
           name: 'restrictions',
           title: trans('access_restrictions'),
-          description: trans('Ajoutez des conditions d\'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission "Administrer" ne sont pas affectés.'),
+          description: trans('workspace_access_restrictions_description'),
           primary: true,
           fields: [
             {

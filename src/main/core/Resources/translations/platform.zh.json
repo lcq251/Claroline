@@ -910,5 +910,9 @@
   "exhausted_message": "次数用尽消息",
   "failure_message_help": "用户达到“失败”状态时显示失败消息。",
   "auto_messages_help": "自定义用户学习过程中自动显示的消息。",
-  "success_conditions": "成功条件"
+  "success_conditions": "成功条件",
+  "workspace_short_description_help": "简要描述您的工作空间（简短描述显示在列表和\"关于\"页面中）",
+  "workspace_long_description_help": "详细描述您的工作空间内容及期望用户完成的工作（详细描述显示在\"关于\"页面，替代简短描述）",
+  "workspace_opening_description": "配置工作空间的打开方式。",
+  "workspace_access_restrictions_description": "为您的内容添加额外的访问条件。具有\"管理\"权限的用户不受影响。"
 }

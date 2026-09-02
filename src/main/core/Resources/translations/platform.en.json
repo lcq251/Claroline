@@ -876,5 +876,9 @@
     "exhausted_message": "Attempts exhausted message",
     "failure_message_help": "The failure message is shown once users reached the \"Failure\" status on their activity.",
     "auto_messages_help": "Customize the messages displayed automatically to your users as they progress.",
-    "success_conditions": "Success conditions"
+    "success_conditions": "Success conditions",
+    "workspace_short_description_help": "Briefly describe your workspace (the short description is displayed in lists and on the \"About\" view).",
+    "workspace_long_description_help": "Describe in detail the content of your workspace, the work expected from your users (the detailed description is displayed on the \"About\" view, replacing the short description).",
+    "workspace_opening_description": "Configure how your workspace will open.",
+    "workspace_access_restrictions_description": "Add additional access conditions to your content. Users with the \"Manage\" permission are not affected."
 }

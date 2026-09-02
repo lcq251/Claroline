@@ -48,7 +48,7 @@ const WorkspaceEditorOverview = () => {
               name: 'meta.description',
               type: 'string',
               label: trans('description_short'),
-              help: trans('Décrivez succinctement votre espace d\'activités (La description courte est affichée dans les listes et sur la vue "À propos").'),
+              help: trans('workspace_short_description_help'),
               recommended: true,
               options: {
                 long: true,
@@ -58,7 +58,7 @@ const WorkspaceEditorOverview = () => {
               name: 'meta.descriptionHtml',
               label: trans('description_long'),
               type: 'html',
-              help: trans('Décrivez de manière détaillée le contenu de votre espace d\'activités, la travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue "À propos" à la place de la description courte).')
+              help: trans('workspace_long_description_help')
             }, {
               name: 'contactEmail',
               label: trans('contact_email'),

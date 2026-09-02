@@ -910,5 +910,9 @@
     "exhausted_message": "Message de tentatives épuisées",
     "failure_message_help": "Le message d'échec est affiché à partir du moment où les utilisateurs ont atteint le statut \"Echec\" à leur activité.",
     "auto_messages_help": "Personnalisez les messages affichés automatiquement à vos utilisateurs lors de leur progression.",
-    "success_conditions": "Conditions de réussite"
+    "success_conditions": "Conditions de réussite",
+    "workspace_short_description_help": "Décrivez succinctement votre espace d'activités (La description courte est affichée dans les listes et sur la vue \"À propos\").",
+    "workspace_long_description_help": "Décrivez de manière détaillée le contenu de votre espace d'activités, le travail attendu par vos utilisateurs (La description détaillée est affichée sur la vue \"À propos\" à la place de la description courte).",
+    "workspace_opening_description": "Configurez la façon dont votre espace de travail va s'ouvrir.",
+    "workspace_access_restrictions_description": "Ajoutez des conditions d'accès supplémentaires à vos contenus. Les utilisateurs ayant la permission \"Administrer\" ne sont pas affectés."
 }
