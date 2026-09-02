@@ -24,7 +24,7 @@ const AibaseEditorOverview = () => {
 
   const baseFields = [
     {
-      name: 'kind',
+      name: 'resource.kind',
       label: trans('kind', {}, 'resource'),
       type: 'choice',
       options: {
@@ -36,7 +36,7 @@ const AibaseEditorOverview = () => {
       help: trans('kind_help', {}, 'resource')
     },
     {
-      name: 'platformType',
+      name: 'resource.platformType',
       label: trans('platform_type', {}, 'resource'),
       type: 'choice',
       options: {
@@ -51,7 +51,7 @@ const AibaseEditorOverview = () => {
       help: trans('platform_type_help', {}, 'resource')
     },
     {
-      name: 'modelName',
+      name: 'resource.modelName',
       label: trans('model_name', {}, 'resource'),
       type: 'string',
       options: {
@@ -59,7 +59,7 @@ const AibaseEditorOverview = () => {
       }
     },
     {
-      name: 'baseUrl',
+      name: 'resource.baseUrl',
       label: trans('base_url', {}, 'resource'),
       type: 'string',
       options: {
@@ -70,7 +70,7 @@ const AibaseEditorOverview = () => {
         : trans('base_url_help_preset', {}, 'resource')
     },
     {
-      name: 'apiKey',
+      name: 'resource.apiKey',
       label: trans('api_key', {}, 'resource'),
       type: 'password',
       options: {
@@ -81,7 +81,7 @@ const AibaseEditorOverview = () => {
         : trans('api_key_help_empty', {}, 'resource')
     },
     {
-      name: 'extraConfig',
+      name: 'resource.extraConfig',
       label: trans('extra_config', {}, 'resource'),
       type: 'string',
       options: {
@@ -92,7 +92,7 @@ const AibaseEditorOverview = () => {
       help: trans('extra_config_help', {}, 'resource')
     },
     {
-      name: 'restrictionType',
+      name: 'resource.restrictionType',
       label: trans('restriction_type', {}, 'resource'),
       type: 'choice',
       options: {
@@ -111,14 +111,14 @@ const AibaseEditorOverview = () => {
   if ('time' === restrictionType) {
     modeFields.push(
       {
-        name: 'startAt',
+        name: 'resource.startAt',
         label: trans('access_start_at', {}, 'resource'),
         type: 'date',
         options: {time: true},
         help: trans('access_start_at_help', {}, 'resource')
       },
       {
-        name: 'expiresAt',
+        name: 'resource.expiresAt',
         label: trans('access_end_at', {}, 'resource'),
         type: 'date',
         options: {time: true},
@@ -128,7 +128,7 @@ const AibaseEditorOverview = () => {
   } else if ('count' === restrictionType) {
     modeFields.push(
       {
-        name: 'usageLimit',
+        name: 'resource.usageLimit',
         label: trans('usage_limit', {}, 'resource'),
         type: 'number',
         help: trans('usage_limit_help', {}, 'resource')
@@ -144,7 +144,7 @@ const AibaseEditorOverview = () => {
           primary: true,
           hideTitle: true,
           fields: [...baseFields, ...modeFields, {
-            name: 'isDefault',
+            name: 'resource.isDefault',
             label: trans('is_default', {}, 'resource'),
             type: 'boolean',
             help: trans('is_default_help', {}, 'resource')
@@ -156,7 +156,7 @@ const AibaseEditorOverview = () => {
             title: trans('dt_voice_settings', {}, 'resource'),
             fields: [
               {
-                name: 'ttsEngine',
+                name: 'resource.ttsEngine',
                 label: trans('dt_tts_engine', {}, 'resource'),
                 type: 'choice',
                 options: {
@@ -171,33 +171,33 @@ const AibaseEditorOverview = () => {
                 help: trans('dt_tts_engine_help', {}, 'resource')
               },
               {
-                name: 'voiceId',
+                name: 'resource.voiceId',
                 label: trans('dt_voice_id', {}, 'resource'),
                 type: 'string',
                 help: trans('dt_voice_id_help', {}, 'resource')
               },
               {
-                name: 'rate',
+                name: 'resource.rate',
                 label: trans('dt_rate', {}, 'resource'),
                 type: 'number',
                 options: {step: 0.1},
                 help: trans('dt_rate_help', {}, 'resource')
               },
               {
-                name: 'pitch',
+                name: 'resource.pitch',
                 label: trans('dt_pitch', {}, 'resource'),
                 type: 'number',
                 options: {step: 0.1},
                 help: trans('dt_pitch_help', {}, 'resource')
               },
               {
-                name: 'ttsAppId',
+                name: 'resource.ttsAppId',
                 label: trans('dt_tts_appid', {}, 'resource'),
                 type: 'string',
                 help: trans('dt_tts_appid_help', {}, 'resource')
               },
               {
-                name: 'ttsToken',
+                name: 'resource.ttsToken',
                 label: trans('dt_tts_token', {}, 'resource'),
                 type: 'password',
                 options: {
@@ -213,7 +213,7 @@ const AibaseEditorOverview = () => {
             title: trans('dt_avatar_settings', {}, 'resource'),
             fields: [
               {
-                name: 'avatarType',
+                name: 'resource.avatarType',
                 label: trans('dt_avatar_type', {}, 'resource'),
                 type: 'choice',
                 options: {
@@ -227,7 +227,7 @@ const AibaseEditorOverview = () => {
                 help: trans('dt_avatar_type_help', {}, 'resource')
               },
               {
-                name: 'avatarAsset',
+                name: 'resource.avatarAsset',
                 label: trans('dt_avatar_asset', {}, 'resource'),
                 type: 'string',
                 help: trans('dt_avatar_asset_help', {}, 'resource')
