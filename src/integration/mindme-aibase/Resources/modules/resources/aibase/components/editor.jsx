@@ -28,10 +28,10 @@ const AibaseEditorOverview = () => {
       label: trans('kind', {}, 'resource'),
       type: 'choice',
       options: {
-        choices: [
-          {value: 'model', label: trans('kind_model', {}, 'resource')},
-          {value: 'digital_teacher', label: trans('kind_digital_teacher', {}, 'resource')}
-        ]
+        choices: {
+          model: trans('kind_model', {}, 'resource'),
+          digital_teacher: trans('kind_digital_teacher', {}, 'resource')
+        }
       },
       help: trans('kind_help', {}, 'resource')
     },
@@ -40,13 +40,13 @@ const AibaseEditorOverview = () => {
       label: trans('platform_type', {}, 'resource'),
       type: 'choice',
       options: {
-        choices: [
-          {value: 'deepseek', label: 'DeepSeek'},
-          {value: 'openai', label: 'OpenAI'},
-          {value: 'qwen', label: '通义千问 Qwen'},
-          {value: 'kimi', label: 'Kimi'},
-          {value: 'custom', label: trans('platform_custom', {}, 'resource')}
-        ]
+        choices: {
+          deepseek: 'DeepSeek',
+          openai: 'OpenAI',
+          qwen: '通义千问 Qwen',
+          kimi: 'Kimi',
+          custom: trans('platform_custom', {}, 'resource')
+        }
       },
       help: trans('platform_type_help', {}, 'resource')
     },
@@ -96,11 +96,11 @@ const AibaseEditorOverview = () => {
       label: trans('restriction_type', {}, 'resource'),
       type: 'choice',
       options: {
-        choices: [
-          {value: 'none', label: trans('restriction_none', {}, 'resource')},
-          {value: 'time', label: trans('restriction_time', {}, 'resource')},
-          {value: 'count', label: trans('restriction_count', {}, 'resource')}
-        ]
+        choices: {
+          none: trans('restriction_none', {}, 'resource'),
+          time: trans('restriction_time', {}, 'resource'),
+          count: trans('restriction_count', {}, 'resource')
+        }
       },
       help: trans('restriction_type_help', {}, 'resource')
     }
@@ -160,13 +160,13 @@ const AibaseEditorOverview = () => {
                 label: trans('dt_tts_engine', {}, 'resource'),
                 type: 'choice',
                 options: {
-                  choices: [
-                    {value: 'none', label: trans('dt_choice_none', {}, 'resource')},
-                    {value: 'cloud', label: trans('dt_choice_cloud', {}, 'resource')},
-                    {value: 'volc', label: trans('dt_choice_volc', {}, 'resource')},
-                    {value: 'edge', label: trans('dt_choice_edge', {}, 'resource')},
-                    {value: 'selfhosted', label: trans('dt_choice_selfhosted', {}, 'resource')}
-                  ]
+                  choices: {
+                    none: trans('dt_choice_none', {}, 'resource'),
+                    cloud: trans('dt_choice_cloud', {}, 'resource'),
+                    volc: trans('dt_choice_volc', {}, 'resource'),
+                    edge: trans('dt_choice_edge', {}, 'resource'),
+                    selfhosted: trans('dt_choice_selfhosted', {}, 'resource')
+                  }
                 },
                 help: trans('dt_tts_engine_help', {}, 'resource')
               },
@@ -217,12 +217,12 @@ const AibaseEditorOverview = () => {
                 label: trans('dt_avatar_type', {}, 'resource'),
                 type: 'choice',
                 options: {
-                  choices: [
-                    {value: 'none', label: trans('dt_choice_none', {}, 'resource')},
-                    {value: 'live2d', label: trans('dt_choice_live2d', {}, 'resource')},
-                    {value: 'vrm', label: trans('dt_choice_vrm', {}, 'resource')},
-                    {value: 'image', label: trans('dt_choice_image', {}, 'resource')}
-                  ]
+                  choices: {
+                    none: trans('dt_choice_none', {}, 'resource'),
+                    live2d: trans('dt_choice_live2d', {}, 'resource'),
+                    vrm: trans('dt_choice_vrm', {}, 'resource'),
+                    image: trans('dt_choice_image', {}, 'resource')
+                  }
                 },
                 help: trans('dt_avatar_type_help', {}, 'resource')
               },
