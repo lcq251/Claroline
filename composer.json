@@ -131,8 +131,7 @@
             "Mindme\\MarkdownBundle\\": "src/integration/mindme-markdown",
             "Mindme\\BillingBundle\\": "src/integration/mindme-billing",
             "Mindme\\AibaseBundle\\": "src/integration/mindme-aibase",
-            "Mindme\\DashboardBundle\\": "src/integration/mindme-dashboard",
-            "Mindme\\DigitalBundle\\": "src/integration/mindme-digital"
+            "Mindme\\DashboardBundle\\": "src/integration/mindme-dashboard"
         }
     },
     "scripts": {

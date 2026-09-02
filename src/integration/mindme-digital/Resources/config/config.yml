@@ -1,4 +1,0 @@
-plugin:
-    resources:
-        - name: digital_teacher
-          class: Mindme\DigitalBundle\Entity\DigitalTeacher

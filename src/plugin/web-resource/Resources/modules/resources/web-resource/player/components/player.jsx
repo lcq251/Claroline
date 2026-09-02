@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
+import get from 'lodash/get'
 
 import {asset} from '#/main/app/config/asset'
 
 import {selectors} from '#/plugin/web-resource/resources/web-resource/store'
-import {ResourcePage} from '#/main/core/resource'
+import {ResourcePage, selectors as resourceSelectors} from '#/main/core/resource'
+import {ResourceInputs} from '#/integration/mindme-aibase/resource/inputs'
 
 class PlayerComponent extends Component {
   constructor(props) {
@@ -46,18 +48,24 @@ class PlayerComponent extends Component {
           src={asset(this.props.resourcePath)}
           allowFullScreen={true}
         />
+
+        {this.props.resourceId &&
+          <ResourceInputs hostId={this.props.resourceId} />
+        }
       </ResourcePage>
     )
   }
 }
 
 PlayerComponent.propTypes = {
-  resourcePath: T.string.isRequired
+  resourcePath: T.string.isRequired,
+  resourceId: T.string
 }
 
 const Player = connect(
   state => ({
-    resourcePath: selectors.path(state)
+    resourcePath: selectors.path(state),
+    resourceId: get(resourceSelectors.resourceNode(state), 'id')
   })
 )(PlayerComponent)
 

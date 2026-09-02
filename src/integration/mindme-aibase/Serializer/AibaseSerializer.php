@@ -15,7 +15,7 @@ use Claroline\AppBundle\API\Serializer\SerializerTrait;
 use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Library\Normalizer\DateNormalizer;
 use Mindme\AibaseBundle\Entity\Aibase;
-use Mindme\AibaseBundle\Security\SecretCipher;
+use Mindme\AibaseBundle\Library\SecretCipher;
 
 /**
  * Serializes an Aibase (AI model resource) for the JSON API.
@@ -61,6 +61,17 @@ class AibaseSerializer
             'usageLimit' => $aibase->getUsageLimit(),
             'restrictionType' => $aibase->getRestrictionType(),
             'startAt' => DateNormalizer::normalize($aibase->getStartAt()),
+            'platformType' => $aibase->getPlatformType(),
+            'baseUrl' => $aibase->getBaseUrl(),
+            'extraConfig' => null !== $aibase->getExtraConfig() ? json_encode($aibase->getExtraConfig()) : null,
+            'kind' => $aibase->getKind(),
+            'ttsEngine' => $aibase->getTtsEngine(),
+            'voiceId' => $aibase->getVoiceId(),
+            'rate' => $aibase->getRate(),
+            'pitch' => $aibase->getPitch(),
+            'avatarType' => $aibase->getAvatarType(),
+            'avatarAsset' => $aibase->getAvatarAsset(),
+            'hasTtsToken' => null !== $aibase->getTtsToken(),
             'hasKey' => $hasKey,
             'apiKeyMask' => $hasKey ? self::MASK : '',
         ];
@@ -69,6 +80,33 @@ class AibaseSerializer
     public function deserialize($data, Aibase $aibase, array $options = []): Aibase
     {
         $this->sipe('modelName', 'setModelName', $data, $aibase);
+
+        if (isset($data['kind'])) {
+            $kind = $data['kind'];
+            $aibase->setKind(in_array($kind, ['model', 'digital_teacher'], true) ? $kind : 'model');
+        }
+
+        if (isset($data['platformType'])) {
+            $allowed = array_keys(Aibase::platformDefaults());
+            $allowed[] = 'custom';
+            $pt = $data['platformType'];
+            $aibase->setPlatformType(in_array($pt, $allowed, true) ? $pt : null);
+        }
+
+        if (isset($data['baseUrl'])) {
+            $aibase->setBaseUrl('' === (string) $data['baseUrl'] ? null : trim((string) $data['baseUrl']));
+        }
+
+        if (array_key_exists('extraConfig', $data)) {
+            $cfg = null;
+            if (is_array($data['extraConfig'])) {
+                $cfg = $data['extraConfig'];
+            } elseif (is_string($data['extraConfig']) && '' !== trim($data['extraConfig'])) {
+                $decoded = json_decode(trim($data['extraConfig']), true);
+                $cfg = is_array($decoded) ? $decoded : null;
+            }
+            $aibase->setExtraConfig($cfg);
+        }
 
         if (isset($data['expiresAt'])) {
             $expiresAt = null;
@@ -121,6 +159,26 @@ class AibaseSerializer
             // only a non-empty, non-mask value replaces the stored key
             if ('' !== $apiKey && self::MASK !== $apiKey) {
                 $aibase->setApiKey($this->cipher->encrypt($apiKey));
+            }
+        }
+
+        if (isset($data['ttsEngine'])) {
+            $engine = $data['ttsEngine'];
+            $aibase->setTtsEngine(in_array($engine, ['none', 'cloud', 'volc', 'edge', 'selfhosted'], true) ? $engine : null);
+        }
+
+        $this->sipe('voiceId', 'setVoiceId', $data, $aibase);
+        $this->sipe('rate', 'setRate', $data, $aibase);
+        $this->sipe('pitch', 'setPitch', $data, $aibase);
+        $this->sipe('avatarType', 'setAvatarType', $data, $aibase);
+        $this->sipe('avatarAsset', 'setAvatarAsset', $data, $aibase);
+        $this->sipe('ttsAppId', 'setTtsAppId', $data, $aibase);
+
+        if (isset($data['ttsToken'])) {
+            $ttsToken = trim((string) $data['ttsToken']);
+
+            if ('' !== $ttsToken && self::MASK !== $ttsToken) {
+                $aibase->setTtsToken($this->cipher->encrypt($ttsToken));
             }
         }
 

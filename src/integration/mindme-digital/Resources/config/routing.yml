@@ -1,4 +1,0 @@
-mindme_digital:
-    resource: '@MindmeDigitalBundle/Controller/'
-    type: attribute
-    prefix: /

@@ -96,16 +96,20 @@ const Editor = (props) => {
         />
 
         <div className="app-editor-body" role="presentation">
-          <Routes
-            path={props.path}
-            redirect={!isEmpty(pages) ? [
-              {from: '/', exact: true, to: '/' + pages[0].name}
-            ] : undefined}
-            routes={pages.map(page => ({
-              path: page.path || '/' + page.name,
-              ...omit(page)
-            }))}
-          />
+          {/* 懒加载编辑器页（插件注册 editorPages，经 React.lazy 包裹）必须在 Suspense 内渲染，
+            否则同步渲染链触发 React #426。包一层统一兜底。 */}
+          <React.Suspense fallback={<div className="p-5 text-center"><span className="fa fa-spinner fa-spin" /></div>}>
+            <Routes
+              path={props.path}
+              redirect={!isEmpty(pages) ? [
+                {from: '/', exact: true, to: '/' + pages[0].name}
+              ] : undefined}
+              routes={pages.map(page => ({
+                path: page.path || '/' + page.name,
+                ...omit(page)
+              }))}
+            />
+          </React.Suspense>
         </div>
       </Modal>
     </EditorContext.Provider>

@@ -3,4 +3,9 @@ services:
         tags: ['claroline.serializer']
         arguments:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
-            - '@Mindme\AibaseBundle\Security\SecretCipher'
+            - '@Mindme\AibaseBundle\Library\SecretCipher'
+
+    Mindme\AibaseBundle\Serializer\ResourceReferenceSerializer:
+        tags: ['claroline.serializer']
+        arguments:
+            - '@Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer'

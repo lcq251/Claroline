@@ -7,3 +7,4 @@ services:
       - '%claroline.param.uploads_directory%'
       - '@Claroline\WebResourceBundle\Manager\WebResourceManager'
       - '@Claroline\AppBundle\API\SerializerProvider'
+      - '@Claroline\AppBundle\Persistence\ObjectManager'

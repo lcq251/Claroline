@@ -13,28 +13,78 @@ namespace Claroline\WebResourceBundle\Component\Resource;
 
 use Claroline\AppBundle\API\SerializerProvider;
 use Claroline\AppBundle\API\Utils\FileBag;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Claroline\CoreBundle\Component\Resource\DownloadableResourceInterface;
+use Claroline\CoreBundle\Component\Resource\FileAdapterInterface;
 use Claroline\CoreBundle\Component\Resource\ResourceComponent;
 use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Claroline\CoreBundle\Entity\Resource\File;
 use Claroline\CoreBundle\Manager\FileManager;
 use Claroline\WebResourceBundle\Manager\WebResourceManager;
-use Symfony\Component\Filesystem\Filesystem;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\File as HttpFile;
 
-final class WebResource extends ResourceComponent implements DownloadableResourceInterface
+final class WebResource extends ResourceComponent implements DownloadableResourceInterface, FileAdapterInterface
 {
     public function __construct(
         private readonly FileManager $fileManager,
         private readonly string $filesDir,
         private readonly string $uploadDir,
         private readonly WebResourceManager $webResourceManager,
-        private readonly SerializerProvider $serializer
+        private readonly SerializerProvider $serializer,
+        private readonly ObjectManager $om
     ) {
     }
 
     public static function getName(): string
     {
         return 'claroline_web_resource';
+    }
+
+    public function requireAdapter(): bool
+    {
+        return true;
+    }
+
+    public function supportsFile(HttpFile $file): int
+    {
+        if (in_array($file->getMimeType(), ['application/zip', 'application/x-zip-compressed'])) {
+            return FileAdapterInterface::SUPPORTED;
+        }
+
+        return FileAdapterInterface::UNSUPPORTED;
+    }
+
+    public function fromFile(HttpFile $file): ?array
+    {
+        return [];
+    }
+
+    /** @param File $resource */
+    public function create(AbstractResource $resource, array $data): void
+    {
+        if (!empty($resource->getUrl())) {
+            $workspace = $resource->getResourceNode()->getWorkspace();
+            $tmpFile = new HttpFile($resource->getUrl());
+
+            // generate hash name
+            $hashName = Uuid::uuid4()->toString().'.zip';
+
+            // move zip to permanent storage
+            $filesPath = $this->filesDir.DIRECTORY_SEPARATOR.'webresource'.DIRECTORY_SEPARATOR.$workspace->getUuid().DIRECTORY_SEPARATOR;
+            $tmpFile->move($filesPath, $hashName);
+
+            // extract zip for serving
+            $this->webResourceManager->unzip($hashName, $workspace);
+
+            // update File entity
+            $resource->setHashName($hashName);
+            $resource->setUrl($hashName);
+            $resource->setSize(filesize($filesPath.$hashName));
+
+            $this->om->persist($resource);
+            $this->om->flush();
+        }
     }
 
     /** @param File $resource */

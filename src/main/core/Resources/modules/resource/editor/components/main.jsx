@@ -7,6 +7,8 @@ import {trans} from '#/main/app/intl'
 import {hasPermission} from '#/main/app/security'
 import {Editor} from '#/main/app/editor/components/main'
 
+import {getApps} from '#/main/app/plugins/app'
+
 import {supportEvaluation} from '#/main/core/resource/utils'
 import {selectors as resourceSelectors} from '#/main/core/resource/store'
 import {ResourceEditorAppearance} from '#/main/core/resource/editor/components/appearance'
@@ -90,7 +92,18 @@ const ResourceEditor = ({
           disabled: !resourceLoaded || !supportEvaluation(resourceNode),
           group: trans('evaluation')
         }
-      ].concat(pages || [])}
+      ].concat(pages || [])
+        .concat(Object.values(getApps('editorPages')).map(page => ({
+          name: page.name,
+          title: page.title,
+          help: page.help,
+          // 资源编辑菜单显隐：按 editorPage 声明的 resourceTypes 白名单过滤当前资源类型。
+          // 未配置 resourceTypes → 全部资源类型显示（向后兼容）；[] → 全部不显示。
+          displayed: page.resourceTypes
+            ? page.resourceTypes.includes(resourceType)
+            : true,
+          component: 'function' === typeof page.component ? React.lazy(page.component) : page.component
+        })))}
     />
   )
 }

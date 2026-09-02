@@ -43,4 +43,3 @@ Mindme\MarkdownBundle\MindmeMarkdownBundle = true
 Mindme\BillingBundle\MindmeBillingBundle = true
 Mindme\AibaseBundle\MindmeAibaseBundle = true
 Mindme\DashboardBundle\MindmeDashboardBundle = true
-Mindme\DigitalBundle\MindmeDigitalBundle = true

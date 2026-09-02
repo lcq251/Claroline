@@ -16,7 +16,11 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Mindme\AibaseBundle\Entity\Aibase;
 use Mindme\AibaseBundle\Entity\AibaseUsage;
-use Mindme\AibaseBundle\Security\SecretCipher;
+use Mindme\AibaseBundle\Library\SecretCipher;
+use Mindme\AibaseBundle\Library\TTS\EdgeTTSProvider;
+use Mindme\AibaseBundle\Library\TTS\TTSProviderInterface;
+use Mindme\AibaseBundle\Library\TTS\NullTTSProvider;
+use Mindme\AibaseBundle\Library\TTS\VolcTTSProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +45,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class AibaseChatController
 {
-    private const DEEPSEEK_BASE_URL = 'https://api.deepseek.com/v1';
+    // fallback base URL when a resource has no resolvable platform/api url
+    private const DEFAULT_BASE_URL = 'https://api.deepseek.com/v1';
 
     public function __construct(
         private readonly ObjectManager $om,
@@ -49,6 +54,8 @@ class AibaseChatController
         private readonly SecretCipher $cipher,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly PlatformConfigurationHandler $config,
+        private readonly TTSProviderInterface $ttsProvider = new NullTTSProvider(),
+        private readonly ?EdgeTTSProvider $edgeTts = null
     ) {
     }
 
@@ -113,14 +120,15 @@ class AibaseChatController
         }
 
         $model = $aibase->getModelName() ?: 'deepseek-chat';
+        $baseUrl = rtrim($aibase->resolveBaseUrl() ?: self::DEFAULT_BASE_URL, '/');
 
-        // 4. Stream the DeepSeek response as SSE --------------------------------
-        $response = new StreamedResponse(function () use ($apiKey, $model, $messages, $temperature, $maxTokens, $aibase, $userId, $usage) {
+        // 4. Stream the platform response as SSE --------------------------------
+        $response = new StreamedResponse(function () use ($apiKey, $model, $baseUrl, $messages, $temperature, $maxTokens, $aibase, $userId, $usage) {
             // Ensure no output buffering interferes with streaming.
             while (ob_get_level() > 0) {
                 ob_end_flush();
             }
-            $this->streamDeepSeek($apiKey, $model, $messages, $temperature, $maxTokens);
+            $this->streamChat($apiKey, $model, $baseUrl, $messages, $temperature, $maxTokens);
             // Consume quota on successful stream completion.
             $this->consumeUsage($aibase, $userId, $usage);
         });
@@ -134,12 +142,74 @@ class AibaseChatController
     }
 
     /**
-     * Streams DeepSeek chat completions, forwarding only the text deltas as
-     * bare `data: <text>` SSE lines (the frontend accumulates them).
+     * Ephemeral TTS endpoint. Returns raw audio bytes (or a JSON error) for the
+     * configured engine. With no real engine configured (default) the player
+     * degrades to the browser Web Speech API (no host Python required); the
+     * `edge` engine is opt-in and needs `pip install edge-tts` on the host.
      */
-    private function streamDeepSeek(
+    #[Route('/apiv2/mindme_aibase/tts', name: 'apiv2_mindme_aibase_tts', methods: ['POST'])]
+    public function tts(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true) ?? [];
+        $resourceUuid = $data['resourceUuid'] ?? null;
+        $text = trim((string) ($data['text'] ?? ''));
+
+        if (!$resourceUuid || '' === $text) {
+            return new JsonResponse(['error' => 'missing resourceUuid or text'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $aibase = $this->aibaseFromResourceUuid((string) $resourceUuid);
+        if (!$aibase) {
+            return new JsonResponse(['error' => 'aibase_not_found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $node = $aibase->getResourceNode();
+        if ($node && !$this->authChecker->isGranted('OPEN', $node)) {
+            return new JsonResponse(['error' => 'no_permission'], Response::HTTP_FORBIDDEN);
+        }
+
+        $options = [
+            'voice' => $aibase->getVoiceId(),
+            'rate' => $aibase->getRate() ?? 1.0,
+            'pitch' => $aibase->getPitch() ?? 0.0,
+        ];
+
+        $provider = match ($aibase->getTtsEngine()) {
+            'volc' => new VolcTTSProvider(
+                (string) ($aibase->getTtsAppId() ?? ''),
+                (string) $this->decryptTtsToken($aibase)
+            ),
+            'edge' => $this->edgeTts ?? $this->ttsProvider,
+            default => $this->ttsProvider,
+        };
+
+        $result = $provider->synthesize($text, $options);
+
+        if (!$result['available']) {
+            return new JsonResponse(['error' => $result['error'] ?? 'tts_not_configured'], Response::HTTP_SERVICE_UNAVAILABLE);
+        }
+
+        $response = new Response($result['data'] ?? '');
+        $response->headers->set('Content-Type', $result['content_type'] ?? 'audio/mpeg');
+
+        return $response;
+    }
+
+    private function decryptTtsToken(Aibase $aibase): string
+    {
+        $token = $aibase->getTtsToken();
+
+        return $token ? $this->cipher->decrypt($token) : '';
+    }
+
+    /**
+     * Streams an OpenAI-compatible chat completion endpoint, forwarding only the
+     * text deltas as bare `data: <text>` SSE lines (the frontend accumulates them).
+     */
+    private function streamChat(
         string $apiKey,
         string $model,
+        string $baseUrl,
         array $messages,
         float $temperature,
         int $maxTokens,
@@ -152,7 +222,7 @@ class AibaseChatController
             'stream' => true,
         ]);
 
-        $ch = curl_init(self::DEEPSEEK_BASE_URL.'/chat/completions');
+        $ch = curl_init($baseUrl.'/chat/completions');
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $payload,

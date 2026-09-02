@@ -1,4 +1,4 @@
 services:
-    Mindme\AibaseBundle\Security\SecretCipher:
+    Mindme\AibaseBundle\Library\SecretCipher:
         arguments:
             - '%kernel.secret%'

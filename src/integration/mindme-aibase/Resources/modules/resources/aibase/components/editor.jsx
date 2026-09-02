@@ -17,9 +17,39 @@ const AibaseEditorOverview = () => {
   const resource = useSelector(resourceSelectors.resource)
   const hasKey = get(resource, 'hasKey', false)
   const mask = get(resource, 'apiKeyMask', '')
+  const hasTtsToken = get(resource, 'hasTtsToken', false)
   const restrictionType = get(resource, 'restrictionType', 'none')
+  const platformType = get(resource, 'platformType', 'custom')
+  const kind = get(resource, 'kind', 'model')
 
   const baseFields = [
+    {
+      name: 'kind',
+      label: trans('kind', {}, 'resource'),
+      type: 'choice',
+      options: {
+        choices: [
+          {value: 'model', label: trans('kind_model', {}, 'resource')},
+          {value: 'digital_teacher', label: trans('kind_digital_teacher', {}, 'resource')}
+        ]
+      },
+      help: trans('kind_help', {}, 'resource')
+    },
+    {
+      name: 'platformType',
+      label: trans('platform_type', {}, 'resource'),
+      type: 'choice',
+      options: {
+        choices: [
+          {value: 'deepseek', label: 'DeepSeek'},
+          {value: 'openai', label: 'OpenAI'},
+          {value: 'qwen', label: '通义千问 Qwen'},
+          {value: 'kimi', label: 'Kimi'},
+          {value: 'custom', label: trans('platform_custom', {}, 'resource')}
+        ]
+      },
+      help: trans('platform_type_help', {}, 'resource')
+    },
     {
       name: 'modelName',
       label: trans('model_name', {}, 'resource'),
@@ -27,6 +57,17 @@ const AibaseEditorOverview = () => {
       options: {
         placeholder: trans('model_name_placeholder', {}, 'resource')
       }
+    },
+    {
+      name: 'baseUrl',
+      label: trans('base_url', {}, 'resource'),
+      type: 'string',
+      options: {
+        placeholder: 'https://api.example.com/v1'
+      },
+      help: ('custom' === platformType)
+        ? trans('base_url_help_custom', {}, 'resource')
+        : trans('base_url_help_preset', {}, 'resource')
     },
     {
       name: 'apiKey',
@@ -38,6 +79,15 @@ const AibaseEditorOverview = () => {
       help: hasKey
         ? trans('api_key_help_set', {mask}, 'resource')
         : trans('api_key_help_empty', {}, 'resource')
+    },
+    {
+      name: 'extraConfig',
+      label: trans('extra_config', {}, 'resource'),
+      type: 'textarea',
+      options: {
+        placeholder: '{"option": "value"}'
+      },
+      help: trans('extra_config_help', {}, 'resource')
     },
     {
       name: 'restrictionType',
@@ -97,7 +147,92 @@ const AibaseEditorOverview = () => {
             type: 'boolean',
             help: trans('is_default_help', {}, 'resource')
           }]
-        }
+        },
+        // 语音(TTS) + 形象(Avatar) 分组仅对数字老师形态有语义
+        ...('digital_teacher' === kind ? [
+          {
+            title: trans('dt_voice_settings', {}, 'resource'),
+            fields: [
+              {
+                name: 'ttsEngine',
+                label: trans('dt_tts_engine', {}, 'resource'),
+                type: 'choice',
+                options: {
+                  choices: [
+                    {value: 'none', label: trans('dt_choice_none', {}, 'resource')},
+                    {value: 'cloud', label: trans('dt_choice_cloud', {}, 'resource')},
+                    {value: 'volc', label: trans('dt_choice_volc', {}, 'resource')},
+                    {value: 'edge', label: trans('dt_choice_edge', {}, 'resource')},
+                    {value: 'selfhosted', label: trans('dt_choice_selfhosted', {}, 'resource')}
+                  ]
+                },
+                help: trans('dt_tts_engine_help', {}, 'resource')
+              },
+              {
+                name: 'voiceId',
+                label: trans('dt_voice_id', {}, 'resource'),
+                type: 'string',
+                help: trans('dt_voice_id_help', {}, 'resource')
+              },
+              {
+                name: 'rate',
+                label: trans('dt_rate', {}, 'resource'),
+                type: 'number',
+                options: {step: 0.1},
+                help: trans('dt_rate_help', {}, 'resource')
+              },
+              {
+                name: 'pitch',
+                label: trans('dt_pitch', {}, 'resource'),
+                type: 'number',
+                options: {step: 0.1},
+                help: trans('dt_pitch_help', {}, 'resource')
+              },
+              {
+                name: 'ttsAppId',
+                label: trans('dt_tts_appid', {}, 'resource'),
+                type: 'string',
+                help: trans('dt_tts_appid_help', {}, 'resource')
+              },
+              {
+                name: 'ttsToken',
+                label: trans('dt_tts_token', {}, 'resource'),
+                type: 'password',
+                options: {
+                  disablePasswordCheck: true
+                },
+                help: hasTtsToken
+                  ? trans('dt_tts_token_help_set', {}, 'resource')
+                  : trans('dt_tts_token_help_empty', {}, 'resource')
+              }
+            ]
+          },
+          {
+            title: trans('dt_avatar_settings', {}, 'resource'),
+            fields: [
+              {
+                name: 'avatarType',
+                label: trans('dt_avatar_type', {}, 'resource'),
+                type: 'choice',
+                options: {
+                  choices: [
+                    {value: 'none', label: trans('dt_choice_none', {}, 'resource')},
+                    {value: 'live2d', label: trans('dt_choice_live2d', {}, 'resource')},
+                    {value: 'vrm', label: trans('dt_choice_vrm', {}, 'resource')},
+                    {value: 'image', label: trans('dt_choice_image', {}, 'resource')}
+                  ]
+                },
+                help: trans('dt_avatar_type_help', {}, 'resource')
+              },
+              {
+                name: 'avatarAsset',
+                label: trans('dt_avatar_asset', {}, 'resource'),
+                type: 'string',
+                help: trans('dt_avatar_asset_help', {}, 'resource')
+              }
+            ]
+          }
+        ] : [])
       ]}
     />
   )

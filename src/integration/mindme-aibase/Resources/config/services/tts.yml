@@ -1,0 +1,7 @@
+services:
+    Mindme\AibaseBundle\Library\TTS\NullTTSProvider:
+        tags:
+            - { name: monolog.logger, channel: tts }
+
+    Mindme\AibaseBundle\Library\TTS\EdgeTTSProvider:
+        public: true

@@ -1,3 +1,0 @@
-services:
-    Mindme\DigitalBundle\Component\Resource\DigitalTeacherResource:
-        tags: ['claroline.component.resource']
