@@ -83,8 +83,10 @@ const AibaseEditorOverview = () => {
     {
       name: 'extraConfig',
       label: trans('extra_config', {}, 'resource'),
-      type: 'textarea',
+      type: 'string',
       options: {
+        long: true,
+        minRows: 4,
         placeholder: '{"option": "value"}'
       },
       help: trans('extra_config_help', {}, 'resource')
