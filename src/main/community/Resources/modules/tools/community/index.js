@@ -51,28 +51,28 @@ export default declareTool(CommunityTool, (tool, contextType, contextData, conte
         name: 'add-user',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-user',
-        label: trans('Ajouter un utilisateur', {}, 'command'),
+        label: trans('add_user', {}, 'command'),
         callback: () => true,
         group: trans('community', {}, 'tools')
       }, {
         name: 'add-group',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-users',
-        label: trans('Ajouter un groupe', {}, 'command'),
+        label: trans('add_group', {}, 'command'),
         callback: () => true,
         group: trans('community', {}, 'tools')
       }, {
         name: 'add-role',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-id-badge',
-        label: trans('Ajouter un rôle', {}, 'command'),
+        label: trans('add_role', {}, 'command'),
         callback: () => true,
         group: trans('community', {}, 'tools')
       }, {
         name: 'view-as',
         type: CALLBACK_BUTTON,
         icon: 'fa fa-fw fa-mask',
-        label: trans('Voir en tant que', {}, 'command'),
+        label: trans('view_as', {}, 'command'),
         callback: () => true,
         group: trans('community', {}, 'tools')
       }

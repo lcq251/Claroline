@@ -1,0 +1,15 @@
+{
+  "Pages": "Pages",
+  "Actions": "Actions",
+  "import_file": "Import a file",
+  "export_file": "Export a file",
+  "add_sequence": "Add a sequence",
+  "correct_pending_evaluations": "Correct pending evaluations",
+  "add_workspace": "Add a workspace",
+  "add_resource": "Add a resource",
+  "add_location": "Add a location",
+  "add_user": "Add a user",
+  "add_group": "Add a group",
+  "add_role": "Add a role",
+  "view_as": "View as"
+}

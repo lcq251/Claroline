@@ -1,0 +1,15 @@
+{
+  "Pages": "Pages",
+  "Actions": "Actions",
+  "import_file": "Importer un fichier",
+  "export_file": "Exporter un fichier",
+  "add_sequence": "Ajouter une séquence",
+  "correct_pending_evaluations": "Corriger des évaluations en attente",
+  "add_workspace": "Ajouter un espace d'activité",
+  "add_resource": "Ajouter une ressource",
+  "add_location": "Ajouter un lieu",
+  "add_user": "Ajouter un utilisateur",
+  "add_group": "Ajouter un groupe",
+  "add_role": "Ajouter un rôle",
+  "view_as": "Voir en tant que"
+}

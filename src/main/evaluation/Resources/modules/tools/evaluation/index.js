@@ -13,13 +13,13 @@ export default declareTool(EvaluationTool, () => new CommandPalette('evaluation'
       name: 'add-sequence',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-route',
-      label: trans('Ajouter une séquence', {}, 'command'),
+      label: trans('add_sequence', {}, 'command'),
       callback: () => true
     }, {
       name: 'correct-evaluations',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-check-double',
-      label: trans('Corriger des évaluations en attente', {}, 'command'),
+      label: trans('correct_pending_evaluations', {}, 'command'),
       callback: () => true
     }
   ])

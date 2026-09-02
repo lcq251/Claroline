@@ -10,7 +10,7 @@ export default declareTool(LocationsTool, () => new CommandPalette('locations')
       name: 'add-location',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-map-marker-alt',
-      label: trans('Ajouter un lieu', {}, 'command'),
+      label: trans('add_location', {}, 'command'),
       callback: () => true
     }
   ])

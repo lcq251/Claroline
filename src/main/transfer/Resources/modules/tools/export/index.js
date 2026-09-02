@@ -13,7 +13,7 @@ export default declareTool(ExportTool, () => new CommandPalette('export')
       name: 'export',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-file-export',
-      label: trans('Exporter un fichier', {}, 'command'),
+      label: trans('export_file', {}, 'command'),
       callback: () => true
     }
   ])

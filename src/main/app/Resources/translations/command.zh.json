@@ -1,0 +1,15 @@
+{
+  "Pages": "页面",
+  "Actions": "操作",
+  "import_file": "导入文件",
+  "export_file": "导出文件",
+  "add_sequence": "添加序列",
+  "correct_pending_evaluations": "批改待评作业",
+  "add_workspace": "添加工作空间",
+  "add_resource": "添加资源",
+  "add_location": "添加地点",
+  "add_user": "添加用户",
+  "add_group": "添加群组",
+  "add_role": "添加角色",
+  "view_as": "身份预览"
+}

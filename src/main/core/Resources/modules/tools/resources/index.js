@@ -13,7 +13,7 @@ export default declareTool(ResourcesTool, () => new CommandPalette('resources')
       name: 'add-resource',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-folder',
-      label: trans('Ajouter une ressource', {}, 'command'),
+      label: trans('add_resource', {}, 'command'),
       callback: () => true
     }
   ])

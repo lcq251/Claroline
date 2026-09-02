@@ -13,7 +13,7 @@ export default declareTool(WorkspacesTool, () => new CommandPalette('workspaces'
       name: 'add-workspace',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-book',
-      label: trans('Ajouter un espace d\'activité', {}, 'command'),
+      label: trans('add_workspace', {}, 'command'),
       callback: () => true
     }
   ])

@@ -13,7 +13,7 @@ export default declareTool(ImportTool, () => new CommandPalette('import')
       name: 'import',
       type: CALLBACK_BUTTON,
       icon: 'fa fa-fw fa-file-import',
-      label: trans('Importer un fichier', {}, 'command'),
+      label: trans('import_file', {}, 'command'),
       callback: () => true
     }
   ])
