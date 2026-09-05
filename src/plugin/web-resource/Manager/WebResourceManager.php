@@ -122,8 +122,16 @@ class WebResourceManager
             mkdir($zipPath.$hash, 0777, true);
         }
 
+        $archivePath = $filesPath.$hash;
+        if (!file_exists($archivePath)) {
+            throw new \RuntimeException(sprintf('WebResource archive "%s" does not exist.', $archivePath));
+        }
+
         $archive = new \ZipArchive();
-        $archive->open($filesPath.$hash);
+        if (true !== $archive->open($archivePath)) {
+            throw new \RuntimeException(sprintf('Cannot open WebResource archive "%s" (ZipArchive error: %s).', $archivePath, $archive->getStatusString()));
+        }
+
         $archive->extractTo($zipPath.$hash);
         $archive->close();
     }

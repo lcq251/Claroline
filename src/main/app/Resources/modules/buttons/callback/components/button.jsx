@@ -17,7 +17,14 @@ const CallbackButton = forwardRef((props, ref) => {
         props.onClick(e)
       }
 
-      props.callback(e)
+      // `callback` is declared `func.isRequired` in propTypes but propTypes
+      // is dev-only. A render path that omits it (e.g. a Button built from
+      // an action shape that resolved to a no-op) would throw
+      // `e.callback is not a function` on every click. Guard with a typeof
+      // check so the button degrades to a plain onClick handler.
+      if ('function' === typeof props.callback) {
+        props.callback(e)
+      }
     }
   }, [props.disabled, props.callback, props.onClick])
 

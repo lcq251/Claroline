@@ -13,6 +13,11 @@ import {ErrorBoundary} from '#/main/app/components/error-boundary'
 const ResourceWrapper = (props) => {
   const [app, setApp] = useState(null)
 
+  // DEBUG: dump incoming props to window for inspection
+  if (typeof window !== 'undefined') {
+    window.__rwProps = { loaded: props.loaded, error: props.error, path: props.path, slug: props.slug }
+  }
+
   // change current resource
   useEffect(() => {
     if (props.slug) {
