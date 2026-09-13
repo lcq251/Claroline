@@ -7,8 +7,6 @@ services:
             - '@Mindme\AibaseBundle\Library\SecretCipher'
             - '@security.token_storage'
             - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
-            - '@Mindme\AibaseBundle\Library\TTS\NullTTSProvider'
-            - '@Mindme\AibaseBundle\Library\TTS\EdgeTTSProvider'
 
     Mindme\AibaseBundle\Controller\AibaseContextController:
         tags: ['controller.service_arguments']
@@ -23,3 +21,12 @@ services:
             - '@Mindme\AibaseBundle\Serializer\ResourceReferenceSerializer'
             - '@security.authorization_checker'
             - '@security.token_storage'
+
+    Mindme\AibaseBundle\Controller\AiteacherDigitalTeacherController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@security.authorization_checker'
+            - '@Mindme\AibaseBundle\Library\SecretCipher'
+            - '@security.token_storage'
+            - '@Mindme\AibaseBundle\Library\DigitalTeacherTicketService'

@@ -5,6 +5,9 @@ services:
             - '@Claroline\AppBundle\Persistence\ObjectManager'
             - '@Mindme\AibaseBundle\Library\SecretCipher'
 
+    Mindme\AibaseBundle\Serializer\AiteacherSerializer:
+        tags: ['claroline.serializer']
+
     Mindme\AibaseBundle\Serializer\ResourceReferenceSerializer:
         tags: ['claroline.serializer']
         arguments:

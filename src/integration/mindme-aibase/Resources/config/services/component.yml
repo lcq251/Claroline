@@ -1,3 +1,6 @@
 services:
     Mindme\AibaseBundle\Component\Resource\AibaseResource:
         tags: ['claroline.component.resource']
+
+    Mindme\AibaseBundle\Component\Resource\AiteacherResource:
+        tags: ['claroline.component.resource']

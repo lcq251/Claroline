@@ -4,7 +4,8 @@ import {trans} from '#/main/app/intl/translation'
 
 registry.add('MindmeAibaseBundle', {
   resources: {
-    aibase: () => import('#/integration/mindme-aibase/resources/aibase')
+    aibase: () => import('#/integration/mindme-aibase/resources/aibase'),
+    aiteacher: () => import('#/integration/mindme-aibase/resources/aiteacher')
   },
   // 通用「关联资源」资源配置页。按 resourceTypes 白名单决定哪些资源类型显示该菜单。
   // 未配置 resourceTypes → 全部类型显示；[] → 全部不显示。

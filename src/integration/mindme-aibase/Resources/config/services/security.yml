@@ -2,3 +2,7 @@ services:
     Mindme\AibaseBundle\Library\SecretCipher:
         arguments:
             - '%kernel.secret%'
+
+    Mindme\AibaseBundle\Library\DigitalTeacherTicketService:
+        arguments:
+            - '@cache.app'

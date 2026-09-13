@@ -17,10 +17,6 @@ use Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler;
 use Mindme\AibaseBundle\Entity\Aibase;
 use Mindme\AibaseBundle\Entity\AibaseUsage;
 use Mindme\AibaseBundle\Library\SecretCipher;
-use Mindme\AibaseBundle\Library\TTS\EdgeTTSProvider;
-use Mindme\AibaseBundle\Library\TTS\TTSProviderInterface;
-use Mindme\AibaseBundle\Library\TTS\NullTTSProvider;
-use Mindme\AibaseBundle\Library\TTS\VolcTTSProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,8 +50,6 @@ class AibaseChatController
         private readonly SecretCipher $cipher,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly PlatformConfigurationHandler $config,
-        private readonly TTSProviderInterface $ttsProvider = new NullTTSProvider(),
-        private readonly ?EdgeTTSProvider $edgeTts = null
     ) {
     }
 
@@ -139,67 +133,6 @@ class AibaseChatController
         $response->headers->set('Connection', 'keep-alive');
 
         return $response;
-    }
-
-    /**
-     * Ephemeral TTS endpoint. Returns raw audio bytes (or a JSON error) for the
-     * configured engine. With no real engine configured (default) the player
-     * degrades to the browser Web Speech API (no host Python required); the
-     * `edge` engine is opt-in and needs `pip install edge-tts` on the host.
-     */
-    #[Route('/apiv2/mindme_aibase/tts', name: 'apiv2_mindme_aibase_tts', methods: ['POST'])]
-    public function tts(Request $request): Response
-    {
-        $data = json_decode($request->getContent(), true) ?? [];
-        $resourceUuid = $data['resourceUuid'] ?? null;
-        $text = trim((string) ($data['text'] ?? ''));
-
-        if (!$resourceUuid || '' === $text) {
-            return new JsonResponse(['error' => 'missing resourceUuid or text'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $aibase = $this->aibaseFromResourceUuid((string) $resourceUuid);
-        if (!$aibase) {
-            return new JsonResponse(['error' => 'aibase_not_found'], Response::HTTP_NOT_FOUND);
-        }
-
-        $node = $aibase->getResourceNode();
-        if ($node && !$this->authChecker->isGranted('OPEN', $node)) {
-            return new JsonResponse(['error' => 'no_permission'], Response::HTTP_FORBIDDEN);
-        }
-
-        $options = [
-            'voice' => $aibase->getVoiceId(),
-            'rate' => $aibase->getRate() ?? 1.0,
-            'pitch' => $aibase->getPitch() ?? 0.0,
-        ];
-
-        $provider = match ($aibase->getTtsEngine()) {
-            'volc' => new VolcTTSProvider(
-                (string) ($aibase->getTtsAppId() ?? ''),
-                (string) $this->decryptTtsToken($aibase)
-            ),
-            'edge' => $this->edgeTts ?? $this->ttsProvider,
-            default => $this->ttsProvider,
-        };
-
-        $result = $provider->synthesize($text, $options);
-
-        if (!$result['available']) {
-            return new JsonResponse(['error' => $result['error'] ?? 'tts_not_configured'], Response::HTTP_SERVICE_UNAVAILABLE);
-        }
-
-        $response = new Response($result['data'] ?? '');
-        $response->headers->set('Content-Type', $result['content_type'] ?? 'audio/mpeg');
-
-        return $response;
-    }
-
-    private function decryptTtsToken(Aibase $aibase): string
-    {
-        $token = $aibase->getTtsToken();
-
-        return $token ? $this->cipher->decrypt($token) : '';
     }
 
     /**

@@ -6,11 +6,12 @@ import {trans} from '#/main/app/intl/translation'
 import {ResourceEditor, ResourceEditorOverview, selectors as editorSelectors} from '#/main/core/resource/editor'
 
 /**
- * Aibase is now an "AI model resource": the editor is a plain
- * resource configuration form (model name / API key / expiry / default).
+ * Aibase is an "AI model resource": the editor is a plain resource
+ * configuration form (model name / API key / expiry / default).
  *
  * The API key is never sent back by the API — the form only receives
  * hasKey + apiKeyMask. Leaving the key input empty keeps the stored key.
+ * The digital-teacher surface moved to the Aiteacher resource.
  */
 const AibaseEditorOverview = () => {
   // form data lives in the resourceEditor store, so we must read the *modified*
@@ -20,24 +21,10 @@ const AibaseEditorOverview = () => {
   const resource = useSelector(editorSelectors.resource)
   const hasKey = get(resource, 'hasKey', false)
   const mask = get(resource, 'apiKeyMask', '')
-  const hasTtsToken = get(resource, 'hasTtsToken', false)
   const restrictionType = get(resource, 'restrictionType', 'none')
   const platformType = get(resource, 'platformType', 'custom')
-  const kind = get(resource, 'kind', 'model')
 
   const baseFields = [
-    {
-      name: 'resource.kind',
-      label: trans('kind', {}, 'resource'),
-      type: 'choice',
-      options: {
-        choices: {
-          model: trans('kind_model', {}, 'resource'),
-          digital_teacher: trans('kind_digital_teacher', {}, 'resource')
-        }
-      },
-      help: trans('kind_help', {}, 'resource')
-    },
     {
       name: 'resource.platformType',
       label: trans('platform_type', {}, 'resource'),
@@ -152,92 +139,7 @@ const AibaseEditorOverview = () => {
             type: 'boolean',
             help: trans('is_default_help', {}, 'resource')
           }]
-        },
-        // 语音(TTS) + 形象(Avatar) 分组仅对数字老师形态有语义
-        ...('digital_teacher' === kind ? [
-          {
-            title: trans('dt_voice_settings', {}, 'resource'),
-            fields: [
-              {
-                name: 'resource.ttsEngine',
-                label: trans('dt_tts_engine', {}, 'resource'),
-                type: 'choice',
-                options: {
-                  choices: {
-                    none: trans('dt_choice_none', {}, 'resource'),
-                    cloud: trans('dt_choice_cloud', {}, 'resource'),
-                    volc: trans('dt_choice_volc', {}, 'resource'),
-                    edge: trans('dt_choice_edge', {}, 'resource'),
-                    selfhosted: trans('dt_choice_selfhosted', {}, 'resource')
-                  }
-                },
-                help: trans('dt_tts_engine_help', {}, 'resource')
-              },
-              {
-                name: 'resource.voiceId',
-                label: trans('dt_voice_id', {}, 'resource'),
-                type: 'string',
-                help: trans('dt_voice_id_help', {}, 'resource')
-              },
-              {
-                name: 'resource.rate',
-                label: trans('dt_rate', {}, 'resource'),
-                type: 'number',
-                options: {step: 0.1},
-                help: trans('dt_rate_help', {}, 'resource')
-              },
-              {
-                name: 'resource.pitch',
-                label: trans('dt_pitch', {}, 'resource'),
-                type: 'number',
-                options: {step: 0.1},
-                help: trans('dt_pitch_help', {}, 'resource')
-              },
-              {
-                name: 'resource.ttsAppId',
-                label: trans('dt_tts_appid', {}, 'resource'),
-                type: 'string',
-                help: trans('dt_tts_appid_help', {}, 'resource')
-              },
-              {
-                name: 'resource.ttsToken',
-                label: trans('dt_tts_token', {}, 'resource'),
-                type: 'password',
-                options: {
-                  disablePasswordCheck: true
-                },
-                help: hasTtsToken
-                  ? trans('dt_tts_token_help_set', {}, 'resource')
-                  : trans('dt_tts_token_help_empty', {}, 'resource')
-              }
-            ]
-          },
-          {
-            title: trans('dt_avatar_settings', {}, 'resource'),
-            fields: [
-              {
-                name: 'resource.avatarType',
-                label: trans('dt_avatar_type', {}, 'resource'),
-                type: 'choice',
-                options: {
-                  choices: {
-                    none: trans('dt_choice_none', {}, 'resource'),
-                    live2d: trans('dt_choice_live2d', {}, 'resource'),
-                    vrm: trans('dt_choice_vrm', {}, 'resource'),
-                    image: trans('dt_choice_image', {}, 'resource')
-                  }
-                },
-                help: trans('dt_avatar_type_help', {}, 'resource')
-              },
-              {
-                name: 'resource.avatarAsset',
-                label: trans('dt_avatar_asset', {}, 'resource'),
-                type: 'string',
-                help: trans('dt_avatar_asset_help', {}, 'resource')
-              }
-            ]
-          }
-        ] : [])
+        }
       ]}
     />
   )

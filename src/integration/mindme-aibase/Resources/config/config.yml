@@ -2,3 +2,5 @@ plugin:
     resources:
         - name: aibase
           class: Mindme\AibaseBundle\Entity\Aibase
+        - name: aiteacher
+          class: Mindme\AibaseBundle\Entity\Aiteacher
