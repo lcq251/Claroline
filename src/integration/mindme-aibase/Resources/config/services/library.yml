@@ -1,0 +1,3 @@
+services:
+    Mindme\AibaseBundle\Configuration\PlatformDefaults:
+        tags: ['claroline.configuration']

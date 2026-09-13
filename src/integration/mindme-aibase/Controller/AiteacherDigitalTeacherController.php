@@ -68,6 +68,10 @@ class AiteacherDigitalTeacherController
 
         return new JsonResponse([
             'ticket' => $this->tickets->issue((int) $node->getId(), $this->getUserId()),
+            'widgetBaseUrl' => $aiteacher->getWidgetBaseUrl(),
+            'modelUrl' => $aiteacher->getModelUrl(),
+            'voice' => $aiteacher->getVoice(),
+            'mode' => $aiteacher->getMode(),
         ]);
     }
 

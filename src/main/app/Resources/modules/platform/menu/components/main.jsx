@@ -16,6 +16,7 @@ import {Menu} from '#/main/app/overlays/menu'
 import {ContextHistory} from '#/main/app/context/components/history'
 import {PlatformMenuQuickAccess} from '#/main/app/platform/menu/components/quick-access'
 import {PlatformMenuHelp} from '#/main/app/platform/menu/components/help'
+import {PlatformMenuSupport} from '#/main/app/platform/menu/components/support'
 import {PlatformMenuGlobal} from '#/main/app/platform/menu/components/global'
 import {constants, useSize} from '#/main/app/dom/size'
 
@@ -162,6 +163,10 @@ const PlatformMenu = (props) => {
 
         <li>
           <PlatformMenuHelp vertical={vertical} />
+        </li>
+
+        <li>
+          <PlatformMenuSupport vertical={vertical} />
         </li>
       </ul>
     </nav>

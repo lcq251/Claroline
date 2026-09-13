@@ -84,5 +84,7 @@
   "error_not_started_desc": "此内容的访问期尚未开始。请等到%date%再访问“%contentName%”的内容。",
   "error_ended": "此内容已无法访问。",
   "error_ended_desc": "此内容的访问期已结束。自%date%起，“%contentName%”的内容访问已关闭。",
-  "error_invalid_dates_contact": "如果您认为应该有权访问此内容，请联系管理员%contactLink%。"
+  "error_invalid_dates_contact": "如果您认为应该有权访问此内容，请联系管理员%contactLink%。",
+  "support": "人工客服",
+  "support_title": "人工客服"
 }

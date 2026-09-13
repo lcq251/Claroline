@@ -71,6 +71,10 @@ const contactEmail = (state) => {
   return configSelectors.param(state, 'contact')
 }
 
+const supportEnabled = (state) => configSelectors.param(state, 'support.enabled', false)
+
+const supportTeacherUuid = (state) => configSelectors.param(state, 'support.teacherUuid', null)
+
 export const selectors = {
   version,
   helpUrl,
@@ -80,5 +84,7 @@ export const selectors = {
   availableContexts,
   favoriteContexts,
   isContextFavorite,
-  currentOrganization
+  currentOrganization,
+  supportEnabled,
+  supportTeacherUuid
 }

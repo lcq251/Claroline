@@ -62,6 +62,10 @@ class ClientSerializer
                 }, $this->om->getRepository(ResourceType::class)->findAll()),
             ],
             'pricing' => $this->config->getParameter('pricing'),
+            'support' => [
+                'enabled' => (bool) $this->config->getParameter('mindme_aibase.support_enabled'),
+                'teacherUuid' => $this->config->getParameter('mindme_aibase.support_teacher_uuid'),
+            ],
             'plugins' => $this->pluginManager->getEnabled(),
             'uploadMaxFilesize' => UploadedFile::getMaxFilesize(),
         ];
