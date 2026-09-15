@@ -10,6 +10,7 @@ import {Menu} from '#/main/app/overlays/menu'
 
 import {selectors} from '#/main/app/platform/store'
 import {AvatarWidgetFrame} from '#/integration/mindme-aibase/resources/aiteacher/components/avatar-widget-frame'
+import {PersonalAvatarConfig} from '#/main/app/platform/menu/components/personal-avatar-config'
 
 /**
  * Left app menu "human support" entry — embeds the global support avatar
@@ -18,6 +19,7 @@ import {AvatarWidgetFrame} from '#/integration/mindme-aibase/resources/aiteacher
  */
 const SupportMenu = (props) => {
   const teacherUuid = useSelector(selectors.supportTeacherUuid)
+  const [tab, setTab] = useState('avatar')
 
   return (
     <Menu id={props.id} className="app-user-menu app-support-menu flyout-menu p-0 position-fixed">
@@ -28,8 +30,27 @@ const SupportMenu = (props) => {
 
         <h2 className="h5 mb-2">{trans('support_title', {}, 'platform')}</h2>
 
+        <div className="btn-group btn-group-sm mb-2" role="tablist">
+          <button
+            type="button"
+            className={`btn btn-outline-primary ${tab === 'avatar' ? 'active' : ''}`}
+            onClick={() => setTab('avatar')}
+          >
+            数字人
+          </button>
+          <button
+            type="button"
+            className={`btn btn-outline-primary ${tab === 'config' ? 'active' : ''}`}
+            onClick={() => setTab('config')}
+          >
+            我的配置
+          </button>
+        </div>
+
         <div className="flex-fill">
-          <AvatarWidgetFrame uuid={teacherUuid} height={420} />
+          {tab === 'avatar'
+            ? <AvatarWidgetFrame uuid={teacherUuid} height={420} />
+            : <PersonalAvatarConfig />}
         </div>
       </div>
     </Menu>
