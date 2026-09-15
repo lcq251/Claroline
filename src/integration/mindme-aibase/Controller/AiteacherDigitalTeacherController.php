@@ -16,6 +16,8 @@ use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Mindme\AibaseBundle\Entity\Aibase;
 use Mindme\AibaseBundle\Entity\AibaseUsage;
 use Mindme\AibaseBundle\Entity\Aiteacher;
+use Mindme\AibaseBundle\Entity\UserAvatar;
+use Mindme\AibaseBundle\Entity\UserKnowledge;
 use Mindme\AibaseBundle\Library\DigitalTeacherTicketService;
 use Mindme\AibaseBundle\Library\SecretCipher;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -108,6 +110,19 @@ class AiteacherDigitalTeacherController
         $messages = $data['messages'] ?? [];
         if (empty($messages)) {
             return new JsonResponse(['error' => 'missing messages'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Inject the signed-in user's personal knowledge base as retrieval context.
+        $user = $this->getAuthenticatedUser();
+        if ($user) {
+            $knowledge = $this->om->getRepository(UserKnowledge::class)->findOneBy(['user' => $user]);
+            if ($knowledge && $knowledge->getEntries()) {
+                $kb = json_encode($knowledge->getEntries(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                array_unshift($messages, [
+                    'role' => 'system',
+                    'content' => "以下是用户的个人知识库（JSON 格式），回答时优先参考其中内容：\n{$kb}",
+                ]);
+            }
         }
 
         $model = $brain->getModelName() ?: 'deepseek-chat';
@@ -216,6 +231,178 @@ class AiteacherDigitalTeacherController
 
         return new Response('ok', Response::HTTP_OK, [
             'X-User-Id' => (string) ($data['userId'] ?? 0),
+        ]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/me', name: 'apiv2_mindme_aibase_me', methods: ['GET'])]
+    public function me(): JsonResponse
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (!is_object($user) || !method_exists($user, 'getId')) {
+            return new JsonResponse(['authenticated' => false, 'id' => null, 'username' => null]);
+        }
+
+        return new JsonResponse([
+            'authenticated' => true,
+            'id' => $user->getId(),
+            'username' => method_exists($user, 'getUsername') ? $user->getUsername() : null,
+        ]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/aiteacher/{uuid}/config', name: 'apiv2_mindme_aibase_aiteacher_config', methods: ['GET'])]
+    public function config(string $uuid): JsonResponse
+    {
+        $aiteacher = $this->findAiteacher($uuid);
+        if (!$aiteacher) {
+            return new JsonResponse(['error' => 'aiteacher_not_found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Personal avatar config (if any) overrides the resource defaults.
+        $avatar = $this->findUserAvatar();
+
+        return new JsonResponse([
+            'widgetBaseUrl' => '/avatar',
+            'modelUrl' => ($avatar?->getModelUrl() ?: $aiteacher->getModelUrl()),
+            'voice' => ($avatar?->getVoice() ?: $aiteacher->getVoice()),
+            'mode' => ($avatar?->getMode() ?: $aiteacher->getMode()),
+        ]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/me/avatar', name: 'apiv2_mindme_aibase_me_avatar_get', methods: ['GET'])]
+    public function getAvatar(): JsonResponse
+    {
+        $user = $this->getAuthenticatedUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'not_authenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $avatar = $this->findUserAvatar();
+
+        return new JsonResponse([
+            'modelUrl' => $avatar?->getModelUrl(),
+            'voice' => $avatar?->getVoice(),
+            'mode' => $avatar?->getMode(),
+        ]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/me/avatar', name: 'apiv2_mindme_aibase_me_avatar_put', methods: ['PUT'])]
+    public function putAvatar(Request $request): JsonResponse
+    {
+        $user = $this->getAuthenticatedUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'not_authenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $data = json_decode($request->getContent(), true) ?? [];
+
+        $avatar = $this->findUserAvatar();
+        if (!$avatar) {
+            $avatar = new UserAvatar();
+            $avatar->setUser($user);
+        }
+
+        if (array_key_exists('modelUrl', $data)) {
+            $avatar->setModelUrl($data['modelUrl'] ?: null);
+        }
+        if (array_key_exists('voice', $data)) {
+            $avatar->setVoice($data['voice'] ?: null);
+        }
+        if (array_key_exists('mode', $data)) {
+            $avatar->setMode($data['mode'] ?: null);
+        }
+
+        $this->om->persist($avatar);
+        $this->om->flush();
+
+        return new JsonResponse([
+            'modelUrl' => $avatar->getModelUrl(),
+            'voice' => $avatar->getVoice(),
+            'mode' => $avatar->getMode(),
+        ]);
+    }
+
+    private function getAuthenticatedUser(): ?object
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (is_object($user) && method_exists($user, 'getId')) {
+            return $user;
+        }
+
+        return null;
+    }
+
+    private function findUserAvatar(): ?UserAvatar
+    {
+        $user = $this->getAuthenticatedUser();
+        if (!$user) {
+            return null;
+        }
+
+        return $this->om->getRepository(UserAvatar::class)->findOneBy(['user' => $user]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/me/knowledge', name: 'apiv2_mindme_aibase_me_knowledge_get', methods: ['GET'])]
+    public function getKnowledge(): JsonResponse
+    {
+        $user = $this->getAuthenticatedUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'not_authenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $knowledge = $this->om->getRepository(UserKnowledge::class)->findOneBy(['user' => $user]);
+
+        return new JsonResponse([
+            'entries' => $knowledge?->getEntries() ?? [],
+            'updatedAt' => $knowledge?->getUpdatedAt()?->format('c'),
+        ]);
+    }
+
+    #[Route('/apiv2/mindme_aibase/me/knowledge', name: 'apiv2_mindme_aibase_me_knowledge_put', methods: ['PUT'])]
+    public function putKnowledge(Request $request): JsonResponse
+    {
+        $user = $this->getAuthenticatedUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'not_authenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $data = json_decode($request->getContent(), true) ?? [];
+        $entries = $data['entries'] ?? null;
+        if (!is_array($entries)) {
+            return new JsonResponse(['error' => 'entries_must_be_array'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validate + normalise entries to {q, a, kw, source?}.
+        $clean = [];
+        foreach ($entries as $index => $item) {
+            if (!is_array($item)) {
+                return new JsonResponse(['error' => 'invalid_entry', 'index' => $index], Response::HTTP_BAD_REQUEST);
+            }
+            $q = trim((string) ($item['q'] ?? ''));
+            $a = trim((string) ($item['a'] ?? ''));
+            if ('' === $q || '' === $a) {
+                return new JsonResponse(['error' => 'entry_requires_q_and_a', 'index' => $index], Response::HTTP_BAD_REQUEST);
+            }
+            $entry = ['q' => $q, 'a' => $a, 'kw' => trim((string) ($item['kw'] ?? ''))];
+            if (isset($item['source']) && is_array($item['source'])) {
+                $entry['source'] = $item['source'];
+            }
+            $clean[] = $entry;
+        }
+
+        $knowledge = $this->om->getRepository(UserKnowledge::class)->findOneBy(['user' => $user]);
+        if (!$knowledge) {
+            $knowledge = new UserKnowledge();
+            $knowledge->setUser($user);
+        }
+
+        $knowledge->setEntries($clean);
+        $knowledge->setUpdatedAt(new \DateTime());
+        $this->om->persist($knowledge);
+        $this->om->flush();
+
+        return new JsonResponse([
+            'entries' => $knowledge->getEntries(),
+            'updatedAt' => $knowledge->getUpdatedAt()?->format('c'),
         ]);
     }
 

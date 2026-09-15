@@ -7,9 +7,11 @@ import {url} from '#/main/app/api/router'
 /**
  * Reusable ai-avatar-bot iframe embedder.
  *
- * Given an Aiteacher resource uuid it fetches a one-time ticket (the ticket
- * endpoint also returns the widget config: widgetBaseUrl / modelUrl / voice /
- * mode), then renders the widget iframe with the brain + TTS endpoints.
+ * Given an Aiteacher resource uuid it fetches the widget config (widgetBaseUrl /
+ * modelUrl / voice / mode) from the config endpoint, then renders the widget
+ * iframe with the brain + TTS endpoints. The widget loads same-origin via
+ * /avatar/ so the browser sends the Claroline session cookie; authentication
+ * happens in the /apiv2 API layer (session), not via a one-time ticket.
  *
  * Used by both the Aiteacher resource player and the global support entry in
  * the left app menu.
@@ -33,10 +35,9 @@ const AvatarWidgetFrame = (props) => {
 
     let cancelled = false
 
-    fetch(url(`/apiv2/mindme_aibase/aiteacher/${uuid}/ticket`), {
-      method: 'POST',
-      credentials: 'include',
-      headers: {'Content-Type': 'application/json'}
+    fetch(url(`/apiv2/mindme_aibase/aiteacher/${uuid}/config`), {
+      method: 'GET',
+      credentials: 'include'
     })
       .then(response => response.json())
       .then(data => {
@@ -59,13 +60,12 @@ const AvatarWidgetFrame = (props) => {
     return <div className="alert alert-danger mb-0" role="alert">{errorMessage}</div>
   }
 
-  if (!config || !config.ticket) {
+  if (!config) {
     return <div className="alert alert-info mb-0" role="alert">{loadingMessage}</div>
   }
 
   const widgetBaseUrl = config.widgetBaseUrl || '/avatar'
   const params = new URLSearchParams()
-  params.set('tk', config.ticket)
   if (config.modelUrl) {
     params.set('model', config.modelUrl)
   }
