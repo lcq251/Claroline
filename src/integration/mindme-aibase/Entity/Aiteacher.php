@@ -53,11 +53,11 @@ class Aiteacher extends AbstractResource
 
     /** Avatar fit: half (bust) | full (whole body). */
     #[ORM\Column(type: Types::STRING, length: 8, nullable: true)]
-    private ?string $fit = null;
+    private ?string $fit = 'half';
 
     /** Avatar zoom level (ai-avatar-bot data-zoom, safe range 1–3). */
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $zoom = null;
+    private ?int $zoom = 1;
 
     /** Avatar display name (document title + greeting). */
     #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
