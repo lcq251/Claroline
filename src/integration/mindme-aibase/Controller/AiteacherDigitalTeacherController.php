@@ -265,6 +265,13 @@ class AiteacherDigitalTeacherController
             'modelUrl' => ($avatar?->getModelUrl() ?: $aiteacher->getModelUrl()),
             'voice' => ($avatar?->getVoice() ?: $aiteacher->getVoice()),
             'mode' => ($avatar?->getMode() ?: $aiteacher->getMode()),
+            'fit' => ($avatar?->getFit() ?: $aiteacher->getFit()),
+            'zoom' => ($avatar?->getZoom() ?? $aiteacher->getZoom()),
+            'name' => ($avatar?->getAvatarName() ?: $aiteacher->getAvatarName()),
+            'welcome' => ($avatar?->getWelcome() ?: $aiteacher->getWelcome()),
+            'greeting' => ($avatar?->getGreeting() ?: $aiteacher->getGreeting()),
+            'fallback' => ($avatar?->getFallback() ?: $aiteacher->getFallback()),
+            'suggestions' => ($avatar?->getSuggestions() ?? $aiteacher->getSuggestions()),
         ]);
     }
 
@@ -282,6 +289,13 @@ class AiteacherDigitalTeacherController
             'modelUrl' => $avatar?->getModelUrl(),
             'voice' => $avatar?->getVoice(),
             'mode' => $avatar?->getMode(),
+            'fit' => $avatar?->getFit(),
+            'zoom' => $avatar?->getZoom(),
+            'name' => $avatar?->getAvatarName(),
+            'welcome' => $avatar?->getWelcome(),
+            'greeting' => $avatar?->getGreeting(),
+            'fallback' => $avatar?->getFallback(),
+            'suggestions' => $avatar?->getSuggestions(),
         ]);
     }
 
@@ -310,6 +324,27 @@ class AiteacherDigitalTeacherController
         if (array_key_exists('mode', $data)) {
             $avatar->setMode($data['mode'] ?: null);
         }
+        if (array_key_exists('fit', $data)) {
+            $avatar->setFit($data['fit'] ?: null);
+        }
+        if (array_key_exists('zoom', $data)) {
+            $avatar->setZoom(null !== $data['zoom'] && '' !== $data['zoom'] ? (int) $data['zoom'] : null);
+        }
+        if (array_key_exists('name', $data)) {
+            $avatar->setAvatarName($data['name'] ?: null);
+        }
+        if (array_key_exists('welcome', $data)) {
+            $avatar->setWelcome($data['welcome'] ?: null);
+        }
+        if (array_key_exists('greeting', $data)) {
+            $avatar->setGreeting($data['greeting'] ?: null);
+        }
+        if (array_key_exists('fallback', $data)) {
+            $avatar->setFallback($data['fallback'] ?: null);
+        }
+        if (array_key_exists('suggestions', $data)) {
+            $avatar->setSuggestions(is_array($data['suggestions']) ? $data['suggestions'] : null);
+        }
 
         $this->om->persist($avatar);
         $this->om->flush();
@@ -318,6 +353,13 @@ class AiteacherDigitalTeacherController
             'modelUrl' => $avatar->getModelUrl(),
             'voice' => $avatar->getVoice(),
             'mode' => $avatar->getMode(),
+            'fit' => $avatar->getFit(),
+            'zoom' => $avatar->getZoom(),
+            'name' => $avatar->getAvatarName(),
+            'welcome' => $avatar->getWelcome(),
+            'greeting' => $avatar->getGreeting(),
+            'fallback' => $avatar->getFallback(),
+            'suggestions' => $avatar->getSuggestions(),
         ]);
     }
 

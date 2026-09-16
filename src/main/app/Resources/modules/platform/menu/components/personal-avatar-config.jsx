@@ -34,6 +34,7 @@ const PersonalAvatarConfig = () => {
   const [saving, setSaving] = useState(false)
   const [newQ, setNewQ] = useState('')
   const [newA, setNewA] = useState('')
+  const [newSuggestion, setNewSuggestion] = useState('')
 
   useEffect(() => {
     fetch(url('/apiv2/mindme_aibase/me/avatar'), {credentials: 'include'})
@@ -94,6 +95,19 @@ const PersonalAvatarConfig = () => {
     saveKnowledge(knowledge.filter((_, i) => i !== index))
   }
 
+  const addSuggestion = () => {
+    const s = newSuggestion.trim()
+    if (!s) {
+      return
+    }
+    saveAvatar({suggestions: [...(avatar?.suggestions || []), s]})
+    setNewSuggestion('')
+  }
+
+  const removeSuggestion = (index) => {
+    saveAvatar({suggestions: (avatar?.suggestions || []).filter((_, i) => i !== index)})
+  }
+
   return (
     <div className="personal-avatar-config">
       <h4 className="fs-base mb-2">数字人形象</h4>
@@ -138,6 +152,101 @@ const PersonalAvatarConfig = () => {
             <option key={value} value={value}>{label}</option>
           ))}
         </select>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label fs-sm">取景</label>
+        <select
+          className="form-select"
+          value={avatar?.fit || 'half'}
+          disabled={saving || !avatar}
+          onChange={e => saveAvatar({fit: e.target.value})}
+        >
+          <option value="half">半身</option>
+          <option value="full">全身</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label fs-sm">缩放</label>
+        <select
+          className="form-select"
+          value={avatar?.zoom || 1}
+          disabled={saving || !avatar}
+          onChange={e => saveAvatar({zoom: parseInt(e.target.value, 10)})}
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label fs-sm">名字</label>
+        <input
+          type="text"
+          className="form-control"
+          value={avatar?.name || ''}
+          disabled={saving || !avatar}
+          onChange={e => setAvatar({...avatar, name: e.target.value})}
+          onBlur={e => saveAvatar({name: e.target.value})}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label fs-sm">开场白</label>
+        <textarea
+          className="form-control"
+          rows={2}
+          value={avatar?.welcome || ''}
+          disabled={saving || !avatar}
+          onChange={e => setAvatar({...avatar, welcome: e.target.value})}
+          onBlur={e => saveAvatar({welcome: e.target.value})}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label fs-sm">兜底话</label>
+        <textarea
+          className="form-control"
+          rows={2}
+          value={avatar?.fallback || ''}
+          disabled={saving || !avatar}
+          onChange={e => setAvatar({...avatar, fallback: e.target.value})}
+          onBlur={e => saveAvatar({fallback: e.target.value})}
+        />
+      </div>
+
+      <h4 className="fs-base mb-2 mt-3">预设问题</h4>
+      {(avatar?.suggestions || []).map((s, index) => (
+        <div key={index} className="d-flex justify-content-between align-items-center border rounded p-2 mb-1">
+          <span className="fs-sm">{s}</span>
+          <button
+            type="button"
+            className="btn btn-sm btn-link text-danger"
+            disabled={saving}
+            onClick={() => removeSuggestion(index)}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      <div className="d-flex gap-1 mb-2">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="新问题"
+          value={newSuggestion}
+          onChange={e => setNewSuggestion(e.target.value)}
+        />
+        <button
+          type="button"
+          className="btn btn-sm btn-primary"
+          disabled={saving || !newSuggestion.trim()}
+          onClick={addSuggestion}
+        >
+          添加
+        </button>
       </div>
 
       <h4 className="fs-base mb-2 mt-3">个人知识库</h4>

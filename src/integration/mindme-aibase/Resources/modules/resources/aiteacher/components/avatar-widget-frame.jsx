@@ -75,6 +75,27 @@ const AvatarWidgetFrame = (props) => {
   if (config.mode) {
     params.set('mode', config.mode)
   }
+  if (config.fit) {
+    params.set('fit', config.fit)
+  }
+  if (config.zoom) {
+    params.set('zoom', config.zoom)
+  }
+  if (config.name) {
+    params.set('name', config.name)
+  }
+  if (config.welcome) {
+    params.set('welcome', config.welcome)
+  }
+  if (config.greeting) {
+    params.set('greeting', config.greeting)
+  }
+  if (config.fallback) {
+    params.set('fallback', config.fallback)
+  }
+  if (config.suggestions && config.suggestions.length) {
+    params.set('suggestions', JSON.stringify(config.suggestions))
+  }
   params.set('ollama', `/apiv2/mindme_aibase/aiteacher/${uuid}`)
   params.set('api', `/apiv2/mindme_aibase/aiteacher/${uuid}/tts`)
 

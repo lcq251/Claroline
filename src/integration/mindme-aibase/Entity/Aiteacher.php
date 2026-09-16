@@ -51,6 +51,34 @@ class Aiteacher extends AbstractResource
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $usageLimit = null;
 
+    /** Avatar fit: half (bust) | full (whole body). */
+    #[ORM\Column(type: Types::STRING, length: 8, nullable: true)]
+    private ?string $fit = null;
+
+    /** Avatar zoom level (ai-avatar-bot data-zoom, safe range 1–3). */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $zoom = null;
+
+    /** Avatar display name (document title + greeting). */
+    #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
+    private ?string $avatarName = null;
+
+    /** Welcome text shown on open. */
+    #[ORM\Column(type: Types::STRING, length: 500, nullable: true)]
+    private ?string $welcome = null;
+
+    /** Greeting text shown on tap. */
+    #[ORM\Column(type: Types::STRING, length: 500, nullable: true)]
+    private ?string $greeting = null;
+
+    /** Fallback text when the brain cannot answer. */
+    #[ORM\Column(type: Types::STRING, length: 800, nullable: true)]
+    private ?string $fallback = null;
+
+    /** Suggested questions (JSON array, up to 8). */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $suggestions = null;
+
     public function getWidgetBaseUrl(): ?string
     {
         return $this->widgetBaseUrl;
@@ -109,5 +137,75 @@ class Aiteacher extends AbstractResource
     public function setUsageLimit(?int $usageLimit): void
     {
         $this->usageLimit = $usageLimit;
+    }
+
+    public function getFit(): ?string
+    {
+        return $this->fit;
+    }
+
+    public function setFit(?string $fit): void
+    {
+        $this->fit = $fit;
+    }
+
+    public function getZoom(): ?int
+    {
+        return $this->zoom;
+    }
+
+    public function setZoom(?int $zoom): void
+    {
+        $this->zoom = $zoom;
+    }
+
+    public function getAvatarName(): ?string
+    {
+        return $this->avatarName;
+    }
+
+    public function setAvatarName(?string $avatarName): void
+    {
+        $this->avatarName = $avatarName;
+    }
+
+    public function getWelcome(): ?string
+    {
+        return $this->welcome;
+    }
+
+    public function setWelcome(?string $welcome): void
+    {
+        $this->welcome = $welcome;
+    }
+
+    public function getGreeting(): ?string
+    {
+        return $this->greeting;
+    }
+
+    public function setGreeting(?string $greeting): void
+    {
+        $this->greeting = $greeting;
+    }
+
+    public function getFallback(): ?string
+    {
+        return $this->fallback;
+    }
+
+    public function setFallback(?string $fallback): void
+    {
+        $this->fallback = $fallback;
+    }
+
+    public function getSuggestions(): ?array
+    {
+        return $this->suggestions;
+    }
+
+    public function setSuggestions(?array $suggestions): void
+    {
+        $this->suggestions = $suggestions;
     }
 }
